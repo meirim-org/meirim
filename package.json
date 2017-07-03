@@ -1,0 +1,25 @@
+{
+  "name": "people-for-cities",
+  "version": "1.0.0",
+  "description": "",
+  "main": "public/index.js",
+  "scripts": {
+    "start": "browser-sync start -server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dortheimer/CitizensForCities.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dortheimer/CitizensForCities/issues"
+  },
+  "homepage": "https://github.com/dortheimer/CitizensForCities#readme",
+  "dependencies": {
+    "@types/googlemaps": "^3.26.13"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.12"
+  }
+}
