@@ -1,0 +1,18 @@
+{
+  "session": {
+    "secret":"secret"
+  },
+  "debug": {
+    "database":true
+  },
+  "database": {
+    "client": "mysql",
+    "connection": {
+      "host": "localhost",
+      "user": "your_database_user",
+      "password": "your_database_password",
+      "database": "citizens",
+      "charset": "utf8"
+    }
+  }
+}
