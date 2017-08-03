@@ -11,7 +11,7 @@ const knex = require('knex')({
 module.exports = session({
 	secret: config.get('session.secret'),
 	resave: false,
-	saveUninitialized: false,
+	saveUninitialized: true,
 	store: new KnexSessionStore({
 		knex: knex
 	})

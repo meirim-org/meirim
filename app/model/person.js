@@ -1,36 +1,59 @@
 'use strict';
-var Checkit = require('checkit');
-var Promise = require('bluebird');
-var Bcrypt = Promise.promisifyAll(require('bcrypt'));
+const Checkit = require('checkit');
+const Promise = require('bluebird');
+const Bcrypt = require('bcrypt');
 const Bookshelf = require("./bookshelf");
+const Exception = require('./exception');
 const Person = Bookshelf.Model.extend({
-	tableName: 'activity',
-	idAttribute: 'activity_id',
+	tableName: 'person',
+	idAttribute: 'id',
 	hasTimestamps: true,
 	rules: {
-		person_id: ['required', 'integer'],
-		person_name: ['required', 'string'],
-		person_email: ['required', 'string'],
-		person_password: ['required', 'string'],
-		person_status: ['required', 'boolean']
+		firstName: ['required', 'string'],
+		lastName: ['required', 'string'],
+		email: ['required', 'email'],
+		password: ['required', 'string'],
+		status: ['required', 'integer'],
+		admin: ['integer']
 	},
-	initialize: function initialize() {
+	hidden: ['password', 'admin'],
+	initialize: function () {
+		this.on('creating', this.assignValues);
 		this.on('saving', this.validateSave);
+		this.on('saving', this.hashPassword);
 	},
-	validateSave: function () {
-		return Checkit(rules).run(this.attributes);
+	assignValues: function (model, attrs, options) {
+		model.attributes.status = 1;
+		model.attributes.email = model.attributes.email.toLowerCase().trim();
 	},
-	login: Promise.method(function (email, password) {
-		if (!email || !password) throw new Error('Email and password are both required');
-		return new this({
-			email: email.toLowerCase().trim()
-		}).fetch({
-			require: true
-		}).tap(function (customer) {
-			return Bcrypt.compareAsync(password, customer.get('password')).then(function (res) {
-				if (!res) throw new Error('Invalid password');
-			});
+	validateSave: function (model, attrs, options) {
+		return Checkit(this.rules).run(this.attributes);
+	},
+	hashPassword: function (model, attrs, options) {
+		if (!model.hasChanged("password")) {
+			return;
+		}
+		// hash password
+		return Bcrypt.hash(model.get("password"), 10).then(function (hashedPassword) {
+			return model.set("password", hashedPassword);
+		})
+	},
+	upload: function (files) {
+		return this;
+	},
+	checkPassword: function (password) {
+		var person = this;
+		return Bcrypt.compare(password, this.get('password')).then(function (res) {
+			if (!res) throw new Exception.notAllowed('Password mismatch');
+			return person;
 		});
-	})
+	}
+}, {
+	canCreate: function (session) {
+		if (session.person) {
+			throw new Exception.notAllowed("Must be signed out")
+		}
+		return Person;
+	}
 });
 module.exports = Bookshelf.model('Person', Person);
