@@ -1,8 +1,0 @@
-{
-  "database": {
-    "client": "mysql",
-    "connection": {
-      "user": "root",
-    }
-  }
-}
