@@ -3,7 +3,7 @@
     "client": "mysql",
     "connection": {
       "user": "root",
-      "password": "5238334"
+      "password": ""
     }
   }
 }
