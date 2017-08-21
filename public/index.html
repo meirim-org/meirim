@@ -1,81 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content="cooperative management for municipal protests in israel">
-  <title>People For Cities - Open Information HaSadna</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Meirim - homepage</title>
 
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+  <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.3.3/papaparse.min.js"></script>
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+  <script src="//maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
+
+  <style>
+
+  #map-canvas {
+    	width: 100%;
+    	height: 300px;
+  	margin: 0;
+  	padding: 15px;
+  }
+
+  </style>
 </head>
 
 <body>
-  <div id="sidebar">
-    <ul id="slide-out" class="side-nav"></ul>
-    <a href="#" data-activates="slide-out" class="button-collapse"></a>
-  </div>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Meirim</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
 
-  <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red">
-      <i class="large material-icons">mode_edit</i>
-    </a>
-    <ul>
-      <li><a class="floating citizenAction blueAction" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScTC3TDnCjJry4PVoNYvUpBHEHOvhOO8bFHCcbc1J6ZhmP3pg/viewform#responses">הוסף</a></li>
-      <li><a class="floating citizenAction cyanAction" onclick="howToSubmit()">איך להגיש</a></li>
-      <li><a class="floating citizenAction greenAction" href="http://www.hasadna.org.il/" target="_blank" >הסדנא</a></li>
-    </ul>
-  </div>
-
-  <form id="search">
-    <div class="inner-search">
-      <input id="pac-input" class="controls" type="text" placeholder="חיפוש" />
-      <button><i class="material-icons">search</i></button>
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
-    <div class="search-results"></div>
-  </form>
-  <div id="map"></div>
-
-  <div id="how-to-submit" class="modal">
-    <div class="modal-content">
-      <h4>איך להגיש התנגדות?</h4>
-      <p class="content"></p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">סגור</a>
-    </div>
-  </div>
-
-
-  <script type="text/template" id="search-results-template">
-    <a href="#" data-index="{{index}}">
-      {{text}}
-    </a>
-  </script>
-  <script type="text/template" id="sidebar-template">
-    <li class="realHead">
-      <div class="headText">
-        <div class="header">מאבק הרכבת</div>
-        <div class="selectedAddress">{{address}}</div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">Starter Template</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
       </div>
-      <div class="headImg">
-        <img src="./props/eventIcon.png" style="max-width:50px;" />
+      <div class="row center">
+        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
       </div>
-    </li>
-    <li><a class="minorHeader">תיאור</a></li>
-    <li class="content">{{description}}</li>
-    <li><a class="minorHeader">טענות</a></li>
-    <li class="content">{{mainClaims}} </li>
-    <li class="buttonContainer {{facebookExists}}"><a target="_blank" href="{{facebookGroup}}" class="joinButton">הצטרף למאבק</a></li>
-    <li class="buttonContainer {{otherLinksExists}}"><a target="_blank" href="{{otherLinks}}" class="otherJoinButton">קרא עוד</a></li>
-  </script>
-  <script src="script.js"></script>
-</body>
+      <br><br>
 
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="section">
+
+      <div id="map-canvas"></div>
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Speeds up development</h5>
+
+            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+            <h5 class="center">User Experience Focused</h5>
+
+            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Easy to work with</h5>
+
+            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br><br>
+  </div>
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+  </body>
 </html>

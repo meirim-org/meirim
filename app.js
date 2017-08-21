@@ -2,14 +2,16 @@ const Express = require('express');
 const path = require('path');
 const BodyParser = require('body-parser');
 const FileUpload = require('express-fileupload');
-const Log = require('./app/model/log');
-// const Session = require('./app/model/session');
-const Config = require('./app/model/config');
+const Log = require('./api/model/log');
+const Config = require('./api/model/config');
+const React = require('react');
+
+
 // init application
 Log.silly("Starting application");
 const app = Express();
 // add sessions
-app.use(require('./app/model/session'));
+app.use(require('./api/model/session'));
 app.use(FileUpload());
 // json parsers
 app.use(BodyParser.json());
@@ -18,8 +20,8 @@ app.use(BodyParser.urlencoded({
 }));
 // set routes
 app.use(Express.static(path.join(__dirname, 'public')));
-app.use('/activity', require('./app/controller/activity'));
-app.use('/sign', require('./app/controller/sign'));
+app.use('/activity', require('./api/controller/activity'));
+app.use('/sign', require('./api/controller/sign'));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	var err = new Error('Not Found');
