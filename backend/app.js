@@ -4,7 +4,7 @@ const BodyParser = require('body-parser');
 const FileUpload = require('express-fileupload');
 const Log = require('./api/model/log');
 const Config = require('./api/model/config');
-const React = require('react');
+const Cors = require('cors');
 
 
 // init application
@@ -12,7 +12,22 @@ Log.silly("Starting application");
 const app = Express();
 // add sessions
 app.use(require('./api/model/session'));
-app.use(FileUpload());
+
+var whitelist = [ 'http://localhost', 'http://localhost:3000' ];
+var corsOptions = {
+    origin: function(origin, callback) {
+        callback(null, true);
+    },
+    optionsSuccessStatus: 200,
+    credentials: true,
+    preflightContinue: false,
+};
+
+
+app.use(Cors(corsOptions));
+app.options('*',Cors(corsOptions));
+
+// app.use(FileUpload());
 // json parsers
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({

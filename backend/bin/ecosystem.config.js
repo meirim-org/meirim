@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name        : "Meirim API",
+    name        : "api",
     script      : "./www",
     watch       : true,
     env: {
