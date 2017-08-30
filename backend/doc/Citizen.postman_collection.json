@@ -20,175 +20,37 @@
 	"public": false,
 	"requests": [
 		{
-			"folder": null,
 			"id": "0611653b-d04e-cb89-e4f8-9cc0114f195f",
-			"name": "Create User",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"firstName\":\"Jonathan\",\n  \"lastName\": \"Dortheimer\",\n  \"email\":\"t4@test.com\",\n  \"password\":\"123456\"\n  \n}",
-			"descriptionFormat": "html",
-			"description": "",
 			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/sign/up",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
 			"method": "POST",
-			"pathVariables": {},
-			"url": "http://localhost:3000/sign/up",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
-		},
-		{
-			"folder": null,
-			"id": "1d27ce75-5289-392a-456a-e762f22814d6",
-			"name": "Create Activities",
-			"dataMode": "raw",
 			"data": [],
-			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}",
-			"descriptionFormat": "html",
-			"description": "",
-			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://localhost:3000/activity",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
-		},
-		{
-			"folder": null,
-			"id": "5dc8593b-c90a-68b5-33c7-74036d0051df",
-			"name": "Get Activity",
 			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}",
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "Content-Type: application/json\n",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://localhost:3000/activity/1/",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
-		},
-		{
-			"folder": null,
-			"id": "67495ab6-28b1-face-8311-3c791b2dac37",
-			"name": "Get Activities",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}",
-			"descriptionFormat": "html",
-			"description": "",
-			"headers": "Content-Type: application/json\n",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://localhost:3000/activity",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
-		},
-		{
-			"folder": null,
-			"id": "8f0db947-fbbd-545a-f2ae-ac231e90de78",
-			"name": "Activity upload",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}",
-			"descriptionFormat": "html",
-			"description": "",
-			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://localhost:3000/activity",
-			"preRequestScript": null,
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"pathVariableData": [],
-			"responses": [],
+			"time": 1504103689790,
+			"name": "Create User",
+			"description": "",
 			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
-			"isFromCollection": true,
-			"collectionRequestId": "1d27ce75-5289-392a-456a-e762f22814d6"
+			"responses": [],
+			"rawModeData": "{\n  \"firstName\":\"Jonathan\",\n  \"lastName\": \"Dortheimer\",\n  \"email\":\"t6@dortheimer.com\",\n  \"password\":\"123456\"\n  \n}"
 		},
 		{
-			"folder": null,
-			"id": "b1bbc5fd-66a9-d625-76dd-21a286865775",
-			"name": "patch Activity",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}",
-			"descriptionFormat": null,
-			"description": "",
+			"id": "1d27ce75-5289-392a-456a-e762f22814d6",
 			"headers": "Content-Type: application/json\n",
-			"method": "PATCH",
-			"pathVariables": {},
-			"url": "http://localhost:3000/activity/1/",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -197,28 +59,27 @@
 					"enabled": true
 				}
 			],
+			"url": "{{host}}/activity",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
-		},
-		{
-			"folder": null,
-			"id": "bbb533f4-3fd1-a9e3-e368-81f475ca85a3",
-			"name": "Sign out",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"email\":\"tes1t@test.com\",\n  \"password\":\"123456\"\n  \n}",
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "Content-Type: application/json\n",
 			"method": "POST",
-			"pathVariables": {},
-			"url": "http://localhost:3000/sign/in",
-			"preRequestScript": null,
+			"data": [],
+			"dataMode": "raw",
 			"tests": null,
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
+			"helperAttributes": {},
+			"time": 1504103670431,
+			"name": "Create Activities",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": [],
+			"rawModeData": "{\n  \"headline\":\"משטרת הגקוזי\",\n  \"address\": \"לינקולן תל אביב\",\n  \"description\":\"עירית תל אביב רוצה להפוך את תחנת השטרה למלון על חשבון השכנים.\"\n  \n}"
+		},
+		{
+			"id": "5dc8593b-c90a-68b5-33c7-74036d0051df",
+			"headers": "Content-Type: application/json\n",
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -227,11 +88,153 @@
 					"enabled": true
 				}
 			],
+			"url": "{{host}}/activity/1/",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504103694766,
+			"name": "Get Activity",
+			"description": "",
 			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
-			"isFromCollection": true,
-			"collectionRequestId": "d7221bbd-c02d-ae12-705e-e5fd45be0aa1"
+			"responses": [],
+			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}"
+		},
+		{
+			"id": "67495ab6-28b1-face-8311-3c791b2dac37",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/activity",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504103693156,
+			"name": "Get Activities",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": [],
+			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}"
+		},
+		{
+			"id": "8f0db947-fbbd-545a-f2ae-ac231e90de78",
+			"headers": "Content-Type: application/x-www-form-urlencoded\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/activity/:id/upload",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {
+				"id": "10"
+			},
+			"pathVariableData": [
+				{
+					"key": "id",
+					"value": "10"
+				}
+			],
+			"method": "POST",
+			"data": [
+				{
+					"key": "dsdsds",
+					"value": "85e2ec22-147e-46aa-8b82-df186bd82c54.jpg",
+					"description": "",
+					"type": "file",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504103692164,
+			"name": "Activity upload",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": []
+		},
+		{
+			"id": "b1bbc5fd-66a9-d625-76dd-21a286865775",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/activity/1/",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504103674249,
+			"name": "patch Activity",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": [],
+			"rawModeData": "{\n  \"headline\":\"Test\",\n  \"address\": \"Moshe aram 10 tel aviv\",\n  \"description\":\"Nice\"\n  \n}"
+		},
+		{
+			"id": "bbb533f4-3fd1-a9e3-e368-81f475ca85a3",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/sign/out",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504103672992,
+			"name": "Sign out",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": [],
+			"rawModeData": "{\n  \"email\":\"tes1t@test.com\",\n  \"password\":\"123456\"\n  \n}"
 		},
 		{
 			"id": "c41078ee-f701-61d7-36c4-5b082d09070c",
@@ -244,7 +247,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:3000/me/",
+			"url": "{{host}}/me/",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -255,7 +258,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1501669838568,
+			"time": 1504103667659,
 			"name": "Me",
 			"description": "",
 			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
@@ -263,23 +266,8 @@
 			"rawModeData": "{\n  \"email\":\"tes1t@test.com\",\n  \"password\":\"123456\"\n  \n}"
 		},
 		{
-			"folder": null,
 			"id": "d7221bbd-c02d-ae12-705e-e5fd45be0aa1",
-			"name": "Sign in",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"email\":\"tes1t@test.com\",\n  \"password\":\"123456\"\n  \n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://localhost:3000/sign/in",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -288,9 +276,23 @@
 					"enabled": true
 				}
 			],
+			"url": "{{host}}/sign/in",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504103691144,
+			"name": "Sign in",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
 			"responses": [],
-			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
+			"rawModeData": "{\n  \"email\":\"t5@test.com\",\n  \"password\":\"123456\"\n  \n}"
 		}
 	]
 }
