@@ -3,7 +3,6 @@ const Bookshelf = require("./bookshelf");
 const Checkit = require('checkit');
 const Exception = require('./exception');
 const Log = require("./log");
-const Sharp = require('sharp');
 const Activity = Bookshelf.Model.extend({
 	tableName: 'activity',
 	idAttribute: 'id',
@@ -26,11 +25,7 @@ const Activity = Bookshelf.Model.extend({
 		Object.keys(files).forEach(function (key) {
 			Log.debug("Handeling file:", key);
 			let sampleFile = files[key];
-			sharp(sampleFile).resize(320, 240).toFile('newPath/output.jpg', (err, info) => {
-				if (err) return new Exception.error(err);
-				Log.debug("Node handeling file:", key);
-				return this;
-			});
+
 		});
 		// Use the mv() method to place the file somewhere on your server
 		// sampleFile.mv('/somewhere/on/your/server/filename.jpg', function (err) {
