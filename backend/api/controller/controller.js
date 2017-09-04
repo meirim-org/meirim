@@ -3,7 +3,7 @@ const Success = require("../view/success");
 const Failure = require("../view/failure");
 const Checkit = require('checkit');
 const Promise = require('bluebird');
-const Log = require('../model/log');
+const Log = require('../service/log');
 const Exception = require('../model/exception');
 class Controller {
 	constructor(model) {
@@ -78,25 +78,26 @@ class Controller {
 		const id = parseInt(req.params.id);
 		return this.model.forge({
 			[this.id_attribute]: id
-		}).canPatch(req.session).fetch().then(fetchedModel => {
+		}).canEdit(req.session).fetch().then(fetchedModel => {
 			return fetchedModel.save(req.body);
 		}).then(savedmodel => {
 			Log.debug(this.tableName, " patch success id:", savedmodel.get("id"));
-			return fetchedModel;
+			return savedmodel;
 		});
 	}
 	create(req, res, next) {
-		return this.model.canCreate(req.session).forge(req.body).save().then(savedModel => {
+		return this.model.canCreate(req.session).then(()=>{
+			return this.model.forge(req.body).save();
+		}).then(savedModel => {
 			Log.debug(this.tableName, " create success id:", savedModel.get("id"));
 			return savedModel;
 		});
 	}
 	upload(req, res, next) {
-		console.log(req.files);
 		const id = parseInt(req.params[this.id_attribute]);
 		return this.model.forge({
 			[this.id_attribute]: id
-		}).canPatch(req.session).upload(req.files);
+		}).canEdit(req.session).upload(req.files);
 	};
 }
 module.exports = Controller;

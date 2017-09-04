@@ -1,5 +1,5 @@
 'use strict';
-const config = require('./config');
+const config = require('../service/config');
 const knex = require('knex')({
 	client: config.get('database.client'),
 	connection: config.get('database.connection'),

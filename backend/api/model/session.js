@@ -1,7 +1,7 @@
 'use strict';
 const session = require('express-session');
 const KnexSessionStore = require('connect-session-knex')(session);
-var config = require('./config');
+var config = require('../service/config');
 // SQL setup
 const knex = require('knex')({
 	client: config.get('database.client'),
