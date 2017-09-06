@@ -57,7 +57,7 @@ class Controller {
 				Log.error(err);
 				return Failure.error(res, err.message);
 			});
-		}
+		};
 	}
 	browse(req, res, next) {
 		return this.model.collection().fetch().then(collection => {
@@ -67,9 +67,12 @@ class Controller {
 	}
 	read(req, res, next) {
 		const id = parseInt(req.params.id);
-		return this.model.forge({
+		var model = this.model.forge({
 			[this.id_attribute]: id
-		}).canRead(req.session).fetch().then(fetchedModel => {
+		});
+		return model.canRead(req.session).then(()=>{
+			return model.fetch();
+		}).then(fetchedModel => {
 			Log.debug(this.tableName, " read success");
 			return fetchedModel;
 		});
@@ -95,9 +98,12 @@ class Controller {
 	}
 	upload(req, res, next) {
 		const id = parseInt(req.params[this.id_attribute]);
-		return this.model.forge({
+		var model= this.model.forge({
 			[this.id_attribute]: id
-		}).canEdit(req.session).upload(req.files);
+		});
+		return model.canEdit(req.session).then(()=>{
+			return model.upload(req.files);
+		});
 	};
 }
 module.exports = Controller;

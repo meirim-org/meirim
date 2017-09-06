@@ -1,13 +1,14 @@
 'use strict';
 const Bookshelf = require("./bookshelf");
+const Promise = require('bluebird');
 const Checkit = require('checkit');
 const Exception = require('./exception');
 const Upload = require("../service/upload");
 const PersonActivity = require("../model/person_activity");
 const Status = require("../model/status");
-const ImageResize = require('node-image-resize');
-const fs = require('fs');
 const Log = require("../service/log");
+const path = require('path');
+const Image = require('../service/image');
 class Activity extends Bookshelf.Model {
 
   get rules() {
@@ -66,26 +67,25 @@ class Activity extends Bookshelf.Model {
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     Log.debug(files);
-    Object.keys(files).forEach(function(key) {
+    Object.keys(files).forEach((key)=> {
       Log.debug("Handeling file:", key);
       var sampleFile = files[key];
-      console.log(sampleFile.path);
-      var image = new ImageResize(sampleFile.path);
-      console.log(1);
-      image.loaded().then(function() {
-        console.log(2);
-        image.smartResizeDown({width: 200, height: 200}).then(function() {
-          console.log(3);
-          image.stream(function(err, stdout, stderr) {
-            console.log(newPath + sampleFile.filename + '.jpg');
-            if (err)
-              Log.e(err);
-            var writeStream = fs.createWriteStream(newPath + sampleFile.filename + '.jpg');
-            console.log(5);
-            stdout.pipe(writeStream);
-            console.log(6);
+      console.log(sampleFile);
+      Image.lwip.open(sampleFile.path,Image.mime[sampleFile.mimetype], (err,image)=>{
+        if (err){
+          Log.e("Open failed",err);
+        }
+        image.cover(400, 400, (err,image)=>{
+          if (err){
+            Log.e("Resize failed",err);
+          }
+          image.writeFile(newPath + sampleFile.filename + '.jpg', "jpg", (err,image)=>{
+            if (err){
+              Log.e("Write failed",err);
+            }
+            Log.debug("Sucess writing file:", newPath + sampleFile.filename + '.jpg');
           });
-        });
+        })
       });
     });
   }
@@ -94,20 +94,20 @@ class Activity extends Bookshelf.Model {
     return Upload.middleware.array('photos', 12);
   }
   canRead(session) {
-    return  Promise.resolve(this);;
+    return Promise.resolve(this);;
   }
   canEdit(session) {
     // if (!session.person || !session.person.admin) {
     // 	throw new Exception.notAllowed("Must be an admin")
     // }
-    return  Promise.resolve(this);;
+    return Promise.resolve(this);;
   }
   canJoin(session) {
     if (!session.person || !session.person.id) {
-    	throw new Exception.notAllowed("Must be signed in")
+      throw new Exception.notAllowed("Must be signed in")
     }
     if (!this.status().notActive()) {
-    	throw new Exception.notAllowed("Activity isn't active");
+      throw new Exception.notAllowed("Activity isn't active");
     }
     return Promise.resolve(this);
   }

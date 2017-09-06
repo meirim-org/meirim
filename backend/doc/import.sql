@@ -3,15 +3,15 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 03, 2017 at 11:07 PM
+-- Generation Time: Sep 05, 2017 at 10:53 PM
 -- Server version: 5.7.19-0ubuntu0.16.04.1
--- PHP Version: 7.0.18-0ubuntu0.16.04.1
+-- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `citizens`
+-- Database: `citizen`
 --
 
 -- --------------------------------------------------------
@@ -29,7 +29,7 @@ CREATE TABLE `activity` (
   `status` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -40,7 +40,7 @@ CREATE TABLE `activity` (
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `category_name` int(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -51,7 +51,7 @@ CREATE TABLE `category` (
 CREATE TABLE `category_activity` (
   `category_id` int(11) NOT NULL,
   `activity_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -69,7 +69,7 @@ CREATE TABLE `person` (
   `admin` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -80,7 +80,7 @@ CREATE TABLE `person` (
 CREATE TABLE `person_activity` (
   `activity_id` int(11) NOT NULL,
   `person_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -93,7 +93,7 @@ CREATE TABLE `post` (
   `post_person_id` int(11) NOT NULL,
   `post_headline` varchar(1024) NOT NULL,
   `post_content` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -114,9 +114,9 @@ CREATE TABLE `sessions` (
 --
 
 CREATE TABLE `status` (
-  `status_id` int(11) NOT NULL,
-  `status_name` varchar(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id` int(11) NOT NULL,
+  `name` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -164,8 +164,8 @@ ALTER TABLE `sessions`
 -- Indexes for table `status`
 --
 ALTER TABLE `status`
-  ADD PRIMARY KEY (`status_id`),
-  ADD UNIQUE KEY `status_id` (`status_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `status_id` (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -175,9 +175,9 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
