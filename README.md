@@ -72,6 +72,7 @@ npm start
 * **Eyal Migdalovich** - *Project initiator* - [eyalmigd](https://github.com/eyalmigd)
 * **Jonathan Dortheimer** - *Initial work* - [PurpleBooth](https://dortheimer.com)
 * **Ann Lillman** - *Designs* - [annlillman](https://github.com/annlillman)
+
 See also the list of [contributors](https://github.com/dortheimer/CitizensForCities/contributors) who participated in this project.
 
 ## License
