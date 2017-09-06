@@ -1,7 +1,12 @@
-import webpack from 'webpack';
-import path from 'path';
+var webpack = require('webpack');
+var path = require('path');
 
-export default {
+
+var BUILD_DIR = path.resolve(__dirname, 'src/client/public');
+var APP_DIR = path.resolve(__dirname, 'src/client/app');
+
+// Existing Code ....
+var config = {
     debug: true,
     devtool: 'inline-source-map',
     noInfo: false,
@@ -24,13 +29,18 @@ export default {
         new webpack.NoErrorsPlugin()
     ],
     module: {
-        loaders: [
-            {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel']},
-            {test: /(\.css)$/, loaders: ['style', 'css']},
-            {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
-            {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},
-            {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
-            {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'}
-        ]
-    }
-};
+    loaders : [
+
+        {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel']},
+        {test: /(\.css)$/, loaders: ['style', 'css']},
+        {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
+        {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},
+        {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
+        {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'}
+        { test:/\.jsx?/, include : APP_DIR, loader : 'babel'}
+    ]
+  }
+}
+
+
+module.exports = config;
