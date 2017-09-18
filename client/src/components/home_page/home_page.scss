@@ -1,0 +1,77 @@
+@import '../global.scss';
+
+.home-page {
+  display: flex;
+  .make-it-fit {
+    margin-right: -12px;
+  }
+  .header-question {
+    height: 114px;
+    font-family: Heebo;
+    font-size: 25px;
+    line-height: 1.27;
+    text-align: right;
+    color: #3b3b3b;
+    position: relative;
+    margin-top: 6%;
+    .bold {
+      color: $orange;
+    }
+  }
+  .help-contact {
+    p {
+      color: #0000CC;
+    }
+  }
+  .read-manual {
+    height: 54px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.39;
+    text-align: right;
+    color: #005cbf;
+    position: relative;
+    margin-top: 2%;
+  }
+  .help-contact {
+    font-size: 13px;
+    line-height: 1.69;
+    text-align: right;
+    color: #3b3b3b;
+    position: relative;
+    margin-top: 2%;
+  }
+  .about-us {
+    height: 247px;
+    font-size: 13px;
+    line-height: 1.69;
+    text-align: right;
+    color: #3b3b3b;
+    position: relative;
+    margin-top: 8%;
+  }
+  .contant {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    padding-right: 80px;
+  }
+  .image-container {
+    width: 50%;
+    max-height: 777px;
+    overflow: hidden;
+  }
+  .maavak-pic {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    border: solid 1px lighten($gray, 30%);
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+}
