@@ -17,6 +17,7 @@
     "cors": "^2.8.4",
     "debug": "^2.6.8",
     "ejs": "^2.5.7",
+    "esri-to-geojson": "^1.0.3",
     "express": "~4.15.2",
     "express-fileupload": "^0.1.4",
     "express-session": "^1.15.3",
@@ -28,11 +29,14 @@
     "mustache": "^2.3.0",
     "mysql": "^2.13.0",
     "node-exceptions": "^2.0.2",
+    "node-schedule": "^1.2.5",
     "nodemailer": "^4.1.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "reproject": "^1.1.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
     "serve-favicon": "^2.4.3",
-    "winston": "^2.3.1",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {}

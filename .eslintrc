@@ -16,7 +16,7 @@
     "regexYFlag": false,                        // enable the regular expression y flag
     "templateStrings": false,                   // enable template strings
     "unicodeCodePointEscapes": false,           // enable code point escapes
-    "jsx": false                                // enable JSX
+    "jsx": true                                // enable JSX
   },
 
   "env": {
@@ -29,6 +29,7 @@
     "jquery": false,      // jquery global variables.
     "prototypejs": false, // prototypejs global variables.
     "shelljs": false,     // shelljs global variables.
+     "es6": true
   },
 
   "globals": {
@@ -43,7 +44,7 @@
     "accessor-pairs": 2,
     "array-callback-return": 2,
     "block-scoped-var": 2,
-    "class-methods-use-this": 2,
+    "class-methods-use-this": 0,
     "complexity": 2,
     "consistent-return": 2,
     "curly": 2,

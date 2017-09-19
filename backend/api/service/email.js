@@ -15,7 +15,7 @@ class Email {
   constructor() {
     // create reusable transporter object using the default SMTP transport
     this.config = Config.get("email");
-    this.transporter = Nodemailer.createTransport(Config.get("email"));
+    this.transporter = Nodemailer.createTransport(this.config.options);
     //load templates
     const templateDir = __dirname + "/email/";
     this.templates = {};
@@ -31,15 +31,18 @@ class Email {
             Log.error("Email cannot load templates", templateDir + file, err);
             return;
           }
-          // parse to json
-          xml2js.parseString(content, (err, result) => {
-            if (err) {
-              Log.error("Email parse template", templateDir + file, err);
-            }
-            // make a nice key and remove the file extension
-            let keys = file.split(".");
-            this.templates[keys[0]] = result.html;
-          });
+          let keys = file.split(".");
+          this.templates[keys[0]] = {};
+          let title = content.match(/<title[^>]*>((.|[\n\r])*)<\/title>/im);
+          this.templates[keys[0]].title = title[1];
+          if (!this.templates[keys[0]].title){
+            Log.e(file,"has not title");
+          }
+          let body = content.match(/<body[^>]*>((.|[\n\r])*)<\/body>/im);
+          this.templates[keys[0]].body = body[1];
+          if (!this.templates[keys[0]].body){
+            Log.e(file,"has not body");
+          }
         });
         Log.info("Loaded email templates");
       });
@@ -50,15 +53,21 @@ class Email {
   }
   newSignUp(person) {
     // setup email data with unicode symbols
-    return this.sendWithTemplate(this.templates.newSignUp, person);
+    return this.sendWithTemplate(this.templates.newSignUp, model.toJSON());
   };
 
-  sendWithTemplate(template, model) {
+  newPlanAlert(person,plan) {
+    // setup email data with unicode symbols
+    let templateProperties = Object.assign(person.toJSON(),plan.toJSON());
+    return this.sendWithTemplate(this.templates.planAlert, templateProperties);
+  };
+
+  sendWithTemplate(template, templateProperties) {
     return this.send({
       from: '"' + this.config.from_name + '" <' + this.config.from_email + '>', // sender address
-      to: model.get("email"), // list of receivers
-      subject: Mustache.render(template.head[0].title[0], model.toJSON()), // Subject line
-      html: Mustache.render(template.body[0], model.toJSON()) // html body
+      to: templateProperties.email, // list of receivers
+      subject: Mustache.render(template.title, templateProperties), // Subject line
+      html: Mustache.render(template.body, templateProperties) // html body
     });
   }
 

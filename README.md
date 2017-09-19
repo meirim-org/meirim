@@ -16,7 +16,9 @@ Things you need to install:
 * Nodejs
 * npm
 * Mysql
+
 Also these requirements:
+
 https://github.com/nodejs/node-gyp#installation
 
 ### Instructions for backend
@@ -70,7 +72,7 @@ npm start
 ## Authors
 
 * **Eyal Migdalovich** - *Project initiator* - [eyalmigd](https://github.com/eyalmigd)
-* **Jonathan Dortheimer** - *Initial work* - [PurpleBooth](https://dortheimer.com)
+* **Jonathan Dortheimer** - *Initial work* - [dortheimer.com](https://dortheimer.com)
 * **Ann Lillman** - *Designs* - [annlillman](https://github.com/annlillman)
 
 See also the list of [contributors](https://github.com/dortheimer/CitizensForCities/contributors) who participated in this project.

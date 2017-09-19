@@ -30,6 +30,11 @@ app.options('*', cors);
 app.use(Express.static(path.join(__dirname, 'public')));
 app.use('/activity', json, urlencoded, require('./api/controller/activity'));
 app.use('/sign', json, urlencoded, require('./api/controller/sign'));
+app.use('/alert', json, urlencoded, require('./api/controller/alert'));
+
+//log schedule
+require('./api/controller/cron');
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

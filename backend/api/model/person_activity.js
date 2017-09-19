@@ -1,10 +1,7 @@
 'use strict';
-const Checkit = require('checkit');
-const Promise = require('bluebird');
-const Bcrypt = require('bcrypt');
-const Bookshelf = require("./bookshelf");
-const Exception = require('./exception');
-class PersonActivity extends Bookshelf.Model{
+const Base_model = require("./base_model");
+const Bookshelf = require('../service/database').Bookshelf;
+class PersonActivity extends Base_model{
   get rules() {
     return {
       activity_id: [
@@ -15,19 +12,8 @@ class PersonActivity extends Bookshelf.Model{
       ]
     }
   }
-
-
   get tableName() {
     return 'person_activity';
-  }
-
-  get hasTimestamps() {
-    return false;
-  }
-  initialize() {
-  }
-  validateSave(model, attrs, options) {
-    return Checkit(this.rules).run(this.attributes);
   }
 };
 module.exports = Bookshelf.model('Person_Activity', PersonActivity);

@@ -1,15 +1,15 @@
 'use strict';
-const Bookshelf = require("./bookshelf");
+const Bookshelf = require("../service/database").Bookshelf;
 const Promise = require('bluebird');
-const Checkit = require('checkit');
 const Exception = require('./exception');
 const Upload = require("../service/upload");
 const PersonActivity = require("../model/person_activity");
 const Status = require("../model/status");
+const Base_model = require("./base_model");
 const Log = require("../service/log");
 const path = require('path');
 const Image = require('../service/image');
-class Activity extends Bookshelf.Model {
+class Activity extends Base_model {
 
   get rules() {
     return {
@@ -59,23 +59,26 @@ class Activity extends Bookshelf.Model {
   }
 
   upload(files) {
+    var sampleFile = null,
+      width =400,
+      height =400,
+      newPath = __dirname + "/../../public/upload/";
 
-    var newPath = __dirname + "/../../public/upload/";
-
-    if (!files)
+    if (!files){
       return new Exception.badRequest('No files were uploaded');
+    }
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     Log.debug(files);
     Object.keys(files).forEach((key)=> {
       Log.debug("Handeling file:", key);
-      var sampleFile = files[key];
+      sampleFile = files[key];
       console.log(sampleFile);
       Image.lwip.open(sampleFile.path,Image.mime[sampleFile.mimetype], (err,image)=>{
         if (err){
           Log.e("Open failed",err);
         }
-        image.cover(400, 400, (err,image)=>{
+        image.cover(width, height, (err,image)=>{
           if (err){
             Log.e("Resize failed",err);
           }
@@ -88,10 +91,12 @@ class Activity extends Bookshelf.Model {
         })
       });
     });
+    return true;
   }
 
   static uploadMiddleWareFactory() {
-    return Upload.middleware.array('photos', 12);
+    var numberOfPhotos = 12;
+    return Upload.middleware.array('photos', numberOfPhotos);
   }
   canRead(session) {
     return Promise.resolve(this);;

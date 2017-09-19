@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 05, 2017 at 10:53 PM
+-- Generation Time: Sep 19, 2017 at 07:14 PM
 -- Server version: 5.7.19-0ubuntu0.16.04.1
 -- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
@@ -30,6 +30,20 @@ CREATE TABLE `activity` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `alert`
+--
+
+CREATE TABLE `alert` (
+  `id` int(11) NOT NULL,
+  `person_id` int(11) NOT NULL,
+  `address` varchar(256) COLLATE utf8_bin NOT NULL,
+  `geom` polygon DEFAULT NULL,
+  `radius` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -85,6 +99,24 @@ CREATE TABLE `person_activity` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `plan`
+--
+
+CREATE TABLE `plan` (
+  `id` int(11) NOT NULL,
+  `sent` tinyint(4) NOT NULL,
+  `OBJECTID` int(11) NOT NULL,
+  `PLAN_COUNTY_NAME` varchar(256) COLLATE utf8_bin NOT NULL,
+  `PL_NUMBER` varchar(256) COLLATE utf8_bin NOT NULL,
+  `PL_NAME` varchar(256) COLLATE utf8_bin NOT NULL,
+  `PLAN_CHARACTOR_NAME` varchar(256) COLLATE utf8_bin NOT NULL,
+  `data` text COLLATE utf8_bin NOT NULL,
+  `geom` geometry NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `post`
 --
 
@@ -129,6 +161,12 @@ ALTER TABLE `activity`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `alert`
+--
+ALTER TABLE `alert`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -154,6 +192,13 @@ ALTER TABLE `person_activity`
   ADD PRIMARY KEY (`activity_id`,`person_id`);
 
 --
+-- Indexes for table `plan`
+--
+ALTER TABLE `plan`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `OBJECTID` (`OBJECTID`);
+
+--
 -- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
@@ -175,9 +220,19 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+--
+-- AUTO_INCREMENT for table `alert`
+--
+ALTER TABLE `alert`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `person`
 --
 ALTER TABLE `person`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+--
+-- AUTO_INCREMENT for table `plan`
+--
+ALTER TABLE `plan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;

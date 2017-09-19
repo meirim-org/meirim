@@ -1,4 +1,7 @@
 {
+  "general": {
+    "userAgent": "Meirim.org (info@meirim.org)"
+  },
   "session": {
     "secret": "secret"
   },
@@ -21,12 +24,17 @@
     }
   },
   "email": {
-    "host": "smtp.ethereal.email",
-    "port": 587,
-    "secure": false, // true for 465, false for other ports
-    "auth": {
-      "user": "account.user", // generated ethereal user
-      "pass": "account.pass" // generated ethereal password
+    "transport": "SMTP",
+    "from_name": "Meirim",
+    "from_email": "alert@meirim.org",
+    "options" : {
+      "host": "smtp.elasticemail.com",
+      "port": 2525,
+      "secure": false, // true for 465, false for other ports
+      "auth": {
+        "user": "meirim@dortheimer.com", // generated ethereal user
+        "pass": "876e2e76-3a46-49f9-9a1d-83b78702d268" // generated ethereal password
+      }
     }
   }
 }
