@@ -77,9 +77,9 @@ const controller = new CronController();
 │    └──────────────────── minute (0 - 59)
 └───────────────────────── second (0 - 59, OPTIONAL)
 **/
-controller.iplan();
-// Schedule.scheduleJob('* * * * * *', _.bind(controller.iplan, controller));
-// Schedule.scheduleJob('* * * * * *', _.bind(controller.send_planning_alerts, controller));
+// controller.iplan();
+Schedule.scheduleJob('0 0 0 * * *', _.bind(controller.iplan, controller));
+Schedule.scheduleJob('0 * * * * *', _.bind(controller.send_planning_alerts, controller));
 
 // Router.get('/iplan', (req, res, next) => {
 //   controller.wrap(_.bind(controller.iplan, controller))(req, res, next);
