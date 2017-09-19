@@ -1,5 +1,4 @@
 'use strict';
-const Router = require('express').Router();
 const Controller = require("../controller/controller");
 const _ = require('lodash');
 const Log = require('../service/log');
@@ -20,6 +19,18 @@ class CronController extends Controller {
         return iplanApi.getBlueLines("PLAN_AREA_CODE=" + council.attributes.CodeMT);
       });
     });
+    // let now = new Date();
+    // let parts = [
+    //   String(now.getFullYear()),
+    //   String(now.getMonth()),
+    //   // String(now.getDate())
+    // ];
+    // // add a 0
+    // parts=parts.map(e=>e.length<2?"0"+e:e);
+    // // return iplanApi.getBlueLines("LAST_UPDATE like '" +(parts.join(""))+"%'");
+    //
+    // return iplanApi.getBlueLines("LAST_UPDATE like '" +(parts.join(""))+"%'");
+
   }
 
   send_planning_alerts(req, res, next) {
@@ -66,8 +77,9 @@ const controller = new CronController();
 │    └──────────────────── minute (0 - 59)
 └───────────────────────── second (0 - 59, OPTIONAL)
 **/
-Schedule.scheduleJob('0 0 0 * * *', _.bind(controller.iplan, controller));
-Schedule.scheduleJob('* * * * * *', _.bind(controller.send_planning_alerts, controller));
+controller.iplan();
+// Schedule.scheduleJob('* * * * * *', _.bind(controller.iplan, controller));
+// Schedule.scheduleJob('* * * * * *', _.bind(controller.send_planning_alerts, controller));
 
 // Router.get('/iplan', (req, res, next) => {
 //   controller.wrap(_.bind(controller.iplan, controller))(req, res, next);
@@ -76,4 +88,4 @@ Schedule.scheduleJob('* * * * * *', _.bind(controller.send_planning_alerts, cont
 //   controller.wrap(_.bind(controller.send_planning_alerts, controller))(req, res, next);
 // });
 
-module.exports = Router;
+module.exports = Schedule;
