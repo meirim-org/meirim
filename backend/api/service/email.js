@@ -53,7 +53,7 @@ class Email {
   }
   newSignUp(person) {
     // setup email data with unicode symbols
-    return this.sendWithTemplate(this.templates.newSignUp, model.toJSON());
+    return this.sendWithTemplate(this.templates.newSignUp, person.toJSON());
   };
 
   newPlanAlert(person,plan) {

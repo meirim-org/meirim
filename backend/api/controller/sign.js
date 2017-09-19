@@ -24,7 +24,7 @@ class SignController extends Controller {
     }
     const email = req.body.email.toLowerCase().trim();
     Log.debug("Try login with email:", email);
-    return Person.forge({email: email}).fetch({require: true}).then(person => {
+    return Person.forge({email: email}).fetch().then(person => {
       if (!person){
         throw new Exception.notAllowed("Password mismatch");
       }
