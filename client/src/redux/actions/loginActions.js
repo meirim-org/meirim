@@ -1,8 +1,6 @@
-'use strict';
 
 import Actions			from './actionTypes';
 import Network          from '../../network/Network';
-
 
 const loginActions = {
 
@@ -11,7 +9,7 @@ const loginActions = {
             dispatch({
                 type: Actions.LOGIN,
             });
-            return Network.lmd.login(loginForm).$promise.then(function (result) {
+            return Network.login.login(loginForm).$promise.then(function (result) {
                 return dispatch({
                     type: Actions.LOGIN_SUCCESS,
                     data: result
@@ -24,6 +22,6 @@ const loginActions = {
             });
         };
     }
-};
+}
 
 export default loginActions;

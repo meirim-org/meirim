@@ -11,12 +11,21 @@ class LoginContainer extends Component {
 
     constructor(props){
         super(props);
-
+        this.state = {
+            errorMessage: "",
+            email: "",
+            password: "",
+        };
         this.onSubmit = this.onSubmit.bind(this);
     }
 
     onSubmit(values) {
-
+        var loginForm = {
+            password: values.password || "",
+            email: values.userName
+        };
+        console.log(loginForm);
+        this.props.onLoginSubmit(loginForm);
     }
 
     render() {
@@ -45,7 +54,7 @@ LoginContainer.defaultProps = {
 
 var mapDispatchToProps = function (dispatch) {
     return {
-       // onLoginSubmit: (loginForm) => { return dispatch (loginActions.login(loginForm))},
+        onLoginSubmit: (loginForm) => { return dispatch (loginActions.login(loginForm))},
     }
 };
 
@@ -55,4 +64,5 @@ var mapStateToProps = function(state){
     }
 };
 
-export default connect(LoginContainer, mapStateToProps, mapDispatchToProps);
+// export default connect(LoginContainer, mapStateToProps, mapDispatchToProps);
+export default LoginContainer;

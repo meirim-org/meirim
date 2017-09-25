@@ -1,4 +1,3 @@
-'use strict';
 
 import React, {Component} 						from 'react';
 import PropTypes 								from 'prop-types';
@@ -12,10 +11,10 @@ function hasErrors(fieldsError) {
 
 class LoginForm extends Component {
 
-    constructor(props){
-        super(props);
-        // this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    // constructor(props){
+    //     super(props);
+    //     // this.handleSubmit = this.handleSubmit.bind(this);
+    // }
 
 
 

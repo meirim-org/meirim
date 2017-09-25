@@ -1,4 +1,3 @@
-'use strict';
 
 var Redux       = require('redux'),
     thunk       = require('redux-thunk').default;

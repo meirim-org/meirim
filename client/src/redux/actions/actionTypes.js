@@ -1,5 +1,4 @@
-'use strict';
-
+import _ from 'lodash';
 
 const keys = [
     'LOGIN',
@@ -7,4 +6,5 @@ const keys = [
     'LOGIN_ERROR',
 ];
 
-module.exports = _.keyBy(keys);
+const Actions = _.keyBy(keys);
+export default Actions;
