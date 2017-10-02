@@ -1,5 +1,5 @@
 'use strict';
-const request = require("request-promise");
+const Request = require("request-promise");
 const Knex = require("../service/database").Knex;
 const GeoJSON = require('esri-to-geojson');
 const Log = require("./log");
@@ -61,7 +61,7 @@ class iplanApi {
     Log.debug("Fetch", url);
     this.options.uri = url;
 
-    return request(this.options).then((data) =>{
+    return Request(this.options).then((data) =>{
 
       let geojson = GeoJSON.fromEsri(data);
       Log.debug("Got", geojson.features.length, "plans");
@@ -104,7 +104,7 @@ class iplanApi {
     Log.debug("Fetch", url);
     this.options.uri = url;
 
-    return request(this.options);
+    return Request(this.options);
   }
 }
 module.exports = new iplanApi();

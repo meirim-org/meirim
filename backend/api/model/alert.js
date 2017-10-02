@@ -83,9 +83,10 @@ class Alert extends Model {
 
   static getUsersByGeometry(plan_id) {
     return Person.collection().query((qb) => {
-      qb.innerJoin('alert', 'alert.person_id', 'person.id');
-      qb.innerJoin('plan', Knex.raw("ST_Intersects(plan.geom,alert.geom)"));
-      qb.where("plan.id", "=", plan_id);
+      qb.innerJoin('alert', 'alert.person_id', 'person.id')
+        .innerJoin('plan', Knex.raw("ST_Intersects(plan.geom,alert.geom)"))
+        .where("plan.id", "=", plan_id)
+        .groupBy("person.id")
     }).fetch();
   }
 };

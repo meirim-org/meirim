@@ -44,22 +44,26 @@ class CronController extends Controller {
           if (!users || !users.length) {
             return {"plan_id": unsentPlan.get("id"), "users": 0};
           }
+
+          //reduce double users
           return Promise.mapSeries(users.models, user => {
             return Email.newPlanAlert(user, unsentPlan).then(success => {
-              return {"plan_id": unsentPlan.get("id"), "users": users.length};
+              return true;
             });
+          }).then(success=> {
+            return {"plan_id": unsentPlan.get("id"), "users": users.length};
           });
         });
       });
     }).then(successArray => {
       let id_array = [];
-      successArray.reduce((pv, cv) => id_array.push(cv.plan_id),0);
-      if (id_array.length){
-          Plan.maekPlansAsSent(id_array);
-          Log.info("Processed", id_array);
+      console.log(successArray);
+      successArray.reduce((pv, cv) => id_array.push(cv.plan_id), 0);
+      console.log(id_array);
+      if (id_array.length) {
+        Plan.maekPlansAsSent(id_array);
+        Log.info("Processed", id_array);
       }
-
-
       return successArray.reduce((pv, cv) => pv.users + cv.users, 0);
     });
   }
@@ -79,7 +83,7 @@ const controller = new CronController();
 **/
 // controller.iplan();
 Schedule.scheduleJob('0 0 0 * * *', _.bind(controller.iplan, controller));
-Schedule.scheduleJob('0 * * * * *', _.bind(controller.send_planning_alerts, controller));
+Schedule.scheduleJob('* * * * * *', _.bind(controller.send_planning_alerts, controller));
 
 // Router.get('/iplan', (req, res, next) => {
 //   controller.wrap(_.bind(controller.iplan, controller))(req, res, next);

@@ -80,7 +80,7 @@ CREATE TABLE `person` (
   `email` varchar(64) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `password` varchar(128) DEFAULT NULL,
-  `admin` int(11) NOT NULL,
+  `admin` int(11) DEFAULT 0,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

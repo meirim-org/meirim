@@ -3,6 +3,7 @@ const Checkit = require('checkit');
 const Promise = require('bluebird');
 const Model = require("./base_model");
 const Bookshelf = require('../service/database').Bookshelf;
+const Knex = require('../service/database').Knex;
 const Log = require('../service/log');
 const Exception = require('./exception');
 class Plan extends Model {
@@ -67,7 +68,6 @@ class Plan extends Model {
     throw new Exception.notAllowed("This option is disabled");
   }
   static maekPlansAsSent(plan_ids) {
-
     return new Plan().query(qb=> {
       qb.whereIn('id', plan_ids);
     }).save({
@@ -88,7 +88,7 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data']
+      columns: ['id', 'data',Knex.raw("X(st_centroid(geom)) as lon"),Knex.raw("Y(st_centroid(geom)) as lat")]
     });
   }
 };

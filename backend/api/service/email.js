@@ -35,13 +35,13 @@ class Email {
           this.templates[keys[0]] = {};
           let title = content.match(/<title[^>]*>((.|[\n\r])*)<\/title>/im);
           this.templates[keys[0]].title = title[1];
-          if (!this.templates[keys[0]].title){
-            Log.e(file,"has not title");
+          if (!this.templates[keys[0]].title) {
+            Log.e(file, "has not title");
           }
           let body = content.match(/<body[^>]*>((.|[\n\r])*)<\/body>/im);
           this.templates[keys[0]].body = body[1];
-          if (!this.templates[keys[0]].body){
-            Log.e(file,"has not body");
+          if (!this.templates[keys[0]].body) {
+            Log.e(file, "has not body");
           }
         });
         Log.info("Loaded email templates");
@@ -56,13 +56,18 @@ class Email {
     return this.sendWithTemplate(this.templates.newSignUp, person.toJSON());
   };
 
-  newPlanAlert(person,plan) {
-    // setup email data with unicode symbols
-    let templateProperties = Object.assign(person.toJSON(),plan.toJSON());
-    return this.sendWithTemplate(this.templates.planAlert, templateProperties);
+  newPlanAlert(person, plan) {
+    let templateProperties = Object.assign(person.toJSON(), plan.toJSON());
+    return this.sendWithTemplate(this.templates.alert, templateProperties);
+  };
+
+  newAlert(person,alert) {
+    let templateProperties = Object.assign(person.toJSON(), plan.toJSON());
+    return this.sendWithTemplate(this.templates.newAlert, templateProperties);
   };
 
   sendWithTemplate(template, templateProperties) {
+
     return this.send({
       from: '"' + this.config.from_name + '" <' + this.config.from_email + '>', // sender address
       to: templateProperties.email, // list of receivers

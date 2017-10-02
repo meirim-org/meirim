@@ -46,7 +46,7 @@ class Person extends Base_model {
 
   hashPassword(model, attrs, options) {
     if (!model.hasChanged("password")) {
-      return;
+      return false;
     }
     // hash password
     return Bcrypt.hash(model.get("password"), 10).then(function(hashedPassword) {
