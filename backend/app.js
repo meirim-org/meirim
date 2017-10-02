@@ -5,7 +5,6 @@ const Log = require('./api/service/log');
 const Config = require('./api/service/config');
 const Eamil = require('./api/service/email');
 const Cors = require('cors');
-
 const urlencoded = BodyParser.urlencoded({extended: false});
 const json = BodyParser.json()
 const cors = Cors({
@@ -31,9 +30,11 @@ app.use(Express.static(path.join(__dirname, 'public')));
 app.use('/activity', json, urlencoded, require('./api/controller/activity'));
 app.use('/sign', json, urlencoded, require('./api/controller/sign'));
 app.use('/alert', json, urlencoded, require('./api/controller/alert'));
+app.use('/cron', json, urlencoded, require('./api/controller/cron'));
+
 
 //log schedule
-const schedule = require('./api/controller/cron');
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
