@@ -88,4 +88,4 @@ Router.get('/send_planning_alerts', (req, res, next) => {
   controller.wrap(_.bind(controller.send_planning_alerts, controller))(req, res, next);
 });
 
-module.exports = Schedule;
+module.exports = Router;
