@@ -2,6 +2,12 @@
   "general": {
     "userAgent": "Meirim.org (info@meirim.org)"
   },
+  "services":{
+    "schedule":{
+      "iplan":"0 0 0 * * *",
+      "send_planning_alerts":"0 0 0 * * *",
+    }
+  },
   "session": {
     "secret": "secret"
   },

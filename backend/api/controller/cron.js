@@ -1,5 +1,6 @@
 'use strict';
 const Controller = require("../controller/controller");
+const Router = require('express').Router();
 const _ = require('lodash');
 const Log = require('../service/log');
 const iplanApi = require('../service/iplanApi');
@@ -8,6 +9,8 @@ const Plan = require('../model/plan');
 const Email = require('../service/email');
 const Promise = require("bluebird");
 const Schedule = require('node-schedule');
+const Config = require('../service/config');
+
 class CronController extends Controller {
 
   iplan(req, res, next) {
@@ -57,9 +60,7 @@ class CronController extends Controller {
       });
     }).then(successArray => {
       let id_array = [];
-      console.log(successArray);
       successArray.reduce((pv, cv) => id_array.push(cv.plan_id), 0);
-      console.log(id_array);
       if (id_array.length) {
         Plan.maekPlansAsSent(id_array);
         Log.info("Processed", id_array);
@@ -70,26 +71,21 @@ class CronController extends Controller {
 }
 
 const controller = new CronController();
-/**
-*    *    *    *    *    *
-┬    ┬    ┬    ┬    ┬    ┬
-│    │    │    │    │    |
-│    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
-│    │    │    │    └───── month (1 - 12)
-│    │    │    └────────── day of month (1 - 31)
-│    │    └─────────────── hour (0 - 23)
-│    └──────────────────── minute (0 - 59)
-└───────────────────────── second (0 - 59, OPTIONAL)
-**/
-// controller.iplan();
-Schedule.scheduleJob('0 0 0 * * *', _.bind(controller.iplan, controller));
-Schedule.scheduleJob('* * * * * *', _.bind(controller.send_planning_alerts, controller));
+const scheduleConfig = Config.get("services.schedule");
 
-// Router.get('/iplan', (req, res, next) => {
-//   controller.wrap(_.bind(controller.iplan, controller))(req, res, next);
-// });
-// Router.get('/send_planning_alerts', (req, res, next) => {
-//   controller.wrap(_.bind(controller.send_planning_alerts, controller))(req, res, next);
-// });
+// set up schedule tasks
+if (scheduleConfig.iplan){
+  Schedule.scheduleJob(scheduleConfig.iplan, _.bind(controller.iplan, controller));
+}
+if (scheduleConfig.iplan){
+  Schedule.scheduleJob(scheduleConfig.send_planning_alerts,_.bind(controller.send_planning_alerts, controller));
+}
+
+Router.get('/iplan', (req, res, next) => {
+  controller.wrap(_.bind(controller.iplan, controller))(req, res, next);
+});
+Router.get('/send_planning_alerts', (req, res, next) => {
+  controller.wrap(_.bind(controller.send_planning_alerts, controller))(req, res, next);
+});
 
 module.exports = Schedule;
