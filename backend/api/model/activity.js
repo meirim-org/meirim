@@ -73,7 +73,6 @@ class Activity extends Base_model {
     Object.keys(files).forEach((key)=> {
       Log.debug("Handeling file:", key);
       sampleFile = files[key];
-      console.log(sampleFile);
       Image.lwip.open(sampleFile.path,Image.mime[sampleFile.mimetype], (err,image)=>{
         if (err){
           Log.e("Open failed",err);

@@ -13,11 +13,9 @@ const degreeToMeter = function(lon, lat, dn, de) {
   //Coordinate offsets in radians
   let dLat = dn / R;
   let dLon = de / (R * Math.cos(Math.PI * lat / radian));
-  console.log(dLat,dLon);
   //OffsetPosition, decimal degrees
   let latO = lat + dLat * radian / Math.PI;
   let lonO = lon + dLon * radian / Math.PI;
-  console.log(latO,lonO);
   return [lonO, latO];
 }
 

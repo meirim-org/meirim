@@ -7,7 +7,7 @@ const _ = require('lodash');
 class AlertController extends Controller {
   create(req, res, next) {
     return super.create(req, res, next).then(savedModel=>{
-        return Email.newAlert(req.session.passport.person ,savedModel);
+        return Email.newAlert(req.session.person ,savedModel);
     });
   }
 }

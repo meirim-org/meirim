@@ -71,7 +71,6 @@ module.exports = (bookshelf) => {
       if (this.geometry) {
         this.geometry.forEach((attr) => {
           if (attributes[attr]) {
-            console.log(attributes[attr]);
             // try {
             //   attributes[attr] = wkx.Geometry.parse(Buffer.from(attributes[attr], 'hex')).toGeoJSON();
             // }

@@ -31,8 +31,6 @@ app.use('/activity', json, urlencoded, require('./api/controller/activity'));
 app.use('/sign', json, urlencoded, require('./api/controller/sign'));
 app.use('/alert', json, urlencoded, require('./api/controller/alert'));
 app.use('/cron', json, urlencoded, require('./api/controller/cron'));
-
-
 //log schedule
 
 

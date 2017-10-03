@@ -68,7 +68,8 @@ class iplanApi {
       Promise.map(geojson.features, datum => {
 
         let reproejcted =reproject.toWgs84(datum.geometry, this.EPSG3857);
-        return Plan.forge({"OBJECTID": datum.properties.OBJECTID}).fetch().then(existingPlan=>{
+        let attr = {"OBJECTID": datum.properties.OBJECTID};
+        return Plan.forge(attr).fetch().then(existingPlan=>{
           if (!existingPlan){
             return Plan.forge({
               "OBJECTID": datum.properties.OBJECTID,
@@ -91,7 +92,7 @@ class iplanApi {
           return true;
         })
         .catch((error)=> {
-          // Log.error(datum, error)
+          Log.error(datum, error)
         });;
       });
     });

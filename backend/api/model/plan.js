@@ -9,7 +9,7 @@ const Exception = require('./exception');
 class Plan extends Model {
   get rules() {
     return {
-      // sent: 'integer',
+      sent: 'integer',
       OBJECTID: [
         'required', 'integer'
       ],
@@ -17,9 +17,7 @@ class Plan extends Model {
       PL_NUMBER: 'string',
       PL_NAME: 'string',
       PLAN_CHARACTOR_NAME: 'string',
-      data: [
-        'required', 'object'
-      ],
+      data: ['required'],
       geom: ['required', 'object']
 
     }
@@ -28,10 +26,12 @@ class Plan extends Model {
     return {sent: 0}
   }
   format(attributes) {
-    attributes.data = JSON.stringify(attributes.data);
+    if (attributes.data){
+      attributes.data = JSON.stringify(attributes.data);
+    }
     return super.format(attributes);
   }
-
+  //
   parse(attributes) {
     try {
       if (attributes.data) {
@@ -68,7 +68,7 @@ class Plan extends Model {
     throw new Exception.notAllowed("This option is disabled");
   }
   static maekPlansAsSent(plan_ids) {
-    return new Plan().query(qb=> {
+    return new Plan().query(qb => {
       qb.whereIn('id', plan_ids);
     }).save({
       sent: "1"
@@ -88,7 +88,7 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data',Knex.raw("X(st_centroid(geom)) as lon"),Knex.raw("Y(st_centroid(geom)) as lat")]
+      columns: ['id', 'data', Knex.raw("X(st_centroid(geom)) as lon"), Knex.raw("Y(st_centroid(geom)) as lat")]
     });
   }
 };
