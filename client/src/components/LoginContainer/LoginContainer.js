@@ -5,7 +5,9 @@ import PropTypes 								from 'prop-types';
 import { connect }                              from 'react-redux'
 import loginActions                              from '../../redux/actions/loginActions';
 import LoginForm                                from '../LoginForm/LoginForm';
-import { Form}                                  from 'antd';
+import { Form, Card}                                  from 'antd';
+import 'antd/dist/antd.css';
+import '../../Login.css';
 
 class LoginContainer extends Component {
 
@@ -24,7 +26,7 @@ class LoginContainer extends Component {
             password: values.password || "",
             email: values.userName
         };
-        console.log(loginForm);
+
         this.props.onLoginSubmit(loginForm);
     }
 
@@ -33,7 +35,8 @@ class LoginContainer extends Component {
 
         return (
             <div className='signin-container content-main-center'>
-                <WrappedNormalLoginForm onSubmit={this.onSubmit}
+
+                <WrappedNormalLoginForm onSubmit={this.props.onLoginSubmit}
                                         email={this.state.email}
                                         password={this.state.password}
                                         errorMessage={this.props.response}
@@ -64,5 +67,4 @@ var mapStateToProps = function(state){
     }
 };
 
-// export default connect(LoginContainer, mapStateToProps, mapDispatchToProps);
-export default LoginContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
