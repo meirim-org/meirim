@@ -1,4 +1,4 @@
-# Meirim
+# Meirim.org
 
 The goal of this project is to empower citizens to effectively organize for their quality of life in their cities and to ensure information about protests is accessible.
 
