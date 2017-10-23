@@ -9,22 +9,24 @@ const Base_model = require("./base_model");
 const Log = require("../service/log");
 const path = require('path');
 const Image = require('../service/image');
+const Checkit = require('checkit');
+const Geocoder = require("../service/geocoder").geocoder;
 class Activity extends Base_model {
 
   get rules() {
     return {
-      id: [
-        'required', 'integer'
-      ],
+      // id: [
+      //   'required', 'integer'
+      // ],
       headline: [
         'required', 'string'
       ],
       address: [
         'required', 'string'
       ],
-      latlon: [
-        'required', 'string'
-      ],
+      // latlon: [
+      //   'required', 'string'
+      // ],
       description: [
         'required', 'string'
       ],
@@ -48,6 +50,25 @@ class Activity extends Base_model {
 
   get hasTimestamps() {
     return true;
+  }
+
+  defaults() {
+    return {status: 1}
+  }
+
+  get geometry() {
+    return ['latlon'];
+  }
+
+  _saving(model, attrs, options) {
+    return Geocoder.geocode(model.get("address")).then(res => {
+      model.set("latlon", {
+        "type": "Point",
+        "coordinates": [res[0].latitude,res[0].longitude]
+      });
+      model.set("address", res[0].formattedAddress);
+      return new Checkit(model.rules).run(model.attributes);
+    })
   }
 
   status() {
@@ -97,29 +118,30 @@ class Activity extends Base_model {
     var numberOfPhotos = 12;
     return Upload.middleware.array('photos', numberOfPhotos);
   }
+
   canRead(session) {
-    return Promise.resolve(this);;
+    return Promise.resolve(true);
   }
   canEdit(session) {
     // if (!session.person || !session.person.admin) {
     // 	throw new Exception.notAllowed("Must be an admin")
     // }
-    return Promise.resolve(this);;
+    return Promise.resolve(true);;
   }
   canJoin(session) {
     if (!session.person || !session.person.id) {
       throw new Exception.notAllowed("Must be signed in")
     }
     if (!this.status().notActive()) {
-      throw new Exception.notAllowed("Activity isn't active");
+      Promise.reject(new Exception.notAllowed("Activity isn't active"));
     }
     return Promise.resolve(this);
   }
   static canCreate(session) {
-    if (!session.person || !session.person.id) {
-      throw new Exception.notAllowed("Must be signed in")
+    if (!session || !session.person || !session.person.id) {
+      Promise.reject(new Exception.notAllowed("Must be signed in"));
     }
-    return Activity;
+    return Promise.resolve(true);
   }
 };
 // private

@@ -9,16 +9,11 @@ class ActivityController extends Controller {
 
   create(req, res, next) {
     var activity = null;
-    return this.model.canCreate(req.session).then((can) => {
-      return Bookshelf.transaction(t => {
-        return this.model.forge(req.body).save(null, {transacting: t}).tap(savedModel => {
-          activity = savedModel;
-          return activity.addPerson(req.session.person.id);
-        });
-      }).then(() => {
-        Log.debug(this.tableName, " created success id:", activity.get("id"));
-        return activity;
-      });;
+    return Bookshelf.transaction(t => {
+      return super.create(req, res, next,t).tap(savedModel => {
+        activity = savedModel;
+        return activity.addPerson(req.session.person.id);
+      });
     });
   }
 

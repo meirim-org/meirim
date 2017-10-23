@@ -69,8 +69,7 @@ class Controller {
     };
   }
   browse(req, res, next) {
-
-    return this.model.getCollection().then(collection => {
+    return this.model.fetchAll().then(collection => {
       Log.debug(this.tableName, "browse success");
       return collection;
     });
@@ -99,11 +98,17 @@ class Controller {
       return savedmodel;
     });
   }
-  create(req, res, next) {
+  create(req, res, next,transaction) {
+    let options = {};
+    if (transaction){
+      options = {
+        transacting:transaction
+      }
+    }
     return this.model.canCreate(req.session).then(() => {
       const model = this.model.forge(req.body);
       model.setPerson(req.session);
-      return model.save();
+      return model.save(null,options);
     }).then(savedModel => {
       Log.debug(this.tableName, " create success id:", savedModel.get("id"));
       return savedModel;
