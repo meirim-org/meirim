@@ -37,6 +37,9 @@ class LoginForm extends Component {
         // Only show error after a field is touched.
         const userNameError = isFieldTouched('userName') && getFieldError('userName');
         const passwordError = isFieldTouched('password') && getFieldError('password');
+        const loginError = this.props.errorMessage == "" ? "" : <div className="ant-alert-error">
+            {this.props.errorMessage}
+        </div>;
         return (
             <Card title="כניסה לחשבון" style={{ width: 300 }}>
                 <Form layout="inline" onSubmit={this.handleSubmit}>
@@ -71,6 +74,7 @@ class LoginForm extends Component {
                             Log in
                         </Button>
                     </FormItem>
+                    {loginError}
                 </Form>
             </Card>
         );
