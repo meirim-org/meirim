@@ -133,13 +133,13 @@ class Activity extends Base_model {
       throw new Exception.notAllowed("Must be signed in")
     }
     if (!this.status().notActive()) {
-      Promise.reject(new Exception.notAllowed("Activity isn't active"));
+      throw new Exception.notAllowed("Activity isn't active");
     }
     return Promise.resolve(this);
   }
   static canCreate(session) {
     if (!session || !session.person || !session.person.id) {
-      Promise.reject(new Exception.notAllowed("Must be signed in"));
+      throw new Exception.notAllowed("Must be signed in");
     }
     return Promise.resolve(true);
   }
