@@ -1,4 +1,4 @@
-var KEY = 'AIzaSyBurnP2Y9-YavLSun_85ZntENUfF4w45OE'; // only works on production domains
+var KEY = 'AIzaSyDcehJnXPISfUYPVg_WxCFYjDasSz0JNOo'; // only works on production domains
 // use these for the labels numbering
 var hebrewLetters = 'אבגדהוזחטיכלמנסעפצקרשת';
 
@@ -60,7 +60,7 @@ function renderSideBar(data) {
 
 function renderSearchResults(data) {
   $('.search-results a').off('click');
-  var template = document.getElementById('search-results-template').innerHTML
+  var template = document.getElementById('search-results-template').innerHTML;
   var elementsList = data.map(function(datum) {
     return render(template, {
       text: datum.name,
@@ -83,7 +83,7 @@ var geocoder = null;
 var globalData = [];
 var config = {
   // api: "http://api.meirim.org/"
-  api: "http://localhost:3000/"
+  api: "http://api.meirim.org/"
 }
 
 addScript("https://maps.googleapis.com/maps/api/js?key=" + KEY + "&callback=initMap");
