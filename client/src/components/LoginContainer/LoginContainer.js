@@ -5,9 +5,9 @@ import PropTypes 								from 'prop-types';
 import { connect }                              from 'react-redux'
 import loginActions                              from '../../redux/actions/loginActions';
 import LoginForm                                from '../LoginForm/LoginForm';
-import { Form, Card}                                  from 'antd';
+import { Form}                                  from 'antd';
 import 'antd/dist/antd.css';
-import '../../Login.css';
+
 
 class LoginContainer extends Component {
 
