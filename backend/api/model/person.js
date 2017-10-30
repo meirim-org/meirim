@@ -2,9 +2,11 @@
 const Checkit = require('checkit');
 const Promise = require('bluebird');
 const Bcrypt = require('bcrypt');
-const Bookshelf = require("./bookshelf");
+const Bookshelf = require('../service/database').Bookshelf;
+
+const Base_model = require("./base_model");
 const Exception = require('./exception');
-class Person extends Bookshelf.Model{
+class Person extends Base_model {
   get rules() {
     return {
       firstName: [
@@ -32,32 +34,19 @@ class Person extends Bookshelf.Model{
   get tableName() {
     return 'person';
   }
-
-  get hasTimestamps() {
-    return true;
-  }
-  get idAttribute() {
-    return 'id';
-  }
-
-  get hasTimestamps() {
-    return true;
-  }
   initialize() {
     this.on('creating', this.assignValues);
-    this.on('saving', this.validateSave);
     this.on('saving', this.hashPassword);
+    super.initialize();
   }
   assignValues(model, attrs, options) {
     model.attributes.status = 1;
     model.attributes.email = model.attributes.email.toLowerCase().trim();
   }
-  validateSave(model, attrs, options) {
-    return Checkit(this.rules).run(this.attributes);
-  }
+
   hashPassword(model, attrs, options) {
     if (!model.hasChanged("password")) {
-      return;
+      return false;
     }
     // hash password
     return Bcrypt.hash(model.get("password"), 10).then(function(hashedPassword) {
@@ -70,16 +59,18 @@ class Person extends Bookshelf.Model{
   checkPassword(password) {
     var person = this;
     return Bcrypt.compare(password, this.get('password')).then(function(res) {
-      if (!res)
+      if (!res) {
         throw new Exception.notAllowed('Password mismatch');
+      }
+
       return person;
     });
   }
-	static canCreate(session) {
+  static canCreate(session) {
     if (session.person) {
       throw new Exception.notAllowed("Must be signed out")
     }
-    return  Promise.resolve(Person);;
+    return Promise.resolve(Person);;
   }
 };
 module.exports = Bookshelf.model('Person', Person);

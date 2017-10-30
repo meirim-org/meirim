@@ -1,10 +1,10 @@
 'use strict';
 const Model = require("./base_model");
 const Bookshelf = require('../service/database').Bookshelf;
-class Status extends Model {
+class Tag extends Model {
 
   get tableName() {
-    return 'status';
+    return 'tag';
   }
 
   canRead(session) {
@@ -15,4 +15,4 @@ class Status extends Model {
     return this.collection();
   }
 };
-module.exports = Bookshelf.model('status', Status);
+module.exports = Bookshelf.model('tag', Tag);

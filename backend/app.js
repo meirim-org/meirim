@@ -5,12 +5,16 @@ const Log = require('./api/service/log');
 const Config = require('./api/service/config');
 const Eamil = require('./api/service/email');
 const Cors = require('cors');
-
 const urlencoded = BodyParser.urlencoded({extended: false});
 const json = BodyParser.json()
+const whitelist = ['http://localhost:3000', 'http://meirim.org','https://meirim.org']
 const cors = Cors({
   origin: function(origin, callback) {
-    callback(null, true)
+    // if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    // } else {
+      // callback(new Error('Not allowed by CORS'))
+    // }
   },
   optionsSuccessStatus: 200,
   credentials: true,
@@ -30,6 +34,14 @@ app.options('*', cors);
 app.use(Express.static(path.join(__dirname, 'public')));
 app.use('/activity', json, urlencoded, require('./api/controller/activity'));
 app.use('/sign', json, urlencoded, require('./api/controller/sign'));
+app.use('/alert', json, urlencoded, require('./api/controller/alert'));
+app.use('/cron', json, urlencoded, require('./api/controller/cron'));
+app.use('/tag', json, urlencoded, require('./api/controller/tag'));
+app.use('/status', json, urlencoded, require('./api/controller/status'));
+
+//log schedule
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

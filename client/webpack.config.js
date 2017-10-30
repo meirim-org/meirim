@@ -4,11 +4,14 @@ var path = require('path');
 var BUILD_DIR = path.resolve(__dirname, 'src/client/public');
 var APP_DIR = path.resolve(__dirname, 'src/client/app');
 
-    module.exports = {
+module.exports = {
     context: __dirname,
     entry: {
+        // Lmd Editor
         'login': ['./pages/login.js'],
-
+        'syndrome-list': ['./pages/syndrome-list.js'],
+        'syndromePage': ['./pages/syndromePage.js'],
+        'approvePage': ['./pages/approvePage.js'],
     },
     output: {
         path: resolve('../public/js/pages'),

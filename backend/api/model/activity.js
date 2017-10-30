@@ -1,29 +1,32 @@
 'use strict';
-const Bookshelf = require("./bookshelf");
-const Checkit = require('checkit');
+const Bookshelf = require("../service/database").Bookshelf;
+const Promise = require('bluebird');
 const Exception = require('./exception');
 const Upload = require("../service/upload");
 const PersonActivity = require("../model/person_activity");
 const Status = require("../model/status");
-const ImageResize = require('node-image-resize');
-const fs = require('fs');
+const Base_model = require("./base_model");
 const Log = require("../service/log");
-class Activity extends Bookshelf.Model {
+const path = require('path');
+const Image = require('../service/image');
+const Checkit = require('checkit');
+const Geocoder = require("../service/geocoder").geocoder;
+class Activity extends Base_model {
 
   get rules() {
     return {
-      id: [
-        'required', 'integer'
-      ],
+      // id: [
+      //   'required', 'integer'
+      // ],
       headline: [
         'required', 'string'
       ],
       address: [
         'required', 'string'
       ],
-      latlon: [
-        'required', 'string'
-      ],
+      // latlon: [
+      //   'required', 'string'
+      // ],
       description: [
         'required', 'string'
       ],
@@ -49,6 +52,25 @@ class Activity extends Bookshelf.Model {
     return true;
   }
 
+  defaults() {
+    return {status: 1}
+  }
+
+  get geometry() {
+    return ['latlon'];
+  }
+
+  _saving(model, attrs, options) {
+    return Geocoder.geocode(model.get("address")).then(res => {
+      model.set("latlon", {
+        "type": "Point",
+        "coordinates": [res[0].latitude,res[0].longitude]
+      });
+      model.set("address", res[0].formattedAddress);
+      return new Checkit(model.rules).run(model.attributes);
+    })
+  }
+
   status() {
     return this.belongsTo('status', 'status');
   }
@@ -58,64 +80,68 @@ class Activity extends Bookshelf.Model {
   }
 
   upload(files) {
+    var sampleFile = null,
+      width =400,
+      height =400,
+      newPath = __dirname + "/../../public/upload/";
 
-    var newPath = __dirname + "/../../public/upload/";
-
-    if (!files)
+    if (!files){
       return new Exception.badRequest('No files were uploaded');
+    }
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     Log.debug(files);
-    Object.keys(files).forEach(function(key) {
+    Object.keys(files).forEach((key)=> {
       Log.debug("Handeling file:", key);
-      var sampleFile = files[key];
-      console.log(sampleFile.path);
-      var image = new ImageResize(sampleFile.path);
-      console.log(1);
-      image.loaded().then(function() {
-        console.log(2);
-        image.smartResizeDown({width: 200, height: 200}).then(function() {
-          console.log(3);
-          image.stream(function(err, stdout, stderr) {
-            console.log(newPath + sampleFile.filename + '.jpg');
-            if (err)
-              Log.e(err);
-            var writeStream = fs.createWriteStream(newPath + sampleFile.filename + '.jpg');
-            console.log(5);
-            stdout.pipe(writeStream);
-            console.log(6);
+      sampleFile = files[key];
+      Image.lwip.open(sampleFile.path,Image.mime[sampleFile.mimetype], (err,image)=>{
+        if (err){
+          Log.e("Open failed",err);
+        }
+        image.cover(width, height, (err,image)=>{
+          if (err){
+            Log.e("Resize failed",err);
+          }
+          image.writeFile(newPath + sampleFile.filename + '.jpg', "jpg", (err,image)=>{
+            if (err){
+              Log.e("Write failed",err);
+            }
+            Log.debug("Sucess writing file:", newPath + sampleFile.filename + '.jpg');
           });
-        });
+        })
       });
     });
+    return true;
   }
 
   static uploadMiddleWareFactory() {
-    return Upload.middleware.array('photos', 12);
+    var numberOfPhotos = 12;
+    return Upload.middleware.array('photos', numberOfPhotos);
   }
+
   canRead(session) {
-    return  Promise.resolve(this);;
+    return Promise.resolve(true);
   }
   canEdit(session) {
     // if (!session.person || !session.person.admin) {
     // 	throw new Exception.notAllowed("Must be an admin")
     // }
-    return  Promise.resolve(this);;
+    return Promise.resolve(true);;
   }
   canJoin(session) {
     if (!session.person || !session.person.id) {
-    	throw new Exception.notAllowed("Must be signed in")
+      throw new Exception.notAllowed("Must be signed in")
     }
     if (!this.status().notActive()) {
-    	throw new Exception.notAllowed("Activity isn't active");
+      throw new Exception.notAllowed("Activity isn't active");
     }
     return Promise.resolve(this);
   }
   static canCreate(session) {
-    if (!session.person || !session.person.id) {
-      throw new Exception.notAllowed("Must be signed in")
+    if (!session || !session.person || !session.person.id) {
+      throw new Exception.notAllowed("Must be signed in");
     }
-    return Activity;
+    return Promise.resolve(true);
   }
 };
 // private

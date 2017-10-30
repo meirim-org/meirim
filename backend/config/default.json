@@ -1,4 +1,13 @@
 {
+  "general": {
+    "userAgent": "Meirim.org (info@meirim.org)"
+  },
+  "services":{
+    "schedule":{
+      "iplan":"0 0 0 * * *",
+      "send_planning_alerts":"0 0 0 * * *"
+    }
+  },
   "session": {
     "secret": "secret"
   },
@@ -21,12 +30,17 @@
     }
   },
   "email": {
-    "host": "smtp.ethereal.email",
-    "port": 587,
-    "secure": false, // true for 465, false for other ports
-    "auth": {
-      "user": "account.user", // generated ethereal user
-      "pass": "account.pass" // generated ethereal password
+    "transport": "SMTP",
+    "from_name": "Meirim",
+    "from_email": "alert@meirim.org",
+    "options" : {
+      "host": "smtp.example.com",
+      "port": 465,
+      "secure": true,
+      "auth": {
+          "user": "",
+          "pass": ""
+      }
     }
   }
 }

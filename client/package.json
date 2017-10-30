@@ -17,6 +17,7 @@
     "react-scripts": "1.0.13",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "react-server-cli": "^0.7.2",
     "webpack": "^3.5.5"
   },
   "scripts": {

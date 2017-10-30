@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="cooperative management for municipal protests in israel">
+  <title>People For Cities - Open Information HaSadna</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.3.3/papaparse.min.js"></script>
+</head>
+
+<body>
+  <div id="sidebar">
+    <ul id="slide-out" class="side-nav"></ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"></a>
+  </div>
+
+  <form id="search">
+    <div class="inner-search">
+      <input id="pac-input" class="controls" type="text" placeholder="חיפוש" />
+      <button><i class="material-icons">search</i></button>
+    </div>
+    <div class="search-results"></div>
+  </form>
+  <div id="map"></div>
+
+
+
+  <script type="text/template" id="search-results-template">
+    <a href="#" data-index="{{index}}">
+      {{text}}
+    </a>
+  </script>
+  <script type="text/template" id="sidebar-template">
+    <li class="realHead">
+      <div class="headText">
+        <div class="header">{{headline}}</div>
+        <div class="selectedAddress">{{address}}</div>
+      </div>
+      <div class="headImg">
+        <img src="./props/eventIcon.png" style="max-width:50px;" />
+      </div>
+    </li>
+    <li><a class="minorHeader">תיאור</a></li>
+    <li class="content">{{description}}</li>
+    <!-- <li class="buttonContainer {}"><a target="_blank" href="{" class="joinButton">הצטרף למאבק</a></li> -->
+    <!-- <li class="buttonContainer {}"><a target="_blank" href="{" class="otherJoinButton">קרא עוד</a></li> -->
+  </script>
+  <script src="script.js"></script>
+</body>
+
+</html>
