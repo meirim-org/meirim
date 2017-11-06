@@ -45,8 +45,8 @@ class Person extends Base_model {
     model.attributes.status = 1;
     model.attributes.email = model.attributes.email.toLowerCase().trim();
   }
-  getActivationToken(email){
-    const data = email;
+  getActivationToken(){
+    const data = this.get('email');
     return Bcrypt.hash(data, 10).then(function(hashedPassword) {
       return new Buffer(hashedPassword).toString('base64');
     })
