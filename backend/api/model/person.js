@@ -9,12 +9,12 @@ const Exception = require('./exception');
 class Person extends Base_model {
   get rules() {
     return {
-      firstName: [
-        'required', 'string'
-      ],
-      lastName: [
-        'required', 'string'
-      ],
+      // firstName: [
+      //   'required', 'string'
+      // ],
+      // lastName: [
+      //   'required', 'string'
+      // ],
       email: [
         'required', 'email'
       ],
@@ -28,9 +28,11 @@ class Person extends Base_model {
     }
   }
   get hidden() {
-    return ['password', 'admin']
+    return ['password', 'admin','status']
   }
-
+  get status() {
+    return 0;
+  }
   get tableName() {
     return 'person';
   }
@@ -43,16 +45,27 @@ class Person extends Base_model {
     model.attributes.status = 1;
     model.attributes.email = model.attributes.email.toLowerCase().trim();
   }
-
+  getActivationToken(email){
+    const data = email;
+    return Bcrypt.hash(data, 10).then(function(hashedPassword) {
+      return new Buffer(hashedPassword).toString('base64');
+    })
+  }
   hashPassword(model, attrs, options) {
+    const passwordLength = 6;
     if (!model.hasChanged("password")) {
       return false;
+    }
+    const password = model.get("password");
+    if (password.lenth <= passwordLength){
+      throw new Exception.badRequest("Password must be at least "+passwordLength+" charcters")
     }
     // hash password
     return Bcrypt.hash(model.get("password"), 10).then(function(hashedPassword) {
       return model.set("password", hashedPassword);
     })
   }
+
   upload(files) {
     return this;
   }
@@ -62,7 +75,6 @@ class Person extends Base_model {
       if (!res) {
         throw new Exception.notAllowed('Password mismatch');
       }
-
       return person;
     });
   }

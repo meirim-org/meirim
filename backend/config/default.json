@@ -1,6 +1,7 @@
 {
   "general": {
-    "userAgent": "Meirim.org (info@meirim.org)"
+    "userAgent": "Meirim.org (info@meirim.org)",
+    "domain":"http://meirim.org/"
   },
   "services":{
     "schedule":{

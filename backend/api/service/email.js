@@ -52,8 +52,14 @@ class Email {
     return new Promise.resolve();
   }
   newSignUp(person) {
-    // setup email data with unicode symbols
-    return this.sendWithTemplate(this.templates.newSignUp, person.toJSON());
+    return person.getActivationToken().then((token)=>{
+      let templateProperties = {
+        url:Config.get("general.domain")+"/alerts/?activate="+token
+      };
+      templateProperties = Object.assign(templateProperties, person.toJSON());
+      // setup email data with unicode symbols
+      return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
+    })
   };
 
   newPlanAlert(person, plan) {
@@ -65,6 +71,11 @@ class Email {
     let templateProperties = Object.assign(person.toJSON(), plan.toJSON());
     return this.sendWithTemplate(this.templates.newAlert, templateProperties);
   };
+
+  newSignUpWithEmail(token){
+
+    return this.sendWithTemplate(this.templates.newAlert, templateProperties);
+  }
 
   sendWithTemplate(template, templateProperties) {
 
