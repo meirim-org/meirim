@@ -21,7 +21,7 @@ class AppLayout extends Component {
                             margin: '16px 56px 16px 0',
                             float: 'right',
                         }}>
-                        <img class='make-it-fit' src="https://i.imgur.com/tKuuok6.png" alt="äúîåðä çñøä" />
+                        <img className='make-it-fit' src="https://i.imgur.com/tKuuok6.png" alt="äúîåðä çñøä" />
                         </div>
                         <Menu
                             mode="horizontal"
@@ -34,9 +34,10 @@ class AppLayout extends Component {
                             <Menu.Item key="4">צור קשר</Menu.Item>
                             <Menu.Item key="3">מי אנחנו</Menu.Item>
                             <Menu.Item key="2">הרשמה</Menu.Item>
-                            <Link to={'/login'}>
-                                <Menu.Item key="1">כניסה</Menu.Item>
-                            </Link>
+                            
+                                <Menu.Item key="1">
+                                  <Link to={'/login'}>כניסה</Link>
+                                </Menu.Item>
                         </Menu>
                     </Header>
                     <Content style={{padding: '0 50px', marginTop: 64}}>
