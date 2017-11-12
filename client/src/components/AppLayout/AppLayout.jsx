@@ -28,16 +28,15 @@ class AppLayout extends Component {
                             defaultSelectedKeys={['2']}
                             style={{lineHeight: '24px', display: 'inline-flex'}}
                         >
-                            <Menu.Item key="7">תרמו לנו</Menu.Item>
-                            <Menu.Item key="6">השותפים שלנו</Menu.Item>
-                            <Menu.Item key="5">איך עושים שינוי</Menu.Item>
-                            <Menu.Item key="4">צור קשר</Menu.Item>
-                            <Menu.Item key="3">מי אנחנו</Menu.Item>
-                            <Menu.Item key="2">הרשמה</Menu.Item>
-                            
-                                <Menu.Item key="1">
-                                  <Link to={'/login'}>כניסה</Link>
-                                </Menu.Item>
+                            <Menu.Item>תרמו לנו</Menu.Item>
+                            <Menu.Item>השותפים שלנו</Menu.Item>
+                            <Menu.Item>איך עושים שינוי</Menu.Item>
+                            <Menu.Item>צור קשר</Menu.Item>
+                            <Menu.Item>מי אנחנו</Menu.Item>
+                            <Menu.Item>הרשמה</Menu.Item>
+                            <Menu.Item>
+                              <Link to={'/login'}>כניסה</Link>
+                            </Menu.Item>
                         </Menu>
                     </Header>
                     <Content style={{padding: '0 50px', marginTop: 64}}>
