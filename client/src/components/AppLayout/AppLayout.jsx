@@ -46,7 +46,7 @@ class AppLayout extends Component {
                             <Breadcrumb.Item>App</Breadcrumb.Item>
                         </Breadcrumb>
                         <div style={{background: '#fff', padding: 24, minHeight: 380}}>
-                            <Route path='login' component={LoginContainer } />
+                            <Route path='/login' component={LoginContainer } />
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>
