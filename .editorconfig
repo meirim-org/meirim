@@ -1,0 +1,19 @@
+[*.js]
+indent_style = tab
+indent_size = 4
+end_of_line = crlf
+
+[*.jsx]
+indent_style = tab
+indent_size = 4
+end_of_line = crlf
+
+[*.scss]
+indent_style = tab
+indent_size = 4
+end_of_line = crlf
+
+
+[*.json]
+indent_style = space
+indent_size = 2
