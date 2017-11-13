@@ -8,12 +8,28 @@ const Email = require("../service/email");
 const _ = require('lodash');
 class SignController extends Controller {
   signup(req, res, next) {
-    var controller = this;
-    return controller.create(req, res, next).then((person) => {
-      return Email.newSignUp(person);
-    }).then(() => {
-      return controller.signin(req, res, next);
-    })
+    // check if user exists and not active
+    return this.model.forge({email:req.body.email,status:0}).fetch().then((person)=>{
+      // if there is an inactive person we send only a mail
+      if (person){
+        Log.debug("Person send activation email to:", person.get("id"));
+        return Email.newSignUp(person);
+      }
+      // if there is a user but active, this will return an error
+      return this.model.forge(req.body).save().then((person) => {
+        Log.debug("Person create success id:", person.get("id"));
+        return Email.newSignUp(person);
+      }).then(() => {
+        return controller.signin(req, res, next);
+      })
+    });
+  }
+  activate(req,res,next){
+    if (!req.body.token){
+      throw new Exception.badRequest("No token provided");
+    }
+    Log.debug("Person Activate token:", req.body.token);
+    return Person.activateByToken(req.body.token);
   }
   signin(req, res, next) {
     if (!req.body.email) {
@@ -49,6 +65,9 @@ class SignController extends Controller {
 const controller = new SignController(Person);
 Router.post('/up', (req, res, next) => {
   controller.wrap(_.bind(controller.signup, controller))(req, res, next);
+});
+Router.post('/activate', (req, res, next) => {
+  controller.wrap(_.bind(controller.activate, controller))(req, res, next);
 });
 Router.post('/in', (req, res, next) => {
   controller.wrap(_.bind(controller.signin, controller))(req, res, next);

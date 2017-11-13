@@ -24,6 +24,7 @@ https://github.com/nodejs/node-gyp#installation
 ### Instructions for backend
 Download code and dependencies
 ```bash
+npm install knex -g
 git clone git@github.com:dortheimer/CitizensForCities.git
 cd CitizensForCities/backend/
 npm i
@@ -42,6 +43,10 @@ exit;
 Import the sql file
 ```bash
 mysql -uroot -p -meirim < backend/doc/import.sql
+```
+Run migrations
+```bash
+knex  migrate:latest
 ```
 
 Edit the local configuration file and set your database and email settings

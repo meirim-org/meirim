@@ -48,6 +48,7 @@
 			"order": [
 				"d7221bbd-c02d-ae12-705e-e5fd45be0aa1",
 				"0611653b-d04e-cb89-e4f8-9cc0114f195f",
+				"11c6a6f2-9209-491b-db47-9069ca51debd",
 				"bbb533f4-3fd1-a9e3-e368-81f475ca85a3"
 			],
 			"folders_order": []
@@ -119,6 +120,36 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
+		},
+		{
+			"id": "11c6a6f2-9209-491b-db47-9069ca51debd",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/sign/activate",
+			"folder": "29954a6e-a9a3-c1ba-bc93-926c464f1f20",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1510088076128,
+			"name": "activate user",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": [],
+			"rawModeData": "{\n  \"token\":\"MTBkZGY0OTQyZTYzNmM3ODM1NDBlOTA4ZTBhZDFmOTRiZQ==\"\n}"
 		},
 		{
 			"folder": "e90de5c9-4b79-76f4-3ca7-7d2265d86d70",
