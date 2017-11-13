@@ -8,7 +8,7 @@ const Status = require("../model/status");
 const Base_model = require("./base_model");
 const Log = require("../service/log");
 const path = require('path');
-const Image = require('../service/image');
+// const Image = require('../service/image');
 const Checkit = require('checkit');
 const Geocoder = require("../service/geocoder").geocoder;
 class Activity extends Base_model {
@@ -91,26 +91,26 @@ class Activity extends Base_model {
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     Log.debug(files);
-    Object.keys(files).forEach((key)=> {
-      Log.debug("Handeling file:", key);
-      sampleFile = files[key];
-      Image.lwip.open(sampleFile.path,Image.mime[sampleFile.mimetype], (err,image)=>{
-        if (err){
-          Log.e("Open failed",err);
-        }
-        image.cover(width, height, (err,image)=>{
-          if (err){
-            Log.e("Resize failed",err);
-          }
-          image.writeFile(newPath + sampleFile.filename + '.jpg', "jpg", (err,image)=>{
-            if (err){
-              Log.e("Write failed",err);
-            }
-            Log.debug("Sucess writing file:", newPath + sampleFile.filename + '.jpg');
-          });
-        })
-      });
-    });
+    // Object.keys(files).forEach((key)=> {
+    //   Log.debug("Handeling file:", key);
+    //   sampleFile = files[key];
+    //   Image.lwip.open(sampleFile.path,Image.mime[sampleFile.mimetype], (err,image)=>{
+    //     if (err){
+    //       Log.e("Open failed",err);
+    //     }
+    //     image.cover(width, height, (err,image)=>{
+    //       if (err){
+    //         Log.e("Resize failed",err);
+    //       }
+    //       image.writeFile(newPath + sampleFile.filename + '.jpg', "jpg", (err,image)=>{
+    //         if (err){
+    //           Log.e("Write failed",err);
+    //         }
+    //         Log.debug("Sucess writing file:", newPath + sampleFile.filename + '.jpg');
+    //       });
+    //     })
+    //   });
+    // });
     return true;
   }
 
