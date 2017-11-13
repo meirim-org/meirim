@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+	<style type="text/css">
+
+			.maavakPic{
+				display: inline-block;
+				margin: left;
+				width:50%;
+				height: 100%;
+			}
+			
+			.containerText{
+				display: inline-block; 
+				vertical-align:top ; 
+				width:49%; 
+				direction: rtl ; 
+				margin: right;
+			}
+
+			div.header-bar {
+				/* width: 697px; */
+				height: 22px;
+				background-color: #3b3b3b;
+				font-family: Heebo;
+				font-size: 12px;
+				letter-spacing: -0.5px;
+				text-align: right;
+				color: #ffffff;
+				text-indent: 10%;
+			}
+
+			.make-it-fit{
+			    display: block;
+				position:relative;
+				right: 10% ;
+				/* top:40px; */
+				width: 250px;
+				height: 68px;
+				margin-top: 4%;
+			}			
+			
+			div.header-question {
+				/* width: 563.4px; */
+				height: 114px;
+				font-family: Heebo;
+				font-size: 25px;
+				line-height: 1.27;
+				text-align: right;
+				color: #3b3b3b;
+				position:relative;
+				right: 10% ;
+				margin-top: 6%;
+			}
+
+
+			div.about-us {
+				/* width: 313px; */
+				height: 247px;
+				font-family: Heebo;
+				font-size: 13px;
+				line-height: 1.69;
+				text-align: right;
+				color: #3b3b3b;
+				position:relative;
+				right: 10% ;
+				margin-top: 8%;
+			}
+			div.read-manual {
+				/* width: 372px; */
+				height: 54px;
+				font-family: Heebo;
+				font-size: 18px;
+				font-weight: bold;
+				line-height: 1.39;
+				text-align: right;
+				color: #005cbf;
+				position:relative;
+				right: 10% ;
+				margin-top: 2%;
+			}
+
+			div.help-contact {
+				/* width: 313px; */
+				height: 247px;
+				font-family: Heebo;
+				font-size: 13px;
+				line-height: 1.69;
+				text-align: right;
+				color: #3b3b3b;
+				position:relative;
+				right: 10% ;
+				margin-top: 2%;
+			}
+			
+			div.Rectangle-join {
+				position: fixed;
+				margin: auto;
+				top: 45%;
+				right: 35%;
+				/* border: 8px solid black; */
+				width: 457px;
+				height: 306px;
+				background-color: #0060bd;
+				text-align: center;
+				direction: rtl ;
+				display:block;
+			}
+			
+			.wanna-know {
+				/* width: 327px; */
+				display: block;
+				height: 31px;
+				font-family: Heebo;
+				font-size: 21px;
+				position:relative;
+				color: #ffffff;
+				top: 20%;
+			}
+			
+			.join-alert {
+				/* width: 281px; */
+				display: block;
+				height: 31px;
+				font-family: Heebo;
+				font-size: 21px;
+				font-weight: bold;
+				color: #ffffff;
+				position:relative;
+				top: 20%;
+				left: 6.7%;
+			}
+			
+			textarea {
+				resize: none;
+			}
+			
+			.group {
+				position: relative;
+				top: 30%;
+				font-family: Heebo;
+				font-size: 15px;
+			}
+			
+			input[type="text"],
+			input[type="password"]{
+				width: 326px;
+			}
+			
+			input[type="text"],
+			input[type="password"],
+			textarea {
+				font-family: Heebo;
+				font-size: 15px;
+				background: none;
+				color: #ffffff;
+				font-size: 18px;
+				/* padding: 10px 10px 10px 5px; */
+				display: block;
+				width: .wanna-know.width;
+				border: none;
+				position:relative;
+				right : 14%;
+				border-radius: 0;
+				border-bottom: 1px solid #ffffff;;
+				&:focus {
+					outline: none;
+				}
+				&:focus ~ .bar:before {
+					width: $width;
+				}
+			}
+			label {
+				color: #ffffff;;
+				font-size: 16px;
+				font-weight: normal;
+				pointer-events: none;
+				top: -25px;
+			}
+
+			.bar {
+				position: relative;
+				display: block;
+				width: $width;
+				&:before {
+				content: '';
+				height: 2px;
+				width: 0;
+				bottom: 0px;
+				position:relative;
+				left: 0%;
+				}
+			}
+			
+			.read-terms {
+				/* width: 155px; */
+				display: block;
+				height: 18px;
+				font-family: Heebo;
+				font-size: 12px;
+				font-weight: bold;
+				position:relative;
+				top: 25%;
+				left: 18.7%;
+				color: #ffffff;
+			}				
+		.termsOfUse{
+			width: 28px;
+			height: 28px;
+			position: relative;
+			margin: 20px auto;
+			background: #ffffff;
+			background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+			border-radius: 50px;
+			box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+			  input[type=checkbox] {
+				visibility: hidden;
+			}
+		}
+		</style>
+		<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>		
+		<script>
+			var mandatoryFieldsMessage = "יש להזין";
+			var emailFormatFieldMessage = "יש להזין כתובת מייל תקינה";
+			var strongPasswordMessage = "יש להזין סיסמה חזקה, לפחות 8 תוים, ספרה אחת ואות גדולה באנגלית";
+			var emailName = "כתובת מייל";
+			var passwordName = "סיסמא";
+			var agreedPTMessage = "יש להסכים לתנאי השימוש והפרטיות";
+			var userSignedInMessage = "ברכות להצטרפותך עדכונים יועברו לכתובת המייל שהזנת";
+			var lettersDotsHyphenFieldsMessage = "יש להזין אותיות, נקודות או מקף ב";
+			var confirmEmailMessage = "נשלח לכתובת המייל שהזנת מייל לאימות משתמש. לאחר לחיצה על הקישור שבמייל ימשיך תהליך ההרשמה";
+			
+			function pageLoad(){
+				window.onload = function () {
+					var a = document.getElementById("errorApiGreenPrivacyTerms");
+					var b = document.getElementById("termsOfUse");
+					var c = document.getElementById("read-terms"); 
+					var e = document.getElementById("emailLabale");
+					var z = document.getElementById("passwordLabale");
+
+					};
+					
+				$('#errorApiGreenPrivacyTerms').hide();
+				
+				/* termsOfUse.addEventListener( 'change', function() {
+					if(this.checked) {
+						$('#errorApiGreenPrivacyTerms').hide();
+					} else {
+						$('#errorApiGreenPrivacyTerms').show();
+					}
+				});
+				*/
+				emailAddress.addEventListener("input" , function() {
+					if($('#emailAddress').val()!=""){
+					document.getElementById("emailLabale").style.display = 'none';
+					//document.getElementById("read-terms").style.top = 25px ;
+					}
+					else{
+					document.getElementById("emailLabale").style.display = 'block';
+					}
+				});
+				userPassword.addEventListener("input" , function() {
+					if($('#userPassword').val()!=""){
+					document.getElementById("passwordLabale").style.display = 'none';
+					}
+					else{
+					document.getElementById("passwordLabale").style.display = 'block';
+					}
+				});
+
+			}
+			
+			function validateEmail(email) {
+				var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				return re.test(email);
+			}
+			
+			function validateStrongPassword(text){
+				/*at least 8 characters long, must contain at least one uppercase letter, one digit and one special character
+				var regex = /^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;*/
+				//at least 8 characters long, must contain at least one uppercase letter and one digit
+			var regex = /^(?=.*?[A-Z])(?=.*?[0-9]).{8,}$/;
+			return regex.test(text);
+			}
+			
+			function onlyLettersAndSomeSpecialChars(text){ // special characters as " ' . - –
+				var regex = /^[\sa-z"'\.\-–\u2014\u0590-\u05fe]+$/i;
+				return regex.test(text);
+			}
+			
+			function signup() {
+				var error=0;
+				var errorMessages = "";	
+				// $('#errorApiGreenPrivacyTerms').hide();			
+							
+							
+				if($('#emailAddress').val()==""){
+					error=1;
+					errorMessages += mandatoryFieldsMessage + " " + emailName + "\n";
+				}else{
+					if(validateEmail($('#emailAddress').val())==false){
+						error=1;
+						errorMessages += emailFormatFieldMessage + "\n";
+					}
+				}
+			
+	
+				if($('#userPassword').val()==""){
+					error=1;
+					errorMessages += mandatoryFieldsMessage + " " + passwordName + "\n";
+				}
+
+				var agreedPT = $('#termsOfUse')[0].checked;
+				if(agreedPT == false){
+				// $('#errorApiGreenPrivacyTerms').show();
+						error=1;
+						errorMessages += agreedPTMessage + "\n";
+				}				
+				
+				if(error==0){ 
+					var data = {}; 
+					data.email = $('#emailAddress').val();
+					data.password = $('#userPassword').val();
+				    $.ajax({
+						url: "http://api.meirim.org/sign/up",
+						type: "POST",
+						dataType: "json",
+						data: JSON.stringify(data),
+						contentType: "application/json",
+						success: function(response) {
+							console.log('process sucess');
+							alert(confirmEmailMessage);
+						},
+						error: function(response) {
+							console.log('process error');
+							alert("process error " + response.responseText);
+						},
+					});
+				}
+				else{
+					if (errorMessages != ""){
+						alert(errorMessages);
+					}
+				}
+		
+			}
+	</script>
+
+		<link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet"></link>
+	</head>
+
+<body onload="pageLoad();" >
+	<img class='maavakPic' src="https://i.imgur.com/FMVQg3l.jpg" alt="התמונה חסרה"></img>
+
+<div  class ="containerText" >	
+	<div class="header-bar">
+		<a href="/about" style="color: #ffffff;">מי אנחנו</a>
+		<span>|</span>
+		<a href="/contactus" style="color: #ffffff;">צור קשר</a>
+		<span>|</span>
+		<a href="/change" style="color: #ffffff;">איך עושים שינוי</a>
+		<span>|</span>
+		<a href="/realationship" style="color: #ffffff;">השותפים שלנו</a>
+		<span>|</span>
+		<a href="/joinus" style="color: #ffffff;">תרמו לנו</a>
+	</div>
+	
+	<img class='make-it-fit' src="https://i.imgur.com/Xzx054b.png" alt="התמונה חסרה"></img>
+	
+	<div class="header-question">
+			<h1>
+			הבניין שיועד לטיפת חלב
+			<br>
+			עומד להפוך 
+			<span style="color:#0000CC"> 
+			לדירת יוקרה?
+			</span>
+			</h1>
+	</div>  
+  
+	
+	<div class="about-us">
+		<strong>קצת על מעירים</strong>
+		<br>
+		מעירים פועלים לשינוי סדר היום במערכת התכנון, חתירה
+		<br>
+		להפרדת רשויות וייצוג הולם לכל שכבות האוכלוסייה תוך 
+		<br>
+		שמירה על האינטרס הסביבתי
+		<br>
+		<br>
+		מערכת ההתרעות שלנו מאגדת במקום אחד את כל התוכניות
+		<br>
+		שהופקדו וההיתרים שניתנו ברמה המקומית המחוזית וותמ"ל
+		<br>
+		ותשלח לגם מייל בזמן אמת, בכל פעם שתופקד תכנית
+		<br>
+		חדשה באיזור מגוריכם, כדי שתוכלו לדעול ולמנוע תכניות
+		<br>
+		יזמיות הנובעות מאינטרס כלכלי על חשבון רווחת התושבים
+		<br>
+		באיזורכם. 
+		<a href="">עוד</a>
+	</div>
+	
+	<div class="read-manual">
+		קראו את המדריך המלא של מעירים
+		<br>
+		לאיך עושים שינוי >
+	</div>
+
+	<div class="help-contact"  >
+		אנחנו כאן לכל שאלה, הבהרה ועניין
+		<br>
+		<p1 style="color:#0000CC">
+		EMAIL: info@meirim.co.org 
+		</p1>
+	</div>
+
+</div >
+
+	<div class="Rectangle-join" >
+
+			<span class="wanna-know"  >
+				רוצים לדעת מה קורה ליד הבית שלכם?
+			</span>
+			
+				
+			<span class="join-alert"  >
+				הרשמו למערכת ההתרעות שלנו 
+			</span>
+
+		    <div class="group">      
+				<input id="emailAddress" type="text" style="text-align: left" required> </input>
+				<span class="highlight"></span>
+				<span class="bar"></span>
+				<label id="emailLabale"	style="position:relative; left: 27%;">כתובת מייל:</label>
+			</div>
+			
+		    <div class="group">      
+				<input id="userPassword" type="password" style="text-align: left" required> </input>
+				<span class="highlight"></span>
+				<span class="bar"></span>
+				<label id="passwordLabale" style="position:relative; left: 30%;">סיסמא:</label>
+			</div>
+			
+			
+			<span class="read-terms" >
+				<input type="checkbox" id="termsOfUse" value="Terms"></input>
+				קראתי את
+				<a href="/terms" style="color: #ffffff;"><strong>תנאי השימוש</strong></a> 
+				<input id="submitButton" type="submit" onclick="signup();" value=">" ></input>
+				<br>
+	            <span id="errorApiGreenPrivacyTerms">יש להסכים לתנאי השימוש ומדיניות הפרטיות</span>
+
+			</span>
+	
+	</div>
+</body>
+</html>
