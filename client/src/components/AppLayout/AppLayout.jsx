@@ -21,22 +21,22 @@ class AppLayout extends Component {
                             margin: '16px 56px 16px 0',
                             float: 'right',
                         }}>
-                        <img class='make-it-fit' src="https://i.imgur.com/tKuuok6.png" alt="äúîåðä çñøä" />
+                        <img className='make-it-fit' src="https://i.imgur.com/tKuuok6.png" alt="äúîåðä çñøä" />
                         </div>
                         <Menu
                             mode="horizontal"
                             defaultSelectedKeys={['2']}
                             style={{lineHeight: '24px', display: 'inline-flex'}}
                         >
-                            <Menu.Item key="7">תרמו לנו</Menu.Item>
-                            <Menu.Item key="6">השותפים שלנו</Menu.Item>
-                            <Menu.Item key="5">איך עושים שינוי</Menu.Item>
-                            <Menu.Item key="4">צור קשר</Menu.Item>
-                            <Menu.Item key="3">מי אנחנו</Menu.Item>
-                            <Menu.Item key="2">הרשמה</Menu.Item>
-                            <Link to={'/login'}>
-                                <Menu.Item key="1">כניסה</Menu.Item>
-                            </Link>
+                            <Menu.Item>תרמו לנו</Menu.Item>
+                            <Menu.Item>השותפים שלנו</Menu.Item>
+                            <Menu.Item>איך עושים שינוי</Menu.Item>
+                            <Menu.Item>צור קשר</Menu.Item>
+                            <Menu.Item>מי אנחנו</Menu.Item>
+                            <Menu.Item>הרשמה</Menu.Item>
+                            <Menu.Item>
+                              <Link to={'/login'}>כניסה</Link>
+                            </Menu.Item>
                         </Menu>
                     </Header>
                     <Content style={{padding: '0 50px', marginTop: 64}}>
