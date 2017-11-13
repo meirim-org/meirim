@@ -3,3 +3,4 @@ node_modules
 local.json
 backend/tmp/
 backend/public/upload/
+.idea
