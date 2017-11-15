@@ -38,6 +38,18 @@
 			"folders_order": []
 		},
 		{
+			"name": "Password",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"order": [
+				"e8369eb3-71bb-f674-54f5-bcc0635af990",
+				"3b2f8b22-607f-418c-7c03-ac0ea7de667b"
+			],
+			"owner": "1147672",
+			"folders_order": [],
+			"id": "29b3b33d-553f-2dfe-271b-2b6ed579ea3b"
+		},
+		{
 			"owner": "1147672",
 			"lastUpdatedBy": "1147672",
 			"lastRevision": 2214213460,
@@ -85,7 +97,8 @@
 		"0de214ba-4eb7-5c68-c7bf-f0569e1ceeb6",
 		"e90de5c9-4b79-76f4-3ca7-7d2265d86d70",
 		"ae6afb1d-ff5d-d33e-3c66-7aa0e9f6148f",
-		"6253de5e-180f-36d5-f049-ada95a95432f"
+		"6253de5e-180f-36d5-f049-ada95a95432f",
+		"29b3b33d-553f-2dfe-271b-2b6ed579ea3b"
 	],
 	"timestamp": 0,
 	"owner": "1147672",
@@ -180,6 +193,37 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
+		},
+		{
+			"id": "3b2f8b22-607f-418c-7c03-ac0ea7de667b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/password/resetWithToken",
+			"folder": "29b3b33d-553f-2dfe-271b-2b6ed579ea3b",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1510761046833,
+			"name": "Reset With Token",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": [],
+			"rawModeData": "{\n\t\"token\":\"MTBkZGY0OTQyZTYzNmM3ODM1NDBlOTA4ZTBhZDFmOTRiZTcwZDVlMTgxYjc4YTMyMjRmMTAyMjBjNmQ5MmM=\",\n\t\"password\":\"123456\"\n}"
 		},
 		{
 			"folder": "0de214ba-4eb7-5c68-c7bf-f0569e1ceeb6",
@@ -526,6 +570,35 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07"
+		},
+		{
+			"id": "e8369eb3-71bb-f674-54f5-bcc0635af990",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{host}}/password/sendResetToken",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1510761542556,
+			"name": "Send Reset Token",
+			"description": "",
+			"collectionId": "8f3481d9-745d-71ae-346a-c038481b0e07",
+			"responses": [],
+			"rawModeData": "{\n\t\"email\":\"t3@dortheimer.com\"\n}"
 		},
 		{
 			"folder": "ae6afb1d-ff5d-d33e-3c66-7aa0e9f6148f",
