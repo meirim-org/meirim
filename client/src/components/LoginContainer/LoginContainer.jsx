@@ -19,6 +19,7 @@ class LoginContainer extends Component {
             password: "",
         };
         this.onSubmit = this.onSubmit.bind(this);
+        this.inCreatNewPassword = /password\/reset\//.test(props.location.pathname);
     }
 
     onSubmit(values) {
@@ -40,6 +41,9 @@ class LoginContainer extends Component {
                                         email={this.state.email}
                                         password={this.state.password}
                                         errorMessage={this.props.response}
+										onForgotPassword={this.props.onForgotPassword}
+										onCreateNewPasswordPassword={this.props.onCreateNewPasswordPassword}
+										inCreatNewPassword={this.inCreatNewPassword}
                 />
             </div>
         );
@@ -55,9 +59,12 @@ LoginContainer.defaultProps = {
 };
 
 
-var mapDispatchToProps = function (dispatch) {
+var mapDispatchToProps = function (dispatch, props) {
+	const resetPasswordToken = props.location.search && props.location.search.match(/\?token=(.*)/)[1];
     return {
         onLoginSubmit: (loginForm) => { return dispatch (loginActions.login(loginForm))},
+		onForgotPassword: (email) => { return dispatch (loginActions.forgotPassword(email))},
+		onCreateNewPasswordPassword: (password) => { return dispatch (loginActions.createNewPassword({password, token: resetPasswordToken}))}
     }
 };
 
