@@ -1,0 +1,15 @@
+.ant-layout-header.main-header {
+    text-align: right;
+    position: fixed;
+    width: 100%;
+    background: white;
+    height: 72px;
+    .logo {
+        width: 120px;
+        height: 40px;
+        background: #333;
+        border-radius: 6px;
+        margin: 16px 56px 16px 0;
+        float: right;
+    }
+}
