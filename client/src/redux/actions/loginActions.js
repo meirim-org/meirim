@@ -9,7 +9,7 @@ const loginActions = {
 
     login: function (loginForm){
         return function (dispatch) {
-            console.log("in the calling action - login");
+            console.log("in the calling action");
             dispatch({
                 type: Actions.LOGIN,
             });
@@ -20,61 +20,14 @@ const loginActions = {
                     data: result
                 });
             }, function (result) {
-                console.log("failure");
+                console.log("failer");
                 return dispatch({
                     type: Actions.LOGIN_ERROR,
                     data: result
                 });
             });
         };
-    },
-
-    forgotPassword: function (email) {
-		return function (dispatch) {
-			console.log("in the calling action - forgotPassword");
-			dispatch({
-				type: Actions.FORGOT_PASS,
-			});
-			return axios.post(api + '/password/sendResetToken', email).then(
-				function (result) {
-					console.log("success");
-					return dispatch({
-						type: Actions.FORGOT_PASS_SUCCESS,
-						data: result
-					});
-				}, function (result) {
-					console.log("failure");
-					return dispatch({
-						type: Actions.FORGOT_PASS_ERROR,
-						data: result
-					});
-				});
-		};
-
-	},
-
-	createNewPassword: function (data) {
-		return function (dispatch) {
-			console.log("in the calling action - createNewPassword");
-			dispatch({
-				type: Actions.CREATE_NEW_PASS,
-			});
-			return axios.post(api + '/password/resetWithToken', data).then(
-				function (result) {
-					console.log("success");
-					return dispatch({
-						type: Actions.CREATE_NEW_PASS_SUCCESS,
-						data: result
-					});
-				}, function (result) {
-					console.log("failure");
-					return dispatch({
-						type: Actions.CREATE_NEW_PASS_ERROR,
-						data: result
-					});
-				});
-		};
-	}
+    }
 }
 
 export default loginActions;

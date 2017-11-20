@@ -19,7 +19,6 @@ class AppLayout extends Component {
 							<div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
 								<Route path='/' exact component={HomePage} />
 								<Route path='/login' component={LoginContainer} />
-								<Route path='/password/reset' component={LoginContainer} />
 							</div>
 						</Content>
 					</Layout>
