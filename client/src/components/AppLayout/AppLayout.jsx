@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import LoginContainer from '../LoginContainer/LoginContainer';
-import Header from '../Header';
-import HomePage from '../HomePage';
+import Header from '../Header/Header';
+import HomePage from '../HomePage/HomePage';
 
 const { Content, Footer } = Layout;
 

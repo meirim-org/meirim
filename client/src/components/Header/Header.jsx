@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Layout } from 'antd';
-import TopNav from '../TopNav';
+import TopNav from '../TopNav/TopNav';
 
 const { Header } = Layout;
 
