@@ -40,6 +40,7 @@ class LoginContainer extends Component {
                                         email={this.state.email}
                                         password={this.state.password}
                                         errorMessage={this.props.response}
+										onForgotPassword={this.props.onForgotPassword}
                 />
             </div>
         );
@@ -55,9 +56,10 @@ LoginContainer.defaultProps = {
 };
 
 
-var mapDispatchToProps = function (dispatch) {
+var mapDispatchToProps = function (dispatch, props) {
     return {
         onLoginSubmit: (loginForm) => { return dispatch (loginActions.login(loginForm))},
+		onForgotPassword: (email) => { return dispatch (loginActions.forgotPassword(email))},
     }
 };
 

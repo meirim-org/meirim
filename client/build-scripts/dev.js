@@ -11,7 +11,8 @@ const options = {
 	contentBase: 'dist',
 	stats: {
 		colors: true
-	}
+	},
+	historyApiFallback: true
 };
 
 const server = new WebpackDevServer(webpack(webpackConfig), options);
