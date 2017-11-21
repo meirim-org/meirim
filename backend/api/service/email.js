@@ -71,6 +71,13 @@ class Email {
     return this.sendWithTemplate(this.templates.newAlert, templateProperties);
   };
 
+  resetPasswordToken(person) {
+    let templateProperties = {
+      "email":person.get("email"),
+      "url": Config.get("general.domain") + "password/reset/?token="+person.resetPasswordToken()
+    };
+    return this.sendWithTemplate(this.templates.resetPasswordToken, templateProperties);
+  };
   newSignUpWithEmail(token) {
 
     return this.sendWithTemplate(this.templates.newAlert, templateProperties);

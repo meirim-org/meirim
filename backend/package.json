@@ -32,7 +32,6 @@
     "node-geocoder": "^3.20.0",
     "node-schedule": "^1.2.5",
     "nodemailer": "^4.1.0",
-    "pajk-lwip": "^0.2.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "reproject": "^1.1.1",

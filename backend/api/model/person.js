@@ -4,14 +4,17 @@ const Promise = require('bluebird');
 const Bcrypt = require('bcrypt');
 const Crypt = require('../helpers/crypt');
 const Bookshelf = require('../service/database').Bookshelf;
+const Log = require('../service/log');
 
 const Base_model = require("./base_model");
 const Exception = require('./exception');
+
+const seconds = 1000;
 class Person extends Base_model {
   get rules() {
     return {
       // firstName: [
-      //   'required', 'string'
+      //   'required', 'string'kshelf
       // ],
       // lastName: [
       //   'required', 'string'
@@ -50,6 +53,42 @@ class Person extends Base_model {
     return new Buffer(hashedPassword).toString('base64');
   }
 
+  resetPasswordToken() {
+    let now = new Date().getTime();
+    let data = this.get('id')+"_"+now;
+    let token = Crypt.encrypt(data);
+    return new Buffer(token).toString('base64');
+  }
+
+  static resetPasswordByToken(token,newPassword) {
+    let now = new Date().getTime();
+    let details = Crypt.decrypt(new Buffer(token, 'base64').toString('ascii'));
+    let parts = details.split("_");
+    if (parts.length !== 2){
+      throw new Exception.badRequest("Invalid token");
+    }
+    let whenGenerated = parseInt(parts[1],10);
+    if (now<whenGenerated){
+      Log.debug("resetPasswordByToken:",whenGenerated, "is in the future");
+      throw new Exception.badRequest("Invalid token");
+    }
+    if (now-7200*seconds > whenGenerated){
+      Log.debug("resetPasswordByToken:",whenGenerated, "is ",7200*seconds,"in the past");
+      throw new Exception.badRequest("Invalid token: token is valid for 2 hours only. Please generate a new token");
+    }
+    return Person.forge({
+      "id":parts[0]
+    }).fetch().then(person=>{
+      if (!person){
+        Log.debug("resetPasswordByToken:Person",parts[0], "not found");
+        throw new Exception.badRequest("Invalid token");
+      }
+      person.set("password",newPassword);
+      return person.save();
+    }).then(person=>{
+      return true;
+    });
+  }
 
   hashPassword(model, attrs, options) {
     const passwordLength = 6;
