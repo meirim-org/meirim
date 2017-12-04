@@ -1,13 +1,14 @@
 'use strict';
 const Router = require('express').Router();
-const Controller = require("../controller/controller");
-const Alert = require("../model/alert");
-const Email = require("../service/email");
+const Controller = require('../controller/controller');
+const Alert = require('../model/alert');
+const Email = require('../service/email');
 const _ = require('lodash');
+
 class AlertController extends Controller {
   create(req, res, next) {
-    return super.create(req, res, next).then(savedModel=>{
-        return Email.newAlert(req.session.person ,savedModel);
+    return super.create(req, res, next).then(savedAlert => {
+      return Email.newAlert(req.session.person, savedAlert);
     });
   }
 }
