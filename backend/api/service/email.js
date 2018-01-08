@@ -1,14 +1,10 @@
 'use strict';
 const Promise = require('bluebird');
-const Checkit = require('checkit');
 const Nodemailer = require('nodemailer');
-const Exception = require('../model/exception');
 const Log = require("./log");
 const Config = require("./config");
 const Mustache = require("mustache");
 const Fs = require('fs');
-const xml2js = require('xml2js');
-const Promath = require('path');
 class Email {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
@@ -67,7 +63,7 @@ class Email {
   };
 
   newAlert(person, alert) {
-    let templateProperties = Object.assign(person.toJSON(), plan.toJSON());
+    let templateProperties = Object.assign({}, person, alert.toJSON());
     return this.sendWithTemplate(this.templates.newAlert, templateProperties);
   };
 
@@ -78,10 +74,6 @@ class Email {
     };
     return this.sendWithTemplate(this.templates.resetPasswordToken, templateProperties);
   };
-  newSignUpWithEmail(token) {
-
-    return this.sendWithTemplate(this.templates.newAlert, templateProperties);
-  }
 
   sendWithTemplate(template, templateProperties) {
 
