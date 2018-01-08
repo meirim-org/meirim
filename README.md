@@ -1,5 +1,7 @@
 # Meirim.org
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d98761313f31455ca93ee6a0187b38d5)](https://www.codacy.com/app/CitizensForCities/CitizensForCities?utm_source=github.com&utm_medium=referral&utm_content=dortheimer/CitizensForCities&utm_campaign=badger)
+
 The goal of this project is to empower citizens to effectively organize for their quality of life in their cities and to ensure information about protests is accessible.
 
 ## Getting Started
