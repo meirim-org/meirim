@@ -1,36 +1,40 @@
 'use strict';
 const Checkit = require('checkit');
-const Promise = require('bluebird');
-const Model = require("./base_model");
+const Bluebird = require('bluebird');
+const Model = require('./base_model');
 const Bookshelf = require('../service/database').Bookshelf;
 const Knex = require('../service/database').Knex;
 const Log = require('../service/log');
 const Exception = require('./exception');
+
 class Plan extends Model {
   get rules() {
     return {
       sent: 'integer',
       OBJECTID: [
-        'required', 'integer'
+        'required', 'integer',
       ],
       PLAN_COUNTY_NAME: 'string',
       PL_NUMBER: 'string',
       PL_NAME: 'string',
-      PLAN_CHARACTOR_NAME: 'string',
+      // PLAN_CHARACTOR_NAME: 'string',
       data: ['required'],
-      geom: ['required', 'object']
+      geom: ['required', 'object'],
 
-    }
+    };
   }
+
   defaults() {
-    return {sent: 0}
+    return {sent: 0};
   }
+
   format(attributes) {
-    if (attributes.data){
+    if (attributes.data) {
       attributes.data = JSON.stringify(attributes.data);
     }
     return super.format(attributes);
   }
+
   //
   parse(attributes) {
     try {
@@ -39,7 +43,7 @@ class Plan extends Model {
       }
 
     } catch (e) {
-      Log.error("Json parse error", attributes.data);
+      Log.error('Json parse error', attributes.data);
     }
 
     return super.parse(attributes);
@@ -57,27 +61,56 @@ class Plan extends Model {
     this.on('saving', this._saving, this);
     super.initialize();
   }
+
   _saving(model, attrs, options) {
     // return new Checkit(model.rules).run(model.attributes);
   }
 
   canRead(session) {
-    return Promise.resolve(this);
+    return Bluebird.resolve(this);
   }
+
   static canCreate(session) {
-    throw new Exception.notAllowed("This option is disabled");
+    throw new Exception.notAllowed('This option is disabled');
   }
+
   static maekPlansAsSent(plan_ids) {
     return new Plan().query(qb => {
       qb.whereIn('id', plan_ids);
     }).save({
-      sent: "1"
+      sent: '1',
     }, {method: 'update'});
   }
+
+  static fetchByObjectID(objectID) {
+    return Plan.forge({'OBJECTID': objectID}).fetch();
+  }
+
+  static buildFromIPlan(iPlan) {
+    return Plan.forge({
+      'OBJECTID': iPlan.properties.OBJECTID,
+      'PLAN_COUNTY_NAME': iPlan.properties.PLAN_COUNTY_NAME || '',
+      'PL_NUMBER': iPlan.properties.PL_NUMBER || '',
+      'PL_NAME': iPlan.properties.PL_NAME || '',
+      // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
+      'data': iPlan.properties,
+      'geom': iPlan.geometry,
+      'PLAN_CHARACTOR_NAME': '',
+      'plan_url': iPlan.properties.PL_URL
+    });
+  }
+
+  static setMavatData(plan, mavanData) {
+    return plan.set({
+      goals_from_mavat: mavanData.goals,
+      main_details_from_mavat: mavanData.mainPlanDetails
+    })
+  }
+
   static getUnsentPlans(userOptions) {
     let options = userOptions
-      ? userOptions
-      : {};
+        ? userOptions
+        : {};
     if (!options.limit) {
       options.limit = 1;
     }
@@ -88,7 +121,7 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data', Knex.raw("X(st_centroid(geom)) as lon"), Knex.raw("Y(st_centroid(geom)) as lat")]
+      columns: ['id', 'data', Knex.raw('X(st_centroid(geom)) as lon'), Knex.raw('Y(st_centroid(geom)) as lat')],
     });
   }
 };
