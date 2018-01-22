@@ -1,3 +1,5 @@
+const bugsnag = require('bugsnag');
+bugsnag.register('cee6ce01fe3b1c1bbc728cb5ac99bf8c');
 const Express = require('express');
 const path = require('path');
 const BodyParser = require('body-parser');
