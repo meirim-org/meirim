@@ -114,6 +114,7 @@ class Plan extends Model {
     if (!options.limit) {
       options.limit = 1;
     }
+    options.limit = 1;
     return Plan.query((qb) => {
       qb.where('sent', '=', '0');
       if (options.OBJECTID) {
@@ -121,7 +122,7 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data', Knex.raw('X(st_centroid(geom)) as lon'), Knex.raw('Y(st_centroid(geom)) as lat')],
+      columns: ['id', 'data','goals_from_mavat',' 	main_details_from_mavat', Knex.raw('X(st_centroid(geom)) as lon'), Knex.raw('Y(st_centroid(geom)) as lat')],
     });
   }
 };

@@ -26,7 +26,7 @@ function parseMavat(planUrl) {
       mainPlanDetails: getMainPlanDetailText(cheerioPage),
     });
   }).catch(e => {
-    log.e("Mavaat returned error", planUrl);
+    log.e("Mavaat returned error", planUrl,e);
     return Bluebird.resolve();
   })
 }

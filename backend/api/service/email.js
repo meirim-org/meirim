@@ -68,7 +68,7 @@ class Email {
   newSignUp(person) {
     const token = person.getActivationToken();
     let templateProperties = {
-      url: Config.get("general.domain") + "/alerts/?activate=" + token
+      url: Config.get("general.domain") + "alerts?activate=" + token
     };
     templateProperties = Object.assign(templateProperties, person.toJSON());
     // setup email data with unicode symbols
