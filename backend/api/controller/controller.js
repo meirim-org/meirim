@@ -77,13 +77,13 @@ class Controller {
   }
   read(req, res, next) {
     const id = parseInt(req.params.id, 10);
-    var model = this.model.forge({
+    return this.model.forge({
       [this.id_attribute]: id
-    });
-    return model.canRead(req.session).then(() => {
-      return model.fetch();
+    }).fetch().then(fetchedModel => {
+      if (!fetchedModel) throw new Exception.notFound("Nof found");
+      return fetchedModel.canRead(req.session);
     }).then(fetchedModel => {
-      Log.debug(this.tableName, "read success");
+      Log.debug(this.tableName, "read success", fetchedModel.get("id"));
       return fetchedModel;
     });
   }
@@ -91,24 +91,37 @@ class Controller {
     const id = parseInt(req.params.id, 10);
     return this.model.forge({
       [this.id_attribute]: id
-    }).canEdit(req.session).fetch().then(fetchedModel => {
+    }).fetch().then(fetchedModel => {
+      if (!fetchedModel) throw new Exception.notFound("Nof found");
+      return fetchedModel.canEdit(req.session);
+    }).then(fetchedModel => {
+      Log.debug(this.tableName, " patch success id:", fetchedModel.get("id"));
       return fetchedModel.save(req.body);
-    }).then(savedmodel => {
-      Log.debug(this.tableName, " patch success id:", savedmodel.get("id"));
-      return savedmodel;
     });
   }
-  create(req, res, next,transaction) {
+  delete(req, res, next) {
+    const id = parseInt(req.params.id, 10);
+    return this.model.forge({
+      [this.id_attribute]: id
+    }).fetch().then(fetchedModel => {
+      if (!fetchedModel) throw new Exception.notFound("Nof found");
+      return fetchedModel.canEdit(req.session);
+    }).then(fetchedModel => {
+      Log.debug(this.tableName, " delete success id:", fetchedModel.get("id"));
+      return fetchedModel.destroy(req.body);
+    });
+  }
+  create(req, res, next, transaction) {
     let options = {};
-    if (transaction){
+    if (transaction) {
       options = {
-        transacting:transaction
+        transacting: transaction
       }
     }
     return this.model.canCreate(req.session).then(() => {
       const model = this.model.forge(req.body);
       model.setPerson(req.session);
-      return model.save(null,options);
+      return model.save(null, options);
     }).then(savedModel => {
       Log.debug(this.tableName, " create success id:", savedModel.get("id"));
       return savedModel;

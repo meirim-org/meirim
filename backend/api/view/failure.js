@@ -18,4 +18,7 @@ module.exports = {
 	duplicate: function (res, message) {
 		this.set(res, 409, message);
 	},
+	notFound: function (res, message) {
+		this.set(res, 404, message);
+	},
 };

@@ -63,13 +63,16 @@ class Alert extends Model {
     if (!session.person) {
       throw new Exception.notAllowed("Must be logged in");
     }
-    return this.fetch().then((alertModel) => {
-      if (alertModel.get("person_id") !== session.user) {
-        throw new Exception.notAllowed("You cannot read this alert");
-      }
-      return alertModel;
-    });
+    if (this.get("person_id") !== session.person.id) {
+      throw new Exception.notAllowed("You cannot read this alert");
+    }
+    return Promise.resolve(this);
   }
+  
+  canEdit(session) {
+    return this.canRead(session);
+  }
+
   static canCreate(session) {
     if (!session.person) {
       throw new Exception.notAllowed("Must be logged in");

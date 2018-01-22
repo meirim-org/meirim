@@ -4,7 +4,9 @@ const Nodemailer = require('nodemailer');
 const Log = require("./log");
 const Config = require("./config");
 const Mustache = require("mustache");
-const Fs = require('fs');
+const Juice = require("juice");
+const Fs = Promise.promisifyAll(require("fs"));
+
 class Email {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
@@ -13,39 +15,55 @@ class Email {
     this.config = Config.get("email");
     this.transporter = Nodemailer.createTransport(this.config.options);
     //load templates
-    const templateDir = __dirname + "/email/";
+   
     this.templates = {};
     //
-    Fs.readdir(templateDir, (err, files) => {
-      if (err) {
-        Log.error("Email cannot load templates", err);
-        return;
-      }
-      files.forEach((file, index) => {
-        Fs.readFile(templateDir + file, 'utf-8', (err, content) => {
-          if (err) {
-            Log.error("Email cannot load templates", templateDir + file, err);
+    
+  }
+
+  init() {
+    const templateDir = __dirname + "/email/";
+    let templates={}, wrapper;
+    return Fs.readdirAsync(templateDir)
+      .then(files=>{
+        let promises=[];
+        files.forEach((file, index) => {
+          promises.push(Fs.readFileAsync(templateDir + file, 'utf-8').then(content=>{
+            return [file,content];
+          }));
+        });
+        return Promise.all(promises);
+      }).then(contents=>{
+        contents.map(content=>{
+          if (!content[1]){
+            Log.error("Email template empty", templateDir + file, err);
             return;
           }
-          let keys = file.split(".");
-          this.templates[keys[0]] = {};
-          let title = content.match(/<title[^>]*>((.|[\n\r])*)<\/title>/im);
-          this.templates[keys[0]].title = title[1];
-          if (!this.templates[keys[0]].title) {
-            Log.e(file, "has not title");
-          }
-          let body = content.match(/<body[^>]*>((.|[\n\r])*)<\/body>/im);
-          this.templates[keys[0]].body = body[1];
-          if (!this.templates[keys[0]].body) {
-            Log.e(file, "has not body");
-          }
-        });
-        Log.info("Loaded email templates");
+          let key = content[0].split(".")[0];
+          if (key == 'wrapper')
+            wrapper = content[1];
+          else
+            templates[key] = content[1];
+        })
+        return [wrapper,templates];
+      }).then (allTemplates=>{
+       
+        for (let key in  allTemplates[1]) {
+          let title = allTemplates[1][key].match(/<title[^>]*>((.|[\n\r])*)<\/title>/im)[1];
+          let body = allTemplates[1][key].match(/<body[^>]*>((.|[\n\r])*)<\/body>/im)[1];
+          let html = Mustache.render(allTemplates[0], {
+            body: body
+          });
+          this.templates[key] = {
+            title: title,
+            body: Juice(html)
+          };
+          Log.info("Loaded template",key);
+        }
+      })
+      .catch(err=>{
+        Log.error("Email cannot load templates", err);
       });
-    });
-  }
-  init() {
-    return new Promise.resolve();
   }
   newSignUp(person) {
     const token = person.getActivationToken();
@@ -69,14 +87,15 @@ class Email {
 
   resetPasswordToken(person) {
     let templateProperties = {
-      "email":person.get("email"),
-      "url": Config.get("general.domain") + "password/reset/?token="+person.resetPasswordToken()
+      "email": person.get("email"),
+      "url": Config.get("general.domain") + "password/reset/?token=" + person.resetPasswordToken()
     };
     return this.sendWithTemplate(this.templates.resetPasswordToken, templateProperties);
   };
 
   sendWithTemplate(template, templateProperties) {
 
+    //build email 
     return this.send({
       from: '"' + this.config.from_name + '" <' + this.config.from_email + '>', // sender address
       to: templateProperties.email, // list of receivers
