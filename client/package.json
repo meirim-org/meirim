@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^2.13.2",
     "axios": "^0.16.2",
+    "copy-webpack-plugin": "4.3.1",
     "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
