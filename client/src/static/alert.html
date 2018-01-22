@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style type="text/css">
+
+    * {
+      font-family: Heebo;
+      text-align: right;
+    }
+
+    .goodMorning {
+      margin: auto;
+      top: 231px;
+      width: 89px;
+      height: 35px;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: -0.9px;
+      text-align: center;
+      color: #3b3b3b;
+      padding-top: 10px;
+      padding-button: 30px
+    }
+
+    .eyelashes {
+      display: block;
+      margin: auto;
+      top: 107px;
+      width: 91px;
+      height: 68px;
+    }
+
+    .selectAreaAndInterest {
+      margin: auto;
+      top: 292px;
+      width: 550px;
+      text-align: center;
+      height: 29px;
+      font-size: 20px;
+      color: #a3a3a3;
+      padding-top: 20px;
+    }
+
+    .rectangle {
+      margin: auto;
+      top: 368px;
+      width: 700px;
+      height: 750px;
+      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 9px 14px 0 rgba(0, 0, 0, 0.08);
+      padding-top: 10px;
+
+    }
+
+    .group {
+      position: relative;
+      font-size: 15px;
+    }
+
+    table {
+      position: relative;
+      font-size: 12px;
+      color: #a3a3a3;
+      padding-right: 3%;
+
+    }
+
+    .groupBelow {
+      position: relative;
+      font-size: 15px;
+      padding-left: 300px;
+    }
+
+    input[id = "submitButton"] {
+      position: relative;
+      right: 40%;
+      color: #a3a3a3;
+    }
+
+    input[type="text"] {
+      width: 480px;
+    }
+
+    input[type="text"] {
+      resize: none;
+      background: none;
+      color: #005cbf;
+      font-size: 18px;
+      /* padding: 10px 10px 10px 5px; */
+      display: block;
+      width: . wanna-know . width;
+      border: none;
+      position: relative;
+      right: 8%;
+      border-radius: 0;
+      border-bottom: solid 1px #e7e7e7;
+
+    &
+    :focus {
+      outline: none;
+    }
+
+    &
+    :focus ~ .bar:before {
+      width: $ width;
+    }
+
+    }
+
+    label#homeLabale {
+      display: block;
+      color: #005cbf;
+      font-size: 16px;
+      font-weight: bold;
+      pointer-events: none;
+      right: 8%;
+      padding-top: 8%;
+    }
+
+    label#radiusLabale {
+      display: block;
+      color: #005cbf;
+      font-size: 16px;
+      font-weight: bold;
+      pointer-events: none;
+      position: relative;
+      display: inline-block;
+    }
+
+    .bar {
+      position: relative;
+      display: block;
+      width: $ width;
+
+    &
+    :before {
+      content: '';
+      height: 2px;
+      width: 0;
+      bottom: 0px;
+      position: relative;
+      left: 0%;
+    }
+
+    }
+
+    input[type="button"],
+    input[type="submit"] {
+      width: 129px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: #005cbf;
+      text-align: center;
+      font-size: 15px;
+      color: #ffffff;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      -moz-apperance: none;
+      height: 6px;
+      width: 270px;
+      background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(100%, #C5C5C5),
+        color-stop(100%, #005cbf)
+      );
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+      -webkit-appearance: none !important;
+      background-color: #005cbf;
+      border: 1px solid #005cbf;
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+    }
+
+    .rangeCurrentNumber,
+    .rangeTextSMleftSide,
+    .rangeTextSMrightSide {
+      font-size: 13px;
+      color: #a3a3a3;
+    }
+
+    input[id = "deleteAlert"] {
+      background: none;
+      border: none;
+      color: red;
+      font-weight: bold;
+    }
+
+    caption, th {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    caption {
+      text-align: center;
+    }
+
+    input[id="homeAddress"] {
+      top: -40px;
+    }
+  </style>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script>
+    var confirmEmailMessage = 'המשתמש אומת במערכת, ברוכים הבאים';
+    var mandatoryFieldsMessage = 'יש להזין כתובת בשדה';
+    var textIfExistAlerts = 'כאן תוכלו להסיר או להוסיף כתובות שמעניינות אתכם';
+
+    function getUsersAlert() {
+      var data = {};
+      var ab = $.ajax({
+        url: 'http://api.meirim.org/alert/',
+        type: 'GET',
+        dataType: 'json',
+        async: false,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+
+        success: function(response) {
+          console.log('process sucess');
+        },
+
+        error: function(response) {
+          console.log('process error');
+        },
+      });
+      return (ab);
+    };
+
+    function pageLoad() {
+      window.onload = function() {
+        var a = document.getElementById('homeAddress');
+        var b = document.getElementById('hideExample');
+        var c = document.getElementById('radiusRange');
+      };
+
+      homeAddress.addEventListener('input', function() {
+        if ($('#homeAddress').val() != '') {
+          document.getElementById('hideExample').style.display = 'none';
+          document.getElementById('homeAddress').style.top = '0px';
+          document.getElementById('rangeLineAlligner').style.top = '40px';
+          document.getElementById('submitButton').style.top = '40px';
+        }
+        else {
+          document.getElementById('hideExample').style.display = 'block';
+          document.getElementById('homeAddress').style.top = '-40px';
+          document.getElementById('rangeLineAlligner').style.top = '0px';
+          document.getElementById('submitButton').style.top = '0px';
+        }
+      });
+
+      radiusRange.addEventListener('change', function() {
+        var val = ($(this).val() - $(this).attr('min')) / ($(this).attr('max') - $(this).attr('min'));
+        val = 1 - val;
+        $(this).css('background-image',
+          '-webkit-gradient(linear, left top, right top, '
+          + 'color-stop(' + val + ', #C5C5C5), '
+          + 'color-stop(' + val + ', #005cbf)'
+          + ')',
+        );
+      });
+
+//http://meirim.org//alerts/?activate=MDU4Y2Q3YjAzODdlNjg3ZDMxNDBlODQzZjFlYzEx
+      var vars = {};
+      window.location.href.replace(location.hash, '').replace(
+        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+        function(m, key, value) { // callback
+          vars[key] = value !== undefined ? value : '';
+        },
+      );
+
+      var token = vars['activate'] ? vars['activate'] : null;
+
+      if (token != null) {
+        var data = {};
+        data.token = token;
+        $.ajax({
+          url: 'http://api.meirim.org/sign/activate',
+          type: 'POST',
+          dataType: 'json',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+
+          success: function(response) {
+            console.log('process sucess');
+            alert(confirmEmailMessage);
+          },
+
+          error: function(response) {
+            console.log('process error');
+            alert('process error ' + response.responseText);
+          },
+        });
+      }
+
+      else {
+        alert('המשתמש לא אומת. ייתכן והמשתמש היה מאומת או שקרתה תקלה אנא פנה לאייל החמודון');
+      }
+
+      var res;
+      var usersAletrts = getUsersAlert();
+
+//user has alerts
+      if (usersAletrts.responseJSON.data != 'undefined') {
+//if(0==1){
+        var userAlertsArr = (usersAletrts.responseJSON.data);
+        document.getElementById('goodMorningText').style.display = 'none';
+        document.getElementById('headerChangedText').innerHTML = textIfExistAlerts;
+        for (let i = 0; i < userAlertsArr.length; i++) {
+          var alertRow = '<td>' + userAlertsArr[i].address.substring(0, userAlertsArr[i].address.search(', מחוז')) +
+            '</td>';// userAlertsArr[i].address + "</td>" ;
+          alertRow += '<td>' + userAlertsArr[i].radius + ' ק"מ' + '</td>';
+          alertRow += '<td>' + '<input id ="deleteAlert" type="button" ' + 'onclick="deleteAlert( ' +
+            userAlertsArr[i].id + ')"value="X"></input>' + '</td>';
+          document.getElementById('alertTable').innerHTML += ( '<tr>' + alertRow + '</tr>' );
+        }
+      }
+
+      else {
+        document.getElementById('alertTable').style.display = 'none';
+      }
+    }
+
+    function deleteAlert(deleteID) {
+
+      if (deleteID != 'undefined') {
+        var data = {};
+        data.address = deleteID;
+
+        $.ajax({
+          url: 'http://api.meirim.org/alert/',
+          type: 'DELETE',
+          dataType: 'json',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          success: function(response) {
+            console.log('process sucess');
+            location.reload();
+          },
+
+          error: function(response) {
+            console.log('process error');
+            alert('process error ' + response.responseText);
+          },
+        });
+      }
+
+      else {
+        alert('חסר מפתח מספר התרעה');
+      }
+    };
+
+    function changeRadiusValue(newValue) {
+      document.getElementById('rangeCurrentNumber').innerHTML = newValue;
+    }
+
+    function addAlert() {
+      var error = 0;
+      var error = 0;
+      var errorMessages = '';
+      if ($('#homeAddress').val() == '') {
+        error = 1;
+        errorMessages += mandatoryFieldsMessage + '\n';
+      }
+
+      if (error == 0) {
+        var data = {};
+        data.address = $('#homeAddress').val();
+        data.radius = $('#radiusRange').val();
+
+        $.ajax({
+          url: 'http://api.meirim.org/alert/',
+          type: 'POST',
+          dataType: 'json',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          success: function(response) {
+            console.log('process sucess');
+            alert(confirmEmailMessage);
+          },
+
+          error: function(response) {
+            console.log('process error');
+            alert('process error ' + response.responseText);
+          },
+        });
+      }
+
+      else {
+        alert(errorMessages);
+      }
+    };
+
+    function logOut() {
+
+      var data = {};
+      $.ajax({
+        url: 'http://api.meirim.org/sign/out',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+
+        success: function(response) {
+          console.log('process sucess');
+          if (response.status != 'OK') {
+            alert(response.text);
+          }
+          location.reload();
+        },
+
+        error: function(response) {
+          console.log('process error');
+          alert('process error ' + response.responseText);
+        },
+      });
+
+    };
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet"></link>
+</head>
+
+<body onload="pageLoad();" style="direction: rtl ; background-color : #f8f8f8 ">
+
+<div class="group">
+  <input id="logOut" type="button" onclick="logOut();" style="position:relative; right: 90%" value="יציאה"></input>
+</div>
+
+<img class='eyelashes' src="https://i.imgur.com/kcRbDo8.png" alt="התמונה חסרה"></img>
+
+
+<div class="goodMorning" id="goodMorningText">
+  בוקר טוב!
+</div>
+
+<div class="selectAreaAndInterest" id="headerChangedText">
+  בחרו מיקום ותחומי מידע עליהם תרצו לקבל התראות
+</div>
+
+<br></br>
+
+<div class="rectangle">
+
+  <table id="alertTable" align="center" style="width:90%">
+
+    <br></br>
+    <tr>
+      <th>כתובת</th>
+      <th>רדיוס</th>
+      <th></th>
+    </tr>
+  </table>
+
+
+  <div class="group">
+    <span class="highlight"></span>
+    <span class="bar"></span>
+
+    <label id="homeLabale" style="position:relative;">כתובת :
+      <br></br>
+
+      <p style="font-size: 13px; font-weight:normal ; color: #a3a3a3;">
+        *כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה </p>
+
+      <p id="hideExample" style="font-size: 15px; font-weight:normal ; color: #a3a3a3;display: block;">
+        לדוגמה: מאז״ה 9, תל אביב </p>
+    </label>
+
+
+    <input id="homeAddress" type="text" style="text-align: right" required> </input>
+  </div>
+
+  <div class="groupBelow" id="rangeLineAlligner">
+    <label id="radiusLabale" style="right : 15%;">רדיוס: </label>
+    <span id="rangeCurrentNumber" style="display:inline-block; color: #a3a3a3;position:relative;right : 15%;">1</span>
+    <p id="rangeTextSMrightSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;"> ק"מ </p>
+    <input id="radiusRange" type="range" min="1" max="5" value="1" step="1" onchange="changeRadiusValue(this.value);"
+           style="display:inline-block;position:relative;right : 15%; "></input>
+    <p id="rangeTextSMleftSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;">5 ק"מ</p>
+  </div>
+
+  <br></br>
+  <input id="submitButton" type="submit" onclick="addAlert();" value="הוספה"></input>
+
+
+</div>
+
+</body>
+
+</html>
