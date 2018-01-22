@@ -1,8 +1,8 @@
 const Request = require('request-promise');
 const GeoJSON = require('esri-to-geojson');
-const Log = require('./log');
+const Log = require('../service/log');
 const Bluebird = require('bluebird');
-const Config = require('./config');
+const Config = require('../service/config');
 const _ = require('lodash');
 const reproject = require('reproject');
 
@@ -61,8 +61,10 @@ class iplanApi {
     // Log.debug("Fetch", url);
     this.options.uri = url;
     return Request(this.options).then((data) => {
+      
       const geojson = GeoJSON.fromEsri(data, {});
-      // Log.debug("Got", geojson.features.length, "plans");
+      Log.debug("Got", geojson.features.length, "plans");
+
       return Bluebird.reduce(geojson.features, (coll, datum) => {
         // overriding geomerty with WGS84 coordinates
         const res = Object.assign({}, datum, {geometry: reproject.toWgs84(datum.geometry, this.EPSG3857)});

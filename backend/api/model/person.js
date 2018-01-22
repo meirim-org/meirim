@@ -128,6 +128,9 @@ class Person extends Base_model {
     const data = new Buffer(token, 'base64').toString('ascii');
     const email = Crypt.decrypt(data);
     return Person.forge({email: email}).fetch().then(fetchedPerson => {
+      if (!fetchedPerson){
+        throw new Exception.badRequest("User not found")
+      }
       fetchedPerson.set("status", 1);
       return fetchedPerson.save().then(()=>{
         return true;

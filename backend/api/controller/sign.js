@@ -9,9 +9,12 @@ const _ = require('lodash');
 class SignController extends Controller {
   signup(req, res, next) {
     // check if user exists and not active
-    return this.model.forge({email:req.body.email,status:0}).fetch().then((person)=>{
+    return this.model.forge({
+      email: req.body.email,
+      status: 0
+    }).fetch().then((person) => {
       // if there is an inactive person we send only a mail
-      if (person){
+      if (person) {
         Log.debug("Person send activation email to:", person.get("id"));
         return Email.newSignUp(person);
       }
@@ -24,8 +27,8 @@ class SignController extends Controller {
       })
     });
   }
-  activate(req,res,next){
-    if (!req.body.token){
+  activate(req, res, next) {
+    if (!req.body.token) {
       throw new Exception.badRequest("No token provided");
     }
     Log.debug("Person Activate token:", req.body.token);
@@ -40,8 +43,10 @@ class SignController extends Controller {
     }
     const email = req.body.email.toLowerCase().trim();
     Log.debug("Try login with email:", email);
-    return Person.forge({email: email}).fetch().then(person => {
-      if (!person){
+    return Person.forge({
+      email: email
+    }).fetch().then(person => {
+      if (!person) {
         throw new Exception.notAllowed("Password mismatch");
       }
 
@@ -63,16 +68,9 @@ class SignController extends Controller {
   }
 }
 const controller = new SignController(Person);
-Router.post('/up', (req, res, next) => {
-  controller.wrap(_.bind(controller.signup, controller))(req, res, next);
-});
-Router.post('/activate', (req, res, next) => {
-  controller.wrap(_.bind(controller.activate, controller))(req, res, next);
-});
-Router.post('/in', (req, res, next) => {
-  controller.wrap(_.bind(controller.signin, controller))(req, res, next);
-});
-Router.post('/out', (req, res, next) => {
-  controller.wrap(_.bind(controller.signout, controller))(req, res, next);
-});
+Router.post('/up', controller.wrap(_.bind(controller.signup, controller)));
+Router.post('/activate', controller.wrap(_.bind(controller.activate, controller)));
+Router.post('/in', controller.wrap(_.bind(controller.signin, controller)));
+Router.post('/out', controller.wrap(_.bind(controller.signout, controller)));
+
 module.exports = Router;

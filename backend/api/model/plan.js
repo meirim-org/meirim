@@ -78,7 +78,7 @@ class Plan extends Model {
     return new Plan().query(qb => {
       qb.whereIn('id', plan_ids);
     }).save({
-      sent: '1',
+      sent: '2',
     }, {method: 'update'});
   }
 

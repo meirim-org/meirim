@@ -3,7 +3,7 @@ const Controller = require('../controller/controller');
 const Router = require('express').Router();
 const _ = require('lodash');
 const Log = require('../service/log');
-const iplanApi = require('../service/iplanApi');
+const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
 const Email = require('../service/email');
@@ -18,19 +18,38 @@ class CronController extends Controller {
     Log.info('Running iplan fetcher');
     // returns a Promise that resolves to true if its a new plan, false otherwise
     const isNewPlan = (iPlan) => {
-      return Plan.fetchByObjectID(iPlan.properties.OBJECTID).then((plan) => !plan);
+      return Plan.fetchByObjectID(iPlan.properties.OBJECTID).then((plan) => {
+        if (!plan) return true;
+        return false;
+        // // test if object changed  
+        // return iPlan.get('data')!=plan.get('data');
+      });
     };
     // the server is limited to 1000 results, we we get these by fragements
     return iplanApi.getPlanningCouncils().then(councils => councils.features).mapSeries(council => {
       // Log.debug('Fetching', council.attributes.MT_Heb);
       return iplanApi.getBlueLines(`PLAN_AREA_CODE=${council.attributes.CodeMT}`).
           then(_.flatten).//we get array of arrays(since it seems there might be multiple features per plan).
-          filter(isNewPlan).
+          filter(isNewPlan).// update plans
           map(Plan.buildFromIPlan).
-          map((plan) => [plan, MavatAPI.parseMavat(plan.attributes.plan_url)]).
-          map(Bluebird.all). //waiting for getting everything
+          mapSeries((plan) => Bluebird.all([plan, MavatAPI.parseMavat(plan.attributes.plan_url)])).
+          // map(Bluebird.all). //waiting for getting everything
           map(_.spread(Plan.setMavatData)).
-          map((plan) => plan.save());
+          map((plan) => {
+            return Plan.fetchByObjectID(plan.get('OBJECTID')).then((oldPlan)=>{
+              
+              if (oldPlan){
+                Log.debug(oldPlan.get('data'),plan.get('data'));
+                
+                let updatedProps = plan.toJSON();
+                updatedProps.sent=1;
+                Log.debug("Updated plan",plan.get("OBJECTID"),);
+                return oldPlan.save(updatedProps);
+              }
+              Log.debug("New plan",plan.get("OBJECTID"),);
+              return plan.save();
+            });
+          });
     });
   }
 
@@ -74,11 +93,7 @@ if (scheduleConfig.iplan) {
   Schedule.scheduleJob(scheduleConfig.sendPlanningAlerts, _.bind(controller.sendPlanningAlerts, controller));
 }
 
-Router.get('/iplan', (req, res, next) => {
-  controller.wrap(_.bind(controller.iplan, controller))(req, res, next);
-});
-Router.get('/send_planning_alerts', (req, res, next) => {
-  controller.wrap(_.bind(controller.sendPlanningAlerts, controller))(req, res, next);
-});
+Router.get('/iplan', controller.wrap(_.bind(controller.iplan, controller)));
+Router.get('/send_planning_alerts', controller.wrap(_.bind(controller.sendPlanningAlerts, controller)));
 
 module.exports = Router;

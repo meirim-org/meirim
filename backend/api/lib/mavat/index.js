@@ -1,6 +1,7 @@
 const requestPromise = require('request-promise');
 const cheerio = require('cheerio');
 const Bluebird = require('bluebird');
+const log = require("../../service/log");
 
 function fetch(planUrl) {
   return requestPromise({
@@ -19,10 +20,14 @@ function getMainPlanDetailText(cheerioPage) {
 
 function parseMavat(planUrl) {
   return fetch(planUrl).then((cheerioPage) => {
+    log.debug("Retrieving", planUrl);
     return Bluebird.props({
       goals: getGoalsText(cheerioPage),
       mainPlanDetails: getMainPlanDetailText(cheerioPage),
     });
+  }).catch(e => {
+    log.e("Mavaat returned error", planUrl);
+    return Bluebird.resolve();
   })
 }
 
