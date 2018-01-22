@@ -11,6 +11,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "bookshelf": "^0.10.4",
+    "bugsnag": "2.1.2",
     "checkit": "^0.7.0",
     "cheerio": "1.0.0-rc.2",
     "config": "^1.26.1",
