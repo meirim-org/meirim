@@ -1,0 +1,24 @@
+@import '../../../global';
+
+.partners {
+  margin-top: 44px;
+  margin-right: 80px;
+  flex-direction: column;
+  display: flex;
+  margin-left: 80px;
+  width: 100%;
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.33;
+    letter-spacing: 0.8px;
+    text-align: right;
+    color: $black;
+  }
+  .partners-list {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+  }
+}
