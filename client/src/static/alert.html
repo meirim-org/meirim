@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
+  <title>עריכת התרעות</title>
   <style type="text/css">
-
     * {
       font-family: Heebo;
       text-align: right;
@@ -51,7 +52,6 @@
       background-color: #ffffff;
       box-shadow: 0 9px 14px 0 rgba(0, 0, 0, 0.08);
       padding-top: 10px;
-
     }
 
     .group {
@@ -64,7 +64,6 @@
       font-size: 12px;
       color: #a3a3a3;
       padding-right: 3%;
-
     }
 
     .groupBelow {
@@ -73,7 +72,7 @@
       padding-left: 300px;
     }
 
-    input[id = "submitButton"] {
+    input[id="submitButton"] {
       position: relative;
       right: 40%;
       color: #a3a3a3;
@@ -97,16 +96,13 @@
       border-radius: 0;
       border-bottom: solid 1px #e7e7e7;
 
-    &
-    :focus {
-      outline: none;
-    }
+      & :focus {
+        outline: none;
+      }
 
-    &
-    :focus ~ .bar:before {
-      width: $ width;
-    }
-
+      & :focus~.bar:before {
+        width: $ width;
+      }
     }
 
     label#homeLabale {
@@ -134,16 +130,14 @@
       display: block;
       width: $ width;
 
-    &
-    :before {
-      content: '';
-      height: 2px;
-      width: 0;
-      bottom: 0px;
-      position: relative;
-      left: 0%;
-    }
-
+      & :before {
+        content: '';
+        height: 2px;
+        width: 0;
+        bottom: 0px;
+        position: relative;
+        left: 0%;
+      }
     }
 
     input[type="button"],
@@ -162,13 +156,11 @@
       -moz-apperance: none;
       height: 6px;
       width: 270px;
-      background-image: -webkit-gradient(
-        linear,
-        left top,
-        right top,
-        color-stop(100%, #C5C5C5),
-        color-stop(100%, #005cbf)
-      );
+      background-image: -webkit-gradient( linear,
+      left top,
+      right top,
+      color-stop(100%, #C5C5C5),
+      color-stop(100%, #005cbf));
     }
 
     input[type='range']::-webkit-slider-thumb {
@@ -187,14 +179,15 @@
       color: #a3a3a3;
     }
 
-    input[id = "deleteAlert"] {
+    input[id="deleteAlert"] {
       background: none;
       border: none;
       color: red;
       font-weight: bold;
     }
 
-    caption, th {
+    caption,
+    th {
       font-size: 15px;
       font-weight: bold;
     }
@@ -224,14 +217,17 @@
         type: 'GET',
         dataType: 'json',
         async: false,
+        xhrFields: {
+          withCredentials: true
+        },
         data: JSON.stringify(data),
         contentType: 'application/json',
 
-        success: function(response) {
+        success: function (response) {
           console.log('process sucess');
         },
 
-        error: function(response) {
+        error: function (response) {
           console.log('process error');
         },
       });
@@ -239,20 +235,19 @@
     };
 
     function pageLoad() {
-      window.onload = function() {
+      window.onload = function () {
         var a = document.getElementById('homeAddress');
         var b = document.getElementById('hideExample');
         var c = document.getElementById('radiusRange');
       };
 
-      homeAddress.addEventListener('input', function() {
+      homeAddress.addEventListener('input', function () {
         if ($('#homeAddress').val() != '') {
           document.getElementById('hideExample').style.display = 'none';
           document.getElementById('homeAddress').style.top = '0px';
           document.getElementById('rangeLineAlligner').style.top = '40px';
           document.getElementById('submitButton').style.top = '40px';
-        }
-        else {
+        } else {
           document.getElementById('hideExample').style.display = 'block';
           document.getElementById('homeAddress').style.top = '-40px';
           document.getElementById('rangeLineAlligner').style.top = '0px';
@@ -260,22 +255,22 @@
         }
       });
 
-      radiusRange.addEventListener('change', function() {
+      radiusRange.addEventListener('change', function () {
         var val = ($(this).val() - $(this).attr('min')) / ($(this).attr('max') - $(this).attr('min'));
         val = 1 - val;
         $(this).css('background-image',
-          '-webkit-gradient(linear, left top, right top, '
-          + 'color-stop(' + val + ', #C5C5C5), '
-          + 'color-stop(' + val + ', #005cbf)'
-          + ')',
+          '-webkit-gradient(linear, left top, right top, ' +
+          'color-stop(' + val + ', #C5C5C5), ' +
+          'color-stop(' + val + ', #005cbf)' +
+          ')',
         );
       });
 
-//http://meirim.org//alerts/?activate=MDU4Y2Q3YjAzODdlNjg3ZDMxNDBlODQzZjFlYzEx
+      //http://meirim.org//alerts/?activate=MDU4Y2Q3YjAzODdlNjg3ZDMxNDBlODQzZjFlYzEx
       var vars = {};
       window.location.href.replace(location.hash, '').replace(
         /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-        function(m, key, value) { // callback
+        function (m, key, value) { // callback
           vars[key] = value !== undefined ? value : '';
         },
       );
@@ -291,43 +286,42 @@
           dataType: 'json',
           data: JSON.stringify(data),
           contentType: 'application/json',
+          xhrFields: {
+            withCredentials: true
+          },
 
-          success: function(response) {
+          success: function (response) {
             console.log('process sucess');
             alert(confirmEmailMessage);
           },
 
-          error: function(response) {
+          error: function (response) {
             console.log('process error');
             alert('process error ' + response.responseText);
           },
         });
-      }
-
-      else {
+      } else {
         alert('המשתמש לא אומת. ייתכן והמשתמש היה מאומת או שקרתה תקלה אנא פנה לאייל החמודון');
       }
 
       var res;
       var usersAletrts = getUsersAlert();
 
-//user has alerts
+      //user has alerts
       if (usersAletrts.responseJSON.data != 'undefined') {
-//if(0==1){
+        //if(0==1){
         var userAlertsArr = (usersAletrts.responseJSON.data);
         document.getElementById('goodMorningText').style.display = 'none';
         document.getElementById('headerChangedText').innerHTML = textIfExistAlerts;
         for (let i = 0; i < userAlertsArr.length; i++) {
           var alertRow = '<td>' + userAlertsArr[i].address.substring(0, userAlertsArr[i].address.search(', מחוז')) +
-            '</td>';// userAlertsArr[i].address + "</td>" ;
+            '</td>'; // userAlertsArr[i].address + "</td>" ;
           alertRow += '<td>' + userAlertsArr[i].radius + ' ק"מ' + '</td>';
           alertRow += '<td>' + '<input id ="deleteAlert" type="button" ' + 'onclick="deleteAlert( ' +
             userAlertsArr[i].id + ')"value="X"></input>' + '</td>';
-          document.getElementById('alertTable').innerHTML += ( '<tr>' + alertRow + '</tr>' );
+          document.getElementById('alertTable').innerHTML += ('<tr>' + alertRow + '</tr>');
         }
-      }
-
-      else {
+      } else {
         document.getElementById('alertTable').style.display = 'none';
       }
     }
@@ -344,19 +338,20 @@
           dataType: 'json',
           data: JSON.stringify(data),
           contentType: 'application/json',
-          success: function(response) {
+          xhrFields: {
+            withCredentials: true
+          },
+          success: function (response) {
             console.log('process sucess');
             location.reload();
           },
 
-          error: function(response) {
+          error: function (response) {
             console.log('process error');
             alert('process error ' + response.responseText);
           },
         });
-      }
-
-      else {
+      } else {
         alert('חסר מפתח מספר התרעה');
       }
     };
@@ -385,19 +380,20 @@
           dataType: 'json',
           data: JSON.stringify(data),
           contentType: 'application/json',
-          success: function(response) {
+          xhrFields: {
+            withCredentials: true
+          },
+          success: function (response) {
             console.log('process sucess');
             alert(confirmEmailMessage);
           },
 
-          error: function(response) {
+          error: function (response) {
             console.log('process error');
             alert('process error ' + response.responseText);
           },
         });
-      }
-
-      else {
+      } else {
         alert(errorMessages);
       }
     };
@@ -411,8 +407,10 @@
         dataType: 'json',
         data: JSON.stringify(data),
         contentType: 'application/json',
-
-        success: function(response) {
+        xhrFields: {
+          withCredentials: true
+        },
+        success: function (response) {
           console.log('process sucess');
           if (response.status != 'OK') {
             alert(response.text);
@@ -420,7 +418,7 @@
           location.reload();
         },
 
-        error: function(response) {
+        error: function (response) {
           console.log('process error');
           alert('process error ' + response.responseText);
         },
@@ -434,68 +432,67 @@
 
 <body onload="pageLoad();" style="direction: rtl ; background-color : #f8f8f8 ">
 
-<div class="group">
-  <input id="logOut" type="button" onclick="logOut();" style="position:relative; right: 90%" value="יציאה"></input>
-</div>
-
-<img class='eyelashes' src="https://i.imgur.com/kcRbDo8.png" alt="התמונה חסרה"></img>
-
-
-<div class="goodMorning" id="goodMorningText">
-  בוקר טוב!
-</div>
-
-<div class="selectAreaAndInterest" id="headerChangedText">
-  בחרו מיקום ותחומי מידע עליהם תרצו לקבל התראות
-</div>
-
-<br></br>
-
-<div class="rectangle">
-
-  <table id="alertTable" align="center" style="width:90%">
-
-    <br></br>
-    <tr>
-      <th>כתובת</th>
-      <th>רדיוס</th>
-      <th></th>
-    </tr>
-  </table>
-
-
   <div class="group">
-    <span class="highlight"></span>
-    <span class="bar"></span>
-
-    <label id="homeLabale" style="position:relative;">כתובת :
-      <br></br>
-
-      <p style="font-size: 13px; font-weight:normal ; color: #a3a3a3;">
-        *כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה </p>
-
-      <p id="hideExample" style="font-size: 15px; font-weight:normal ; color: #a3a3a3;display: block;">
-        לדוגמה: מאז״ה 9, תל אביב </p>
-    </label>
-
-
-    <input id="homeAddress" type="text" style="text-align: right" required> </input>
+    <input id="logOut" type="button" onclick="logOut();" style="position:relative; right: 90%" value="יציאה"></input>
   </div>
 
-  <div class="groupBelow" id="rangeLineAlligner">
-    <label id="radiusLabale" style="right : 15%;">רדיוס: </label>
-    <span id="rangeCurrentNumber" style="display:inline-block; color: #a3a3a3;position:relative;right : 15%;">1</span>
-    <p id="rangeTextSMrightSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;"> ק"מ </p>
-    <input id="radiusRange" type="range" min="1" max="5" value="1" step="1" onchange="changeRadiusValue(this.value);"
-           style="display:inline-block;position:relative;right : 15%; "></input>
-    <p id="rangeTextSMleftSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;">5 ק"מ</p>
+  <img class='eyelashes' src="https://i.imgur.com/kcRbDo8.png" alt="התמונה חסרה"></img>
+
+
+  <div class="goodMorning" id="goodMorningText">
+    בוקר טוב!
+  </div>
+
+  <div class="selectAreaAndInterest" id="headerChangedText">
+    בחרו מיקום ותחומי מידע עליהם תרצו לקבל התראות
   </div>
 
   <br></br>
-  <input id="submitButton" type="submit" onclick="addAlert();" value="הוספה"></input>
+
+  <div class="rectangle">
+
+    <table id="alertTable" align="center" style="width:90%">
+
+      <br></br>
+      <tr>
+        <th>כתובת</th>
+        <th>רדיוס</th>
+        <th></th>
+      </tr>
+    </table>
 
 
-</div>
+    <div class="group">
+      <span class="highlight"></span>
+      <span class="bar"></span>
+
+      <label id="homeLabale" style="position:relative;">כתובת :
+        <br></br>
+
+        <p style="font-size: 13px; font-weight:normal ; color: #a3a3a3;">
+          *כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה </p>
+
+        <p id="hideExample" style="font-size: 15px; font-weight:normal ; color: #a3a3a3;display: block;">
+          לדוגמה: מאז״ה 9, תל אביב </p>
+      </label>
+
+
+      <input id="homeAddress" type="text" style="text-align: right" required> </input>
+    </div>
+
+    <div class="groupBelow" id="rangeLineAlligner">
+      <label id="radiusLabale" style="right : 15%;">רדיוס: </label>
+      <span id="rangeCurrentNumber" style="display:inline-block; color: #a3a3a3;position:relative;right : 15%;">1</span>
+      <p id="rangeTextSMrightSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;"> ק"מ </p>
+      <input id="radiusRange" type="range" min="1" max="5" value="1" step="1" onchange="changeRadiusValue(this.value);" style="display:inline-block;position:relative;right : 15%; "></input>
+      <p id="rangeTextSMleftSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;">5 ק"מ</p>
+    </div>
+
+    <br></br>
+    <input id="submitButton" type="submit" onclick="addAlert();" value="הוספה"></input>
+
+
+  </div>
 
 </body>
 
