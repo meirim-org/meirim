@@ -9,7 +9,7 @@ require('./home_page.scss');
 const HomePage = () => {
   return (
     <main className='home-page column'>
-      <div className={"row"}>
+      <div className={'row'}>
         <div className='contant'>
           <img className='make-it-fit' src={require('../../images/logo_small.png')} alt="äúîåðä çñøä"/>
           <div className="header-question">
@@ -22,54 +22,53 @@ const HomePage = () => {
           </div>
           <div className="about-us">
             <strong>קצת על מעירים</strong>
-            <br/>
-            מעירים פועלים לשינוי סדר היום במערכת התכנון, חתירה
-            <br/>
-            להפרדת רשויות וייצוג הולם לכל שכבות האוכלוסייה תוך
-            <br/>
-            שמירה על האינטרס הסביבתי
-            <br/>
-            <br/>
-            מערכת ההתרעות שלנו מאגדת במקום אחד את כל התוכניות
-            <br/>
-            שהופקדו וההיתרים שניתנו ברמה המקומית המחוזית וותמ"ל
-            <br/>
-            ותשלח לגם מייל בזמן אמת, בכל פעם שתופקד תכנית
-            <br/>
-            חדשה באיזור מגוריכם, כדי שתוכלו לדעול ולמנוע תכניות
-            <br/>
-            יזמיות הנובעות מאינטרס כלכלי על חשבון רווחת התושבים
-            <br/>
-            באיזורכם.
-            <a href="">עוד</a>
-          </div>
-          <div className="help-contact">
-            אנחנו כאן לכל שאלה, הבהרה ועניין
-            <br/>
-            <p1>
-              EMAIL: info@meirim.co.org
-            </p1>
+            <p>
+              אנו פועלים לשינוי סדר היום במערכת התכנון, חתירה
+              להפרדת רשויות וייצוג הולם לכל שכבות האוכלוסייה תוך
+              שמירה על האינטרס הסביבתי. מעירים הנו פרויקט עצמאי
+              המאומץ על ידי התנועה לחופש המידע.
+            </p>
+            <p>
+              מערכת ההתרעות שלנו מאגדת במקום אחד את כל התכניות
+              בסמכות מקומית ומחוזית ותשלח לכם התראה למייל בזמן אמת,
+              בכל פעם שתופקד תכנית חדשה באזור מגוריכם כך שתוכלו לעקוב
+              בקלות אחרי השינויים בסביבת המגורים שלכם.
+            </p>
+            <p>
+              בקרוב מאוד נוסיף למערכת ההתראות מידע מועדות תכנון נוספות,
+              נאפשר לייצר שיח סביב תכנית כזו או אחרת ונפתח פלטפורמה לתיעוד
+              ועידוד אקטיביזם עירוני.
+            </p>
+            <p className="help-contact">
+              הישארו איתנו,
+              החברים ממעירים.
+
+              <br/>
+              <p1>
+                <a href="mailto:info@meirim.co.org">info@meirim.co.org</a>
+              </p1>
+            </p>
           </div>
         </div>
-        <div className={"image-container"}>
-          <img className='maavak-pic' src={require("../../images/traktor.png")} alt="התמונה חסרה"/>
+        <div className={'image-container'}>
+          <img className='maavak-pic' src={require('../../images/traktor.png')} alt="התמונה חסרה"/>
         </div>
         <HomePageForm/>
 
       </div>
-      <div className={"row"}>
+      <div className={'row'}>
         <Partners/>
       </div>
-      <div className={"row line"}/>
-      <div className={"row"}>
+      <div className={'row line'}/>
+      <div className={'row'}>
         <Team/>
       </div>
-      <div className={"row line"}/>
-      <div className={"row"}>
+      <div className={'row line'}/>
+      <div className={'row'}>
         <Footer/>
       </div>
     </main>
-  )
+  );
 };
 
 export default HomePage;

@@ -2,64 +2,31 @@ import React from 'react';
 
 require('./team.scss');
 
+function getPersonComponent(name, title, img) {
+  return <div className={"person"}>
+    <img className={"image"} src={require(`../../../../images/${img}.png`)}/>
+    <p className={"name"}>{name}</p>
+    <p className={"title"}>{title}</p>
+  </div>
+}
+
 const Team = () => {
   return (
     <div className={"team"}>
       <p className={"short-desc"}>
-        אנחנו קבוצה קטנה ונחושה של אדריכלים,
-        מתכנתים ומעצבת שעובדות ימים ולילות בהתנדבות במטרה להגביר את השקיפות במערכת התכנון,
-        לעודד אקטיביזם עירוני ולאפשר לכל אחד ואחת. זה הצוות שלנו:
+        אנחנו קבוצה עצמאית, קטנה ונחושה של אדריכלים, מתכנתים ומעצבת שעובדות ימים ולילות בהתנדבות במטרה להגביר את השקיפות במערכת התכנון ולעודד אקטיביזם עירוני. זה הצוות שלנו:
       </p>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/naor.png')}/>
-        <p className={"name"}>נאור תורג׳מן</p>
-        <p className={"title"}>מתכנת</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/yonatan.png')}/>
-        <p className={"name"}>יונתן דורטהיימר</p>
-        <p className={"title"}>מתכנת</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/talia.png')}/>
-        <p className={"name"}>ד״ר טליה מרגלית</p>
-        <p className={"title"}>חוקרת ויועצת אקדמית</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/eyal.png')}/>
-        <p className={"name"}>איל מגדלוביץ</p>
-        <p className={"title"}>יזם ומנהל הפרויקט</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/lilach.png')}/>
-        <p className={"name"}>לילך</p>
-        <p className={"title"}>מתכנתת</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/shira.png')}/>
-        <p className={"name"}>שירה</p>
-        <p className={"title"}>אדריכלית</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/danni.png')}/>
-        <p className={"name"}>דני פרידלנד</p>
-        <p className={"title"}>מתכנת</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/ann.png')}/>
-        <p className={"name"}>אן לילמנסטונס</p>
-        <p className={"title"}>מעצבת</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/noa.png')}/>
-        <p className={"name"}>נועה ירקוני</p>
-        <p className={"title"}>תוכן</p>
-      </div>
-      <div className={"person"}>
-        <img className={"image"} src={require('../../../../images/tomer.png')}/>
-        <p className={"name"}>תומר צ׳ציק</p>
-        <p className={"title"}>מתכנת</p>
-      </div>
+      {getPersonComponent("נאור תורג׳מן", "מתכנת", "naor")}
+      {getPersonComponent("יונתן דורטהיימר", "אדריכל ומתכנת", "yonatan")}
+      {getPersonComponent("דר' טליה מרגלית","אדריכלית, חוקרת ויועצת אקדמית", "talia")}
+      {getPersonComponent("איל מגדלוביץ", "אדריכל ומנהל הפרויקט", "eyal")}
+      {getPersonComponent("לילך ריטר רמתי", "מתכנתת", "lilach")}
+      {getPersonComponent("שירה אפרתי", "אדריכלית", "shira")}
+      {getPersonComponent("דני פרידלנד", "מתכנת", "danni")}
+      {getPersonComponent("אן לילמנסטונס", "מעצבת", "ann")}
+      {getPersonComponent("נועה ירקוני", "אדריכלית", "noa")}
+      {getPersonComponent("תומר צ׳ציק", "מתכנת", "tomer")}
+      {getPersonComponent("עדי קויש", "אדריכלית", "adi")}
     </div>
   )
 };
