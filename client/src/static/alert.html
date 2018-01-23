@@ -222,8 +222,7 @@
         },
         data: JSON.stringify(data),
         contentType: 'application/json',
-
-        success: function (response) {
+        success: function(response) {
           console.log('process sucess');
         },
 
@@ -289,8 +288,7 @@
           xhrFields: {
             withCredentials: true
           },
-
-          success: function (response) {
+          success: function(response) {
             console.log('process sucess');
             alert(confirmEmailMessage);
           },
@@ -341,7 +339,7 @@
           xhrFields: {
             withCredentials: true
           },
-          success: function (response) {
+          success: function(response) {
             console.log('process sucess');
             location.reload();
           },
@@ -383,7 +381,7 @@
           xhrFields: {
             withCredentials: true
           },
-          success: function (response) {
+          success: function(response) {
             console.log('process sucess');
             alert(confirmEmailMessage);
           },
@@ -410,7 +408,7 @@
         xhrFields: {
           withCredentials: true
         },
-        success: function (response) {
+        success: function(response) {
           console.log('process sucess');
           if (response.status != 'OK') {
             alert(response.text);
