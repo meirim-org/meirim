@@ -370,7 +370,7 @@
       if (error == 0) {
         var data = {};
         data.address = $('#homeAddress').val();
-        data.radius = $('#radiusRange').val();
+        data.radius = parseInt($('#radiusRange').val());
 
         $.ajax({
           url: 'http://api.meirim.org/alert/',
