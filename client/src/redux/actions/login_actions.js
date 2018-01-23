@@ -2,6 +2,7 @@ import Actions from './action_types';
 import axios from 'axios';
 
 const API_HOST = 'http://api.meirim.org';
+axios.defaults.withCredentials = true; 
 
 const loginActions = {
 
