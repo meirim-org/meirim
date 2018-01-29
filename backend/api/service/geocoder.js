@@ -3,7 +3,7 @@
 const NodeGeocoder = require('node-geocoder');
 const Config = require("./config");
 
-const instance = NodeGeocoder({'user-agent': Config.get("general.userAgent"), provider: 'openstreetmap'});
+const instance = NodeGeocoder(Config.get("geocoder"));
 const degreeToMeter = function(lon, lat, dn, de) {
 
   //Earth’s radius, sphere

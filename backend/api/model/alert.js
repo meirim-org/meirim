@@ -8,6 +8,7 @@ const Knex = require('../service/database').Knex;
 const Geocoder = require("../service/geocoder").geocoder;
 const DegreeToMeter = require("../service/geocoder").degreeToMeter;
 const Exception = require('./exception');
+const Log = require('../service/log');
 class Alert extends Model {
   get rules() {
     return {
@@ -24,7 +25,9 @@ class Alert extends Model {
     }
   }
   defaults() {
-    return {radius: 5}
+    return {
+      radius: 5
+    }
   }
 
   get geometry() {
@@ -40,23 +43,29 @@ class Alert extends Model {
     super.initialize();
   }
   _saving(model, attrs, options) {
-    return Geocoder.geocode(model.get("address")).then(res => {
-      let box = [];
-      let km = 1000;
-      let radius = model.get("radius")* km;
-      box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius));
-      box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius));
-      box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius));
-      box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius));
-      box.push(box[0]);
-
-      model.set("geom", {
-        "type": "Polygon",
-        "coordinates": [box]
-      });
-      model.set("address", res[0].formattedAddress);
-      return new Checkit(model.rules).run(model.attributes);
-    })
+    // partial validation
+    let partialRules = Object.assign(model.rules,{});
+    delete partialRules.geom;
+    return new Checkit(partialRules).run(model.attributes).then(()=>{
+      return Geocoder.geocode(model.get("address")).then(res => {
+        let box = [];
+        let km = 1000;
+        let radius = model.get("radius") * km;
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius));
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius));
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius));
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius));
+        box.push(box[0]);
+  
+        model.set("geom", {
+          "type": "Polygon",
+          "coordinates": [box]
+        });
+        model.set("address", res[0].formattedAddress);
+        return new Checkit(model.rules).run(model.attributes);
+      })
+    });
+   
   }
 
   canRead(session) {
@@ -68,7 +77,7 @@ class Alert extends Model {
     }
     return Promise.resolve(this);
   }
-  
+
   canEdit(session) {
     return this.canRead(session);
   }
@@ -81,7 +90,9 @@ class Alert extends Model {
   }
 
   getCollection() {
-    return this.collection().query('where', {person_id: this.get("person_id")}).fetch();
+    return this.collection().query('where', {
+      person_id: this.get("person_id")
+    }).fetch();
   }
 
   static getUsersByGeometry(plan_id) {
