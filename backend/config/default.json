@@ -1,12 +1,15 @@
 {
+  "geocoder": {
+    "provider": "openstreetmap"
+  },
   "general": {
     "userAgent": "Meirim.org (info@meirim.org)",
-    "domain":"http://meirim.org/"
+    "domain": "http://meirim.org/"
   },
-  "services":{
-    "schedule":{
-      "iplan":"0 0 0 * * *",
-      "sendPlanningAlerts":"0 0 0 * * *"
+  "services": {
+    "schedule": {
+      "iplan": "0 0 0 * * *",
+      "sendPlanningAlerts": "0 0 0 * * *"
     }
   },
   "session": {
@@ -34,13 +37,13 @@
     "transport": "SMTP",
     "from_name": "Meirim",
     "from_email": "alert@meirim.org",
-    "options" : {
+    "options": {
       "host": "smtp.example.com",
       "port": 465,
       "secure": true,
       "auth": {
-          "user": "",
-          "pass": ""
+        "user": "",
+        "pass": ""
       }
     }
   }
