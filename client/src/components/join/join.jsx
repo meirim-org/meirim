@@ -26,7 +26,7 @@ const Join = (props) => {
         </div>
       </div>
       <div className='submit-wrapper'>
-        <input type='sumbit' value='>' className='submit' />
+        <input type='sumbit' value='>' className='submit' onClick={props.onSubmit} />
       </div>
     </form>
   )

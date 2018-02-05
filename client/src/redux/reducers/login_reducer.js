@@ -4,10 +4,10 @@ const loginReducer = function (state, action) {
 
 	switch (action.type) {
 		case Actions.LOGIN_SUCCESS:
-			return Object.assign(state, {
-				status: 'logged'
-			});
-
+    return Object.assign({}, state, {
+      status: 'logged',
+      user: action.data
+    });
 		case Actions.LOGIN_ERROR:
 			var stateCopy = Object.assign({}, state);
 			stateCopy.response = "ההתחברות נכשלה, אנא נסה/י שנית";

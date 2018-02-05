@@ -12,10 +12,7 @@ const loginActions = {
 				type: Actions.LOGIN,
 			});
 			return axios.post(API_HOST + '/sign/in', loginForm).then(function (result) {
-				return dispatch({
-					type: Actions.LOGIN_SUCCESS,
-					data: result
-				});
+        window.location.href = '/alerts';
 			}, function (result) {
 				return dispatch({
 					type: Actions.LOGIN_ERROR,
