@@ -19,15 +19,7 @@ $("#addNewAlert").on("submit", function () {
     .done(function (response) {
       $("#alertTable").trigger("addAlert", [response.data])
     })
-    .fail(function(xhr, status, errorThrown){
-      switch (xhr.status) {
-        case 500:
-          if (confirm(xhr.responseJSON.data + "\n" + goToLoginText)) {
-            errorMessage(xhr.responseJSON.data);
-          }
-          break;
-        }
-    });
+    .fail(errorHandler);
   return false;
 });
 
@@ -144,7 +136,7 @@ function errorHandler(xhr, status, errorThrown) {
       }
       break;
     default:
-      errorMessage("Sorry, there was a problem!" + xhr.status);
+      errorMessage("Sorry, there was a problem!\n" + xhr.responseJSON.data);
       console.log("Error: " + errorThrown);
       console.log("Status: " + status);
       console.dir(xhr);

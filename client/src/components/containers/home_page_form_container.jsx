@@ -11,7 +11,6 @@ class HomepageFormContainer extends Component {
 		this.state = {
 			email: '',
 			password: '',
-			agree: false,
 			terms: false,
 		};
 		this.onSignupSubmit = this.onSignupSubmit.bind(this);
@@ -27,10 +26,6 @@ class HomepageFormContainer extends Component {
 		}
 		if (!this.state.password) {
 			alert('הכנס סיסמא');
-			return;
-		}
-		if (!this.state.agree) {
-			alert('תסכים לתוכן שיווקי');
 			return;
 		}
 		if (!this.state.terms) {

@@ -24,8 +24,9 @@ export default class HomePageForm extends Component {
 	}
 
 	render() {
+		console.log(this.props);
 		if (this.props.status === 'logged') {
-			return <Redirect push to="/dashboard" />;
+			return <Redirect push to="/alert.html" />;
 		}
 		if (this.props.status === 'registered') {
 			return (
