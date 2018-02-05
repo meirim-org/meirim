@@ -65,8 +65,8 @@ $("#alertTable").bind({
       .data('alert', alert.id);
     tr = $("<tr />")
       .css("display", "none")
-      .append($("<td />").html(alert.address.substring(0, alert.address.search(', מחוז'))))
-      .append($("<td />").html(alert.radius+ 'ק"מ'))
+      .append($("<td />").html(alert.address))
+      .append($("<td />").html(alert.radius+ ' ק"מ'))
       .append($("<td />").append(button));
     table.append(tr);
     tr.fadeIn();
