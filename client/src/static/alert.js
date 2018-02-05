@@ -77,7 +77,7 @@ $("#alertTable").bind({
  * Object to manage the communication with the backend
  */
 var API = {
-  Apibase: 'http://localhost:3000/',
+  Apibase: 'http://api.meirim.org',
   get: function (path, data) {
     return this.request({
       type: 'GET',
