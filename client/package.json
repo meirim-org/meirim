@@ -17,7 +17,7 @@
     "webpack": "^3.5.5"
   },
   "scripts": {
-    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js  --open",
+    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js  --config ./build-scripts/webpack.dev.config.js --open",
     "dev": "node ./build-scripts/dev.js",
     "prod": "node ./build-scripts/prod.js"
   },

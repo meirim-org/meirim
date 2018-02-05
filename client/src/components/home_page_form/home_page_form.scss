@@ -80,6 +80,11 @@
       outline: none;
     }
   }
+  // remove firefox invalid
+  input:invalid {
+    box-shadow: none;
+  }
+
   label {
     color: #ffffff;
     font-size: 16px;
