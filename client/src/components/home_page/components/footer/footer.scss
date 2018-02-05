@@ -8,10 +8,15 @@
   flex-direction: column;
   margin-top: 65px;
   .conatct-us {
-    width: 170px;
+    display: flex;
+    justify-content: space-between;
+    width: 260px;
     font-size: 15px;
     text-align: center;
     color: $black;
+    .mail {
+      text-align: center;
+    }
     a {
       color: $black;
       &:hover {
