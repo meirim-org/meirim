@@ -77,7 +77,7 @@ $("#alertTable").bind({
  * Object to manage the communication with the backend
  */
 var API = {
-  Apibase: 'http://api.meirim.org',
+  Apibase: 'http://api.meirim.org/',
   get: function (path, data) {
     return this.request({
       type: 'GET',
@@ -136,7 +136,7 @@ function errorHandler(xhr, status, errorThrown) {
       }
       break;
     default:
-      errorMessage("Sorry, there was a problem!\n" + xhr.responseJSON.data);
+      errorMessage("Sorry, there was a problem!\n" + xhr.status);
       console.log("Error: " + errorThrown);
       console.log("Status: " + status);
       console.dir(xhr);
