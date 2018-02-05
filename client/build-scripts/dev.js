@@ -11,7 +11,12 @@ const options = {
   stats: {
     colors: true
   },
-  historyApiFallback: true
+  historyApiFallback: {
+    rewrites: [{
+      from: '/alerts',
+      to: '/alert.html'
+    }]
+  }
 };
 
 const server = new WebpackDevServer(webpack(webpackConfig), options);
