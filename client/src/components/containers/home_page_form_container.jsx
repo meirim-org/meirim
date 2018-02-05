@@ -19,7 +19,8 @@ class HomepageFormContainer extends Component {
 		this.toggle = this.toggle.bind(this);
 	}
 
-	onSignupSubmit() {
+	onSignupSubmit(e) {
+    e.preventDefault();
 		if (!this.state.email) {
 			alert('הכנס מייל');
 			return;
@@ -38,7 +39,8 @@ class HomepageFormContainer extends Component {
 		});
 	}
 
-	onLoginSubmit() {
+	onLoginSubmit(e) {
+    e.preventDefault();
 		if (!this.state.email) {
 			alert('הכנס מייל');
 			return;
@@ -71,7 +73,6 @@ class HomepageFormContainer extends Component {
 					password={this.state.password}
 					onChange={this.onChange}
 					toggle={this.toggle}
-					agree={this.state.agree}
 					terms={this.state.terms}
 					status={this.props.status}
 				/>
