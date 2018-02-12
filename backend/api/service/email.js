@@ -4,6 +4,8 @@ const Log = require('./log');
 const Config = require('./config');
 const Mustache = require('mustache');
 const Juice = require('juice');
+const Alert = require("../model/alert");
+
 const Fs = Promise.promisifyAll(require('fs'));
 
 class Email {
@@ -12,6 +14,7 @@ class Email {
   constructor() {
     // create reusable transporter object using the default SMTP transport
     this.config = Config.get('email');
+    this.baseUrl = Config.get('general.domain');
     this.transporter = Nodemailer.createTransport(this.config.options);
     // load templates
 
@@ -68,9 +71,15 @@ class Email {
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
   }
 
-  newPlanAlert(person, plan) {
-    const templateProperties = Object.assign(person.toJSON(), plan.toJSON());
-    return this.sendWithTemplate(this.templates.alert, templateProperties);
+  newPlanAlert(data) {
+    let row = data;
+    let alert = new Alert({
+      id:data.alert_id,
+      person_id:data.person_id
+    });
+    row.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
+   
+    return this.sendWithTemplate(this.templates.alert, row);
   }
 
   newAlert(person, alert) {

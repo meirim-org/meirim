@@ -53,6 +53,7 @@ class CronController extends Controller {
     });
   }
 
+  // send emails for each plan to each user in the geographic area the fits
   sendPlanningAlerts(req, res, next) {
     Log.info('Running send planning alert');
     return Plan.getUnsentPlans().then(unsentPlans => {
@@ -66,7 +67,8 @@ class CronController extends Controller {
         }
 
         //reduce double users
-        return Bluebird.mapSeries(users.models, user => Email.newPlanAlert(user, unsentPlan)).then(() => {
+        return Bluebird.mapSeries(users[0], user => Email.newPlanAlert(user))
+        .then(() => {
           return {'plan_id': unsentPlan.get('id'), 'users': users.length};
         });
       });
