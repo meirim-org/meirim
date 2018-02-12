@@ -25,12 +25,23 @@ class AlertController extends Controller {
       return collection;
     });
   }
+
+  unsubscribe(req, res, next) {
+    return Alert.byToken(req.query.token).fetch().then(fetchedModel=>{
+      if (!fetchedModel) throw new Exception.notFound("Nof found");
+      Log.debug(this.tableName, " unsubscribe success id:", fetchedModel.get("id"));
+      return fetchedModel.destroy(req.body);
+    });
+  }
 }
 
 const controller = new AlertController(Alert);
 Router.get('/', controller.wrap(_.bind(controller.browse, controller)));
 Router.get('/:id', controller.wrap(_.bind(controller.read, controller)));
 Router.post('/', controller.wrap(_.bind(controller.create, controller)));
+Router.delete('/unsubscribe', controller.wrap(_.bind(controller.unsubscribe, controller)));
 Router.delete('/:id', controller.wrap(_.bind(controller.delete, controller)));
+
+
 
 module.exports = Router;

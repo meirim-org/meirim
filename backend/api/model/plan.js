@@ -126,4 +126,4 @@ class Plan extends Model {
     });
   }
 };
-module.exports = Bookshelf.model('plan', Plan);
+module.exports = Plan;

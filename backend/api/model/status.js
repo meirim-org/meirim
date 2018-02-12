@@ -15,4 +15,4 @@ class Status extends Model {
     return this.collection();
   }
 };
-module.exports = Bookshelf.model('status', Status);
+module.exports = Status;

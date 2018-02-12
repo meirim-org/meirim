@@ -3,6 +3,7 @@ const Checkit = require('checkit');
 const Promise = require('bluebird');
 const Model = require("./base_model");
 const Person = require("./person");
+const Crypt = require('../helpers/crypt');
 const Bookshelf = require('../service/database').Bookshelf;
 const Knex = require('../service/database').Knex;
 const Geocoder = require("../service/geocoder").geocoder;
@@ -42,6 +43,11 @@ class Alert extends Model {
     this.on('saving', this._saving, this);
     super.initialize();
   }
+
+  alerts() {
+    return this.belongsTo(Person);
+  }
+
   _saving(model, attrs, options) {
     // partial validation
     let partialRules = Object.assign(model.rules,{});
@@ -95,13 +101,32 @@ class Alert extends Model {
     }).fetch();
   }
 
+  unsubsribeToken(){
+    const token = Crypt.encrypt(this.get('id')+'_'+this.get('person_id'));
+    return new Buffer(token).toString('base64');
+  }
+
+  static byToken(token){
+    let details = Crypt.decrypt(new Buffer(token, 'base64').toString('ascii'));
+    let parts = details.split('_');
+    return Alert.forge({
+      id: parts[0]
+    });
+  }
+
   static getUsersByGeometry(plan_id) {
-    return Person.collection().query((qb) => {
-      qb.innerJoin('alert', 'alert.person_id', 'person.id')
-        .innerJoin('plan', Knex.raw("ST_Intersects(plan.geom,alert.geom)"))
-        .where("plan.id", "=", plan_id)
-        .groupBy("person.id")
-    }).fetch();
+
+    let sql = `SELECT 
+    person.email,
+    person.id as person_id,
+    alert.id as alert_id, 
+    plan.* 
+    FROM alert 
+    INNER JOIN plan ON ST_Intersects(plan.geom,alert.geom)
+    INNER JOIN person ON person.id=alert.person_id
+    WHERE plan.id=${plan_id}
+    GROUP BY person.id`;
+    return Knex.raw(sql);
   }
 };
-module.exports = Bookshelf.model('alert', Alert);
+module.exports = Alert;
