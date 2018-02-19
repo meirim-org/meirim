@@ -8,7 +8,7 @@ const Log = require('./log');
 const Config = require('./config');
 const Mustache = require('mustache');
 const Juice = require('juice');
-const Alert = require("../model/alert");
+const Alert = require('../model/alert');
 const Fs = Promise.promisifyAll(require('fs'));
 
 class Email {
