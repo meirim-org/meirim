@@ -106,7 +106,7 @@ class Alert extends Model {
     return new Buffer(token).toString('base64');
   }
 
-  static byToken(token){
+  static ByToken(token){
     let details = Crypt.decrypt(new Buffer(token, 'base64').toString('ascii'));
     let parts = details.split('_');
     return Alert.forge({

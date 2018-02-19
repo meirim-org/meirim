@@ -61,7 +61,9 @@ class CronController extends Controller {
       return unsentPlans.models;
     }).mapSeries(unsentPlan => {
       return Alert.getUsersByGeometry(unsentPlan.get('id')).then(users => {
+        
         Log.debug('Got', users.length, 'users for plan', unsentPlan.get('id'));
+        
         if (!users || !users.length) {
           return {'plan_id': unsentPlan.get('id'), 'users': 0};
         }
