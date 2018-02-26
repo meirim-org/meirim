@@ -15,7 +15,7 @@ const Footer = () => {
         </a>
       </div>
       <p className={"copyrights"}>
-        © #{(new Date()).getFullYear()}   כל הזכויות שמורות למעירים
+        © {(new Date()).getFullYear()}   כל הזכויות שמורות למעירים
       </p>
     </div>
   )
