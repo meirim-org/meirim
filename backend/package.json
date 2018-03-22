@@ -1,11 +1,7 @@
 {
-  "name": "citizensforcities",
-  "version": "0.0.0",
+  "name": "meirim-backend",
+  "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "start": "node ./bin/www",
-    "start:dev": "./node_modules/.bin/nodemon  ./bin/www"
-  },
   "dependencies": {
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
@@ -47,6 +43,13 @@
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
+    "jest": "^22.4.2",
     "nodemon": "1.12.1"
+  },
+  "scripts": {
+    "start": "node ./bin/www",
+    "start:dev": "./node_modules/.bin/nodemon  ./bin/www",
+    "test": "jest"
   }
+  
 }

@@ -1,16 +1,17 @@
-'use strict';
 const Exception = require('node-exceptions');
-class badRequest extends Exception.LogicalException {}
-class duplicate extends Exception.LogicalException {}
-class notAllowed extends Exception.LogicalException {}
-class notImplemented extends Exception.LogicalException {}
-class notFound extends Exception.LogicalException {}
-class error extends Exception.LogicalException {}
+
+class BadRequest extends Exception.LogicalException {}
+class Duplicate extends Exception.LogicalException {}
+class NotAllowed extends Exception.LogicalException {}
+class NotImplemented extends Exception.LogicalException {}
+class NotFound extends Exception.LogicalException {}
+class Error extends Exception.LogicalException {}
+
 module.exports = {
-	badRequest: badRequest,
-	duplicate: duplicate,
-	notAllowed: notAllowed,
-	notImplemented: notImplemented,
-	notFound: notFound,
-	error: error
-}
+  BadRequest,
+  Duplicate,
+  NotAllowed,
+  NotImplemented,
+  NotFound,
+  Error,
+};

@@ -27,10 +27,5 @@ class AlertController extends Controller {
   }
 }
 
-const controller = new AlertController(Alert);
-Router.get('/', controller.wrap(_.bind(controller.browse, controller)));
-Router.get('/:id', controller.wrap(_.bind(controller.read, controller)));
-Router.post('/', controller.wrap(_.bind(controller.create, controller)));
-Router.delete('/:id', controller.wrap(_.bind(controller.delete, controller)));
+module.exports = new AlertController(Alert);
 
-module.exports = Router;
