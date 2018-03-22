@@ -1,32 +1,32 @@
 const bugsnag = require('bugsnag');
+
 bugsnag.register('cee6ce01fe3b1c1bbc728cb5ac99bf8c');
+
 const Express = require('express');
 const path = require('path');
 const BodyParser = require('body-parser');
+
 const Log = require('./api/service/log');
-const Config = require('./api/service/config');
 const Eamil = require('./api/service/email');
+const routes = require('./api/routes');
 const Cors = require('cors');
+
 const urlencoded = BodyParser.urlencoded({
-  extended: false
+  extended: false,
 });
-const json = BodyParser.json()
-const whitelist = ['http://localhost:3000', 'http://meirim.org', 'https://meirim.org']
+const json = BodyParser.json();
+
+// const whitelist = ['http://localhost:3000', 'http://meirim.org', 'https://meirim.org']
 const cors = Cors({
-  origin: function (origin, callback) {
-    // if (whitelist.indexOf(origin) !== -1) {
-    callback(null, true)
-    // } else {
-    // callback(new Error('Not allowed by CORS'))
-    // }
-  },
+  origin: (origin, callback) => callback(null, true),
   optionsSuccessStatus: 200,
   credentials: true,
-  preflightContinue: false
+  preflightContinue: false,
 });
 
+
 // init application
-Log.silly("Starting application");
+Log.silly('Starting application');
 const app = Express();
 // middlewares
 app.use(require('./api/model/session'));
@@ -36,39 +36,31 @@ app.options('*', cors);
 
 // set routes
 app.use(Express.static(path.join(__dirname, 'public')));
-app.use('/activity', json, urlencoded, require('./api/controller/activity'));
-app.use('/sign', json, urlencoded, require('./api/controller/sign'));
-app.use('/password', json, urlencoded, require('./api/controller/password'));
+app.use('/', json, urlencoded, require('./api/routes/activity'));
 
-app.use('/alert', json, urlencoded, require('./api/controller/alert'));
-app.use('/cron', json, urlencoded, require('./api/controller/cron'));
-app.use('/tag', json, urlencoded, require('./api/controller/tag'));
-app.use('/status', json, urlencoded, require('./api/controller/status'));
-app.use('/health', json, urlencoded, require('./api/controller/health'));
-//log schedule
+
 
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 // error handler
-app.use(function (err, req, res, next) {
-  console.log("Error handler", err);
+app.use((err, req, res, next) => {
+  console.log('Error handler', err);
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ?
-    err :
-    {};
+    err : {};
   // render the error page
   res.status(err.status || 500);
   res.json('error');
 });
 
-Eamil.init().then(success => {
-  Log.info("Email initialized");
-  Log.info("Application loaded");
+Eamil.init().then(() => {
+  Log.info('Email initialized');
+  Log.info('Application loaded');
 });
 module.exports = app;

@@ -1,14 +1,9 @@
-'use strict';
-const Router = require('express').Router();
-const Controller = require("../controller/controller");
-const Tag = require("../model/tag");
-const _ = require('lodash');
+const Controller = require('./controller');
+const Tag = require('../model/tag');
+
 class TagController extends Controller {
 
 }
 
-const controller = new TagController(Tag);
-Router.get('/', (req, res, next) => {
-  controller.wrap(_.bind(controller.browse, controller))(req, res, next);
-});
-module.exports = Router;
+module.exports = new TagController(Tag);
+
