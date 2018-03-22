@@ -6,7 +6,7 @@ const knex = require('knex')({
 	debug: config.get('debug.database')
 });
 const Bookshelf = require('bookshelf')(knex);
-Bookshelf.plugin(['registry', 'visibility','pagination']);
+Bookshelf.plugin(['visibility','pagination']);
 Bookshelf.plugin(require('../lib/bookshelf-mysql-gis'));
 module.exports = {
 	Bookshelf:Bookshelf,

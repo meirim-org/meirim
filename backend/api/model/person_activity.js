@@ -16,4 +16,4 @@ class PersonActivity extends Base_model{
     return 'person_activity';
   }
 };
-module.exports = Bookshelf.model('Person_Activity', PersonActivity);
+module.exports = PersonActivity;
