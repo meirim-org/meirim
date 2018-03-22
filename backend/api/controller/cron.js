@@ -53,6 +53,7 @@ class CronController extends Controller {
     });
   }
 
+  // send emails for each plan to each user in the geographic area the fits
   sendPlanningAlerts(req, res, next) {
     Log.info('Running send planning alert');
     return Plan.getUnsentPlans().then(unsentPlans => {
@@ -60,13 +61,16 @@ class CronController extends Controller {
       return unsentPlans.models;
     }).mapSeries(unsentPlan => {
       return Alert.getUsersByGeometry(unsentPlan.get('id')).then(users => {
+        
         Log.debug('Got', users.length, 'users for plan', unsentPlan.get('id'));
+        
         if (!users || !users.length) {
           return {'plan_id': unsentPlan.get('id'), 'users': 0};
         }
 
         //reduce double users
-        return Bluebird.mapSeries(users.models, user => Email.newPlanAlert(user, unsentPlan)).then(() => {
+        return Bluebird.mapSeries(users[0], user => Email.newPlanAlert(user))
+        .then(() => {
           return {'plan_id': unsentPlan.get('id'), 'users': users.length};
         });
       });

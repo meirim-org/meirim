@@ -145,4 +145,4 @@ class Activity extends Base_model {
   }
 };
 // private
-module.exports = Bookshelf.model('Activity', Activity);
+module.exports = Activity;
