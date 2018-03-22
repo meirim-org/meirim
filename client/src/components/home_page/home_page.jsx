@@ -11,11 +11,11 @@ const HomePage = () => {
     <main className='home-page column'>
       <div className={'row'}>
         <div className='contant'>
-          <img className='make-it-fit' src={require('../../images/logo_small.png')} alt="äúîåðä çñøä"/>
+          <img className='make-it-fit' src={require('../../images/logo_small.png')} alt="äúîåðä çñøä" />
           <div className="header-question">
             <h1>
               הגינה הציבורית שלכם
-              <br/>
+              <br />
               עומדת להפוך
               <span className='bold'> למגדל?</span>
             </h1>
@@ -23,10 +23,10 @@ const HomePage = () => {
           <div className="about-us">
             <strong>קצת על מעירים</strong>
             <p>
-              אנו פועלים לשינוי סדר היום במערכת התכנון, חתירה
-              להפרדת רשויות וייצוג הולם לכל שכבות האוכלוסייה תוך
-              שמירה על האינטרס הסביבתי. מעירים הנו פרויקט עצמאי
-              המאומץ על ידי התנועה לחופש המידע.
+              אנו פועלים לשינוי סדר היום במערכת התכנון וחתירה
+                להפרדת רשויות וייצוג הולם לכל שכבות האוכלוסייה תוך
+                שמירה על האינטרס הסביבתי. מעירים הנו פרויקט עצמאי
+                המאומץ על ידי התנועה לחופש המידע.
             </p>
             <p>
               מערכת ההתרעות שלנו מאגדת במקום אחד את כל התכניות
@@ -43,29 +43,29 @@ const HomePage = () => {
               הישארו איתנו,
               החברים ממעירים.
 
-              <br/>
+              <br />
               <p1>
-                <a href="mailto:info@meirim.co.org">info@meirim.co.org</a>
+                <a href="mailto:info@meirim.org">info@meirim.org</a>
               </p1>
             </p>
           </div>
         </div>
         <div className={'image-container'}>
-          <img className='maavak-pic' src={require('../../images/traktor.png')} alt="התמונה חסרה"/>
+          <img className='maavak-pic' src={require('../../images/traktor.png')} alt="התמונה חסרה" />
         </div>
-        <HomePageForm/>
+        <HomePageForm />
 
       </div>
       <div className={'row'}>
-        <Partners/>
+        <Partners />
       </div>
-      <div className={'row line'}/>
+      <div className={'row line'} />
       <div className={'row'}>
-        <Team/>
+        <Team />
       </div>
-      <div className={'row line'}/>
+      <div className={'row line'} />
       <div className={'row'}>
-        <Footer/>
+        <Footer />
       </div>
     </main>
   );
