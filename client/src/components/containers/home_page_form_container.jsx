@@ -74,7 +74,8 @@ class HomepageFormContainer extends Component {
 					onChange={this.onChange}
 					toggle={this.toggle}
 					terms={this.state.terms}
-					status={this.props.status}
+          status={this.props.status}
+          errorMessage={this.props.errorMessage}
 				/>
 			</div>
 		);
@@ -97,7 +98,8 @@ var mapDispatchToProps = function(dispatch, props) {
 
 var mapStateToProps = function(state) {
 	return {
-		status: state.loginReducer.status,
+    status: state.loginReducer.status,
+    errorMessage: state.loginReducer.errorMessage
 	};
 };
 
