@@ -1,6 +1,6 @@
 node_modules
 *.log
 local.json
-backend/tmp/
-backend/public/upload/
+tmp/
+public/upload/
 .idea

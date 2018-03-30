@@ -3,7 +3,6 @@ module.exports = {
     name        : "api",
     script      : "bin/www",
     watch       : true,
-    cwd         : "backend/",
     env: {
       "NODE_ENV": "production",
       "PORT":3000
