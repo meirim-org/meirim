@@ -5,11 +5,12 @@ const Bcrypt = require('bcrypt');
 const Crypt = require('../helpers/crypt');
 const Bookshelf = require('../service/database').Bookshelf;
 const Log = require('../service/log');
-
+const Alert = require("./alert");
 const Base_model = require("./base_model");
 const Exception = require('./exception');
 
 const seconds = 1000;
+
 class Person extends Base_model {
   get rules() {
     return {
@@ -43,6 +44,11 @@ class Person extends Base_model {
     this.on('saving', this.hashPassword);
     super.initialize();
   }
+
+  alerts() {
+    return this.hasMany(Alert);
+  }
+
   assignValues(model, attrs, options) {
     model.attributes.status = 0;
     model.attributes.email = model.attributes.email.toLowerCase().trim();
@@ -138,4 +144,4 @@ class Person extends Base_model {
     });
   }
 };
-module.exports = Bookshelf.model('Person', Person);
+module.exports = Person;

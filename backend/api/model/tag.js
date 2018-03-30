@@ -15,4 +15,4 @@ class Tag extends Model {
     return this.collection();
   }
 };
-module.exports = Bookshelf.model('tag', Tag);
+module.exports = Tag;
