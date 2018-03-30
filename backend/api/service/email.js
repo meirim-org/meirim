@@ -1,52 +1,63 @@
+/**
+ * Email service.
+ * Compiles emails and pushes to an email web service.
+ */
 const Promise = require('bluebird');
 const Nodemailer = require('nodemailer');
 const Log = require('./log');
 const Config = require('./config');
 const Mustache = require('mustache');
 const Juice = require('juice');
+const Alert = require('../model/alert');
 const Fs = Promise.promisifyAll(require('fs'));
 
 class Email {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
+  /**
+   * Generate test SMTP service account from ethereal.email
+   * Only needed if you don't have a real mail account for testing
+   */
   constructor() {
     // create reusable transporter object using the default SMTP transport
     this.config = Config.get('email');
+    this.baseUrl = Config.get('general.domain');
     this.transporter = Nodemailer.createTransport(this.config.options);
-    // load templates
-
     this.templates = {};
     //
   }
 
+  /** 
+   * Init the class and load the template files.
+   */
   init() {
     const templateDir = `${__dirname}/email/`;
     let templates = {},
-      wrapper;
+      wrapper,
+      promises = [];
     return Fs.readdirAsync(templateDir)
-      .then((files) => {
-        const promises = [];
-        files.forEach((file, index) => {
-          promises.push(Fs.readFileAsync(templateDir + file, 'utf-8').then(content => [file, content]));
-        });
-        return Promise.all(promises);
-      }).then((contents) => {
+      .map(file => Fs.readFileAsync(templateDir + file, 'utf-8').then(content => [file, content]))
+      .then((contents) => {
+        // map files
         contents.map((content) => {
           if (!content[1]) {
             Log.error('Email template empty', templateDir + file, err);
             return;
           }
           const key = content[0].split('.')[0];
-          if (key == 'wrapper') { wrapper = content[1]; } else { templates[key] = content[1]; }
+          if (key == 'wrapper') {
+            wrapper = content[1];
+          } else {
+            templates[key] = content[1];
+          }
         });
-        return [wrapper, templates];
-      }).then((allTemplates) => {
-        for (const key in allTemplates[1]) {
-          const title = allTemplates[1][key].match(/<title[^>]*>((.|[\n\r])*)<\/title>/im)[1];
-          const body = allTemplates[1][key].match(/<body[^>]*>((.|[\n\r])*)<\/body>/im)[1];
-          const html = Mustache.render(allTemplates[0], {
+
+        // build templates
+        for (const key in templates) {
+          const title = templates[key].match(/<title[^>]*>((.|[\n\r])*)<\/title>/im)[1];
+          const body = templates[key].match(/<body[^>]*>((.|[\n\r])*)<\/body>/im)[1];
+          const html = Mustache.render(wrapper, {
             body,
           });
+
           this.templates[key] = {
             title,
             body: Juice(html),
@@ -58,6 +69,7 @@ class Email {
         Log.error('Email cannot load templates', err);
       });
   }
+
   newSignUp(person) {
     const token = person.getActivationToken();
     let templateProperties = {
@@ -68,9 +80,13 @@ class Email {
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
   }
 
-  newPlanAlert(person, plan) {
-    const templateProperties = Object.assign(person.toJSON(), plan.toJSON());
-    return this.sendWithTemplate(this.templates.alert, templateProperties);
+  newPlanAlert(data) {
+    let alert = new Alert({
+      id: data.alert_id,
+      person_id: data.person_id
+    });
+    data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
+    return this.sendWithTemplate(this.templates.alert, data);
   }
 
   newAlert(person, alert) {
@@ -95,18 +111,15 @@ class Email {
     });
   }
 
+  /**
+   * send mail with defined transport object
+   * @param {*} mailOptions 
+   */
   send(mailOptions) {
-    return new Promise((resolve, reject) => {
-      // send mail with defined transport object
-      this.transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          Log.error(error);
-          return reject(error);
-        }
-        Log.info('Message sent: %s', info.messageId, mailOptions.to);
-        return resolve(true);
-      });
-    });
+    
+    return this.transporter.sendMail(mailOptions)
+      .then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
+
   }
 }
 module.exports = new Email();
