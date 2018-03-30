@@ -1,0 +1,132 @@
+const Checkit = require('checkit');
+const Promise = require('bluebird');
+const Model = require('./base_model');
+const Person = require('./person');
+const Crypt = require('../lib/crypt');
+const {
+  Knex,
+} = require('../service/database');
+const Geocoder = require('../service/geocoder').geocoder;
+const DegreeToMeter = require('../service/geocoder').degreeToMeter;
+const Exception = require('./exception');
+
+class Alert extends Model {
+  get rules() {
+    return {
+      person_id: [
+        'required', 'integer'
+      ],
+      address: [
+        'required', 'string'
+      ],
+      geom: [
+        'required', 'object'
+      ],
+      radius: ['required', 'number']
+    }
+  }
+  defaults() {
+    return {
+      radius: 5
+    }
+  }
+
+  get geometry() {
+    return ['geom'];
+  }
+
+  get tableName() {
+    return 'alert';
+  }
+
+  initialize() {
+    this.on('saving', this._saving, this);
+    super.initialize();
+  }
+
+  alerts() {
+    return this.belongsTo(Person);
+  }
+
+  _saving(model, attrs, options) {
+    // partial validation
+    let partialRules = Object.assign(model.rules, {});
+    delete partialRules.geom;
+    return new Checkit(partialRules).run(model.attributes).then(() => {
+      return Geocoder.geocode(model.get('address')).then(res => {
+        let box = [];
+        let km = 1000;
+        let radius = model.get('radius') * km;
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius));
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius));
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius));
+        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius));
+        box.push(box[0]);
+
+        model.set('geom', {
+          'type': 'Polygon',
+          'coordinates': [box]
+        });
+        model.set('address', res[0].formattedAddress);
+        return new Checkit(model.rules).run(model.attributes);
+      })
+    });
+
+  }
+
+  canRead(session) {
+    if (!session.person) {
+      throw new Exception.notAllowed('Must be logged in');
+    }
+    if (this.get('person_id') !== session.person.id) {
+      throw new Exception.notAllowed('You cannot read this alert');
+    }
+    return Promise.resolve(this);
+  }
+
+  canEdit(session) {
+    return this.canRead(session);
+  }
+
+  static canCreate(session) {
+    if (!session.person) {
+      throw new Exception.notAllowed('Must be logged in');
+    }
+    return Promise.resolve(this);
+  }
+
+  getCollection() {
+    return this.collection().query('where', {
+      person_id: this.get('person_id')
+    }).fetch();
+  }
+
+  unsubsribeToken() {
+    const token = Crypt.encrypt(this.get('id') + '_' + this.get('person_id'));
+    return new Buffer(token).toString('base64');
+  }
+
+  static ByToken(token) {
+    let details = Crypt.decrypt(new Buffer(token, 'base64').toString('ascii'));
+    let parts = details.split('_');
+    return Alert.forge({
+      id: parts[0]
+    });
+  }
+
+  static getUsersByGeometry(plan_id) {
+
+    let sql = `SELECT 
+    person.email,
+    person.id as person_id,
+    alert.id as alert_id, 
+    plan.* 
+    FROM alert 
+    INNER JOIN plan ON ST_Intersects(plan.geom,alert.geom)
+    INNER JOIN person ON person.id=alert.person_id
+    WHERE plan.id=${plan_id}
+    GROUP BY person.id`;
+    return Knex.raw(sql);
+  }
+};
+module.exports = Alert;
