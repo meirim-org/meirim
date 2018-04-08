@@ -26,7 +26,6 @@ const cors = Cors({
 });
 
 // init application
-Log.silly('Starting application');
 const app = Express();
 app.use(Session);
 app.use(cors);
@@ -36,7 +35,6 @@ app.use('/', json, urlencoded, routes);
 app.use(errorHandler);
 
 Email.init().then(() => {
-  Log.info('Email initialized');
   Log.info('Application loaded');
 });
 module.exports = app;

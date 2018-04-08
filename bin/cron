@@ -1,1 +1,19 @@
 #!/usr/bin/env node
+
+const Schedule = require('node-schedule');
+const Config = require('../api/lib/config');
+const controller = require('../api/controller/cron');
+const Log = require('../api/lib/log');
+
+const scheduleConfig = Config.get('services.schedule');
+
+
+// set up schedule tasks
+if (scheduleConfig.iplan) {
+  Log.info('Registering schedule job iplan', scheduleConfig.iplan);
+  Schedule.scheduleJob(scheduleConfig.iplan, controller.iplan);
+}
+if (scheduleConfig.sendPlanningAlerts) {
+  Log.info('Registering schedule job sendPlanningAlerts', scheduleConfig.sendPlanningAlerts);
+  Schedule.scheduleJob(scheduleConfig.sendPlanningAlerts, controller.sendPlanningAlerts);
+}

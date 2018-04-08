@@ -9,10 +9,50 @@ body {
   font-size: 13px;
 }
 
+nav {
+  z-index: 1;
+}
+
+.hero {
+  margin: -56px -15px 0 -15px;
+  position: relative;
+}
+
+.hero .content {
+  position: absolute;
+  top: 20%;
+  text-align: center;
+  width: 100%;
+  color: #ffffff;
+}
+
+.hero .content h4,
+.hero .content p {
+  text-align: center;
+}
+
+.hero .join {
+  color: #ffffff;
+  background: #ffa81b;
+  border-radius: 20px;
+  border-width: 0;
+  font-weight: bold;
+  height: 40px;
+  padding: 10px 30px;
+  text-decoration: none;
+}
+
+h2 strong {
+  color: #ffa81b;
+  font-weight: normal;
+}
+
 .hpForm {
   background: #ffa81b;
   color: #ffffff;
   padding: 25px;
+  margin: 0 -15px;
+  /* width: 100%; */
 }
 
 .hpForm button {
@@ -25,26 +65,30 @@ body {
   padding: 10px 30px;
 }
 
+.hpForm .form-group.active_field label {
+  display: none;
+}
 
-.hpForm .form-group{
+.hpForm .form-group {
   position: relative;
 }
-.hpForm .form-group label{
-    color: #ffffff;
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 1rem;
-    font-weight: bold;
-    -webkit-transition: color .2s ease-out, -webkit-transform .2s ease-out;
-    transition: color .2s ease-out, -webkit-transform .2s ease-out;
-    transition: transform .2s ease-out, color .2s ease-out;
-    transition: transform .2s ease-out, color .2s ease-out, -webkit-transform .2s ease-out;
-    -webkit-transform-origin: 0% 100%;
-    transform-origin: 0% 100%;
-    text-align: initial;
-    -webkit-transform: translateY(12px);
-    transform: translateY(12px);
+
+.hpForm .form-group label {
+  color: #ffffff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  -webkit-transition: color .2s ease-out, -webkit-transform .2s ease-out;
+  transition: color .2s ease-out, -webkit-transform .2s ease-out;
+  transition: transform .2s ease-out, color .2s ease-out;
+  transition: transform .2s ease-out, color .2s ease-out, -webkit-transform .2s ease-out;
+  -webkit-transform-origin: 0% 100%;
+  transform-origin: 0% 100%;
+  text-align: initial;
+  -webkit-transform: translateY(12px);
+  transform: translateY(12px);
 }
 
 .hpForm .form-group input {
@@ -60,4 +104,29 @@ body {
   border-bottom: 1px solid #ffffff;
   transition: border-color .15s ease-in-out, box-shadow .15s;
   text-align: left;
+  direction: ltr;
+}
+
+.team,
+.partners {
+  background: #ffffff;
+}
+
+@media (min-width: 992px) {
+  .hero {
+    position: inherit;
+  }
+  .hero .content {
+    position: inherit;
+  }
+  .hero .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:50%;
+  }
+  .hero .content {
+    text-align: right;
+    margin-top:60px;
+  }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "citizensforcities",
-  "version": "2.0.0",
+  "name": "Meirim",
+  "version": "1.5.0",
   "description": "The goal of this project is to empower citizens to effectively organize for their quality of life in their cities and to ensure information about protests is accessible.",
   "main": "ecosystem.config.js",
   "repository": {
@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/meirim-org/meirim/issues"
   },
-  "homepage": "https://github.com/meirim-org/meirim#readme",
+  "homepage": "http://meirim.org",
   "dependencies": {
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
@@ -55,16 +55,16 @@
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
-    "jest": "^22.4.2",
-    "nodemon": "1.12.1",
     "eslint": "4.15.0",
     "eslint-config-airbnb": "16.1.0",
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
-    "eslint-plugin-react": "7.5.1"
+    "jest": "^22.4.2",
+    "nodemon": "1.12.1"
   },
   "scripts": {
-    "start": "./node_modules/.bin/nodemon  ./bin/www",
+    "start": "./node_modules/.bin/nodemon  ./bin/api",
+    "cron": "./node_modules/.bin/nodemon  ./bin/cron",
     "test": "jest"
   }
 }

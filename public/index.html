@@ -11,10 +11,8 @@
   <link href="css/index.css" rel="stylesheet" />
 </head>
 
-
 <body>
-  <nav class="navbar navbar-expand-lg sticky-top">
-    <a class="navbar-brand" href="#">Navbar</a>
+  <nav class="navbar navbar-expand-lg navbar-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -22,28 +20,38 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link active" href="#">עמוד הבית</a>
-        <a class="nav-item nav-link" href="#">התרעות תכנון</a>
-        <a class="nav-item nav-link" href="#">אודות</a>
+        <a class="nav-item nav-link" href="/alert/">התרעות תכנון</a>
+        <!-- <a class="nav-item nav-link" href="#">אודות</a> -->
       </div>
     </div>
     <form class="form-inline">
-      <button class="btn btn-outline-secondary" type="button">הצטרפו למעירים</button>
+      <button class="btn btn-outline-light" type="button" data-toggle="modal" data-target="#loginModal">כניסה לחשבון</button>
     </form>
   </nav>
-
-  <img class="img-fluid position-fixed" src="images/traktor.png" alt="טרקטור">
   <div class="container">
-
+    <section class="hero">
+      <img class="img-fluid background" src="images/traktor.png" alt="טרקטור">
+      <div class="content">
+        <img class="logo" src="images/logo_small.png" alt="לוגו מעירים">
+        <div class="d-lg-none">
+          <h4>מידע תכנוני ואקטיביזם עירוני</h4>
+          <p>רוצים השכמה?</p>
+          <a href="#register" class="join">הצטרפו למעירים</a>
+        </div>
+      </div>
+    </section>
     <div class="row">
-      <div class="col-sm-4">
-        <img class="make-it-fit" src="images/logo_small.png" alt="לוגו מעירים">
-        <h1>הגינה הציבורית שלכם עומדת להפוך למגדל?</h1>
+
+      <div class="col-lg-4">
+        <h2>הגינה הציבורית שלכם עומדת להפוך
+          <strong>למגדל?</strong>
+        </h2>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-lg-4">
 
-        <h2>קצת על מעירים</h2>
+        <strong>קצת על מעירים</strong>
         <p>
           אנו פועלים לשינוי סדר היום במערכת התכנון, חתירה להפרדת רשויות וייצוג הולם לכל שכבות האוכלוסייה תוך שמירה על האינטרס הסביבתי.
           מעירים הנו פרויקט עצמאי המאומץ על ידי התנועה לחופש המידע.
@@ -64,7 +72,8 @@
           <a href="mailto:info@meirim.org">info@meirim.org</a>
         </p>
       </div>
-      <div class="col-sm-4">
+      <div class="col-lg-4">
+        <a name="register"></a>
         <form class="hpForm">
           רוצים לדעת מה קורה ליד הבית שלכם?
           <strong class="d-block">הרשמו למערכת ההתרעות שלנו</strong>
@@ -83,104 +92,145 @@
         </form>
       </div>
     </div>
-    <div class="row">
-      <div class="col">
-        <h2>השותפים שלנו</h2>
-        <div class="row">
-          <div class="col">
-            <img class="img-fluid align-middle" src="images/logo-shorashim.png" alt="שורשים">
-          </div>
-          <div class="col">
-            <img class="img-fluid align-middle" src="images/logo-hatnua.png" alt="התנועה לחופש המידע">
-          </div>
-          <div class="col">
-            <img class="img-fluid align-middle" src="images/logo-hevra.png" alt="החברה להגנת הטבע">
-          </div>
-          <div class="col">
-            <img class="img-fluid align-middle" src="images/logo-lebinui.png" alt="המטה לבינוי שפוי">
-          </div>
-          <div class="col">
-            <img class="img-fluid align-middle" src="images/logo-mithabrim.png" alt="מתחברים">
-          </div>
-          <div class="col">
-            <img class="img-fluid align-middle" src="images/logo-sadna.png" alt="הסנדא לידע ציבורי">
-          </div>
-          <div class="col">
-            <img class="img-fluid align-middle" src="images/logo-sviva.png" alt="חיים וסביבה">
+  </div>
+
+  <section class="partners">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h2>השותפים שלנו</h2>
+          <div class="row">
+            <div class="col">
+              <img class="img-fluid align-middle" src="images/logo-shorashim.png" alt="שורשים">
+            </div>
+            <div class="col">
+              <img class="img-fluid align-middle" src="images/logo-hatnua.png" alt="התנועה לחופש המידע">
+            </div>
+            <div class="col">
+              <img class="img-fluid align-middle" src="images/logo-hevra.png" alt="החברה להגנת הטבע">
+            </div>
+            <div class="col">
+              <img class="img-fluid align-middle" src="images/logo-lebinui.png" alt="המטה לבינוי שפוי">
+            </div>
+            <div class="col">
+              <img class="img-fluid align-middle" src="images/logo-mithabrim.png" alt="מתחברים">
+            </div>
+            <div class="col">
+              <img class="img-fluid align-middle" src="images/logo-sadna.png" alt="הסנדא לידע ציבורי">
+            </div>
+            <div class="col">
+              <img class="img-fluid align-middle" src="images/logo-sviva.png" alt="חיים וסביבה">
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="team">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <p class="short-desc">אנחנו קבוצה עצמאית, קטנה ונחושה של אדריכלים, מתכנתים ומעצבת שעובדות ימים ולילות בהתנדבות במטרה להגביר את השקיפות
+            במערכת התכנון ולעודד אקטיביזם עירוני. זה הצוות שלנו:</p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="m-3 text-center">
+            <img class="img-fluid" src="images/eyal.png">
+            <a href="#">איל מגדלוביץ</a>
+            אדריכל ומנהל מעירים
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="m-3 text-center">
+            <img class="img-fluid" src="images/talia.png">
+            <a href="#">דר' טליה מרגלית</a>
+            אדריכלית, חוקרת ויועצת אקדמית
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="m-3 text-center">
+            <img class="img-fluid" src="images/yonatan.png">
+            <a href="http://dortheimer.com">יונתן דורטהיימר</a>
+            מתכנת ואדריכל וחוקר
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="m-3 text-center">
+            <img class="img-fluid" src="images/tomer.png">
+            <a href="#">תומר צ׳ציק</a>
+            מנהל פרויקטים
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="m-3 text-center">
+            <img class="img-fluid" src="images/naor.png">
+            <a href="#">נאור תורג׳מן</a>
+            מתכנת
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="m-3 text-center">
+            <img class="img-fluid" src="images/lilach.png">
+            <a href="#">לילך ריטר רמתי</a>
+            מתכנתת
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="m-3 text-center">
+            <img class="img-fluid" src="images/shira.png">
+            <a href="#">שירה אפרתי</a>
+            אדריכלית
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  </div>
+  <footer class="text-center">
+    מוזמנים לכתוב לנו בכל עניין
+    <a href="mailto:info@meirim.org">info@meirim.org</a>
+    <a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות הפיתוח</a>
+    <a href="https://www.facebook.com/meirim.city/">הצטרפו לעמוד הפייסבוק שלנו</a>
+  </footer>
 
 
-    <div class="row">
-      <div class="col-sm-4">
-        <p class="short-desc">אנחנו קבוצה עצמאית, קטנה ונחושה של אדריכלים, מתכנתים ומעצבת שעובדות ימים ולילות בהתנדבות במטרה להגביר את השקיפות
-          במערכת התכנון ולעודד אקטיביזם עירוני. זה הצוות שלנו:</p>
-      </div>
-      <div class="col-6 col-sm-2">
-        <div class="m-3 text-center">
-          <img class="img-fluid" src="images/eyal.png">
-          <a href="#">איל מגדלוביץ</a>
-          אדריכל ומנהל מעירים
+  <!-- Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">כניסת משתמשים קיימים</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      </div>
-      <div class="col-6 col-sm-2">
-        <div class="m-3 text-center">
-          <img class="img-fluid" src="images/talia.png">
-          <a href="#">דר' טליה מרגלית</a>
-          אדריכלית, חוקרת ויועצת אקדמית
-        </div>
-      </div>
-      <div class="col-6 col-sm-2">
-        <div class="m-3 text-center">
-          <img class="img-fluid" src="images/yonatan.png">
-          <a href="http://dortheimer.com">יונתן דורטהיימר</a>
-          מתכנת ואדריכל וחוקר
-        </div>
-      </div>
-      <div class="col-6 col-sm-2">
-            <div class="m-3 text-center">
-              <img class="img-fluid" src="images/tomer.png">
-              <a href="#">תומר צ׳ציק</a>
-              מנהל פרויקטים
+        <form>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputEmail">כתובת מייל:</label>
+              <input class="" required type="email" name="email" id="inputEmail" placeholder="yourname@mail.com">
+            </div>
+            <div class="form-group">
+              <label for="inputPassword">סיסמה:</label>
+              <input class="" required type="password" name="password" id="inputPassword">
             </div>
           </div>
-      <div class="col-6 col-sm-2">
-        <div class="m-3 text-center">
-          <img class="img-fluid" src="images/naor.png">
-          <a href="#">נאור תורג׳מן</a>
-          מתכנת
-        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">כניסה</button>
+          </div>
       </div>
-
-
-
-      <div class="col-6 col-sm-2">
-        <div class="m-3 text-center">
-          <img class="img-fluid" src="images/lilach.png">
-          <a href="#">לילך ריטר רמתי</a>
-          מתכנתת
-        </div>
-      </div>
-      <div class="col-6 col-sm-2">
-        <div class="m-3 text-center">
-          <img class="img-fluid" src="images/shira.png">
-          <a href="#">שירה אפרתי</a>
-          אדריכלית
-        </div>
-      </div>
-
+      </form>
     </div>
   </div>
 
-  <footer class="text-center">
-      מוזמנים לכתוב לנו בכל עניין
-      <a href="mailto:info@meirim.org">info@meirim.org</a>
-      <a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות הפיתוח</a>
-      <a href="https://www.facebook.com/meirim.city/">הצטרפו לעמוד הפייסבוק שלנו</a>
-  </footer>
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
   <script src="js/api.js"></script>
   <script src="js/index.js"></script>
 </body>

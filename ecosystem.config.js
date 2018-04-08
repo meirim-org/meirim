@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
     name        : "api",
-    script      : "bin/www",
+    script      : "bin/api",
     watch       : true,
     env: {
       "NODE_ENV": "production",
