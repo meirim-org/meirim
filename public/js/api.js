@@ -45,7 +45,7 @@ function errorHandler(xhr, status, errorThrown) {
   switch (xhr.status) {
     case 403:
       if (confirm(xhr.responseJSON.data + "\n" + goToLoginText)) {
-        redirectTo("/login");
+        redirectTo("/#login");
       }
       break;
     default:
