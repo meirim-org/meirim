@@ -74,18 +74,18 @@
         </p>
       </div>
       <div class="col-lg-4">
-        <a name="register"></a>
+        <a id="register"></a>
         <form class="hpForm">
           רוצים לדעת מה קורה ליד הבית שלכם?
           <strong class="d-block">הרשמו למערכת ההתרעות שלנו</strong>
 
           <div class="form-group">
-            <label for="inputEmail">כתובת מייל:</label>
-            <input class="" required type="email" name="email" id="inputEmail" placeholder="yourname@mail.com">
+            <label for="loginEmail">כתובת מייל:</label>
+            <input class="" required type="email" name="email" id="loginEmail" placeholder="yourname@mail.com">
           </div>
           <div class="form-group">
-            <label for="inputPassword">סיסמה:</label>
-            <input class="" required type="password" name="password" id="inputPassword">
+            <label for="loginPassword">סיסמה:</label>
+            <input class="" required type="password" name="password" id="loginPassword">
           </div>
           <div class="form-group text-center">
             <button type="submit">המשך</button>
@@ -137,49 +137,49 @@
         </div>
         <div class="col-6 col-lg-2">
           <div class="m-3 text-center">
-            <img class="img-fluid" src="images/eyal.png">
+            <img class="img-fluid" src="images/eyal.png" alt="איל מגדלוביץ">
             <a href="#">איל מגדלוביץ</a>
             אדריכל ומנהל מעירים
           </div>
         </div>
         <div class="col-6 col-lg-2">
           <div class="m-3 text-center">
-            <img class="img-fluid" src="images/talia.png">
+            <img class="img-fluid" src="images/talia.png" alt="טליה מרגלית">
             <a href="#">דר' טליה מרגלית</a>
             אדריכלית, חוקרת ויועצת אקדמית
           </div>
         </div>
         <div class="col-6 col-lg-2">
           <div class="m-3 text-center">
-            <img class="img-fluid" src="images/yonatan.png">
+            <img class="img-fluid" src="images/yonatan.png" alt="יונתן דורטהיימר">
             <a href="http://dortheimer.com">יונתן דורטהיימר</a>
             מתכנת ואדריכל וחוקר
           </div>
         </div>
         <div class="col-6 col-lg-2">
           <div class="m-3 text-center">
-            <img class="img-fluid" src="images/tomer.png">
+            <img class="img-fluid" src="images/tomer.png" alt="תומר צצ'יק">
             <a href="#">תומר צ׳ציק</a>
             מנהל פרויקטים
           </div>
         </div>
         <div class="col-6 col-lg-2">
           <div class="m-3 text-center">
-            <img class="img-fluid" src="images/naor.png">
+            <img class="img-fluid" src="images/naor.png" alt="נאור תורג׳מן">
             <a href="#">נאור תורג׳מן</a>
             מתכנת
           </div>
         </div>
         <div class="col-6 col-lg-2">
           <div class="m-3 text-center">
-            <img class="img-fluid" src="images/lilach.png">
+            <img class="img-fluid" src="images/lilach.png" alt="לילך ריטר רמתי">
             <a href="#">לילך ריטר רמתי</a>
             מתכנתת
           </div>
         </div>
         <div class="col-6 col-lg-2">
           <div class="m-3 text-center">
-            <img class="img-fluid" src="images/shira.png">
+            <img class="img-fluid" src="images/shira.png" alt="שירה אפרתי">
             <a href="#">שירה אפרתי</a>
             אדריכלית
           </div>
@@ -188,7 +188,6 @@
       </div>
     </div>
   </section>
-  </div>
   <footer class="text-center">
     מוזמנים לכתוב לנו בכל עניין
     <a href="mailto:info@meirim.org">info@meirim.org</a>
@@ -200,14 +199,14 @@
   <!-- Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">כניסת משתמשים קיימים</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form>
+      <form>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">כניסת משתמשים קיימים</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div class="modal-body">
             <div class="form-group">
               <label for="inputEmail">כתובת מייל:</label>
@@ -221,7 +220,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-primary">כניסה</button>
           </div>
-      </div>
+        </div>
       </form>
     </div>
   </div>

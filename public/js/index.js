@@ -18,8 +18,8 @@ $(document).ready(function () {
   $("#loginModal").on("submit", function () {
 
     API.post('sign/in/', {
-        email: $('#inputEmail').val(),
-        password: $('#inputPassword"').val()
+        email: $('#loginEmail').val(),
+        password: $('#loginPassword"').val()
       })
       .done(function (response) {
         redirectTo('/alert/')
@@ -58,5 +58,7 @@ $(document).ready(function () {
       });
     return false;
   });
+
+  // show login
 
 });
