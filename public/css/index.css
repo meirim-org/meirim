@@ -109,9 +109,8 @@ h2 strong {
 
 .team,
 .partners {
-  background: #ffffff;
-  height: 200px;
   position: relative;
+  background: #ffffff;
 }
 
 @media (min-width: 992px) {
