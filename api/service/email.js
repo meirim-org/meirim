@@ -62,7 +62,6 @@ class Email {
             title,
             body: Juice(html),
           };
-          Log.info('Loaded template', key);
         }
       })
       .catch((err) => {

@@ -87,21 +87,22 @@ class Plan extends Model {
 
   static fetchByObjectID(objectID) {
     return Plan.forge({
-      'OBJECTID': objectID
+      OBJECTID: objectID
     }).fetch();
   }
 
   static buildFromIPlan(iPlan) {
+    if (!iPlan) return false;
     return Plan.forge({
-      'OBJECTID': iPlan.properties.OBJECTID,
-      'PLAN_COUNTY_NAME': iPlan.properties.PLAN_COUNTY_NAME || '',
-      'PL_NUMBER': iPlan.properties.PL_NUMBER || '',
-      'PL_NAME': iPlan.properties.PL_NAME || '',
+      OBJECTID: iPlan.properties.OBJECTID,
+      PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
+      PL_NUMBER: iPlan.properties.PL_NUMBER || '',
+      PL_NAME: iPlan.properties.PL_NAME || '',
       // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
-      'data': iPlan.properties,
-      'geom': iPlan.geometry,
-      'PLAN_CHARACTOR_NAME': '',
-      'plan_url': iPlan.properties.PL_URL
+      data: iPlan.properties,
+      geom: iPlan.geometry,
+      PLAN_CHARACTOR_NAME: '',
+      plan_url: iPlan.properties.PL_URL,
     });
   }
 
