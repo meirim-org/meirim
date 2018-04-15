@@ -43,7 +43,7 @@ body {
 }
 
 .rectangle {
-  margin: 29px auto;
+  margin: 29px auto; 
   padding: 74px 113px;
   width: 636px;
   border-radius: 10px;
@@ -191,4 +191,22 @@ input[id="deleteAlert"] {
   border: none;
   color: red;
   font-weight: bold;
+}
+
+.radiusRange {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+}
+
+@media (max-width: 576px) { 
+  .rectangle {
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+  }
+
+  .radiusRange {
+    max-width: 60%;
+  }
 }
