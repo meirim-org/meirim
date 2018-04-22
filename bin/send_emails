@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+const controller = require('../api/controller/cron');
+const Log = require('../api/lib/log');
+
+controller.sendPlanningAlerts()
+  .then(() => Log.info('sendPlanningAlerts completed'))
+  .catch(e => Log.error(e))
+  .finally(() => process.exit());
