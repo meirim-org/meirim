@@ -209,4 +209,8 @@ input[id="deleteAlert"] {
   .radiusRange {
     max-width: 60%;
   }
+
+  .selectAreaAndInterest {
+    max-width: 90%;
+  }
 }
