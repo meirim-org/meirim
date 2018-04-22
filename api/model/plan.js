@@ -28,7 +28,7 @@ class Plan extends Model {
       sent: 0
     };
   }
-
+ // support json encode for data field
   format(attributes) {
     if (attributes.data) {
       attributes.data = JSON.stringify(attributes.data);
@@ -36,10 +36,11 @@ class Plan extends Model {
     return super.format(attributes);
   }
 
-  //
+  // support json encode for data field
   parse(attributes) {
     try {
       if (attributes.data) {
+        
         attributes.data = JSON.parse(attributes.data);
       }
 
@@ -81,40 +82,48 @@ class Plan extends Model {
     }).save({
       sent: '2',
     }, {
-      method: 'update'
+      method: 'update',
     });
   }
 
   static fetchByObjectID(objectID) {
     return Plan.forge({
-      OBJECTID: objectID
+      OBJECTID: objectID,
     }).fetch();
   }
 
   static buildFromIPlan(iPlan) {
-    if (!iPlan) return false;
     return Plan.forge({
-      OBJECTID: iPlan.properties.OBJECTID,
-      PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
-      PL_NUMBER: iPlan.properties.PL_NUMBER || '',
-      PL_NAME: iPlan.properties.PL_NAME || '',
-      // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
-      data: iPlan.properties,
-      geom: iPlan.geometry,
-      PLAN_CHARACTOR_NAME: '',
-      plan_url: iPlan.properties.PL_URL,
-    });
+        OBJECTID: iPlan.properties.OBJECTID,
+      })
+      .fetch()
+      .then((oldPlan) => {
+        if (oldPlan) return oldPlan;
+
+        const plan = new Plan({
+          OBJECTID: iPlan.properties.OBJECTID,
+          PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
+          PL_NUMBER: iPlan.properties.PL_NUMBER || '',
+          PL_NAME: iPlan.properties.PL_NAME || '',
+          // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
+          data: iPlan.properties,
+          geom: iPlan.geometry,
+          PLAN_CHARACTOR_NAME: '',
+          plan_url: iPlan.properties.PL_URL,
+        });
+        return plan.save();
+      });
   }
 
   static setMavatData(plan, mavanData) {
     return plan.set({
       goals_from_mavat: mavanData.goals,
-      main_details_from_mavat: mavanData.mainPlanDetails
-    })
+      main_details_from_mavat: mavanData.mainPlanDetails,
+    });
   }
 
   static getUnsentPlans(userOptions) {
-    let options = userOptions ?
+    const options = userOptions ?
       userOptions : {};
     if (!options.limit) {
       options.limit = 1;
@@ -127,7 +136,7 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data', 'goals_from_mavat', ' 	main_details_from_mavat', Knex.raw('X(st_centroid(geom)) as lon'), Knex.raw('Y(st_centroid(geom)) as lat')],
+      columns: ['id', 'data', 'goals_from_mavat', 'main_details_from_mavat', Knex.raw('X(st_centroid(geom)) as lon'), Knex.raw('Y(st_centroid(geom)) as lat')],
     });
   }
 };

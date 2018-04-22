@@ -58,17 +58,19 @@ const getBlueLines = (where) => {
   const url = `${BASE_AGS_URL}/0/query?f=json&outFields=${fields.join(',')}&returnGeometry=true&where=${where}`;
   const requestOptions = _.clone(options);
   requestOptions.uri = url;
-  return Request(requestOptions).then((data) => {
-    const geojson = GeoJSON.fromEsri(data, {});
-    Log.debug("Got", geojson.features.length, "plans");
-    return Bluebird.reduce(geojson.features, (coll, datum) => {
-      // overriding geomerty with WGS84 coordinates
-      const res = Object.assign({}, datum, {
-        geometry: reproject.toWgs84(datum.geometry, EPSG3857)
-      });
-      return coll.concat(res);
-    }, []);
-  });
+  return Request(requestOptions)
+    .then((data) => {
+      const geojson = GeoJSON.fromEsri(data, {});
+      Log.debug('Got', geojson.features.length, 'plans');
+      return Bluebird
+        .reduce(geojson.features, (coll, datum) => {
+        // overriding geomerty with WGS84 coordinates
+          const res = Object.assign({}, datum, {
+            geometry: reproject.toWgs84(datum.geometry, EPSG3857),
+          });
+          return coll.concat(res);
+        }, []);
+    });
 };
 
 const getPlanningCouncils = () => {
