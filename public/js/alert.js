@@ -56,7 +56,8 @@ $("#alertTable").bind({
       .fail(errorHandler);
   },
   addAlert: function (event, alert) {
-    var table = $("#alertTable");
+    var table = $("#alertTable")
+      .css("disaplay", "block");
     button = $("<button />")
       .addClass("delete")
       .on("click", function (e) {
@@ -70,6 +71,9 @@ $("#alertTable").bind({
       .append($("<td />").append(button));
     table.append(tr);
     tr.fadeIn();
+  },
+  init: function() {
+    $("#alertTable").css("display", "none");
   }
 });
 
@@ -138,6 +142,8 @@ $(document).ready(function () {
       })
       .fail(errorHandler);
   }
+
+  $("#alertTable").trigger("init");
 
   // load alerts to the table
   API.get('alert').done(function (response) {
