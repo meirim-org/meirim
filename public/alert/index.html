@@ -12,102 +12,82 @@
   <link href="../css/alert.css" rel="stylesheet" />
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"         aria-controls="navbarNavAltMarkup"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/">עמוד הבית</a>
-        <a class="nav-item nav-link active" href="/alert/">התרעות תכנון</a>
-        <!-- <a class="nav-item nav-link" href="#">אודות</a> -->
-      </div>
-    </div>
-    <button id="logout" class="float-left">יציאה</button>
-    <form class="form-inline">
-      <button class="btn btn-outline-light" type="button">כניסה לחשבון</button>
-    </form>
-  </nav>
-
-  <div clas="container">
-    <div class="row">
-      <div class="col">
-        <div class="group">
-
-          <img class='eyelashes' src="https://i.imgur.com/kcRbDo8.png" alt="מעירים"></img>
-          <div class="goodMorning" id="goodMorningText">
-            ברוכים הבאים למעירים!
-          </div>
-          <div class="col">
-
-            <div class="selectAreaAndInterest">
-              כדי לקבל רק התראות רלבנטיות הזינו כתובת ורדיוס:
-              <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
-            </div>
-            <br>
-          </div>
-          
+      
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/">עמוד הבית</a>
+          <a class="nav-item nav-link active" href="/alert/">התרעות תכנון</a>
+          <a class="nav-item nav-link active" href="/alert/">יציאה</a>
         </div>
       </div>
+      
+      
+    </nav>
 
-
-    </div>
-  </div>
-
-
-  <div class="container">
-    <div class="rectangle" id="container">
-
-      <div class="row">
-        <div class="col">
-          <table id="alertTable">
-            <thead>
-              <tr>
-                <th>כתובת</th>
-                <th>רדיוס</th>
-                <th></th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-      </div>
-
+    <div class="container">
       <div class="row">
         <div class="col">
           <div class="group">
-            <label id="homeLabale" style="position:relative;">כתובת:</label>
-            <input id="homeAddress" type="text" required placeholder="לדוגמה: מאז״ה 9, תל אביב"/>
-
-              <form id="addNewAlert">
-                <label id="radiusLabale">רדיוס:</label>
-                <div class="row">
-                  <div class="col">
-                    <span id="rangeCurrentNumber" style="display:inline-block; color: #a3a3a3;position:relative;right : 15%;">1</span>
-                    <p id="rangeTextSMrightSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;">ק"מ</p>
-                  </div>
-                  <div class="col">
-                    <input id="radiusRange" type="range" min="1" max="5" value="1" step="1" class="radiusRange"/>
-                    <p id="rangeTextSMleftSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;">5 ק"מ</p>
-                  </div>
-                  <div class="col">
-                    <button id="submitButton">הוספה</button>
-
-                  </div>
-                </div>
-              </form> 
+            <img class='eyelashes' src="https://i.imgur.com/kcRbDo8.png" alt="מעירים"/>
+            <div class="goodMorning" id="goodMorningText">
+              ברוכים הבאים למעירים!
+            </div>
+            <div class="selectAreaAndInterest">
+              כדי לקבל רק התראות רלבנטיות הזינו כתובת ורדיוס:
+              <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
+            </div>     
           </div>
         </div>
       </div>
-
     </div>
-  </div>
+
+    <div class="container">
+      <div class="rectangle" id="container">
+        <div class="row">
+          <div class="col">
+            <table id="alertTable">
+              <thead>
+                <tr>
+                  <th>כתובת</th>
+                  <th>רדיוס</th>
+                  <th></th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="group">
+              <label id="homeLabale" style="position:relative;">כתובת:</label>
+              <input id="homeAddress" type="text" required placeholder="לדוגמה: מאז״ה 9, תל אביב"/>
+              <form id="addNewAlert">
+                <label id="radiusLabale">רדיוס:</label>
+                <div class="row">
+                  <span id="rangeCurrentNumber" style="display:inline-block; color: #a3a3a3;position:relative;right : 15%;">1</span>
+                  <p id="rangeTextSMrightSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;">ק"מ</p>
+                  <input id="radiusRange" type="range" min="1" max="5" value="1" step="1" class="radiusRange"/>
+                  <p id="rangeTextSMleftSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 15%;">5 ק"מ</p>
+                  <button id="submitButton">הוספה</button>
+                </div>
+              </form> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
     <script src="../js/api.js"></script>
     <script src="../js/alert.js"></script>
-</body>
 
+  </body>
 </html>
