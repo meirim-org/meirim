@@ -2,8 +2,10 @@
 
 const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
+const Email = require('../api/service/email');
 
-controller.sendPlanningAlerts()
+
+Email.init().then(() => controller.sendPlanningAlerts())
   .then(() => Log.info('sendPlanningAlerts completed'))
   .catch(e => Log.error(e))
   .finally(() => process.exit());

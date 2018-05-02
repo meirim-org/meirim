@@ -123,12 +123,10 @@ class Plan extends Model {
   }
 
   static getUnsentPlans(userOptions) {
-    const options = userOptions ?
-      userOptions : {};
+    const options = userOptions ? userOptions : {};
     if (!options.limit) {
       options.limit = 1;
     }
-    options.limit = 1;
     return Plan.query((qb) => {
       qb.where('sent', '=', '0');
       if (options.OBJECTID) {
