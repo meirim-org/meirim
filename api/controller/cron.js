@@ -1,5 +1,3 @@
-const Controller = require('../controller/controller');
-const _ = require('lodash');
 const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
@@ -38,7 +36,8 @@ module.exports = {
                   return;
                 }
                 // if there was an update get more data and save
-                return Plan.buildFromIPlan(iPlan)
+                return Plan
+                  .buildFromIPlan(iPlan)
                   .then((plan) => {
                     // this might return nothing
                     return MavatAPI.parseMavat(plan.get('plan_url'))
@@ -51,8 +50,9 @@ module.exports = {
                       })
                       .finally(() => {
                         plan.set('sent', oldPlan ? 1 : 0);
-                        return plan.save();
                         Log.debug('Saved');
+                        return plan.save();
+                        
                       })
 
                   });
@@ -67,7 +67,7 @@ module.exports = {
     Log.info('Running send planning alert');
 
     return Plan
-      .getUnsentPlans()
+      .getUnsentPlans({ limit: 100 })
       .then((unsentPlans) => {
         Log.debug('Got', unsentPlans.models.length, 'Plans');
         return unsentPlans.models;
@@ -76,8 +76,8 @@ module.exports = {
         return Alert
           .getUsersByGeometry(unsentPlan.get('id'))
           .then((users) => {
-            Log.debug('Got', users.length, 'users for plan', unsentPlan.get('id'));
-            if (!users || !users.length) {
+            Log.debug('Got', users[0].length, 'users for plan', unsentPlan.get('id'));
+            if (!users[0] || !users[0].length) {
               return {
                 plan_id: unsentPlan.get('id'),
                 users: 0,
@@ -101,7 +101,7 @@ module.exports = {
         successArray.reduce((pv, cv) => id_array.push(cv.plan_id), 0);
         if (id_array.length) {
           return Plan.maekPlansAsSent(id_array)
-           .then(() => Log.info('Processed', id_array));
+           .then(() => Log.info('Processed plans', id_array));
         }
         // return successArray.reduce((pv, cv) => pv.users + cv.users, 0);
       });

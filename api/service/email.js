@@ -102,12 +102,14 @@ class Email {
   }
 
   sendWithTemplate(template, templateProperties) {
-    return this.send({
+    const email = {
       from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
       to: templateProperties.email, // list of receivers
       subject: Mustache.render(template.title, templateProperties), // Subject line
       html: Mustache.render(template.body, templateProperties), // html body
-    });
+    };
+    Log.debug('Sending email', email);
+    return this.send(email);
   }
 
   /**
