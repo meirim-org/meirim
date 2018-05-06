@@ -1,9 +1,15 @@
-const Winston = require('winston');
+const logger = require('pino')();
 
-const logger = new Winston.Logger({
-  level: 'silly',
-  transports: [
-    new (Winston.transports.Console)(),
-  ],
-});
-module.exports = logger;
+logger.level = 'debug';
+
+module.exports = {
+  debug: (...args) => {
+    logger.debug(args);
+  },
+  info: (...args) => {
+    logger.info(args);
+  },
+  error: (...args) => {
+    logger.error(args);
+  }
+};

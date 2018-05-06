@@ -25,7 +25,7 @@ class Plan extends Model {
 
   defaults() {
     return {
-      sent: 0
+      sent: 0,
     };
   }
  // support json encode for data field
@@ -40,10 +40,8 @@ class Plan extends Model {
   parse(attributes) {
     try {
       if (attributes.data) {
-        
         attributes.data = JSON.parse(attributes.data);
       }
-
     } catch (e) {
       Log.error('Json parse error', attributes.data);
     }

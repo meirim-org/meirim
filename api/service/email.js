@@ -10,6 +10,7 @@ const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
 const Fs = Promise.promisifyAll(require('fs'));
+const path = require('path');
 
 class Email {
   /**
@@ -30,9 +31,9 @@ class Email {
    */
   init() {
     const templateDir = `${__dirname}/email/`;
-    let templates = {},
-      wrapper,
-      promises = [];
+    let templates = {};
+    let wrapper;
+    let promises = [];
     return Fs.readdirAsync(templateDir)
       .map(file => Fs.readFileAsync(templateDir + file, 'utf-8').then(content => [file, content]))
       .then((contents) => {
@@ -79,13 +80,16 @@ class Email {
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
   }
 
-  newPlanAlert(data) {
+  newPlanAlert(user, unsentPlan) {
     const alert = new Alert({
-      id: data.alert_id,
-      person_id: data.person_id,
+      id: user.alert_id,
+      person_id: user.person_id,
     });
+    const data = user;
     data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
-    return this.sendWithTemplate(this.templates.alert, data);
+    Object.assign(data, unsentPlan.attributes);
+
+    return this.sendWithTemplate(this.templates.alert, user);
   }
 
   newAlert(person, alert) {
@@ -102,13 +106,23 @@ class Email {
   }
 
   sendWithTemplate(template, templateProperties) {
+
+    const attachments = templateProperties.attachments ? templateProperties.attachments : [];
+
+    attachments.push({
+      filename: 'logo_email.png',
+      path: path.resolve('public/images/logo_email.png'),
+      cid: 'logomeirim',
+    });
+
     const email = {
       from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
       to: templateProperties.email, // list of receivers
       subject: Mustache.render(template.title, templateProperties), // Subject line
       html: Mustache.render(template.body, templateProperties), // html body
+      attachments,
     };
-    Log.debug('Sending email', email);
+
     return this.send(email);
   }
 
