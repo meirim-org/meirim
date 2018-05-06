@@ -6,9 +6,9 @@ const Email = require('../service/email');
 const Bluebird = require('bluebird');
 const MavatAPI = require('../lib/mavat');
 
-const isNewPlan = iPlan => Plan
-  .fetchByObjectID(iPlan.properties.OBJECTID)
-  .then(plan => !plan);
+// const isNewPlan = iPlan => Plan
+//   .fetchByObjectID(iPlan.properties.OBJECTID)
+//   .then(plan => !plan);
 
 module.exports = {
   iplan: () => {
@@ -33,14 +33,15 @@ module.exports = {
                 // check if there was an update
                 if (oldPlan && oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE) {
                   Log.debug('No update required');
-                  return;
+                  return Bluebird.resolve();
                 }
                 // if there was an update get more data and save
                 return Plan
                   .buildFromIPlan(iPlan)
                   .then((plan) => {
                     // this might return nothing
-                    return MavatAPI.parseMavat(plan.get('plan_url'))
+                    return MavatAPI
+                      .parseMavat(plan.get('plan_url'))
                       .then((mavatData) => {
                         Plan.setMavatData(plan, mavatData);
                         Log.debug('Saving with mavat');
@@ -52,14 +53,11 @@ module.exports = {
                         plan.set('sent', oldPlan ? 1 : 0);
                         Log.debug('Saved');
                         return plan.save();
-                        
-                      })
-
+                      });
                   });
               });
           });
-        })
-      );
+        }));
   },
   sendPlanningAlerts: () => {
     // send emails for each plan to each user in the geographic area the fits
@@ -83,11 +81,10 @@ module.exports = {
                 users: 0,
               };
             }
-
             // reduce double users
             return Bluebird
               .mapSeries(users[0], user => Email
-                .newPlanAlert(user))
+                .newPlanAlert(user,unsentPlan))
               .then(() => {
                 return {
                   plan_id: unsentPlan.get('id'),
@@ -101,7 +98,7 @@ module.exports = {
         successArray.reduce((pv, cv) => id_array.push(cv.plan_id), 0);
         if (id_array.length) {
           return Plan.maekPlansAsSent(id_array)
-           .then(() => Log.info('Processed plans', id_array));
+            .then(() => Log.info('Processed plans', id_array));
         }
         // return successArray.reduce((pv, cv) => pv.users + cv.users, 0);
       });

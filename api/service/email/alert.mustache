@@ -18,29 +18,31 @@
     <div class="subSubHeadline">
        <strong>מספר התוכנית:</strong> {{data.PL_NUMBER}}
     </div>
+    {{#data.PLAN_COUNTY_NAME}}
     <div class="subSubHeadline">
-      <strong>ישוב:</strong> {{#data.PLAN_COUNTY_NAME}}{{data.PLAN_COUNTY_NAME}}{{/data.PLAN_COUNTY_NAME}}{{^data.PLAN_COUNTY_NAME}}כללי{{/data.PLAN_COUNTY_NAME}}
+      <strong>ישוב:</strong> {{data.PLAN_COUNTY_NAME}}
     </div>
+    {{/data.PLAN_COUNTY_NAME}}
      <div class="subSubHeadline">
        <strong>סוג תוכנית:</strong> {{data.ENTITY_SUBTYPE_DESC}}
     </div>
     
      <div class="subSubHeadline">
         <strong>מטרת התוכנית:</strong>
-    </div>:
+    </div>
     <div class="content">
     {{goals_from_mavat}}
     </div>
      <div class="subSubHeadline">
         <strong>תיאור התוכנית:</strong>
-    </div>:
+    </div>
     <div class="content">
     {{main_details_from_mavat}}
     </div>
     <div class="link_wrapper">
     <a class="link" href="{{data.PL_URL}}">צפייה במסמכי התכנית</a>
     </div>
-    <a href="{{unsubscribeLink}}">מחיקת התרעה</a>
+    <a href="{{unsubscribeLink}}">מחיקת התראה</a>
   </div>
 </body>
 </html>
