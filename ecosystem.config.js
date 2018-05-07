@@ -2,10 +2,13 @@ module.exports = {
   apps: [{
     name: 'api',
     script: 'bin/api',
-    watch: true,
+    merge_logs: true,
+    out_file: 'logs/combined.log',
+    error_file: 'logs/combined.log',
+    cwd: '/path/CitizensForCities',
     env: {
-      'NODE_ENV': 'production',
-      'PORT': 3000
-    }
-  }]
+      NODE_ENV: 'production',
+    },
+    restart_delay: 4000,
+  }],
 }
