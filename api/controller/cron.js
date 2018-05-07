@@ -46,8 +46,8 @@ module.exports = {
                         Plan.setMavatData(plan, mavatData);
                         Log.debug('Saving with mavat');
                       })
-                      .catch(() => {
-                        Log.debug('Saving without mavat');
+                      .catch((e) => {
+                        Log.debug('Saving without mavat', e);
                       })
                       .finally(() => {
                         plan.set('sent', oldPlan ? 1 : 0);
@@ -65,7 +65,9 @@ module.exports = {
     Log.info('Running send planning alert');
 
     return Plan
-      .getUnsentPlans({ limit: 100 })
+      .getUnsentPlans({
+        limit: 100
+      })
       .then((unsentPlans) => {
         Log.debug('Got', unsentPlans.models.length, 'Plans');
         return unsentPlans.models;
@@ -84,7 +86,7 @@ module.exports = {
             // reduce double users
             return Bluebird
               .mapSeries(users[0], user => Email
-                .newPlanAlert(user,unsentPlan))
+                .newPlanAlert(user, unsentPlan))
               .then(() => {
                 return {
                   plan_id: unsentPlan.get('id'),

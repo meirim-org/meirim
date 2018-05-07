@@ -57,6 +57,7 @@ const EPSG3857 = '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0
 const getBlueLines = (where) => {
   const url = `${BASE_AGS_URL}/0/query?f=json&outFields=${fields.join(',')}&returnGeometry=true&where=${where}`;
   const requestOptions = _.clone(options);
+  Log.debug(url);
   requestOptions.uri = url;
   return Request(requestOptions)
     .then((data) => {
@@ -64,7 +65,7 @@ const getBlueLines = (where) => {
       Log.debug('Got', geojson.features.length, 'plans');
       return Bluebird
         .reduce(geojson.features, (coll, datum) => {
-        // overriding geomerty with WGS84 coordinates
+          // overriding geomerty with WGS84 coordinates
           const res = Object.assign({}, datum, {
             geometry: reproject.toWgs84(datum.geometry, EPSG3857),
           });
