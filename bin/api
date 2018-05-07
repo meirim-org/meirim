@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const debug = require('debug')('citizensforcities:server');
 const http = require('http');
 const app = require('../api/app');
 
@@ -56,4 +55,3 @@ function normalizePort(val) {
 
   return false;
 }
-
