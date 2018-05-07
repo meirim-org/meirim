@@ -8,9 +8,6 @@ The goal of this project is to empower citizens to effectively organize for thei
 
 The project is in development and has two parts:
 
-* Client - built with React and Webpack.
-* Backend - build with nodejs.
-
 ## Setup instructions for development
 
 ### Prerequisites for backend
@@ -19,7 +16,6 @@ Things you need to install:
 
 * git
 * Nodejs
-* npm
 * Mysql
 
 Also these requirements:
@@ -33,7 +29,7 @@ Download code and dependencies
 ```bash
 npm install knex -g
 git clone git@github.com:dortheimer/CitizensForCities.git
-cd CitizensForCities/backend/
+cd CitizensForCities/
 npm i
 ```
 
@@ -81,6 +77,12 @@ Run Server
 pm2 start ecosystem.config.js --env production
 
 Set up cron
+
+```bash
+crontab -e
+0 0 * * *  cd /path_to_code/CitizensForCities/ && NODE_ENV='production' /usr/bin/node /path_to_code/CitizensForCities/bin/iplan >> /path_to_code/CitizensForCities/logs/combined.log 2>&1
+0 0 * * *  cd /path_to_code/CitizensForCities/ && NODE_ENV='production' /usr/bin/node /path_to_code/CitizensForCities/bin/send_emails >> /path_to_code/CitizensForCities/logs/combined.log 2>&1
+```
 
 ## Authors
 
