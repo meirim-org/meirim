@@ -7,13 +7,16 @@ The goal of this project is to empower citizens to effectively organize for thei
 ## Getting Started
 
 The project is in development and has two parts:
+
 * Client - built with React and Webpack.
 * Backend - build with nodejs.
 
 ## Setup instructions for development
 
 ### Prerequisites for backend
+
 Things you need to install:
+
 * git
 * Nodejs
 * npm
@@ -24,7 +27,9 @@ Also these requirements:
 https://github.com/nodejs/node-gyp#installation
 
 ### Instructions for backend
+
 Download code and dependencies
+
 ```bash
 npm install knex -g
 git clone git@github.com:dortheimer/CitizensForCities.git
@@ -33,54 +38,55 @@ npm i
 ```
 
 Import the database schema
+
 ```bash
 mysql -uroot -p
 ```
+
 Create a new schema:
+
 ```sql
 CREATE DATABASE meirim character set UTF8 collate utf8_bin;
 USE DATABASE meirim;
 exit;
 ```
+
 Import the sql file
+
 ```bash
 mysql -uroot -p -meirim < backend/doc/import.sql
 ```
+
 Run migrations
+
 ```bash
 knex  migrate:latest
 ```
 
 Edit the local configuration file and set your database and email settings
+
 ```bash
-vi backend/config/local.json
+vi config/local.json
 ```
 
 Run the backend
-```bash
-node start
-```
 
-### Prerequisites for client
-Things you need to install:
-* git
-* Nodejs
-* npm
-
-### Instructions
-Download code and dependencies
 ```bash
-git clone git@github.com:dortheimer/CitizensForCities.git
-cd CitizensForCities/client/
-npm i
 npm start
 ```
 
+## Running in production
+
+Run Server
+pm2 start ecosystem.config.js --env production
+
+Set up cron
+
 ## Authors
 
-* **Eyal Migdalovich** - *Project initiator* - [eyalmigd](https://github.com/eyalmigd)
-* **Jonathan Dortheimer** - *Initial work* - [dortheimer.com](https://dortheimer.com)
-* **Ann Lillman** - *Designs* - [annlillman](https://github.com/annlillman)
+* **Eyal Migdalovich** - _Project initiator_ - [eyalmigd](https://github.com/eyalmigd)
+* **Jonathan Dortheimer** - _Initial work_ - [dortheimer.com](https://dortheimer.com)
+* **Ann Lillman** - _Designs_ - [annlillman](https://github.com/annlillman)
 
 See also the list of [contributors](https://github.com/dortheimer/CitizensForCities/contributors) who participated in this project.
 
