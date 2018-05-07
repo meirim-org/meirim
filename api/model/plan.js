@@ -28,7 +28,7 @@ class Plan extends Model {
       sent: 0,
     };
   }
- // support json encode for data field
+  // support json encode for data field
   format(attributes) {
     if (attributes.data) {
       attributes.data = JSON.stringify(attributes.data);
@@ -96,9 +96,7 @@ class Plan extends Model {
       })
       .fetch()
       .then((oldPlan) => {
-        if (oldPlan) return oldPlan;
-
-        const plan = new Plan({
+        const data = {
           OBJECTID: iPlan.properties.OBJECTID,
           PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
           PL_NUMBER: iPlan.properties.PL_NUMBER || '',
@@ -108,7 +106,14 @@ class Plan extends Model {
           geom: iPlan.geometry,
           PLAN_CHARACTOR_NAME: '',
           plan_url: iPlan.properties.PL_URL,
-        });
+        };
+        if (oldPlan) {
+          oldPlan.set(data);
+          return oldPlan.save();
+        }
+
+        const plan = new Plan(data);
+        Log.debug('buildFromIPlan', plan);
         return plan.save();
       });
   }
