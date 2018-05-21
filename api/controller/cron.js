@@ -38,23 +38,19 @@ module.exports = {
                 // if there was an update get more data and save
                 return Plan
                   .buildFromIPlan(iPlan)
-                  .then((plan) => {
-                    // this might return nothing
-                    return MavatAPI
-                      .parseMavat(plan.get('plan_url'))
-                      .then((mavatData) => {
-                        Plan.setMavatData(plan, mavatData);
-                        Log.debug('Saving with mavat');
-                      })
-                      .catch((e) => {
-                        Log.debug('Saving without mavat', e);
-                      })
-                      .finally(() => {
-                        plan.set('sent', oldPlan ? 1 : 0);
-                        Log.debug('Saved');
-                        return plan.save();
-                      });
-                  });
+                  .then(plan => MavatAPI
+                    .parseMavat(plan.get('plan_url'))
+                    .then((mavatData) => {
+                      Plan.setMavatData(plan, mavatData);
+                      plan.set('sent', oldPlan ? 1 : 0);
+                      Log.debug('Saving with mavat');
+                      return plan.save();
+                    })
+                    .catch((e) => {
+                      plan.set('sent', oldPlan ? 1 : 0);
+                      Log.debug('Saving without mavat', e);
+                      return plan.save();
+                    }));
               });
           });
         }));
