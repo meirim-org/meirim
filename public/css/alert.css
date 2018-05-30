@@ -134,8 +134,8 @@ label#radiusLabale {
 }
 
 button.delete {
-  height: 12px;
-  width: 12px;
+  height: 20px;
+  width: 20px;
   background-color:transparent;
   position: relative;
   border: 0;

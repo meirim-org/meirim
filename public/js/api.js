@@ -69,5 +69,4 @@ function getParams() {
       a[b[0]] = decodeURIComponent(b[1]);
       return a;
     }, {});
-
 }
