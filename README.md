@@ -43,7 +43,6 @@ Create a new schema:
 
 ```sql
 CREATE DATABASE meirim character set UTF8 collate utf8_bin;
-USE DATABASE meirim;
 exit;
 ```
 
@@ -73,8 +72,9 @@ npm start
 
 ## Running in production
 
-Run Server
+Run Server in production (using apache to serve public)
 pm2 start ecosystem.config.js --env production
+
 
 Set up cron
 
@@ -84,11 +84,12 @@ crontab -e
 * * * * *  cd /path_to_code/CitizensForCities/ && NODE_ENV='production' /usr/bin/node /path_to_code/CitizensForCities/bin/send_emails >> /path_to_code/CitizensForCities/logs/combined.log 2>&1
 ```
 
-## Authors
+## Running in development
 
-* **Eyal Migdalovich** - _Project initiator_ - [eyalmigd](https://github.com/eyalmigd)
-* **Jonathan Dortheimer** - _Initial work_ - [dortheimer.com](https://dortheimer.com)
-* **Ann Lillman** - _Designs_ - [annlillman](https://github.com/annlillman)
+node bin/api
+node bin/dev_server
+
+## Authors
 
 See also the list of [contributors](https://github.com/dortheimer/CitizensForCities/contributors) who participated in this project.
 

@@ -8,16 +8,20 @@ $("#logout").on("click", function () {
 
 //form submit button
 $("#addNewAlert").on("submit", function () {
-  var mandatoryFieldsMessage = 'יש להזין כתובת בשדה';
+
+   var mandatoryFieldsMessage = 'יש להזין כתובת בשדה';
   if (!$('#homeAddress').val()) {
     return errorMessage(mandatoryFieldsMessage)
   }
+  $("#addNewAlert").attr('disabled', true);
   API.post('alert/', {
       address: $('#homeAddress').val(),
       radius: parseInt($('#radiusRange').val())
     })
     .done(function (response) {
-      $("#alertTable").trigger("addAlert", [response.data])
+      $("#alertTable").trigger("addAlert", [response.data]);
+      $("#addNewAlert").attr('disabled', false);
+
     })
     .fail(errorHandler);
   return false;
@@ -27,10 +31,11 @@ $("#addNewAlert").on("submit", function () {
 (function slider() {
   let slider = $('#radiusRange');
   // let rangeCurrentNumber = $('#rangeCurrentNumber')
-  let min = $(this).attr('min');
-  let max = $(this).attr('max');
+  let min = $(slider).attr('min');
+  let max = $(slider).attr('max');
   slider.on('change', function () {
-    var val = 1 - ($(this).val() - min) / (max - min);
+    var val = 1 - ($(slider).val() - min) / (max - min);
+    $("#rangeCurrentNumber").html($(slider).val());
     $(this).css('background-image',
       '-webkit-gradient(linear, left top, right top, ' +
       'color-stop(' + val + ', #C5C5C5), ' +
@@ -56,9 +61,9 @@ $("#alertTable").bind({
       .fail(errorHandler);
   },
   addAlert: function (event, alert) {
-    var table = $("#alertTable")
-      .css("disaplay", "block");
-    button = $("<button />")
+    var table = $("#alertTable");
+    table.css("display", "table");
+    var button = $("<button />")
       .addClass("delete")
       .on("click", function (e) {
         table.trigger("deleteAlert", [this])
@@ -73,6 +78,7 @@ $("#alertTable").bind({
     tr.fadeIn();
   },
   init: function() {
+    console.log(3);
     $("#alertTable").css("display", "none");
   }
 });
