@@ -7,7 +7,7 @@ const Exception = require('../model/exception');
 class AlertController extends Controller {
   create(req, res, next) {
     return super.create(req, res, next)
-      .then(savedAlert => Email.newAlert(req.session.person, savedAlert).then(() => [savedAlert]));
+      .then(savedAlert => Email.newAlert(req.session.person, savedAlert).then(() => savedAlert));
   }
 
   /**

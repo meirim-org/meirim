@@ -78,7 +78,6 @@ $("#alertTable").bind({
     tr.fadeIn();
   },
   init: function() {
-    console.log(3);
     $("#alertTable").css("display", "none");
   }
 });
