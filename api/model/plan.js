@@ -38,6 +38,7 @@ class Plan extends Model {
 
   // support json encode for data field
   parse(attributes) {
+
     try {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);

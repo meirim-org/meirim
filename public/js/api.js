@@ -2,7 +2,7 @@
  * Object to manage the communication with the backend
  */
 var API = {
-  Apibase: 'http://api.meirim.org/',
+  Apibase: 'http://localhost:3000/',//'http://api.meirim.org/',
   get: function (path, data) {
     return this.request({
       type: 'GET',

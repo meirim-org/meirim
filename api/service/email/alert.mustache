@@ -1,48 +1,69 @@
 <!DOCTYPE html>
-<html  dir="rtl">
-<head>
-  <title>בוקר טוב! הופקדה תכנית חדשה באזור העניין שלך - {{data.PL_NAME}}</title>
-</head>
-<body dir="rtl">
-    <h2 class="headline">בוקר טוב!</h2>
-    <h2 class="headline">הופקדה תכנית חדשה באזור העניין שלך</h2>
-    <img src="https://maps.googleapis.com/maps/api/staticmap?center={{lat}},{{lon}}&zoom=16&size=600x400&maptype=hybrid&markers=color:red%7Clabel:C%7C{{lat}},{{lon}}"
-                    alt="Plan map"
-                    width="600"
-                    border="0" align="center" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; margin: auto;"
-                    class="g-img" />
-    <div class="subHeadline">
-        שם התוכנית: <span class="blue">{{data.PL_NAME}}</span>
-    </div>
+<html dir="rtl">
 
-    <div class="subSubHeadline">
-       <strong>מספר התוכנית:</strong> {{data.PL_NUMBER}}
-    </div>
-    {{#data.PLAN_COUNTY_NAME}}
-    <div class="subSubHeadline">
-      <strong>ישוב:</strong> {{data.PLAN_COUNTY_NAME}}
-    </div>
-    {{/data.PLAN_COUNTY_NAME}}
-     <div class="subSubHeadline">
-       <strong>סוג תוכנית:</strong> {{data.ENTITY_SUBTYPE_DESC}}
-    </div>
-    
-     <div class="subSubHeadline">
-        <strong>מטרת התוכנית:</strong>
-    </div>
-    <div class="content">
-    {{goals_from_mavat}}
-    </div>
-     <div class="subSubHeadline">
-        <strong>תיאור התוכנית:</strong>
-    </div>
-    <div class="content">
-    {{main_details_from_mavat}}
-    </div>
-    <div class="link_wrapper">
-    <a class="link" href="{{data.PL_URL}}">צפייה במסמכי התכנית</a>
-    </div>
-    <a href="{{unsubscribeLink}}">מחיקת התראה</a>
+<head>
+  <title>
+    {{#data.PLAN_COUNTY_NAME}} תכנית חדשה ב{{data.PLAN_COUNTY_NAME}} {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}} תכנית
+    חדשה באזור העניין שלך {{/data.PLAN_COUNTY_NAME}} - {{data.PL_NAME}}</title>
+</head>
+
+<body dir="rtl">
+  <h2 class="headline">בוקר טוב!</h2>
+  {{#data.PLAN_COUNTY_NAME}}
+  <h2 class="headline">תכנית חדשה ב{{data.PLAN_COUNTY_NAME}}</h2>
+  {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}}
+  <h2 class="headline">תכנית חדשה באזור העניין שלך</h2>
+  {{/data.PLAN_COUNTY_NAME}}
+
+  <h2 class="headline">{{data.PL_NAME}}</h2>
+  <img src="https://maps.googleapis.com/maps/api/staticmap?center={{lat}},{{lon}}&zoom=16&size=600x400&maptype=hybrid&markers=color:red%7Clabel:C%7C{{lat}},{{lon}}"
+    alt="Plan map" width="600" border="0" align="center" style="width: 600px max-width: 600px; margin-bottom:20px; height:400px; background: #dddddd;"
+    class="g-img" />
+
+  <div class="subSubHeadline">
+    <strong>סטטוס:</strong> {{data.STATION_DESC}}
+    <br> {{#data.DEPOSITING_DATE}} <strong>תאריך הפקדה:</strong> {{data.DEPOSITING_DATE}} {{/data.DEPOSITING_DATE}}
   </div>
+  <h3>
+    מטרת התוכנית:
+  </h3>
+  <div class="content">
+    {{goals_from_mavat}}
+  </div>
+
+  <h3>תיאור התוכנית:</h3>
+  <div class="content">
+    {{main_details_from_mavat}}
+  </div>
+  <h3>
+    פרטים נוספים:
+  </h3>
+  <div class="subSubHeadline">
+    <strong>מספר התוכנית:</strong> {{data.PL_NUMBER}}
+  </div>
+
+  {{#data.PLAN_COUNTY_NAME}}
+  <div class="subSubHeadline">
+    <strong>ישוב:</strong> {{data.PLAN_COUNTY_NAME}}
+  </div>
+  {{/data.PLAN_COUNTY_NAME}}
+  <div class="subSubHeadline">
+    <strong>סוג תוכנית:</strong> {{data.ENTITY_SUBTYPE_DESC}}
+  </div>
+
+  <div class="subSubHeadline">
+    <strong>
+      שימושי קרקע:
+    </strong>
+    {{data.PL_LANDUSE_STRING}}
+  </div>
+
+  <div class="link_wrapper">
+    <a class="link" href="{{link}}">צפייה במסמכי התכנית</a>
+  </div>
+  <a href="{{unsubscribeLink}}">מחיקת התראה</a>
+  </div>
+
 </body>
+
 </html>
