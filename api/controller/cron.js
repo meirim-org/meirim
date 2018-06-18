@@ -32,7 +32,7 @@ module.exports = {
               .then((oldPlan) => {
                 // check if there was an update
                 if (oldPlan && oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE) {
-                  Log.debug('No update required');
+                  // Log.debug('No update required');
                   return Bluebird.resolve();
                 }
                 // if there was an update get more data and save
