@@ -57,7 +57,7 @@ module.exports = {
   },
   sendPlanningAlerts: () => {
     // send emails for each plan to each user in the geographic area the fits
-    // sendPlanningAlerts(req, res, next) {
+    // sendPlanningAlerts(req, res, next) {id
     Log.info('Running send planning alert');
 
     return Plan
@@ -73,16 +73,15 @@ module.exports = {
           .getUsersByGeometry(unsentPlan.get('id'))
           .then((users) => {
             Log.debug('Got', users[0].length, 'users for plan', unsentPlan.get('id'));
+
             if (!users[0] || !users[0].length) {
               return {
                 plan_id: unsentPlan.get('id'),
                 users: 0,
               };
             }
-            // reduce double users
             return Bluebird
-              .mapSeries(users[0], user => Email
-                .newPlanAlert(user, unsentPlan))
+              .mapSeries(users[0], user => Email.newPlanAlert(user, unsentPlan))
               .then(() => {
                 return {
                   plan_id: unsentPlan.get('id'),

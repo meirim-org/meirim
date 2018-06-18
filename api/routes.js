@@ -2,7 +2,7 @@ const Router = require('express').Router();
 const SignUp = require('./controller/sign');
 const Password = require('./controller/password');
 const Alert = require('./controller/alert');
-// const Activity = require('./controller/activity');
+const Plan = require('./controller/plan');
 // const cron = require('./Controller/cron');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
@@ -18,11 +18,8 @@ Router.post('/sign/activate', wrap(SignUp.activate, SignUp));
 Router.post('/sign/in', wrap(SignUp.signin, SignUp));
 Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 
-// Activity
-// Router.get('/activity/', wrap(Activity.browse));
-// Router.post('/activity/', wrap(Activity.create));
-// Router.get('/activity/:id', wrap(Activity.read));
-// Router.post('/activity/:id/join', wrap(Activity.join));
+// Plan
+Router.get('/plan/:id', wrap(Plan.read,Plan));
 
 // Password
 Router.post('/password/sendResetToken', wrap(Password.sendResetToken));

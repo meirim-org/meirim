@@ -10,12 +10,12 @@ module.exports = (req, res) => {
     const index = err.message.indexOf('ER_DUP_ENTRY:') + 14;
     return Failure.duplicate(res, err.message.substr(index));
   }
-  Log.info('User error', err.message);
+
+  Log.error('User error', err);
+
   if (err.name === 'NotAllowed') return Failure.notAllowed(res, err.message);
   if (err.name === 'BadRequest') return Failure.badRequest(res, err.message);
   if (err.name === 'NotFound') return Failure.notFound(res, err.message);
   if (err.name === 'NotImplemented') return Failure.notImplemented(res, err.message);
-  Log.error('User error', err);
   return Failure.error(res, err.message);
 };
-

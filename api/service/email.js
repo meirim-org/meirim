@@ -86,10 +86,17 @@ class Email {
       person_id: user.person_id,
     });
     const data = user;
-    data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
-    Object.assign(data, unsentPlan.attributes);
 
-    return this.sendWithTemplate(this.templates.alert, user);
+    Object.assign(data, unsentPlan.attributes);
+    if (data.data.DEPOSITING_DATE) {
+      let dates = data.data.DEPOSITING_DATE.split('T');
+      data.data.DEPOSITING_DATE = dates[0];
+    }
+
+    data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
+    data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
+
+    return this.sendWithTemplate(this.templates.alert, data);
   }
 
   newAlert(person, alert) {

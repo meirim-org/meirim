@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>מעירים - התרעות תכנון</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin="" />
+
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+    crossorigin=""></script>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="../lib/mustache.js"></script>
+
+  <link href="plan.css" rel="stylesheet" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand navbar-light">
+    <a class="navbar-brand" href="/">
+      <img style="width:32px" src="https://i.imgur.com/kcRbDo8.png" alt="מעירים" /> מעירים
+    </a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/#register">ראשי</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/alert/">התראות</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="btn btn-outline-secondary" href="/login" moda>התחברות</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <div id="render"></div>
+  <footer class="text-center">
+      מוזמנים לכתוב לנו בכל עניין
+      <a href="mailto:info@meirim.org">info@meirim.org</a>
+      <a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות הפיתוח</a>
+      <a href="https://www.facebook.com/meirim.city/">הצטרפו לעמוד הפייסבוק שלנו</a>
+    </footer>
+  
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="../js/api.js"></script>
+  <script src="plan.js"></script>
+
+  <script id="template" type="x-tmpl-mustache">
+    <div class="container">
+      <h1>{{PL_NAME}}</h1>
+     
+      <div class="row">
+        <div class="col">
+
+
+          <h3>מטרות התוכנית</h3>
+          <div class="rectangle">
+
+            {{goals_from_mavat}}
+
+          </div>
+          <h3>תיאור התוכנית</h3>
+          <div class="rectangle">
+
+            {{main_details_from_mavat}}
+
+          </div>
+        </div>
+        <div class="col">
+            <h3>מיקום</h3>
+            <div id="map"></div>
+            <h3>נתוני התוכנית</h3>
+          <ul>
+            <li>מספר תוכנית: {{data.PL_NUMBER}}</li>
+            <li>תאריך: {{data.ENTITY_SUBTYPE_DESC}}</li>
+            <li>תאריך הפקדה: {{data.DEPOSITING_DATE}}</li>
+            <li>שימוש קרקע: {{data.PL_LANDUSE_STRING}}</li>
+            <li>סטטוס: {{data.STATION_DESC}}</li>
+            <li>עדכון אחרון: {{data.LAST_UPDATE}}</li>
+            <li>
+              <a target="_blank" href="{{plan_url}}">מסמכי התוכנית באתר משרד האוצר</a>
+            </li>
+          </ul>
+         
+
+
+        </div>
+      </div>
+
+    </div>
+  </script>
+  
+</body>
+
+</html>
