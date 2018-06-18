@@ -16,6 +16,16 @@ nav {
   position: relative;
 }
 
+.garden h2{
+ padding-top:35px;
+}
+
+.aboutus{
+  padding-bottom:3px;
+  display:block;
+}
+
+
 .hero .content {
   position: absolute;
   top: 20%;
@@ -108,8 +118,14 @@ h2 strong {
 .team,
 .partners {
   position: relative;
+  padding-top: 35px;
   background: #ffffff;
 }
+
+.team .d-block {
+  color:#007bff;
+}
+
 
 @media (min-width: 992px) {
   .hero {
