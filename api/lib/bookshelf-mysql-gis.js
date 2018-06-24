@@ -39,15 +39,14 @@ module.exports = (bookshelf) => {
             if (attributes[attr][0][0][0]) {
 
               attributes[attr].map((att, i) => {
-                json[i]=[];
+                json[i] = [];
                 att.map((el, k) => {
-                  json[i][k]=[];
+                  json[i][k] = [];
                   el.map((elj, j) => {
                     json[i][k][j] = [elj.x, elj.y]
                   });
                 });
               });
-              console.log(json)
 
               attributes[attr] = {
                 "type": "MultiPolygon",
