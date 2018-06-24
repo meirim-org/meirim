@@ -114,7 +114,6 @@ class Plan extends Model {
         }
 
         const plan = new Plan(data);
-        Log.debug('buildFromIPlan', plan);
         return plan.save();
       });
   }

@@ -23,9 +23,8 @@ module.exports = {
         // remove existing plans
         .then((iPlans) => {
           // loop over plans received
-          return Bluebird.mapSeries(iPlans, (iPlan) => {
-            return Plan
-              .forge({
+          return Bluebird.mapSeries(iPlans, iPlan =>
+              Plan.forge({
                 OBJECTID: iPlan.properties.OBJECTID,
               })
               .fetch()
@@ -43,16 +42,23 @@ module.exports = {
                     .then((mavatData) => {
                       Plan.setMavatData(plan, mavatData);
                       plan.set('sent', oldPlan ? 1 : 0);
-                      Log.debug('Saving with mavat');
+                      Log.debug('Saving with mavat', JSON.stringify(mavatData));
                       return plan.save();
                     })
                     .catch((e) => {
                       plan.set('sent', oldPlan ? 1 : 0);
-                      Log.debug('Saving without mavat', e);
+                      Log.debug('Saving without mavat', JSON.stringify(e));
                       return plan.save();
                     }));
-              });
-          });
+              })
+              .catch((e) => {
+                Log.debug('iplan exception', JSON.stringify(e));
+                return Bluebird.resolve();
+              }))
+            .catch((e) => {
+              Log.debug('iplan map exception', JSON.stringify(e));
+              return Bluebird.resolve();
+            });
         }));
   },
   sendPlanningAlerts: () => {
@@ -62,7 +68,7 @@ module.exports = {
 
     return Plan
       .getUnsentPlans({
-        limit: 100
+        limit: 100,
       })
       .then((unsentPlans) => {
         Log.debug('Got', unsentPlans.models.length, 'Plans');
