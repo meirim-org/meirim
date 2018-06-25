@@ -61,6 +61,26 @@ module.exports = {
             });
         }));
   },
+
+  complete_mavat_data: () => {
+    return Plan.query((qb) => {
+        qb.where('main_details_from_mavat', '=', '');
+      })
+      .fetchAll()
+      .then(planCollection => {
+        return Bluebird.mapSeries(planCollection.models, plan => {
+          return MavatAPI
+            .parseMavat(plan.get('plan_url'))
+            .then((mavatData) => {
+              console.log(mavatData);
+              Plan.setMavatData(plan, mavatData);
+              Log.debug('Saving with mavat', JSON.stringify(mavatData));
+              return plan.save();
+            });
+        })
+      })
+  },
+
   sendPlanningAlerts: () => {
     // send emails for each plan to each user in the geographic area the fits
     // sendPlanningAlerts(req, res, next) {id
