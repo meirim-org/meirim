@@ -8,7 +8,10 @@ function fetch(planUrl) {
   return requestPromise({
     uri: planUrl,
     timeout: 10000,
-    transform: body => cheerio.load(body),
+    transform: (body) => {
+      log.debug('Got', body);
+      return cheerio.load(body);
+    },
   });
 }
 
