@@ -9,7 +9,7 @@ function fetch(planUrl) {
     uri: planUrl,
     timeout: 10000,
     transform: (body) => {
-      log.debug('Got', body);
+      // log.debug('Got', body);
       return cheerio.load(body);
     },
   });
