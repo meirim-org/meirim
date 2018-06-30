@@ -34,6 +34,7 @@
     "express-pino-logger": "^3.0.1",
     "express-session": "^1.15.3",
     "jade": "~1.11.0",
+    "js-crawler": "^0.3.21",
     "juice": "^4.2.2",
     "knex": "^0.13.0",
     "lodash": "^4.17.4",
@@ -47,10 +48,12 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pino": "^4.16.1",
+    "puppeteer": "^1.5.0",
     "reproject": "^1.1.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "serve-favicon": "^2.4.3",
+    "x-ray-phantom": "^1.0.1",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {

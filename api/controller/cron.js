@@ -13,11 +13,9 @@ const MavatAPI = require('../lib/mavat');
 module.exports = {
   iplan: () => {
     Log.info('Running iplan fetcher');
-    return iplanApi.getPlanningCouncils()
-      // get counsils
+    return iplanApi
+      .getPlanningCouncils()
       .then(councils => councils.features)
-
-      // for each counsil get plans
       .mapSeries(council => iplanApi
         .getBlueLines(`PLAN_AREA_CODE=${council.attributes.CodeMT}`)
         // remove existing plans
@@ -42,7 +40,7 @@ module.exports = {
                     .then((mavatData) => {
                       Plan.setMavatData(plan, mavatData);
                       plan.set('sent', oldPlan ? 1 : 0);
-                      Log.debug('Saving with mavat', JSON.stringify(mavatData));
+                      // Log.debug('Saving with mavat', JSON.stringify(mavatData));
                       return plan.save();
                     })
                     .catch((e) => {
@@ -69,10 +67,10 @@ module.exports = {
       .fetchAll()
       .then(planCollection => {
         return Bluebird.mapSeries(planCollection.models, plan => {
+          Log.debug((plan.get('plan_url')));
           return MavatAPI
             .parseMavat(plan.get('plan_url'))
             .then((mavatData) => {
-              console.log(mavatData);
               Plan.setMavatData(plan, mavatData);
               Log.debug('Saving with mavat', JSON.stringify(mavatData));
               return plan.save();

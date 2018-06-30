@@ -1,18 +1,47 @@
-const requestPromise = require('request-promise');
+// const requestPromise = require('request-promise');
 const cheerio = require('cheerio');
 const Bluebird = require('bluebird');
 const log = require('../../lib/log');
+const puppeteer = require('puppeteer');
 
-function fetch(planUrl) {
-  log.debug('Getting', planUrl);
-  return requestPromise({
-    uri: planUrl,
-    timeout: 10000,
-    transform: (body) => {
-      // log.debug('Got', body);
-      return cheerio.load(body);
-    },
-  });
+// function fetch(planUrl) {
+//   log.debug('Getting', planUrl);
+//   return requestPromise({
+//     uri: planUrl,
+//     timeout: 10000,
+//     transform: (body) => {
+//       // log.debug('Got', body);
+//       return cheerio.load(body);
+//     },
+//   });
+// }
+
+
+function fetch(plaUrl) {
+  return new Promise((resolve, reject) => {
+
+    (async () => {
+      try {
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.tracing.start({
+        path: 'trace.json',
+        categories: ['devtools.timeline'],
+      });
+      await page.goto(plaUrl, {
+        "waitUntil": "networkidle0",
+      });
+      // execute standard javascript in the context of the page.
+      const bodyHTML = await page.evaluate(() => document.body.innerHTML);
+      await page.tracing.stop();
+      await browser.close();
+      resolve(cheerio.load(bodyHTML));
+    }
+    catch (err){
+      reject(err);
+    }
+    })();
+  })
 }
 
 function getGoalsText(cheerioPage) {
