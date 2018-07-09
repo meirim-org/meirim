@@ -11,6 +11,9 @@ nav {
   z-index: 1;
 }
 
+.heroContainer {
+  height:800px;
+}
 .hero {
   display: none;
 }
@@ -121,6 +124,13 @@ h2 strong {
   color:#007bff;
 }
 
+footer {
+  margin-top:40px;  
+  z-index: 10000;
+  position: relative;
+  background: white;
+  padding: 100px;
+}
 
 @media (min-width: 992px) {
   .heroContainer {
