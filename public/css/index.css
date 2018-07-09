@@ -12,17 +12,11 @@ nav {
 }
 
 .hero {
-  margin: -56px -15px 0 -15px;
-  position: relative;
+  display: none;
 }
 
 .garden h2{
  padding-top:35px;
-}
-
-.aboutus{
-  padding-bottom:3px;
-  display:block;
 }
 
 
@@ -116,7 +110,8 @@ h2 strong {
 }
 
 .team,
-.partners {
+.partners,
+.aboutus {
   position: relative;
   padding-top: 35px;
   background: #ffffff;
@@ -128,8 +123,12 @@ h2 strong {
 
 
 @media (min-width: 992px) {
+  .heroContainer {
+    height: 800px;
+  }
   .hero {
-    position: inherit;
+    display: block;
+
   }
   .hero .content {
     position: inherit;

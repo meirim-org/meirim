@@ -28,9 +28,9 @@ function fetch(plaUrl) {
         path: 'trace.json',
         categories: ['devtools.timeline'],
       });
-      await page.goto(plaUrl, {
-        "waitUntil": "networkidle0",
-      });
+      await page.goto(plaUrl);
+      await page.waitForNavigation();
+
       // execute standard javascript in the context of the page.
       const bodyHTML = await page.evaluate(() => document.body.innerHTML);
       await page.tracing.stop();
@@ -38,6 +38,7 @@ function fetch(plaUrl) {
       resolve(cheerio.load(bodyHTML));
     }
     catch (err){
+      log.error(err);
       reject(err);
     }
     })();
