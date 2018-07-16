@@ -48,7 +48,7 @@ function fetch(plaUrl) {
         await page.goto(plaUrl);
         log.debug('Fetching', plaUrl);
         // await page.screenshot({path: 'screenshot.png'});
-        await page.waitForSelector('#ctl00_ContentPlaceHolder1_tdGOALS');
+        await page.waitForSelector('#ctl00_divPageTitle');
 
         // execute standard javascript in the context of the page.
         const bodyHTML = await page.evaluate(() => document.body.innerHTML);
