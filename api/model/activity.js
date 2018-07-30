@@ -124,22 +124,22 @@ class Activity extends BaseModel {
   }
   canEdit(session) {
     // if (!session.person || !session.person.admin) {
-    // 	throw new Exception.notAllowed('Must be an admin')
+    // 	throw new Exception.NotAllowed('Must be an admin')
     // }
     return Promise.resolve(true);;
   }
   canJoin(session) {
     if (!session.person || !session.person.id) {
-      throw new Exception.notAllowed('Must be signed in')
+      throw new Exception.NotAllowed('Must be signed in')
     }
     if (!this.status().notActive()) {
-      throw new Exception.notAllowed('Activity isn\'t active');
+      throw new Exception.NotAllowed('Activity isn\'t active');
     }
     return Promise.resolve(this);
   }
   static canCreate(session) {
     if (!session || !session.person || !session.person.id) {
-      throw new Exception.notAllowed('Must be signed in');
+      throw new Exception.NotAllowed('Must be signed in');
     }
     return Promise.resolve(true);
   }

@@ -1,13 +1,21 @@
 /**
  * Object to manage the communication with the backend
  */
-var API = {
-  Apibase: 'http://api.meirim.org/',
-  get: function (path, data) {
+const API = {
+  // for dev environment
+  Apibase: location.hostname !== "localhost" ? 'http://api.meirim.org/' : 'http://localhost:3000/',
+  get_promise: function (path) {
+    return new Promise((resolve, reject) => {
+      this.get(path)
+        .done(response => resolve(response))
+        .catch(error => reject(error));
+
+    })
+  },
+  get: function (path) {
     return this.request({
       type: 'GET',
-      url: this.Apibase + path,
-      data: data
+      url: this.Apibase + path
     });
   },
   post: function (path, data) {
@@ -24,7 +32,7 @@ var API = {
     });
   },
   request: function (params) {
-    let settings = Object.assign({
+    const settings = Object.assign({
       dataType: 'json',
       async: true,
       xhrFields: {
@@ -57,6 +65,21 @@ function errorHandler(xhr, status, errorThrown) {
   }
 };
 
+function loadTemplate(path) {
+  const settings = {
+    type: 'GET',
+    url: path,
+    dataType: 'text',
+    async: true,
+    contentType: 'text/plain',
+  };
+
+  return new Promise((resolve, reject) =>
+    $.ajax(settings)
+      .done(response => resolve(response))
+      .catch(error => reject(error)));
+}
+
 function errorMessage(message) {
   alert(message);
 }
@@ -70,3 +93,4 @@ function getParams() {
       return a;
     }, {});
 }
+
