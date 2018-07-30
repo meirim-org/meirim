@@ -14,21 +14,21 @@ class Alert extends Model {
   get rules() {
     return {
       person_id: [
-        'required', 'integer'
+        'required', 'integer',
       ],
       address: [
-        'required', 'string'
+        'required', 'string',
       ],
       geom: [
-        'required', 'object'
+        'required', 'object',
       ],
-      radius: ['required', 'number']
-    }
+      radius: ['required', 'number'],
+    };
   }
   defaults() {
     return {
-      radius: 5
-    }
+      radius: 5,
+    };
   }
 
   get geometry() {
@@ -50,10 +50,12 @@ class Alert extends Model {
 
   _saving(model, attrs, options) {
     // partial validation
-    let partialRules = Object.assign(model.rules, {});
+    const partialRules = Object.assign(model.rules, {});
     delete partialRules.geom;
-    return new Checkit(partialRules).run(model.attributes).then(() => {
-      return Geocoder.geocode(model.get('address')).then(res => {
+    return new Checkit(partialRules)
+      .run(model.attributes)
+      .then(() => Geocoder.geocode(model.get('address'))
+      .then(res => {
         let box = [];
         let km = 1000;
         let radius = model.get('radius') * km;
@@ -69,17 +71,15 @@ class Alert extends Model {
         });
         model.set('address', res[0].formattedAddress);
         return new Checkit(model.rules).run(model.attributes);
-      })
-    });
-
+      }));
   }
 
   canRead(session) {
     if (!session.person) {
-      throw new Exception.notAllowed('Must be logged in');
+      throw new Exception.NotAllowed('Must be logged in');
     }
     if (this.get('person_id') !== session.person.id) {
-      throw new Exception.notAllowed('You cannot read this alert');
+      throw new Exception.NotAllowed('You cannot read this alert');
     }
     return Promise.resolve(this);
   }
@@ -90,27 +90,27 @@ class Alert extends Model {
 
   static canCreate(session) {
     if (!session.person) {
-      throw new Exception.notAllowed('Must be logged in');
+      throw new Exception.NotAllowed('Must be logged in');
     }
     return Promise.resolve(this);
   }
 
   getCollection() {
     return this.collection().query('where', {
-      person_id: this.get('person_id')
+      person_id: this.get('person_id'),
     }).fetch();
   }
 
   unsubsribeToken() {
-    const token = Crypt.encrypt(this.get('id') + '_' + this.get('person_id'));
+    const token = Crypt.encrypt(`${this.get('id')  }_${  this.get('person_id')}`);
     return new Buffer(token).toString('base64');
   }
 
   static ByToken(token) {
-    let details = Crypt.decrypt(new Buffer(token, 'base64').toString('ascii'));
-    let parts = details.split('_');
+    const details = Crypt.decrypt(new Buffer(token, 'base64').toString('ascii'));
+    const parts = details.split('_');
     return Alert.forge({
-      id: parts[0]
+      id: parts[0],
     });
   }
 

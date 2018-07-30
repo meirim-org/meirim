@@ -21,6 +21,7 @@ class SignController extends Controller {
         }
 
         // if there is a user but active, this will return an error
+      
         return this.model
           .forge(req.body)
           .save()

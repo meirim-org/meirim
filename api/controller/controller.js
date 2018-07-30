@@ -19,9 +19,9 @@ class Controller {
   static wrap(fn, ctx) {
     return (req, res, next) => Promise
       .try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-      .then(response => Success.set(res, response))
+      .then(response => Success.set(res, response, req.session))
       .catch(Checkit.Error, (err) => {
-        req.error = Exception.BadRequest(err);
+        req.error = new Exception.BadRequest(err);
         next();
       })
       .catch((err) => {

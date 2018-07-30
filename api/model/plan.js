@@ -72,7 +72,7 @@ class Plan extends Model {
   }
 
   static canCreate(session) {
-    throw new Exception.notAllowed('This option is disabled');
+    throw new Exception.NotAllowed('This option is disabled');
   }
 
   static maekPlansAsSent(plan_ids) {
