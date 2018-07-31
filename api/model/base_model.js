@@ -1,9 +1,10 @@
-'use strict';
-const Checkit = require('checkit');
-const Bookshelf = require("../service/database").Bookshelf;
-const Exception = require('./exception');
-class Base_model extends Bookshelf.Model {
 
+
+const Checkit = require('checkit');
+const { Bookshelf } = require('../service/database');
+const Exception = require('./exception');
+
+class Base_model extends Bookshelf.Model {
   get hasTimestamps() {
     return false;
   }
@@ -15,21 +16,21 @@ class Base_model extends Bookshelf.Model {
     return new Checkit(model.rules).run(model.attributes);
   }
 
-  setPerson(session){
-    if (this.rules.person_id && session.person){
-      this.set("person_id",session.person.id);
+  setPerson(session) {
+    if (this.rules.person_id && session.person) {
+      this.set('person_id', session.person.id);
     }
   }
 
   canRead(session) {
-    throw new Exception.notAllowed("Must be logged in");
+    throw new Exception.NotAllowed('Must be logged in');
   }
   static canCreate(session) {
-    throw new Exception.notAllowed("Must be logged in");
+    throw new Exception.NotAllowed('Must be logged in');
   }
 
   getCollection() {
     return this.collection().fetch();
   }
-};
+}
 module.exports = Base_model;

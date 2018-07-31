@@ -72,10 +72,10 @@ class Email {
 
   newSignUp(person) {
     const token = person.getActivationToken();
-    let templateProperties = {
+    const templateProperties = {
       url: `${this.baseUrl}alert?activate=${token}`,
+      email: person.get('email'),
     };
-    templateProperties = Object.assign(templateProperties, person.toJSON());
     // setup email data with unicode symbols
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
   }
