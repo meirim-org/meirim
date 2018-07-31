@@ -3,7 +3,7 @@ const SignUp = require('./controller/sign');
 const Password = require('./controller/password');
 const Alert = require('./controller/alert');
 const Plan = require('./controller/plan');
-// const cron = require('./Controller/cron');
+const Comment = require('./controller/comment');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
@@ -19,7 +19,11 @@ Router.post('/sign/in', wrap(SignUp.signin, SignUp));
 Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 
 // Plan
-Router.get('/plan/:id', wrap(Plan.read,Plan));
+Router.get('/plan/:id', wrap(Plan.read, Plan));
+
+// Comment
+Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
+Router.post('/comment/:plan_id', wrap(Comment.create, Comment));
 
 // Password
 Router.post('/password/sendResetToken', wrap(Password.sendResetToken));

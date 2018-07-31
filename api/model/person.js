@@ -31,7 +31,7 @@ class Person extends BaseModel {
     };
   }
   get hidden() {
-    return ['password', 'admin', 'status']
+    return ['password', 'admin', 'status', 'email'];
   }
 
   get tableName() {
@@ -61,7 +61,7 @@ class Person extends BaseModel {
 
   resetPasswordToken() {
     const now = new Date().getTime();
-    const data = this.get('id') + '_' + now;
+    const data = `${this.get('id')  }_${  now}`;
     const token = Crypt.encrypt(data);
     return Buffer.from(token).toString('base64');
   }
@@ -84,8 +84,8 @@ class Person extends BaseModel {
       throw new Exception.BadRequest('Invalid token: token is valid for 2 hours only. Please generate a new token');
     }
     return Person.forge({
-        id: parts[0],
-      })
+      id: parts[0],
+    })
       .fetch()
       .then((person) => {
         if (!person) {
@@ -105,7 +105,7 @@ class Person extends BaseModel {
     }
     const password = model.get('password');
     if (password.lenth <= passwordLength) {
-      throw new Exception.BadRequest('Password must be at least ' + passwordLength + ' charcters')
+      throw new Exception.BadRequest(`Password must be at least ${  passwordLength  } charcters`);
     }
     // hash password
     return Bcrypt.hash(model.get('password'), 10)
