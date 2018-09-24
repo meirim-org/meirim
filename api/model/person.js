@@ -3,6 +3,7 @@ const Bcrypt = require('bcrypt');
 const Crypt = require('../lib/crypt');
 const Log = require('../lib/log');
 const Alert = require('./alert');
+const Config = require('config');
 const BaseModel = require('./base_model');
 const verifier = require('email-verify');
 const Exception = require('./exception');
@@ -157,7 +158,7 @@ class Person extends BaseModel {
   static verifyEmail(email) {
     const codes = verifier.verifyCodes;
     return new Promise((resolve, reject) => {
-      verifier.verify(email, (err, info) => {
+      verifier.verify(email, { sender: Config.get('email.from_email') }, (err, info) => {
         Log.debug('Email verifier', info, err);
         if (err) reject(err);
         else if (info.success) resolve(true);
