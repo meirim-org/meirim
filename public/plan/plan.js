@@ -3,13 +3,13 @@ $(document).ready(() => {
   const template = $('#template').html();
 
   Promise.all([
-    API.get_promise('plan/' + id),
-    loadTemplate('/plan/nav.mustache'),
-  ])
-  
-    .then(([response,navTemplate]) => {
-      $('#nav').html(Mustache.render(navTemplate,response));
-      $('#render').html(Mustache.render(template,response));
+      API.get_promise('plan/' + id),
+      loadTemplate('/plan/nav.mustache'),
+    ])
+
+    .then(([response, navTemplate]) => {
+      $('#nav').html(Mustache.render(navTemplate, response));
+      $('#render').html(Mustache.render(template, response));
 
       // set up the map
       const mymap = L.map('map');
