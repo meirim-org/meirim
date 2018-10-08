@@ -32,7 +32,7 @@ class Person extends BaseModel {
     };
   }
   get hidden() {
-    return ['password', 'admin', 'status', 'email'];
+    return ['password', 'admin', 'status'];
   }
 
   get tableName() {

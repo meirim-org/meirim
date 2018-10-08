@@ -56,7 +56,11 @@ class Comment extends Model {
         qb.orderBy('id', 'DESC');
       })
       .fetchAll({
-        withRelated: ['person'],
+        withRelated: [{
+          'person': function (qb) {
+            qb.column('id', 'alias');
+          }
+        }],
       });
   }
 
