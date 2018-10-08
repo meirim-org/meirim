@@ -21,7 +21,7 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
-server.listen(port);http://meirim.org/
+server.listen(port);
 server.on('error', (error) => {
   if (error.syscall !== 'listen') {
     throw error;
