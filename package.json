@@ -33,6 +33,7 @@
     "express-fileupload": "^0.1.4",
     "express-pino-logger": "^3.0.1",
     "express-session": "^1.15.3",
+    "html-table-to-json": "^0.2.1",
     "jade": "~1.11.0",
     "juice": "^4.2.2",
     "knex": "^0.13.0",
@@ -48,10 +49,12 @@
     "passport-local": "^1.0.0",
     "pino": "^4.16.1",
     "puppeteer": "^1.5.0",
+    "react-scripts": "^2.0.4",
     "reproject": "^1.1.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "serve-favicon": "^2.4.3",
+    "shapefile": "^0.6.6",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
