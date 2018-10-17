@@ -6,9 +6,10 @@ const Config = require('../lib/config');
 const _ = require('lodash');
 const reproject = require('reproject');
 
-const BASE_AGS_URL = 'https://ags.moin.gov.il/arcgis/rest/services/mehoziot_app/MapServer';
+const BASE_AGS_URL = 'https://ags.iplan.gov.il/arcgis/rest/services/PlanningPublic/Xplan/MapServer';
 
 const options = {
+  rejectUnauthorized: false,
   qs: {
     // access_token: 'xxxxx xxxxx' // -> uri + '?access_token=xxxxx%20xxxxx'
   },
