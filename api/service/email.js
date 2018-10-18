@@ -121,13 +121,19 @@ class Email {
       path: path.resolve('public/images/logo_email.png'),
       cid: 'logomeirim',
     });
+    const subject = Mustache
+      .render(template.title, templateProperties)
+      .replace(/\r?\n|\r/g, '')
+      .replace(/\s\s+/g, ' ');
 
     const email = {
       from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
       to: templateProperties.email, // list of receivers
-      subject: Mustache.render(template.title, templateProperties), // Subject line
+      subject, // Subject line
       html: Mustache.render(template.body, templateProperties), // html body
       attachments,
+      encoding: 'utf8',
+      textEncoding: 'base64',
     };
 
     return this.send(email);
