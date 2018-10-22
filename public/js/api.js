@@ -3,7 +3,7 @@
  */
 const API = {
   // for dev environment
-  Apibase: location.hostname !== "localhost" ? 'http://api.meirim.org/' : 'http://localhost:3000/',
+  Apibase: location.hostname !== "localhost" ? 'https://api.meirim.org/' : 'http://localhost:3000/',
   get_promise: function (path) {
     return new Promise((resolve, reject) => {
       this.get(path)
