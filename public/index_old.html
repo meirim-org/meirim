@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>מעירים - לסדר יום מרחבי חדש</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/solid.css" integrity="sha384-Rw5qeepMFvJVEZdSo1nDQD5B6wX0m7c5Z/pLNvjkB14W6Yki1hKbSEQaX9ffUbWe"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/regular.css" integrity="sha384-EWu6DiBz01XlR6XGsVuabDMbDN6RT8cwNoY+3tIH+6pUCfaNldJYJQfQlbEIWLyA"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/fontawesome.css" integrity="sha384-GVa9GOgVQgOk+TNYXu7S/InPTfSDTtBalSgkgqQ7sCik56N9ztlkoTr2f/T44oKV"
+    crossorigin="anonymous">
+  <link href="css/index.css" rel="stylesheet" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122025557-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-122025557-1');
+</script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand navbar-light">
+    <a class="navbar-brand" href="/">
+      <img style="width:32px" class='eyelashes' src="/images/logo.png" alt="מעירים" /> מעירים
+    </a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/alert/">התראות</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="btn btn-outline-secondary" href="/login" moda>התחברות</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <div class="container heroContainer">
+    <section class="hero">
+      <img class="img-fluid background" src="images/traktor_op.png" alt="טרקטור">
+      <div class="content">
+        <img class="logo" src="images/logo_small.png" alt="לוגו מעירים">
+        <div class="d-lg-none">
+          <h4>מידע תכנוני ואקטיביזם עירוני</h4>
+          <p>רוצים השכמה?</p>
+          <a href="#register" class="join">הצטרפו למעירים</a>
+        </div>
+      </div>
+    </section>
+    <div class="row garden">
+
+      <div class="col-lg-4">
+        <h2>רוצים לדעת אם הגינה הציבורית שלכם עומדת
+          <strong>להפוך למגדל?</strong>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <p>
+          מערכת ההתראות שלנו מאגדת במקום אחד את כל התכניות בסמכות מקומית ומחוזית ותשלח לכם התראה למייל בזמן אמת, בכל פעם שתופקד תכנית
+          חדשה בסמכות מקומית או כשתקלט במערכת תכנית חדשה בסמכות מחוזית באזור מגוריכם או בכל אזור אחר שתבחרו! 
+          כך תוכלו לעקוב בקלות אחרי השינויים בסביבת המגורים שלכם. 
+        </p>
+      </div>
+      <div class="col-lg-4">
+        <a id="register"></a>
+        <form class="hpForm">
+          <strong class="d-d-block text-center">הרשמו עכשיו:</strong>
+
+          <div class="form-group">
+            <label for="loginEmail">כתובת מייל:</label>
+            <input class="" required type="email" name="email" id="loginEmail" placeholder="yourname@mail.com">
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">סיסמה:</label>
+            <input class="" required type="password" name="password" id="loginPassword">
+          </div>
+          <div class="form-group text-center">
+            <button type="submit">הרשמה</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center">
+    <a href="mailto:info@meirim.org">יצירת קשר</a> | <a href="https://www.facebook.com/meirim.city/">הפייסבוק שלנו</a> |
+    <a href="/team/">אודות</a> | <a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות</a><br>
+    <a href="/terms/">תנאי שימוש</a> |  כל הזכויות שמורות
+  </footer>
+
+
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <script src="js/api.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>
