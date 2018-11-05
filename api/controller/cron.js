@@ -12,7 +12,7 @@ const MavatAPI = require('../lib/mavat');
 
 module.exports = {
   iplan: () => {
-    Log.info('Running iplan fetcher');
+    console.log('Running iplan fetcher');
     return iplanApi
       .getPlanningCouncils()
       .then(councils => councils.features)
@@ -39,22 +39,23 @@ module.exports = {
                     .parseMavat(plan.get('plan_url'))
                     .then((mavatData) => {
                       Plan.setMavatData(plan, mavatData);
-                      plan.set('sent', oldPlan ? 1 : 0);
+                      if (!oldPlan || oldPlan.get('data').STATION != iPlan.properties.STATION) {
+                        plan.set('sent', oldPlan ? 1 : 0);
+                      }
                       // Log.debug('Saving with mavat', JSON.stringify(mavatData));
                       return plan.save();
                     })
                     .catch((e) => {
-                      plan.set('sent', oldPlan ? 1 : 0);
-                      Log.debug('Saving without mavat', JSON.stringify(e));
+                      console.log('Saving without mavat', JSON.stringify(e));
                       return plan.save();
                     }));
               })
               .catch((e) => {
-                Log.debug('iplan exception', JSON.stringify(e));
+                console.log('iplan exception', JSON.stringify(e));
                 return Bluebird.resolve();
               }))
             .catch((e) => {
-              Log.debug('iplan map exception', JSON.stringify(e));
+              console.log('iplan map exception', JSON.stringify(e));
               return Bluebird.resolve();
             });
         }));
