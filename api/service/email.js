@@ -93,7 +93,8 @@ class Email {
       data.data.DEPOSITING_DATE = dates[0];
     }
 
-    data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
+    // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
+    data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
 
     return this.sendWithTemplate(this.templates.alert, data);
