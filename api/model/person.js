@@ -95,14 +95,17 @@ class Person extends BaseModel {
           throw new Exception.BadRequest('Invalid token');
         }
         person.set('password', newPassword);
+        Log.debug('Set new password');
         return person.save();
       })
       .then(() => true);
   }
 
   hashPassword(model) {
+   
     const passwordLength = 6;
     if (!model.hasChanged('password')) {
+      Log.debug('Password not hashed');
       return false;
     }
     const password = model.get('password');
@@ -110,6 +113,7 @@ class Person extends BaseModel {
       throw new Exception.BadRequest(`Password must be at least ${  passwordLength  } charcters`);
     }
     // hash password
+    Log.debug('Password hashed');
     return Bcrypt.hash(model.get('password'), 10)
       .then(hashedPassword => model.set('password', hashedPassword));
   }
