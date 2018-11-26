@@ -73,6 +73,30 @@ class SignController extends Controller {
       });
   }
 
+  // forgot(req) {
+  //   if (!req.body.email) {
+  //     throw new Exception.BadRequest('No email provided');
+  //   }
+   
+  //   const email = req.body.email.toLowerCase().trim();
+  //   Log.debug('Try login with email:', email);
+
+  //   return Person.forge({
+  //       email,
+  //     })
+  //     .fetch()
+  //     .then(person => {
+  //       // always return true;
+  //       if (!person){
+  //         return Promise.resolve();
+  //       }
+  //       person.resetPasswordCode()
+  //       return Email.sendPasswordResetCode(Object.assign({},person,person.resetPasswordCode()));
+      
+  //     })
+  //     .then(() =>true);
+  // }
+
   signout(req) {
     if (req.session.destroy()) {
       return true;

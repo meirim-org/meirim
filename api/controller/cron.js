@@ -87,7 +87,7 @@ module.exports = {
 
     return Plan
       .getUnsentPlans({
-        limit: 100,
+        limit: 1,
       })
       .then((unsentPlans) => {
         Log.debug('Got', unsentPlans.models.length, 'Plans');
@@ -116,12 +116,13 @@ module.exports = {
           });
       })
       .then((successArray) => {
-        let id_array = [];
-        successArray.reduce((pv, cv) => id_array.push(cv.plan_id), 0);
-        if (id_array.length) {
-          return Plan.maekPlansAsSent(id_array)
-            .then(() => Log.info('Processed plans', id_array));
+        const idArray = [];
+        successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
+        if (idArray.length) {
+          return Plan.maekPlansAsSent(idArray)
+            .then(() => Log.info('Processed plans', idArray));
         }
+        return true;
         // return successArray.reduce((pv, cv) => pv.users + cv.users, 0);
       });
   },
