@@ -67,6 +67,7 @@ class Person extends BaseModel {
     return Buffer.from(token).toString('base64');
   }
 
+
   static resetPasswordByToken(token, newPassword) {
     const now = new Date().getTime();
     const details = Crypt.decrypt(Buffer.from(token, 'base64').toString('ascii'));

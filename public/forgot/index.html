@@ -1,0 +1,98 @@
+  <!DOCTYPE html>
+<html lang="he">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>מעירים - התראות תכנון</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/solid.css" integrity="sha384-Rw5qeepMFvJVEZdSo1nDQD5B6wX0m7c5Z/pLNvjkB14W6Yki1hKbSEQaX9ffUbWe"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/regular.css" integrity="sha384-EWu6DiBz01XlR6XGsVuabDMbDN6RT8cwNoY+3tIH+6pUCfaNldJYJQfQlbEIWLyA"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/fontawesome.css" integrity="sha384-GVa9GOgVQgOk+TNYXu7S/InPTfSDTtBalSgkgqQ7sCik56N9ztlkoTr2f/T44oKV"
+    crossorigin="anonymous">
+  <link href="../alert/alert.css" rel="stylesheet" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122025557-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-122025557-1');
+</script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand navbar-light">
+    <a class="navbar-brand" href="/">
+      <img style="width:32px" src="/images/logo.png" alt="מעירים" /> מעירים
+    </a>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="btn btn-outline-secondary" href="/login" moda>התחברות</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="group">
+          <img class='eyelashes' src="/images/logo.png" alt="מעירים" />
+          <div class="goodMorning" id="goodMorningText">
+              שכחתם את הסיסמה? 
+          </div>
+          <div class="selectAreaAndInterest">
+           הכניסו את כתובת הדואר האלקטרוני שבאמצעותה נרשמתם ונשלח לכם קוד לאיפוס הסיסמה.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rectangle" id="container">
+      <form id="stage1" method="post">
+        <div class="alert alert-danger d-none" role="alert"></div>
+        <div class="form-group">
+          <label for="loginEmail">שלב 1 - כתובת דואר אלקטרוני:</label>
+          <input class="form-control" required type="email" name="email" id="loginEmail" placeholder="yourname@mail.com">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+            <i class="fas fa-spinner fa-spin d-none"></i> שליחת קוד איפוס</button>
+      </form>
+
+      <form id="stage2" method="post" style="margin-top:20px">
+        <div class="form-group">
+            <label for="emailCode">שלב 2 -קוד איפוס:</label>
+            <input class="form-control" required disabled type="text" name="emailCode" id="emailCode">
+          </div>
+        <div class="form-group">
+          <label for="loginPassword">סיסמה חדשה:</label>
+          <input class="form-control" required type="password"  disabled name="password" id="loginPassword">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" disabled>
+          <i class="fas fa-spinner fa-spin d-none"></i> כניסה</button>
+        </form>
+     
+    </div>
+</div>
+
+<footer class="text-center">
+  <a href="mailto:info@meirim.org">יצירת קשר</a> | <a href="https://www.facebook.com/meirim.city/">הפייסבוק שלנו</a> |
+  <a href="/team/">אודות</a> | <a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות</a><br>
+  <a href="/terms/">תנאי שימוש</a> |  כל הזכויות שמורות
+</footer>
+
+
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+      <script src="../js/api.js"></script>
+      <script src="forgot.js"></script>
+
+</body>
+
+</html>

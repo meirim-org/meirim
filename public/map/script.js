@@ -83,7 +83,7 @@ var geocoder = null;
 var globalData = [];
 var config = {
   // api: "http://api.meirim.org/"
-  api: "http://api.meirim.org/"
+  api: "https://api.meirim.org/"
 }
 
 addScript("https://maps.googleapis.com/maps/api/js?key=" + KEY + "&callback=initMap");

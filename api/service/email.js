@@ -108,7 +108,7 @@ class Email {
   resetPasswordToken(person) {
     const templateProperties = {
       email: person.get('email'),
-      url: `${Config.get('general.domain')}password/reset/?token=${person.resetPasswordToken()}`,
+      url: `${Config.get('general.domain')}forgot/?token=${person.resetPasswordToken()}`,
     };
     return this.sendWithTemplate(this.templates.resetPasswordToken, templateProperties);
   }
