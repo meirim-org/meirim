@@ -14,51 +14,45 @@ module.exports = {
   iplan: () => {
     console.log('Running iplan fetcher');
     return iplanApi
-      .getPlanningCouncils()
-      .then(councils => councils.features)
-      .mapSeries(council => iplanApi
-        .getBlueLines(`PLAN_AREA_CODE=${council.attributes.CodeMT}`)
-        // remove existing plans
-        .then((iPlans) => {
-          // loop over plans received
-          return Bluebird.mapSeries(iPlans, iPlan =>
-              Plan.forge({
-                OBJECTID: iPlan.properties.OBJECTID,
-              })
-              .fetch()
-              .then((oldPlan) => {
-                // check if there was an update
-                if (oldPlan && oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE) {
-                  // Log.debug('No update required');
-                  return Bluebird.resolve();
-                }
-                // if there was an update get more data and save
-                return Plan
-                  .buildFromIPlan(iPlan)
-                  .then(plan => MavatAPI
-                    .parseMavat(plan.get('plan_url'))
-                    .then((mavatData) => {
-                      Plan.setMavatData(plan, mavatData);
-                      if (!oldPlan || oldPlan.get('data').STATION != iPlan.properties.STATION) {
-                        plan.set('sent', oldPlan ? 1 : 0);
-                      }
-                      // Log.debug('Saving with mavat', JSON.stringify(mavatData));
-                      return plan.save();
-                    })
-                    .catch((e) => {
-                      console.log('Saving without mavat', JSON.stringify(e));
-                      return plan.save();
-                    }));
-              })
-              .catch((e) => {
-                console.log('iplan exception', JSON.stringify(e));
+      .getBlueLines()
+      .then((iPlans) => {
+        // loop over plans received
+        // console.log(iPlans[0].properties);
+        return Bluebird.mapSeries(iPlans, iPlan =>
+          
+          Plan.forge({
+            PL_NUMBER: iPlan.properties.PL_NUMBER,
+          })
+            .fetch()
+            .then((oldPlan) => {
+              // check if there was an update
+              if (oldPlan && oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE) {
+                // Log.debug('No update required');
                 return Bluebird.resolve();
-              }))
+              }
+              // if there was an update get more data and save
+              return Plan
+                .buildFromIPlan(iPlan)
+                .then(plan => MavatAPI
+                  .parseMavat(plan.get('plan_url'))
+                  .then((mavatData) => {
+                    Plan.setMavatData(plan, mavatData);
+                    if (!oldPlan || oldPlan.get('data').STATION !== iPlan.properties.STATION) {
+                      plan.set('sent', oldPlan ? 1 : 0);
+                    }
+                    // Log.debug('Saving with mavat', JSON.stringify(mavatData));
+                    return plan.save();
+                  })
+                  .catch((e) => {
+                    console.log('Saving without mavat', JSON.stringify(e));
+                    return plan.save();
+                  }));
+            })
             .catch((e) => {
-              console.log('iplan map exception', JSON.stringify(e));
+              console.log('iplan exception', JSON.stringify(e));
               return Bluebird.resolve();
-            });
-        }));
+            }));
+      });
   },
 
   complete_mavat_data: () => {
