@@ -32,7 +32,7 @@ module.exports = {
               }
               // if there was an update get more data and save
               return Plan
-                .buildFromIPlan(iPlan)
+                .buildFromIPlan(iPlan, oldPlan)
                 .then(plan => MavatAPI
                   .parseMavat(plan.get('plan_url'))
                   .then((mavatData) => {

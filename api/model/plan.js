@@ -91,31 +91,25 @@ class Plan extends Model {
     }).fetch();
   }
 
-  static buildFromIPlan(iPlan) {
-    return Plan.forge({
-        OBJECTID: iPlan.properties.OBJECTID,
-      })
-      .fetch()
-      .then((oldPlan) => {
-        const data = {
-          OBJECTID: iPlan.properties.OBJECTID,
-          PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
-          PL_NUMBER: iPlan.properties.PL_NUMBER || '',
-          PL_NAME: iPlan.properties.PL_NAME || '',
-          // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
-          data: iPlan.properties,
-          geom: iPlan.geometry,
-          PLAN_CHARACTOR_NAME: '',
-          plan_url: iPlan.properties.PL_URL,
-        };
-        if (oldPlan) {
-          oldPlan.set(data);
-          return oldPlan.save();
-        }
+  static buildFromIPlan(iPlan, oldPlan = null) {
+    const data = {
+      OBJECTID: iPlan.properties.OBJECTID,
+      PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
+      PL_NUMBER: iPlan.properties.PL_NUMBER || '',
+      PL_NAME: iPlan.properties.PL_NAME || '',
+      // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
+      data: iPlan.properties,
+      geom: iPlan.geometry,
+      PLAN_CHARACTOR_NAME: '',
+      plan_url: iPlan.properties.PL_URL,
+    };
+    if (oldPlan) {
+      oldPlan.set(data);
+      return oldPlan.save();
+    }
 
-        const plan = new Plan(data);
-        return plan.save();
-      });
+    const plan = new Plan(data);
+    return plan.save();
   }
 
   static setMavatData(plan, mavanData) {
