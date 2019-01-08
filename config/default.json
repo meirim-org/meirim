@@ -2,6 +2,10 @@
   "geocoder": {
     "provider": "openstreetmap"
   },
+  "staticmap": {
+    "width": 600,
+    "height": 400
+  },
   "general": {
     "userAgent": "Meirim.org (info@meirim.org)",
     "domain": "http://meirim.org/"
