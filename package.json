@@ -75,6 +75,7 @@
   ],
   "scripts": {
     "start": "react-scripts start",
+    "server": "node bin/api",
     "build": "react-scripts build"
   }
 }

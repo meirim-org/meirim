@@ -1,0 +1,7 @@
+footer {
+    margin-top:40px;  
+    z-index: 10000;
+    position: relative;
+    background: white;
+    padding: 100px;
+  }
