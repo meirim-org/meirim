@@ -16,9 +16,7 @@
   {{/data.PLAN_COUNTY_NAME}}
 
   <h2 class="headline">{{data.PL_NAME}}</h2>
-  <img src="https://maps.googleapis.com/maps/api/staticmap?center={{lat}},{{lon}}&zoom=16&size=600x400&maptype=hybrid&markers=color:red%7Clabel:C%7C{{lat}},{{lon}}"
-    alt="Plan map" width="600" border="0" align="center" style="width: 100%; max-width: 600px; margin-bottom:20px; height:400px; background: #dddddd;"
-    class="g-img" />
+  <img src="data:image/png;base64,{{encodedStaticMap}}" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: 400px; background: #dddddd;" />
 
   <div class="subSubHeadline">
     <strong>סטטוס:</strong> {{data.STATION_DESC}}
