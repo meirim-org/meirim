@@ -18,7 +18,8 @@ class PasswordController extends Controller {
       if (!person) {
         throw new Exception.NotFound('Email not found');
       }
-      return Email.resetPasswordToken(person);
+      return Email.resetPasswordToken(person)
+      .then(()=>true);
     });
   }
   static resetWithToken(req) {
@@ -29,7 +30,8 @@ class PasswordController extends Controller {
       throw new Exception.BadRequest('No password provided');
     }
 
-    return Person.resetPasswordByToken(req.body.token, req.body.password);
+    return Person.resetPasswordByToken(req.body.token, req.body.password)
+    .then(()=>true);
   }
 }
-module.exports = new PasswordController(Person);
+module.exports = PasswordController;

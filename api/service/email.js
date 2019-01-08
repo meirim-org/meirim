@@ -93,7 +93,8 @@ class Email {
       data.data.DEPOSITING_DATE = dates[0];
     }
 
-    data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
+    // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
+    data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
 
     return this.sendWithTemplate(this.templates.alert, data);
@@ -107,7 +108,7 @@ class Email {
   resetPasswordToken(person) {
     const templateProperties = {
       email: person.get('email'),
-      url: `${Config.get('general.domain')}password/reset/?token=${person.resetPasswordToken()}`,
+      url: `${Config.get('general.domain')}forgot/?token=${person.resetPasswordToken()}`,
     };
     return this.sendWithTemplate(this.templates.resetPasswordToken, templateProperties);
   }
@@ -121,13 +122,19 @@ class Email {
       path: path.resolve('api/service/emaillogo_email.png'),
       cid: 'logomeirim',
     });
+    const subject = Mustache
+      .render(template.title, templateProperties)
+      .replace(/\r?\n|\r/g, '')
+      .replace(/\s\s+/g, ' ');
 
     const email = {
       from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
       to: templateProperties.email, // list of receivers
-      subject: Mustache.render(template.title, templateProperties), // Subject line
+      subject, // Subject line
       html: Mustache.render(template.body, templateProperties), // html body
       attachments,
+      encoding: 'utf8',
+      textEncoding: 'base64',
     };
 
     return this.send(email);
