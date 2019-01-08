@@ -118,7 +118,7 @@ class Email {
 
     attachments.push({
       filename: 'logo_email.png',
-      path: path.resolve('public/images/logo_email.png'),
+      path: path.resolve('api/service/emaillogo_email.png'),
       cid: 'logomeirim',
     });
 

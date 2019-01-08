@@ -1,0 +1,59 @@
+.hpForm {
+    background: #ffa81b;
+    color: #ffffff;
+    padding: 25px;
+    margin: 0 -15px;
+  }
+
+    
+  .hpForm button {
+    background: #ffffff;
+    color: #ffa81b;
+    border-radius: 20px;
+    border-width: 0;
+    font-weight: bold;
+    height: 40px;
+    padding: 10px 30px;
+  }
+  
+  .hpForm .form-group.active_field label {
+    display: none;
+  }
+  
+  .hpForm .form-group {
+    position: relative;
+  }
+  
+  .hpForm .form-group label {
+    color: #ffffff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    -webkit-transition: color .2s ease-out, -webkit-transform .2s ease-out;
+    transition: color .2s ease-out, -webkit-transform .2s ease-out;
+    transition: transform .2s ease-out, color .2s ease-out;
+    transition: transform .2s ease-out, color .2s ease-out, -webkit-transform .2s ease-out;
+    -webkit-transform-origin: 0% 100%;
+    transform-origin: 0% 100%;
+    text-align: initial;
+    -webkit-transform: translateY(12px);
+    transform: translateY(12px);
+  }
+  
+  .hpForm .form-group input {
+    display: block;
+    width: 100%;
+    padding: .375rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #ffffff;
+    background-color: transparent;
+    background-clip: padding-box;
+    border: 0;
+    border-bottom: 1px solid #ffffff;
+    transition: border-color .15s ease-in-out, box-shadow .15s;
+    text-align: left;
+    direction: ltr;
+  }
