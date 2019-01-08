@@ -12,52 +12,47 @@ const MavatAPI = require('../lib/mavat');
 
 module.exports = {
   iplan: () => {
-    Log.info('Running iplan fetcher');
+    console.log('Running iplan fetcher');
     return iplanApi
-      .getPlanningCouncils()
-      .then(councils => councils.features)
-      .mapSeries(council => iplanApi
-        .getBlueLines(`PLAN_AREA_CODE=${council.attributes.CodeMT}`)
-        // remove existing plans
-        .then((iPlans) => {
-          // loop over plans received
-          return Bluebird.mapSeries(iPlans, iPlan =>
-              Plan.forge({
-                OBJECTID: iPlan.properties.OBJECTID,
-              })
-              .fetch()
-              .then((oldPlan) => {
-                // check if there was an update
-                if (oldPlan && oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE) {
-                  // Log.debug('No update required');
-                  return Bluebird.resolve();
-                }
-                // if there was an update get more data and save
-                return Plan
-                  .buildFromIPlan(iPlan)
-                  .then(plan => MavatAPI
-                    .parseMavat(plan.get('plan_url'))
-                    .then((mavatData) => {
-                      Plan.setMavatData(plan, mavatData);
-                      plan.set('sent', oldPlan ? 1 : 0);
-                      // Log.debug('Saving with mavat', JSON.stringify(mavatData));
-                      return plan.save();
-                    })
-                    .catch((e) => {
-                      plan.set('sent', oldPlan ? 1 : 0);
-                      Log.debug('Saving without mavat', JSON.stringify(e));
-                      return plan.save();
-                    }));
-              })
-              .catch((e) => {
-                Log.debug('iplan exception', JSON.stringify(e));
+      .getBlueLines()
+      .then((iPlans) => {
+        // loop over plans received
+        // console.log(iPlans[0].properties);
+        return Bluebird.mapSeries(iPlans, iPlan =>
+          
+          Plan.forge({
+            PL_NUMBER: iPlan.properties.PL_NUMBER,
+          })
+            .fetch()
+            .then((oldPlan) => {
+              // check if there was an update
+              if (oldPlan && oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE) {
+                // Log.debug('No update required');
                 return Bluebird.resolve();
-              }))
+              }
+              // if there was an update get more data and save
+              return Plan
+                .buildFromIPlan(iPlan, oldPlan)
+                .then(plan => MavatAPI
+                  .parseMavat(plan.get('plan_url'))
+                  .then((mavatData) => {
+                    Plan.setMavatData(plan, mavatData);
+                    if (!oldPlan || oldPlan.get('data').STATION !== iPlan.properties.STATION) {
+                      plan.set('sent', oldPlan ? 1 : 0);
+                    }
+                    // Log.debug('Saving with mavat', JSON.stringify(mavatData));
+                    return plan.save();
+                  })
+                  .catch((e) => {
+                    console.log('Saving without mavat', JSON.stringify(e));
+                    return plan.save();
+                  }));
+            })
             .catch((e) => {
-              Log.debug('iplan map exception', JSON.stringify(e));
+              console.log('iplan exception', JSON.stringify(e));
               return Bluebird.resolve();
-            });
-        }));
+            }));
+      });
   },
 
   complete_mavat_data: () => {
@@ -86,7 +81,7 @@ module.exports = {
 
     return Plan
       .getUnsentPlans({
-        limit: 100,
+        limit: 1,
       })
       .then((unsentPlans) => {
         Log.debug('Got', unsentPlans.models.length, 'Plans');
@@ -115,12 +110,13 @@ module.exports = {
           });
       })
       .then((successArray) => {
-        let id_array = [];
-        successArray.reduce((pv, cv) => id_array.push(cv.plan_id), 0);
-        if (id_array.length) {
-          return Plan.maekPlansAsSent(id_array)
-            .then(() => Log.info('Processed plans', id_array));
+        const idArray = [];
+        successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
+        if (idArray.length) {
+          return Plan.maekPlansAsSent(idArray)
+            .then(() => Log.info('Processed plans', idArray));
         }
+        return true;
         // return successArray.reduce((pv, cv) => pv.users + cv.users, 0);
       });
   },
