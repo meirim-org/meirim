@@ -49,7 +49,7 @@ function redirectTo(path) {
 }
 
 function errorHandler(xhr, status, errorThrown) {
-  var goToLoginText = "תרצו להכנס למערכת או להרשם?";
+  var goToLoginText = "תרצו להתחבר למערכת או להרשם?";
   switch (xhr.status) {
     case 403:
       if (confirm(xhr.responseJSON.data + "\n" + goToLoginText)) {
