@@ -80,7 +80,7 @@ class Email {
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
   }
 
-  newPlanAlert(user, unsentPlan) {
+  newPlanAlert(user, unsentPlan, planStaticMap) {
     const alert = new Alert({
       id: user.alert_id,
       person_id: user.person_id,
@@ -96,6 +96,7 @@ class Email {
     // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
     data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
+    data.encodedStaticMap = planStaticMap;
 
     return this.sendWithTemplate(this.templates.alert, data);
   }
