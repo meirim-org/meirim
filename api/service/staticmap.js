@@ -4,11 +4,11 @@ const path = require('path');
 
 const StaticMaps = require('staticmaps');
 
-const fetchStaticMap = (lat, lon) => {  
+const fetchStaticMap = (lat, lon) => {
   // create map with marker in center
   const map = new StaticMaps({
-    width: Config.get('staticmap').get('width'), 
-    height: Config.get('staticmap').get('height')
+    width: Config.get('staticmap').get('width'),
+    height: Config.get('staticmap').get('height'),
   });
 
   const marker = {
@@ -19,11 +19,9 @@ const fetchStaticMap = (lat, lon) => {
   };
   map.addMarker(marker);
 
+  // resolve with base64 string so we don't pass buffers around
   return map.render()
-    .then(() => {
-      // resolve with base64 string so we don't pass buffers around
-      return map.image.image.toString('base64');
-    })
+    .then(() => map.image.image.toString('base64'))
     .catch((err) => {
       // fail with no image
       Log.error('Cannot generate static map for email', err);
@@ -32,5 +30,5 @@ const fetchStaticMap = (lat, lon) => {
 };
 
 module.exports = {
-    fetchStaticMap
+  fetchStaticMap,
 };
