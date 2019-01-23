@@ -96,7 +96,13 @@ class Email {
     // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
     data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
-    data.encodedStaticMap = planStaticMap;
+
+    data.attachments = [{
+      cid: 'planmap',
+      filename: 'plan_map.png',
+      content: planStaticMap,
+      encoding: 'base64'
+    }];
 
     return this.sendWithTemplate(this.templates.alert, data);
   }
