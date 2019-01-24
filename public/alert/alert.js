@@ -6,12 +6,10 @@ $("#logout").on("click", function () {
   })
 });
 
-//layer = L.featureGroup();
-
 //form submit button
 $("#addNewAlert").on("submit", function () {
 
-   var mandatoryFieldsMessage = 'יש להזין כתובת בשדה';
+  var mandatoryFieldsMessage = 'יש להזין כתובת בשדה';
   if (!$('#homeAddress').val()) {
     return errorMessage(mandatoryFieldsMessage)
   }
@@ -56,15 +54,23 @@ $("#alertTable").bind({
     if (!id) return;
     API.delete("alert/" + id)
       .done(function () {
-        row.fadeOut().complete(function(){
+       // row.fadeOut().complete(function () {
           row.remove();
-        });
+
+          layer.eachLayer((l)=>{
+            if(l.alertId===id){
+              layer.removeLayer(l);
+            }
+          })
+        //});
       })
       .fail(errorHandler);
   },
   addAlert: function (event, alert) {
     var table = $("#alertTable");
     table.css("display", "table");
+    $("#map").css('display', 'block');
+    $("#noAlertsMessage").css('display', 'none');
     var button = $("<button />")
       .addClass("delete")
       .attr("alt", "מחק התראה")
@@ -75,7 +81,7 @@ $("#alertTable").bind({
     tr = $("<tr />")
       .css("display", "none")
       .append($("<td />").html(alert.address))
-      .append($("<td />").html(alert.radius+ ' ק"מ'))
+      .append($("<td />").html(alert.radius + ' ק"מ'))
       .append($("<td />").append(button));
     table.append(tr);
     tr.fadeIn();
@@ -84,14 +90,19 @@ $("#alertTable").bind({
     var center = turf.centroid(alert.geom);
     var coords = [center.geometry.coordinates[1], center.geometry.coordinates[0]];
     //var coords = turf.flip(center);
-    var c= L.circle(coords, {radius: (alert.radius * 1000)});
+    var c = L.circle(coords, {
+      radius: (alert.radius * 1000)
+    });
+    c.alertId = alert.id;
+    c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
     c.addTo(layer);
     var bounds = turf.flip(turf.envelope(layer.toGeoJSON()));
     map.fitBounds(bounds.geometry.coordinates);
 
   },
-  init: function() {
+  init: function () {
     $("#alertTable").css("display", "none");
+    $("#map").css("display", "none");
   }
 });
 
@@ -126,23 +137,25 @@ $(document).ready(function () {
 
   $("#alertTable").trigger("init");
 
-   // initializing the map
-   map = L.map('map');
-   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-     attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-     maxZoom: 18,
-     id: 'mapbox.streets',
-   }).addTo(map);
+  // initializing the map
+  map = L.map('map');
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+  }).addTo(map);
 
-   layer = L.featureGroup()
-   layer.addTo(map);
+  layer = L.featureGroup()
+  layer.addTo(map);
 
   // load alerts to the table
   API.get('alert').done(function (response) {
     var table = $("#alertTable");
     let alerts = response.data;
 
-    var features = [];
+    if(alerts && alerts.length > 0){
+      $("#noAlertsMessage").remove();
+    }
     for (let i = 0; i < alerts.length; i++) {
       table.trigger("addAlert", [alerts[i]]);
     }
