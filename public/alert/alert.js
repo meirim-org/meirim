@@ -6,6 +6,8 @@ $("#logout").on("click", function () {
   })
 });
 
+//layer = L.featureGroup();
+
 //form submit button
 $("#addNewAlert").on("submit", function () {
 
@@ -65,6 +67,7 @@ $("#alertTable").bind({
     table.css("display", "table");
     var button = $("<button />")
       .addClass("delete")
+      .attr("alt", "מחק התראה")
       .on("click", function (e) {
         table.trigger("deleteAlert", [this])
       })
@@ -76,6 +79,16 @@ $("#alertTable").bind({
       .append($("<td />").append(button));
     table.append(tr);
     tr.fadeIn();
+
+    // getting the centroid of the polygon
+    var center = turf.centroid(alert.geom);
+    var coords = [center.geometry.coordinates[1], center.geometry.coordinates[0]];
+    //var coords = turf.flip(center);
+    var c= L.circle(coords, {radius: (alert.radius * 1000)});
+    c.addTo(layer);
+    var bounds = turf.flip(turf.envelope(layer.toGeoJSON()));
+    map.fitBounds(bounds.geometry.coordinates);
+
   },
   init: function() {
     $("#alertTable").css("display", "none");
@@ -113,11 +126,23 @@ $(document).ready(function () {
 
   $("#alertTable").trigger("init");
 
+   // initializing the map
+   map = L.map('map');
+   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+     attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+     maxZoom: 18,
+     id: 'mapbox.streets',
+   }).addTo(map);
+
+   layer = L.featureGroup()
+   layer.addTo(map);
+
   // load alerts to the table
   API.get('alert').done(function (response) {
     var table = $("#alertTable");
     let alerts = response.data;
 
+    var features = [];
     for (let i = 0; i < alerts.length; i++) {
       table.trigger("addAlert", [alerts[i]]);
     }
