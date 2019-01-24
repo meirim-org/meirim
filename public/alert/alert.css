@@ -210,10 +210,14 @@ input[id="deleteAlert"] {
 }
 
 @media (max-width: 576px) { 
+
+  .container{
+    padding:auto;
+  }
   .rectangle {
     padding: 10px;
     margin: 5px;
-    width: 100%;
+    width: 98%;
   }
 
   .radiusRange {
@@ -223,7 +227,6 @@ input[id="deleteAlert"] {
   #map{
     height: 300px;
     width: 300px;
-    margin: 20px;
   }
 
   .selectAreaAndInterest {
