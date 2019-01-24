@@ -57,12 +57,6 @@
           <div class="group">
             <div class="goodMorning" id="goodMorningText">
             התראות
-            </div>
-            <div class="selectAreaAndInterest">
-              כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס:
-              <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
-              <small>**ניתן להוסיף יותר מכתובת אחת</small>
-            </div>     
           </div>
         </div>
       </div>
@@ -70,7 +64,12 @@
 
     <div class="container">
       <div class="rectangle" id="container">
-      <h5 class=container-title>התראה חדשה</h5>       
+      <h5 class=container-title>התראה חדשה</h5>   
+      <div class="selectAreaAndInterest">
+          כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
+          <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
+          <small>**ניתן להוסיף יותר מכתובת אחת</small>
+        </div>         
         <div class="row">
           <div class="col">
             <div class="group">
@@ -79,10 +78,12 @@
               <form id="addNewAlert">
                 <label id="radiusLabale">רדיוס</label>
                 <div class="row">
+                  <div class="col">
                   <span id="rangeCurrentNumber" style="display:inline-block; color: #a3a3a3;position:relative;right :0">1</span>
                   <p id="rangeTextSMrightSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 0">ק"מ</p>
                   <input id="radiusRange" type="range" min="1" max="5" value="3" step="1" class="radiusRange"/>
                   <p id="rangeTextSMleftSide" style="display:inline-block;color: #a3a3a3;position:relative;right : 0">5 ק"מ</p>
+                </div>
                   <br>
                   <button id="submitButton">הוספה</button>
                 </div>
