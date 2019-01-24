@@ -94,10 +94,14 @@ $("#alertTable").bind({
       radius: (alert.radius * 1000)
     });
     c.alertId = alert.id;
+    c.originalGeometry = alert.geom;
     c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
     c.addTo(layer);
     var bounds = turf.flip(turf.envelope(layer.toGeoJSON()));
     map.fitBounds(bounds.geometry.coordinates);
+   if(map.getZoom()>12){
+     map.setZoom(12);
+   }
 
   },
   init: function () {
