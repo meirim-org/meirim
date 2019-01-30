@@ -27,6 +27,39 @@ $("#addNewAlert").on("submit", function () {
   return false;
 });
 
+function addAlertToMap(alert){
+
+  // creating a circle from the box to display it
+  var center = turf.centroid(alert.geom);
+  var coords = [center.geometry.coordinates[1], center.geometry.coordinates[0]];
+  //var coords = turf.flip(center);
+  var c = L.circle(coords, {
+    radius: (alert.radius * 1000)
+  });
+  c.alertId = alert.id;
+  c.transparentLayerId = L.geoJSON(alert.geom).addTo(transparentLayer)['_leaflet_id'];
+  console.log('the transparent id is '+c.transparentLayerId );
+  c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
+  c.addTo(layer);
+
+  // adding the box to the transaparent layer
+  // getting the id of the polygon in the t.layer
+  map.fitBounds(transparentLayer.getBounds());
+}
+
+function removeAlertFromMap(alertId){
+
+  // removing the circle
+  layer.eachLayer((l)=>{
+    if(l.alertId===alertId){
+      transparentLayer.removeLayer(l.transparentLayerId);
+      layer.removeLayer(l);
+    }
+  })
+
+  map.fitBounds(transparentLayer.getBounds());
+}
+
 // Radius slider
 (function slider() {
   let slider = $('#radiusRange');
@@ -56,12 +89,7 @@ $("#alertTable").bind({
       .done(function () {
        // row.fadeOut().complete(function () {
           row.remove();
-
-          layer.eachLayer((l)=>{
-            if(l.alertId===id){
-              layer.removeLayer(l);
-            }
-          })
+          removeAlertFromMap(id);
         //});
       })
       .fail(errorHandler);
@@ -86,23 +114,7 @@ $("#alertTable").bind({
     table.append(tr);
     tr.fadeIn();
 
-    // getting the centroid of the polygon
-    var center = turf.centroid(alert.geom);
-    var coords = [center.geometry.coordinates[1], center.geometry.coordinates[0]];
-    //var coords = turf.flip(center);
-    var c = L.circle(coords, {
-      radius: (alert.radius * 1000)
-    });
-    c.alertId = alert.id;
-    c.originalGeometry = alert.geom;
-    c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
-    c.addTo(layer);
-    var bounds = turf.flip(turf.envelope(layer.toGeoJSON()));
-    map.fitBounds(bounds.geometry.coordinates);
-   if(map.getZoom()>12){
-     map.setZoom(12);
-   }
-
+    addAlertToMap(alert);
   },
   init: function () {
     $("#alertTable").css("display", "none");
@@ -141,7 +153,7 @@ $(document).ready(function () {
 
   $("#alertTable").trigger("init");
 
-  // initializing the map
+  // initializing all the map things
   map = L.map('map');
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -149,7 +161,8 @@ $(document).ready(function () {
     id: 'mapbox.streets',
   }).addTo(map);
 
-  layer = L.featureGroup()
+  layer = L.featureGroup();
+  transparentLayer = L.geoJSON()
   layer.addTo(map);
 
   // load alerts to the table
