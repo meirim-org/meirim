@@ -96,6 +96,7 @@ class Email {
     // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
     data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
+    data.isLocalAuthority = isLocalAuthority(unsentPlan);
 
     data.attachments = [{
       cid: 'planmap',
@@ -155,6 +156,12 @@ class Email {
     return this.transporter
       .sendMail(mailOptions)
       .then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
+  }
+
+  isLocalAuthority(plan) {
+    const planData = JSON.parse(plan.get('data'));
+    const local = 'מקומי';
+    return planData['ENTITY_SUBTYPE_DESC'].indexOf(local) !== -1;
   }
 }
 module.exports = new Email();

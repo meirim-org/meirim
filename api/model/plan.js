@@ -19,7 +19,7 @@ class Plan extends Model {
       // PLAN_CHARACTOR_NAME: 'string',
       data: ['required'],
       geom: ['required', 'object'],
-
+      jurisdiction: 'string'
     };
   }
 
@@ -56,6 +56,10 @@ class Plan extends Model {
 
   get tableName() {
     return 'plan';
+  }
+
+  get jurisdiction() {
+    return 'jurisdiction';
   }
 
   initialize() {
