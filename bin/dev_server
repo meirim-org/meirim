@@ -3,8 +3,7 @@
 const http = require('http');
 const Express = require('express');
 const BodyParser = require('body-parser');
-const expressLogger = require('express-pino-logger')()
-
+const expressWinston = require('express-winston');
 const urlencoded = BodyParser.urlencoded({
   extended: false,
 });
@@ -12,7 +11,7 @@ const urlencoded = BodyParser.urlencoded({
 // init application
 const app = Express();
 app.use(Express.static('public'));
-app.use(expressLogger);
+
 app.use(urlencoded);
 // app.use(Express.static(path.join(__dirname, 'public')));
 

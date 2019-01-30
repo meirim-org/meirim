@@ -6,7 +6,6 @@ const Email = require('./service/email');
 const routes = require('./routes');
 const errorHandler = require('./errorHandler');
 const Cors = require('cors');
-const expressLogger = require('express-pino-logger')()
 
 const urlencoded = BodyParser.urlencoded({
   extended: false,
@@ -23,7 +22,6 @@ const cors = Cors({
 
 // init application
 const app = Express();
-app.use(expressLogger);
 app.use(Session);
 app.use(cors);
 app.options('*', cors);

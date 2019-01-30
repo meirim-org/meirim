@@ -65,9 +65,9 @@ class Email {
           };
         }
       })
-      .catch((err) => {
-        Log.error('Email cannot load templates', err);
-      });
+      // .catch((err) => {
+      //   Log.error('Email cannot load templates', err);
+      // });
   }
 
   newSignUp(person) {

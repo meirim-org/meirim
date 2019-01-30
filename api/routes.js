@@ -7,9 +7,7 @@ const Comment = require('./controller/comment');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
-const {
-  wrap,
-} = require('./controller/controller');
+const { wrap } = require('./controller/controller');
 
 
 // Sign up
@@ -34,6 +32,10 @@ Router.get('/alert/', wrap(Alert.browse, Alert));
 Router.get('/alert/:id', wrap(Alert.read, Alert));
 Router.post('/alert/', wrap(Alert.create, Alert));
 Router.delete('/alert/:id', wrap(Alert.delete, Alert));
+
+//me
+Router.get('/me/', wrap(Alert.browse, Alert));
+
 
 // Cron
 // Router.get('/cron/iplan', wrap(iplan));
