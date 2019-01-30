@@ -99,7 +99,7 @@ $("#alertTable").bind({
     $("#noAlertsMessage").css('display', 'none');
     var button = $("<button />")
       .addClass("delete")
-      .attr("alt", "מחק התראה")
+      .attr("title", "מחק התראה")
       .on("click", function (e) {
         table.trigger("deleteAlert", [this])
       })

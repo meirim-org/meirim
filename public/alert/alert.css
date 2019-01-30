@@ -204,8 +204,8 @@ input[id="deleteAlert"] {
 }
 
 #map{
-  height: 250px;
-  width: 250px;
+  height: 300px;
+  width: 100%;
 }
 
 @media (max-width: 576px) { 
@@ -224,8 +224,6 @@ input[id="deleteAlert"] {
   }
 
   #map{
-    height: 300px;
-    width: 300px;
     border-radius: 10px;
   }
 
