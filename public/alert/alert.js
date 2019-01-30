@@ -29,16 +29,14 @@ $("#addNewAlert").on("submit", function () {
 
 function addAlertToMap(alert){
 
+  var polygon = L.geoJSON(alert.geom).addTo(transparentLayer);
   // creating a circle from the box to display it
-  var center = turf.centroid(alert.geom);
-  var coords = [center.geometry.coordinates[1], center.geometry.coordinates[0]];
-  //var coords = turf.flip(center);
-  var c = L.circle(coords, {
+  var center = polygon.getBounds().getCenter();
+  var c = L.circle([center.lat, center.lng], {
     radius: (alert.radius * 1000)
   });
   c.alertId = alert.id;
-  c.transparentLayerId = L.geoJSON(alert.geom).addTo(transparentLayer)['_leaflet_id'];
-  console.log('the transparent id is '+c.transparentLayerId );
+  c.transparentLayerId = polygon['_leaflet_id'];
   c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
   c.addTo(layer);
 
