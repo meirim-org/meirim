@@ -1,4 +1,7 @@
- 
+input:-webkit-autofill {
+  background-color: transparent !important;
+}
+  
   .heroContainer {
     height:800px;
   }

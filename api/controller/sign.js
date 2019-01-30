@@ -5,6 +5,13 @@ const Log = require('../lib/log');
 const Email = require('../service/email');
 
 class SignController extends Controller {
+
+  me(req) {
+     if (!req.session.person){
+        throw Exception.NotAllowed('Must be logged in');
+     }
+     return true;
+  }
   signup(req) {
     // check if user exists and not active
     return this.model

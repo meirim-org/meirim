@@ -3,12 +3,17 @@ import React, { Component } from 'react';
 import Navigation from '../components/Navigation';
 import RegisterForm from '../components/RegisterForm';
 
+import api from '../services/api';
+
 import t from '../locale/he_IL';
-import traktor from './traktor_op.png';
-import logo_small from './logo_small.png';
+import traktor from '../assets/traktor_op.png';
+import logo_small from '../assets/logo_small.png';
 import './Home.css';
 
 class Home extends Component {
+
+
+  
   render() {
       return <React.Fragment>
         <Navigation />
