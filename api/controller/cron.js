@@ -5,6 +5,7 @@ const Plan = require('../model/plan');
 const Email = require('../service/email');
 const Bluebird = require('bluebird');
 const MavatAPI = require('../lib/mavat');
+const { fetchStaticMap } = require('../service/staticmap');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -88,9 +89,10 @@ module.exports = {
         return unsentPlans.models;
       })
       .mapSeries((unsentPlan) => {
-        return Alert
-          .getUsersByGeometry(unsentPlan.get('id'))
-          .then((users) => {
+        return Promise.all([
+          Alert.getUsersByGeometry(unsentPlan.get('id')),
+          fetchStaticMap(unsentPlan.get('lat'), unsentPlan.get('lon')),
+        ]).then(([users, planStaticMap]) => {
             Log.debug('Got', users[0].length, 'users for plan', unsentPlan.get('id'));
 
             if (!users[0] || !users[0].length) {
@@ -100,13 +102,13 @@ module.exports = {
               };
             }
             return Bluebird
-              .mapSeries(users[0], user => Email.newPlanAlert(user, unsentPlan))
-              .then(() => {
-                return {
-                  plan_id: unsentPlan.get('id'),
-                  users: users.length,
-                };
-              });
+            .mapSeries(users[0], user => Email.newPlanAlert(user, unsentPlan, planStaticMap))
+            .then(() => {
+              return {
+                plan_id: unsentPlan.get('id'),
+                users: users.length,
+              };
+            });
           });
       })
       .then((successArray) => {

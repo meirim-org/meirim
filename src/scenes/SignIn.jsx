@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
-import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
 
 import api from '../services/api';
 
@@ -15,27 +15,36 @@ class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            success:0
+            success: 0
         };
-    
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-      }
+
+        this.handleChange = this
+            .handleChange
+            .bind(this);
+        this.handleSubmit = this
+            .handleSubmit
+            .bind(this);
+    }
 
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({
+            [event.target.name]: event.target.value,
+            success: 0
+        });
     }
-      
+
     handleSubmit(event) {
-        api.post('/sign/in',this.state)
-        .then(success=>this.setState({success:1}))
-        .catch(error=>this.setState({success:-1}))
         event.preventDefault();
-      }
+        api
+            .post('/sign/in', this.state)
+            .then(success => this.setState({success: 1}))
+            .catch(error => this.setState({success: -1}))
+
+    }
     render() {
         const {success} = this.state;
-        if (success === 1){
-            return <Redirect to='/alerts' />
+        if (success === 1) {
+            return <Redirect to='/alerts'/>
         }
         return <React.Fragment>
             <Navigation/>
@@ -55,8 +64,9 @@ class SignIn extends Component {
                 </div>
 
                 <div className="rectangle" id="container">
-                    <form  method="post" onSubmit={this.handleSubmit}>
-                        <div className="alert alert-danger d-none" role="alert"></div>
+                    <form method="post" onSubmit={this.handleSubmit}>
+                        {success == -1 && <div className="alert alert-danger" role="alert">מייל או סיסמה לא נכונים</div>
+}
                         <div className="form-group">
                             <label htmlFor="loginEmail">כתובת מייל:</label>
                             <Link to="/" className="float-left">הרשמה</Link>
@@ -86,7 +96,7 @@ class SignIn extends Component {
                     </form>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </React.Fragment>
     }
 }
