@@ -6,6 +6,7 @@ const Email = require('../service/email');
 const Bluebird = require('bluebird');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
+const Turf = require('turf');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -107,9 +108,10 @@ module.exports = {
         return unsentPlans.models;
       })
       .mapSeries((unsentPlan) => {
+        let centroid = Turf.centroid(unsentPlan.get('geom'));
         return Promise.all([
           Alert.getUsersByGeometry(unsentPlan.get('id')),
-          fetchStaticMap(unsentPlan.get('lat'), unsentPlan.get('lon')),
+          fetchStaticMap(centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]),
         ]).then(([users, planStaticMap]) => {
             Log.debug('Got', users[0].length, 'users for plan', unsentPlan.get('id'));
 

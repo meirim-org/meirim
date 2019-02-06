@@ -62,6 +62,10 @@ class Plan extends Model {
     return 'jurisdiction';
   }
 
+  get isLocalAuthority() {
+
+  }
+
   initialize() {
     this.on('saving', this._saving, this);
     super.initialize();
@@ -136,7 +140,7 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data', 'goals_from_mavat', 'main_details_from_mavat', Knex.raw('X(st_centroid(geom)) as lon'), Knex.raw('Y(st_centroid(geom)) as lat')],
+      columns: ['id', 'data', 'goals_from_mavat', 'main_details_from_mavat', 'geom', 'jurisdiction'],
     });
   }
 };

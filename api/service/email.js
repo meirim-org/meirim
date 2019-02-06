@@ -96,7 +96,8 @@ class Email {
     // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
     data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
-    data.isLocalAuthority = isLocalAuthority(unsentPlan);
+    data.jurisdiction = unsentPlan.get('jurisdiction');
+    data.isLocalAuthority = data.jurisdiction === 'מקומית';
 
     data.attachments = [{
       cid: 'planmap',
@@ -159,9 +160,9 @@ class Email {
   }
 
   isLocalAuthority(plan) {
-    const planData = JSON.parse(plan.get('data'));
+    const jurisdiction = JSON.parse(plan.get('jurisdiction'));
     const local = 'מקומי';
-    return planData['ENTITY_SUBTYPE_DESC'].indexOf(local) !== -1;
+    return jurisdiction === local;
   }
 }
 module.exports = new Email();
