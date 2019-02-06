@@ -5,12 +5,13 @@
 const Promise = require('bluebird');
 const Nodemailer = require('nodemailer');
 const Mustache = require('mustache');
+const dir = require('node-dir');
+const path = require('path');
+
 const Juice = require('juice');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
-const Fs = Promise.promisifyAll(require('fs'));
-const path = require('path');
 
 class Email {
   /**
@@ -31,31 +32,33 @@ class Email {
    */
   init() {
     const templateDir = `${__dirname}/email/`;
-    let templates = {};
-    let wrapper;
-    let promises = [];
-    return Fs.readdirAsync(templateDir)
-      .map(file => Fs.readFileAsync(templateDir + file, 'utf-8').then(content => [file, content]))
-      .then((contents) => {
-        // map files
-        contents.map((content) => {
-          if (!content[1]) {
-            Log.error('Email template empty', templateDir + file, err);
-            return;
-          }
-          const key = content[0].split('.')[0];
-          if (key === 'wrapper') {
-            wrapper = content[1];
-          } else {
-            templates[key] = content[1];
-          }
+    const templates = {};
+    let contents = [];
+    let mapper = [];
+    return new Promise((resolve, reject) =>{
+      dir.readFiles(templateDir, {
+        match: /.mustache$/,
+      },
+        function(err, content, next) {
+            if (err) reject(err);
+            contents.push(content);
+            next();
+        },
+        function(err, files){
+            if (err) reject(err);
+            mapper = files;
+            resolve();
         });
-
-        // build templates
-        for (const key in templates) {
+    }).then(()=>{
+      mapper.map((file,index) => {
+        const key = file.split('/').pop().split('.').shift();
+        templates[key] = contents[index];
+      })
+     
+      for (const key in templates) {
           const title = templates[key].match(/<title[^>]*>((.|[\n\r])*)<\/title>/im)[1];
           const body = templates[key].match(/<body[^>]*>((.|[\n\r])*)<\/body>/im)[1];
-          const html = Mustache.render(wrapper, {
+          const html = Mustache.render( templates['wrapper'], {
             body,
           });
 
@@ -64,10 +67,7 @@ class Email {
             body: Juice(html),
           };
         }
-      })
-      // .catch((err) => {
-      //   Log.error('Email cannot load templates', err);
-      // });
+    })  
   }
 
   newSignUp(person) {
@@ -80,7 +80,7 @@ class Email {
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
   }
 
-  newPlanAlert(user, unsentPlan) {
+  newPlanAlert(user, unsentPlan, planStaticMap) {
     const alert = new Alert({
       id: user.alert_id,
       person_id: user.person_id,
@@ -96,6 +96,13 @@ class Email {
     // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
     data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
+
+    data.attachments = [{
+      cid: 'planmap',
+      filename: 'plan_map.png',
+      content: planStaticMap,
+      encoding: 'base64'
+    }];
 
     return this.sendWithTemplate(this.templates.alert, data);
   }
@@ -119,7 +126,7 @@ class Email {
 
     attachments.push({
       filename: 'logo_email.png',
-      path: path.resolve('api/service/emaillogo_email.png'),
+      path: path.resolve('api/service/email/logo_email.png'),
       cid: 'logomeirim',
     });
     const subject = Mustache
