@@ -6,7 +6,7 @@ const Config = require('../lib/config');
 const _ = require('lodash');
 const reproject = require('reproject');
 
-const BASE_AGS_URL = 'https://ags.iplan.gov.il/arcgis/rest/services/PlanningPublic/Xplan/MapServer';
+const BASE_AGS_URL = 'https://ags.iplan.gov.il/arcgis/rest/services/PlanningPublic/Xplan2/MapServer';
 
 const options = {
   rejectUnauthorized: false,
