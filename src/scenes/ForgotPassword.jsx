@@ -15,7 +15,7 @@ class ForgotPassword extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            success: 0
+            stage: 0
         };
 
         this.handleChange = this
@@ -37,13 +37,13 @@ class ForgotPassword extends Component {
         event.preventDefault();
         api
             .post('/password/sendResetToken', this.state)
-            .then(success => this.setState({success: 1}))
-            .catch(error => this.setState({success: -1}));
+            .then(success => this.setState({stage: 1}))
+            .catch(error => this.setState({stage: -1}));
 
     }
     render() {
-        const {success} = this.state;
-        if (success === 1) {
+        const { stage } = this.state;
+        if (stage === 4) {
             return <Redirect to='/alerts'/>
         }
         return <React.Fragment>
@@ -63,9 +63,9 @@ class ForgotPassword extends Component {
                     </div>
                 </div>
 
-                <div class="rectangle" id="container">
+                {stage == 0 && <div class="rectangle" id="container">
                     <form id="stage1" method="post" onSubmit={this.handleSubmit}>
-                        {success == -1 && <div class="alert alert-danger" role="alert">כתובת המייל אינה תקינה</div>}
+                        {stage == -1 && <div class="alert alert-danger" role="alert">כתובת המייל אינה תקינה</div>}
                         <div class="form-group">
                             <label for="loginEmail">שלב 1 - כתובת דואר אלקטרוני:</label>
                             <input
@@ -74,6 +74,7 @@ class ForgotPassword extends Component {
                                 type="email"
                                 name="email"
                                 id="loginEmail"
+                                onChange = {this.handleChange}
                                 placeholder="yourname@mail.com"/>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">
@@ -81,6 +82,23 @@ class ForgotPassword extends Component {
                             שליחת קוד איפוס</button>
                     </form>
                 </div>
+                }
+
+            {stage == 1 && <div class="rectangle" id="container">
+                <form id="stage2" method="post" style={{marginTop:"20px"}}>
+                    <div class="form-group">
+                        <label for="emailCode">שלב 2 -קוד איפוס:</label>
+                        <input class="form-control" type="hidden" name="emailCode" id="emailCode" />
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">סיסמה חדשה:</label>
+                        <input class="form-control" required type="password"  name="password" id="loginPassword" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-spinner fa-spin d-none"></i> החלפה</button>
+                </form>
+            </div>
+                }
             </div>
             <Footer/>
         </React.Fragment>
