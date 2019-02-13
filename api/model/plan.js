@@ -42,7 +42,9 @@ class Plan extends Model {
     try {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);
-        attributes.isNotCredible = (attributes.jurisdiction === 'מקומית' && attributes.data.STATION_DESC !== 'מאושרות');
+        if (attributes.jurisdiction === 'מקומית' && attributes.data.STATION_DESC !== 'מאושרות') {
+          attributes.notCredible = true;
+        }
       }
     } catch (e) {
       Log.error('Json parse error', attributes.data);
