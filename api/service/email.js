@@ -158,11 +158,5 @@ class Email {
       .sendMail(mailOptions)
       .then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
   }
-
-  isLocalAuthority(plan) {
-    const jurisdiction = JSON.parse(plan.get('jurisdiction'));
-    const local = 'מקומי';
-    return jurisdiction === local;
-  }
 }
 module.exports = new Email();

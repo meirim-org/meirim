@@ -59,10 +59,6 @@ class Plan extends Model {
     return 'plan';
   }
 
-  get gal() {
-    return 'jurisdiction';
-  }
-
   initialize() {
     this.on('saving', this._saving, this);
     super.initialize();
