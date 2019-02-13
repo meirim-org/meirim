@@ -9,7 +9,7 @@ $("#logout").on("click", function () {
 //form submit button
 $("#addNewAlert").on("submit", function () {
 
-   var mandatoryFieldsMessage = 'יש להזין כתובת בשדה';
+  var mandatoryFieldsMessage = 'יש להזין כתובת בשדה';
   if (!$('#homeAddress').val()) {
     return errorMessage(mandatoryFieldsMessage)
   }
@@ -26,6 +26,37 @@ $("#addNewAlert").on("submit", function () {
     .fail(errorHandler);
   return false;
 });
+
+function addAlertToMap(alert){
+
+  var polygon = L.geoJSON(alert.geom).addTo(transparentLayer);
+  // creating a circle from the box to display it
+  var center = polygon.getBounds().getCenter();
+  var c = L.circle([center.lat, center.lng], {
+    radius: (alert.radius * 1000)
+  });
+  c.alertId = alert.id;
+  c.transparentLayerId = polygon['_leaflet_id'];
+  c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
+  c.addTo(layer);
+
+  // adding the box to the transaparent layer
+  // getting the id of the polygon in the t.layer
+  map.fitBounds(transparentLayer.getBounds());
+}
+
+function removeAlertFromMap(alertId){
+
+  // removing the circle
+  layer.eachLayer((l)=>{
+    if(l.alertId===alertId){
+      transparentLayer.removeLayer(l.transparentLayerId);
+      layer.removeLayer(l);
+    }
+  })
+
+  map.fitBounds(transparentLayer.getBounds());
+}
 
 // Radius slider
 (function slider() {
@@ -54,17 +85,21 @@ $("#alertTable").bind({
     if (!id) return;
     API.delete("alert/" + id)
       .done(function () {
-        row.fadeOut().complete(function(){
+       // row.fadeOut().complete(function () {
           row.remove();
-        });
+          removeAlertFromMap(id);
+        //});
       })
       .fail(errorHandler);
   },
   addAlert: function (event, alert) {
     var table = $("#alertTable");
     table.css("display", "table");
+    $("#map").css('display', 'block');
+    $("#noAlertsMessage").css('display', 'none');
     var button = $("<button />")
       .addClass("delete")
+      .attr("title", "מחק התראה")
       .on("click", function (e) {
         table.trigger("deleteAlert", [this])
       })
@@ -72,13 +107,16 @@ $("#alertTable").bind({
     tr = $("<tr />")
       .css("display", "none")
       .append($("<td />").html(alert.address))
-      .append($("<td />").html(alert.radius+ ' ק"מ'))
+      .append($("<td />").html(alert.radius + ' ק"מ'))
       .append($("<td />").append(button));
     table.append(tr);
     tr.fadeIn();
+
+    addAlertToMap(alert);
   },
-  init: function() {
+  init: function () {
     $("#alertTable").css("display", "none");
+    $("#map").css("display", "none");
   }
 });
 
@@ -113,11 +151,26 @@ $(document).ready(function () {
 
   $("#alertTable").trigger("init");
 
+  // initializing all the map things
+  map = L.map('map');
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+  }).addTo(map);
+
+  layer = L.featureGroup();
+  transparentLayer = L.geoJSON()
+  layer.addTo(map);
+
   // load alerts to the table
   API.get('alert').done(function (response) {
     var table = $("#alertTable");
     let alerts = response.data;
 
+    if(alerts && alerts.length > 0){
+      $("#noAlertsMessage").remove();
+    }
     for (let i = 0; i < alerts.length; i++) {
       table.trigger("addAlert", [alerts[i]]);
     }
