@@ -42,6 +42,7 @@ class Plan extends Model {
     try {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);
+        attributes.isNotCredible = (attributes.jurisdiction === 'מקומית' && attributes.data.STATION_DESC !== 'מאושרות');
       }
     } catch (e) {
       Log.error('Json parse error', attributes.data);
@@ -58,12 +59,8 @@ class Plan extends Model {
     return 'plan';
   }
 
-  get jurisdiction() {
+  get gal() {
     return 'jurisdiction';
-  }
-
-  get isLocalAuthority() {
-
   }
 
   initialize() {
