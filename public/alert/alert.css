@@ -44,7 +44,7 @@ body {
 
 .rectangle {
   margin: 29px auto; 
-  padding: 74px 113px;
+  padding: 30px 30px;
   width: 636px;
   border-radius: 10px;
   background-color: #ffffff;
@@ -54,12 +54,12 @@ body {
 .group {
   position: relative;
   font-size: 15px;
-  margin-bottom: 30px;
 }
 
 table#alertTable{
   width: 100%;
   margin-bottom: 30px;
+  cursor: default;
 }
 table#alertTable th{
   font-size: 15px;
@@ -104,6 +104,9 @@ label#radiusLabale {
   position: relative;
   display: inline-block;
 }
+.container-title{
+  font-weight: bold;
+}
 
 .bar {
   position: relative;
@@ -139,6 +142,7 @@ button.delete {
   background-color:transparent;
   position: relative;
   border: 0;
+  cursor:pointer;
 }
 
 button.delete:after {
@@ -199,15 +203,28 @@ input[id="deleteAlert"] {
   max-width: 100%;
 }
 
+#map{
+  height: 300px;
+  width: 100%;
+}
+
 @media (max-width: 576px) { 
+
+  .container{
+    padding:auto;
+  }
   .rectangle {
     padding: 10px;
-    margin: 0;
-    width: 100%;
+    margin: 5px;
+    width: 98%;
   }
 
   .radiusRange {
     max-width: 60%;
+  }
+
+  #map{
+    border-radius: 10px;
   }
 
   .selectAreaAndInterest {
