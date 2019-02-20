@@ -11,16 +11,15 @@ class PlanPerson extends Base_model {
       person_id: [
         'required', 'integer'
       ],
-      follow: ['integer']
     }
   }
   get tableName() {
     return 'plan_person';
   }
-  static subscribe(personId, planId) {
+  static subscribe(person_id, plan_id) {
     return this
-      .query('where', 'person_id', '=', personId)
-      .query('where', 'plan_id', '=', planId)
+      .query('where', 'person_id', '=', person_id)
+      .query('where', 'plan_id', '=', plan_id)
       .fetchAll()
       .then((existingSubscription) => {
       // if it exists- updating it
@@ -28,18 +27,22 @@ class PlanPerson extends Base_model {
           return Promise.resolve(existingSubscription.models[0]);
         }
         return this.forge({
-          person_id: personId,
-          plan_id: planId,
-          follow: 1,
+          person_id,
+          plan_id,
         }).save();
       });
   }
 
-  static unsubscribe(planId, personId) {
-    return this.forge({
-      person_id: personId,
-      plan_id: plan_id
-    }).fetch();
+  static unsubscribe(person_id, plan_id) {
+    return this
+      .query('where', 'person_id', '=', person_id)
+      .query('where', 'plan_id', '=', plan_id)
+      .destroy();
+      // .fetch().then((subscription) => {
+      //   if (!subscription)
+      //     return Promise.resolve();
+      //   return subscription.destroy();
+      // });
   }
-};
+}
 module.exports = PlanPerson;
