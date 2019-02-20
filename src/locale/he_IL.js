@@ -9,5 +9,7 @@ export default {
     password:'סיסמה',
     signup:'הרשמה',
     signup_now:'הרשמו עכשיו',
-    km:'ק"מ'
+    km:'ק"מ',
+    emailExists: 'כתובת האי מייל כבר קיימת',
+    error: 'שגיאה'
 }

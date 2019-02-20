@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react';
 import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 import RegisterForm from '../components/RegisterForm';
-
-import api from '../services/api';
 
 import t from '../locale/he_IL';
 import traktor from '../assets/traktor_op.png';
@@ -51,6 +50,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
+        <Footer />
       </React.Fragment>
   }
 }

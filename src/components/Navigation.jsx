@@ -25,7 +25,7 @@ class Navigation extends Component {
     }
     return <nav className="navbar navbar-expand navbar-light">
       <Link className="navbar-brand" to="/">
-        <img className='eyelashes' src={logo} alt={t.name} /> {t.name}
+        <img className='eyelashes_nav' src={logo} alt={t.name} /> {t.name}
       </Link>
       <ul className="navbar-nav">
         <li className="nav-item">

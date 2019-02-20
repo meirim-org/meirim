@@ -12,11 +12,13 @@ import logo from '../assets/logo.png';
 import './Alerts.css';
 
 class SignIn extends Component {
+    
+    state = {
+        success: 0
+    };
+
     constructor(props) {
         super(props);
-        this.state = {
-            success: 0
-        };
 
         this.handleChange = this
             .handleChange
@@ -44,7 +46,7 @@ class SignIn extends Component {
     render() {
         const {success} = this.state;
         if (success === 1) {
-            return <Redirect to='/alerts'/>
+            return <Redirect to='/'/>
         }
         return <React.Fragment>
             <Navigation/>
@@ -52,7 +54,7 @@ class SignIn extends Component {
                 <div className="row">
                     <div className="col">
                         <div className="group">
-                            <img className='eyelashes' src="/images/logo.png" alt="מעירים"/>
+                            <img className='eyelashes' src={logo} alt="מעירים"/>
                             <div className="goodMorning" id="goodMorningText">
                                 ברוכים הבאים למעירים!
                             </div>
@@ -65,8 +67,7 @@ class SignIn extends Component {
 
                 <div className="rectangle" id="container">
                     <form method="post" onSubmit={this.handleSubmit}>
-                        {success == -1 && <div className="alert alert-danger" role="alert">מייל או סיסמה לא נכונים</div>
-}
+                        {success == -1 && <div className="alert alert-danger" role="alert">מייל או סיסמה לא נכונים</div>}
                         <div className="form-group">
                             <label htmlFor="loginEmail">כתובת מייל:</label>
                             <Link to="/" className="float-left">הרשמה</Link>
