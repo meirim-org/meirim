@@ -73,6 +73,10 @@ function getMainPlanDetailText(cheerioPage) {
   return cheerioPage('#ctl00_ContentPlaceHolder1_tdINSTRACTIONS').text();
 }
 
+function getJurisdictionString(cheerioPage) {
+  return cheerioPage('#ctl00_ContentPlaceHolder1_AUTH').val();
+}
+
 function parseMavat(planUrl) {
   return init()
     .then(() => fetch(planUrl))
@@ -81,6 +85,7 @@ function parseMavat(planUrl) {
       return Bluebird.props({
         goals: getGoalsText(cheerioPage),
         mainPlanDetails: getMainPlanDetailText(cheerioPage),
+        jurisdiction: getJurisdictionString(cheerioPage)
       });
     });
 }
