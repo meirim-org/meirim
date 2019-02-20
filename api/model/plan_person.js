@@ -36,7 +36,7 @@ class PlanPerson extends Base_model {
   }
 
   static unsubscribe(planId, personId) {
-    return Plan.forge({
+    return this.forge({
       person_id: personId,
       plan_id: plan_id
     }).fetch();
