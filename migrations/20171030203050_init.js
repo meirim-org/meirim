@@ -58,6 +58,12 @@ const tables = [
     geom geometry NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;`,
 
+  `CREATE TABLE plan_person (
+    plan_id int(11) NOT NULL,
+    person_id int(11) NOT NULL,
+    follow tinyint(4),
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
+
   `CREATE TABLE post (
     post_id int(11) NOT NULL,
     post_person_id int(11) NOT NULL,
