@@ -5,6 +5,8 @@ import Plans from './scenes/Plans';
 import SignIn from './scenes/SignIn';
 import Alerts from './scenes/Alerts';
 import ForgotPassword from './scenes/ForgotPassword';
+import About from './scenes/About';
+import Terms from './scenes/Terms';
 import api from './services/api';
 
 import './assets/bootstrap.css';
@@ -37,6 +39,8 @@ class App extends Component {
                     <Route path="/plans" render={(props) => <Plans {...props} me={me}/>}/>
                     <Route path="/sign/in" render={(props) => <SignIn {...props} me={me}/>}/>
                     <Route path="/forgot" render={(props) => <ForgotPassword {...props} me={me}/>}/>
+                    <Route path="/about" render={(props) => <About {...props} me={me}/>}/>
+                    <Route path="/terms" render={(props) => <Terms {...props} me={me}/>}/>
                 </div>
             </Router>
         );
