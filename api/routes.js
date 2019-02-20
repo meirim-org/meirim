@@ -22,7 +22,7 @@ Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 // Plan
 Router.get('/plan/:id', wrap(Plan.read, Plan));
 Router.get('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
-Router.get('/plan/:id/unsubscribe', wrap(Subscription.unsubscribe, Subscription));
+Router.delete('/plan/:id/subscribe', wrap(Subscription.unsubscribe, Subscription));
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
