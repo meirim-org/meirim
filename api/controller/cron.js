@@ -6,6 +6,7 @@ const Email = require('../service/email');
 const Bluebird = require('bluebird');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
+const Turf = require('turf');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -13,7 +14,6 @@ const { fetchStaticMap } = require('../service/staticmap');
 
 module.exports = {
   iplan: () => {
-    console.log('Running iplan fetcher');
     return iplanApi
       .getBlueLines()
       .then((iPlans) => {
@@ -72,7 +72,26 @@ module.exports = {
               return plan.save();
             });
         })
+      });
+  },
+
+  complete_jurisdiction_from_mavat: () => {
+    return Plan.query((qb) => {
+        qb.where('jurisdiction', 'IS', null);
       })
+      .fetchAll()
+      .then(planCollection => {
+        return Bluebird.mapSeries(planCollection.models, plan => {
+          Log.debug((plan.get('plan_url')));
+          return MavatAPI
+            .parseMavat(plan.get('plan_url'))
+            .then((mavatData) => {
+              Plan.setMavatData(plan, mavatData);
+              Log.debug('Saving with jurisdiction form mavat', JSON.stringify(mavatData));
+              return plan.save();
+            });
+        })
+      });
   },
 
   sendPlanningAlerts: () => {
@@ -89,9 +108,10 @@ module.exports = {
         return unsentPlans.models;
       })
       .mapSeries((unsentPlan) => {
+        let centroid = Turf.centroid(unsentPlan.get('geom'));
         return Promise.all([
           Alert.getUsersByGeometry(unsentPlan.get('id')),
-          fetchStaticMap(unsentPlan.get('lat'), unsentPlan.get('lon')),
+          fetchStaticMap(centroid.geometry.coordinates[1], centroid.geometry.coordinates[0]),
         ]).then(([users, planStaticMap]) => {
             Log.debug('Got', users[0].length, 'users for plan', unsentPlan.get('id'));
 

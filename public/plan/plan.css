@@ -35,12 +35,16 @@
     margin-bottom:30px;}
   
   .rectangle {
-    padding: 35px;
+    padding: 20px;
     border-radius: 10px;
     background-color: #ffffff;
     box-shadow: 0 9px 14px 0 rgba(0, 0, 0, 0.08);
     line-height: 200%;
     margin-bottom:30px;
+  }
+
+  .note{
+    color: #999;
   }
   
   
@@ -48,7 +52,7 @@
   @media (max-width: 576px) { 
     .rectangle {
       padding: 10px;
-      margin: 0;
+      margin: 5px;
       width: 100%;
     }
   
