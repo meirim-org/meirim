@@ -17,6 +17,8 @@ import "../../node_modules/leaflet/dist/leaflet.css";
 
 class Alerts extends Component {
     state = {
+        error: false,
+        loading: false,
         alerts: [],
         form: {
             radius: 3,
@@ -34,41 +36,61 @@ class Alerts extends Component {
         this.handleSubmit = this
             .handleSubmit
             .bind(this);
+        this.handleDelete = this
+            .handleDelete
+            .bind(this);
     }
     handleSlide(value) {
         const {form} = this.state;
         form.radius = value;
-        this.setState({form});
+        this.setState({form, error:false});
     }
 
     handleAddress(e) {
         const {form} = this.state;
         form.address = e.target.value;
-        this.setState({form});
+
+        this.setState({form, error:false});
     }
 
     handleSubmit(e){
         const {address, radius} = this.state.form;
         e.preventDefault();
-
+        
+        this.setState({loading:true});
+        
         api.post('/alert',{
             address, radius
         })
+        .then(() => this.getAlerts())
+        .then(() => this.setState({loading:false}))
+        .catch(error => {
+            this.setState({error})
+            console.error(error);
+        })
+    }
+
+    handleDelete(alertId) {
+        api.delete('/alert/'+alertId)
         .then(() => this.getAlerts())
     }
 
     componentDidMount() {
         this.getAlerts();
+        document.getElementById('homeAddress').focus();
     }
 
     getAlerts() {
         return api
         .get('/alert')
-        .then(result => this.setState({alerts: result.data}));
+        .then(result => this.setState({alerts: result.data}))
+        .catch(error => this.setState({error}))
     }
+    
     render() {
-        const {alerts, form} = this.state;
+        const {alerts, form, error, loading} = this.state;
         const {me} = this.props;
+
         return <React.Fragment>
             <Navigation me={me}/>
             <div className="container">
@@ -79,7 +101,7 @@ class Alerts extends Component {
                     <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
                     <small>**ניתן להוסיף יותר מכתובת אחת</small>
                 </div>
-
+                
                 <form className="rectangle" onSubmit={this.handleSubmit}>
                     <h5 className="container-title">ההתראה חדשה</h5>
                     <div className="selectAreaAndInterest">
@@ -87,6 +109,8 @@ class Alerts extends Component {
                         <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
                         <small>**ניתן להוסיף יותר מכתובת אחת</small>
                     </div>
+                    {error && <div className="alert alert-danger" role="alert">הכתובת לא נמצאה</div>}
+
                     <div className="row">
                         <div className="col">
                             <label id="homeLabale">כתובת:</label>
@@ -96,7 +120,7 @@ class Alerts extends Component {
                                 value={form.address}
                                 required
                                 onChange={this.handleAddress}
-                                placeholder="לדוגמה: מאז״ה 9, תל אביב"/>
+                                />
                         </div>
                     </div>
                     <div className="row">
@@ -131,7 +155,7 @@ class Alerts extends Component {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <button id="submitButton">הוספה</button>
+                            <button id="submitButton" disabled={loading}>הוספה</button>
                         </div>
                     </div>
                 </form>
@@ -140,7 +164,7 @@ class Alerts extends Component {
                     <h5 className="container-title">ההתראות שלי</h5>
                     <div className="row">
                         <div className="col col-sm-6">
-                            <AlertTable alerts={alerts}/>
+                            <AlertTable alerts={alerts} onDelete={this.handleDelete}/>
                         </div>
                         <div className="col col-sm-6">
                             {/* <Mapa alerts={alerts} /> */}

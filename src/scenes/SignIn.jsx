@@ -46,7 +46,7 @@ class SignIn extends Component {
     render() {
         const {success} = this.state;
         if (success === 1) {
-            return <Redirect to='/'/>
+            window.location = '/';
         }
         return <React.Fragment>
             <Navigation/>

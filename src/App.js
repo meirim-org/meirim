@@ -35,7 +35,6 @@ class App extends Component {
                         ? <Alerts {...props} me={me}/>
                         : <Home {...props}/>}/>
                     <Route path="/plans" render={(props) => <Plans {...props} me={me}/>}/>
-                    <Route path="/alerts" render={(props) => <Alerts {...props} me={me}/>}/>
                     <Route path="/sign/in" render={(props) => <SignIn {...props} me={me}/>}/>
                     <Route path="/forgot" render={(props) => <ForgotPassword {...props} me={me}/>}/>
                 </div>

@@ -17,7 +17,7 @@ function AlertTable(props) {
           <tr>
             <td>{alert.address}</td>
             <td>{alert.radius+" "+t.km}</td>
-            <td><button>Delete</button></td>
+            <td><button onClick={() => props.onDelete(alert.id)}>Delete</button></td>
           </tr>)
         )}
       </tbody>
