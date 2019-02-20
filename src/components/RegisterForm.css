@@ -15,7 +15,9 @@
     height: 40px;
     padding: 10px 30px;
   }
-  
+  .eyelashes_nav {
+    width: 32px;
+  }
   .hpForm .form-group.active_field label {
     display: none;
   }

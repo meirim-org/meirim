@@ -7,6 +7,10 @@ import './RegisterForm.css';
 
 class RegisterForm extends Component {
 
+  state = {
+    error : false,
+    done: false
+  }
   constructor(props) {
     super(props);
     this.state = {email: '',
@@ -32,15 +36,33 @@ class RegisterForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     api.post('/sign/up/',this.state)
-    .then(res => this.setState({done:true}))
-    .catch(error => alert(error));
+      .then(res => this.setState({done:true}))
+      .catch(error => this.setState( { error }));
   }
 
   render() {
-    if (this.state.done) {
-      return <Redirect to='/dashboard' />
+    const { done , error } = this.state;
+    let errorMessage = '';
+    if (error){
+      if (error.response){
+        if (error.response.status==409){
+          errorMessage = t.emailExists;
+        }
+        else if (error.response.data && error.response.data.data){
+          errorMessage = error.response.data;
+        }
+      }
+      if (!errorMessage){
+        errorMessage = t.error
+      }
+
+    }
+    if (done) {
+      return <Redirect to='/alerts' />
     }
       return <form className="hpForm" onSubmit={this.handleSubmit}>
+
+        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
         <strong className="d-d-block text-center">{t.signup_now}:</strong>
         <div className="form-group">
           <label for="loginEmail">{t.email_address}:</label>
