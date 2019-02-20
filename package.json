@@ -68,7 +68,9 @@
     "winston": "^3.1.0",
     "xml2js": "^0.4.19"
   },
-  "devDependencies": {},
+  "devDependencies": {
+
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -79,8 +81,8 @@
     "not op_mini all"
   ],
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
+    "start": "BROWSER=none ./node_modules/react-scripts/bin/react-scripts.js start",
     "server": "node bin/api",
-    "build": "react-scripts build"
+    "build": "./node_modules/react-scripts/bin/react-scripts.js build"
   }
 }
