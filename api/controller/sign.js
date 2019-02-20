@@ -7,10 +7,10 @@ const Email = require('../service/email');
 class SignController extends Controller {
 
   me(req) {
-     if (!req.session.person){
-        throw Exception.NotAllowed('Must be logged in');
-     }
-     return true;
+    if (!req.session.person) {
+      throw Exception.NotAllowed('Must be logged in');
+    }
+    return true;
   }
   signup(req) {
     // check if user exists and not active
@@ -28,7 +28,7 @@ class SignController extends Controller {
         }
 
         // if there is a user but active, this will return an error
-      
+
         return this.model
           .forge(req.body)
           .save()
@@ -84,7 +84,7 @@ class SignController extends Controller {
   //   if (!req.body.email) {
   //     throw new Exception.BadRequest('No email provided');
   //   }
-   
+
   //   const email = req.body.email.toLowerCase().trim();
   //   Log.debug('Try login with email:', email);
 
@@ -99,7 +99,7 @@ class SignController extends Controller {
   //       }
   //       person.resetPasswordCode()
   //       return Email.sendPasswordResetCode(Object.assign({},person,person.resetPasswordCode()));
-      
+
   //     })
   //     .then(() =>true);
   // }
