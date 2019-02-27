@@ -29,9 +29,12 @@ class Controller {
         next();
       });
   }
-  browse() {
+  browse(req) {
+    const {params} = req;
+    const page = params.page || 0;
+
     return this.model
-      .fetchAll()
+      .fetchPage({page, pageSize: 20})
       .then((collection) => {
         Log.debug(this.tableName, 'browse success');
         return collection;

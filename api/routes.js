@@ -17,6 +17,7 @@ Router.post('/sign/in', wrap(SignUp.signin, SignUp));
 Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 
 // Plan
+Router.get('/plan/', wrap(Plan.browse, Plan));
 Router.get('/plan/:id', wrap(Plan.read, Plan));
 
 // Comment
