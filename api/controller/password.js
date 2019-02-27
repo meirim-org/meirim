@@ -12,15 +12,15 @@ class PasswordController extends Controller {
     const email = req.body.email.toLowerCase().trim();
     Log.debug('Forgot password:', email);
 
-    return Person.forge({
-      email,
-    }).fetch().then((person) => {
-      if (!person) {
-        throw new Exception.NotFound('Email not found');
-      }
-      return Email.resetPasswordToken(person)
+    return Person.forge({ email })
+      .fetch()
+      .then((person) => {
+        if (!person) {
+          throw new Exception.NotFound('Email not found');
+        }
+        return Email.resetPasswordToken(person);
+      })
       .then(()=>true);
-    });
   }
   static resetWithToken(req) {
     if (!req.body.token) {

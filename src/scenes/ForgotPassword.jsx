@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
+import queryString from 'query-string'
 import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
 
 import api from '../services/api';
@@ -33,18 +34,31 @@ class ForgotPassword extends Component {
         });
     }
 
-    handleSubmit(event) {
+    sendEmail(event) {
         event.preventDefault();
+        const {email} = this.state;
         api
-            .post('/password/sendResetToken', this.state)
+            .post('/password/sendResetToken', {email})
             .then(success => this.setState({stage: 1}))
             .catch(error => this.setState({stage: -1}));
 
     }
+
+    changePassword(event) {
+      event.preventDefault();
+      const {password }= this.state;
+      const {token} = queryString.parse(this.props.location.search);
+      api
+          .post('/password/resetWithToken', {password , token})
+          .then(success => this.setState({stage: 2}))
+          .catch(error => this.setState({stage: -1}));
+
+    }
     render() {
         const { stage } = this.state;
-        if (stage === 4) {
-            return <Redirect to='/alerts'/>
+        const {token} = queryString.parse(this.props.location.search);
+        if (stage === 3) {
+            return <Redirect to='/sign/in/'/>
         }
         return <React.Fragment>
             <Navigation/>
@@ -52,7 +66,7 @@ class ForgotPassword extends Component {
                 <div class="row">
                     <div class="col">
                         <div class="group">
-                            <img class='eyelashes' src="/images/logo.png" alt="מעירים"/>
+                            <img class='eyelashes' src={logo} alt="מעירים"/>
                             <div class="goodMorning" id="goodMorningText">
                                 שכחתם את הסיסמה?
                             </div>
@@ -63,8 +77,8 @@ class ForgotPassword extends Component {
                     </div>
                 </div>
 
-                {stage == 0 && <div class="rectangle" id="container">
-                    <form id="stage1" method="post" onSubmit={this.handleSubmit}>
+                {!token && <div class="rectangle" id="container">
+                    <form id="stage1" method="post" onSubmit={this.sendEmail}>
                         {stage == -1 && <div class="alert alert-danger" role="alert">כתובת המייל אינה תקינה</div>}
                         <div class="form-group">
                             <label for="loginEmail">שלב 1 - כתובת דואר אלקטרוני:</label>
@@ -84,15 +98,21 @@ class ForgotPassword extends Component {
                 </div>
                 }
 
-            {stage == 1 && <div class="rectangle" id="container">
-                <form id="stage2" method="post" style={{marginTop:"20px"}}>
+            {token && <div class="rectangle" id="container">
+                <form id="stage2" method="post" style={{marginTop:"20px"}}  onSubmit={this.changePassword}>
                     <div class="form-group">
-                        <label for="emailCode">שלב 2 -קוד איפוס:</label>
+                        <label for="emailCode">שלב 2 -החלפת סיסמה:</label>
                         <input class="form-control" type="hidden" name="emailCode" id="emailCode" />
                     </div>
                     <div class="form-group">
                         <label for="loginPassword">סיסמה חדשה:</label>
-                        <input class="form-control" required type="password"  name="password" id="loginPassword" />
+                        <input class="form-control" 
+                          minLength={6} 
+                          required 
+                          type="password" 
+                          onChange = {this.handleChange} 
+                          name="password" 
+                          id="loginPassword" />
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
                         <i class="fas fa-spinner fa-spin d-none"></i> החלפה</button>

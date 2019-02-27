@@ -102,6 +102,7 @@ class Plan extends Model {
       geom: iPlan.geometry,
       PLAN_CHARACTOR_NAME: '',
       plan_url: iPlan.properties.PL_URL,
+      status: iPlan.properties.STATION_DESC,
     };
     if (oldPlan) {
       oldPlan.set(data);
