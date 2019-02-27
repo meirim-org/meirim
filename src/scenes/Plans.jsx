@@ -19,7 +19,7 @@ class Plans extends Component {
     loading: false,
     hasMore: true,
     pageNumber: 1,
-    planStatuses: ['פרסום לאישור בעיתונים', 'בתהליך אישור', 'מאושרות'],
+    planStatuses: [],
     filterStatuses: [],
     plans: []
   }
@@ -67,12 +67,12 @@ class Plans extends Component {
       .then(result => {
         this.setState({
           loading: false,
-          hasMore: result.data.pagination.page < result.data.pagination.pageCount,
+          hasMore: result.pagination.page < result.pagination.pageCount,
           filterStatuses: statuses,
           pageNumber: pageNumber,
           plans: [
             ...this.state.plans,
-            ...result.data.records
+            ...result.data
           ]
         });
       })
@@ -81,7 +81,16 @@ class Plans extends Component {
 
   componentDidMount() {
     const {filterStatuses, pageNumber} = this.state;
-    this.loadPlans(pageNumber, filterStatuses);
+
+    api.get('/plan_status')
+      .then(result => {
+        this.setState({
+          planStatuses: result.data.map(status => {return status.status;})
+        });
+
+        this.loadPlans(pageNumber, filterStatuses);
+      })
+      .catch(error => this.setState({error}));
   }
 
   render() {
@@ -115,7 +124,7 @@ class Plans extends Component {
           </tbody>
         </table>
         {error &&
-          <div style={{ color: '#900' }}>
+          <div className="error-container">
             {error}
           </div>
         }
