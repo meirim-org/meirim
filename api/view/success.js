@@ -1,6 +1,7 @@
 module.exports = {
   set: (res, result, session) => {
     let data = false;
+    let pagination = {}
     const me = {};
     if (session.person) {
       me.id = session.person.id;
@@ -9,10 +10,8 @@ module.exports = {
     // format collection with pagination
     
     if (result.pagination){
-      data =  {
-        pagination: result.pagination,
-        records: result.models
-      }
+      data =  result.models;
+        pagination = result.pagination;
     }
     else {
       data = result;
@@ -23,6 +22,7 @@ module.exports = {
     res.json({
       status: 'OK',
       data,
+      pagination,
       me,
     });
   },
