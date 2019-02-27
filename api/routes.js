@@ -19,6 +19,8 @@ Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 // Plan
 Router.get('/plan/', wrap(Plan.browse, Plan));
 Router.get('/plan/:id', wrap(Plan.read, Plan));
+Router.get('/plan_county', wrap(Plan.county, Plan));
+Router.get('/plan_status', wrap(Plan.statuses, Plan));
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));

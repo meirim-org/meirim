@@ -1,6 +1,8 @@
 const Controller = require('../controller/controller');
 const Plan = require('../model/plan');
+const { Knex } = require('../service/database');
 class PlanController extends Controller {
+
 
   browse(req) {
     
@@ -30,6 +32,16 @@ class PlanController extends Controller {
       where
     })
   }
+  county () {
+      return Knex
+        .raw(`SELECT DISTINCT PLAN_COUNTY_NAME FROM plan`)
+        .then(results => results[0])
+  }
+  statuses () {
+    return Knex
+      .raw(`SELECT DISTINCT status FROM plan`)
+      .then(results => results[0])
+}
 }
 
 module.exports = new PlanController(Plan);
