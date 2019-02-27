@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import Home from './scenes/Home';
 import Plans from './scenes/Plans';
+import SinglePlan from './scenes/SinglePlan';
 import SignIn from './scenes/SignIn';
 import Alerts from './scenes/Alerts';
 import ForgotPassword from './scenes/ForgotPassword';
@@ -31,12 +32,10 @@ class App extends Component {
         return (
             <Router>
                 <div>
-                    <Route exact
-                        path="/"
-                        render={(props) => me
-                        ? <Alerts {...props} me={me}/>
-                        : <Home {...props}/>}/>
+                    <Route exact path="/" render={(props) => <Home {...props}/>}/>
+                    <Route path="/alerts" render={(props) => <Alerts {...props} me={me}/>}/>
                     <Route path="/plans" render={(props) => <Plans {...props} me={me}/>}/>
+                    <Route path="/plan/:id" render={(props) => <SinglePlan {...props} me={me}/>}/>
                     <Route path="/sign/in" render={(props) => <SignIn {...props} me={me}/>}/>
                     <Route path="/forgot" render={(props) => <ForgotPassword {...props} me={me}/>}/>
                     <Route path="/about" render={(props) => <About {...props} me={me}/>}/>

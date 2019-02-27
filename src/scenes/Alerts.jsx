@@ -104,11 +104,6 @@ class Alerts extends Component {
                 
                 <form className="rectangle" onSubmit={this.handleSubmit}>
                     <h5 className="container-title">ההתראה חדשה</h5>
-                    <div className="selectAreaAndInterest">
-                        כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
-                        <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
-                        <small>**ניתן להוסיף יותר מכתובת אחת</small>
-                    </div>
                     {error && <div className="alert alert-danger" role="alert">הכתובת לא נמצאה</div>}
 
                     <div className="row">

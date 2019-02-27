@@ -5,6 +5,7 @@ class PlanController extends Controller {
   browse(req) {
     
     const columns = [
+      'id',
       'PLAN_COUNTY_NAME',
       'PL_NUMBER',
       'PL_NAME',

@@ -19,12 +19,15 @@ class ForgotPassword extends Component {
             stage: 0
         };
 
+        this.changePassword = this
+            .changePassword
+            .bind(this);
+        this.sendEmail = this
+            .sendEmail
+            .bind(this);
         this.handleChange = this
-            .handleChange
-            .bind(this);
-        this.handleSubmit = this
-            .handleSubmit
-            .bind(this);
+          .handleChange
+          .bind(this);
     }
 
     handleChange(event) {
@@ -57,7 +60,7 @@ class ForgotPassword extends Component {
     render() {
         const { stage } = this.state;
         const {token} = queryString.parse(this.props.location.search);
-        if (stage === 3) {
+        if (stage === 2) {
             return <Redirect to='/sign/in/'/>
         }
         return <React.Fragment>
