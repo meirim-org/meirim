@@ -29,17 +29,28 @@ class Controller {
         next();
       });
   }
-  browse(req) {
-    const {params} = req;
-    const page = params.page || 0;
+  browse(req, options = {}) {
+    const {query} = req;
+    
+    let page = parseInt(query.page) || 1;
+    if (page < 1) page =1;
 
+    let columns = options.columns || '*';
+    let where = options.where || {};
+    
     return this.model
-      .fetchPage({page, pageSize: 20})
+      .query(qb => Object.keys(where).map(index => qb.where(index , 'in' , where[index])))
+      .fetchPage({
+        columns,
+        page, 
+        pageSize: 20
+      })
       .then((collection) => {
         Log.debug(this.tableName, 'browse success');
         return collection;
       });
   }
+  
   read(req) {
     const id = parseInt(req.params.id, 10);
     return this.model
