@@ -1,0 +1,9 @@
+html body {
+  direction: rtl;
+  background-color: #f8f8f8
+}
+
+.container .btn .active {
+  background-color: #054487;
+  border-color: #054487;
+}
