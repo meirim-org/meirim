@@ -35,7 +35,7 @@ class App extends Component {
                     <Route exact path="/" render={(props) => <Home {...props}/>}/>
                     <Route path="/alerts" render={(props) => <Alerts {...props} me={me}/>}/>
                     <Route path="/plans" render={(props) => <Plans {...props} me={me}/>}/>
-                    <Route path="/plan/:id" render={(props) => <SinglePlan {...props} me={me}/>}/>
+                    <Route path="/plan/:id/" render={(props) => <SinglePlan {...props} me={me}/>}/>
                     <Route path="/sign/in" render={(props) => <SignIn {...props} me={me}/>}/>
                     <Route path="/forgot" render={(props) => <ForgotPassword {...props} me={me}/>}/>
                     <Route path="/about" render={(props) => <About {...props} me={me}/>}/>
