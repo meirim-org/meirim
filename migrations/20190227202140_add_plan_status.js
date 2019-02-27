@@ -1,7 +1,13 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.table('plan', (table) => {
-    table.text('status');
+    table.string('status',64);
+  })
+  .then( () => {
+    return knex.schema.table('plan', (table) => {
+      table.index('status', 'status', 'index')
+    })
+    
   })
   .then(()=> {
   
