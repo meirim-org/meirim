@@ -15,7 +15,7 @@
   "homepage": "http://meirim.org",
   "dependencies": {
     "axios": "^0.18.0",
-    "bcrypt": "^1.0.2",
+    "bcrypt": "3.0.2",
     "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "bookshelf": "^0.10.4",
