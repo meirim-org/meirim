@@ -4,6 +4,7 @@ const Password = require('./controller/password');
 const Alert = require('./controller/alert');
 const Plan = require('./controller/plan');
 const Comment = require('./controller/comment');
+const Subscription = require('./controller/subscription');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
@@ -20,6 +21,8 @@ Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 
 // Plan
 Router.get('/plan/:id', wrap(Plan.read, Plan));
+Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
+Router.delete('/plan/:id/subscribe', wrap(Subscription.unsubscribe, Subscription));
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
