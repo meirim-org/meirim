@@ -38,11 +38,6 @@ class PlanPerson extends Base_model {
       .query('where', 'person_id', '=', person_id)
       .query('where', 'plan_id', '=', plan_id)
       .destroy();
-      // .fetch().then((subscription) => {
-      //   if (!subscription)
-      //     return Promise.resolve();
-      //   return subscription.destroy();
-      // });
   }
 }
 module.exports = PlanPerson;
