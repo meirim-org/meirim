@@ -19,7 +19,7 @@ class Plan extends Model {
       // PLAN_CHARACTOR_NAME: 'string',
       data: ['required'],
       geom: ['required', 'object'],
-
+      jurisdiction: 'string'
     };
   }
 
@@ -42,6 +42,9 @@ class Plan extends Model {
     try {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);
+        if (attributes.jurisdiction === 'מקומית' && attributes.data.STATION_DESC !== 'מאושרות') {
+          attributes.notCredible = true;
+        }
       }
     } catch (e) {
       Log.error('Json parse error', attributes.data);
@@ -116,6 +119,7 @@ class Plan extends Model {
     return plan.set({
       goals_from_mavat: mavanData.goals,
       main_details_from_mavat: mavanData.mainPlanDetails,
+      jurisdiction: mavanData.jurisdiction,
     });
   }
 
@@ -131,7 +135,7 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data', 'goals_from_mavat', 'main_details_from_mavat', Knex.raw('X(st_centroid(geom)) as lon'), Knex.raw('Y(st_centroid(geom)) as lat')],
+      columns: ['id', 'data', 'goals_from_mavat', 'main_details_from_mavat', 'geom', 'jurisdiction'],
     });
   }
 };
