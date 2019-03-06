@@ -45,10 +45,14 @@
     <strong>ישוב:</strong> {{data.PLAN_COUNTY_NAME}}
   </div>
   {{/data.PLAN_COUNTY_NAME}}
+  {{#jurisdiction}}
+  <div class="subSubHeadline">
+    <strong>מוסד התכנון המוסמך להפקיד את התכנית:</strong> {{jurisdiction}}
+  </div>
+  {{/jurisdiction}}
   <div class="subSubHeadline">
     <strong>סוג תוכנית:</strong> {{data.ENTITY_SUBTYPE_DESC}}
   </div>
-
   <div class="subSubHeadline">
     <strong>
       שימושי קרקע:
@@ -61,6 +65,13 @@
   </div>
   <a href="{{unsubscribeLink}}">מחיקת התראה</a>
   </div>
+    {{#isLocalAuthority}}
+  <div class="subSubHeadline" style="color: #999; padding: 10px; margin: 10px;">
+    
+     שימו לב! זוהי תכנית המופקדת בסמכות מקומית. מכיוון שהוועדות המקומיות לא מדווחות בצורה אחידה אודות הסטטוס של התכניות בסמכותן אנחנו ממליצים לא להסתמך על סטטוס התכניות (גם לא כמו שמופיע באתר "תכנון זמין") - למעט אישור. אם קיבלתם התראה על תכנית חדשה בסמכות מקומית זה אומר שהתכנית עברה "תנאי סף" וכנראה שהיא בהפקדה או תכף מופקדת. תשארו עירניים!
+    
+  </div>
+   {{/isLocalAuthority}}
 
 </body>
 
