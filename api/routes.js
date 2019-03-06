@@ -21,7 +21,7 @@ Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 
 // Plan
 Router.get('/plan/:id', wrap(Plan.read, Plan));
-Router.get('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
+Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
 Router.delete('/plan/:id/subscribe', wrap(Subscription.unsubscribe, Subscription));
 
 // Comment

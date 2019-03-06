@@ -26,8 +26,10 @@ class PlanPersonController extends Controller {
     return this.model.unsubscribe(req.session.person.id, req.params.id)
       .then(() => {
         Log.debug('Person subscription created removed');
+        return true;
       });
   }
 }
+
 
 module.exports = new PlanPersonController(PlanPerson);

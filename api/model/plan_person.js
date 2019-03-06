@@ -17,10 +17,10 @@ class PlanPerson extends Base_model {
     return 'plan_person';
   }
   static subscribe(person_id, plan_id) {
-    return this
-      .query('where', 'person_id', '=', person_id)
-      .query('where', 'plan_id', '=', plan_id)
-      .fetchAll()
+    return this.forge({
+      person_id,
+      plan_id,
+    }).fetchAll()
       .then((existingSubscription) => {
       // if it exists- updating it
         if (existingSubscription && existingSubscription.length > 0) {
@@ -37,7 +37,8 @@ class PlanPerson extends Base_model {
     return this
       .query('where', 'person_id', '=', person_id)
       .query('where', 'plan_id', '=', plan_id)
-      .destroy();
+      .destroy()
+      .then(() => true);
   }
 }
 module.exports = PlanPerson;
