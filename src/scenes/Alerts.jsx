@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Map, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
+import _ from 'lodash';
 import leaflet from 'leaflet';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -162,7 +163,7 @@ class Alerts extends Component {
                             <AlertTable alerts={alerts} onDelete={this.handleDelete}/>
                         </div>
                         <div className="col col-sm-6">
-                            {/* <Mapa alerts={alerts} /> */}
+                            { <Mapa alerts={alerts} /> }
                         </div>
                     </div>
                 </div>
@@ -172,27 +173,31 @@ class Alerts extends Component {
     }
 }
 
+
+
 function Mapa(props) {
 
-    const transparentLayer = leaflet.geoJSON();
-    const layer = leaflet.featureGroup();
-    const layer1 = props.alerts.map(alert=>{
-        var polygon = leaflet.geoJSON(alert.geom).addTo(transparentLayer);
+//     // getting all the current alerts and putting them into two layers
+//    const transparentLayer = leaflet.geoJSON();
+// //    const layer = leaflet.featureGroup();
+
+    //const layer1 = props.alerts.map(alert=>{
+    //    var polygon = leaflet.geoJSON(alert.geom).addTo(transparentLayer);
         // creating a circle from the box to display it
-        var center = polygon.getBounds().getCenter();
-        var c = leaflet.circle([center.lat, center.lng], {
-            radius: (alert.radius * 1000)
-        });
+      //  var center = polygon.getBounds().getCenter();
+       // var c = leaflet.circle([center.lat, center.lng], {
+         //   radius: (alert.radius * 1000)
+        //});
 
         // c.alertId = alert.id;
         // c.transparentLayerId = polygon['_leaflet_id'];
         // c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
-        c.addTo(layer);
+     //   c.addTo(layer);
 
   // adding the box to the transaparent layer
   // getting the id of the polygon in the t.layer
 //   map.fitBounds(transparentLayer.getBounds());
-    });
+  // });
     return <Map
     // bounds = {layer}
     center={[34, 34]}
@@ -200,14 +205,49 @@ function Mapa(props) {
     style={{
     height: "300px",
     width: "100%"
-}}>
+    }}>
     <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
-        <GeoJSON data={layer}></GeoJSON>
-    
-    
-</Map>
+      {RaduisCircleLayer(props)}
+        {/* {</TileLayer> } */}
+    </Map>
+}
+
+function RaduisCircleLayer(props){
+
+//    let circleLayer =[ {
+//         "type": "LineString", 
+//         "coordinates": [
+//             [30, 10], [10, 30], [40, 40]
+//         ]
+//         }, {"type":"Polygon","coordinates":[[[34.854251550982376,31.977026764205977],[34.854251550982376,31.887195235794024],[34.748402449017625,31.887195235794024],[34.748402449017625,31.977026764205977],[34.854251550982376,31.977026764205977]]]}];
+let circleLayer  = _.map(props.alert, 'geom');
+    //circleLayer.push()
+     circleLayer =props.alerts.map(alert=>{
+     //  var polygon = leaflet.geoJSON(alert.geom);
+     console.log(JSON.stringify(alert.geom));
+     //circleLayer.push(alert.geom);
+     return alert.geom;
+     })
+
+     console.log("layer leng"+ circleLayer[0]);
+     //circleLayer = circleLayer.concat(layer1);
+     console.log("layer leng"+ circleLayer.length);
+    //     creating a circle from the box to display it
+    //    var center = polygon.getBounds().getCenter();
+    //    var c = leaflet.circle([center.lat, center.lng], {
+    //        radius: (alert.radius * 1000)
+    //     });
+
+    //     c.alertId = alert.id;
+    //     c.transparentLayerId = polygon['_leaflet_id'];
+    //     c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
+    //    c.addTo(layer);
+
+   // console.log('my alerts are'+ props.alerts);
+   
+    return <GeoJSON data={circleLayer}/> 
 }
 
 export default Alerts;

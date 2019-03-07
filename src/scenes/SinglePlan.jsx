@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
 import api from '../services/api';
+import '../assets/bootstrap.css';
 
 import Moment from 'react-moment'
 
@@ -28,7 +29,7 @@ class SinglePlan extends Component {
 
         return <React.Fragment>
             <Navigation me={me}/>
-            <div className="container">
+            <div className="container" class="container">
                 {plan.PL_NAME && <div class="container">
                     <h1>{plan.PL_NAME}</h1>
                     <div class="row">
