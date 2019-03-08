@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import leaflet from 'leaflet';
-import {Map, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
+import {Map, TileLayer, GeoJSON} from 'react-leaflet';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import Comments from '../components/Comments';
 
 import api from '../services/api';
 import '../assets/bootstrap.css';
@@ -18,6 +19,7 @@ class SinglePlan extends Component {
 
     componentDidMount() {
         const {id} = this.props.match.params;
+        this.setState({planId:id})
         return api
             .get('/plan/' + id)
             .then(plan => this.setState({plan:plan.data}))
@@ -49,6 +51,7 @@ class SinglePlan extends Component {
                             <div class="rectangle">
                                 <h4>תגובות</h4>
                                 <div id="comments"></div>
+                                <Comments planId={this.state.planId} />
                             </div>
                         </div>
                         <div class="col">
