@@ -215,7 +215,7 @@ function Mapa(props) {
         // let circle = leaflet.circle([center.lat, center.lng], {
         //       radius: (alert.radius * 1000)
         //   });
-         return (<Circle radius={alert.radius * 100} center={center}/>) 
+         return (<Circle radius={alert.radius * 1000} center={center}/>) 
     })}
     </Map>
 }
