@@ -92,16 +92,23 @@ class SinglePlan extends Component {
         api.post('/comment/' + this.state.id, newComment)
         .then((res) => {
             this.setState({done:true})
-            var newComment = _.merge(res.data, {
-                person:{
-                    alias:this.state.me.alias, 
-                    id: this.state.me.id
-                }});
-            this.setState({comments:this.state.comments.concat([newComment])})
+            this.handleCommentPublished(res.data);
         })
         .catch(error => this.setState( { error }));
     }
-    
+
+    handleCommentPublished(data){
+        var newComment = _.merge(data, {
+                 person:{
+                      alias:this.state.me.alias, 
+                     id: this.state.me.id
+                   }});
+        this.setState({comments:this.state.comments.concat([newComment])});
+        let {form }= this.state;
+        form.content = '';
+        this.setState({form});
+    }
+
     handleChange(event) {
         event.preventDefault();
         let {form} = this.state;
