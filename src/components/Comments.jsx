@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import _ from 'lodash';
 
 import api from '../services/api';
+
+import avatar from '../assets/logo.png';
 import '../assets/bootstrap.css';
 import './Comments.css';
 
@@ -29,7 +31,6 @@ class SinglePlan extends Component {
        
     }
     componentDidMount() {
-        // const {id} = this.props.match.params;
         const {id} = this.state;
 
          return api.get('/comment/' + id)
@@ -42,44 +43,52 @@ class SinglePlan extends Component {
     }
 
     render() {
-        const {comments} = this.state;
-        const {me} = this.state || {};
-        const {id} = this.state;
+        const {me, id, comments } = this.state || {};
 
         return <React.Fragment>
-            <div className="container" class="container">
-                <form class="add-comment"  method="post" onSubmit={this.handleSubmit}>    
-                    <input type="hidden" name="parent_id" value="0"/>
-                    <input type="hidden" name="plan_id" value="{id}"/>
-                    <div class="form-group">
-                         <label for="exampleInputPassword1" class="sr-only">Password</label>
-                         <textarea  value={this.state.form.content} required placeholder="מה דעתך על התוכנית?"  name="content" class="form-control" rows="1" onChange={this.handleChange}></textarea>
+            {!this.state.me.id && ( 
+                 <div class="text-center container">
+                    מה דעתך על התוכנית?<br />
+                    <small>יש להירשם כדי להגיב ולהשתתף בדיון</small><br />
+                    <a href="/"  class="btn btn-success">חשבון חדש</a> 
+                    או   
+                    <a href="/sign/in/" class="btn btn-primary">חשבון קיים</a>
+                </div> 
+            )}
+            {this.state.me.id && ( 
+            <form class="add-comment"  id="newCommentform" method="post" onSubmit={this.handleSubmit}>    
+                <input type="hidden" name="parent_id" value="0"/>
+                <input type="hidden" name="plan_id" value="{id}"/>
+                <div class="form-group">
+                    <br></br>
+                     <label for="exampleInputPassword1" class="sr-only">Password</label>
+                     <textarea  value={this.state.form.content} required placeholder="מה דעתך על התוכנית?"  name="content" class="form-control" rows="1" onChange={this.handleChange}></textarea>
+                </div>
+                {!this.state.me.alias && !this.state.me.alias !=='' (
+                    <div class="form-group" hidden>
+                    <label for="exampleInputEmail1" class="sr-only">כינוי</label>
+                    <input type="text" class="form-control" required name="alias" placeholder="כינוי" value="{this.state.me.alias}"/>
                     </div>
-  {me.alias &&  (
-      <div class="form-group" hidden>
-      <label for="exampleInputEmail1" class="sr-only">כינוי</label>
-      <input type="text" class="form-control" required name="alias" placeholder="כינוי" value="{this.state.me.alias}"/>
-    </div>
-  ) }
+                ) }
   
-    <button type="submit" class="btn btn-success float-left">שליחה</button>
-    </form>
-            <ul id="comments-list" class="comments-list ">
-                 {this.state.comments.map((comment, idx) => {
-                    return ( <li class="comment-main-level">
-                                    <div class="comment-avatar">
-                                        <img src="/images/defaultAvatar.png" alt="avatar"></img>
-                                    </div>
-                                    <div class="comment-box">
-                                        <div class="comment-head">
-                                            <h6 class="comment-name"><a href="/profile/{comment.person.id}">{comment.person.alias} </a></h6>
+                <button type="submit" class="btn btn-success float-left">שליחה</button>
+            </form>
+            )}
+                <ul id="comments-list" class="comments-list ">
+                    {this.state.comments.map((comment, idx) => {
+                        return ( <li class="comment-main-level">
+                                        <div class="comment-avatar">
+                                            <img src={avatar} alt="avatar"></img>
                                         </div>
-                                        <div class="comment-content">  {comment.content} </div>
-                                    </div>
-                                </li>)
-                })}
-            </ul> 
-            </div>
+                                        <div class="comment-box">
+                                            <div class="comment-head">
+                                                <h6 class="comment-name"><a href={'/profile/'+comment.person.id}>{comment.person.alias || 'אנונימי'} </a></h6>
+                                            </div>
+                                            <div class="comment-content">  {comment.content} </div>
+                                        </div>
+                                    </li>)
+                    })}
+                </ul> 
         </React.Fragment>
     }
 
@@ -107,6 +116,7 @@ class SinglePlan extends Component {
         let {form }= this.state;
         form.content = '';
         this.setState({form});
+        document.getElementByName("newCommentform").reset()
     }
 
     handleChange(event) {
