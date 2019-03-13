@@ -1,8 +1,5 @@
 const Bluebird = require('bluebird');
 const Model = require('./base_model');
-const {
-  Knex,
-} = require('../service/database');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 
