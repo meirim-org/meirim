@@ -5,6 +5,8 @@ import Footer from '../components/Footer';
 
 import api from '../services/api';
 
+import Moment from 'react-moment'
+
 import t from '../locale/he_IL';
 
 class SinglePlan extends Component {
@@ -58,10 +60,16 @@ class SinglePlan extends Component {
                                     <li>מספר תוכנית: {plan.data.PL_NUMBER}</li>
                                     <li>סוג תוכנית: {plan.data.ENTITY_SUBTYPE_DESC}</li>
                                     {plan.jurisdiction && <li>מוסד התכנון המוסמך להפקיד את התכנית: {plan.jurisdiction}</li>}
-                                    <li>תאריך הפקדה: {plan.data.DEPOSITING_DATE}</li>
+                                    <li>תאריך הפקדה:  <Moment format="DD/MM/YYYY">
+                                    {plan.data.DEPOSITING_DATE}
+                                     </Moment>
+                                     </li> 
                                     <li>שימוש קרקע: {plan.data.PL_LANDUSE_STRING}</li>
                                     <li>סטטוס: {plan.data.STATION_DESC}</li>
-                                    <li>עדכון אחרון: {plan.data.LAST_UPDATE}</li>
+                                    <li>עדכון אחרון:  <Moment parse="YYYYMMDDHHmm" format="DD/MM/YYYY HH:mm">
+                                    {plan.data.LAST_UPDATE}
+                                </Moment>
+                                     </li> 
                                     <li>
                                         <a target="_blank" href={plan.plan_url}>מסמכי התוכנית באתר משרד האוצר</a>
                                     </li>
