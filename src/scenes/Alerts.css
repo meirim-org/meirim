@@ -42,7 +42,7 @@
   .rectangle {
     margin: 29px auto; 
     padding: 30px 30px;
-    width: 636px;
+    /* width: 636px; */
     border-radius: 10px;
     background-color: #ffffff;
     box-shadow: 0 9px 14px 0 rgba(0, 0, 0, 0.08);

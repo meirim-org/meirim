@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-
+import leaflet from 'leaflet';
+import {Map, TileLayer, GeoJSON} from 'react-leaflet';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import Comments from '../components/Comments';
 
 import api from '../services/api';
+import '../assets/bootstrap.css';
 
 import Moment from 'react-moment'
 
@@ -16,6 +19,7 @@ class SinglePlan extends Component {
 
     componentDidMount() {
         const {id} = this.props.match.params;
+        this.setState({planId:id})
         return api
             .get('/plan/' + id)
             .then(plan => this.setState({plan:plan.data}))
@@ -28,7 +32,7 @@ class SinglePlan extends Component {
 
         return <React.Fragment>
             <Navigation me={me}/>
-            <div className="container">
+            <div className="container" class="container">
                 {plan.PL_NAME && <div class="container">
                     <h1>{plan.PL_NAME}</h1>
                     <div class="row">
@@ -47,12 +51,13 @@ class SinglePlan extends Component {
                             <div class="rectangle">
                                 <h4>תגובות</h4>
                                 <div id="comments"></div>
+                                <Comments planId={this.state.planId} />
                             </div>
                         </div>
                         <div class="col">
                             <div class="rectangle">
                                 <h4>מיקום</h4>
-                                <div id="map"></div>
+                               {Mapa(plan)}
                             </div>
                             <div class="rectangle">
                                 <h4>נתוני התוכנית</h4>
@@ -89,6 +94,23 @@ class SinglePlan extends Component {
             <Footer/>
         </React.Fragment>
     }
+}
+
+function Mapa(plan) {
+
+    let bounds = leaflet.geoJSON(plan.geom).getBounds();
+    return <Map
+    center={bounds.getCenter() }
+    bounds={bounds}
+    style={{
+    height: "300px",
+    width: "100%"
+    }}>
+    <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
+        <GeoJSON data={plan.geom}/>
+     </Map>
 }
 
 export default SinglePlan;

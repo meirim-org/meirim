@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {Map, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
+
+import {Map, Marker, Popup, TileLayer, GeoJSON, FeatureGroup, Circle} from 'react-leaflet';
+import _ from 'lodash';
+
 import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
 
 import leaflet from 'leaflet';
@@ -25,7 +28,15 @@ class Alerts extends Component {
         form: {
             radius: 3,
             address: ''
-        }
+        },
+        // default 
+        bounds:[{
+            lat:35,
+            lng:35
+        },{
+            lat:25,
+            lng:25
+        }]
     }
     constructor(props) {
         super(props);
@@ -85,12 +96,24 @@ class Alerts extends Component {
     getAlerts() {
         return api
         .get('/alert')
-        .then(result => this.setState({alerts: result.data}))
+        .then(result => {
+            let transparentLayer = leaflet.geoJSON();
+            let fixedBounds = this.state.bounds;
+            if(result.data.length > 0){
+                result.data.map((alert)=>{
+                    leaflet.geoJSON(alert.geom).addTo(transparentLayer);    
+                  })
+                  const layerBounds = transparentLayer.getBounds();
+                  fixedBounds= [layerBounds._southWest, layerBounds._northEast];
+                }
+         this.setState({bounds: fixedBounds, alerts:result.data});
+         
+        })
         .catch(error => this.setState({error}))
     }
     
     render() {
-        const {alerts, form, error, loading} = this.state;
+        const {alerts, form, error, loading, bounds} = this.state;
         const {me} = this.props;
         // unauthenticatd
         if (error && error.response && error.response.status === 403) {
@@ -131,11 +154,11 @@ class Alerts extends Component {
                                 max={5}
                                 onChange={this.handleSlide}
                                 marks={{
+                                5: '5 ק"מ',
                                 1: '1 ק"מ',
                                 2: '2 ק"מ',
                                 3: '3 ק"מ',
                                 4: '4 ק"מ',
-                                5: '5 ק"מ'
                             }}
                                 trackStyle={[{
                                     backgroundColor: 'blue'
@@ -167,7 +190,10 @@ class Alerts extends Component {
                             <AlertTable alerts={alerts} onDelete={this.handleDelete}/>
                         </div>
                         <div className="col col-sm-6">
-                            {/* <Mapa alerts={alerts} /> */}
+                        {
+                            alerts.length > 0 &&
+                             <Mapa alerts={alerts} bounds={bounds}/> 
+                             }
                         </div>
                     </div>
                 </div>
@@ -177,42 +203,24 @@ class Alerts extends Component {
     }
 }
 
+
+
 function Mapa(props) {
 
-    const transparentLayer = leaflet.geoJSON();
-    const layer = leaflet.featureGroup();
-    const layer1 = props.alerts.map(alert=>{
-        var polygon = leaflet.geoJSON(alert.geom).addTo(transparentLayer);
-        // creating a circle from the box to display it
-        var center = polygon.getBounds().getCenter();
-        var c = leaflet.circle([center.lat, center.lng], {
-            radius: (alert.radius * 1000)
-        });
-
-        // c.alertId = alert.id;
-        // c.transparentLayerId = polygon['_leaflet_id'];
-        // c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
-        c.addTo(layer);
-
-  // adding the box to the transaparent layer
-  // getting the id of the polygon in the t.layer
-//   map.fitBounds(transparentLayer.getBounds());
-    });
     return <Map
-    // bounds = {layer}
-    center={[34, 34]}
-    zoom={11}
+    bounds = {props.bounds}
     style={{
     height: "300px",
     width: "100%"
-}}>
+    }}>
     <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
-        <GeoJSON data={layer}></GeoJSON>
-    
-    
-</Map>
+     {props.alerts.map((alert, idx) =>{
+        let center = leaflet.geoJSON(alert.geom).getBounds().getCenter();
+                return (<Circle radius={alert.radius * 1000} center={center}/>) 
+     })}
+    </Map>
 }
 
 export default Alerts;
