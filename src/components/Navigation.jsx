@@ -12,17 +12,19 @@ class Navigation extends Component {
   state = {
     signOutSuccess: false
   }
+  constructor(props){
+      super(props);
+      this.signout = this.signout.bind(this);
+  }
   signout() {
     api.post('/sign/out')
-      .then(signOutSuccess => this.setState({signOutSuccess}))
+      .then(signOutSuccess => {
+          window.location = '/';
+      })
   }
   render() {
     const { me } = this.props;
-    const { signOutSuccess } = this.state;
 
-    if (signOutSuccess){
-      return <Redirect to="/" />
-    }
     return <nav className="navbar navbar-expand navbar-light">
       <Link className="navbar-brand" to="/">
         <img className='eyelashes_nav' src={logo} alt={t.name} /> {t.name}
@@ -33,9 +35,6 @@ class Navigation extends Component {
         </li>
         <li className="nav-item">
           <Link className="nav-link" to="/plans/">{t.plans}</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/about/">{t.about}</Link>
         </li>
       </ul>
       
