@@ -14,6 +14,7 @@ class PlanController extends Controller {
       'PLAN_CHARACTOR_NAME',
       'goals_from_mavat',
       'main_details_from_mavat',
+      'geom',
     ];
     
     const {query} = req;
