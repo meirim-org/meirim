@@ -13,11 +13,13 @@ import logo from '../assets/logo.png';
 import './Alerts.css';
 
 class ForgotPassword extends Component {
+
+    state = {
+        error:false,
+        stage:'email'
+    }
     constructor(props) {
         super(props);
-        this.state = {
-            stage: 0
-        };
 
         this.changePassword = this
             .changePassword
@@ -26,102 +28,119 @@ class ForgotPassword extends Component {
             .sendEmail
             .bind(this);
         this.handleChange = this
-          .handleChange
-          .bind(this);
+            .handleChange
+            .bind(this);
     }
 
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value,
-            success: 0
+            error: false
         });
     }
 
     sendEmail(event) {
         event.preventDefault();
         const {email} = this.state;
+        this.setState({stage:'sending'})
         api
             .post('/password/sendResetToken', {email})
-            .then(success => this.setState({stage: 1}))
-            .catch(error => this.setState({stage: -1}));
+            .then(success => this.setState({stage: 'sent'}))
+            .catch(error => this.setState({error, stage:'email'}));
 
+    }
+    componentDidMount() {
+        const {token} = queryString.parse(this.props.location.search);
+        if (token) {
+            this.setState({token, stage: 'change'});
+        }
     }
 
     changePassword(event) {
-      event.preventDefault();
-      const {password }= this.state;
-      const {token} = queryString.parse(this.props.location.search);
-      api
-          .post('/password/resetWithToken', {password , token})
-          .then(success => this.setState({stage: 2}))
-          .catch(error => this.setState({stage: -1}));
+        event.preventDefault();
+        const {password, token} = this.state;
+        this.setState({stage:'changing'})
+        api
+            .post('/password/resetWithToken', {password, token})
+            .then(() => this.setState({stage: 'changed'}))
+            .catch(error => this.setState({error, stage:'change'}));
 
     }
     render() {
-        const { stage } = this.state;
-        const {token} = queryString.parse(this.props.location.search);
-        if (stage === 2) {
+        const {stage, error} = this.state;
+
+        if (stage === 'changed') {
             return <Redirect to='/sign/in/'/>
         }
         return <React.Fragment>
             <Navigation/>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="group">
-                            <img class='eyelashes' src={logo} alt="מעירים"/>
-                            <div class="goodMorning" id="goodMorningText">
+            <div className="container dialog">
+                <div className="row">
+                    <div className="col">
+                        <div className="group">
+                            <img className='eyelashes' src={logo} alt="מעירים"/>
+                            <div className="goodMorning" id="goodMorningText">
                                 שכחתם את הסיסמה?
                             </div>
-                            <div class="selectAreaAndInterest">
+                            <div className="selectAreaAndInterest">
                                 הכניסו את כתובת הדואר האלקטרוני שבאמצעותה נרשמתם ונשלח לכם קוד לאיפוס הסיסמה.
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {!token && <div class="rectangle" id="container">
+                {stage === 'email' && <div className="rectangle">
                     <form id="stage1" method="post" onSubmit={this.sendEmail}>
-                        {stage == -1 && <div class="alert alert-danger" role="alert">כתובת המייל אינה תקינה</div>}
-                        <div class="form-group">
+                        {error && <div className="alert alert-danger" role="alert">כתובת המייל אינה תקינה</div>}
+                        <div className="form-group">
                             <label for="loginEmail">שלב 1 - כתובת דואר אלקטרוני:</label>
                             <input
-                                class="form-control"
+                                className="form-control"
                                 required
                                 type="email"
                                 name="email"
                                 id="loginEmail"
-                                onChange = {this.handleChange}
+                                onChange={this.handleChange}
                                 placeholder="yourname@mail.com"/>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-spinner fa-spin d-none"></i>
+                        <button type="submit" className="btn btn-primary btn-block">
+                            <i className="fas fa-spinner fa-spin d-none"></i>
                             שליחת קוד איפוס</button>
                     </form>
                 </div>
-                }
+}
+                {stage === 'sent' && <div className="alert alert-success" role="alert">שלחנו לך דואר אלקטרוני עם הנחיות להמשך</div>}
 
-            {token && <div class="rectangle" id="container">
-                <form id="stage2" method="post" style={{marginTop:"20px"}}  onSubmit={this.changePassword}>
-                    <div class="form-group">
-                        <label for="emailCode">שלב 2 -החלפת סיסמה:</label>
-                        <input class="form-control" type="hidden" name="emailCode" id="emailCode" />
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">סיסמה חדשה:</label>
-                        <input class="form-control" 
-                          minLength={6} 
-                          required 
-                          type="password" 
-                          onChange = {this.handleChange} 
-                          name="password" 
-                          id="loginPassword" />
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-spinner fa-spin d-none"></i> החלפה</button>
-                </form>
-            </div>
-                }
+                {stage === 'change' && <div className="rectangle" id="container">
+                    <form
+                        id="stage2"
+                        method="post"
+                        style={{
+                        marginTop: "20px"
+                    }}
+                        onSubmit={this.changePassword}>
+                        {error && <div className="alert alert-danger" role="alert">חלה שגיאה</div>}
+
+                        <div className="form-group">
+                            <label for="emailCode">שלב 2 -החלפת סיסמה:</label>
+                            <input className="form-control" type="hidden" name="emailCode" id="emailCode"/>
+                        </div>
+                        <div className="form-group">
+                            <label for="loginPassword">נא לבחור סיסמה חדשה:</label>
+                            <input
+                                className="form-control"
+                                minLength={6}
+                                required
+                                type="password"
+                                onChange={this.handleChange}
+                                name="password"
+                                id="loginPassword"/>
+                        </div>
+                        <button type="submit" className="btn btn-primary btn-block">
+                            <i className="fas fa-spinner fa-spin d-none"></i>
+                            החלפה</button>
+                    </form>
+                </div>}
             </div>
             <Footer/>
         </React.Fragment>

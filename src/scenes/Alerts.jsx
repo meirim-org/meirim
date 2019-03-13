@@ -121,7 +121,7 @@ class Alerts extends Component {
         }
         return <React.Fragment>
             <Navigation me={me}/>
-            <div className="container">
+            <div className="container widedialog">
                 <img className='large_eyelashes' src={logo} alt={t.name}/>
                 <div className="goodMorning">ברוכים הבאים למעירים!</div>
                 <div className="selectAreaAndInterest">

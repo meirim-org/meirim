@@ -14,8 +14,9 @@ class Home extends Component {
 
   
   render() {
+      const { me } = this.props;
       return <React.Fragment>
-        <Navigation />
+        <Navigation me={me}/>
         
         <div className="container heroContainer">
           <section className="hero">
