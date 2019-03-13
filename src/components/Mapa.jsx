@@ -7,13 +7,20 @@ import t from '../locale/he_IL';
 
 class Mapa extends Component {
   render() {
-    const { geom, hideZoom } = this.props;
+    const { geom, hideZoom, disableInteractions } = this.props;
     const bounds = leaflet.geoJSON(geom).getBounds();
 
     return <Map
       center={bounds.getCenter() }
       bounds={bounds}
       zoomControl={!hideZoom}
+      boxZoom={!disableInteractions}
+      doubleClickZoom={!disableInteractions}
+      dragging={!disableInteractions}
+      keyboard={!disableInteractions}
+      scrollWheelZoom={!disableInteractions}
+      tap={!disableInteractions}
+      touchZoom={!disableInteractions}
       style={{
         height: "100%",
         width: "100%"
