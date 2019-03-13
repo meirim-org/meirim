@@ -125,7 +125,8 @@ class Alert extends Model {
     FROM alert 
     INNER JOIN plan ON ST_Intersects(plan.geom,alert.geom)
     INNER JOIN person ON person.id=alert.person_id
-    WHERE plan.id=${planId}`;
+    WHERE plan.id=${planId}
+    GROUP BY person.id`;
     return Knex.raw(sql);
   }
 }

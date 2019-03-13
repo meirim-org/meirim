@@ -115,6 +115,10 @@ function getShapeFile(cheerioPage) {
     .catch(error => console.error(error.stack));
 }
 
+function getJurisdictionString(cheerioPage) {
+  return cheerioPage('#ctl00_ContentPlaceHolder1_AUTH').val();
+}
+
 function parseMavat(planUrl) {
   return init()
     .then(() => fetch(planUrl))
@@ -125,6 +129,7 @@ function parseMavat(planUrl) {
         goals: getGoalsText(cheerioPage),
         mainPlanDetails: getMainPlanDetailText(cheerioPage),
         areaChanges: getAreaChanges(cheerioPage),
+        jurisdiction: getJurisdictionString(cheerioPage)
       });
     });
 }

@@ -96,6 +96,8 @@ class Email {
     // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
     data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan?id=${unsentPlan.get('id')}`;
+    data.jurisdiction = unsentPlan.get('jurisdiction');
+    data.isLocalAuthority = data.jurisdiction === 'מקומית';
 
     data.attachments = [{
       cid: 'planmap',
