@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-<<<<<<< HEAD
+
 import {Map, Marker, Popup, TileLayer, GeoJSON, FeatureGroup, Circle} from 'react-leaflet';
 import _ from 'lodash';
-=======
-import {Map, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
+
 import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
 
->>>>>>> c97447cedb652b43cd6fa96a0cb41b4ed52e360c
 import leaflet from 'leaflet';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -31,6 +29,14 @@ class Alerts extends Component {
             radius: 3,
             address: ''
         },
+        // default 
+        bounds:[{
+            lat:35,
+            lng:35
+        },{
+            lat:25,
+            lng:25
+        }]
     }
     constructor(props) {
         super(props);
@@ -86,36 +92,22 @@ class Alerts extends Component {
         this.getAlerts();
         document.getElementById('homeAddress').focus();
     }
-//     shouldComponentUpdate() {
-//         // calculating the maps bounds
-//         let transparentLayer = leaflet.geoJSON();
-//         this.state.alerts.map((alert)=>{
-//           leaflet.geoJSON(alert.geom).addTo(transparentLayer);    
-//         })
-//         const bounds = transparentLayer.getBounds();
-// //        this.setState({bounds:bounds});
-//     console.log('changed1');
-//     window.alert(JSON.stringify(bounds));
-//     return true;
-
-//     }
-//     componentWillReceiveProps(){
-//         console.log('changed2');
-//     }
 
     getAlerts() {
         return api
         .get('/alert')
         .then(result => {
-            this.setState({alerts: result.data})
             let transparentLayer = leaflet.geoJSON();
-            result.data.map((alert)=>{
-              leaflet.geoJSON(alert.geom).addTo(transparentLayer);    
-            })
-            const bounds = transparentLayer.getBounds();
-            //const fixedBounds = [[bounds._southWest.lng, bounds._southWest.lat],[ bounds._northEast.lng, bounds._northEast.lat]];
-          //  this.setState({bounds: [[31,45], [45,32]]})
-         // this.setState({bounds: fixedBounds})
+            let fixedBounds = this.state.bounds;
+            if(result.data.length > 0){
+                result.data.map((alert)=>{
+                    leaflet.geoJSON(alert.geom).addTo(transparentLayer);    
+                  })
+                  const layerBounds = transparentLayer.getBounds();
+                  fixedBounds= [layerBounds._southWest, layerBounds._northEast];
+                }
+         this.setState({bounds: fixedBounds, alerts:result.data});
+         
         })
         .catch(error => this.setState({error}))
     }
@@ -162,11 +154,11 @@ class Alerts extends Component {
                                 max={5}
                                 onChange={this.handleSlide}
                                 marks={{
+                                5: '5 ק"מ',
                                 1: '1 ק"מ',
                                 2: '2 ק"מ',
                                 3: '3 ק"מ',
                                 4: '4 ק"מ',
-                                5: '5 ק"מ'
                             }}
                                 trackStyle={[{
                                     backgroundColor: 'blue'
@@ -199,6 +191,7 @@ class Alerts extends Component {
                         </div>
                         <div className="col col-sm-6">
                         {
+                            alerts.length > 0 &&
                              <Mapa alerts={alerts} bounds={bounds}/> 
                              }
                         </div>
@@ -216,9 +209,6 @@ function Mapa(props) {
 
     return <Map
     bounds = {props.bounds}
-   //bounds = {[[31,31], [32,32]]}
-    //center={[31.4, 34]}
-    //zoom={11}
     style={{
     height: "300px",
     width: "100%"
