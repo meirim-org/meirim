@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import leaflet from 'leaflet';
-import {Map, TileLayer, GeoJSON} from 'react-leaflet';
+
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import Comments from '../components/Comments';
+import Mapa from '../components/Mapa';
 
 import api from '../services/api';
 import '../assets/bootstrap.css';
@@ -57,7 +57,9 @@ class SinglePlan extends Component {
                         <div class="col">
                             <div class="rectangle">
                                 <h4>מיקום</h4>
-                               {Mapa(plan)}
+                                <div className="map-container" style={{height: '300px'}}>
+                                  <Mapa geom={plan.geom} />
+                                </div>
                             </div>
                             <div class="rectangle">
                                 <h4>נתוני התוכנית</h4>
@@ -94,23 +96,6 @@ class SinglePlan extends Component {
             <Footer/>
         </React.Fragment>
     }
-}
-
-function Mapa(plan) {
-
-    let bounds = leaflet.geoJSON(plan.geom).getBounds();
-    return <Map
-    center={bounds.getCenter() }
-    bounds={bounds}
-    style={{
-    height: "300px",
-    width: "100%"
-    }}>
-    <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
-        <GeoJSON data={plan.geom}/>
-     </Map>
 }
 
 export default SinglePlan;
