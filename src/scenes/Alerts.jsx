@@ -29,7 +29,8 @@ class Alerts extends Component {
             radius: 3,
             address: ''
         },
-        // default 
+
+        // it does not use it, no map when there is no alerts
         bounds:[{
             lat:35,
             lng:35
@@ -76,7 +77,14 @@ class Alerts extends Component {
             address, radius
         })
         .then(() => this.getAlerts())
-        .then(() => this.setState({loading:false}))
+        .finally(()=>{
+            this.setState({
+                loading: false,
+                 form:{
+                    radius: 3,
+                    address: ''
+            }});
+        })
         .catch(error => {
             this.setState({error})
             console.error(error);
@@ -178,7 +186,7 @@ class Alerts extends Component {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <button id="submitButton" disabled={loading}>הוספה</button>
+                            <button id="submitButton" loading={this.state.loading} disabled={this.state.loading}>{loading? 'מוסיף' +'...':' הוספה'}</button>
                         </div>
                     </div>
                 </form>
