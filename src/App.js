@@ -28,11 +28,12 @@ class App extends Component {
         if (me === null) {
             return <div>Loading...</div>
         }
+        console.log(me);
 
         return (
             <Router>
                 <div>
-                    <Route exact path="/" render={(props) => <Home {...props}/>}/>
+                    <Route exact path="/" render={(props) => <Home {...props}  me={me}/>}/>
                     <Route path="/alerts" render={(props) => <Alerts {...props} me={me}/>}/>
                     <Route path="/plans" render={(props) => <Plans {...props} me={me}/>}/>
                     <Route path="/plan/:id/" render={(props) => <SinglePlan {...props} me={me}/>}/>

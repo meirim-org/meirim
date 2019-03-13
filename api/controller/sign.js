@@ -6,110 +6,86 @@ const Email = require('../service/email');
 
 class SignController extends Controller {
 
-  me(req) {
-    if (!req.session.person) {
-      throw Exception.NotAllowed('Must be logged in');
-    }
-    return true;
-  }
-  signup(req) {
-    // check if user exists and not active
-    return this.model
-      .forge({
-        email: req.body.email,
-        status: 0,
-      })
-      .fetch()
-      .then((existingPerson) => {
-        // if there is an inactive person we send only a mail
-        if (existingPerson) {
-          Log.debug('Person send activation email to:', existingPerson.get('id'));
-          return Email.newSignUp(existingPerson);
+    me(req) {
+        if (!req.session.person) {
+            throw Exception.NotAllowed('Must be logged in');
         }
-
-        // if there is a user but active, this will return an error
-
+        return true;
+    }
+    signup(req) {
+        // check if user exists and not active
         return this.model
-          .forge(req.body)
-          .save()
-          .then((person) => {
-            Log.debug('Person create success id:', person.get('id'));
-            return Email.newSignUp(person);
-          })
-          .then(() => this.signin(req));
-      });
-  }
+            .forge({
+                email: req.body.email,
+                status: 0,
+            })
+            .fetch()
+            .then((existingPerson) => {
+                // if there is an inactive person we send only a mail
+                if (existingPerson) {
+                    Log.debug('Person send activation email to:', existingPerson.get('id'));
+                    return Email.newSignUp(existingPerson);
+                }
 
-  activate(req) {
-    if (!req.body.token) {
-      throw new Exception.BadRequest('No token provided');
-    }
-    Log.debug('Person Activate token:', req.body.token);
-    return Person
-      .activateByToken(req.body.token);
-  }
+                // if there is a user but active, this will return an error
 
-  signin(req) {
-    if (!req.body.email) {
-      throw new Exception.BadRequest('No email provided');
-    }
-    if (!req.body.password) {
-      throw new Exception.BadRequest('No password provided');
+                return this.model
+                    .forge(req.body)
+                    .save()
+                    .then((person) => {
+                        Log.debug('Person create success id:', person.get('id'));
+                        return Email.newSignUp(person);
+                    })
+                    .then(() => this.signin(req));
+            });
     }
 
-    const email = req.body.email.toLowerCase().trim();
-    Log.debug('Try login with email:', email);
+    activate(req) {
+        if (!req.body.token) {
+            throw new Exception.BadRequest('No token provided');
+        }
+        Log.debug('Person Activate token:', req.body.token);
+        return Person
+            .activateByToken(req.body.token);
+    }
 
-    return Person.forge({
-        email,
-      })
-      .fetch()
-      .then((person) => {
-        if (!person) {
-          throw new Exception.NotAllowed('Password mismatch');
+    signin(req) {
+        if (!req.body.email) {
+            throw new Exception.BadRequest('No email provided');
+        }
+        if (!req.body.password) {
+            throw new Exception.BadRequest('No password provided');
         }
 
-        Log.debug('user was found:', person.get('id'));
-        return person;
-      })
-      .then(person => person.checkPassword(req.body.password))
-      .then((person) => {
-        req.session.person = person;
-        Log.debug('user was signedin:', person.get('id'));
-        return person;
-      });
-  }
+        const email = req.body.email.toLowerCase().trim();
+        Log.debug('Try login with email:', email);
 
-  // forgot(req) {
-  //   if (!req.body.email) {
-  //     throw new Exception.BadRequest('No email provided');
-  //   }
+        return Person.forge({
+                email,
+            })
+            .fetch()
+            .then((person) => {
+                if (!person) {
+                    throw new Exception.NotAllowed('Password mismatch');
+                }
 
-  //   const email = req.body.email.toLowerCase().trim();
-  //   Log.debug('Try login with email:', email);
-
-  //   return Person.forge({
-  //       email,
-  //     })
-  //     .fetch()
-  //     .then(person => {
-  //       // always return true;
-  //       if (!person){
-  //         return Promise.resolve();
-  //       }
-  //       person.resetPasswordCode()
-  //       return Email.sendPasswordResetCode(Object.assign({},person,person.resetPasswordCode()));
-
-  //     })
-  //     .then(() =>true);
-  // }
-
-  signout(req) {
-    if (req.session.destroy()) {
-      return true;
+                Log.debug('user was found:', person.get('id'));
+                return person;
+            })
+            .then(person => person.checkPassword(req.body.password))
+            .then((person) => {
+                req.session.person = person;
+                Log.debug('user was signedin:', person.get('id'));
+                return person;
+            });
     }
-    return false;
-  }
+
+    signout(req) {
+        if (req.session.destroy()) {
+            return true;
+        }
+        return false;
+    }
 }
 
 

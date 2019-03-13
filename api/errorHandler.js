@@ -11,7 +11,7 @@ module.exports = (req, res) => {
     return Failure.duplicate(res, err.message.substr(index));
   }
 
-  Log.error('User error', err);
+  Log.error('User error', JSON.stringify(err));
 
   if (err.name === 'NotAllowed') return Failure.notAllowed(res, err.message);
   if (err.name === 'BadRequest') return Failure.badRequest(res, err.message);

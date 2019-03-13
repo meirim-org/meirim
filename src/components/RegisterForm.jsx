@@ -57,24 +57,31 @@ class RegisterForm extends Component {
       }
 
     }
-    if (done) {
-      return <Redirect to='/alerts' />
-    }
+
       return <form className="hpForm" onSubmit={this.handleSubmit}>
 
         {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-        <strong className="d-d-block text-center">{t.signup_now}:</strong>
-        <div className="form-group">
-          <label for="loginEmail">{t.email_address}:</label>
-          <input onChange={this.handleChange} value={this.state.email} required type="email" name="email" id="loginEmail" placeholder="yourname@mail.com" />
-        </div>
-        <div className="form-group">
-          <label for="loginPassword">{t.password}</label>
-          <input onChange={this.handleChange} value={this.state.password} required type="password" name="password" id="loginPassword" />
-        </div>
-        <div className="form-group text-center">
-          <button type="submit">{t.signup}</button>
-        </div>
+        {!done && (
+            <div>
+                <strong className="d-d-block text-center">{t.signup_now}:</strong>
+                <div className="form-group">
+                <label for="loginEmail">{t.email_address}:</label>
+                <input onChange={this.handleChange} value={this.state.email} required type="email" name="email" id="loginEmail" placeholder="yourname@mail.com" />
+                </div>
+                <div className="form-group">
+                <label for="loginPassword">{t.password}</label>
+                <input onChange={this.handleChange} value={this.state.password} required type="password" name="password" id="loginPassword" />
+                </div>
+                <div className="form-group text-center">
+                <button type="submit">{t.signup}</button>
+                </div>
+            </div>
+        )}
+
+        {done && (
+            <div className="alert alert-success">שלחו לך דואר אלקטרוני עם לינק להפעלת החשבון.</div>
+        )}
+        
       </form>
   }
 }
