@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
+<<<<<<< HEAD
 import {Map, Marker, Popup, TileLayer, GeoJSON, FeatureGroup, Circle} from 'react-leaflet';
 import _ from 'lodash';
+=======
+import {Map, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
+import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
+
+>>>>>>> c97447cedb652b43cd6fa96a0cb41b4ed52e360c
 import leaflet from 'leaflet';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -25,8 +31,6 @@ class Alerts extends Component {
             radius: 3,
             address: ''
         },
-        //bounds:[[30,30], [30,30]]
-        //bounds:[{lat:30,lng:30}, [30,30]}]
     }
     constructor(props) {
         super(props);
@@ -119,7 +123,10 @@ class Alerts extends Component {
     render() {
         const {alerts, form, error, loading, bounds} = this.state;
         const {me} = this.props;
-
+        // unauthenticatd
+        if (error && error.response && error.response.status === 403) {
+            return <Redirect to="/sign/in" />
+        }
         return <React.Fragment>
             <Navigation me={me}/>
             <div className="container">
