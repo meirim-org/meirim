@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Map, Marker, Popup, TileLayer, GeoJSON} from 'react-leaflet';
+import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
+
 import leaflet from 'leaflet';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -90,7 +92,10 @@ class Alerts extends Component {
     render() {
         const {alerts, form, error, loading} = this.state;
         const {me} = this.props;
-
+        // unauthenticatd
+        if (error && error.response && error.response.status === 403) {
+            return <Redirect to="/sign/in" />
+        }
         return <React.Fragment>
             <Navigation me={me}/>
             <div className="container">
