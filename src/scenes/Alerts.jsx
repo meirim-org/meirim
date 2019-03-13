@@ -24,7 +24,9 @@ class Alerts extends Component {
         form: {
             radius: 3,
             address: ''
-        }
+        },
+        //bounds:[[30,30], [30,30]]
+        //bounds:[{lat:30,lng:30}, [30,30]}]
     }
     constructor(props) {
         super(props);
@@ -80,16 +82,42 @@ class Alerts extends Component {
         this.getAlerts();
         document.getElementById('homeAddress').focus();
     }
+//     shouldComponentUpdate() {
+//         // calculating the maps bounds
+//         let transparentLayer = leaflet.geoJSON();
+//         this.state.alerts.map((alert)=>{
+//           leaflet.geoJSON(alert.geom).addTo(transparentLayer);    
+//         })
+//         const bounds = transparentLayer.getBounds();
+// //        this.setState({bounds:bounds});
+//     console.log('changed1');
+//     window.alert(JSON.stringify(bounds));
+//     return true;
+
+//     }
+//     componentWillReceiveProps(){
+//         console.log('changed2');
+//     }
 
     getAlerts() {
         return api
         .get('/alert')
-        .then(result => this.setState({alerts: result.data}))
+        .then(result => {
+            this.setState({alerts: result.data})
+            let transparentLayer = leaflet.geoJSON();
+            result.data.map((alert)=>{
+              leaflet.geoJSON(alert.geom).addTo(transparentLayer);    
+            })
+            const bounds = transparentLayer.getBounds();
+            //const fixedBounds = [[bounds._southWest.lng, bounds._southWest.lat],[ bounds._northEast.lng, bounds._northEast.lat]];
+          //  this.setState({bounds: [[31,45], [45,32]]})
+         // this.setState({bounds: fixedBounds})
+        })
         .catch(error => this.setState({error}))
     }
     
     render() {
-        const {alerts, form, error, loading} = this.state;
+        const {alerts, form, error, loading, bounds} = this.state;
         const {me} = this.props;
 
         return <React.Fragment>
@@ -163,7 +191,9 @@ class Alerts extends Component {
                             <AlertTable alerts={alerts} onDelete={this.handleDelete}/>
                         </div>
                         <div className="col col-sm-6">
-                        { <Mapa alerts={alerts} /> }
+                        {
+                             <Mapa alerts={alerts} bounds={bounds}/> 
+                             }
                         </div>
                     </div>
                 </div>
@@ -177,32 +207,11 @@ class Alerts extends Component {
 
 function Mapa(props) {
 
-    //= RaduisCircleLayer(props.alerts);
-//     // getting all the current alerts and putting them into two layers
-//    const transparentLayer = leaflet.geoJSON();
-// //    const layer = leaflet.featureGroup();
-
-    //const layer1 = props.alerts.map(alert=>{
-    //    var polygon = leaflet.geoJSON(alert.geom).addTo(transparentLayer);
-        // creating a circle from the box to display it
-      //  var center = polygon.getBounds().getCenter();
-       // var c = leaflet.circle([center.lat, center.lng], {
-         //   radius: (alert.radius * 1000)
-        //});
-
-        // c.alertId = alert.id;
-        // c.transparentLayerId = polygon['_leaflet_id'];
-        // c.bindTooltip(alert.address+", "+ alert.radius+" "+' ק"מ').openTooltip();
-     //   c.addTo(layer);
-
-  // adding the box to the transaparent layer
-  // getting the id of the polygon in the t.layer
-//   map.fitBounds(transparentLayer.getBounds());
-  // });
     return <Map
-    // bounds = {layer}
-    center={[34, 34]}
-    zoom={11}
+    bounds = {props.bounds}
+   //bounds = {[[31,31], [32,32]]}
+    //center={[31.4, 34]}
+    //zoom={11}
     style={{
     height: "300px",
     width: "100%"
@@ -210,13 +219,10 @@ function Mapa(props) {
     <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
-      {props.alerts.map((alert, idx) =>{
+     {props.alerts.map((alert, idx) =>{
         let center = leaflet.geoJSON(alert.geom).getBounds().getCenter();
-        // let circle = leaflet.circle([center.lat, center.lng], {
-        //       radius: (alert.radius * 1000)
-        //   });
-         return (<Circle radius={alert.radius * 1000} center={center}/>) 
-    })}
+                return (<Circle radius={alert.radius * 1000} center={center}/>) 
+     })}
     </Map>
 }
 

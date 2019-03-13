@@ -64,7 +64,7 @@ class SinglePlan extends Component {
                      <label for="exampleInputPassword1" class="sr-only">Password</label>
                      <textarea  value={this.state.form.content} required placeholder="מה דעתך על התוכנית?"  name="content" class="form-control" rows="1" onChange={this.handleChange}></textarea>
                 </div>
-                {!this.state.me.alias && !this.state.me.alias !=='' (
+                {!this.state.me.alias && this.state.me.alias !=='' (
                     <div class="form-group" hidden>
                     <label for="exampleInputEmail1" class="sr-only">כינוי</label>
                     <input type="text" class="form-control" required name="alias" placeholder="כינוי" value="{this.state.me.alias}"/>
