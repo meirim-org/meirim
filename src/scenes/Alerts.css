@@ -38,6 +38,13 @@
     display:block;
     text-align: center;
   }
+
+  .dialog {
+      max-width:400px;
+  }
+  .widedialog {
+      max-width: 600px;
+  }
   
   .rectangle {
     margin: 29px auto; 

@@ -7,9 +7,11 @@ import t from '../locale/he_IL';
 class Footer extends Component {
   render() {
       return <footer className="text-center">
+        
       <a href="mailto:info@meirim.org">יצירת קשר</a> | <a href="https://www.facebook.com/meirim.city/">הפייסבוק שלנו</a> |
-      <a href="/about/">אודות</a> | <a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות</a><br />
-      <a href="/terms/">תנאי שימוש</a> |  כל הזכויות שמורות
+      <Link to="/about/">{t.about}</Link> | 
+      <a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות</a><br />
+      <Link to="/terms/">תנאי שימוש</Link> |  כל הזכויות שמורות
     </footer>
     
   }
