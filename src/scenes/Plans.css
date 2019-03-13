@@ -11,3 +11,25 @@ html body {
 .error-container {
   color: '#900';
 }
+
+.card {
+  max-width: 335px;
+  margin: 0 1em 3em 1em;
+}
+
+.card-link {
+  height: 100%;
+  width: 100%;
+}
+
+.card-action-area {
+  height: 100%;
+}
+
+.card-media {
+  height: 60%;
+}
+
+.card-content {
+  height: 40%;
+}
