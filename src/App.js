@@ -28,8 +28,6 @@ class App extends Component {
         if (me === null) {
             return <div>Loading...</div>
         }
-        console.log(me);
-
         return (
             <Router>
                 <div>
