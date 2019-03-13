@@ -77,7 +77,14 @@ class Alerts extends Component {
             address, radius
         })
         .then(() => this.getAlerts())
-        .then(() => this.setState({loading:false}))
+        .finally(()=>{
+            this.setState({
+                loading: false,
+                 form:{
+                    radius: 3,
+                    address: ''
+            }});
+        })
         .catch(error => {
             this.setState({error})
             console.error(error);
