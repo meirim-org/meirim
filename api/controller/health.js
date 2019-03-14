@@ -4,4 +4,3 @@ const Status = require('../model/status');
 class StatusController extends Controller {}
 
 module.exports = new StatusController(Status);
-

@@ -1,73 +1,64 @@
-exports.up = function(knex, Promise) {
+exports.up = function (knex, Promise) {
   return knex.schema.createTableIfNotExists('tag', (table) => {
     table.increments('id').primary();
     table.string('name', 32).notNullable();
-  }).then(() => {
-    return knex.schema.dropTableIfExists('status');
-  }).then(() => {
-    return knex.schema.createTableIfNotExists('status', (table) => {
-      table.increments('id').primary();
-      table.string('name', 32).notNullable();
-    })
-  }).then(() => {
-    return knex("tag").insert([
+  }).then(() => knex.schema.dropTableIfExists('status')).then(() => knex.schema.createTableIfNotExists('status', (table) => {
+    table.increments('id').primary();
+    table.string('name', 32).notNullable();
+  })).then(() => knex('tag').insert([
+    {
+      name: 'דיור',
+    }, {
+      name: 'תעסוקה ותעשיה',
+    }, {
+      name: 'מבני ציבור',
+    }, {
+      name: 'שטחים פתוחים',
+    }, {
+      name: 'טבע וסביבה',
+    }, {
+      name: 'תשתיות ותחבורה',
+    }, {
+      name: 'חינוך',
+    }, {
+      name: 'בריאות',
+    }, {
+      name: 'שטחים ירוקים',
+    }, {
+      name: 'חוף הים',
+    }, {
+      name: 'טבע עירוני',
+    }, {
+      name: 'זיהום ומפגעים אקולוגים',
+    }, {
+      name: 'הפרטה',
+    }, {
+      name: 'ציפוף',
+    }, {
+      name: 'בניה לגובה',
+    }, {
+      name: 'נגישות',
+    },
+  ]))
+    .then(() => knex('status').insert([
       {
-        name: "דיור"
+        name: 'טרום הפקדה – שלבי תכנון מוקדמים',
       }, {
-        name: "תעסוקה ותעשיה"
+        name: 'בהפקדה – X ימים להגשת התנגדות',
       }, {
-        name: "מבני ציבור"
+        name: 'דיון בהתנגדויות',
       }, {
-        name: "שטחים פתוחים"
+        name: 'הועבר לדיון בבית משפט',
       }, {
-        name: "טבע וסביבה"
+        name: 'התכנית אושרה',
       }, {
-        name: "תשתיות ותחבורה"
+        name: 'פרויקט בביצוע',
       }, {
-        name: "חינוך"
-      }, {
-        name: "בריאות"
-      }, {
-        name: "שטחים ירוקים"
-      }, {
-        name: "חוף הים"
-      }, {
-        name: "טבע עירוני"
-      }, {
-        name: "זיהום ומפגעים אקולוגים"
-      }, {
-        name: "הפרטה"
-      }, {
-        name: "ציפוף"
-      }, {
-        name: "בניה לגובה"
-      }, {
-        name: "נגישות"
-      }
-    ]);
-  }).then(() => {
-    return knex("status").insert([
-      {
-        name: "טרום הפקדה – שלבי תכנון מוקדמים"
-      }, {
-        name: "בהפקדה – X ימים להגשת התנגדות"
-      }, {
-        name: "דיון בהתנגדויות"
-      }, {
-        name: "הועבר לדיון בבית משפט"
-      }, {
-        name: "התכנית אושרה"
-      }, {
-        name: "פרויקט בביצוע"
-      }, {
-        name: "מאבק הסתיים"
-      }
-    ]);
-  });
+        name: 'מאבק הסתיים',
+      },
+    ]));
 };
 
-exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('tag').then(() => {
-    return knex.schema.dropTableIfExists('status');
-  });
+exports.down = function (knex, Promise) {
+  return knex.schema.dropTableIfExists('tag').then(() => knex.schema.dropTableIfExists('status'));
 };

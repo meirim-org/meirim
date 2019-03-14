@@ -1,8 +1,8 @@
+const path = require('path');
+const StaticMaps = require('staticmaps');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
-const path = require('path');
 
-const StaticMaps = require('staticmaps');
 
 const fetchStaticMap = (lat, lon) => {
   // create map with marker in center

@@ -27,6 +27,7 @@ class AlertController extends Controller {
         return collection;
       });
   }
+
   /**
    * Unsubscribe from alert by token, when clicking an unsubscribe
    * link in an email

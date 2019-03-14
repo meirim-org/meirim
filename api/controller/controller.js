@@ -1,6 +1,6 @@
-const Success = require('../view/success');
 const Checkit = require('checkit');
 const Promise = require('bluebird');
+const Success = require('../view/success');
 const Log = require('../lib/log');
 const Exception = require('../model/exception');
 const {
@@ -15,6 +15,7 @@ class Controller {
       this.tableName = model.prototype.tableName;
     }
   }
+
   // try catch wrapper for all controllers
   static wrap(fn, ctx) {
     return (req, res, next) => Promise
@@ -29,28 +30,29 @@ class Controller {
         next();
       });
   }
-  browse(req, options = {}) {
-    const {query} = req;
-    
-    let page = parseInt(query.page) || 1;
-    if (page < 1) page =1;
 
-    let columns = options.columns || '*';
-    let where = options.where || {};
-    
+  browse(req, options = {}) {
+    const { query } = req;
+
+    let page = parseInt(query.page) || 1;
+    if (page < 1) page = 1;
+
+    const columns = options.columns || '*';
+    const where = options.where || {};
+
     return this.model
-      .query(qb => Object.keys(where).map(index => qb.where(index , 'in' , where[index])))
+      .query(qb => Object.keys(where).map(index => qb.where(index, 'in', where[index])))
       .fetchPage({
         columns,
-        page, 
-        pageSize: 20
+        page,
+        pageSize: 20,
       })
       .then((collection) => {
         Log.debug(this.tableName, 'browse success');
         return collection;
       });
   }
-  
+
   read(req) {
     const id = parseInt(req.params.id, 10);
     return this.model
@@ -66,6 +68,7 @@ class Controller {
         return fetchedModel;
       });
   }
+
   patch(req) {
     const id = parseInt(req.params.id, 10);
     return this.model
@@ -82,6 +85,7 @@ class Controller {
         return fetchedModel.save(req.body);
       });
   }
+
   delete(req) {
     const id = parseInt(req.params.id, 10);
     return this.model
@@ -98,6 +102,7 @@ class Controller {
         return fetchedModel.destroy(req.body);
       });
   }
+
   create(req, transaction) {
     let options = {};
     if (transaction) {
@@ -117,6 +122,7 @@ class Controller {
         return savedModel;
       });
   }
+
   upload(req) {
     const id = parseInt(req.params[this.id_attribute], 10);
     const model = this.model
