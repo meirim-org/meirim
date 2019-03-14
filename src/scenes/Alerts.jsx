@@ -74,7 +74,8 @@ class Alerts extends Component {
         this.setState({loading:true});
         
         api.post('/alert',{
-            address, radius
+            address, 
+            radius: 6- radius
         })
         .then(() => this.getAlerts())
         .finally(()=>{
@@ -162,14 +163,14 @@ class Alerts extends Component {
                                 max={5}
                                 onChange={this.handleSlide}
                                 marks={{
-                                5: '5 ק"מ',
-                                1: '1 ק"מ',
-                                2: '2 ק"מ',
+                                1: '5 ק"מ',
+                                2: '4 ק"מ',
                                 3: '3 ק"מ',
-                                4: '4 ק"מ',
+                                4: '2 ק"מ',
+                                5: '1 ק"מ',
                             }}
                                 trackStyle={[{
-                                    backgroundColor: 'blue'
+                                    backgroundColor: 'gray'
                                 }
                             ]}
                                 handleStyle={[{
@@ -178,7 +179,7 @@ class Alerts extends Component {
                                 }
                             ]}
                                 railStyle={{
-                                backgroundColor: 'grey'
+                                backgroundColor: 'blue'
                             }}
                                 dots={true}
                                 defaultValue={form.radius}/>
