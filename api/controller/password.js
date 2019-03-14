@@ -20,8 +20,9 @@ class PasswordController extends Controller {
         }
         return Email.resetPasswordToken(person);
       })
-      .then(()=>true);
+      .then(() => true);
   }
+
   static resetWithToken(req) {
     if (!req.body.token) {
       throw new Exception.BadRequest('No token provided');
@@ -31,7 +32,7 @@ class PasswordController extends Controller {
     }
 
     return Person.resetPasswordByToken(req.body.token, req.body.password)
-    .then(()=>true);
+      .then(() => true);
   }
 }
 module.exports = PasswordController;

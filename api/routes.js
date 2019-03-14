@@ -41,7 +41,7 @@ Router.get('/alert/:id', wrap(Alert.read, Alert));
 Router.post('/alert/', wrap(Alert.create, Alert));
 Router.delete('/alert/:id', wrap(Alert.delete, Alert));
 
-//me
+// me
 Router.get('/me/', wrap(Alert.browse, Alert));
 
 

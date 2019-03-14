@@ -57,9 +57,9 @@ class Comment extends Model {
       })
       .fetchAll({
         withRelated: [{
-          'person': function (qb) {
+          person(qb) {
             qb.column('id', 'alias');
-          }
+          },
         }],
       });
   }

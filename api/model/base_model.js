@@ -8,10 +8,12 @@ class Base_model extends Bookshelf.Model {
   get hasTimestamps() {
     return false;
   }
+
   initialize() {
     this.on('saving', this._saving, this);
     super.initialize();
   }
+
   _saving(model, attrs, options) {
     return new Checkit(model.rules).run(model.attributes);
   }
@@ -25,6 +27,7 @@ class Base_model extends Bookshelf.Model {
   canRead(session) {
     throw new Exception.NotAllowed('Must be logged in');
   }
+
   static canCreate(session) {
     throw new Exception.NotAllowed('Must be logged in');
   }

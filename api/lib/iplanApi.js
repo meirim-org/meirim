@@ -1,10 +1,10 @@
 const Request = require('request-promise');
 const GeoJSON = require('esri-to-geojson');
-const Log = require('../lib/log');
 const Bluebird = require('bluebird');
-const Config = require('../lib/config');
 const _ = require('lodash');
 const reproject = require('reproject');
+const Config = require('../lib/config');
+const Log = require('../lib/log');
 
 const BASE_AGS_URL = 'https://ags.iplan.gov.il/arcgis/rest/services/PlanningPublic/Xplan2/MapServer';
 

@@ -1,11 +1,11 @@
 const Express = require('express');
 const BodyParser = require('body-parser');
+const Cors = require('cors');
 const Log = require('./lib/log');
 const Session = require('./lib/session');
 const Email = require('./service/email');
 const routes = require('./routes');
 const errorHandler = require('./errorHandler');
-const Cors = require('cors');
 
 const urlencoded = BodyParser.urlencoded({
   extended: false,

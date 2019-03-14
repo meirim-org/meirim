@@ -6,7 +6,6 @@ const {
 } = require('../service/database');
 
 class PlanPersonController extends Controller {
-
   subscribe(req) {
     if (!req.session.person) {
       throw new Exception.NotAllowed('Must be logged in');

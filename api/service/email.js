@@ -33,41 +33,41 @@ class Email {
   init() {
     const templateDir = `${__dirname}/email/`;
     const templates = {};
-    let contents = [];
+    const contents = [];
     let mapper = [];
-    return new Promise((resolve, reject) =>{
+    return new Promise((resolve, reject) => {
       dir.readFiles(templateDir, {
         match: /.mustache$/,
       },
-        function(err, content, next) {
-            if (err) reject(err);
-            contents.push(content);
-            next();
-        },
-        function(err, files){
-            if (err) reject(err);
-            mapper = files;
-            resolve();
-        });
-    }).then(()=>{
-      mapper.map((file,index) => {
+      (err, content, next) => {
+        if (err) reject(err);
+        contents.push(content);
+        next();
+      },
+      (err, files) => {
+        if (err) reject(err);
+        mapper = files;
+        resolve();
+      });
+    }).then(() => {
+      mapper.map((file, index) => {
         const key = file.split('/').pop().split('.').shift();
         templates[key] = contents[index];
-      })
-     
-      for (const key in templates) {
-          const title = templates[key].match(/<title[^>]*>((.|[\n\r])*)<\/title>/im)[1];
-          const body = templates[key].match(/<body[^>]*>((.|[\n\r])*)<\/body>/im)[1];
-          const html = Mustache.render( templates['wrapper'], {
-            body,
-          });
+      });
 
-          this.templates[key] = {
-            title,
-            body: Juice(html),
-          };
-        }
-    })  
+      for (const key in templates) {
+        const title = templates[key].match(/<title[^>]*>((.|[\n\r])*)<\/title>/im)[1];
+        const body = templates[key].match(/<body[^>]*>((.|[\n\r])*)<\/body>/im)[1];
+        const html = Mustache.render(templates.wrapper, {
+          body,
+        });
+
+        this.templates[key] = {
+          title,
+          body: Juice(html),
+        };
+      }
+    });
   }
 
   newSignUp(person) {
@@ -89,7 +89,7 @@ class Email {
 
     Object.assign(data, unsentPlan.attributes);
     if (data.data.DEPOSITING_DATE) {
-      let dates = data.data.DEPOSITING_DATE.split('T');
+      const dates = data.data.DEPOSITING_DATE.split('T');
       data.data.DEPOSITING_DATE = dates[0];
     }
 
@@ -103,7 +103,7 @@ class Email {
       cid: 'planmap',
       filename: 'plan_map.png',
       content: planStaticMap,
-      encoding: 'base64'
+      encoding: 'base64',
     }];
 
     return this.sendWithTemplate(this.templates.alert, data);
@@ -123,7 +123,6 @@ class Email {
   }
 
   sendWithTemplate(template, templateProperties) {
-
     const attachments = templateProperties.attachments ? templateProperties.attachments : [];
 
     attachments.push({

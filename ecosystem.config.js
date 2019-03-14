@@ -11,4 +11,4 @@ module.exports = {
     },
     restart_delay: 4000,
   }],
-}
+};

@@ -1,21 +1,23 @@
-'use strict';
-const Base_model = require("./base_model");
-const Bookshelf = require('../service/database').Bookshelf;
+
+const Base_model = require('./base_model');
+const { Bookshelf } = require('../service/database');
 
 class PlanPerson extends Base_model {
   get rules() {
     return {
       plan_id: [
-        'required', 'integer'
+        'required', 'integer',
       ],
       person_id: [
-        'required', 'integer'
+        'required', 'integer',
       ],
-    }
+    };
   }
+
   get tableName() {
     return 'plan_person';
   }
+
   static subscribe(person_id, plan_id) {
     return this.forge({
       person_id,
