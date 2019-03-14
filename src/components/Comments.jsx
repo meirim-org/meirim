@@ -17,11 +17,12 @@ class SinglePlan extends Component {
        isLoading: true,
        id: this.props.planId,
        me:  {},
+       content:'',
+       alias:'',
        form: {
-        content:'',
         plan_id: this.props.planId,
-        parent_id:0
-    }
+        parent_id:0,
+    }   
     }
     constructor(props) {
         super(props);
@@ -61,13 +62,13 @@ class SinglePlan extends Component {
                 <input type="hidden" name="plan_id" value="{id}"/>
                 <div class="form-group">
                     <br></br>
-                     <label for="exampleInputPassword1" class="sr-only">Password</label>
-                     <textarea  value={this.state.form.content} required placeholder="מה דעתך על התוכנית?"  name="content" class="form-control" rows="1" onChange={this.handleChange}></textarea>
+                     <label class="sr-only">Password</label>
+                     <textarea  value={this.state.content} required placeholder="מה דעתך על התוכנית?"  name="content" class="form-control" rows="1" onChange={this.handleChange}></textarea>
                 </div>
-                {!this.state.me.alias && this.state.me.alias !=='' (
-                    <div class="form-group" hidden>
-                    <label for="exampleInputEmail1" class="sr-only">כינוי</label>
-                    <input type="text" class="form-control" required name="alias" placeholder="כינוי" value="{this.state.me.alias}"/>
+                {!this.state.me.alias &&  (
+                    <div class="form-group" >
+                      <label class="sr-only">כינוקקקקקקי</label>
+                       <input type="text" class="form-control" required name="alias" placeholder="כינוי" value={this.state.me.alias} onChange={this.handleChange}/>
                     </div>
                 ) }
   
@@ -94,8 +95,9 @@ class SinglePlan extends Component {
 
     handleSubmit(e){
         let newComment = this.state.form;
-        newComment.alias = this.state.me.alias;
-        newComment.person_id = this.state.me.person_id;
+        newComment.content =  this.state.content;
+        newComment.alias = this.state.me.alias || this.state.alias;
+        newComment.person_id = this.state.me.id;
         
         e.preventDefault();
         api.post('/comment/' + this.state.id, newComment)
@@ -109,23 +111,27 @@ class SinglePlan extends Component {
     handleCommentPublished(data){
         var newComment = _.merge(data, {
                  person:{
-                      alias:this.state.me.alias, 
+                      alias: this.state.alias || this.state.me.alias,
                      id: this.state.me.id
                    }});
-        this.setState({comments:this.state.comments.concat([newComment])});
-        let {form }= this.state;
-        form.content = '';
-        this.setState({form});
+        // if there hasnt been an alias for current user
+        const newMe = this.state.me;
+        newMe.alias = newMe.alias || data.person.alias;
+        this.setState({ 
+            comments:this.state.comments.concat([newComment]),
+            content:'',
+            me: newMe
+        });
         document.getElementByName("newCommentform").reset()
     }
 
     handleChange(event) {
         event.preventDefault();
-        let {form} = this.state;
+        let newState = this.state;
         const target = event.target;
-        form[target.name] = target.value;
+        newState[target.name] = target.value;
     
-        this.setState({form});
+        this.setState({newState});
     
         event.preventDefault();
       }
