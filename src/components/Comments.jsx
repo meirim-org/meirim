@@ -47,15 +47,6 @@ class SinglePlan extends Component {
         const {me, id, comments } = this.state || {};
 
         return <React.Fragment>
-            {!this.state.me.id && ( 
-                 <div className="text-center container">
-                    מה דעתך על התוכנית?<br />
-                    <small>יש להירשם כדי להגיב ולהשתתף בדיון</small><br />
-                    <a href="/"  className="btn btn-success">חשבון חדש</a> 
-                    או   
-                    <a href="/sign/in/" className="btn btn-primary">חשבון קיים</a>
-                </div> 
-            )}
             {this.state.me.id && ( 
             <form className="add-comment"  id="newCommentform" method="post" onSubmit={this.handleSubmit}>    
                 <input type="hidden" name="parent_id" value="0"/>
@@ -67,7 +58,7 @@ class SinglePlan extends Component {
                 </div>
                 {!this.state.me.alias &&  (
                     <div className="form-group" >
-                      <label className="sr-only">כינוקקקקקקי</label>
+                      <label className="sr-only">כינוי</label>
                        <input type="text" className="form-control" required name="alias" placeholder="כינוי" value={this.state.me.alias} onChange={this.handleChange}/>
                     </div>
                 ) }
@@ -90,6 +81,15 @@ class SinglePlan extends Component {
                                     </li>)
                     })}
                 </ul> 
+                {!this.state.me.id && ( 
+                 <div className="text-center container">
+                    מה דעתך על התוכנית?<br />
+                    <small>יש להירשם כדי להגיב ולהשתתף בדיון</small><br />
+                    <a href="/"  className="btn btn-success">חשבון חדש</a> 
+                    או   
+                    <a href="/sign/in/" className="btn btn-primary">חשבון קיים</a>
+                </div> 
+            )}
         </React.Fragment>
     }
 
