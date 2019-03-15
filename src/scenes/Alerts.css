@@ -147,6 +147,7 @@
     color:rgba(255, 0, 31, 0.64);
     line-height:23px;
     text-align: center;
+    cursor:pointer;
   }
 
   
@@ -162,6 +163,10 @@
       padding: 10px;
       margin: 10px;
       width: 100%;
+    }
+
+    .container{
+      padding-right: 0;
     }
   
     .radiusRange {
