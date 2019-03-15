@@ -44,8 +44,7 @@ class SinglePlan extends Component {
                             </div>
                             <div className="rectangle">
                                 <h4>תיאור התוכנית</h4>
-                                {plan.main_details_from_mavat}
-
+                                <UnsafeRender html={plan.main_details_from_mavat}></UnsafeRender>
                             </div>
 
                             <div className="rectangle">
@@ -96,6 +95,14 @@ class SinglePlan extends Component {
             <Footer/>
         </React.Fragment>
     }
+}
+
+function createMarkup(html) {
+    return {__html: html};
+}
+  
+function UnsafeRender(props) {
+    return <div dangerouslySetInnerHTML={createMarkup(props.html)} />;
 }
 
 export default SinglePlan;
