@@ -32,36 +32,36 @@ class SinglePlan extends Component {
 
         return <React.Fragment>
             <Navigation me={me}/>
-            <div className="container" class="container">
-                {plan.PL_NAME && <div class="container">
+            <div className="container" className="container">
+                {plan.PL_NAME && <div className="container">
                     <h1>{plan.PL_NAME}</h1>
-                    <div class="row">
-                        <div class="col">
-                            <div class="rectangle">
+                    <div className="row">
+                        <div className="col">
+                            <div className="rectangle">
                                 <h4>מטרות התוכנית</h4>
                                 {plan.goals_from_mavat}
 
                             </div>
-                            <div class="rectangle">
+                            <div className="rectangle">
                                 <h4>תיאור התוכנית</h4>
                                 {plan.main_details_from_mavat}
 
                             </div>
 
-                            <div class="rectangle">
+                            <div className="rectangle">
                                 <h4>תגובות</h4>
                                 <div id="comments"></div>
                                 <Comments planId={this.state.planId} />
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="rectangle">
+                        <div className="col">
+                            <div className="rectangle">
                                 <h4>מיקום</h4>
                                 <div className="map-container" style={{height: '300px'}}>
                                   <Mapa geom={plan.geom} />
                                 </div>
                             </div>
-                            <div class="rectangle">
+                            <div className="rectangle">
                                 <h4>נתוני התוכנית</h4>
                                 <ul>
                                     <li>מספר תוכנית: {plan.data.PL_NUMBER}</li>
@@ -81,7 +81,7 @@ class SinglePlan extends Component {
                                         <a target="_blank" href={plan.plan_url}>מסמכי התוכנית באתר משרד האוצר</a>
                                     </li>
                                 </ul>
-                                {plan.notCredible && <div class="note">
+                                {plan.notCredible && <div className="note">
                                     שימו לב! זוהי תכנית המופקדת בסמכות מקומית. מכיוון שהוועדות המקומיות לא מדווחות
                                     בצורה אחידה אודות הסטטוס של התכניות בסמכותן אנחנו ממליצים לא להסתמך על סטטוס
                                     התכניות (גם לא כמו שמופיע באתר "תכנון זמין"). התכנית עברה "תנאי סף" וכנראה שהיא
