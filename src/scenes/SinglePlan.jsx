@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import Comments from '../components/Comments';
 import Mapa from '../components/Mapa';
+import UnsafeRender from '../components/UnsafeRender'
 
 import api from '../services/api';
 import '../assets/bootstrap.css';
@@ -39,7 +40,7 @@ class SinglePlan extends Component {
                         <div className="col">
                             <div className="rectangle">
                                 <h4>מטרות התוכנית</h4>
-                                {plan.goals_from_mavat}
+                                <UnsafeRender html={plan.goals_from_mavat}></UnsafeRender>
 
                             </div>
                             <div className="rectangle">
@@ -95,14 +96,6 @@ class SinglePlan extends Component {
             <Footer/>
         </React.Fragment>
     }
-}
-
-function createMarkup(html) {
-    return {__html: html};
-}
-  
-function UnsafeRender(props) {
-    return <div dangerouslySetInnerHTML={createMarkup(props.html)} />;
 }
 
 export default SinglePlan;
