@@ -160,7 +160,7 @@
   
   @media (max-width: 576px) { 
     .rectangle {
-      padding: 10px;
+      /* padding: 1px; */
       margin: 10px;
       width: 100%;
     }
