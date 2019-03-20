@@ -1,11 +1,11 @@
 const Promise = require('bluebird');
 const Bcrypt = require('bcrypt');
+const Config = require('config');
+const verifier = require('email-verify');
 const Crypt = require('../lib/crypt');
 const Log = require('../lib/log');
 const Alert = require('./alert');
-const Config = require('config');
 const BaseModel = require('./base_model');
-const verifier = require('email-verify');
 const Exception = require('./exception');
 
 const seconds = 1000;
@@ -31,6 +31,7 @@ class Person extends BaseModel {
       admin: ['integer'],
     };
   }
+
   get hidden() {
     return ['password', 'admin', 'status'];
   }
@@ -54,6 +55,7 @@ class Person extends BaseModel {
     model.attributes.email = model.attributes.email.toLowerCase().trim();
     return Person.verifyEmail(model.attributes.email);
   }
+
   getActivationToken() {
     const data = this.get('email');
     const hashedPassword = Crypt.encrypt(data);
@@ -62,7 +64,7 @@ class Person extends BaseModel {
 
   resetPasswordToken() {
     const now = new Date().getTime();
-    const data = `${this.get('id')  }_${  now}`;
+    const data = `${this.get('id')}_${now}`;
     const token = Crypt.encrypt(data);
     return Buffer.from(token).toString('base64');
   }
@@ -102,7 +104,6 @@ class Person extends BaseModel {
   }
 
   hashPassword(model) {
-   
     const passwordLength = 6;
     if (!model.hasChanged('password')) {
       Log.debug('Password not hashed');
@@ -110,7 +111,7 @@ class Person extends BaseModel {
     }
     const password = model.get('password');
     if (password.lenth <= passwordLength) {
-      throw new Exception.BadRequest(`Password must be at least ${  passwordLength  } charcters`);
+      throw new Exception.BadRequest(`Password must be at least ${passwordLength} charcters`);
     }
     // hash password
     Log.debug('Password hashed');
@@ -131,6 +132,7 @@ class Person extends BaseModel {
         return this;
       });
   }
+
   static canCreate(session) {
     if (session.person) {
       throw new Exception.NotAllowed('Must be signed out');

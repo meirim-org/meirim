@@ -25,6 +25,7 @@ class Alert extends Model {
       radius: ['required', 'number'],
     };
   }
+
   defaults() {
     return {
       radius: 5,
@@ -55,26 +56,26 @@ class Alert extends Model {
     return new Checkit(partialRules)
       .run(model.attributes)
       .then(() => Geocoder.geocode(model.get('address'))
-      .then(res => {
-        if (!res[0]){
-          throw new Exception.NotFound('The address does not exist');
-        }
-        let box = [];
-        let km = 1000;
-        let radius = model.get('radius') * km;
-        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius));
-        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius));
-        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius));
-        box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius));
-        box.push(box[0]);
+        .then((res) => {
+          if (!res[0]) {
+            throw new Exception.NotFound('The address does not exist');
+          }
+          const box = [];
+          const km = 1000;
+          const radius = model.get('radius') * km;
+          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius));
+          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius));
+          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius));
+          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius));
+          box.push(box[0]);
 
-        model.set('geom', {
-          'type': 'Polygon',
-          'coordinates': [box]
-        });
-        model.set('address', res[0].formattedAddress);
-        return new Checkit(model.rules).run(model.attributes);
-      }));
+          model.set('geom', {
+            type: 'Polygon',
+            coordinates: [box],
+          });
+          model.set('address', res[0].formattedAddress);
+          return new Checkit(model.rules).run(model.attributes);
+        }));
   }
 
   canRead(session) {
@@ -105,7 +106,7 @@ class Alert extends Model {
   }
 
   unsubsribeToken() {
-    const token = Crypt.encrypt(`${this.get('id')  }_${  this.get('person_id')}`);
+    const token = Crypt.encrypt(`${this.get('id')}_${this.get('person_id')}`);
     return new Buffer(token).toString('base64');
   }
 

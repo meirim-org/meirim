@@ -13,7 +13,7 @@ const promises = fs.readdirAsync(dir).map((file) => {
 
   const dbf = file.replace('.shp', '.dbf');
 
-  return shapefile.open(dir + file, dir + dbf, {encoding:'windows-1255'})
+  return shapefile.open(dir + file, dir + dbf, { encoding: 'windows-1255' })
     .then(source => source.read()
       .then((result) => {
         console.log('=================', file, '=================');

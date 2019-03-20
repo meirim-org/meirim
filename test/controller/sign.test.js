@@ -4,18 +4,18 @@ const Email = require('../../api/service/email');
 const Exception = require('../../api/model/exception');
 const Person = require('../../api/model/person');
 
-const email = 'test' + (new Date().getTime()) + '@meirim.org';
+const email = `test${new Date().getTime()}@meirim.org`;
 const password = '123456';
 
 beforeAll(() => Email.init());
 
 afterAll(() => function () {
-    return Person.forge({
-      email,
-    }).destroty();
+  return Person.forge({
+    email,
+  }).destroty();
 });
 
-let req1 = {
+const req1 = {
   body: {
     email,
     password,
@@ -50,17 +50,15 @@ test('Sign up with wrong email should fail', () => {
 }, 10000);
 
 test('Activate account shouls work', () => Person.forge({
-    email,
-  })
+  email,
+})
   .fetch()
-  .then((user) => {
-    return controller.activate({
-      body: {
-        token: user.getActivationToken(),
-      },
-      session: {},
-    }, res, next);
-  })
+  .then(user => controller.activate({
+    body: {
+      token: user.getActivationToken(),
+    },
+    session: {},
+  }, res, next))
   .then((response) => {
     expect(response).toBeTruthy();
     return response;
@@ -97,45 +95,45 @@ test('Sign in should works with uppercase email', () => controller.signin(req3, 
 
 test('Sign in should fail with wrong password', () => {
   expect(controller
-      .signin({
-        body: {
-          email,
-          password: 'wrongPw',
-        },
-        session: {},
-      }))
+    .signin({
+      body: {
+        email,
+        password: 'wrongPw',
+      },
+      session: {},
+    }))
     .rejects.toThrow(Exception.BadRequest);
 });
 
 test('Sign in should fail without email', () => {
   expect(() => controller
-      .signin({
-        body: {
-          password: 'wrongPw',
-        },
-        session: {},
-      }))
+    .signin({
+      body: {
+        password: 'wrongPw',
+      },
+      session: {},
+    }))
     .toThrow();
 });
 
 test('Sign in should fail without password', () => {
   expect(() => controller
-      .signin({
-        body: {
-          email,
-        },
-        session: {},
-      }))
+    .signin({
+      body: {
+        email,
+      },
+      session: {},
+    }))
     .toThrow();
 });
 
 test('Sign out shoud work', () => {
   expect(controller
-      .signout({
-        body: {},
-        session: {
-          destroy: () => true,
-        },
-      }))
+    .signout({
+      body: {},
+      session: {
+        destroy: () => true,
+      },
+    }))
     .toBeTruthy();
 });

@@ -1,8 +1,8 @@
-'use strict';
-const Model = require("./base_model");
-const Bookshelf = require('../service/database').Bookshelf;
-class Tag extends Model {
 
+const Model = require('./base_model');
+const { Bookshelf } = require('../service/database');
+
+class Tag extends Model {
   get tableName() {
     return 'tag';
   }
@@ -14,5 +14,5 @@ class Tag extends Model {
   getCollection() {
     return this.collection();
   }
-};
+}
 module.exports = Tag;

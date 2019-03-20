@@ -6,7 +6,6 @@ const {
 } = require('../service/database');
 
 class ActivityController extends Controller {
-
   create(req) {
     let activity = null;
     return Bookshelf.transaction(t => super.create(req, t))

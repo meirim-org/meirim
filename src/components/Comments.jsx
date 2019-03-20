@@ -17,11 +17,12 @@ class SinglePlan extends Component {
        isLoading: true,
        id: this.props.planId,
        me:  {},
+       content:'',
+       alias:'',
        form: {
-        content:'',
         plan_id: this.props.planId,
-        parent_id:0
-    }
+        parent_id:0,
+    }   
     }
     constructor(props) {
         super(props);
@@ -46,56 +47,57 @@ class SinglePlan extends Component {
         const {me, id, comments } = this.state || {};
 
         return <React.Fragment>
-            {!this.state.me.id && ( 
-                 <div class="text-center container">
-                    מה דעתך על התוכנית?<br />
-                    <small>יש להירשם כדי להגיב ולהשתתף בדיון</small><br />
-                    <a href="/"  class="btn btn-success">חשבון חדש</a> 
-                    או   
-                    <a href="/sign/in/" class="btn btn-primary">חשבון קיים</a>
-                </div> 
-            )}
             {this.state.me.id && ( 
-            <form class="add-comment"  id="newCommentform" method="post" onSubmit={this.handleSubmit}>    
+            <form className="add-comment"  id="newCommentform" method="post" onSubmit={this.handleSubmit}>    
                 <input type="hidden" name="parent_id" value="0"/>
                 <input type="hidden" name="plan_id" value="{id}"/>
-                <div class="form-group">
+                <div className="form-group">
                     <br></br>
-                     <label for="exampleInputPassword1" class="sr-only">Password</label>
-                     <textarea  value={this.state.form.content} required placeholder="מה דעתך על התוכנית?"  name="content" class="form-control" rows="1" onChange={this.handleChange}></textarea>
+                     <label className="sr-only">Password</label>
+                     <textarea  value={this.state.content} required placeholder="מה דעתך על התוכנית?"  name="content" className="form-control" rows="1" onChange={this.handleChange}></textarea>
                 </div>
-                {!this.state.me.alias && this.state.me.alias !=='' (
-                    <div class="form-group" hidden>
-                    <label for="exampleInputEmail1" class="sr-only">כינוי</label>
-                    <input type="text" class="form-control" required name="alias" placeholder="כינוי" value="{this.state.me.alias}"/>
+                {!this.state.me.alias &&  (
+                    <div className="form-group" >
+                      <label className="sr-only">כינוי</label>
+                       <input type="text" className="form-control" required name="alias" placeholder="כינוי" value={this.state.me.alias} onChange={this.handleChange}/>
                     </div>
                 ) }
   
-                <button type="submit" class="btn btn-success float-left">שליחה</button>
+                <button type="submit" className="btn btn-success float-left">שליחה</button>
             </form>
             )}
-                <ul id="comments-list" class="comments-list ">
+                <ul id="comments-list" className="comments-list ">
                     {this.state.comments.map((comment, idx) => {
-                        return ( <li class="comment-main-level">
-                                        <div class="comment-avatar">
+                        return ( <li className="comment-main-level">
+                                        <div className="comment-avatar">
                                             <img src={avatar} alt="avatar"></img>
                                         </div>
-                                        <div class="comment-box">
-                                            <div class="comment-head">
-                                                <h6 class="comment-name"><a href={'/profile/'+comment.person.id}>{comment.person.alias || 'אנונימי'} </a></h6>
+                                        <div className="comment-box">
+                                            <div className="comment-head">
+                                                <h6 className="comment-name"><a href={'/profile/'+comment.person.id}>{comment.person.alias || 'אנונימי'} </a></h6>
                                             </div>
-                                            <div class="comment-content">  {comment.content} </div>
+                                            <div className="comment-content">  {comment.content} </div>
                                         </div>
                                     </li>)
                     })}
                 </ul> 
+                {!this.state.me.id && ( 
+                 <div className="text-center container">
+                    מה דעתך על התוכנית?<br />
+                    <small>יש להירשם כדי להגיב ולהשתתף בדיון</small><br />
+                    <a href="/"  className="btn btn-success">חשבון חדש</a> 
+                    או   
+                    <a href="/sign/in/" className="btn btn-primary">חשבון קיים</a>
+                </div> 
+            )}
         </React.Fragment>
     }
 
     handleSubmit(e){
         let newComment = this.state.form;
-        newComment.alias = this.state.me.alias;
-        newComment.person_id = this.state.me.person_id;
+        newComment.content =  this.state.content;
+        newComment.alias = this.state.me.alias || this.state.alias;
+        newComment.person_id = this.state.me.id;
         
         e.preventDefault();
         api.post('/comment/' + this.state.id, newComment)
@@ -109,23 +111,27 @@ class SinglePlan extends Component {
     handleCommentPublished(data){
         var newComment = _.merge(data, {
                  person:{
-                      alias:this.state.me.alias, 
+                      alias: this.state.alias || this.state.me.alias,
                      id: this.state.me.id
                    }});
-        this.setState({comments:this.state.comments.concat([newComment])});
-        let {form }= this.state;
-        form.content = '';
-        this.setState({form});
+        // if there hasnt been an alias for current user
+        const newMe = this.state.me;
+        newMe.alias = newMe.alias || data.person.alias;
+        this.setState({ 
+            comments:this.state.comments.concat([newComment]),
+            content:'',
+            me: newMe
+        });
         document.getElementByName("newCommentform").reset()
     }
 
     handleChange(event) {
         event.preventDefault();
-        let {form} = this.state;
+        let newState = this.state;
         const target = event.target;
-        form[target.name] = target.value;
+        newState[target.name] = target.value;
     
-        this.setState({form});
+        this.setState({newState});
     
         event.preventDefault();
       }
