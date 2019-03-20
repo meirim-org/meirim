@@ -1,6 +1,6 @@
 {
   "name": "Meirim",
-  "version": "1.5.0",
+  "version": "3.0.0",
   "description": "The goal of this project is to empower citizens to effectively organize for their quality of life in their cities and to ensure information about protests is accessible.",
   "main": "ecosystem.config.js",
   "repository": {
@@ -75,13 +75,6 @@
     "turf": "^3.0.14",
     "winston": "^3.1.0",
     "xml2js": "^0.4.19"
-  },
-  "devDependencies": {
-    "eslint": "^5.15.1",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4"
   },
   "eslintConfig": {
     "extends": "react-app"
