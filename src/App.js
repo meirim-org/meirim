@@ -10,7 +10,13 @@ import About from './scenes/About';
 import Terms from './scenes/Terms';
 import api from './services/api';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+
 import './assets/bootstrap.css';
+
+library.add(faSpinner)
 
 class App extends Component {
     state = {

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import {Map, Marker, Popup, TileLayer, GeoJSON, FeatureGroup, Circle} from 'react-leaflet';
 import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
 
@@ -184,7 +185,11 @@ class Alerts extends Component {
                     <div className="row">
                         <div className="col">
                         <br></br><br></br>
-                            <button id="submitButton" loading={this.state.loading} title="הוסף התראה" disabled={this.state.loading}>{loading? 'מוסיף' +'...':' הוספה'}</button>
+                            <button id="submitButton" loading={this.state.loading} title="הוסף התראה" disabled={loading}>הוספה
+                            { loading && 
+                                <FontAwesomeIcon icon="spinner" spin />
+                            }
+                            </button>
                         </div>
                     </div>
                 </form>
