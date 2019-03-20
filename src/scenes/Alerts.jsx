@@ -132,7 +132,7 @@ class Alerts extends Component {
             <Navigation me={me}/>
             <div className="container widedialog">
                 <form className="rectangle" onSubmit={this.handleSubmit}>
-                    <h5 className="container-title">ההתראה חדשה</h5>
+                    <h5 className="container-title">התראה חדשה</h5>
                     {error && <div className="alert alert-danger" role="alert">הכתובת לא נמצאה</div>}
                     <div className="selectAreaAndInterest">
                     כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
