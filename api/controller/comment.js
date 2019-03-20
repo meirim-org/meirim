@@ -36,9 +36,9 @@ class CommentController extends Controller {
     delete req.body.alias;
 
     return Promise.all([
-        alias,
-        super.create(req, res, next),
-      ])
+      alias,
+      super.create(req, res, next),
+    ])
       .then(result => result[1]);
   }
 

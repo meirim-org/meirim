@@ -74,7 +74,8 @@ class Alerts extends Component {
         this.setState({loading:true});
         
         api.post('/alert',{
-            address, radius
+            address, 
+            radius: 6- radius
         })
         .then(() => this.getAlerts())
         .finally(()=>{
@@ -130,18 +131,14 @@ class Alerts extends Component {
         return <React.Fragment>
             <Navigation me={me}/>
             <div className="container widedialog">
-                <img className='large_eyelashes' src={logo} alt={t.name}/>
-                <div className="goodMorning">ברוכים הבאים למעירים!</div>
-                <div className="selectAreaAndInterest">
-                    כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס:
-                    <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
-                    <small>**ניתן להוסיף יותר מכתובת אחת</small>
-                </div>
-                
                 <form className="rectangle" onSubmit={this.handleSubmit}>
                     <h5 className="container-title">ההתראה חדשה</h5>
                     {error && <div className="alert alert-danger" role="alert">הכתובת לא נמצאה</div>}
-
+                    <div className="selectAreaAndInterest">
+                    כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
+                    <small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
+                    <small>**ניתן להוסיף יותר מכתובת אחת</small>
+                </div>
                     <div className="row">
                         <div className="col">
                             <label id="homeLabale">כתובת:</label>
@@ -162,14 +159,14 @@ class Alerts extends Component {
                                 max={5}
                                 onChange={this.handleSlide}
                                 marks={{
-                                5: '5 ק"מ',
-                                1: '1 ק"מ',
-                                2: '2 ק"מ',
+                                1: '5 ק"מ',
+                                2: '4 ק"מ',
                                 3: '3 ק"מ',
-                                4: '4 ק"מ',
+                                4: '2 ק"מ',
+                                5: '1 ק"מ',
                             }}
                                 trackStyle={[{
-                                    backgroundColor: 'blue'
+                                    backgroundColor: 'gray'
                                 }
                             ]}
                                 handleStyle={[{
@@ -178,7 +175,7 @@ class Alerts extends Component {
                                 }
                             ]}
                                 railStyle={{
-                                backgroundColor: 'grey'
+                                backgroundColor: 'blue'
                             }}
                                 dots={true}
                                 defaultValue={form.radius}/>
@@ -186,7 +183,8 @@ class Alerts extends Component {
                     </div>
                     <div className="row">
                         <div className="col">
-                            <button id="submitButton" loading={this.state.loading} disabled={this.state.loading}>{loading? 'מוסיף' +'...':' הוספה'}</button>
+                        <br></br><br></br>
+                            <button id="submitButton" loading={this.state.loading} title="הוסף התראה" disabled={this.state.loading}>{loading? 'מוסיף' +'...':' הוספה'}</button>
                         </div>
                     </div>
                 </form>

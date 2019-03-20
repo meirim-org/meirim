@@ -16,7 +16,7 @@ class Plan extends Model {
       // PLAN_CHARACTOR_NAME: 'string',
       data: ['required'],
       geom: ['required', 'object'],
-      jurisdiction: 'string'
+      jurisdiction: 'string',
     };
   }
 
@@ -25,6 +25,7 @@ class Plan extends Model {
       sent: 0,
     };
   }
+
   // support json encode for data field
   format(attributes) {
     if (attributes.data) {
@@ -35,7 +36,6 @@ class Plan extends Model {
 
   // support json encode for data field
   parse(attributes) {
-
     try {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);
@@ -76,7 +76,7 @@ class Plan extends Model {
   }
 
   static maekPlansAsSent(plan_ids) {
-    return new Plan().query(qb => {
+    return new Plan().query((qb) => {
       qb.whereIn('id', plan_ids);
     }).save({
       sent: '2',
@@ -122,7 +122,7 @@ class Plan extends Model {
   }
 
   static getUnsentPlans(userOptions) {
-    const options = userOptions ? userOptions : {};
+    const options = userOptions || {};
     if (!options.limit) {
       options.limit = 1;
     }
@@ -136,5 +136,5 @@ class Plan extends Model {
       columns: ['id', 'data', 'goals_from_mavat', 'main_details_from_mavat', 'geom', 'jurisdiction'],
     });
   }
-};
+}
 module.exports = Plan;

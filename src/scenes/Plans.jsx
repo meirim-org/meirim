@@ -13,6 +13,7 @@ import api from '../services/api';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import Mapa from '../components/Mapa'
+import UnsafeRender from '../components/UnsafeRender';
 
 import t from '../locale/he_IL';
 import './Plans.css';
@@ -165,15 +166,15 @@ class Plans extends Component {
                   <CardActionArea className="card-action-area">
                     <CardMedia
                       className="card-media"
-                      title="{plan.PL_NUMBER}">
-                      <Mapa geom={plan.geom} hideZoom={true} />
+                      title={plan.PL_NUMBER}>
+                      <Mapa geom={plan.geom} hideZoom={true} disableInteractions={true} />
                     </CardMedia>
                     <CardContent className="card-content">
                       <Typography gutterBottom variant="h5" component="h2">
                         {plan.PL_NAME}
                       </Typography>
                       <Typography component="p">
-                        {plan.main_details_from_mavat}
+                      <UnsafeRender html={plan.main_details_from_mavat}></UnsafeRender>
                       </Typography>
                     </CardContent>
                   </CardActionArea>

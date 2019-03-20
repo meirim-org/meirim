@@ -14,6 +14,10 @@
     padding-top: 10px;
     padding-bottom: 30px
   }
+
+  .container-title{
+    font-weight: bold;
+  }
   
 
   .eyelashes {
@@ -43,7 +47,7 @@
       max-width:400px;
   }
   .widedialog {
-      max-width: 600px;
+      max-width: 800px;
   }
   
   .rectangle {
@@ -143,6 +147,7 @@
     color:rgba(255, 0, 31, 0.64);
     line-height:23px;
     text-align: center;
+    cursor:pointer;
   }
 
   
@@ -156,8 +161,12 @@
   @media (max-width: 576px) { 
     .rectangle {
       padding: 10px;
-      margin: 0;
+      margin: 10px;
       width: 100%;
+    }
+
+    .container{
+      padding-right: 0;
     }
   
     .radiusRange {
