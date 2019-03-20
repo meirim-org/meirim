@@ -15,7 +15,7 @@ class Home extends Component {
   
   render() {
       const { me } = this.props;
-      return <React.Fragment>
+      return (<React.Fragment>
         <Navigation me={me}/>
         
         <div className="container heroContainer">
@@ -51,7 +51,7 @@ class Home extends Component {
           </div>
         </div>
         <Footer />
-      </React.Fragment>
+      </React.Fragment>)
   }
 }
 
