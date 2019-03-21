@@ -1,0 +1,10 @@
+.map-title{
+  position: absolute;
+  z-index: 9999;
+  font-size: large;
+  padding:5px;
+}
+
+.map-title button{
+  font-weight: bolder;
+} 
