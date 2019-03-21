@@ -40,8 +40,7 @@ class SinglePlan extends Component {
                         <div className="col">
                             <div className="rectangle">
                                 <h4>מטרות התוכנית</h4>
-                                {plan.goals_from_mavat}
-
+                                <UnsafeRender html={plan.goals_from_mavat}></UnsafeRender>
                             </div>
                             <div className="rectangle">
                                 <h4>תיאור התוכנית</h4>
