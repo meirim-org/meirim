@@ -13,11 +13,12 @@ import api from './services/api';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import './assets/bootstrap.css';
 
-library.add(faSpinner)
+library.add(faSpinner);
+library.add(faTimes);
 
 class App extends Component {
     state = {
