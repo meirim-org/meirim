@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import api from '../services/api';
 
@@ -61,16 +62,16 @@ class Plans extends Component {
     this.filterTimer = undefined;
 
     // bind scroll event
-    window.onscroll = () => {
-      const {error, loading, hasMore, filterStatuses, filterCounties, pageNumber} = this.state;
+    // window.onscroll = () => {
+    //   const {error, loading, hasMore, filterStatuses, filterCounties, pageNumber} = this.state;
 
-      if (error || loading || !hasMore) return;
+    //   if (error || loading || !hasMore) return;
 
-      // check if page is scrolled to the bottom
-      if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-        this.loadPlans(pageNumber + 1, filterStatuses, filterCounties);
-      }
-    };
+    //   // check if page is scrolled to the bottom
+    //   if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+    //     this.loadPlans(pageNumber + 1, filterStatuses, filterCounties);
+    //   }
+    // };
   }
 
   handleStatusToggle(event) {
@@ -86,10 +87,10 @@ class Plans extends Component {
 
     this.setState({
       plans: [],
-      filterStatuses: values
+     // filterStatuses: values
     });
 
-    this.filterTimer = setTimeout(this.loadPlans(1, values, this.state.filterCounties), 500); 
+   // this.filterTimer = setTimeout(this.loadPlans(1, values, this.state.filterCounties), 500); 
   }
 
   handleCountyToggle(event) {
@@ -108,19 +109,21 @@ class Plans extends Component {
       filterCounties: values
     });
 
-    this.filterTimer = setTimeout(this.loadPlans(1, this.state.filterStatuses, values), 500); 
+   // this.filterTimer = setTimeout(this.loadPlans(1, this.state.filterStatuses, values), 500); 
   }
 
-  loadPlans(pageNumber, filterStatuses, filterCounties) {
+  loadPlans() {
     this.setState({loading: true, noData: false});
-
-    api.get('/plan?page=' + pageNumber + '&status=' + filterStatuses.join(',') + '&PLAN_COUNTY_NAME=' + filterCounties.join(','))
+    const newPageNum = this.state.pageNumber +1;
+    
+    //api.get('/plan?page=' + newPageNum + '&status=' + filterStatuses.join(',') + '&PLAN_COUNTY_NAME=' + filterCounties.join(','))
+    api.get('/plan?page=' + newPageNum)
       .then(result => {
         this.setState({
           loading: false,
           hasMore: result.pagination.page < result.pagination.pageCount,
           noData: this.state.plans.length + result.data.length == 0,
-          pageNumber: pageNumber,
+          pageNumber: newPageNum,
           plans: [
             ...this.state.plans,
             ...result.data
@@ -149,17 +152,17 @@ class Plans extends Component {
       })
       .catch(error => this.setState({error}));
     
-    this.loadPlans(pageNumber, filterStatuses, filterCounties);
+    this.loadPlans();
   }
 
   render() {
-    const {plans, planStatuses, filterStatuses, planCounties, filterCounties, error, loading, noData} = this.state;  
+    const {plans, planStatuses, filterStatuses, planCounties, filterCounties, error, loading, noData, hasMore} = this.state;  
     const {me} = this.props;
 
     return <React.Fragment>
       <Navigation me={me} />
         <div className="container">
-          <GridList cellHeight={500} className="gridList" cols={3}>
+          <GridList cellHeight={500} className="gridList" cols={2}>
             {plans.map(plan => (
               <Card className="card" raised={true}>
                 <Link className="card-link" to={`/plan/${plan.id}/${plan.PL_NAME}`}>
@@ -188,13 +191,34 @@ class Plans extends Component {
               {error}
             </div>
           }
-          {loading &&
+          {/* {loading &&
             <div>טוען...</div>
-          }
+          } */}
           {noData &&
             <div>אין כאן כלום</div>
           }
         </div>
+        <InfiniteScroll
+  dataLength={plans.length} //This is important field to render the next data
+  next={this.loadPlans}
+  hasMore={hasMore}
+  loader={<h4>טוען</h4>}
+  endMessage={
+    <p style={{textAlign: 'center'}}>
+      <b>Yay! You have seen it all</b>
+    </p>
+  }
+  // below props only if you need pull down functionality
+  refreshFunction={()=>{window.alert('refresh')}}
+  pullDownToRefresh
+  pullDownToRefreshContent={
+    <h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>
+  }
+  releaseToRefreshContent={
+    <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
+  }>
+  {/* {items} */}
+</InfiniteScroll>
         <Footer />
       </React.Fragment>
   }

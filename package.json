@@ -63,6 +63,7 @@
     "react": "^16.5.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.5.2",
+    "react-infinite-scroll-component": "^4.5.2",
     "react-leaflet": "^2.2.0",
     "react-moment": "^0.8.4",
     "react-router-dom": "^4.3.1",
