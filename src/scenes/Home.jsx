@@ -15,7 +15,7 @@ class Home extends Component {
   
   render() {
       const { me } = this.props;
-      return <React.Fragment>
+      return (<React.Fragment>
         <Navigation me={me}/>
         
         <div className="container heroContainer">
@@ -32,8 +32,7 @@ class Home extends Component {
           </section>
           <div className="row garden">
             <div className="col-lg-4">
-              <h2>רוצים לדעת אם הגינה הציבורית שלכם עומדת
-                <strong>להפוך למגדל?</strong>
+              <h2>רוצים לדעת אם הגינה הציבורית שלכם עומדת <strong>להפוך למגדל?</strong>
               </h2>
             </div>
           </div>
@@ -52,7 +51,7 @@ class Home extends Component {
           </div>
         </div>
         <Footer />
-      </React.Fragment>
+      </React.Fragment>)
   }
 }
 
