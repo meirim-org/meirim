@@ -167,7 +167,7 @@ class Plans extends Component {
                     <CardMedia
                       className="card-media"
                       title={plan.PL_NUMBER}>
-                      <Mapa geom={plan.geom} hideZoom={true} disableInteractions={true} />
+                      <Mapa geom={plan.geom} hideZoom={true} disableInteractions={true} title={plan.PLAN_COUNTY_NAME}/>
                     </CardMedia>
                     <CardContent className="card-content">
                       <Typography gutterBottom variant="h5" component="h2">
