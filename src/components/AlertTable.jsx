@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import t from '../locale/he_IL';
 
 
@@ -17,7 +18,10 @@ function AlertTable(props) {
           <tr>
             <td>{alert.address}</td>
             <td>{alert.radius+" "+t.km}</td>
-            <td><button className="delete" title="מחק התראה" onClick={() => props.onDelete(alert.id)}></button></td>
+            <td>
+              <button className="delete" alt="מחק התראה" onClick={() => props.onDelete(alert.id)}>
+              <FontAwesomeIcon icon="times" title="מחק התראה" />
+            </button></td>
           </tr>)
         )}
       </tbody>
