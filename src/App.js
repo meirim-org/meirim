@@ -4,6 +4,7 @@ import Home from './scenes/Home';
 import Plans from './scenes/Plans';
 import SinglePlan from './scenes/SinglePlan';
 import SignIn from './scenes/SignIn';
+import Activate from './scenes/Activate';
 import Alerts from './scenes/Alerts';
 import ForgotPassword from './scenes/ForgotPassword';
 import About from './scenes/About';
@@ -42,7 +43,8 @@ class App extends Component {
                     <Route path="/plans" render={(props) => <Plans {...props} me={me}/>}/>
                     <Route path="/plan/:id/" render={(props) => <SinglePlan {...props} me={me}/>}/>
                     <Route path="/sign/in" render={(props) => <SignIn {...props} me={me}/>}/>
-                    <Route path="/forgot" render={(props) => <ForgotPassword {...props} me={me}/>}/>
+                    <Route path="/activate" render={(props) => <Activate {...props} me={me}/>}/>
+                                        <Route path="/forgot" render={(props) => <ForgotPassword {...props} me={me}/>}/>
                     <Route path="/about" render={(props) => <About {...props} me={me}/>}/>
                     <Route path="/terms" render={(props) => <Terms {...props} me={me}/>}/>
                 </div>
