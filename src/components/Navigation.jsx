@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
-
+import { BrowserRouter as Router, Redirect } from 'react-router-dom';
+import { NavLink as Link } from 'react-router-dom';
 import Hidden from '@material-ui/core/Hidden';
 import api from '../services/api';
 
@@ -27,7 +27,7 @@ class Navigation extends Component {
     const { me } = this.props;
 
     return <nav className="navbar navbar-expand navbar-light">
-      <Link className="navbar-brand" to="/">
+      <Link className="navbar-brand" to={me? "/plans":"/"}>
         <img className='eyelashes_nav' src={logo} alt={t.name} /> <Hidden mdDown="true">{t.name}</Hidden>
       </Link>
       <ul className="navbar-nav">
