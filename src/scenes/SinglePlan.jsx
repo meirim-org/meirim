@@ -86,9 +86,7 @@ class SinglePlan extends Component {
                                 <h4>תגובות</h4>
                                 <div id="comments"></div>
                                 <Comments planId={this.state.planId} />
-                            </div>
-                         
-                         
+                            </div>        
                         </div>
                     </div>
                 </div>}

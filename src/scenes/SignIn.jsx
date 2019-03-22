@@ -14,7 +14,8 @@ import './Alerts.css';
 class SignIn extends Component {
     
     state = {
-        success: 0
+        success: 0,
+       redirectTo: ((this.props.location || {}).state || {}).redirectTo || '/'
     };
 
     constructor(props) {
@@ -46,7 +47,7 @@ class SignIn extends Component {
     render() {
         const {success} = this.state;
         if (success === 1) {
-            window.location = '/';
+            window.location = this.state.redirectTo;
         }
         return <React.Fragment>
             <Navigation/>
