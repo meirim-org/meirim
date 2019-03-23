@@ -60,18 +60,6 @@ class Plans extends Component {
       .bind(this);
     
     this.filterTimer = undefined;
-
-    // bind scroll event
-    // window.onscroll = () => {
-    //   const {error, loading, hasMore, filterStatuses, filterCounties, pageNumber} = this.state;
-
-    //   if (error || loading || !hasMore) return;
-
-    //   // check if page is scrolled to the bottom
-    //   if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-    //     this.loadPlans(pageNumber + 1, filterStatuses, filterCounties);
-    //   }
-    // };
   }
 
   handleStatusToggle(event) {
@@ -162,7 +150,7 @@ class Plans extends Component {
     return <React.Fragment>
       <Navigation me={me} />
         <div className="container">
-          <GridList cellHeight={500} className="gridList" cols={2}>
+          <GridList cellHeight={500} cellWidth={335} className="gridList" cols={1}>
             {plans.map(plan => (
               <Card className="card" raised={true}>
                 <Link className="card-link" to={`/plan/${plan.id}/${plan.PL_NAME}`}>
@@ -191,15 +179,12 @@ class Plans extends Component {
               {error}
             </div>
           }
-          {/* {loading &&
-            <div>טוען...</div>
-          } */}
           {noData &&
             <div>אין כאן כלום</div>
           }
         </div>
         <InfiniteScroll
-  dataLength={plans.length} //This is important field to render the next data
+  dataLength={plans.length}
   next={this.loadPlans}
   hasMore={hasMore}
   loader={<h4>טוען</h4>}
@@ -207,15 +192,6 @@ class Plans extends Component {
     <p style={{textAlign: 'center'}}>
       <b>Yay! You have seen it all</b>
     </p>
-  }
-  // below props only if you need pull down functionality
-  refreshFunction={()=>{window.alert('refresh')}}
-  pullDownToRefresh
-  pullDownToRefreshContent={
-    <h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>
-  }
-  releaseToRefreshContent={
-    <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
   }>
   {/* {items} */}
 </InfiniteScroll>
