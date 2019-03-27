@@ -16,6 +16,7 @@ class Mapa extends Component {
       bounds={bounds}
       zoomControl={!hideZoom}
       boxZoom={!disableInteractions}
+      maxZoom={17}
       doubleClickZoom={!disableInteractions}
       dragging={!disableInteractions}
       keyboard={!disableInteractions}
