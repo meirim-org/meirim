@@ -14,6 +14,9 @@
   },
   "homepage": "http://meirim.org",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.16",
+    "@fortawesome/free-solid-svg-icons": "^5.8.0",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
@@ -60,6 +63,7 @@
     "react": "^16.5.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.5.2",
+    "react-infinite-scroll-component": "^4.5.2",
     "react-leaflet": "^2.2.0",
     "react-moment": "^0.8.4",
     "react-router-dom": "^4.3.1",

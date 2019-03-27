@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import {Map, Marker, Popup, TileLayer, GeoJSON, FeatureGroup, Circle} from 'react-leaflet';
 import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import {BrowserRouter as Router, Redirect, Link} from 'react-router-dom';
 
@@ -37,8 +38,13 @@ class Alerts extends Component {
         },{
             lat:25,
             lng:25
-        }]
+        }],
+        slider:{
+            min:1,
+            max:10
+        }
     }
+
     constructor(props) {
         super(props);
         this.handleAddress = this
@@ -75,7 +81,7 @@ class Alerts extends Component {
         
         api.post('/alert',{
             address, 
-            radius: 6- radius
+            radius: this.state.slider.max + this.state.slider.min- radius
         })
         .then(() => this.getAlerts())
         .finally(()=>{
@@ -124,6 +130,11 @@ class Alerts extends Component {
     render() {
         const {alerts, form, error, loading, bounds} = this.state;
         const {me} = this.props;
+
+        const sliderText = {};
+        _.map(new Array(this.state.slider.max), (obj, i)=>{
+            sliderText[i+1]= this.state.slider.max- i  + " ק״מ";
+        })
         // unauthenticatd
         if (error && error.response && error.response.status === 403) {
             return <Redirect to="/sign/in" />
@@ -132,7 +143,7 @@ class Alerts extends Component {
             <Navigation me={me}/>
             <div className="container widedialog">
                 <form className="rectangle" onSubmit={this.handleSubmit}>
-                    <h5 className="container-title">ההתראה חדשה</h5>
+                    <h5 className="container-title">התראה חדשה</h5>
                     {error && <div className="alert alert-danger" role="alert">הכתובת לא נמצאה</div>}
                     <div className="selectAreaAndInterest">
                     כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
@@ -155,16 +166,10 @@ class Alerts extends Component {
                         <div className="col">
                             <label id="radiusLabale">רדיוס:</label>
                             <Slider
-                                min={1}
-                                max={5}
+                                min={this.state.slider.min}
+                                max={this.state.slider.max}
                                 onChange={this.handleSlide}
-                                marks={{
-                                1: '5 ק"מ',
-                                2: '4 ק"מ',
-                                3: '3 ק"מ',
-                                4: '2 ק"מ',
-                                5: '1 ק"מ',
-                            }}
+                                marks={sliderText}
                                 trackStyle={[{
                                     backgroundColor: 'gray'
                                 }
@@ -184,7 +189,11 @@ class Alerts extends Component {
                     <div className="row">
                         <div className="col">
                         <br></br><br></br>
-                            <button id="submitButton" loading={this.state.loading} title="הוסף התראה" disabled={this.state.loading}>{loading? 'מוסיף' +'...':' הוספה'}</button>
+                            <button id="submitButton" loading={this.state.loading} title="הוסף התראה" disabled={loading}>הוספה
+                            { loading && 
+                                <FontAwesomeIcon icon="spinner" spin />
+                            }
+                            </button>
                         </div>
                     </div>
                 </form>

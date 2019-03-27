@@ -3,7 +3,7 @@ export default {
   signin: 'התחברות',
   signout: 'התנתקות',
   name: 'מעירים',
-  plans: 'תב"עות',
+  plans: 'תוכניות',
   about: 'אודות',
   email_address: 'כתובת מייל',
   password: 'סיסמה',
