@@ -41,25 +41,10 @@ class SinglePlan extends Component {
                             <div className="rectangle">
                                 <h4>מטרות התוכנית</h4>
                                 <UnsafeRender html={plan.goals_from_mavat}></UnsafeRender>
-
                             </div>
                             <div className="rectangle">
                                 <h4>תיאור התוכנית</h4>
                                 <UnsafeRender html={plan.main_details_from_mavat}></UnsafeRender>
-                            </div>
-
-                            <div className="rectangle">
-                                <h4>תגובות</h4>
-                                <div id="comments"></div>
-                                <Comments planId={this.state.planId} />
-                            </div>
-                        </div>
-                        <div className="col">
-                            <div className="rectangle">
-                                <h4>מיקום</h4>
-                                <div className="map-container" style={{height: '300px'}}>
-                                  <Mapa geom={plan.geom} />
-                                </div>
                             </div>
                             <div className="rectangle">
                                 <h4>נתוני התוכנית</h4>
@@ -73,7 +58,7 @@ class SinglePlan extends Component {
                                      </li> 
                                     <li>שימוש קרקע: {plan.data.PL_LANDUSE_STRING}</li>
                                     <li>סטטוס: {plan.data.STATION_DESC}</li>
-                                    <li>עדכון אחרון:  <Moment parse="YYYYMMDDHHmm" format="DD/MM/YYYY HH:mm">
+                                    <li>עדכון אחרון:  <Moment parse="YYYYMMDDHHmm" format="DD/MM/YYYY">
                                     {plan.data.LAST_UPDATE}
                                 </Moment>
                                      </li> 
@@ -89,6 +74,19 @@ class SinglePlan extends Component {
                                 </div>}
 
                             </div>
+                        </div>
+                        <div className="col">
+                            <div className="rectangle">
+                                <h4>מיקום</h4>
+                                <div className="map-container" style={{height: '300px'}}>
+                                  <Mapa geom={plan.geom} />
+                                </div>
+                            </div>
+                            <div className="rectangle">
+                                <h4>תגובות</h4>
+                                <div id="comments"></div>
+                                <Comments planId={this.state.planId} />
+                            </div>        
                         </div>
                     </div>
                 </div>}

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {BrowserRouter as Router, Redirect, NavLink as Link} from 'react-router-dom';
 import _ from 'lodash';
 
 import api from '../services/api';
@@ -11,7 +12,7 @@ import Moment from 'react-moment'
 
 import t from '../locale/he_IL';
 
-class SinglePlan extends Component {
+class Comments extends Component {
     state = {
        comments: [],
        isLoading: true,
@@ -22,7 +23,13 @@ class SinglePlan extends Component {
        form: {
         plan_id: this.props.planId,
         parent_id:0,
-    }   
+    },
+        signInURL:{
+            pathname:'/sign/in',
+            state:{
+                redirectTo: window.location.pathname
+            }
+        }   
     }
     constructor(props) {
         super(props);
@@ -85,9 +92,13 @@ class SinglePlan extends Component {
                  <div className="text-center container">
                     מה דעתך על התוכנית?<br />
                     <small>יש להירשם כדי להגיב ולהשתתף בדיון</small><br />
-                    <a href="/"  className="btn btn-success">חשבון חדש</a> 
-                    או   
-                    <a href="/sign/in/" className="btn btn-primary">חשבון קיים</a>
+                    <Link to="/">
+                        <button className="btn btn-success">חשבון חדש</button> 
+                    </Link>
+                    או 
+                    <Link to={this.state.signInURL}>
+                        <button className="btn btn-primary">חשבון קיים</button> 
+                    </Link>
                 </div> 
             )}
         </React.Fragment>
@@ -138,4 +149,4 @@ class SinglePlan extends Component {
 }
 
 
-export default SinglePlan;
+export default Comments;

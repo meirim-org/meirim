@@ -134,6 +134,11 @@
     background-color:transparent;
     position: relative;
     border: 0;
+    cursor: pointer;
+    color:#9b9b9b
+  }
+  button.delete:hover {
+    color:black
   }
   
   button.delete:after {
@@ -142,9 +147,9 @@
     bottom: 0;
     left: 0;
     right: 0;
-    content: "\274c"; /* use the hex value here... */
-    font-size: 23px; 
-    color:rgba(255, 0, 31, 0.64);
+    /* content: "\274c"; use the hex value here... */
+    font-size: 30px; 
+    /* color:rgba(255, 0, 31, 0.64); */
     line-height:23px;
     text-align: center;
     cursor:pointer;
@@ -160,7 +165,7 @@
   
   @media (max-width: 576px) { 
     .rectangle {
-      padding: 10px;
+      /* padding: 1px; */
       margin: 10px;
       width: 100%;
     }
