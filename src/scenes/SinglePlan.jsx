@@ -58,7 +58,7 @@ class SinglePlan extends Component {
                                      </li> 
                                     <li>שימוש קרקע: {plan.data.PL_LANDUSE_STRING}</li>
                                     <li>סטטוס: {plan.data.STATION_DESC}</li>
-                                    <li>עדכון אחרון:  <Moment parse="YYYYMMDDHHmm" format="DD/MM/YYYY HH:mm">
+                                    <li>עדכון אחרון:  <Moment parse="YYYYMMDDHHmm" format="DD/MM/YYYY">
                                     {plan.data.LAST_UPDATE}
                                 </Moment>
                                      </li> 
