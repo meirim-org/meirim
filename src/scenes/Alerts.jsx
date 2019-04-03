@@ -87,6 +87,8 @@ class Alerts extends Component {
         
         api.post('/alert',{
             address, 
+            // we make the calculation as the slider is LTR, and the value 
+            // is the opposite in RTL
             radius: this.state.slider.max + this.state.slider.min- radius
         })
         .then(() => this.getAlerts())
