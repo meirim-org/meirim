@@ -42,7 +42,13 @@ class Alerts extends Component {
         slider:{
             min:1,
             max:10
-        }
+        },
+        signInURL:{
+            pathname:'/sign/in',
+            state:{
+                redirectTo: window.location.pathname
+            }
+        }   
     }
 
     constructor(props) {
@@ -137,7 +143,7 @@ class Alerts extends Component {
         })
         // unauthenticatd
         if (error && error.response && error.response.status === 403) {
-            return <Redirect to="/sign/in" />
+            return <Redirect to={this.state.signInURL} />
         }
         return <React.Fragment>
             <Navigation me={me}/>
