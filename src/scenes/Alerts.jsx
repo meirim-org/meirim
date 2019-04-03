@@ -41,14 +41,15 @@ class Alerts extends Component {
         }],
         slider:{
             min:1,
-            max:10
+            max:10,
         },
+        sliderText:{},
         signInURL:{
             pathname:'/sign/in',
             state:{
                 redirectTo: window.location.pathname
             }
-        }   
+        }  
     }
 
     constructor(props) {
@@ -112,6 +113,11 @@ class Alerts extends Component {
     }
 
     componentDidMount() {
+        const sliderText = {};
+        _.map(new Array(this.state.slider.max), (obj, i)=>{
+            sliderText[i+1]= `${this.state.slider.max- i} ${t.km}`;
+        })
+        this.setState({sliderText})
         this.getAlerts();
         document.getElementById('homeAddress').focus();
     }
@@ -139,10 +145,10 @@ class Alerts extends Component {
         const {alerts, form, error, loading, bounds} = this.state;
         const {me} = this.props;
 
-        const sliderText = {};
-        _.map(new Array(this.state.slider.max), (obj, i)=>{
-            sliderText[i+1]= this.state.slider.max- i  + " ק״מ";
-        })
+        // const sliderText = {};
+        // _.map(new Array(this.state.slider.max), (obj, i)=>{
+        //     sliderText[i+1]= `${this.state.slider.max- i} ${t.km}`;
+        // })
         // unauthenticatd
         if (error && error.response && error.response.status === 403) {
             return <Redirect to={this.state.signInURL} />
@@ -177,7 +183,7 @@ class Alerts extends Component {
                                 min={this.state.slider.min}
                                 max={this.state.slider.max}
                                 onChange={this.handleSlide}
-                                marks={sliderText}
+                                marks={this.state.sliderText}
                                 trackStyle={[{
                                     backgroundColor: 'gray'
                                 }
