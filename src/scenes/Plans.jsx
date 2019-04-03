@@ -15,20 +15,10 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import Mapa from '../components/Mapa'
 import UnsafeRender from '../components/UnsafeRender';
+import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
 
 import t from '../locale/he_IL';
 import './Plans.css';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 class Plans extends Component {
   state = {
@@ -37,8 +27,6 @@ class Plans extends Component {
     hasMore: true,
     noData: false,
     pageNumber: 1,
-    planStatuses: [],
-    filterStatuses: [],
     planCounties: [],
     filterCounties: [],
     plans: []
@@ -46,72 +34,40 @@ class Plans extends Component {
 
   constructor(props) {
     super(props);
-
-    this.handleStatusToggle = this
-      .handleStatusToggle
-      .bind(this);
-    
-    this.handleCountyToggle = this
-      .handleCountyToggle
-      .bind(this);
     
     this.loadPlans = this
       .loadPlans
       .bind(this);
     
+    this.loadNextPage = this
+      .loadNextPage
+      .bind(this);
+    
     this.filterTimer = undefined;
   }
 
-  handleStatusToggle(event) {
-    // make sure we don't send more than one request every half second
-    if (this.filterTimer !== undefined) {
-      clearTimeout(this.filterTimer);
-    }
-
-    const values = [];
-    for (let i = 0, l = event.target.value.length; i < l; i += 1) {
-      values.push(event.target.value[i]);
-    }
-
+  handleCountyFilterChange(selectedCounties) {
     this.setState({
-      plans: [],
-     // filterStatuses: values
+      plans: []
     });
 
-   // this.filterTimer = setTimeout(this.loadPlans(1, values, this.state.filterCounties), 500); 
+    this.loadPlans(1, selectedCounties);
   }
 
-  handleCountyToggle(event) {
-    // make sure we don't send more than one request every half second
-    if (this.filterTimer !== undefined) {
-      clearTimeout(this.filterTimer);
-    }
-
-    const values = [];
-    for (let i = 0, l = event.target.value.length; i < l; i += 1) {
-      values.push(event.target.value[i]);
-    }
-
+  loadPlans(pageNumber, filterCounties) {
     this.setState({
-      plans: [],
-      filterCounties: values
+      loading: true,
+      noData: false
     });
-
-   // this.filterTimer = setTimeout(this.loadPlans(1, this.state.filterStatuses, values), 500); 
-  }
-
-  loadPlans() {
-    this.setState({loading: true, noData: false});
-    const newPageNum = this.state.pageNumber +1;
     
-    //api.get('/plan?page=' + newPageNum + '&status=' + filterStatuses.join(',') + '&PLAN_COUNTY_NAME=' + filterCounties.join(','))
-    api.get('/plan?page=' + newPageNum)
+    api.get('/plan?page=' + pageNumber + '&PLAN_COUNTY_NAME=' + filterCounties.join(','))
       .then(result => {
         this.setState({
           loading: false,
           hasMore: result.pagination.page < result.pagination.pageCount,
           noData: this.state.plans.length + result.data.length == 0,
-          pageNumber: newPageNum,
+          pageNumber: pageNumber,
+          filterCounties: filterCounties,
           plans: [
             ...this.state.plans,
             ...result.data
@@ -121,82 +77,85 @@ class Plans extends Component {
       .catch(error => this.setState({error}));
   }
 
-  componentDidMount() {
-    const {pageNumber, filterStatuses, filterCounties} = this.state;
+  loadNextPage() {
+    const {pageNumber, filterCounties} = this.state;
+    this.loadPlans(pageNumber + 1, filterCounties);
+  }
 
-    api.get('/plan_status')
-      .then(result => {
-        this.setState({
-          planStatuses: result.data.map(status => {return status.status;})
-        });
-      })
-      .catch(error => this.setState({error}));
+  componentDidMount() {
+    const {pageNumber, filterCounties} = this.state;
   
     api.get('/plan_county')
       .then(result => {
         this.setState({
-          planCounties: result.data.map(county => {return county.PLAN_COUNTY_NAME;})
+          planCounties: result.data.map(county => {return {label: county.PLAN_COUNTY_NAME};})
         });
       })
       .catch(error => this.setState({error}));
     
-    this.loadPlans();
+    this.loadPlans(pageNumber, filterCounties);
   }
 
   render() {
-    const {plans, planStatuses, filterStatuses, planCounties, filterCounties, error, loading, noData, hasMore} = this.state;  
+    const {plans, planCounties, error, loading, noData, hasMore} = this.state;
     const {me} = this.props;
 
     return <React.Fragment>
       <Navigation me={me} />
-        <div className="container">
-          <GridList cellHeight={500} cellWidth={335} className="gridList" cols={1}>
-            {plans.map(plan => (
-              <Card className="card" raised={true}>
-                <Link className="card-link" to={`/plan/${plan.id}/${plan.PL_NAME}`}>
-                  <CardActionArea className="card-action-area">
-                    <CardMedia
-                      className="card-media"
-                      title={plan.PL_NUMBER}>
-                      <Mapa geom={plan.geom} hideZoom={true} disableInteractions={true} title={plan.PLAN_COUNTY_NAME}/>
-                    </CardMedia>
-                    <CardContent className="card-content">
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {plan.PL_NAME}
-                      </Typography>
-                      <Typography component="p">
-                      <UnsafeRender html={plan.main_details_from_mavat}></UnsafeRender>
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Link>
-              </Card>
-            ))}
-          </GridList>
+      <div className="container">
+        <FilterAutoCompleteMultiple 
+          classes=""
+          placeholder="בחרו רשויות"
+          inputSuggestions={planCounties}
+          onFilterChange={this.handleCountyFilterChange.bind(this)}
+        />
+        <br />
+        <GridList cellHeight={500} cellWidth={335} className="gridList" cols={1}>
+          {plans.map(plan => (
+            <Card className="card" raised={true}>
+              <Link className="card-link" to={`/plan/${plan.id}/${plan.PL_NAME}`}>
+                <CardActionArea className="card-action-area">
+                  <CardMedia
+                    className="card-media"
+                    title={plan.PL_NUMBER}>
+                    <Mapa geom={plan.geom} hideZoom={true} disableInteractions={true} title={plan.PLAN_COUNTY_NAME}/>
+                  </CardMedia>
+                  <CardContent className="card-content">
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {plan.PL_NAME}
+                    </Typography>
+                    <Typography component="p">
+                    <UnsafeRender html={plan.main_details_from_mavat}></UnsafeRender>
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
+            </Card>
+          ))}
+        </GridList>
 
-          {error &&
-            <div className="error-container">
-              {error}
-            </div>
-          }
-          {noData &&
-            <div>אין כאן כלום</div>
-          }
-        </div>
-        <InfiniteScroll
-  dataLength={plans.length}
-  next={this.loadPlans}
-  hasMore={hasMore}
-  loader={<h4>טוען</h4>}
-  endMessage={
-    <p style={{textAlign: 'center'}}>
-      <b>Yay! You have seen it all</b>
-    </p>
-  }>
-  {/* {items} */}
-</InfiniteScroll>
-        <Footer />
-      </React.Fragment>
+        {error &&
+          <div className="error-container">
+            {error}
+          </div>
+        }
+        {noData &&
+          <div>אין כאן כלום</div>
+        }
+      </div>
+      <InfiniteScroll
+        dataLength={plans.length}
+        next={this.loadNextPage}
+        hasMore={hasMore}
+        loader={<h4>טוען</h4>}
+        endMessage={
+          <p style={{textAlign: 'center'}}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }>
+      </InfiniteScroll>
+      <Footer />
+    </React.Fragment>
   }
 }
 
