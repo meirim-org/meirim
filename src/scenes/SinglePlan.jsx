@@ -24,7 +24,11 @@ class SinglePlan extends Component {
         return api
             .get('/plan/' + id)
             .then(plan => this.setState({plan:plan.data}))
-            .catch(error => this.setState({error}))
+            .catch(error => {
+                if(error.response.status ===404)
+                    window.location = '/404'
+                this.setState({error})
+            })
     }
 
     render() {

@@ -189,8 +189,8 @@ class Alerts extends Component {
                     <div className="row">
                         <div className="col">
                         <br></br><br></br>
-                            <button id="submitButton" loading={this.state.loading} title="הוסף התראה" disabled={loading}>הוספה
-                            { loading && 
+                            <button id="submitButton" loading={this.state.loading} title="הוסף התראה" disabled={this.state.loading}>הוספה
+                            { this.state.loading && 
                                 <FontAwesomeIcon icon="spinner" spin />
                             }
                             </button>
