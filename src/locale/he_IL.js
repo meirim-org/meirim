@@ -5,6 +5,7 @@ export default {
   name: 'מעירים',
   plans: 'תוכניות',
   about: 'אודות',
+  new_alert: 'התראה חדשה',
   email_address: 'כתובת מייל',
   password: 'סיסמה',
   signup: 'הרשמה',

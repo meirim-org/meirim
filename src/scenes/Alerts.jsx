@@ -27,7 +27,7 @@ class Alerts extends Component {
         loading: false,
         alerts: [],
         form: {
-            radius: 3,
+            radius: 5,
             address: ''
         },
 
@@ -127,16 +127,14 @@ class Alerts extends Component {
         .get('/alert')
         .then(result => {
             let transparentLayer = leaflet.geoJSON();
-            let fixedBounds = this.state.bounds;
             if(result.data.length > 0){
                 result.data.map((alert)=>{
                     leaflet.geoJSON(alert.geom).addTo(transparentLayer);    
                   })
-                  const layerBounds = transparentLayer.getBounds();
-                  fixedBounds= [layerBounds._southWest, layerBounds._northEast];
+                 const layerBounds = transparentLayer.getBounds();
+                 this.setState({bounds: [layerBounds._southWest, layerBounds._northEast], 
+                    alerts:result.data});
                 }
-         this.setState({bounds: fixedBounds, alerts:result.data});
-         
         })
         .catch(error => this.setState({error}))
     }
@@ -145,10 +143,6 @@ class Alerts extends Component {
         const {alerts, form, error, loading, bounds} = this.state;
         const {me} = this.props;
 
-        // const sliderText = {};
-        // _.map(new Array(this.state.slider.max), (obj, i)=>{
-        //     sliderText[i+1]= `${this.state.slider.max- i} ${t.km}`;
-        // })
         // unauthenticatd
         if (error && error.response && error.response.status === 403) {
             return <Redirect to={this.state.signInURL} />
@@ -157,7 +151,7 @@ class Alerts extends Component {
             <Navigation me={me}/>
             <div className="container widedialog">
                 <form className="rectangle" onSubmit={this.handleSubmit}>
-                    <h5 className="container-title">התראה חדשה</h5>
+                    <h5 className="container-title">{t.new_alert}</h5>
                     {error && <div className="alert alert-danger" role="alert">הכתובת לא נמצאה</div>}
                     <div className="selectAreaAndInterest">
                     כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
@@ -171,6 +165,7 @@ class Alerts extends Component {
                                 id="homeAddress"
                                 type="text"
                                 value={form.address}
+                                placeholder='לדוגמא: מאז"ה 9, תל אביב'
                                 required
                                 onChange={this.handleAddress}
                                 />
