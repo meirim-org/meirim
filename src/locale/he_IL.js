@@ -13,4 +13,5 @@ export default {
   km: 'ק"מ',
   emailExists: 'כתובת האי מייל כבר קיימת',
   error: 'שגיאה',
+  forgotPassword: 'שכחתם את הסיסמה?'
 };
