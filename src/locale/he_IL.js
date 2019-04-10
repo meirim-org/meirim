@@ -14,5 +14,7 @@ export default {
   km: 'ק"מ',
   emailExists: 'כתובת האי מייל כבר קיימת',
   error: 'שגיאה',
-  forgotPassword: 'שכחתם את הסיסמה?'
+  forgotPassword: 'שכחתם את הסיסמה?',
+  loading: 'טוען',
+  seen_all_plans:'ראית את כל התוכניות'
 };
