@@ -89,58 +89,66 @@ class ForgotPassword extends Component {
                     </div>
                 </div>
 
-                {stage === 'email' && <div className="rectangle">
-                    <form id="stage1" method="post" onSubmit={this.sendEmail}>
-                        {error && <div className="alert alert-danger" role="alert">כתובת המייל אינה תקינה</div>}
-                        <div className="form-group">
-                            <label for="loginEmail">שלב 1 - כתובת דואר אלקטרוני:</label>
-                            <input
-                                className="form-control"
-                                required
-                                type="email"
-                                name="email"
-                                id="loginEmail"
-                                onChange={this.handleChange}
-                                placeholder="yourname@mail.com"/>
-                        </div>
-                        <button type="submit" className="btn btn-primary btn-block">
-                            <i className="fas fa-spinner fa-spin d-none"></i>
-                            שליחת קוד איפוס</button>
-                    </form>
-                </div>
-}
-                {stage === 'sent' && <div className="alert alert-success" role="alert">שלחנו לך דואר אלקטרוני עם הנחיות להמשך</div>}
+                {(() => {
+                     switch(stage) {
+    case 'email':
+      return  <div className="rectangle">
+      <form id="stage1" method="post" onSubmit={this.sendEmail}>
+          {error && <div className="alert alert-danger" role="alert">כתובת המייל אינה תקינה</div>}
+          <div className="form-group">
+              <label for="loginEmail">שלב 1 - כתובת דואר אלקטרוני:</label>
+              <input
+                  className="form-control"
+                  required
+                  type="email"
+                  name="email"
+                  id="loginEmail"
+                  onChange={this.handleChange}
+                  placeholder="yourname@mail.com"/>
+          </div>
+          <button type="submit" className="btn btn-primary btn-block">
+              <i className="fas fa-spinner fa-spin d-none"></i>
+              שליחת קוד איפוס</button>
+      </form>
+  </div>;
+    case 'sent':
+      return <div className="alert alert-success" role="alert">שלחנו לך דואר אלקטרוני עם הנחיות להמשך</div>;
+    case 'change':
+      return <div className="rectangle" id="container">
+      <form
+          id="stage2"
+          method="post"
+          style={{
+          marginTop: "20px"
+      }}
+          onSubmit={this.changePassword}>
+          {error && <div className="alert alert-danger" role="alert">חלה שגיאה</div>}
 
-                {stage === 'change' && <div className="rectangle" id="container">
-                    <form
-                        id="stage2"
-                        method="post"
-                        style={{
-                        marginTop: "20px"
-                    }}
-                        onSubmit={this.changePassword}>
-                        {error && <div className="alert alert-danger" role="alert">חלה שגיאה</div>}
+          <div className="form-group">
+              <label for="emailCode">שלב 2 -החלפת סיסמה:</label>
+              <input className="form-control" type="hidden" name="emailCode" id="emailCode"/>
+          </div>
+          <div className="form-group">
+              <label for="loginPassword">נא לבחור סיסמה חדשה:</label>
+              <input
+                  className="form-control"
+                  minLength={6}
+                  required
+                  type="password"
+                  onChange={this.handleChange}
+                  name="password"
+                  id="loginPassword"/>
+          </div>
+          <button type="submit" className="btn btn-primary btn-block">
+              <i className="fas fa-spinner fa-spin d-none"></i>
+              החלפה</button>
+      </form>
+  </div>;
+    default:
+      return null
+    }
+})()}
 
-                        <div className="form-group">
-                            <label for="emailCode">שלב 2 -החלפת סיסמה:</label>
-                            <input className="form-control" type="hidden" name="emailCode" id="emailCode"/>
-                        </div>
-                        <div className="form-group">
-                            <label for="loginPassword">נא לבחור סיסמה חדשה:</label>
-                            <input
-                                className="form-control"
-                                minLength={6}
-                                required
-                                type="password"
-                                onChange={this.handleChange}
-                                name="password"
-                                id="loginPassword"/>
-                        </div>
-                        <button type="submit" className="btn btn-primary btn-block">
-                            <i className="fas fa-spinner fa-spin d-none"></i>
-                            החלפה</button>
-                    </form>
-                </div>}
             </div>
             <Footer/>
         </React.Fragment>
