@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import Typography from '@material-ui/core/Typography';
@@ -23,7 +23,6 @@ import './Plans.css';
 class Plans extends Component {
   state = {
     error: false,
-    loading: false,
     hasMore: true,
     noData: false,
     pageNumber: 1,
@@ -56,14 +55,12 @@ class Plans extends Component {
 
   loadPlans(pageNumber, filterCounties) {
     this.setState({
-      loading: true,
       noData: false
     });
     
     api.get('/plan?page=' + pageNumber + '&PLAN_COUNTY_NAME=' + filterCounties.join(','))
       .then(result => {
         this.setState({
-          loading: false,
           hasMore: result.pagination.page < result.pagination.pageCount,
           noData: this.state.plans.length + result.data.length == 0,
           pageNumber: pageNumber,
@@ -78,12 +75,12 @@ class Plans extends Component {
   }
 
   loadNextPage() {
-    const {pageNumber, filterCounties} = this.state;
+    const { pageNumber, filterCounties } = this.state;
     this.loadPlans(pageNumber + 1, filterCounties);
   }
 
   componentDidMount() {
-    const {pageNumber, filterCounties} = this.state;
+    const { pageNumber, filterCounties } = this.state;
   
     api.get('/plan_county')
       .then(result => {
@@ -97,8 +94,8 @@ class Plans extends Component {
   }
 
   render() {
-    const {plans, planCounties, error, loading, noData, hasMore} = this.state;
-    const {me} = this.props;
+    const { plans, planCounties, error, noData, hasMore, pageNumber } = this.state;
+    const { me } = this.props;
 
     return <React.Fragment>
       <Navigation me={me} />
@@ -148,9 +145,9 @@ class Plans extends Component {
         next={this.loadNextPage}
         hasMore={hasMore}
         loader={<h4>טוען</h4>}
-        endMessage={
+        endMessage={pageNumber > 1 && 
           <p style={{textAlign: 'center'}}>
-            <b>Yay! You have seen it all</b>
+            <b>זה הכל!</b>
           </p>
         }>
       </InfiniteScroll>
