@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types';
+
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import deburr from 'lodash/deburr';
 
 import Downshift from 'downshift';
+
+import './FilterAutoCompleteMultiple.css';
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -155,11 +157,8 @@ class FilterAutoCompleteMultiple extends Component {
                     key={item}
                     tabIndex={-1}
                     label={item}
-                    className={classes.chip}
+                    className={'filterChip'}
                     onDelete={this.handleDelete(item)}
-                    style={{
-                      marginLeft: '15px',
-                    }}
                   />
                 )),
                 onChange: this.handleInputChange,
@@ -186,9 +185,5 @@ class FilterAutoCompleteMultiple extends Component {
     );
   }
 }
-
-FilterAutoCompleteMultiple.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default FilterAutoCompleteMultiple;
