@@ -5,6 +5,7 @@ export default {
   name: 'מעירים',
   plans: 'תוכניות',
   about: 'אודות',
+  meirim_title:'מידע תכנוני ואקטיביזם עירוני',
   new_alert: 'התראה חדשה',
   email_address: 'כתובת מייל',
   password: 'סיסמה',
