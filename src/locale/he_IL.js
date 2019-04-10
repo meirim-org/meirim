@@ -16,5 +16,5 @@ export default {
   error: 'שגיאה',
   forgotPassword: 'שכחתם את הסיסמה?',
   loading: 'טוען',
-  seen_all_plans:'ראית את כל התוכניות'
+  seen_all_plans:'זה הכל!'
 };
