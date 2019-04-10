@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
 import Home from './scenes/Home';
 import Plans from './scenes/Plans';
 import SinglePlan from './scenes/SinglePlan';
@@ -40,6 +40,7 @@ class App extends Component {
         return (
             <Router>
                 <div>
+                    <Switch>
                     <Route exact path="/" render={(props) => <Home {...props}  me={me}/>}/>
                     <Route path="/alerts" render={(props) => <Alerts {...props} me={me}/>}/>
                     <Route path="/plan/:id/:title" render={(props) => <SinglePlan {...props} me={me}/>}/>
@@ -52,7 +53,7 @@ class App extends Component {
                     <Route path="/terms" render={(props) => <Terms {...props} me={me}/>}/>
                     <Route path="/404" render={(props) => <NotFound {...props} me={me}/>} />
                     <Route component={NotFound} />
-                    
+                    </Switch>    
                 </div>
             </Router>
         );
