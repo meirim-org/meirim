@@ -147,10 +147,10 @@ class Plans extends Component {
         dataLength={plans.length}
         next={this.loadNextPage}
         hasMore={hasMore}
-        loader={<h4>טוען</h4>}
+        loader={<h4 className="centerNote">{t.loading}</h4>}
         endMessage={
-          <p style={{textAlign: 'center'}}>
-            <b>Yay! You have seen it all</b>
+          <p className="centerNote">
+            <b>{t.seen_all_plans}</b>
           </p>
         }>
       </InfiniteScroll>

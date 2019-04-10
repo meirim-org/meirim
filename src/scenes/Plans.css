@@ -15,6 +15,10 @@ html body{
   color: '#900';
 }
 
+.centerNote{
+  text-align: center;
+}
+
 .card {
   max-width: 335px;
   margin: 0 1em 3em 1em;
