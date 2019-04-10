@@ -51,6 +51,7 @@ class App extends Component {
                     <Route path="/about" render={(props) => <About {...props} me={me}/>}/>
                     <Route path="/terms" render={(props) => <Terms {...props} me={me}/>}/>
                     <Route path="/404" render={(props) => <NotFound {...props} me={me}/>} />
+                    <Route component={NotFound} />
                     
                 </div>
             </Router>
