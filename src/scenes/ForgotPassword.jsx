@@ -80,7 +80,7 @@ class ForgotPassword extends Component {
                         <div className="group">
                             <img className='eyelashes' src={logo} alt="מעירים"/>
                             <div className="goodMorning" id="goodMorningText">
-                                שכחתם את הסיסמה?
+                                {t.forgotPassword}
                             </div>
                             <div className="selectAreaAndInterest">
                                 הכניסו את כתובת הדואר האלקטרוני שבאמצעותה נרשמתם ונשלח לכם קוד לאיפוס הסיסמה.
