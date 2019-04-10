@@ -24,7 +24,7 @@ class Home extends Component {
             <div className="content">
               <img className="logo" src={logo_small} alt={t.name} />
               <div className="d-lg-none">
-                <h4>מידע תכנוני ואקטיביזם עירוני</h4>
+                <h4>{t.meirim_title}</h4>
                 <p>רוצים השכמה?</p>
                 <a href="#register" className="join">הצטרפו למעירים</a>
               </div>
