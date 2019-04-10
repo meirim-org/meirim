@@ -105,7 +105,7 @@ class Plans extends Component {
       <div className="container">
         <FilterAutoCompleteMultiple 
           classes=""
-          placeholder="חדש: סינון לפי רשויות מקומיות! הזינו את הרשויות שברצונכם לראות"
+          placeholder="חדש! סינון לפי רשויות מקומיות- הזינו את הרשויות שברצונכם לראות"
           inputSuggestions={planCounties}
           onFilterChange={this.handleCountyFilterChange.bind(this)}
         />
