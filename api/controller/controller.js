@@ -1,11 +1,9 @@
-const Checkit = require('checkit');
-const Promise = require('bluebird');
-const Success = require('../view/success');
-const Log = require('../lib/log');
-const Exception = require('../model/exception');
-const {
-  bind,
-} = require('lodash');
+const Checkit = require("checkit");
+const Promise = require("bluebird");
+const Success = require("../view/success");
+const Log = require("../lib/log");
+const Exception = require("../model/exception");
+const { bind } = require("lodash");
 
 class Controller {
   constructor(model) {
@@ -18,17 +16,17 @@ class Controller {
 
   // try catch wrapper for all controllers
   static wrap(fn, ctx) {
-    return (req, res, next) => Promise
-      .try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-      .then(response => Success.set(res, response, req.session))
-      .catch(Checkit.Error, (err) => {
-        req.error = new Exception.BadRequest(err);
-        next();
-      })
-      .catch((err) => {
-        req.error = err;
-        next();
-      });
+    return (req, res, next) =>
+      Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+        .then((response) => Success.set(res, response, req.session))
+        .catch(Checkit.Error, (err) => {
+          req.error = new Exception.BadRequest(err);
+          next();
+        })
+        .catch((err) => {
+          req.error = err;
+          next();
+        });
   }
 
   browse(req, options = {}) {
@@ -37,18 +35,20 @@ class Controller {
     let page = parseInt(query.page) || 1;
     if (page < 1) page = 1;
 
-    const columns = options.columns || '*';
+    const columns = options.columns || "*";
     const where = options.where || {};
 
     return this.model
-      .query(qb => Object.keys(where).map(index => qb.where(index, 'in', where[index])))
+      .query((qb) =>
+        Object.keys(where).map((index) => qb.where(index, "in", where[index]))
+      )
       .fetchPage({
         columns,
         page,
-        pageSize: 20,
+        pageSize: 20
       })
       .then((collection) => {
-        Log.debug(this.tableName, 'browse success');
+        Log.debug(this.tableName, "browse success");
         return collection;
       });
   }
@@ -57,14 +57,15 @@ class Controller {
     const id = parseInt(req.params.id, 10);
     return this.model
       .forge({
-        [this.id_attribute]: id,
+        [this.id_attribute]: id
       })
-      .fetch().then((fetchedModel) => {
-        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+      .fetch()
+      .then((fetchedModel) => {
+        if (!fetchedModel) throw new Exception.NotFound("Nof found");
         return fetchedModel.canRead(req.session);
       })
       .then((fetchedModel) => {
-        Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
+        Log.debug(this.tableName, "read success", fetchedModel.get("id"));
         return fetchedModel;
       });
   }
@@ -73,15 +74,15 @@ class Controller {
     const id = parseInt(req.params.id, 10);
     return this.model
       .forge({
-        [this.id_attribute]: id,
+        [this.id_attribute]: id
       })
       .fetch()
       .then((fetchedModel) => {
-        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+        if (!fetchedModel) throw new Exception.NotFound("Nof found");
         return fetchedModel.canEdit(req.session);
       })
       .then((fetchedModel) => {
-        Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
+        Log.debug(this.tableName, " patch success id:", fetchedModel.get("id"));
         return fetchedModel.save(req.body);
       });
   }
@@ -90,15 +91,19 @@ class Controller {
     const id = parseInt(req.params.id, 10);
     return this.model
       .forge({
-        [this.id_attribute]: id,
+        [this.id_attribute]: id
       })
       .fetch()
       .then((fetchedModel) => {
-        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+        if (!fetchedModel) throw new Exception.NotFound("Nof found");
         return fetchedModel.canEdit(req.session);
       })
       .then((fetchedModel) => {
-        Log.debug(this.tableName, ' delete success id:', fetchedModel.get('id'));
+        Log.debug(
+          this.tableName,
+          " delete success id:",
+          fetchedModel.get("id")
+        );
         return fetchedModel.destroy(req.body);
       });
   }
@@ -107,7 +112,7 @@ class Controller {
     let options = {};
     if (transaction) {
       options = {
-        transacting: transaction,
+        transacting: transaction
       };
     }
     return this.model
@@ -118,19 +123,17 @@ class Controller {
         return model.save(null, options);
       })
       .then((savedModel) => {
-        Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
+        Log.debug(this.tableName, " create success id:", savedModel.get("id"));
         return savedModel;
       });
   }
 
   upload(req) {
     const id = parseInt(req.params[this.id_attribute], 10);
-    const model = this.model
-      .forge({
-        [this.id_attribute]: id,
-      });
-    return model.canEdit(req.session)
-      .then(() => model.upload(req.files));
+    const model = this.model.forge({
+      [this.id_attribute]: id
+    });
+    return model.canEdit(req.session).then(() => model.upload(req.files));
   }
 }
 module.exports = Controller;

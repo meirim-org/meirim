@@ -1,5 +1,5 @@
-const Controller = require('../controller/controller');
-const Status = require('../model/status');
+const Controller = require("../controller/controller");
+const Status = require("../model/status");
 
 class StatusController extends Controller {}
 

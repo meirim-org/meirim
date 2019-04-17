@@ -1,4 +1,3 @@
-
 const tables = [
   `CREATE TABLE activity (
     id int(10) UNSIGNED NOT NULL,
@@ -76,39 +75,42 @@ const tables = [
     sid varchar(255) NOT NULL,
     sess text NOT NULL,
     expired datetime NOT NULL
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
 ];
 
 const statements = [
-  'ALTER TABLE activity ADD PRIMARY KEY (id);',
-  'ALTER TABLE alert ADD PRIMARY KEY (id);',
-  'ALTER TABLE category ADD PRIMARY KEY (category_id);',
-  'ALTER TABLE category_activity ADD PRIMARY KEY (category_id,activity_id);',
-  'ALTER TABLE person ADD PRIMARY KEY (id), ADD UNIQUE KEY email (email);',
-  'ALTER TABLE person_activity ADD PRIMARY KEY (activity_id,person_id);',
-  'ALTER TABLE sessions ADD PRIMARY KEY (sid), ADD KEY sessions_expired_index (expired);',
-  'ALTER TABLE activity MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
-  'ALTER TABLE alert MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
-  'ALTER TABLE person MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
+  "ALTER TABLE activity ADD PRIMARY KEY (id);",
+  "ALTER TABLE alert ADD PRIMARY KEY (id);",
+  "ALTER TABLE category ADD PRIMARY KEY (category_id);",
+  "ALTER TABLE category_activity ADD PRIMARY KEY (category_id,activity_id);",
+  "ALTER TABLE person ADD PRIMARY KEY (id), ADD UNIQUE KEY email (email);",
+  "ALTER TABLE person_activity ADD PRIMARY KEY (activity_id,person_id);",
+  "ALTER TABLE sessions ADD PRIMARY KEY (sid), ADD KEY sessions_expired_index (expired);",
+  "ALTER TABLE activity MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;",
+  "ALTER TABLE alert MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;",
+  "ALTER TABLE person MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;"
 ];
 
-exports.up = function (knex, Promise) {
-  return Promise.all(tables.map((table) => {
-    try {
-      return knex.raw(table);
-    } catch (e) {
-      console.log(e);
-    }
-  }))
-    .then(Promise.all(statements.map((statement) => {
+exports.up = function(knex, Promise) {
+  return Promise.all(
+    tables.map((table) => {
       try {
-        knex.raw(statement);
+        return knex.raw(table);
       } catch (e) {
         console.log(e);
       }
-    })));
+    })
+  ).then(
+    Promise.all(
+      statements.map((statement) => {
+        try {
+          knex.raw(statement);
+        } catch (e) {
+          console.log(e);
+        }
+      })
+    )
+  );
 };
 
-exports.down = function (knex, Promise) {
-
-};
+exports.down = function(knex, Promise) {};

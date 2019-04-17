@@ -1,26 +1,20 @@
-const Checkit = require('checkit');
-const Model = require('./base_model');
-const Person = require('./person');
-const Exception = require('./exception');
+const Checkit = require("checkit");
+const Model = require("./base_model");
+const Person = require("./person");
+const Exception = require("./exception");
 
 class Comment extends Model {
   get rules() {
     return {
-      person_id: [
-        'required', 'integer',
-      ],
-      content: [
-        'required', 'string',
-      ],
-      plan_id: [
-        'required', 'integer',
-      ],
-      parent_id: ['required', 'integer'],
+      person_id: ["required", "integer"],
+      content: ["required", "string"],
+      plan_id: ["required", "integer"],
+      parent_id: ["required", "integer"]
     };
   }
 
   get tableName() {
-    return 'comment';
+    return "comment";
   }
 
   person() {
@@ -28,7 +22,7 @@ class Comment extends Model {
   }
 
   initialize() {
-    this.on('saving', this._saving, this);
+    this.on("saving", this._saving, this);
     super.initialize();
   }
 
@@ -41,32 +35,34 @@ class Comment extends Model {
   }
 
   canEdit(session) {
-    if (session.person.id !== this.get('person_id')) {
-      throw new Exception.NotAllowed('You cannot edit this comment');
+    if (session.person.id !== this.get("person_id")) {
+      throw new Exception.NotAllowed("You cannot edit this comment");
     }
     return Promise.resolve(this);
   }
 
   static byPlan(planId) {
     if (!planId) {
-      throw new Exception.BadRequest('Must provide planId');
+      throw new Exception.BadRequest("Must provide planId");
     }
-    return this.query('where', 'plan_id', '=', planId)
+    return this.query("where", "plan_id", "=", planId)
       .query((qb) => {
-        qb.orderBy('id', 'DESC');
+        qb.orderBy("id", "DESC");
       })
       .fetchAll({
-        withRelated: [{
-          person(qb) {
-            qb.column('id', 'alias');
-          },
-        }],
+        withRelated: [
+          {
+            person(qb) {
+              qb.column("id", "alias");
+            }
+          }
+        ]
       });
   }
 
   static canCreate(session) {
     if (!session.person) {
-      throw new Exception.NotAllowed('Must be logged in');
+      throw new Exception.NotAllowed("Must be logged in");
     }
     return Promise.resolve(this);
   }

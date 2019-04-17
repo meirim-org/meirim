@@ -6,7 +6,6 @@
  * https://github.com/joshswan/bookshelf-postgis/blob/master/LICENSE
  */
 
-
 module.exports = (bookshelf) => {
   const proto = bookshelf.Model.prototype;
 
@@ -18,7 +17,9 @@ module.exports = (bookshelf) => {
       if (this.geometry) {
         this.geometry.forEach((attr) => {
           if (attributes[attr]) {
-            attributes[attr] = bookshelf.knex.raw('ST_GeomFromGeoJSON(?)', [JSON.stringify(attributes[attr])]);
+            attributes[attr] = bookshelf.knex.raw("ST_GeomFromGeoJSON(?)", [
+              JSON.stringify(attributes[attr])
+            ]);
           }
         });
       }
@@ -46,8 +47,8 @@ module.exports = (bookshelf) => {
               });
 
               attributes[attr] = {
-                type: 'MultiPolygon',
-                coordinates: json,
+                type: "MultiPolygon",
+                coordinates: json
               };
             } else {
               attributes[attr].map((el, i) => {
@@ -57,8 +58,8 @@ module.exports = (bookshelf) => {
                 });
               });
               attributes[attr] = {
-                type: 'Polygon',
-                coordinates: json,
+                type: "Polygon",
+                coordinates: json
               };
             }
           }
@@ -67,6 +68,6 @@ module.exports = (bookshelf) => {
 
       // Call parent parse method
       return proto.parse.call(this, attributes);
-    },
+    }
   });
 };
