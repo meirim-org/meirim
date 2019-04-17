@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
+import React, { Component } from "react";
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
 
-import t from '../locale/he_IL';
-import './About.css';
+import t from "../locale/he_IL";
+import "./About.css";
 
-import eyal from '../assets/team/eyal.png';
-import talia from '../assets/team/talia.png';
-import yonatan from '../assets/team/yonatan.png';
-import tomer from '../assets/team/tomer.png';
-import ann from '../assets/team/ann.png';
-import shira from '../assets/team/shira.png';
-import adi from '../assets/team/adi.png';
-import gal from '../assets/team/gal.png'
+import eyal from "../assets/team/eyal.png";
+import talia from "../assets/team/talia.png";
+import yonatan from "../assets/team/yonatan.png";
+import tomer from "../assets/team/tomer.png";
+import ann from "../assets/team/ann.png";
+import shira from "../assets/team/shira.png";
+import adi from "../assets/team/adi.png";
+import gal from "../assets/team/gal.png";
 
 class About extends Component {
     render() {
@@ -97,7 +97,7 @@ class About extends Component {
                 </div>
             </div>
             <Footer />
-        </React.Fragment>
+        </React.Fragment>;
     }
 }
 

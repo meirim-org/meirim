@@ -1,8 +1,8 @@
 
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-import t from '../locale/he_IL';
+import t from "../locale/he_IL";
 
 class Footer extends Component {
   render() {
