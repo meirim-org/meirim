@@ -29,18 +29,14 @@ class Plans extends Component {
     planCounties: [],
     filterCounties: [],
     plans: []
-  }
+  };
 
   constructor(props) {
     super(props);
-    
-    this.loadPlans = this
-      .loadPlans
-      .bind(this);
-    
-    this.loadNextPage = this
-      .loadNextPage
-      .bind(this);
+
+    this.loadPlans = this.loadPlans.bind(this);
+
+    this.loadNextPage = this.loadNextPage.bind(this);
   }
 
   handleCountyFilterChange(selectedCounties) {
@@ -55,21 +51,24 @@ class Plans extends Component {
     this.setState({
       noData: false
     });
-    
-    api.get("/plan?page=" + pageNumber + "&PLAN_COUNTY_NAME=" + filterCounties.join(","))
+
+    api
+      .get(
+        "/plan?page=" +
+          pageNumber +
+          "&PLAN_COUNTY_NAME=" +
+          filterCounties.join(",")
+      )
       .then(result => {
         this.setState({
           hasMore: result.pagination.page < result.pagination.pageCount,
           noData: this.state.plans.length + result.data.length === 0,
           pageNumber,
           filterCounties,
-          plans: [
-            ...this.state.plans,
-            ...result.data
-          ]
+          plans: [...this.state.plans, ...result.data]
         });
       })
-      .catch(error => this.setState({error}));
+      .catch(error => this.setState({ error }));
   }
 
   loadNextPage() {
@@ -79,15 +78,18 @@ class Plans extends Component {
 
   componentDidMount() {
     const { pageNumber, filterCounties } = this.state;
-  
-    api.get("/plan_county")
-      .then((result) => {
+
+    api
+      .get("/plan_county")
+      .then(result => {
         this.setState({
-          planCounties: result.data.map((county) => {return {label: county.PLAN_COUNTY_NAME};})
+          planCounties: result.data.map(county => {
+            return { label: county.PLAN_COUNTY_NAME };
+          })
         });
       })
-      .catch((error) => this.setState({error}));
-    
+      .catch(error => this.setState({ error }));
+
     this.loadPlans(pageNumber, filterCounties);
   }
 
@@ -95,62 +97,69 @@ class Plans extends Component {
     const { plans, planCounties, error, noData, hasMore } = this.state;
     const { me } = this.props;
 
-    return <React.Fragment>
-      <Navigation me={me} />
-      <div className="container">
-        <FilterAutoCompleteMultiple 
-          classes=""
-          placeholder="חדש! סינון לפי רשויות מקומיות- הזינו את הרשויות שברצונכם לראות"
-          inputSuggestions={planCounties}
-          onFilterChange={this.handleCountyFilterChange.bind(this)}
-        />
-        <br />
-        <GridList cellHeight={500} cellWidth={335} className="gridList" cols={1}>
-          {plans.map((plan) => (
-            <Card className="card" raised={true}>
-              <Link className="card-link" to={`/plan/${plan.id}/${plan.PL_NAME}`}>
-                <CardActionArea className="card-action-area">
-                  <CardMedia
-                    className="card-media"
-                    title={plan.PL_NUMBER}>
-                    <Mapa geom={plan.geom} hideZoom={true} disableInteractions={true} title={plan.PLAN_COUNTY_NAME}/>
-                  </CardMedia>
-                  <CardContent className="card-content">
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {plan.PL_NAME}
-                    </Typography>
-                    <Typography component="p">
-                    <UnsafeRender html={plan.main_details_from_mavat}></UnsafeRender>
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Link>
-            </Card>
-          ))}
-        </GridList>
+    return (
+      <React.Fragment>
+        <Navigation me={me} />
+        <div className="container">
+          <FilterAutoCompleteMultiple
+            classes=""
+            placeholder="חדש! סינון לפי רשויות מקומיות- הזינו את הרשויות שברצונכם לראות"
+            inputSuggestions={planCounties}
+            onFilterChange={this.handleCountyFilterChange.bind(this)}
+          />
+          <br />
+          <GridList
+            cellHeight={500}
+            cellWidth={335}
+            className="gridList"
+            cols={1}
+          >
+            {plans.map(plan => (
+              <Card className="card" raised={true}>
+                <Link
+                  className="card-link"
+                  to={`/plan/${plan.id}/${plan.PL_NAME}`}
+                >
+                  <CardActionArea className="card-action-area">
+                    <CardMedia className="card-media" title={plan.PL_NUMBER}>
+                      <Mapa
+                        geom={plan.geom}
+                        hideZoom={true}
+                        disableInteractions={true}
+                        title={plan.PLAN_COUNTY_NAME}
+                      />
+                    </CardMedia>
+                    <CardContent className="card-content">
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {plan.PL_NAME}
+                      </Typography>
+                      <Typography component="p">
+                        <UnsafeRender html={plan.main_details_from_mavat} />
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Link>
+              </Card>
+            ))}
+          </GridList>
 
-        {error &&
-          <div className="error-container">
-            {error}
-          </div>
-        }
-        {noData &&
-          <div>אין כאן כלום</div>
-        }
-      </div>
-      <InfiniteScroll
-        dataLength={plans.length}
-        next={this.loadNextPage}
-        hasMore={hasMore}
-        loader={<h4 className="centerNote">{t.loading}</h4>}
-        endMessage={
-          <p className="centerNote">
-            <b>{t.seen_all_plans}</b>
-          </p>
-        }>
-      </InfiniteScroll>
-      <Footer />
-    </React.Fragment>;
+          {error && <div className="error-container">{error}</div>}
+          {noData && <div>אין כאן כלום</div>}
+        </div>
+        <InfiniteScroll
+          dataLength={plans.length}
+          next={this.loadNextPage}
+          hasMore={hasMore}
+          loader={<h4 className="centerNote">{t.loading}</h4>}
+          endMessage={
+            <p className="centerNote">
+              <b>{t.seen_all_plans}</b>
+            </p>
+          }
+        />
+        <Footer />
+      </React.Fragment>
+    );
   }
 }
 

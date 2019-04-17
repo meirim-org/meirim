@@ -1,82 +1,77 @@
 input:-webkit-autofill {
   background-color: transparent !important;
 }
-  
+
+.heroContainer {
+  height: 800px;
+}
+.hero {
+  display: none;
+}
+
+.garden h2 {
+  padding-top: 35px;
+}
+
+.hero .content {
+  position: absolute;
+  top: 20%;
+  text-align: center;
+  width: 100%;
+  color: #ffffff;
+}
+
+.hero .content h4,
+.hero .content p {
+  text-align: center;
+}
+
+.hero .join {
+  color: #ffffff;
+  background: #ffa81b;
+  border-radius: 20px;
+  border-width: 0;
+  font-weight: bold;
+  height: 40px;
+  padding: 10px 30px;
+  text-decoration: none;
+}
+
+h2 strong {
+  color: #ffa81b;
+  font-weight: normal;
+}
+
+.team,
+.partners,
+.aboutus {
+  position: relative;
+  padding-top: 35px;
+  background: #ffffff;
+}
+
+.team .d-block {
+  color: #007bff;
+}
+
+@media (min-width: 992px) {
   .heroContainer {
-    height:800px;
+    height: 800px;
   }
   .hero {
-    display: none;
+    display: block;
   }
-  
-  .garden h2{
-   padding-top:35px;
-  }
-  
-  
   .hero .content {
+    position: inherit;
+  }
+  .hero .background {
     position: absolute;
-    top: 20%;
-    text-align: center;
-    width: 100%;
-    color: #ffffff;
+    top: 0;
+    left: 0;
+    width: 50%;
   }
-  
-  .hero .content h4,
-  .hero .content p {
-    text-align: center;
+  .hero .content {
+    text-align: right;
+    margin-top: 60px;
   }
-  
-  .hero .join {
-    color: #ffffff;
-    background: #ffa81b;
-    border-radius: 20px;
-    border-width: 0;
-    font-weight: bold;
-    height: 40px;
-    padding: 10px 30px;
-    text-decoration: none;
-  }
-  
-  h2 strong {
-    color: #ffa81b;
-    font-weight: normal;
-  }
-  
-
-  
-  .team,
-  .partners,
-  .aboutus {
-    position: relative;
-    padding-top: 35px;
-    background: #ffffff;
-  }
-  
-  .team .d-block {
-    color:#007bff;
-  }
-   
-  
-  @media (min-width: 992px) {
-    .heroContainer {
-      height: 800px;
-    }
-    .hero {
-      display: block;
-  
-    }
-    .hero .content {
-      position: inherit;
-    }
-    .hero .background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width:50%;
-    }
-    .hero .content {
-      text-align: right;
-      margin-top:60px;
-    }
-  }
+}
