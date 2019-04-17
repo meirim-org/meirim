@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-import Typography from '@material-ui/core/Typography';
-import GridList from '@material-ui/core/GridList';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import Typography from "@material-ui/core/Typography";
+import GridList from "@material-ui/core/GridList";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-import api from '../services/api';
+import api from "../services/api";
 
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
-import Mapa from '../components/Mapa'
-import UnsafeRender from '../components/UnsafeRender';
-import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
+import Mapa from "../components/Mapa";
+import UnsafeRender from "../components/UnsafeRender";
+import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
 
-import t from '../locale/he_IL';
-import './Plans.css';
+import t from "../locale/he_IL";
+import "./Plans.css";
 
 class Plans extends Component {
   state = {
@@ -41,8 +41,6 @@ class Plans extends Component {
     this.loadNextPage = this
       .loadNextPage
       .bind(this);
-    
-    this.filterTimer = undefined;
   }
 
   handleCountyFilterChange(selectedCounties) {
@@ -58,13 +56,13 @@ class Plans extends Component {
       noData: false
     });
     
-    api.get('/plan?page=' + pageNumber + '&PLAN_COUNTY_NAME=' + filterCounties.join(','))
+    api.get("/plan?page=" + pageNumber + "&PLAN_COUNTY_NAME=" + filterCounties.join(","))
       .then(result => {
         this.setState({
           hasMore: result.pagination.page < result.pagination.pageCount,
-          noData: this.state.plans.length + result.data.length == 0,
-          pageNumber: pageNumber,
-          filterCounties: filterCounties,
+          noData: this.state.plans.length + result.data.length === 0,
+          pageNumber,
+          filterCounties,
           plans: [
             ...this.state.plans,
             ...result.data
@@ -82,19 +80,19 @@ class Plans extends Component {
   componentDidMount() {
     const { pageNumber, filterCounties } = this.state;
   
-    api.get('/plan_county')
-      .then(result => {
+    api.get("/plan_county")
+      .then((result) => {
         this.setState({
-          planCounties: result.data.map(county => {return {label: county.PLAN_COUNTY_NAME};})
+          planCounties: result.data.map((county) => {return {label: county.PLAN_COUNTY_NAME};})
         });
       })
-      .catch(error => this.setState({error}));
+      .catch((error) => this.setState({error}));
     
     this.loadPlans(pageNumber, filterCounties);
   }
 
   render() {
-    const { plans, planCounties, error, noData, hasMore, pageNumber } = this.state;
+    const { plans, planCounties, error, noData, hasMore } = this.state;
     const { me } = this.props;
 
     return <React.Fragment>
@@ -108,7 +106,7 @@ class Plans extends Component {
         />
         <br />
         <GridList cellHeight={500} cellWidth={335} className="gridList" cols={1}>
-          {plans.map(plan => (
+          {plans.map((plan) => (
             <Card className="card" raised={true}>
               <Link className="card-link" to={`/plan/${plan.id}/${plan.PL_NAME}`}>
                 <CardActionArea className="card-action-area">
@@ -152,7 +150,7 @@ class Plans extends Component {
         }>
       </InfiniteScroll>
       <Footer />
-    </React.Fragment>
+    </React.Fragment>;
   }
 }
 

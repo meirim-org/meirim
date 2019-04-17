@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import leaflet from 'leaflet';
-import { Map, TileLayer, GeoJSON } from 'react-leaflet';
+import leaflet from "leaflet";
+import { Map, TileLayer, GeoJSON } from "react-leaflet";
 
-import './Mapa.css';
-import t from '../locale/he_IL';
+import "./Mapa.css";
+import t from "../locale/he_IL";
 
 class Mapa extends Component {
   render() {

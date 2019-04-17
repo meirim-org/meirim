@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
+import Paper from "@material-ui/core/Paper";
+import Chip from "@material-ui/core/Chip";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 
-import deburr from 'lodash/deburr';
+import deburr from "lodash/deburr";
 
-import Downshift from 'downshift';
+import Downshift from "downshift";
 
-import './FilterAutoCompleteMultiple.css';
+import "./FilterAutoCompleteMultiple.css";
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -32,7 +32,7 @@ function renderInput(inputProps) {
 
 function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
   const isHighlighted = highlightedIndex === index;
-  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
+  const isSelected = (selectedItem || "").indexOf(suggestion.label) > -1;
 
   return (
     <MenuItem
@@ -59,24 +59,24 @@ renderSuggestion.propTypes = {
 
 class FilterAutoCompleteMultiple extends Component {
   state = {
-    inputValue: '',
+    inputValue: "",
     selectedItem: [],
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     const { inputValue, selectedItem } = this.state;
-    if (selectedItem.length && !inputValue.length && event.key === 'Backspace') {
+    if (selectedItem.length && !inputValue.length && event.key === "Backspace") {
       this.setState({
         selectedItem: selectedItem.slice(0, selectedItem.length - 1),
       });
     }
-  };
+  }
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     this.setState({ inputValue: event.target.value });
-  };
+  }
 
-  handleChange = item => {
+  handleChange = (item) => {
     const { onFilterChange } = this.props;
     let { selectedItem } = this.state;
 
@@ -85,14 +85,14 @@ class FilterAutoCompleteMultiple extends Component {
     }
 
     this.setState({
-      inputValue: '',
+      inputValue: "",
       selectedItem,
     });
 
     onFilterChange(selectedItem);
-  };
+  }
 
-  handleDelete = item => () => {
+  handleDelete = (item) => () => {
     const { onFilterChange } = this.props;
 
     let { selectedItem } = this.state;
@@ -104,8 +104,7 @@ class FilterAutoCompleteMultiple extends Component {
     });
 
     onFilterChange(selectedItem);
-  };
-
+  }
 
   getSuggestions(value) {
     const { inputSuggestions } = this.props;
@@ -116,7 +115,7 @@ class FilterAutoCompleteMultiple extends Component {
 
     return inputLength === 0
       ? []
-      : inputSuggestions.filter(suggestion => {
+      : inputSuggestions.filter((suggestion) => {
           const keep =
             count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
   
@@ -126,7 +125,7 @@ class FilterAutoCompleteMultiple extends Component {
   
           return keep;
         });
-  };
+  }
 
   render() {
     const { classes, placeholder } = this.props;
@@ -152,18 +151,18 @@ class FilterAutoCompleteMultiple extends Component {
               fullWidth: true,
               classes,
               InputProps: getInputProps({
-                startAdornment: selectedItem.map(item => (
+                startAdornment: selectedItem.map((item) => (
                   <Chip
                     key={item}
                     tabIndex={-1}
                     label={item}
-                    className={'filterChip'}
+                    className={"filterChip"}
                     onDelete={this.handleDelete(item)}
                   />
                 )),
                 onChange: this.handleInputChange,
                 onKeyDown: this.handleKeyDown,
-                placeholder: placeholder,
+                placeholder,
               }),
             })}
             {isOpen ? (

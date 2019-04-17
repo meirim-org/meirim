@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
+import React, { Component } from "react";
 
-import t from '../locale/he_IL';
-import './Terms.css';
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
+
+import t from "../locale/he_IL";
+import "./Terms.css";
 
 class Terms extends Component {
     render() {
@@ -59,7 +60,7 @@ class Terms extends Component {
                 </p>
             </div>
             <Footer />
-        </React.Fragment>
+        </React.Fragment>;
     }
 }
 
