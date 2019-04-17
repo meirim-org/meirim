@@ -1,47 +1,39 @@
-const Checkit = require('checkit');
-const Promise = require('bluebird');
-const Model = require('./base_model');
-const Person = require('./person');
-const Crypt = require('../lib/crypt');
-const {
-  Knex,
-} = require('../service/database');
-const Geocoder = require('../service/geocoder').geocoder;
-const DegreeToMeter = require('../service/geocoder').degreeToMeter;
-const Exception = require('./exception');
+const Checkit = require("checkit");
+const Promise = require("bluebird");
+const Model = require("./base_model");
+const Person = require("./person");
+const Crypt = require("../lib/crypt");
+const { Knex } = require("../service/database");
+const Geocoder = require("../service/geocoder").geocoder;
+const DegreeToMeter = require("../service/geocoder").degreeToMeter;
+const Exception = require("./exception");
 
 class Alert extends Model {
   get rules() {
     return {
-      person_id: [
-        'required', 'integer',
-      ],
-      address: [
-        'required', 'string',
-      ],
-      geom: [
-        'required', 'object',
-      ],
-      radius: ['required', 'number'],
+      person_id: ["required", "integer"],
+      address: ["required", "string"],
+      geom: ["required", "object"],
+      radius: ["required", "number"]
     };
   }
 
   defaults() {
     return {
-      radius: 5,
+      radius: 5
     };
   }
 
   get geometry() {
-    return ['geom'];
+    return ["geom"];
   }
 
   get tableName() {
-    return 'alert';
+    return "alert";
   }
 
   initialize() {
-    this.on('saving', this._saving, this);
+    this.on("saving", this._saving, this);
     super.initialize();
   }
 
@@ -53,37 +45,44 @@ class Alert extends Model {
     // partial validation
     const partialRules = Object.assign(model.rules, {});
     delete partialRules.geom;
-    return new Checkit(partialRules)
-      .run(model.attributes)
-      .then(() => Geocoder.geocode(model.get('address'))
-        .then((res) => {
-          if (!res[0]) {
-            throw new Exception.NotFound('The address does not exist');
-          }
-          const box = [];
-          const km = 1000;
-          const radius = model.get('radius') * km;
-          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius));
-          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius));
-          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius));
-          box.push(DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius));
-          box.push(box[0]);
+    return new Checkit(partialRules).run(model.attributes).then(() =>
+      Geocoder.geocode(model.get("address")).then((res) => {
+        if (!res[0]) {
+          throw new Exception.NotFound("The address does not exist");
+        }
+        const box = [];
+        const km = 1000;
+        const radius = model.get("radius") * km;
+        box.push(
+          DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius)
+        );
+        box.push(
+          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius)
+        );
+        box.push(
+          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius)
+        );
+        box.push(
+          DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius)
+        );
+        box.push(box[0]);
 
-          model.set('geom', {
-            type: 'Polygon',
-            coordinates: [box],
-          });
-          model.set('address', res[0].formattedAddress);
-          return new Checkit(model.rules).run(model.attributes);
-        }));
+        model.set("geom", {
+          type: "Polygon",
+          coordinates: [box]
+        });
+        model.set("address", res[0].formattedAddress);
+        return new Checkit(model.rules).run(model.attributes);
+      })
+    );
   }
 
   canRead(session) {
     if (!session.person) {
-      throw new Exception.NotAllowed('Must be logged in');
+      throw new Exception.NotAllowed("Must be logged in");
     }
-    if (this.get('person_id') !== session.person.id) {
-      throw new Exception.NotAllowed('You cannot read this alert');
+    if (this.get("person_id") !== session.person.id) {
+      throw new Exception.NotAllowed("You cannot read this alert");
     }
     return Promise.resolve(this);
   }
@@ -94,27 +93,31 @@ class Alert extends Model {
 
   static canCreate(session) {
     if (!session.person) {
-      throw new Exception.NotAllowed('Must be logged in');
+      throw new Exception.NotAllowed("Must be logged in");
     }
     return Promise.resolve(this);
   }
 
   getCollection() {
-    return this.collection().query('where', {
-      person_id: this.get('person_id'),
-    }).fetch();
+    return this.collection()
+      .query("where", {
+        person_id: this.get("person_id")
+      })
+      .fetch();
   }
 
   unsubsribeToken() {
-    const token = Crypt.encrypt(`${this.get('id')}_${this.get('person_id')}`);
-    return new Buffer(token).toString('base64');
+    const token = Crypt.encrypt(`${this.get("id")}_${this.get("person_id")}`);
+    return new Buffer(token).toString("base64");
   }
 
   static ByToken(token) {
-    const details = Crypt.decrypt(new Buffer(token, 'base64').toString('ascii'));
-    const parts = details.split('_');
+    const details = Crypt.decrypt(
+      new Buffer(token, "base64").toString("ascii")
+    );
+    const parts = details.split("_");
     return Alert.forge({
-      id: parts[0],
+      id: parts[0]
     });
   }
 

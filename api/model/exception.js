@@ -1,4 +1,4 @@
-const Exception = require('node-exceptions');
+const Exception = require("node-exceptions");
 
 class BadRequest extends Exception.LogicalException {}
 class Duplicate extends Exception.LogicalException {}
@@ -13,5 +13,5 @@ module.exports = {
   NotAllowed,
   NotImplemented,
   NotFound,
-  Error,
+  Error
 };

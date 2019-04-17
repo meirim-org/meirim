@@ -16,13 +16,12 @@ module.exports = {
       data = result;
     }
 
-
-    res.set('Content-Type', 'application/json; charset=utf-8');
+    res.set("Content-Type", "application/json; charset=utf-8");
     res.json({
-      status: 'OK',
+      status: "OK",
       data,
       pagination,
-      me,
+      me
     });
-  },
+  }
 };

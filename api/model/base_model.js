@@ -1,8 +1,6 @@
-
-
-const Checkit = require('checkit');
-const { Bookshelf } = require('../service/database');
-const Exception = require('./exception');
+const Checkit = require("checkit");
+const { Bookshelf } = require("../service/database");
+const Exception = require("./exception");
 
 class Base_model extends Bookshelf.Model {
   get hasTimestamps() {
@@ -10,7 +8,7 @@ class Base_model extends Bookshelf.Model {
   }
 
   initialize() {
-    this.on('saving', this._saving, this);
+    this.on("saving", this._saving, this);
     super.initialize();
   }
 
@@ -20,16 +18,16 @@ class Base_model extends Bookshelf.Model {
 
   setPerson(session) {
     if (this.rules.person_id && session.person) {
-      this.set('person_id', session.person.id);
+      this.set("person_id", session.person.id);
     }
   }
 
   canRead(session) {
-    throw new Exception.NotAllowed('Must be logged in');
+    throw new Exception.NotAllowed("Must be logged in");
   }
 
   static canCreate(session) {
-    throw new Exception.NotAllowed('Must be logged in');
+    throw new Exception.NotAllowed("Must be logged in");
   }
 
   getCollection() {

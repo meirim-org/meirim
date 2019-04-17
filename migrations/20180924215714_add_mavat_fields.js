@@ -1,8 +1,3 @@
+exports.up = function(knex, Promise) {};
 
-exports.up = function (knex, Promise) {
-
-};
-
-exports.down = function (knex, Promise) {
-
-};
+exports.down = function(knex, Promise) {};
