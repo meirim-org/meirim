@@ -33,8 +33,8 @@ class RegisterForm extends Component {
     event.preventDefault();
     api
       .post("/sign/up/", this.state)
-      .then(res => this.setState({ done: true }))
-      .catch(error => this.setState({ error }));
+      .then((res) => this.setState({ done: true }))
+      .catch((error) => this.setState({ error }));
   }
 
   render() {

@@ -38,8 +38,8 @@ class ForgotPassword extends Component {
     this.setState({ stage: "sending" });
     api
       .post("/password/sendResetToken", { email })
-      .then(success => this.setState({ stage: "sent" }))
-      .catch(error => this.setState({ error, stage: "email" }));
+      .then((success) => this.setState({ stage: "sent" }))
+      .catch((error) => this.setState({ error, stage: "email" }));
   }
   componentDidMount() {
     const { token } = queryString.parse(this.props.location.search);
@@ -55,7 +55,7 @@ class ForgotPassword extends Component {
     api
       .post("/password/resetWithToken", { password, token })
       .then(() => this.setState({ stage: "changed" }))
-      .catch(error => this.setState({ error, stage: "change" }));
+      .catch((error) => this.setState({ error, stage: "change" }));
   }
   render() {
     const { stage, error } = this.state;

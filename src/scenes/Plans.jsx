@@ -59,7 +59,7 @@ class Plans extends Component {
           "&PLAN_COUNTY_NAME=" +
           filterCounties.join(",")
       )
-      .then(result => {
+      .then((result) => {
         this.setState({
           hasMore: result.pagination.page < result.pagination.pageCount,
           noData: this.state.plans.length + result.data.length === 0,
@@ -68,7 +68,7 @@ class Plans extends Component {
           plans: [...this.state.plans, ...result.data]
         });
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
   }
 
   loadNextPage() {
@@ -81,14 +81,14 @@ class Plans extends Component {
 
     api
       .get("/plan_county")
-      .then(result => {
+      .then((result) => {
         this.setState({
-          planCounties: result.data.map(county => {
+          planCounties: result.data.map((county) => {
             return { label: county.PLAN_COUNTY_NAME };
           })
         });
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
 
     this.loadPlans(pageNumber, filterCounties);
   }
@@ -114,7 +114,7 @@ class Plans extends Component {
             className="gridList"
             cols={1}
           >
-            {plans.map(plan => (
+            {plans.map((plan) => (
               <Card className="card" raised={true}>
                 <Link
                   className="card-link"

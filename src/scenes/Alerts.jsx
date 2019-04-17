@@ -106,7 +106,7 @@ class Alerts extends Component {
           }
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
         console.error(error);
       });
@@ -129,10 +129,10 @@ class Alerts extends Component {
   getAlerts() {
     return api
       .get("/alert")
-      .then(result => {
+      .then((result) => {
         let transparentLayer = leaflet.geoJSON();
         if (result.data.length > 0) {
-          result.data.map(alert => {
+          result.data.map((alert) => {
             leaflet.geoJSON(alert.geom).addTo(transparentLayer);
           });
           const layerBounds = transparentLayer.getBounds();
@@ -142,7 +142,7 @@ class Alerts extends Component {
           });
         }
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
   }
 
   render() {
