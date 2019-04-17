@@ -46,12 +46,12 @@ class Comments extends Component {
 
     return api
       .get("/comment/" + id)
-      .then(comments => {
+      .then((comments) => {
         this.setState({ comments: comments.data });
         this.setState({ me: comments.me });
         this.setState({ isLoading: false });
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
   }
 
   render() {
@@ -150,11 +150,11 @@ class Comments extends Component {
     e.preventDefault();
     api
       .post("/comment/" + this.state.id, newComment)
-      .then(res => {
+      .then((res) => {
         this.setState({ done: true });
         this.handleCommentPublished(res.data);
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
   }
 
   handleCommentPublished(data) {

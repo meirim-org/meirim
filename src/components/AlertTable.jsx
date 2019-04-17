@@ -14,7 +14,7 @@ function AlertTable(props) {
         </tr>
       </thead>
       <tbody>
-        {alerts.map(alert => (
+        {alerts.map((alert) => (
           <tr>
             <td>{alert.address}</td>
             <td>{alert.radius + " " + t.km}</td>

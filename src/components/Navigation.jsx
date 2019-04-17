@@ -17,7 +17,7 @@ class Navigation extends Component {
     this.signout = this.signout.bind(this);
   }
   signout() {
-    api.post("/sign/out").then(signOutSuccess => {
+    api.post("/sign/out").then((signOutSuccess) => {
       window.location = "/";
     });
   }

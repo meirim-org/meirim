@@ -69,7 +69,7 @@ class FilterAutoCompleteMultiple extends Component {
     selectedItem: []
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     const { onFilterChange } = this.props;
     let { inputValue, selectedItem } = this.state;
 
@@ -89,11 +89,11 @@ class FilterAutoCompleteMultiple extends Component {
     }
   };
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     this.setState({ inputValue: event.target.value });
   };
 
-  handleChange = item => {
+  handleChange = (item) => {
     const { onFilterChange } = this.props;
     let { selectedItem } = this.state;
 
@@ -109,7 +109,7 @@ class FilterAutoCompleteMultiple extends Component {
     onFilterChange(selectedItem);
   };
 
-  handleDelete = item => () => {
+  handleDelete = (item) => () => {
     const { onFilterChange } = this.props;
     let { selectedItem } = this.state;
 
@@ -131,7 +131,7 @@ class FilterAutoCompleteMultiple extends Component {
 
     return inputLength === 0
       ? []
-      : inputSuggestions.filter(suggestion => {
+      : inputSuggestions.filter((suggestion) => {
           const keep =
             count < 5 &&
             suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
@@ -168,7 +168,7 @@ class FilterAutoCompleteMultiple extends Component {
               fullWidth: true,
               classes,
               InputProps: getInputProps({
-                startAdornment: selectedItem.map(item => (
+                startAdornment: selectedItem.map((item) => (
                   <Chip
                     key={item}
                     tabIndex={-1}

@@ -35,8 +35,8 @@ class SignIn extends Component {
     event.preventDefault();
     api
       .post("/sign/in", this.state)
-      .then(success => this.setState({ success: 1 }))
-      .catch(error => this.setState({ success: -1 }));
+      .then((success) => this.setState({ success: 1 }))
+      .catch((error) => this.setState({ success: -1 }));
   }
   render() {
     const { success } = this.state;
