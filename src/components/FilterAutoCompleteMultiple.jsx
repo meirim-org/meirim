@@ -64,11 +64,18 @@ class FilterAutoCompleteMultiple extends Component {
   };
 
   handleKeyDown = (event) => {
-    const { inputValue, selectedItem } = this.state;
+    const { onFilterChange } = this.props;
+    let { inputValue, selectedItem } = this.state;
+    
     if (selectedItem.length && !inputValue.length && event.key === "Backspace") {
+      // remove last filter item
+      selectedItem.splice(selectedItem.length - 1, 1);
+      
       this.setState({
-        selectedItem: selectedItem.slice(0, selectedItem.length - 1),
+        selectedItem,
       });
+
+      onFilterChange(selectedItem);
     }
   }
 
@@ -94,7 +101,6 @@ class FilterAutoCompleteMultiple extends Component {
 
   handleDelete = (item) => () => {
     const { onFilterChange } = this.props;
-
     let { selectedItem } = this.state;
     
     selectedItem.splice(selectedItem.indexOf(item), 1);
