@@ -12,6 +12,7 @@ import tomer from '../assets/team/tomer.png';
 import ann from '../assets/team/ann.png';
 import shira from '../assets/team/shira.png';
 import adi from '../assets/team/adi.png';
+import gal from '../assets/team/gal.png'
 
 class About extends Component {
     render() {
@@ -82,6 +83,13 @@ class About extends Component {
                                     <img class="img-fluid" src={adi} alt="עדי קויש" />
                                     <div class="d-block text-center">עדי קויש</div>
                                     אדריכלית
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-4">
+                                <div class="m-3 text-center">
+                                    <img class="img-fluid" src={gal} alt="גל גנדלר" />
+                                    <div class="d-block text-center">גל גנדלר</div>
+                                    מתכנתת
                                 </div>
                             </div>
                         </div>
