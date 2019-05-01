@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { BrowserRouter as Redirect } from "react-router-dom";
 import api from "../services/api";
 import t from "../locale/he_IL";
 import "./RegisterForm.css";
@@ -9,6 +8,7 @@ class RegisterForm extends Component {
     error: false,
     done: false
   };
+  
   constructor(props) {
     super(props);
     this.state = { email: "", password: "" };
@@ -42,7 +42,7 @@ class RegisterForm extends Component {
     let errorMessage = "";
     if (error) {
       if (error.response) {
-        if (error.response.status == 409) {
+        if (error.response.status === 409) {
           errorMessage = t.emailExists;
         } else if (error.response.data && error.response.data.data) {
           errorMessage = error.response.data;
@@ -60,9 +60,9 @@ class RegisterForm extends Component {
         )}
         {!done && (
           <div>
-            <strong className="d-d-block text-center">{t.signup_now}:</strong>
+            <strong className="d-d-block text-center">{t.signupNow}:</strong>
             <div className="form-group">
-              <label for="loginEmail">{t.email_address}:</label>
+              <label for="loginEmail">{t.emailAddress}:</label>
               <input
                 onChange={this.handleChange}
                 value={this.state.email}
@@ -99,4 +99,5 @@ class RegisterForm extends Component {
     );
   }
 }
+
 export default RegisterForm;

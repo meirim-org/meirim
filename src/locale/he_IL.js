@@ -5,16 +5,16 @@ export default {
   name: "מעירים",
   plans: "תוכניות",
   about: "אודות",
-  meirim_title: "מידע תכנוני ואקטיביזם עירוני",
-  new_alert: "התראה חדשה",
-  email_address: "כתובת מייל",
+  meirimTitle: "מידע תכנוני ואקטיביזם עירוני",
+  newAlert: "התראה חדשה",
+  emailAddress: "כתובת מייל",
   password: "סיסמה",
   signup: "הרשמה",
-  signup_now: "הרשמו עכשיו",
+  signupNow: "הרשמו עכשיו",
   km: 'ק"מ',
   emailExists: "כתובת האי מייל כבר קיימת",
   error: "שגיאה",
   forgotPassword: "שכחתם את הסיסמה?",
   loading: "טוען",
-  seen_all_plans: "זה הכל!"
+  seenAllPlans: "זה הכל!"
 };

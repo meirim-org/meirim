@@ -1,9 +1,9 @@
 // const requestPromise = require('request-promise');
-const cheerio = require('cheerio');
-const Bluebird = require('bluebird');
-const puppeteer = require('puppeteer');
-const HtmlTableToJson = require('html-table-to-json');
-const log = require('../../lib/log');
+const cheerio = require("cheerio");
+const Bluebird = require("bluebird");
+const puppeteer = require("puppeteer");
+const HtmlTableToJson = require("html-table-to-json");
+const log = require("../../lib/log");
 // const shapefile = require('shapefile');
 
 // const downloadDir = '';
@@ -24,9 +24,9 @@ function init() {
     (async () => {
       try {
         if (!browser) {
-          log.debug('Launching chrome');
+          log.debug("Launching chrome");
           browser = await puppeteer.launch();
-          log.debug('Success launching chrome');
+          log.debug("Success launching chrome");
         }
         resolve(browser);
       } catch (err) {
@@ -46,11 +46,11 @@ function fetch(plaUrl) {
         //   path: 'trace.json',
         //   categories: ['devtools.timeline'],
         // });
-        log.debug('Fetching', plaUrl);
+        log.debug("Fetching", plaUrl);
         await page.goto(plaUrl);
 
         // await page.screenshot({path: 'screenshot.png'});
-        await page.waitForSelector('#ctl00_divPageTitle');
+        await page.waitForSelector("#ctl00_divPageTitle");
 
         // execute standard javascript in the context of the page.
         const bodyHTML = await page.evaluate(() => document.body.innerHTML);
@@ -72,12 +72,12 @@ function fetch(plaUrl) {
         //   });
         //   await page.waitForNavigation({ waitUntil: 'networkidle2' });
         page.close();
-        log.debug('Success loading', plaUrl);
+        log.debug("Success loading", plaUrl);
         resolve(cheerio.load(bodyHTML, {
           decodeEntities: false,
         }));
       } catch (err) {
-        log.error('Mavat fetch error', err);
+        log.error("Mavat fetch error", err);
         reject(err);
       }
     })();
@@ -85,15 +85,15 @@ function fetch(plaUrl) {
 }
 
 function getGoalsText(cheerioPage) {
-  return cheerioPage('#ctl00_ContentPlaceHolder1_tdGOALS').html();
+  return cheerioPage("#ctl00_ContentPlaceHolder1_tdGOALS").html();
 }
 
 function getMainPlanDetailText(cheerioPage) {
-  return cheerioPage('#ctl00_ContentPlaceHolder1_tdINSTRACTIONS').html();
+  return cheerioPage("#ctl00_ContentPlaceHolder1_tdINSTRACTIONS").html();
 }
 
 function getAreaChanges(cheerioPage) {
-  const html = cheerioPage('#tblQuantities tbody').html();
+  const html = cheerioPage("#tblQuantities tbody").html();
   const jsonTables = new HtmlTableToJson(`<table>${html}</table>`);
   return JSON.stringify(jsonTables.results);
 }
@@ -112,14 +112,14 @@ function getAreaChanges(cheerioPage) {
 // }
 
 function getJurisdictionString(cheerioPage) {
-  return cheerioPage('#ctl00_ContentPlaceHolder1_AUTH').val();
+  return cheerioPage("#ctl00_ContentPlaceHolder1_AUTH").val();
 }
 
 function parseMavat(planUrl) {
   return init()
     .then(() => fetch(planUrl))
     .then((cheerioPage) => {
-      log.debug('Retrieving', planUrl);
+      log.debug("Retrieving", planUrl);
 
       return Bluebird.props({
         goals: getGoalsText(cheerioPage),
