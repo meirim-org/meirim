@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Redirect } from "react-router-dom";
-import { NavLink as Link } from "react-router-dom";
-import Hidden from "@material-ui/core/Hidden";
-import api from "../services/api";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Redirect } from 'react-router-dom';
+import { NavLink as Link } from 'react-router-dom';
+import Hidden from '@material-ui/core/Hidden';
+import api from '../services/api';
 
-import t from "../locale/he_IL";
-import logo from "../assets/logo.png";
-import "./Navigation.css";
+import t from '../locale/he_IL';
+import logo from '../assets/logo.png';
+import './Navigation.css';
 
 class Navigation extends Component {
   state = {
@@ -17,8 +17,8 @@ class Navigation extends Component {
     this.signout = this.signout.bind(this);
   }
   signout() {
-    api.post("/sign/out").then((signOutSuccess) => {
-      window.location = "/";
+    api.post('/sign/out').then(signOutSuccess => {
+      window.location = '/';
     });
   }
   render() {
@@ -26,8 +26,8 @@ class Navigation extends Component {
 
     return (
       <nav className="navbar navbar-expand navbar-light">
-        <Link className="navbar-brand" to={me ? "/plans" : "/"}>
-          <img className="eyelashes_nav" src={logo} alt={t.name} />{" "}
+        <Link className="navbar-brand" to={me ? '/plans' : '/'}>
+          <img className="eyelashes_nav" src={logo} alt={t.name} />{' '}
           <Hidden mdDown="true">{t.name}</Hidden>
         </Link>
         <ul className="navbar-nav">

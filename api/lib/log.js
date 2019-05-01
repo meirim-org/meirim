@@ -1,9 +1,9 @@
-const winston = require("winston");
+const winston = require('winston');
 
 const logger = winston.createLogger({
-  level: "info",
+  level: 'info',
   format: winston.format.json(),
-  defaultMeta: { service: "user-service" },
+  defaultMeta: { service: 'user-service' },
   transports: [
     new winston.transports.Console()
     //
@@ -25,7 +25,7 @@ const logger = winston.createLogger({
 //   }));
 // }
 
-logger.level = "debug";
+logger.level = 'debug';
 
 module.exports = {
   debug: (...args) => {

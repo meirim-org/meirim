@@ -1,20 +1,20 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
   NavLink as Link
-} from "react-router-dom";
-import _ from "lodash";
+} from 'react-router-dom';
+import _ from 'lodash';
 
-import api from "../services/api";
+import api from '../services/api';
 
-import avatar from "../assets/logo.png";
-import "../assets/bootstrap.css";
-import "./Comments.css";
+import avatar from '../assets/logo.png';
+import '../assets/bootstrap.css';
+import './Comments.css';
 
-import Moment from "react-moment";
+import Moment from 'react-moment';
 
-import t from "../locale/he_IL";
+import t from '../locale/he_IL';
 
 class Comments extends Component {
   state = {
@@ -22,14 +22,14 @@ class Comments extends Component {
     isLoading: true,
     id: this.props.planId,
     me: {},
-    content: "",
-    alias: "",
+    content: '',
+    alias: '',
     form: {
       planId: this.props.planId,
       parentId: 0
     },
     signInURL: {
-      pathname: "/sign/in",
+      pathname: '/sign/in',
       state: {
         redirectTo: window.location.pathname
       }
@@ -45,13 +45,13 @@ class Comments extends Component {
     const { id } = this.state;
 
     return api
-      .get("/comment/" + id)
-      .then((comments) => {
+      .get('/comment/' + id)
+      .then(comments => {
         this.setState({ comments: comments.data });
         this.setState({ me: comments.me });
         this.setState({ isLoading: false });
       })
-      .catch((error) => this.setState({ error }));
+      .catch(error => this.setState({ error }));
   }
 
   render() {
@@ -111,8 +111,8 @@ class Comments extends Component {
                 <div className="comment-box">
                   <div className="comment-head">
                     <h6 className="comment-name">
-                      <a href={"/profile/" + comment.person.id}>
-                        {comment.person.alias || "אנונימי"}{" "}
+                      <a href={'/profile/' + comment.person.id}>
+                        {comment.person.alias || 'אנונימי'}{' '}
                       </a>
                     </h6>
                   </div>
@@ -149,12 +149,12 @@ class Comments extends Component {
 
     e.preventDefault();
     api
-      .post("/comment/" + this.state.id, newComment)
-      .then((res) => {
+      .post('/comment/' + this.state.id, newComment)
+      .then(res => {
         this.setState({ done: true });
         this.handleCommentPublished(res.data);
       })
-      .catch((error) => this.setState({ error }));
+      .catch(error => this.setState({ error }));
   }
 
   handleCommentPublished(data) {
@@ -169,10 +169,10 @@ class Comments extends Component {
     newMe.alias = newMe.alias || data.person.alias;
     this.setState({
       comments: this.state.comments.concat([newComment]),
-      content: "",
+      content: '',
       me: newMe
     });
-    document.getElementByName("newCommentform").reset();
+    document.getElementByName('newCommentform').reset();
   }
 
   handleChange(event) {

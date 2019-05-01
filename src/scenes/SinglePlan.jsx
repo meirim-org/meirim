@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import Comments from "../components/Comments";
-import Mapa from "../components/Mapa";
-import UnsafeRender from "../components/UnsafeRender";
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
+import Comments from '../components/Comments';
+import Mapa from '../components/Mapa';
+import UnsafeRender from '../components/UnsafeRender';
 
-import api from "../services/api";
-import "../assets/bootstrap.css";
+import api from '../services/api';
+import '../assets/bootstrap.css';
 
-import Moment from "react-moment";
+import Moment from 'react-moment';
 
-import t from "../locale/he_IL";
+import t from '../locale/he_IL';
 
 class SinglePlan extends Component {
   state = {
@@ -22,13 +22,13 @@ class SinglePlan extends Component {
     const { id } = this.props.match.params;
     this.setState({ planId: id });
     return api
-      .get("/plan/" + id)
-      .then((plan) => this.setState({ plan: plan.data }))
-      .catch((error) => {
+      .get('/plan/' + id)
+      .then(plan => this.setState({ plan: plan.data }))
+      .catch(error => {
         if (error.response.status === 404) {
-          window.location = "/404";
+          window.location = '/404';
         }
-        
+
         this.setState({ error });
       });
   }
@@ -61,12 +61,12 @@ class SinglePlan extends Component {
                       <li>סוג תוכנית: {plan.data.ENTITY_SUBTYPE_DESC}</li>
                       {plan.jurisdiction && (
                         <li>
-                          מוסד התכנון המוסמך להפקיד את התכנית:{" "}
+                          מוסד התכנון המוסמך להפקיד את התכנית:{' '}
                           {plan.jurisdiction}
                         </li>
                       )}
                       <li>
-                        תאריך הפקדה:{" "}
+                        תאריך הפקדה:{' '}
                         <Moment format="DD/MM/YYYY">
                           {plan.data.DEPOSITING_DATE}
                         </Moment>
@@ -74,7 +74,7 @@ class SinglePlan extends Component {
                       <li>שימוש קרקע: {plan.data.PL_LANDUSE_STRING}</li>
                       <li>סטטוס: {plan.data.STATION_DESC}</li>
                       <li>
-                        עדכון אחרון:{" "}
+                        עדכון אחרון:{' '}
                         <Moment parse="YYYYMMDDHHmm" format="DD/MM/YYYY">
                           {plan.data.LAST_UPDATE}
                         </Moment>
@@ -99,7 +99,7 @@ class SinglePlan extends Component {
                 <div className="col">
                   <div className="rectangle">
                     <h4>מיקום</h4>
-                    <div className="map-container" style={{ height: "300px" }}>
+                    <div className="map-container" style={{ height: '300px' }}>
                       <Mapa geom={plan.geom} />
                     </div>
                   </div>

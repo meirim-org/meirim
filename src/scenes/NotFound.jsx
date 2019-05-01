@@ -1,20 +1,20 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 
-import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
 
-import api from "../services/api";
+import api from '../services/api';
 
-import t from "../locale/he_IL";
-import logo from "../assets/logo.png";
-import "./Alerts.css";
+import t from '../locale/he_IL';
+import logo from '../assets/logo.png';
+import './Alerts.css';
 
 class SignIn extends Component {
   state = {
     success: 0,
-    redirectTo: ((this.props.location || {}).state || {}).redirectTo || "/"
+    redirectTo: ((this.props.location || {}).state || {}).redirectTo || '/'
   };
 
   constructor(props) {
@@ -34,9 +34,9 @@ class SignIn extends Component {
   handleSubmit(event) {
     event.preventDefault();
     api
-      .post("/sign/in", this.state)
-      .then((success) => this.setState({ success: 1 }))
-      .catch((error) => this.setState({ success: -1 }));
+      .post('/sign/in', this.state)
+      .then(success => this.setState({ success: 1 }))
+      .catch(error => this.setState({ success: -1 }));
   }
   render() {
     const { success } = this.state;

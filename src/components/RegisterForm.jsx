@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import api from "../services/api";
-import t from "../locale/he_IL";
-import "./RegisterForm.css";
+import React, { Component } from 'react';
+import api from '../services/api';
+import t from '../locale/he_IL';
+import './RegisterForm.css';
 
 class RegisterForm extends Component {
   state = {
     error: false,
     done: false
   };
-  
+
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "" };
+    this.state = { email: '', password: '' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,7 +19,7 @@ class RegisterForm extends Component {
 
   handleChange(event) {
     const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
@@ -32,14 +32,14 @@ class RegisterForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     api
-      .post("/sign/up/", this.state)
-      .then((res) => this.setState({ done: true }))
-      .catch((error) => this.setState({ error }));
+      .post('/sign/up/', this.state)
+      .then(res => this.setState({ done: true }))
+      .catch(error => this.setState({ error }));
   }
 
   render() {
     const { done, error } = this.state;
-    let errorMessage = "";
+    let errorMessage = '';
     if (error) {
       if (error.response) {
         if (error.response.status === 409) {

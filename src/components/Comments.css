@@ -3,7 +3,7 @@
 }
 
 .comments-list:before {
-  content: "";
+  content: '';
   width: 2px;
   height: 100%;
   background: #c7cacb;
@@ -13,7 +13,7 @@
 }
 
 .comments-list:after {
-  content: "";
+  content: '';
   position: absolute;
   background: #c7cacb;
   bottom: 0;
@@ -32,7 +32,7 @@
 }
 
 .reply-list li:before {
-  content: "";
+  content: '';
   width: 60px;
   height: 2px;
   background: #c7cacb;
@@ -48,7 +48,7 @@
 }
 
 .comments-list li:after {
-  content: "";
+  content: '';
   display: block;
   clear: both;
   height: 0;
@@ -86,7 +86,7 @@
 }
 
 .comment-main-level:after {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   display: block;
@@ -99,7 +99,7 @@
 
 .comments-list .comment-box:before,
 .comments-list .comment-box:after {
-  content: "";
+  content: '';
   height: 0;
   width: 0;
   position: absolute;

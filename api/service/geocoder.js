@@ -1,7 +1,7 @@
-const NodeGeocoder = require("node-geocoder");
-const Config = require("../lib/config");
+const NodeGeocoder = require('node-geocoder');
+const Config = require('../lib/config');
 
-const geocoder = NodeGeocoder(Config.get("geocoder"));
+const geocoder = NodeGeocoder(Config.get('geocoder'));
 
 const degreeToMeter = (lon, lat, dn, de) => {
   // Earth’s radius, sphere

@@ -1,20 +1,20 @@
-const Bluebird = require("bluebird");
-const Model = require("./base_model");
-const Log = require("../lib/log");
-const Exception = require("./exception");
+const Bluebird = require('bluebird');
+const Model = require('./base_model');
+const Log = require('../lib/log');
+const Exception = require('./exception');
 
 class Plan extends Model {
   get rules() {
     return {
-      sent: "integer",
-      OBJECTID: ["required", "integer"],
-      PLAN_COUNTY_NAME: "string",
-      PL_NUMBER: "string",
-      PL_NAME: "string",
+      sent: 'integer',
+      OBJECTID: ['required', 'integer'],
+      PLAN_COUNTY_NAME: 'string',
+      PL_NUMBER: 'string',
+      PL_NAME: 'string',
       // PLAN_CHARACTOR_NAME: 'string',
-      data: ["required"],
-      geom: ["required", "object"],
-      jurisdiction: "string"
+      data: ['required'],
+      geom: ['required', 'object'],
+      jurisdiction: 'string'
     };
   }
 
@@ -38,29 +38,29 @@ class Plan extends Model {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);
         if (
-          attributes.jurisdiction === "מקומית" &&
-          attributes.data.STATION_DESC !== "מאושרות"
+          attributes.jurisdiction === 'מקומית' &&
+          attributes.data.STATION_DESC !== 'מאושרות'
         ) {
           attributes.notCredible = true;
         }
       }
     } catch (e) {
-      Log.error("Json parse error", attributes.data);
+      Log.error('Json parse error', attributes.data);
     }
 
     return super.parse(attributes);
   }
 
   get geometry() {
-    return ["geom"];
+    return ['geom'];
   }
 
   get tableName() {
-    return "plan";
+    return 'plan';
   }
 
   initialize() {
-    this.on("saving", this._saving, this);
+    this.on('saving', this._saving, this);
     super.initialize();
   }
 
@@ -73,20 +73,20 @@ class Plan extends Model {
   }
 
   static canCreate(session) {
-    throw new Exception.NotAllowed("This option is disabled");
+    throw new Exception.NotAllowed('This option is disabled');
   }
 
   static maekPlansAsSent(plan_ids) {
     return new Plan()
-      .query((qb) => {
-        qb.whereIn("id", plan_ids);
+      .query(qb => {
+        qb.whereIn('id', plan_ids);
       })
       .save(
         {
-          sent: "2"
+          sent: '2'
         },
         {
-          method: "update"
+          method: 'update'
         }
       );
   }
@@ -100,13 +100,13 @@ class Plan extends Model {
   static buildFromIPlan(iPlan, oldPlan = null) {
     const data = {
       OBJECTID: iPlan.properties.OBJECTID,
-      PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || "",
-      PL_NUMBER: iPlan.properties.PL_NUMBER || "",
-      PL_NAME: iPlan.properties.PL_NAME || "",
+      PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
+      PL_NUMBER: iPlan.properties.PL_NUMBER || '',
+      PL_NAME: iPlan.properties.PL_NAME || '',
       // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
       data: iPlan.properties,
       geom: iPlan.geometry,
-      PLAN_CHARACTOR_NAME: "",
+      PLAN_CHARACTOR_NAME: '',
       plan_url: iPlan.properties.PL_URL,
       status: iPlan.properties.STATION_DESC
     };
@@ -132,20 +132,20 @@ class Plan extends Model {
     if (!options.limit) {
       options.limit = 1;
     }
-    return Plan.query((qb) => {
-      qb.where("sent", "=", "0");
+    return Plan.query(qb => {
+      qb.where('sent', '=', '0');
       if (options.OBJECTID) {
-        qb.where("OBJECTID", "=", options.OBJECTID);
+        qb.where('OBJECTID', '=', options.OBJECTID);
       }
     }).fetchPage({
       pageSize: options.limit,
       columns: [
-        "id",
-        "data",
-        "goals_from_mavat",
-        "main_details_from_mavat",
-        "geom",
-        "jurisdiction"
+        'id',
+        'data',
+        'goals_from_mavat',
+        'main_details_from_mavat',
+        'geom',
+        'jurisdiction'
       ]
     });
   }

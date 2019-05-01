@@ -1,5 +1,5 @@
-const uploadDirectory = "tmp/";
-const Multer = require("multer")({
+const uploadDirectory = 'tmp/';
+const Multer = require('multer')({
   dest: uploadDirectory
 });
 

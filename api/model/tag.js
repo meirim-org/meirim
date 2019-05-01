@@ -1,9 +1,9 @@
-const Model = require("./base_model");
-const { Bookshelf } = require("../service/database");
+const Model = require('./base_model');
+const { Bookshelf } = require('../service/database');
 
 class Tag extends Model {
   get tableName() {
-    return "tag";
+    return 'tag';
   }
 
   canRead(session) {

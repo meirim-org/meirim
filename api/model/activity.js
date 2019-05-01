@@ -1,11 +1,11 @@
-const Promise = require("bluebird");
-const Checkit = require("checkit");
-const Exception = require("./exception");
-const Upload = require("../lib/upload");
-const PersonActivity = require("../model/person_activity");
-const BaseModel = require("./base_model");
-const Log = require("../lib/log");
-const Geocoder = require("../service/geocoder").geocoder;
+const Promise = require('bluebird');
+const Checkit = require('checkit');
+const Exception = require('./exception');
+const Upload = require('../lib/upload');
+const PersonActivity = require('../model/person_activity');
+const BaseModel = require('./base_model');
+const Log = require('../lib/log');
+const Geocoder = require('../service/geocoder').geocoder;
 
 class Activity extends BaseModel {
   get rules() {
@@ -13,22 +13,22 @@ class Activity extends BaseModel {
       // id: [
       //   'required', 'integer'
       // ],
-      headline: ["required", "string"],
-      address: ["required", "string"],
+      headline: ['required', 'string'],
+      address: ['required', 'string'],
       // latlon: [
       //   'required', 'string'
       // ],
-      description: ["required", "string"],
-      status: ["required", "integer"]
+      description: ['required', 'string'],
+      status: ['required', 'integer']
     };
   }
 
   get hidden() {
-    return ["password", "admin"];
+    return ['password', 'admin'];
   }
 
   get tableName() {
-    return "activity";
+    return 'activity';
   }
 
   get hasTimestamps() {
@@ -36,7 +36,7 @@ class Activity extends BaseModel {
   }
 
   get idAttribute() {
-    return "id";
+    return 'id';
   }
 
   get hasTimestamps() {
@@ -50,27 +50,27 @@ class Activity extends BaseModel {
   }
 
   get geometry() {
-    return ["latlon"];
+    return ['latlon'];
   }
 
   _saving(model, attrs, options) {
-    return Geocoder.geocode(model.get("address")).then((res) => {
-      model.set("latlon", {
-        type: "Point",
+    return Geocoder.geocode(model.get('address')).then(res => {
+      model.set('latlon', {
+        type: 'Point',
         coordinates: [res[0].latitude, res[0].longitude]
       });
-      model.set("address", res[0].formattedAddress);
+      model.set('address', res[0].formattedAddress);
       return new Checkit(model.rules).run(model.attributes);
     });
   }
 
   status() {
-    return this.belongsTo("status", "status");
+    return this.belongsTo('status', 'status');
   }
 
   addPerson(person_id) {
     return PersonActivity.forge({
-      activity_id: this.get("id"),
+      activity_id: this.get('id'),
       person_id
     }).save();
   }
@@ -82,7 +82,7 @@ class Activity extends BaseModel {
     const newPath = `${__dirname}/../../public/upload/`;
 
     if (!files) {
-      return new Exception.badRequest("No files were uploaded");
+      return new Exception.badRequest('No files were uploaded');
     }
 
     // The name of the input field (i.e. 'sampleFile') is used to retrieve the uploaded file
@@ -112,7 +112,7 @@ class Activity extends BaseModel {
 
   static uploadMiddleWareFactory() {
     const numberOfPhotos = 12;
-    return Upload.middleware.array("photos", numberOfPhotos);
+    return Upload.middleware.array('photos', numberOfPhotos);
   }
 
   canRead(session) {
@@ -128,7 +128,7 @@ class Activity extends BaseModel {
 
   canJoin(session) {
     if (!session.person || !session.person.id) {
-      throw new Exception.NotAllowed("Must be signed in");
+      throw new Exception.NotAllowed('Must be signed in');
     }
     if (!this.status().notActive()) {
       throw new Exception.NotAllowed("Activity isn't active");
@@ -138,7 +138,7 @@ class Activity extends BaseModel {
 
   static canCreate(session) {
     if (!session || !session.person || !session.person.id) {
-      throw new Exception.NotAllowed("Must be signed in");
+      throw new Exception.NotAllowed('Must be signed in');
     }
     return Promise.resolve(true);
   }

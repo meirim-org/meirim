@@ -1,6 +1,6 @@
 const set = (res, status, message) => {
   res.status(status).json({
-    status: "Failure",
+    status: 'Failure',
     data: message
   });
 };

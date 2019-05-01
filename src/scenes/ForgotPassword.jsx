@@ -1,21 +1,21 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 
-import queryString from "query-string";
-import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
+import queryString from 'query-string';
+import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
 
-import api from "../services/api";
+import api from '../services/api';
 
-import t from "../locale/he_IL";
-import logo from "../assets/logo.png";
-import "./Alerts.css";
+import t from '../locale/he_IL';
+import logo from '../assets/logo.png';
+import './Alerts.css';
 
 class ForgotPassword extends Component {
   state = {
     error: false,
-    stage: "email"
+    stage: 'email'
   };
   constructor(props) {
     super(props);
@@ -35,32 +35,32 @@ class ForgotPassword extends Component {
   sendEmail(event) {
     event.preventDefault();
     const { email } = this.state;
-    this.setState({ stage: "sending" });
+    this.setState({ stage: 'sending' });
     api
-      .post("/password/sendResetToken", { email })
-      .then((success) => this.setState({ stage: "sent" }))
-      .catch((error) => this.setState({ error, stage: "email" }));
+      .post('/password/sendResetToken', { email })
+      .then(success => this.setState({ stage: 'sent' }))
+      .catch(error => this.setState({ error, stage: 'email' }));
   }
   componentDidMount() {
     const { token } = queryString.parse(this.props.location.search);
     if (token) {
-      this.setState({ token, stage: "change" });
+      this.setState({ token, stage: 'change' });
     }
   }
 
   changePassword(event) {
     event.preventDefault();
     const { password, token } = this.state;
-    this.setState({ stage: "changing" });
+    this.setState({ stage: 'changing' });
     api
-      .post("/password/resetWithToken", { password, token })
-      .then(() => this.setState({ stage: "changed" }))
-      .catch((error) => this.setState({ error, stage: "change" }));
+      .post('/password/resetWithToken', { password, token })
+      .then(() => this.setState({ stage: 'changed' }))
+      .catch(error => this.setState({ error, stage: 'change' }));
   }
   render() {
     const { stage, error } = this.state;
 
-    if (stage === "changed") {
+    if (stage === 'changed') {
       return <Redirect to="/sign/in/" />;
     }
     return (
@@ -84,7 +84,7 @@ class ForgotPassword extends Component {
 
           {(() => {
             switch (stage) {
-              case "email":
+              case 'email':
                 return (
                   <div className="rectangle">
                     <form id="stage1" method="post" onSubmit={this.sendEmail}>
@@ -117,20 +117,20 @@ class ForgotPassword extends Component {
                     </form>
                   </div>
                 );
-              case "sent":
+              case 'sent':
                 return (
                   <div className="alert alert-success" role="alert">
                     שלחנו לך דואר אלקטרוני עם הנחיות להמשך
                   </div>
                 );
-              case "change":
+              case 'change':
                 return (
                   <div className="rectangle" id="container">
                     <form
                       id="stage2"
                       method="post"
                       style={{
-                        marginTop: "20px"
+                        marginTop: '20px'
                       }}
                       onSubmit={this.changePassword}
                     >

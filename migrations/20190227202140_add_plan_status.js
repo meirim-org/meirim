@@ -1,11 +1,11 @@
 exports.up = function(knex, Promise) {
   return knex.schema
-    .table("plan", (table) => {
-      table.string("status", 64);
+    .table('plan', table => {
+      table.string('status', 64);
     })
     .then(() =>
-      knex.schema.table("plan", (table) => {
-        table.index("status", "status", "index");
+      knex.schema.table('plan', table => {
+        table.index('status', 'status', 'index');
       })
     )
     .then(() => {
