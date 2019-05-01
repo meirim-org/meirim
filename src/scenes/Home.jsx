@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import RegisterForm from "../components/RegisterForm";
+import React, { Component } from 'react';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
+import RegisterForm from '../components/RegisterForm';
 
-import t from "../locale/he_IL";
-import traktor from "../assets/traktor_op.png";
-import logoSmall from "../assets/logo_small.png";
-import "./Home.css";
+import t from '../locale/he_IL';
+import traktor from '../assets/traktor_op.png';
+import logoSmall from '../assets/logo_small.png';
+import './Home.css';
 
 class Home extends Component {
   render() {
@@ -32,7 +32,7 @@ class Home extends Component {
           <div className="row garden">
             <div className="col-lg-4">
               <h2>
-                רוצים לדעת אם הגינה הציבורית שלכם עומדת{" "}
+                רוצים לדעת אם הגינה הציבורית שלכם עומדת{' '}
                 <strong>להפוך למגדל?</strong>
               </h2>
             </div>

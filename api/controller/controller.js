@@ -1,9 +1,9 @@
-const Checkit = require("checkit");
-const Promise = require("bluebird");
-const Success = require("../view/success");
-const Log = require("../lib/log");
-const Exception = require("../model/exception");
-const { bind } = require("lodash");
+const Checkit = require('checkit');
+const Promise = require('bluebird');
+const Success = require('../view/success');
+const Log = require('../lib/log');
+const Exception = require('../model/exception');
+const { bind } = require('lodash');
 
 class Controller {
   constructor(model) {
@@ -18,12 +18,12 @@ class Controller {
   static wrap(fn, ctx) {
     return (req, res, next) =>
       Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-        .then((response) => Success.set(res, response, req.session))
-        .catch(Checkit.Error, (err) => {
+        .then(response => Success.set(res, response, req.session))
+        .catch(Checkit.Error, err => {
           req.error = new Exception.BadRequest(err);
           next();
         })
-        .catch((err) => {
+        .catch(err => {
           req.error = err;
           next();
         });
@@ -35,20 +35,20 @@ class Controller {
     let page = parseInt(query.page) || 1;
     if (page < 1) page = 1;
 
-    const columns = options.columns || "*";
+    const columns = options.columns || '*';
     const where = options.where || {};
 
     return this.model
-      .query((qb) =>
-        Object.keys(where).map((index) => qb.where(index, "in", where[index]))
+      .query(qb =>
+        Object.keys(where).map(index => qb.where(index, 'in', where[index]))
       )
       .fetchPage({
         columns,
         page,
         pageSize: 20
       })
-      .then((collection) => {
-        Log.debug(this.tableName, "browse success");
+      .then(collection => {
+        Log.debug(this.tableName, 'browse success');
         return collection;
       });
   }
@@ -60,12 +60,12 @@ class Controller {
         [this.id_attribute]: id
       })
       .fetch()
-      .then((fetchedModel) => {
-        if (!fetchedModel) throw new Exception.NotFound("Nof found");
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
         return fetchedModel.canRead(req.session);
       })
-      .then((fetchedModel) => {
-        Log.debug(this.tableName, "read success", fetchedModel.get("id"));
+      .then(fetchedModel => {
+        Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
         return fetchedModel;
       });
   }
@@ -77,12 +77,12 @@ class Controller {
         [this.id_attribute]: id
       })
       .fetch()
-      .then((fetchedModel) => {
-        if (!fetchedModel) throw new Exception.NotFound("Nof found");
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
         return fetchedModel.canEdit(req.session);
       })
-      .then((fetchedModel) => {
-        Log.debug(this.tableName, " patch success id:", fetchedModel.get("id"));
+      .then(fetchedModel => {
+        Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
         return fetchedModel.save(req.body);
       });
   }
@@ -94,15 +94,15 @@ class Controller {
         [this.id_attribute]: id
       })
       .fetch()
-      .then((fetchedModel) => {
-        if (!fetchedModel) throw new Exception.NotFound("Nof found");
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
         return fetchedModel.canEdit(req.session);
       })
-      .then((fetchedModel) => {
+      .then(fetchedModel => {
         Log.debug(
           this.tableName,
-          " delete success id:",
-          fetchedModel.get("id")
+          ' delete success id:',
+          fetchedModel.get('id')
         );
         return fetchedModel.destroy(req.body);
       });
@@ -122,8 +122,8 @@ class Controller {
         model.setPerson(req.session);
         return model.save(null, options);
       })
-      .then((savedModel) => {
-        Log.debug(this.tableName, " create success id:", savedModel.get("id"));
+      .then(savedModel => {
+        Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
         return savedModel;
       });
   }

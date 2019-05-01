@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import t from "../locale/he_IL";
+import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import t from '../locale/he_IL';
 
 function AlertTable(props) {
   const { alerts } = props;
@@ -14,10 +14,10 @@ function AlertTable(props) {
         </tr>
       </thead>
       <tbody>
-        {alerts.map((alert) => (
+        {alerts.map(alert => (
           <tr>
             <td>{alert.address}</td>
-            <td>{alert.radius + " " + t.km}</td>
+            <td>{alert.radius + ' ' + t.km}</td>
             <td>
               <button
                 className="delete"

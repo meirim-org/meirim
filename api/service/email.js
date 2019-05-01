@@ -2,16 +2,16 @@
  * Email service.
  * Compiles emails and pushes to an email web service.
  */
-const Promise = require("bluebird");
-const Nodemailer = require("nodemailer");
-const Mustache = require("mustache");
-const dir = require("node-dir");
-const path = require("path");
+const Promise = require('bluebird');
+const Nodemailer = require('nodemailer');
+const Mustache = require('mustache');
+const dir = require('node-dir');
+const path = require('path');
 
-const Juice = require("juice");
-const Log = require("../lib/log");
-const Config = require("../lib/config");
-const Alert = require("../model/alert");
+const Juice = require('juice');
+const Log = require('../lib/log');
+const Config = require('../lib/config');
+const Alert = require('../model/alert');
 
 class Email {
   /**
@@ -20,8 +20,8 @@ class Email {
    */
   constructor() {
     // create reusable transporter object using the default SMTP transport
-    this.config = Config.get("email");
-    this.baseUrl = Config.get("general.domain");
+    this.config = Config.get('email');
+    this.baseUrl = Config.get('general.domain');
     this.transporter = Nodemailer.createTransport(this.config.options);
     this.templates = {};
     //
@@ -42,7 +42,10 @@ class Email {
           match: /.mustache$/
         },
         (err, content, next) => {
-          if (err) reject(err);
+          if (err) {
+            reject(err);
+          }
+
           contents.push(content);
           next();
         },
@@ -50,7 +53,7 @@ class Email {
           if (err) {
             reject(err);
           }
-          
+
           mapper = files;
           resolve();
         }
@@ -58,9 +61,9 @@ class Email {
     }).then(() => {
       mapper.map((file, index) => {
         const key = file
-          .split("/")
+          .split('/')
           .pop()
-          .split(".")
+          .split('.')
           .shift();
         templates[key] = contents[index];
       });
@@ -88,7 +91,7 @@ class Email {
     const token = person.getActivationToken();
     const templateProperties = {
       url: `${this.baseUrl}activate/?token=${token}`,
-      email: person.get("email")
+      email: person.get('email')
     };
     // setup email data with unicode symbols
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
@@ -103,7 +106,7 @@ class Email {
 
     Object.assign(data, unsentPlan.attributes);
     if (data.data.DEPOSITING_DATE) {
-      const dates = data.data.DEPOSITING_DATE.split("T");
+      const dates = data.data.DEPOSITING_DATE.split('T');
       data.data.DEPOSITING_DATE = dates[0];
     }
 
@@ -111,18 +114,18 @@ class Email {
     data.unsubscribeLink = `${
       this.baseUrl
     }alert/?token=${alert.unsubsribeToken()}`;
-    data.link = `${this.baseUrl}plan/${unsentPlan.get("id")}/${unsentPlan.get(
-      "PL_NAME"
+    data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}/${unsentPlan.get(
+      'PL_NAME'
     )}`;
-    data.jurisdiction = unsentPlan.get("jurisdiction");
-    data.isLocalAuthority = data.jurisdiction === "מקומית";
+    data.jurisdiction = unsentPlan.get('jurisdiction');
+    data.isLocalAuthority = data.jurisdiction === 'מקומית';
 
     data.attachments = [
       {
-        cid: "planmap",
-        filename: "plan_map.png",
+        cid: 'planmap',
+        filename: 'plan_map.png',
         content: planStaticMap,
-        encoding: "base64"
+        encoding: 'base64'
       }
     ];
 
@@ -136,9 +139,9 @@ class Email {
 
   resetPasswordToken(person) {
     const templateProperties = {
-      email: person.get("email"),
+      email: person.get('email'),
       url: `${Config.get(
-        "general.domain"
+        'general.domain'
       )}forgot/?token=${person.resetPasswordToken()}`
     };
     return this.sendWithTemplate(
@@ -153,13 +156,13 @@ class Email {
       : [];
 
     attachments.push({
-      filename: "logo_email.png",
-      path: path.resolve("api/service/email/logo_email.png"),
-      cid: "logomeirim"
+      filename: 'logo_email.png',
+      path: path.resolve('api/service/email/logo_email.png'),
+      cid: 'logomeirim'
     });
     const subject = Mustache.render(template.title, templateProperties)
-      .replace(/\r?\n|\r/g, "")
-      .replace(/\s\s+/g, " ");
+      .replace(/\r?\n|\r/g, '')
+      .replace(/\s\s+/g, ' ');
 
     const email = {
       from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
@@ -167,8 +170,8 @@ class Email {
       subject, // Subject line
       html: Mustache.render(template.body, templateProperties), // html body
       attachments,
-      encoding: "utf8",
-      textEncoding: "base64"
+      encoding: 'utf8',
+      textEncoding: 'base64'
     };
 
     return this.send(email);
@@ -181,8 +184,8 @@ class Email {
   send(mailOptions) {
     return this.transporter
       .sendMail(mailOptions)
-      .then((info) =>
-        Log.info("Message sent: %s", info.messageId, mailOptions.to)
+      .then(info =>
+        Log.info('Message sent: %s', info.messageId, mailOptions.to)
       );
   }
 }

@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import Typography from "@material-ui/core/Typography";
-import GridList from "@material-ui/core/GridList";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import InfiniteScroll from "react-infinite-scroll-component";
+import Typography from '@material-ui/core/Typography';
+import GridList from '@material-ui/core/GridList';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-import api from "../services/api";
+import api from '../services/api';
 
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import Mapa from "../components/Mapa";
-import UnsafeRender from "../components/UnsafeRender";
-import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
+import Mapa from '../components/Mapa';
+import UnsafeRender from '../components/UnsafeRender';
+import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
 
-import t from "../locale/he_IL";
-import "./Plans.css";
+import t from '../locale/he_IL';
+import './Plans.css';
 
 class Plans extends Component {
   state = {
@@ -54,12 +54,12 @@ class Plans extends Component {
 
     api
       .get(
-        "/plan?page=" +
+        '/plan?page=' +
           pageNumber +
-          "&PLAN_COUNTY_NAME=" +
-          filterCounties.join(",")
+          '&PLAN_COUNTY_NAME=' +
+          filterCounties.join(',')
       )
-      .then((result) => {
+      .then(result => {
         this.setState({
           hasMore: result.pagination.page < result.pagination.pageCount,
           noData: this.state.plans.length + result.data.length === 0,
@@ -68,7 +68,7 @@ class Plans extends Component {
           plans: [...this.state.plans, ...result.data]
         });
       })
-      .catch((error) => this.setState({ error }));
+      .catch(error => this.setState({ error }));
   }
 
   loadNextPage() {
@@ -80,15 +80,15 @@ class Plans extends Component {
     const { pageNumber, filterCounties } = this.state;
 
     api
-      .get("/plan_county")
-      .then((result) => {
+      .get('/plan_county')
+      .then(result => {
         this.setState({
-          planCounties: result.data.map((county) => {
+          planCounties: result.data.map(county => {
             return { label: county.PLAN_COUNTY_NAME };
           })
         });
       })
-      .catch((error) => this.setState({ error }));
+      .catch(error => this.setState({ error }));
 
     this.loadPlans(pageNumber, filterCounties);
   }
@@ -114,7 +114,7 @@ class Plans extends Component {
             className="gridList"
             cols={1}
           >
-            {plans.map((plan) => (
+            {plans.map(plan => (
               <Card className="card" raised={true}>
                 <Link
                   className="card-link"

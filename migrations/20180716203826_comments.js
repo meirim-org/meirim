@@ -1,17 +1,17 @@
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTable("comment", (table) => {
-      table.increments("id").primary();
-      table.integer("parent_id");
-      table.integer("person_id");
-      table.integer("plan_id");
-      table.string("content", 2000);
+    .createTable('comment', table => {
+      table.increments('id').primary();
+      table.integer('parent_id');
+      table.integer('person_id');
+      table.integer('plan_id');
+      table.string('content', 2000);
       table.timestamps();
     })
     .then(() =>
-      knex.schema.table("person", (table) => {
+      knex.schema.table('person', table => {
         table
-          .string("alias")
+          .string('alias')
           .unique()
           .nullable();
       })
@@ -19,5 +19,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTab("comment");
+  return knex.schema.dropTab('comment');
 };

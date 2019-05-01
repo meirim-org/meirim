@@ -1,27 +1,27 @@
-const Controller = require("../controller/controller");
-const Comment = require("../model/comment");
-const Person = require("../model/person");
-const Log = require("../lib/log");
-const Exception = require("../model/exception");
+const Controller = require('../controller/controller');
+const Comment = require('../model/comment');
+const Person = require('../model/person');
+const Log = require('../lib/log');
+const Exception = require('../model/exception');
 
 class CommentController extends Controller {
   create(req, res, next) {
     if (!req.session.person) {
-      throw new Exception.BadRequest("Must be logged in");
+      throw new Exception.BadRequest('Must be logged in');
     }
 
     // add fname
     let alias = Promise.resolve();
     if (!req.session.person.alias) {
       if (!req.body.alias) {
-        throw new Exception.BadRequest("Please provide an alias");
+        throw new Exception.BadRequest('Please provide an alias');
       }
       const aliasString = req.body.alias;
       alias = Person.forge({
         id: req.session.person.id
       })
         .fetch()
-        .then((person) =>
+        .then(person =>
           person.save(
             {
               alias: aliasString
@@ -31,7 +31,7 @@ class CommentController extends Controller {
             }
           )
         )
-        .then((person) => {
+        .then(person => {
           req.session.person = person;
           return false;
         });
@@ -40,7 +40,7 @@ class CommentController extends Controller {
     delete req.body.alias;
 
     return Promise.all([alias, super.create(req, res, next)]).then(
-      (result) => result[1]
+      result => result[1]
     );
   }
 
@@ -49,8 +49,8 @@ class CommentController extends Controller {
    * @param {IncomingRequest} req
    */
   byPlan(req) {
-    return this.model.byPlan(req.params.plan_id).then((collection) => {
-      Log.debug(this.tableName, "Get comment list", req.params.plan_id);
+    return this.model.byPlan(req.params.plan_id).then(collection => {
+      Log.debug(this.tableName, 'Get comment list', req.params.plan_id);
       return collection;
     });
   }

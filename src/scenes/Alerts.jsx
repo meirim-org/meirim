@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import {
   Map,
@@ -8,26 +8,26 @@ import {
   GeoJSON,
   FeatureGroup,
   Circle
-} from "react-leaflet";
-import _ from "lodash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from 'react-leaflet';
+import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
 
-import leaflet from "leaflet";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import AlertTable from "../components/AlertTable";
+import leaflet from 'leaflet';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
+import AlertTable from '../components/AlertTable';
 
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
-import api from "../services/api";
+import api from '../services/api';
 
-import t from "../locale/he_IL";
-import logo from "../assets/logo.png";
-import "./Alerts.css";
-import "../../node_modules/leaflet/dist/leaflet.css";
+import t from '../locale/he_IL';
+import logo from '../assets/logo.png';
+import './Alerts.css';
+import '../../node_modules/leaflet/dist/leaflet.css';
 
 class Alerts extends Component {
   state = {
@@ -36,7 +36,7 @@ class Alerts extends Component {
     alerts: [],
     form: {
       radius: 5,
-      address: ""
+      address: ''
     },
 
     // it does not use it, no map when there is no alerts
@@ -56,7 +56,7 @@ class Alerts extends Component {
     },
     sliderText: {},
     signInURL: {
-      pathname: "/sign/in",
+      pathname: '/sign/in',
       state: {
         redirectTo: window.location.pathname
       }
@@ -90,7 +90,7 @@ class Alerts extends Component {
     this.setState({ loading: true });
 
     api
-      .post("/alert", {
+      .post('/alert', {
         address,
         // we make the calculation as the slider is LTR, and the value
         // is the opposite in RTL
@@ -102,18 +102,18 @@ class Alerts extends Component {
           loading: false,
           form: {
             radius: 3,
-            address: ""
+            address: ''
           }
         });
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({ error });
         console.error(error);
       });
   }
 
   handleDelete(alertId) {
-    api.delete("/alert/" + alertId).then(() => this.getAlerts());
+    api.delete('/alert/' + alertId).then(() => this.getAlerts());
   }
 
   componentDidMount() {
@@ -123,16 +123,16 @@ class Alerts extends Component {
     });
     this.setState({ sliderText });
     this.getAlerts();
-    document.getElementById("homeAddress").focus();
+    document.getElementById('homeAddress').focus();
   }
 
   getAlerts() {
     return api
-      .get("/alert")
-      .then((result) => {
+      .get('/alert')
+      .then(result => {
         let transparentLayer = leaflet.geoJSON();
         if (result.data.length > 0) {
-          result.data.map((alert) => {
+          result.data.map(alert => {
             leaflet.geoJSON(alert.geom).addTo(transparentLayer);
           });
           const layerBounds = transparentLayer.getBounds();
@@ -142,7 +142,7 @@ class Alerts extends Component {
           });
         }
       })
-      .catch((error) => this.setState({ error }));
+      .catch(error => this.setState({ error }));
   }
 
   render() {
@@ -195,17 +195,17 @@ class Alerts extends Component {
                   marks={this.state.sliderText}
                   trackStyle={[
                     {
-                      backgroundColor: "gray"
+                      backgroundColor: 'gray'
                     }
                   ]}
                   handleStyle={[
                     {
-                      backgroundColor: "blue",
-                      border: "1px solid blue"
+                      backgroundColor: 'blue',
+                      border: '1px solid blue'
                     }
                   ]}
                   railStyle={{
-                    backgroundColor: "blue"
+                    backgroundColor: 'blue'
                   }}
                   dots={true}
                   defaultValue={form.radius}
@@ -254,8 +254,8 @@ function Mapa(props) {
     <Map
       bounds={props.bounds}
       style={{
-        height: "300px",
-        width: "100%"
+        height: '300px',
+        width: '100%'
       }}
     >
       <TileLayer
