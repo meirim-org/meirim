@@ -158,7 +158,7 @@ class Alerts extends Component {
         <Navigation me={me} />
         <div className="container widedialog">
           <form className="rectangle" onSubmit={this.handleSubmit}>
-            <h5 className="container-title">{t.new_alert}</h5>
+            <h5 className="container-title">{t.newAlert}</h5>
             {error && (
               <div className="alert alert-danger" role="alert">
                 הכתובת לא נמצאה

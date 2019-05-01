@@ -47,7 +47,10 @@ class Email {
           next();
         },
         (err, files) => {
-          if (err) reject(err);
+          if (err) {
+            reject(err);
+          }
+          
           mapper = files;
           resolve();
         }

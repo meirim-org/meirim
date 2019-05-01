@@ -5,7 +5,7 @@ import RegisterForm from "../components/RegisterForm";
 
 import t from "../locale/he_IL";
 import traktor from "../assets/traktor_op.png";
-import logo_small from "../assets/logo_small.png";
+import logoSmall from "../assets/logo_small.png";
 import "./Home.css";
 
 class Home extends Component {
@@ -19,9 +19,9 @@ class Home extends Component {
           <section className="hero">
             <img className="img-fluid background" src={traktor} alt="" />
             <div className="content">
-              <img className="logo" src={logo_small} alt={t.name} />
+              <img className="logo" src={logoSmall} alt={t.name} />
               <div className="d-lg-none">
-                <h4>{t.meirim_title}</h4>
+                <h4>{t.meirimTitle}</h4>
                 <p>רוצים השכמה?</p>
                 <a href="#register" className="join">
                   הצטרפו למעירים

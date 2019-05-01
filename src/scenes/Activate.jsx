@@ -41,8 +41,8 @@ class Activate extends Component {
                   ברוכים הבאים למעירים!
                 </div>
                 <div className="selectAreaAndInterest">
-                  {step === 0 && `מנסים להפעיל את החשבון שלך`}
-                  {step === 1 && `החשבון הופעל בהצלחה`}
+                  {step === 0 && "מנסים להפעיל את החשבון שלך"}
+                  {step === 1 && "החשבון הופעל בהצלחה"}
                   {step === -1 && (
                     <div className="alert alert-danger">{error}</div>
                   )}

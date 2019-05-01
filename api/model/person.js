@@ -173,23 +173,27 @@ class Person extends BaseModel {
         { sender: Config.get("email.from_email") },
         (err, info) => {
           Log.debug("Email verifier", info, err);
-          if (err) reject(err);
-          else if (info.success) resolve(true);
-          else if (info.code === codes.domainNotFound)
+          if (err) {
+            reject(err);
+          } else if (info.success) {
+            resolve(true);
+          } else if (info.code === codes.domainNotFound) {
             reject(new Exception.BadRequest("Email domain not found"));
-          else if (info.code === codes.invalidEmailStructure)
+          } else if (info.code === codes.invalidEmailStructure) {
             reject(new Exception.BadRequest("Email is not valid"));
-          else if (info.code === codes.noMxRecords)
+          } else if (info.code === codes.noMxRecords) {
             reject(
               new Exception.BadRequest(
                 "The domain doesn't receive emails. No MX records"
               )
             );
-          else if (info.code === codes.SMTPConnectionTimeout)
+          } else if (info.code === codes.SMTPConnectionTimeout) {
             reject(new Exception.BadRequest("SMTP Connection Timeout"));
-          else if (info.code === codes.SMTPConnectionError)
+          } else if (info.code === codes.SMTPConnectionError) {
             reject(new Exception.BadRequest("SMTP Connection Error"));
-          else reject(new Exception.BadRequest("Email isn't valid"));
+          } else {
+            reject(new Exception.BadRequest("Email isn't valid"));
+          }
         }
       );
     });

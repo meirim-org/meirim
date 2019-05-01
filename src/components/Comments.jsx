@@ -25,8 +25,8 @@ class Comments extends Component {
     content: "",
     alias: "",
     form: {
-      plan_id: this.props.planId,
-      parent_id: 0
+      planId: this.props.planId,
+      parentId: 0
     },
     signInURL: {
       pathname: "/sign/in",
@@ -66,8 +66,8 @@ class Comments extends Component {
             method="post"
             onSubmit={this.handleSubmit}
           >
-            <input type="hidden" name="parent_id" value="0" />
-            <input type="hidden" name="plan_id" value="{id}" />
+            <input type="hidden" name="parentId" value="0" />
+            <input type="hidden" name="planId" value="{id}" />
             <div className="form-group">
               <br />
               <label className="sr-only">Password</label>

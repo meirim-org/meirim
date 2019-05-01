@@ -153,7 +153,7 @@ class Plans extends Component {
           loader={<h4 className="centerNote">{t.loading}</h4>}
           endMessage={
             <p className="centerNote">
-              <b>{t.seen_all_plans}</b>
+              <b>{t.seenAllPlans}</b>
             </p>
           }
         />

@@ -63,7 +63,7 @@ class SignIn extends Component {
 
           <div className="rectangle dialog">
             <form method="post" onSubmit={this.handleSubmit}>
-              {success == -1 && (
+              {success === -1 && (
                 <div className="alert alert-danger" role="alert">
                   מייל או סיסמה לא נכונים
                 </div>
