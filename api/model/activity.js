@@ -19,7 +19,7 @@ class Activity extends BaseModel {
       //   'required', 'string'
       // ],
       description: ['required', 'string'],
-      status: ['required', 'integer']
+      status: ['required', 'integer'],
     };
   }
 
@@ -45,7 +45,7 @@ class Activity extends BaseModel {
 
   defaults() {
     return {
-      status: 1
+      status: 1,
     };
   }
 
@@ -54,10 +54,10 @@ class Activity extends BaseModel {
   }
 
   _saving(model, attrs, options) {
-    return Geocoder.geocode(model.get('address')).then(res => {
+    return Geocoder.geocode(model.get('address')).then((res) => {
       model.set('latlon', {
         type: 'Point',
-        coordinates: [res[0].latitude, res[0].longitude]
+        coordinates: [res[0].latitude, res[0].longitude],
       });
       model.set('address', res[0].formattedAddress);
       return new Checkit(model.rules).run(model.attributes);
@@ -71,7 +71,7 @@ class Activity extends BaseModel {
   addPerson(person_id) {
     return PersonActivity.forge({
       activity_id: this.get('id'),
-      person_id
+      person_id,
     }).save();
   }
 

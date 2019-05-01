@@ -12,7 +12,7 @@ class PlanController extends Controller {
       'PLAN_CHARACTOR_NAME',
       'goals_from_mavat',
       'main_details_from_mavat',
-      'geom'
+      'geom',
     ];
 
     const { query } = req;
@@ -28,20 +28,20 @@ class PlanController extends Controller {
 
     return super.browse(req, {
       columns,
-      where
+      where,
     });
   }
 
   county() {
     return Knex.raw(
       'SELECT PLAN_COUNTY_NAME, COUNT(*) as num FROM plan GROUP BY PLAN_COUNTY_NAME'
-    ).then(results => results[0]);
+    ).then((results) => results[0]);
   }
 
   statuses() {
     return Knex.raw(
       'SELECT status, COUNT(*) as num  FROM plan GROUP BY status'
-    ).then(results => results[0]);
+    ).then((results) => results[0]);
   }
 }
 

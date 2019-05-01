@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class UnsafeRender extends Component {
   state = {
-    html: this.props.html
+    html: this.props.html,
   };
 
   render() {

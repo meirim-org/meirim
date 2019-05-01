@@ -19,5 +19,5 @@ const degreeToMeter = (lon, lat, dn, de) => {
 
 module.exports = {
   geocoder,
-  degreeToMeter
+  degreeToMeter,
 };

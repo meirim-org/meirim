@@ -5,7 +5,7 @@ class PlanPerson extends Base_model {
   get rules() {
     return {
       plan_id: ['required', 'integer'],
-      person_id: ['required', 'integer']
+      person_id: ['required', 'integer'],
     };
   }
 
@@ -16,17 +16,17 @@ class PlanPerson extends Base_model {
   static subscribe(person_id, plan_id) {
     return this.forge({
       person_id,
-      plan_id
+      plan_id,
     })
       .fetchAll()
-      .then(existingSubscription => {
+      .then((existingSubscription) => {
         // if it exists- updating it
         if (existingSubscription && existingSubscription.length > 0) {
           return Promise.resolve(existingSubscription.models[0]);
         }
         return this.forge({
           person_id,
-          plan_id
+          plan_id,
         }).save();
       });
   }

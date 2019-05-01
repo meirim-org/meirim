@@ -15,7 +15,7 @@ import t from '../locale/he_IL';
 
 class SinglePlan extends Component {
   state = {
-    plan: {}
+    plan: {},
   };
 
   componentDidMount() {
@@ -23,8 +23,8 @@ class SinglePlan extends Component {
     this.setState({ planId: id });
     return api
       .get('/plan/' + id)
-      .then(plan => this.setState({ plan: plan.data }))
-      .catch(error => {
+      .then((plan) => this.setState({ plan: plan.data }))
+      .catch((error) => {
         if (error.response.status === 404) {
           window.location = '/404';
         }

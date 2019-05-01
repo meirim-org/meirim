@@ -8,6 +8,6 @@ module.exports = session({
   resave: false,
   saveUninitialized: true,
   store: new KnexSessionStore({
-    knex: Knex
-  })
+    knex: Knex,
+  }),
 });

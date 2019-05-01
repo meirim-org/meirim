@@ -13,5 +13,5 @@ module.exports = {
   NotAllowed,
   NotImplemented,
   NotFound,
-  Error
+  Error,
 };

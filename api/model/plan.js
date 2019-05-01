@@ -14,13 +14,13 @@ class Plan extends Model {
       // PLAN_CHARACTOR_NAME: 'string',
       data: ['required'],
       geom: ['required', 'object'],
-      jurisdiction: 'string'
+      jurisdiction: 'string',
     };
   }
 
   defaults() {
     return {
-      sent: 0
+      sent: 0,
     };
   }
 
@@ -78,22 +78,22 @@ class Plan extends Model {
 
   static maekPlansAsSent(plan_ids) {
     return new Plan()
-      .query(qb => {
+      .query((qb) => {
         qb.whereIn('id', plan_ids);
       })
       .save(
         {
-          sent: '2'
+          sent: '2',
         },
         {
-          method: 'update'
+          method: 'update',
         }
       );
   }
 
   static fetchByObjectID(objectID) {
     return Plan.forge({
-      OBJECTID: objectID
+      OBJECTID: objectID,
     }).fetch();
   }
 
@@ -108,7 +108,7 @@ class Plan extends Model {
       geom: iPlan.geometry,
       PLAN_CHARACTOR_NAME: '',
       plan_url: iPlan.properties.PL_URL,
-      status: iPlan.properties.STATION_DESC
+      status: iPlan.properties.STATION_DESC,
     };
     if (oldPlan) {
       oldPlan.set(data);
@@ -123,7 +123,7 @@ class Plan extends Model {
     return plan.set({
       goals_from_mavat: mavanData.goals,
       main_details_from_mavat: mavanData.mainPlanDetails,
-      jurisdiction: mavanData.jurisdiction
+      jurisdiction: mavanData.jurisdiction,
     });
   }
 
@@ -132,7 +132,7 @@ class Plan extends Model {
     if (!options.limit) {
       options.limit = 1;
     }
-    return Plan.query(qb => {
+    return Plan.query((qb) => {
       qb.where('sent', '=', '0');
       if (options.OBJECTID) {
         qb.where('OBJECTID', '=', options.OBJECTID);
@@ -145,8 +145,8 @@ class Plan extends Model {
         'goals_from_mavat',
         'main_details_from_mavat',
         'geom',
-        'jurisdiction'
-      ]
+        'jurisdiction',
+      ],
     });
   }
 }

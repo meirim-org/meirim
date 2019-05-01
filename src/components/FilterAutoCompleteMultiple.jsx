@@ -21,9 +21,9 @@ function renderInput(inputProps) {
         inputRef: ref,
         classes: {
           root: classes.inputRoot,
-          input: classes.inputInput
+          input: classes.inputInput,
         },
-        ...InputProps
+        ...InputProps,
       }}
       {...other}
     />
@@ -35,7 +35,7 @@ function renderSuggestion({
   index,
   itemProps,
   highlightedIndex,
-  selectedItem
+  selectedItem,
 }) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
@@ -47,7 +47,7 @@ function renderSuggestion({
       selected={isHighlighted}
       component="div"
       style={{
-        fontWeight: isSelected ? 500 : 400
+        fontWeight: isSelected ? 500 : 400,
       }}
     >
       {suggestion.label}
@@ -60,16 +60,16 @@ renderSuggestion.propTypes = {
   index: PropTypes.number,
   itemProps: PropTypes.object,
   selectedItem: PropTypes.string,
-  suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired
+  suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
 };
 
 class FilterAutoCompleteMultiple extends Component {
   state = {
     inputValue: '',
-    selectedItem: []
+    selectedItem: [],
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     const { onFilterChange } = this.props;
     let { inputValue, selectedItem } = this.state;
 
@@ -82,18 +82,18 @@ class FilterAutoCompleteMultiple extends Component {
       selectedItem.splice(selectedItem.length - 1, 1);
 
       this.setState({
-        selectedItem
+        selectedItem,
       });
 
       onFilterChange(selectedItem);
     }
   };
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     this.setState({ inputValue: event.target.value });
   };
 
-  handleChange = item => {
+  handleChange = (item) => {
     const { onFilterChange } = this.props;
     let { selectedItem } = this.state;
 
@@ -103,20 +103,20 @@ class FilterAutoCompleteMultiple extends Component {
 
     this.setState({
       inputValue: '',
-      selectedItem
+      selectedItem,
     });
 
     onFilterChange(selectedItem);
   };
 
-  handleDelete = item => () => {
+  handleDelete = (item) => () => {
     const { onFilterChange } = this.props;
     let { selectedItem } = this.state;
 
     selectedItem.splice(selectedItem.indexOf(item), 1);
 
     this.setState({
-      selectedItem
+      selectedItem,
     });
 
     onFilterChange(selectedItem);
@@ -131,7 +131,7 @@ class FilterAutoCompleteMultiple extends Component {
 
     return inputLength === 0
       ? []
-      : inputSuggestions.filter(suggestion => {
+      : inputSuggestions.filter((suggestion) => {
           const keep =
             count < 5 &&
             suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
@@ -161,14 +161,14 @@ class FilterAutoCompleteMultiple extends Component {
           isOpen,
           inputValue: inputValue2,
           selectedItem: selectedItem2,
-          highlightedIndex
+          highlightedIndex,
         }) => (
           <div className={classes.container}>
             {renderInput({
               fullWidth: true,
               classes,
               InputProps: getInputProps({
-                startAdornment: selectedItem.map(item => (
+                startAdornment: selectedItem.map((item) => (
                   <Chip
                     key={item}
                     tabIndex={-1}
@@ -179,8 +179,8 @@ class FilterAutoCompleteMultiple extends Component {
                 )),
                 onChange: this.handleInputChange,
                 onKeyDown: this.handleKeyDown,
-                placeholder
-              })
+                placeholder,
+              }),
             })}
             {isOpen ? (
               <Paper className={classes.paper} square>
@@ -190,7 +190,7 @@ class FilterAutoCompleteMultiple extends Component {
                     index,
                     itemProps: getItemProps({ item: suggestion.label }),
                     highlightedIndex,
-                    selectedItem: selectedItem2
+                    selectedItem: selectedItem2,
                   })
                 )}
               </Paper>

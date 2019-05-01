@@ -2,6 +2,6 @@ module.exports = {
   // lwip : require('pajk-lwip'),
   mime: {
     'image/jpeg': 'jpg',
-    'image/png': 'png'
-  }
+    'image/png': 'png',
+  },
 };

@@ -16,18 +16,20 @@ module.exports = {
   iplan: () =>
     iplanApi
       .getBlueLines()
-      .then(iPlans => Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan))),
+      .then((iPlans) =>
+        Bluebird.mapSeries(iPlans, (iPlan) => fetchIplan(iPlan))
+      ),
 
   complete_mavat_data: () =>
-    Plan.query(qb => {
+    Plan.query((qb) => {
       qb.where('main_details_from_mavat', '=', '');
     })
       .fetchAll()
-      .then(planCollection =>
-        Bluebird.mapSeries(planCollection.models, plan => {
+      .then((planCollection) =>
+        Bluebird.mapSeries(planCollection.models, (plan) => {
           Log.debug(plan.get('plan_url'));
 
-          return MavatAPI.parseMavat(plan.get('plan_url')).then(mavatData => {
+          return MavatAPI.parseMavat(plan.get('plan_url')).then((mavatData) => {
             Plan.setMavatData(plan, mavatData);
             Log.debug('Saving with mavat', JSON.stringify(mavatData));
             return plan.save();
@@ -36,14 +38,14 @@ module.exports = {
       ),
 
   complete_jurisdiction_from_mavat: () =>
-    Plan.query(qb => {
+    Plan.query((qb) => {
       qb.where('jurisdiction', 'IS', null);
     })
       .fetchAll()
-      .then(planCollection =>
-        Bluebird.mapSeries(planCollection.models, plan => {
+      .then((planCollection) =>
+        Bluebird.mapSeries(planCollection.models, (plan) => {
           Log.debug(plan.get('plan_url'));
-          return MavatAPI.parseMavat(plan.get('plan_url')).then(mavatData => {
+          return MavatAPI.parseMavat(plan.get('plan_url')).then((mavatData) => {
             Plan.setMavatData(plan, mavatData);
             Log.debug(
               'Saving with jurisdiction form mavat',
@@ -60,20 +62,20 @@ module.exports = {
     Log.info('Running send planning alert');
 
     return Plan.getUnsentPlans({
-      limit: 1
+      limit: 1,
     })
-      .then(unsentPlans => {
+      .then((unsentPlans) => {
         Log.debug('Got', unsentPlans.models.length, 'Plans');
         return unsentPlans.models;
       })
-      .mapSeries(unsentPlan => {
+      .mapSeries((unsentPlan) => {
         const centroid = Turf.centroid(unsentPlan.get('geom'));
         return Promise.all([
           Alert.getUsersByGeometry(unsentPlan.get('id')),
           fetchStaticMap(
             centroid.geometry.coordinates[1],
             centroid.geometry.coordinates[0]
-          )
+          ),
         ]).then(([users, planStaticMap]) => {
           Log.debug(
             'Got',
@@ -85,18 +87,18 @@ module.exports = {
           if (!users[0] || !users[0].length) {
             return {
               plan_id: unsentPlan.get('id'),
-              users: 0
+              users: 0,
             };
           }
-          return Bluebird.mapSeries(users[0], user =>
+          return Bluebird.mapSeries(users[0], (user) =>
             Email.newPlanAlert(user, unsentPlan, planStaticMap)
           ).then(() => ({
             plan_id: unsentPlan.get('id'),
-            users: users.length
+            users: users.length,
           }));
         });
       })
-      .then(successArray => {
+      .then((successArray) => {
         const idArray = [];
         successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
         if (idArray.length) {
@@ -107,17 +109,17 @@ module.exports = {
         return true;
         // return successArray.reduce((pv, cv) => pv.users + cv.users, 0);
       });
-  }
+  },
 };
 
 /** Private */
 
-const fetchIplan = iPlan =>
+const fetchIplan = (iPlan) =>
   Plan.forge({
-    PL_NUMBER: iPlan.properties.PL_NUMBER
+    PL_NUMBER: iPlan.properties.PL_NUMBER,
   })
     .fetch()
-    .then(oldPlan => {
+    .then((oldPlan) => {
       // check if there was an update
       if (
         oldPlan &&
@@ -130,7 +132,7 @@ const fetchIplan = iPlan =>
       return (
         buildPlan(iPlan, oldPlan)
           // check if there is an update in the status of the plan and mark it for email update
-          .then(plan => {
+          .then((plan) => {
             if (
               !oldPlan ||
               oldPlan.get('data').STATION !== iPlan.properties.STATION
@@ -141,22 +143,22 @@ const fetchIplan = iPlan =>
           })
       );
     })
-    .then(plan => plan.save())
-    .catch(e => {
+    .then((plan) => plan.save())
+    .catch((e) => {
       console.log('iplan exception', JSON.stringify(e));
       return Bluebird.resolve();
     });
 
 const buildPlan = (iPlan, oldPlan) =>
-  Plan.buildFromIPlan(iPlan, oldPlan).then(plan => {
+  Plan.buildFromIPlan(iPlan, oldPlan).then((plan) => {
     // no mavat url was found
     if (!plan.get('plan_url')) {
       return plan;
     }
 
     return MavatAPI.parseMavat(plan.get('plan_url'))
-      .then(mavatData => Plan.setMavatData(plan, mavatData))
-      .catch(e => {
+      .then((mavatData) => Plan.setMavatData(plan, mavatData))
+      .catch((e) => {
         // mavat might crash gracefully
         console.log('Mavat error', JSON.stringify(e));
         return plan;

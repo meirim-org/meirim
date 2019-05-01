@@ -4,7 +4,7 @@ import {
   Route,
   Link,
   Redirect,
-  Switch
+  Switch,
 } from 'react-router-dom';
 import Home from './scenes/Home';
 import Plans from './scenes/Plans';
@@ -29,13 +29,13 @@ library.add(faTimes);
 
 class App extends Component {
   state = {
-    me: null
+    me: null,
   };
   componentWillMount() {
     api
       .get('/me')
-      .then(me => this.setState({ me: true }))
-      .catch(error => this.setState({ me: false }));
+      .then((me) => this.setState({ me: true }))
+      .catch((error) => this.setState({ me: false }));
   }
   render() {
     const { me } = this.state;
@@ -50,47 +50,47 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => <Home {...props} me={me} />}
+              render={(props) => <Home {...props} me={me} />}
             />
             <Route
               path="/alerts"
-              render={props => <Alerts {...props} me={me} />}
+              render={(props) => <Alerts {...props} me={me} />}
             />
             <Route
               path="/plan/:id/:title"
-              render={props => <SinglePlan {...props} me={me} />}
+              render={(props) => <SinglePlan {...props} me={me} />}
             />
             <Route
               path="/plan/:id"
-              render={props => <SinglePlan {...props} me={me} />}
+              render={(props) => <SinglePlan {...props} me={me} />}
             />
             <Route
               path="/plans"
-              render={props => <Plans {...props} me={me} />}
+              render={(props) => <Plans {...props} me={me} />}
             />
             <Route
               path="/sign/in"
-              render={props => <SignIn {...props} me={me} />}
+              render={(props) => <SignIn {...props} me={me} />}
             />
             <Route
               path="/activate"
-              render={props => <Activate {...props} me={me} />}
+              render={(props) => <Activate {...props} me={me} />}
             />
             <Route
               path="/forgot"
-              render={props => <ForgotPassword {...props} me={me} />}
+              render={(props) => <ForgotPassword {...props} me={me} />}
             />
             <Route
               path="/about"
-              render={props => <About {...props} me={me} />}
+              render={(props) => <About {...props} me={me} />}
             />
             <Route
               path="/terms"
-              render={props => <Terms {...props} me={me} />}
+              render={(props) => <Terms {...props} me={me} />}
             />
             <Route
               path="/404"
-              render={props => <NotFound {...props} me={me} />}
+              render={(props) => <NotFound {...props} me={me} />}
             />
             <Route component={NotFound} />
           </Switch>

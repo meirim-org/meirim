@@ -15,9 +15,9 @@ const options = {
     // access_token: 'xxxxx xxxxx' // -> uri + '?access_token=xxxxx%20xxxxx'
   },
   headers: {
-    'User-Agent': Config.get('general.userAgent')
+    'User-Agent': Config.get('general.userAgent'),
   },
-  json: true // Automatically parses the JSON string in the response
+  json: true, // Automatically parses the JSON string in the response
 };
 
 const fields = [
@@ -50,7 +50,7 @@ const fields = [
   'QUANTITY_DELTA_125',
   'LAST_UPDATE',
   'PL_ORDER_PRINT_VERSION',
-  'PL_TASRIT_PRN_VERSION'
+  'PL_TASRIT_PRN_VERSION',
 ];
 
 const EPSG3857 =
@@ -63,7 +63,7 @@ const getBlueLines = () => {
   const requestOptions = _.clone(options);
   Log.debug(url);
   requestOptions.uri = url;
-  return Request(requestOptions).then(data => {
+  return Request(requestOptions).then((data) => {
     const geojson = GeoJSON.fromEsri(data, {});
     Log.debug('Got', geojson.features.length, 'plans');
     return Bluebird.reduce(
@@ -71,7 +71,7 @@ const getBlueLines = () => {
       (coll, datum) => {
         // overriding geomerty with WGS84 coordinates
         const res = Object.assign({}, datum, {
-          geometry: reproject.toWgs84(datum.geometry, EPSG3857)
+          geometry: reproject.toWgs84(datum.geometry, EPSG3857),
         });
         return coll.concat(res);
       },
@@ -90,5 +90,5 @@ const getPlanningCouncils = () => {
 
 module.exports = {
   getBlueLines,
-  getPlanningCouncils
+  getPlanningCouncils,
 };

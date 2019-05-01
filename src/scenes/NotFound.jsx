@@ -14,7 +14,7 @@ import './Alerts.css';
 class SignIn extends Component {
   state = {
     success: 0,
-    redirectTo: ((this.props.location || {}).state || {}).redirectTo || '/'
+    redirectTo: ((this.props.location || {}).state || {}).redirectTo || '/',
   };
 
   constructor(props) {
@@ -27,7 +27,7 @@ class SignIn extends Component {
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
-      success: 0
+      success: 0,
     });
   }
 
@@ -35,8 +35,8 @@ class SignIn extends Component {
     event.preventDefault();
     api
       .post('/sign/in', this.state)
-      .then(success => this.setState({ success: 1 }))
-      .catch(error => this.setState({ success: -1 }));
+      .then((success) => this.setState({ success: 1 }))
+      .catch((error) => this.setState({ success: -1 }));
   }
   render() {
     const { success } = this.state;

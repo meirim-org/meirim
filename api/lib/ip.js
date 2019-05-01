@@ -8,5 +8,5 @@ const client = function client(req) {
 };
 
 module.exports = {
-  client
+  client,
 };
