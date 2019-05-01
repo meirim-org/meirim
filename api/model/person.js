@@ -22,7 +22,7 @@ class Person extends BaseModel {
       email: ['required', 'email'],
       password: ['required', 'string'],
       status: ['required', 'integer'],
-      admin: ['integer']
+      admin: ['integer'],
     };
   }
 
@@ -91,10 +91,10 @@ class Person extends BaseModel {
       );
     }
     return Person.forge({
-      id: parts[0]
+      id: parts[0],
     })
       .fetch()
-      .then(person => {
+      .then((person) => {
         if (!person) {
           Log.debug('resetPasswordByToken:Person', parts[0], 'not found');
           throw new Exception.BadRequest('Invalid token');
@@ -120,7 +120,7 @@ class Person extends BaseModel {
     }
     // hash password
     Log.debug('Password hashed');
-    return Bcrypt.hash(model.get('password'), 10).then(hashedPassword =>
+    return Bcrypt.hash(model.get('password'), 10).then((hashedPassword) =>
       model.set('password', hashedPassword)
     );
   }
@@ -129,7 +129,7 @@ class Person extends BaseModel {
   //   return this;
   // }
   checkPassword(password) {
-    return Bcrypt.compare(password, this.get('password')).then(res => {
+    return Bcrypt.compare(password, this.get('password')).then((res) => {
       if (!res) {
         throw new Exception.NotAllowed('Password mismatch');
       }
@@ -148,10 +148,10 @@ class Person extends BaseModel {
     const data = Buffer.from(token, 'base64').toString('ascii');
     const email = Crypt.decrypt(data);
     return Person.forge({
-      email
+      email,
     })
       .fetch()
-      .then(fetchedPerson => {
+      .then((fetchedPerson) => {
         if (!fetchedPerson) {
           throw new Exception.BadRequest('User not found');
         }

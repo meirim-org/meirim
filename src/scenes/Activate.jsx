@@ -12,7 +12,7 @@ import './Alerts.css';
 class Activate extends Component {
   state = {
     step: 0,
-    error: 0
+    error: 0,
   };
 
   componentDidMount() {
@@ -23,8 +23,8 @@ class Activate extends Component {
     }
     api
       .post('/sign/activate', { token })
-      .then(success => this.setState({ step: 1 }))
-      .catch(error => this.setState({ step: -1, error: 'We got an error' }));
+      .then((success) => this.setState({ step: 1 }))
+      .catch((error) => this.setState({ step: -1, error: 'We got an error' }));
   }
   render() {
     const { step, error } = this.state;

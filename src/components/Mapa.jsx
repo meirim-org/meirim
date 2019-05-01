@@ -26,7 +26,7 @@ class Mapa extends Component {
         touchZoom={!disableInteractions}
         style={{
           height: '100%',
-          width: '100%'
+          width: '100%',
         }}
       >
         <TileLayer

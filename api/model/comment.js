@@ -9,7 +9,7 @@ class Comment extends Model {
       person_id: ['required', 'integer'],
       content: ['required', 'string'],
       plan_id: ['required', 'integer'],
-      parent_id: ['required', 'integer']
+      parent_id: ['required', 'integer'],
     };
   }
 
@@ -46,7 +46,7 @@ class Comment extends Model {
       throw new Exception.BadRequest('Must provide planId');
     }
     return this.query('where', 'plan_id', '=', planId)
-      .query(qb => {
+      .query((qb) => {
         qb.orderBy('id', 'DESC');
       })
       .fetchAll({
@@ -54,9 +54,9 @@ class Comment extends Model {
           {
             person(qb) {
               qb.column('id', 'alias');
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
   }
 

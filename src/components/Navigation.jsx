@@ -10,14 +10,14 @@ import './Navigation.css';
 
 class Navigation extends Component {
   state = {
-    signOutSuccess: false
+    signOutSuccess: false,
   };
   constructor(props) {
     super(props);
     this.signout = this.signout.bind(this);
   }
   signout() {
-    api.post('/sign/out').then(signOutSuccess => {
+    api.post('/sign/out').then((signOutSuccess) => {
       window.location = '/';
     });
   }

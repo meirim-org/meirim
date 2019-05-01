@@ -5,7 +5,7 @@ class PersonActivity extends Base_model {
   get rules() {
     return {
       activity_id: ['required', 'integer'],
-      person_id: ['required', 'integer']
+      person_id: ['required', 'integer'],
     };
   }
 

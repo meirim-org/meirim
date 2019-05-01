@@ -14,7 +14,7 @@ class PasswordController extends Controller {
 
     return Person.forge({ email })
       .fetch()
-      .then(person => {
+      .then((person) => {
         if (!person) {
           throw new Exception.NotFound('Email not found');
         }

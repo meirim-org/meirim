@@ -75,7 +75,7 @@ const tables = [
     sid varchar(255) NOT NULL,
     sess text NOT NULL,
     expired datetime NOT NULL
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
 ];
 
 const statements = [
@@ -88,12 +88,12 @@ const statements = [
   'ALTER TABLE sessions ADD PRIMARY KEY (sid), ADD KEY sessions_expired_index (expired);',
   'ALTER TABLE activity MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
   'ALTER TABLE alert MODIFY id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
-  'ALTER TABLE person MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;'
+  'ALTER TABLE person MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
 ];
 
 exports.up = function(knex, Promise) {
   return Promise.all(
-    tables.map(table => {
+    tables.map((table) => {
       try {
         return knex.raw(table);
       } catch (e) {
@@ -102,7 +102,7 @@ exports.up = function(knex, Promise) {
     })
   ).then(
     Promise.all(
-      statements.map(statement => {
+      statements.map((statement) => {
         try {
           knex.raw(statement);
         } catch (e) {

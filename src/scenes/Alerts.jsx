@@ -7,7 +7,7 @@ import {
   TileLayer,
   GeoJSON,
   FeatureGroup,
-  Circle
+  Circle,
 } from 'react-leaflet';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,31 +36,31 @@ class Alerts extends Component {
     alerts: [],
     form: {
       radius: 5,
-      address: ''
+      address: '',
     },
 
     // it does not use it, no map when there is no alerts
     bounds: [
       {
         lat: 35,
-        lng: 35
+        lng: 35,
       },
       {
         lat: 25,
-        lng: 25
-      }
+        lng: 25,
+      },
     ],
     slider: {
       min: 1,
-      max: 10
+      max: 10,
     },
     sliderText: {},
     signInURL: {
       pathname: '/sign/in',
       state: {
-        redirectTo: window.location.pathname
-      }
-    }
+        redirectTo: window.location.pathname,
+      },
+    },
   };
 
   constructor(props) {
@@ -94,7 +94,7 @@ class Alerts extends Component {
         address,
         // we make the calculation as the slider is LTR, and the value
         // is the opposite in RTL
-        radius: this.state.slider.max + this.state.slider.min - radius
+        radius: this.state.slider.max + this.state.slider.min - radius,
       })
       .then(() => this.getAlerts())
       .finally(() => {
@@ -102,11 +102,11 @@ class Alerts extends Component {
           loading: false,
           form: {
             radius: 3,
-            address: ''
-          }
+            address: '',
+          },
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
         console.error(error);
       });
@@ -129,20 +129,20 @@ class Alerts extends Component {
   getAlerts() {
     return api
       .get('/alert')
-      .then(result => {
+      .then((result) => {
         let transparentLayer = leaflet.geoJSON();
         if (result.data.length > 0) {
-          result.data.map(alert => {
+          result.data.map((alert) => {
             leaflet.geoJSON(alert.geom).addTo(transparentLayer);
           });
           const layerBounds = transparentLayer.getBounds();
           this.setState({
             bounds: [layerBounds._southWest, layerBounds._northEast],
-            alerts: result.data
+            alerts: result.data,
           });
         }
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
   }
 
   render() {
@@ -195,17 +195,17 @@ class Alerts extends Component {
                   marks={this.state.sliderText}
                   trackStyle={[
                     {
-                      backgroundColor: 'gray'
-                    }
+                      backgroundColor: 'gray',
+                    },
                   ]}
                   handleStyle={[
                     {
                       backgroundColor: 'blue',
-                      border: '1px solid blue'
-                    }
+                      border: '1px solid blue',
+                    },
                   ]}
                   railStyle={{
-                    backgroundColor: 'blue'
+                    backgroundColor: 'blue',
                   }}
                   dots={true}
                   defaultValue={form.radius}
@@ -255,7 +255,7 @@ function Mapa(props) {
       bounds={props.bounds}
       style={{
         height: '300px',
-        width: '100%'
+        width: '100%',
       }}
     >
       <TileLayer

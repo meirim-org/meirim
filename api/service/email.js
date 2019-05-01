@@ -39,7 +39,7 @@ class Email {
       dir.readFiles(
         templateDir,
         {
-          match: /.mustache$/
+          match: /.mustache$/,
         },
         (err, content, next) => {
           if (err) {
@@ -76,12 +76,12 @@ class Email {
           /<body[^>]*>((.|[\n\r])*)<\/body>/im
         )[1];
         const html = Mustache.render(templates.wrapper, {
-          body
+          body,
         });
 
         this.templates[key] = {
           title,
-          body: Juice(html)
+          body: Juice(html),
         };
       }
     });
@@ -91,7 +91,7 @@ class Email {
     const token = person.getActivationToken();
     const templateProperties = {
       url: `${this.baseUrl}activate/?token=${token}`,
-      email: person.get('email')
+      email: person.get('email'),
     };
     // setup email data with unicode symbols
     return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
@@ -100,7 +100,7 @@ class Email {
   newPlanAlert(user, unsentPlan, planStaticMap) {
     const alert = new Alert({
       id: user.alert_id,
-      person_id: user.person_id
+      person_id: user.person_id,
     });
     const data = user;
 
@@ -125,8 +125,8 @@ class Email {
         cid: 'planmap',
         filename: 'plan_map.png',
         content: planStaticMap,
-        encoding: 'base64'
-      }
+        encoding: 'base64',
+      },
     ];
 
     return this.sendWithTemplate(this.templates.alert, data);
@@ -142,7 +142,7 @@ class Email {
       email: person.get('email'),
       url: `${Config.get(
         'general.domain'
-      )}forgot/?token=${person.resetPasswordToken()}`
+      )}forgot/?token=${person.resetPasswordToken()}`,
     };
     return this.sendWithTemplate(
       this.templates.resetPasswordToken,
@@ -158,7 +158,7 @@ class Email {
     attachments.push({
       filename: 'logo_email.png',
       path: path.resolve('api/service/email/logo_email.png'),
-      cid: 'logomeirim'
+      cid: 'logomeirim',
     });
     const subject = Mustache.render(template.title, templateProperties)
       .replace(/\r?\n|\r/g, '')
@@ -171,7 +171,7 @@ class Email {
       html: Mustache.render(template.body, templateProperties), // html body
       attachments,
       encoding: 'utf8',
-      textEncoding: 'base64'
+      textEncoding: 'base64',
     };
 
     return this.send(email);
@@ -184,7 +184,7 @@ class Email {
   send(mailOptions) {
     return this.transporter
       .sendMail(mailOptions)
-      .then(info =>
+      .then((info) =>
         Log.info('Message sent: %s', info.messageId, mailOptions.to)
       );
   }

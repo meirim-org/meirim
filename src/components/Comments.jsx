@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
-  NavLink as Link
+  NavLink as Link,
 } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -26,14 +26,14 @@ class Comments extends Component {
     alias: '',
     form: {
       planId: this.props.planId,
-      parentId: 0
+      parentId: 0,
     },
     signInURL: {
       pathname: '/sign/in',
       state: {
-        redirectTo: window.location.pathname
-      }
-    }
+        redirectTo: window.location.pathname,
+      },
+    },
   };
   constructor(props) {
     super(props);
@@ -46,12 +46,12 @@ class Comments extends Component {
 
     return api
       .get('/comment/' + id)
-      .then(comments => {
+      .then((comments) => {
         this.setState({ comments: comments.data });
         this.setState({ me: comments.me });
         this.setState({ isLoading: false });
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
   }
 
   render() {
@@ -150,19 +150,19 @@ class Comments extends Component {
     e.preventDefault();
     api
       .post('/comment/' + this.state.id, newComment)
-      .then(res => {
+      .then((res) => {
         this.setState({ done: true });
         this.handleCommentPublished(res.data);
       })
-      .catch(error => this.setState({ error }));
+      .catch((error) => this.setState({ error }));
   }
 
   handleCommentPublished(data) {
     var newComment = _.merge(data, {
       person: {
         alias: this.state.alias || this.state.me.alias,
-        id: this.state.me.id
-      }
+        id: this.state.me.id,
+      },
     });
     // if there hasnt been an alias for current user
     const newMe = this.state.me;
@@ -170,7 +170,7 @@ class Comments extends Component {
     this.setState({
       comments: this.state.comments.concat([newComment]),
       content: '',
-      me: newMe
+      me: newMe,
     });
     document.getElementByName('newCommentform').reset();
   }

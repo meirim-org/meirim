@@ -14,13 +14,13 @@ class Alert extends Model {
       person_id: ['required', 'integer'],
       address: ['required', 'string'],
       geom: ['required', 'object'],
-      radius: ['required', 'number']
+      radius: ['required', 'number'],
     };
   }
 
   defaults() {
     return {
-      radius: 5
+      radius: 5,
     };
   }
 
@@ -46,7 +46,7 @@ class Alert extends Model {
     const partialRules = Object.assign(model.rules, {});
     delete partialRules.geom;
     return new Checkit(partialRules).run(model.attributes).then(() =>
-      Geocoder.geocode(model.get('address')).then(res => {
+      Geocoder.geocode(model.get('address')).then((res) => {
         if (!res[0]) {
           throw new Exception.NotFound('The address does not exist');
         }
@@ -69,7 +69,7 @@ class Alert extends Model {
 
         model.set('geom', {
           type: 'Polygon',
-          coordinates: [box]
+          coordinates: [box],
         });
         model.set('address', res[0].formattedAddress);
         return new Checkit(model.rules).run(model.attributes);
@@ -101,7 +101,7 @@ class Alert extends Model {
   getCollection() {
     return this.collection()
       .query('where', {
-        person_id: this.get('person_id')
+        person_id: this.get('person_id'),
       })
       .fetch();
   }
@@ -117,7 +117,7 @@ class Alert extends Model {
     );
     const parts = details.split('_');
     return Alert.forge({
-      id: parts[0]
+      id: parts[0],
     });
   }
 

@@ -1,12 +1,12 @@
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTableIfNotExists('tag', table => {
+    .createTableIfNotExists('tag', (table) => {
       table.increments('id').primary();
       table.string('name', 32).notNullable();
     })
     .then(() => knex.schema.dropTableIfExists('status'))
     .then(() =>
-      knex.schema.createTableIfNotExists('status', table => {
+      knex.schema.createTableIfNotExists('status', (table) => {
         table.increments('id').primary();
         table.string('name', 32).notNullable();
       })
@@ -14,78 +14,78 @@ exports.up = function(knex, Promise) {
     .then(() =>
       knex('tag').insert([
         {
-          name: 'דיור'
+          name: 'דיור',
         },
         {
-          name: 'תעסוקה ותעשיה'
+          name: 'תעסוקה ותעשיה',
         },
         {
-          name: 'מבני ציבור'
+          name: 'מבני ציבור',
         },
         {
-          name: 'שטחים פתוחים'
+          name: 'שטחים פתוחים',
         },
         {
-          name: 'טבע וסביבה'
+          name: 'טבע וסביבה',
         },
         {
-          name: 'תשתיות ותחבורה'
+          name: 'תשתיות ותחבורה',
         },
         {
-          name: 'חינוך'
+          name: 'חינוך',
         },
         {
-          name: 'בריאות'
+          name: 'בריאות',
         },
         {
-          name: 'שטחים ירוקים'
+          name: 'שטחים ירוקים',
         },
         {
-          name: 'חוף הים'
+          name: 'חוף הים',
         },
         {
-          name: 'טבע עירוני'
+          name: 'טבע עירוני',
         },
         {
-          name: 'זיהום ומפגעים אקולוגים'
+          name: 'זיהום ומפגעים אקולוגים',
         },
         {
-          name: 'הפרטה'
+          name: 'הפרטה',
         },
         {
-          name: 'ציפוף'
+          name: 'ציפוף',
         },
         {
-          name: 'בניה לגובה'
+          name: 'בניה לגובה',
         },
         {
-          name: 'נגישות'
-        }
+          name: 'נגישות',
+        },
       ])
     )
     .then(() =>
       knex('status').insert([
         {
-          name: 'טרום הפקדה – שלבי תכנון מוקדמים'
+          name: 'טרום הפקדה – שלבי תכנון מוקדמים',
         },
         {
-          name: 'בהפקדה – X ימים להגשת התנגדות'
+          name: 'בהפקדה – X ימים להגשת התנגדות',
         },
         {
-          name: 'דיון בהתנגדויות'
+          name: 'דיון בהתנגדויות',
         },
         {
-          name: 'הועבר לדיון בבית משפט'
+          name: 'הועבר לדיון בבית משפט',
         },
         {
-          name: 'התכנית אושרה'
+          name: 'התכנית אושרה',
         },
         {
-          name: 'פרויקט בביצוע'
+          name: 'פרויקט בביצוע',
         },
         {
-          name: 'מאבק הסתיים'
-        }
+          name: 'מאבק הסתיים',
+        },
       ])
     );
 };
