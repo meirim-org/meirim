@@ -66,7 +66,7 @@ class Person extends BaseModel {
   static resetPasswordByToken(token, newPassword) {
     const now = new Date().getTime();
     const details = Crypt.decrypt(
-      Buffer.from(token, 'base64').toString('ascii')
+      Buffer.from(token, 'base64').toString('ascii'),
     );
     const parts = details.split('_');
     if (parts.length !== 2) {
@@ -84,17 +84,17 @@ class Person extends BaseModel {
         whenGenerated,
         'is ',
         7200 * seconds,
-        'in the past'
+        'in the past',
       );
       throw new Exception.BadRequest(
-        'Invalid token: token is valid for 2 hours only. Please generate a new token'
+        'Invalid token: token is valid for 2 hours only. Please generate a new token',
       );
     }
     return Person.forge({
       id: parts[0],
     })
       .fetch()
-      .then((person) => {
+      .then(person => {
         if (!person) {
           Log.debug('resetPasswordByToken:Person', parts[0], 'not found');
           throw new Exception.BadRequest('Invalid token');
@@ -115,13 +115,13 @@ class Person extends BaseModel {
     const password = model.get('password');
     if (password.lenth <= passwordLength) {
       throw new Exception.BadRequest(
-        `Password must be at least ${passwordLength} charcters`
+        `Password must be at least ${passwordLength} charcters`,
       );
     }
     // hash password
     Log.debug('Password hashed');
-    return Bcrypt.hash(model.get('password'), 10).then((hashedPassword) =>
-      model.set('password', hashedPassword)
+    return Bcrypt.hash(model.get('password'), 10).then(hashedPassword =>
+      model.set('password', hashedPassword),
     );
   }
 
@@ -129,7 +129,7 @@ class Person extends BaseModel {
   //   return this;
   // }
   checkPassword(password) {
-    return Bcrypt.compare(password, this.get('password')).then((res) => {
+    return Bcrypt.compare(password, this.get('password')).then(res => {
       if (!res) {
         throw new Exception.NotAllowed('Password mismatch');
       }
@@ -151,7 +151,7 @@ class Person extends BaseModel {
       email,
     })
       .fetch()
-      .then((fetchedPerson) => {
+      .then(fetchedPerson => {
         if (!fetchedPerson) {
           throw new Exception.BadRequest('User not found');
         }
@@ -184,8 +184,8 @@ class Person extends BaseModel {
           } else if (info.code === codes.noMxRecords) {
             reject(
               new Exception.BadRequest(
-                "The domain doesn't receive emails. No MX records"
-              )
+                "The domain doesn't receive emails. No MX records",
+              ),
             );
           } else if (info.code === codes.SMTPConnectionTimeout) {
             reject(new Exception.BadRequest('SMTP Connection Timeout'));
@@ -194,7 +194,7 @@ class Person extends BaseModel {
           } else {
             reject(new Exception.BadRequest("Email isn't valid"));
           }
-        }
+        },
       );
     });
   }

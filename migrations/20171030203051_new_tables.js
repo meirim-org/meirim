@@ -1,15 +1,15 @@
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTableIfNotExists('tag', (table) => {
+    .createTableIfNotExists('tag', table => {
       table.increments('id').primary();
       table.string('name', 32).notNullable();
     })
     .then(() => knex.schema.dropTableIfExists('status'))
     .then(() =>
-      knex.schema.createTableIfNotExists('status', (table) => {
+      knex.schema.createTableIfNotExists('status', table => {
         table.increments('id').primary();
         table.string('name', 32).notNullable();
-      })
+      }),
     )
     .then(() =>
       knex('tag').insert([
@@ -61,7 +61,7 @@ exports.up = function(knex, Promise) {
         {
           name: 'נגישות',
         },
-      ])
+      ]),
     )
     .then(() =>
       knex('status').insert([
@@ -86,7 +86,7 @@ exports.up = function(knex, Promise) {
         {
           name: 'מאבק הסתיים',
         },
-      ])
+      ]),
     );
 };
 

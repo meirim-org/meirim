@@ -93,23 +93,23 @@ const statements = [
 
 exports.up = function(knex, Promise) {
   return Promise.all(
-    tables.map((table) => {
+    tables.map(table => {
       try {
         return knex.raw(table);
       } catch (e) {
         console.log(e);
       }
-    })
+    }),
   ).then(
     Promise.all(
-      statements.map((statement) => {
+      statements.map(statement => {
         try {
           knex.raw(statement);
         } catch (e) {
           console.log(e);
         }
-      })
-    )
+      }),
+    ),
   );
 };
 

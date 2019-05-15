@@ -58,12 +58,12 @@ const EPSG3857 =
 
 const getBlueLines = () => {
   const url = `${BASE_AGS_URL}/0/query?f=json&outFields=${fields.join(
-    ','
+    ',',
   )}&returnGeometry=true&where=OBJECTID>0&orderByFields=LAST_UPDATE DESC`;
   const requestOptions = _.clone(options);
   Log.debug(url);
   requestOptions.uri = url;
-  return Request(requestOptions).then((data) => {
+  return Request(requestOptions).then(data => {
     const geojson = GeoJSON.fromEsri(data, {});
     Log.debug('Got', geojson.features.length, 'plans');
     return Bluebird.reduce(
@@ -75,7 +75,7 @@ const getBlueLines = () => {
         });
         return coll.concat(res);
       },
-      []
+      [],
     );
   });
 };

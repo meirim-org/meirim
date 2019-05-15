@@ -21,7 +21,7 @@ module.exports = {
       status: 'OK',
       data,
       pagination,
-      me
+      me,
     });
-  }
+  },
 };

@@ -6,12 +6,10 @@ const { Bookshelf } = require('../service/database');
 class ActivityController extends Controller {
   create(req) {
     let activity = null;
-    return Bookshelf.transaction((t) => super.create(req, t)).tap(
-      (savedModel) => {
-        activity = savedModel;
-        return activity.addPerson(req.session.person.id);
-      }
-    );
+    return Bookshelf.transaction(t => super.create(req, t)).tap(savedModel => {
+      activity = savedModel;
+      return activity.addPerson(req.session.person.id);
+    });
   }
 
   join(req) {
@@ -20,9 +18,9 @@ class ActivityController extends Controller {
         id: parseInt(req.params.id, 10),
       })
       .fetch()
-      .then((activity) => activity.canJoin(req.session))
-      .then((activity) => activity.addPerson(req.session.person.id))
-      .then((activity) => {
+      .then(activity => activity.canJoin(req.session))
+      .then(activity => activity.addPerson(req.session.person.id))
+      .then(activity => {
         Log.debug(this.tableName, 'created success id:', activity.get('id'));
         return activity;
       });

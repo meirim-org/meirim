@@ -21,17 +21,17 @@ class CommentController extends Controller {
         id: req.session.person.id,
       })
         .fetch()
-        .then((person) =>
+        .then(person =>
           person.save(
             {
               alias: aliasString,
             },
             {
               patch: true,
-            }
-          )
+            },
+          ),
         )
-        .then((person) => {
+        .then(person => {
           req.session.person = person;
           return false;
         });
@@ -40,7 +40,7 @@ class CommentController extends Controller {
     delete req.body.alias;
 
     return Promise.all([alias, super.create(req, res, next)]).then(
-      (result) => result[1]
+      result => result[1],
     );
   }
 
@@ -49,7 +49,7 @@ class CommentController extends Controller {
    * @param {IncomingRequest} req
    */
   byPlan(req) {
-    return this.model.byPlan(req.params.plan_id).then((collection) => {
+    return this.model.byPlan(req.params.plan_id).then(collection => {
       Log.debug(this.tableName, 'Get comment list', req.params.plan_id);
       return collection;
     });
