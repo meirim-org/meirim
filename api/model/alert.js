@@ -46,7 +46,7 @@ class Alert extends Model {
     const partialRules = Object.assign(model.rules, {});
     delete partialRules.geom;
     return new Checkit(partialRules).run(model.attributes).then(() =>
-      Geocoder.geocode(model.get('address')).then(res => {
+      Geocoder.geocode(model.get('address')).then((res) => {
         if (!res[0]) {
           throw new Exception.NotFound('The address does not exist');
         }

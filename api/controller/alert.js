@@ -8,9 +8,7 @@ class AlertController extends Controller {
   create(req, res, next) {
     return super
       .create(req, res, next)
-      .then(savedAlert =>
-        Email.newAlert(req.session.person, savedAlert).then(() => savedAlert),
-      );
+      .then(savedAlert => Email.newAlert(req.session.person, savedAlert).then(() => savedAlert));
   }
 
   /**
@@ -24,7 +22,7 @@ class AlertController extends Controller {
     return this.model
       .query('where', 'person_id', '=', req.session.person.id)
       .fetchAll()
-      .then(collection => {
+      .then((collection) => {
         Log.debug(this.tableName, 'browse success user', req.session.person.id);
         return collection;
       });
@@ -38,7 +36,7 @@ class AlertController extends Controller {
   unsubscribe(req) {
     return Alert.ByToken(req.query.token)
       .fetch()
-      .then(fetchedModel => {
+      .then((fetchedModel) => {
         if (!fetchedModel) {
           throw new Exception.NotFound('Nof found');
         }

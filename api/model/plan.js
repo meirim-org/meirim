@@ -38,8 +38,8 @@ class Plan extends Model {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);
         if (
-          attributes.jurisdiction === 'מקומית' &&
-          attributes.data.STATION_DESC !== 'מאושרות'
+          attributes.jurisdiction === 'מקומית'
+          && attributes.data.STATION_DESC !== 'מאושרות'
         ) {
           attributes.notCredible = true;
         }
@@ -78,7 +78,7 @@ class Plan extends Model {
 
   static maekPlansAsSent(plan_ids) {
     return new Plan()
-      .query(qb => {
+      .query((qb) => {
         qb.whereIn('id', plan_ids);
       })
       .save(
@@ -132,7 +132,7 @@ class Plan extends Model {
     if (!options.limit) {
       options.limit = 1;
     }
-    return Plan.query(qb => {
+    return Plan.query((qb) => {
       qb.where('sent', '=', '0');
       if (options.OBJECTID) {
         qb.where('OBJECTID', '=', options.OBJECTID);

@@ -1,7 +1,6 @@
-const Base_model = require('./base_model');
-const { Bookshelf } = require('../service/database');
+const Model = require('./base_model');
 
-class PlanPerson extends Base_model {
+class PlanPerson extends Model {
   get rules() {
     return {
       plan_id: ['required', 'integer'],
@@ -19,7 +18,7 @@ class PlanPerson extends Base_model {
       plan_id,
     })
       .fetchAll()
-      .then(existingSubscription => {
+      .then((existingSubscription) => {
         // if it exists- updating it
         if (existingSubscription && existingSubscription.length > 0) {
           return Promise.resolve(existingSubscription.models[0]);
