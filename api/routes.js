@@ -26,7 +26,7 @@ Router.get('/plan_status', wrap(Plan.statuses, Plan));
 Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
 Router.delete(
   '/plan/:id/subscribe',
-  wrap(Subscription.unsubscribe, Subscription)
+  wrap(Subscription.unsubscribe, Subscription),
 );
 
 // Comment
