@@ -22,7 +22,7 @@ const fetchStaticMap = (lat, lon) => {
   return map
     .render()
     .then(() => map.image.image.toString('base64'))
-    .catch((err) => {
+    .catch(err => {
       // fail with no image
       Log.error('Cannot generate static map for email', err);
       return '';

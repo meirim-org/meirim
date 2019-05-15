@@ -46,7 +46,7 @@ class Alert extends Model {
     const partialRules = Object.assign(model.rules, {});
     delete partialRules.geom;
     return new Checkit(partialRules).run(model.attributes).then(() =>
-      Geocoder.geocode(model.get('address')).then((res) => {
+      Geocoder.geocode(model.get('address')).then(res => {
         if (!res[0]) {
           throw new Exception.NotFound('The address does not exist');
         }
@@ -54,16 +54,16 @@ class Alert extends Model {
         const km = 1000;
         const radius = model.get('radius') * km;
         box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius)
+          DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius),
         );
         box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius)
+          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius),
         );
         box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius)
+          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius),
         );
         box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius)
+          DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius),
         );
         box.push(box[0]);
 
@@ -73,7 +73,7 @@ class Alert extends Model {
         });
         model.set('address', res[0].formattedAddress);
         return new Checkit(model.rules).run(model.attributes);
-      })
+      }),
     );
   }
 
@@ -113,7 +113,7 @@ class Alert extends Model {
 
   static ByToken(token) {
     const details = Crypt.decrypt(
-      new Buffer(token, 'base64').toString('ascii')
+      new Buffer(token, 'base64').toString('ascii'),
     );
     const parts = details.split('_');
     return Alert.forge({

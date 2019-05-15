@@ -34,14 +34,14 @@ class PlanController extends Controller {
 
   county() {
     return Knex.raw(
-      'SELECT PLAN_COUNTY_NAME, COUNT(*) as num FROM plan GROUP BY PLAN_COUNTY_NAME'
-    ).then((results) => results[0]);
+      'SELECT PLAN_COUNTY_NAME, COUNT(*) as num FROM plan GROUP BY PLAN_COUNTY_NAME',
+    ).then(results => results[0]);
   }
 
   statuses() {
     return Knex.raw(
-      'SELECT status, COUNT(*) as num  FROM plan GROUP BY status'
-    ).then((results) => results[0]);
+      'SELECT status, COUNT(*) as num  FROM plan GROUP BY status',
+    ).then(results => results[0]);
   }
 }
 

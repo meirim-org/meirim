@@ -46,7 +46,7 @@ class Comment extends Model {
       throw new Exception.BadRequest('Must provide planId');
     }
     return this.query('where', 'plan_id', '=', planId)
-      .query((qb) => {
+      .query(qb => {
         qb.orderBy('id', 'DESC');
       })
       .fetchAll({
