@@ -1,6 +1,6 @@
 exports.up = function(knex, Promise) {
   return knex.schema
-    .createTable('comment', (table) => {
+    .createTable('comment', table => {
       table.increments('id').primary();
       table.integer('parent_id');
       table.integer('person_id');
@@ -9,12 +9,12 @@ exports.up = function(knex, Promise) {
       table.timestamps();
     })
     .then(() =>
-      knex.schema.table('person', (table) => {
+      knex.schema.table('person', table => {
         table
           .string('alias')
           .unique()
           .nullable();
-      })
+      }),
     );
 };
 

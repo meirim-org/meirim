@@ -54,7 +54,7 @@ class Activity extends BaseModel {
   }
 
   _saving(model, attrs, options) {
-    return Geocoder.geocode(model.get('address')).then((res) => {
+    return Geocoder.geocode(model.get('address')).then(res => {
       model.set('latlon', {
         type: 'Point',
         coordinates: [res[0].latitude, res[0].longitude],

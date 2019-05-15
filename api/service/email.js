@@ -56,7 +56,7 @@ class Email {
 
           mapper = files;
           resolve();
-        }
+        },
       );
     }).then(() => {
       mapper.map((file, index) => {
@@ -70,10 +70,10 @@ class Email {
 
       for (const key in templates) {
         const title = templates[key].match(
-          /<title[^>]*>((.|[\n\r])*)<\/title>/im
+          /<title[^>]*>((.|[\n\r])*)<\/title>/im,
         )[1];
         const body = templates[key].match(
-          /<body[^>]*>((.|[\n\r])*)<\/body>/im
+          /<body[^>]*>((.|[\n\r])*)<\/body>/im,
         )[1];
         const html = Mustache.render(templates.wrapper, {
           body,
@@ -115,7 +115,7 @@ class Email {
       this.baseUrl
     }alert/?token=${alert.unsubsribeToken()}`;
     data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}/${unsentPlan.get(
-      'PL_NAME'
+      'PL_NAME',
     )}`;
     data.jurisdiction = unsentPlan.get('jurisdiction');
     data.isLocalAuthority = data.jurisdiction === 'מקומית';
@@ -141,12 +141,12 @@ class Email {
     const templateProperties = {
       email: person.get('email'),
       url: `${Config.get(
-        'general.domain'
+        'general.domain',
       )}forgot/?token=${person.resetPasswordToken()}`,
     };
     return this.sendWithTemplate(
       this.templates.resetPasswordToken,
-      templateProperties
+      templateProperties,
     );
   }
 
@@ -184,8 +184,8 @@ class Email {
   send(mailOptions) {
     return this.transporter
       .sendMail(mailOptions)
-      .then((info) =>
-        Log.info('Message sent: %s', info.messageId, mailOptions.to)
+      .then(info =>
+        Log.info('Message sent: %s', info.messageId, mailOptions.to),
       );
   }
 }
