@@ -8,7 +8,7 @@ const routes = require('./routes');
 const errorHandler = require('./errorHandler');
 
 const urlencoded = BodyParser.urlencoded({
-  extended: false
+  extended: false,
 });
 const json = BodyParser.json();
 
@@ -17,7 +17,7 @@ const cors = Cors({
   origin: (origin, callback) => callback(null, true),
   optionsSuccessStatus: 200,
   credentials: true,
-  preflightContinue: false
+  preflightContinue: false,
 });
 
 // init application

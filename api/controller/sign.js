@@ -20,12 +20,12 @@ class SignController extends Controller {
         status: 0,
       })
       .fetch()
-      .then((existingPerson) => {
+      .then(existingPerson => {
         // if there is an inactive person we send only a mail
         if (existingPerson) {
           Log.debug(
             'Person send activation email to:',
-            existingPerson.get('id')
+            existingPerson.get('id'),
           );
           return Email.newSignUp(existingPerson);
         }
@@ -35,7 +35,7 @@ class SignController extends Controller {
         return this.model
           .forge(req.body)
           .save()
-          .then((person) => {
+          .then(person => {
             Log.debug('Person create success id:', person.get('id'));
             return Email.newSignUp(person);
           })
@@ -66,7 +66,7 @@ class SignController extends Controller {
       email,
     })
       .fetch()
-      .then((person) => {
+      .then(person => {
         if (!person) {
           throw new Exception.NotAllowed('Password mismatch');
         }
@@ -74,8 +74,8 @@ class SignController extends Controller {
         Log.debug('user was found:', person.get('id'));
         return person;
       })
-      .then((person) => person.checkPassword(req.body.password))
-      .then((person) => {
+      .then(person => person.checkPassword(req.body.password))
+      .then(person => {
         req.session.person = person;
         Log.debug('user was signedin:', person.get('id'));
         return person;
