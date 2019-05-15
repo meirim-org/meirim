@@ -184,9 +184,7 @@ class Email {
   send(mailOptions) {
     return this.transporter
       .sendMail(mailOptions)
-      .then(info =>
-        Log.info('Message sent: %s', info.messageId, mailOptions.to),
-      );
+      .then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
   }
 }
 module.exports = new Email();
