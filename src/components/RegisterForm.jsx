@@ -31,8 +31,11 @@ class RegisterForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    let {password, email} = this.state;
     api
-      .post('/sign/up/', this.state)
+      .post('/sign/up/', {
+        password, email
+      })
       .then((res) => this.setState({ done: true }))
       .catch((error) => this.setState({ error }));
   }
@@ -45,7 +48,7 @@ class RegisterForm extends Component {
         if (error.response.status === 409) {
           errorMessage = t.emailExists;
         } else if (error.response.data && error.response.data.data) {
-          errorMessage = error.response.data;
+          errorMessage = error.response.data.data;
         }
       }
       if (!errorMessage) {
@@ -55,7 +58,7 @@ class RegisterForm extends Component {
 
     return (
       <form className="hpForm" onSubmit={this.handleSubmit}>
-        {errorMessage && (
+        {(errorMessage && !done) && (
           <div className="alert alert-danger">{errorMessage}</div>
         )}
         {!done && (
