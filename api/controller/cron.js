@@ -149,7 +149,7 @@ const buildPlan = (iPlan, oldPlan) =>
       .then(mavatData => Plan.setMavatData(plan, mavatData))
       .catch((e) => {
         // mavat might crash gracefully
-        Console.log('Mavat error', JSON.stringify(e));
+        console.log('Mavat error', JSON.stringify(e));
         return plan;
       });
   });
