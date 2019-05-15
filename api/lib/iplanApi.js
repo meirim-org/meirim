@@ -63,7 +63,7 @@ const getBlueLines = () => {
   const requestOptions = _.clone(options);
   Log.debug(url);
   requestOptions.uri = url;
-  return Request(requestOptions).then(data => {
+  return Request(requestOptions).then((data) => {
     const geojson = GeoJSON.fromEsri(data, {});
     Log.debug('Got', geojson.features.length, 'plans');
     return Bluebird.reduce(

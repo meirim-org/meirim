@@ -56,7 +56,8 @@ function fetch(plaUrl) {
         const bodyHTML = await page.evaluate(() => document.body.innerHTML);
         // await page.tracing.stop();
         // await browser.close();
-        // const reportLink = await page.$("#tblDocs .clsTableCell:contains('(SHP)')").nextUntil('> img').last().find('img').get();
+        // const reportLink = await page.$("#tblDocs .clsTableCell:contains('(SHP)')")
+        //   .nextUntil('> img').last().find('img').get();
         //   await page._client.send('Page.setDownloadBehavior', {
         //     behavior: 'allow',
         //     downloadPath: './',
@@ -66,7 +67,8 @@ function fetch(plaUrl) {
         //   delay: 100,
         // });
         //   const js = await page.evaluate(() => {
-        //     const el = $("#tblDocs .clsTableCell:contains('(SHP)')").nextUntil('> img').last().find('img').get();
+        //     const el = $("#tblDocs .clsTableCell:contains('(SHP)')")
+        //       .nextUntil('> img').last().find('img').get();
         //     $(el).click();
         //     return el;
         //   });
@@ -76,7 +78,7 @@ function fetch(plaUrl) {
         resolve(
           cheerio.load(bodyHTML, {
             decodeEntities: false,
-          })
+          }),
         );
       } catch (err) {
         log.error('Mavat fetch error', err);

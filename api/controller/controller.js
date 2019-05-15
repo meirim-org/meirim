@@ -16,38 +16,35 @@ class Controller {
 
   // try catch wrapper for all controllers
   static wrap(fn, ctx) {
-    return (req, res, next) =>
-      Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-        .then(response => Success.set(res, response, req.session))
-        .catch(Checkit.Error, err => {
-          req.error = new Exception.BadRequest(err);
-          next();
-        })
-        .catch(err => {
-          req.error = err;
-          next();
-        });
+    return (req, res, next) => Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+      .then(response => Success.set(res, response, req.session))
+      .catch(Checkit.Error, (err) => {
+        req.error = new Exception.BadRequest(err);
+        next();
+      })
+      .catch((err) => {
+        req.error = err;
+        next();
+      });
   }
 
   browse(req, options = {}) {
     const { query } = req;
 
-    let page = parseInt(query.page) || 1;
+    let page = parseInt(query.page, 10) || 1;
     if (page < 1) page = 1;
 
     const columns = options.columns || '*';
     const where = options.where || {};
 
     return this.model
-      .query(qb =>
-        Object.keys(where).map(index => qb.where(index, 'in', where[index])),
-      )
+      .query(qb => Object.keys(where).map(index => qb.where(index, 'in', where[index])))
       .fetchPage({
         columns,
         page,
         pageSize: 20,
       })
-      .then(collection => {
+      .then((collection) => {
         Log.debug(this.tableName, 'browse success');
         return collection;
       });
@@ -60,11 +57,11 @@ class Controller {
         [this.id_attribute]: id,
       })
       .fetch()
-      .then(fetchedModel => {
+      .then((fetchedModel) => {
         if (!fetchedModel) throw new Exception.NotFound('Nof found');
         return fetchedModel.canRead(req.session);
       })
-      .then(fetchedModel => {
+      .then((fetchedModel) => {
         Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
         return fetchedModel;
       });
@@ -77,11 +74,11 @@ class Controller {
         [this.id_attribute]: id,
       })
       .fetch()
-      .then(fetchedModel => {
+      .then((fetchedModel) => {
         if (!fetchedModel) throw new Exception.NotFound('Nof found');
         return fetchedModel.canEdit(req.session);
       })
-      .then(fetchedModel => {
+      .then((fetchedModel) => {
         Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
         return fetchedModel.save(req.body);
       });
@@ -94,11 +91,11 @@ class Controller {
         [this.id_attribute]: id,
       })
       .fetch()
-      .then(fetchedModel => {
+      .then((fetchedModel) => {
         if (!fetchedModel) throw new Exception.NotFound('Nof found');
         return fetchedModel.canEdit(req.session);
       })
-      .then(fetchedModel => {
+      .then((fetchedModel) => {
         Log.debug(
           this.tableName,
           ' delete success id:',
@@ -122,7 +119,7 @@ class Controller {
         model.setPerson(req.session);
         return model.save(null, options);
       })
-      .then(savedModel => {
+      .then((savedModel) => {
         Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
         return savedModel;
       });
