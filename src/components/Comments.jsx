@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import {
-  BrowserRouter as Router,
-  Redirect,
   NavLink as Link,
 } from 'react-router-dom';
 import _ from 'lodash';
@@ -11,10 +9,6 @@ import api from '../services/api';
 import avatar from '../assets/logo.png';
 import '../assets/bootstrap.css';
 import './Comments.css';
-
-import Moment from 'react-moment';
-
-import t from '../locale/he_IL';
 
 class Comments extends Component {
   state = {
@@ -55,8 +49,6 @@ class Comments extends Component {
   }
 
   render() {
-    const { me, id, comments } = this.state || {};
-
     return (
       <React.Fragment>
         {this.state.me.id && (
@@ -104,7 +96,7 @@ class Comments extends Component {
         <ul id="comments-list" className="comments-list ">
           {this.state.comments.map((comment, idx) => {
             return (
-              <li className="comment-main-level">
+              <li className="comment-main-level" key={idx}>
                 <div className="comment-avatar">
                   <img src={avatar} alt="avatar" />
                 </div>

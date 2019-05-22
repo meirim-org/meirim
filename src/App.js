@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link,
-  Redirect,
   Switch,
 } from 'react-router-dom';
 import Home from './scenes/Home';
@@ -19,7 +17,6 @@ import NotFound from './scenes/NotFound';
 import api from './services/api';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import './assets/bootstrap.css';

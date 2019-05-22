@@ -2,17 +2,13 @@ import React, { Component } from 'react';
 
 import {
   Map,
-  Marker,
-  Popup,
   TileLayer,
-  GeoJSON,
-  FeatureGroup,
   Circle,
 } from 'react-leaflet';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import leaflet from 'leaflet';
 import Navigation from '../components/Navigation';
@@ -25,7 +21,6 @@ import 'rc-slider/assets/index.css';
 import api from '../services/api';
 
 import t from '../locale/he_IL';
-import logo from '../assets/logo.png';
 import './Alerts.css';
 import '../../node_modules/leaflet/dist/leaflet.css';
 
@@ -132,9 +127,7 @@ class Alerts extends Component {
       .then((result) => {
         let transparentLayer = leaflet.geoJSON();
         if (result.data.length > 0) {
-          result.data.map((alert) => {
-            leaflet.geoJSON(alert.geom).addTo(transparentLayer);
-          });
+          result.data.map(alert => leaflet.geoJSON(alert.geom).addTo(transparentLayer));
           const layerBounds = transparentLayer.getBounds();
           this.setState({
             bounds: [layerBounds._southWest, layerBounds._northEast],
@@ -146,7 +139,7 @@ class Alerts extends Component {
   }
 
   render() {
-    const { alerts, form, error, loading, bounds } = this.state;
+    const { alerts, form, error, bounds } = this.state;
     const { me } = this.props;
 
     // unauthenticatd
@@ -218,7 +211,6 @@ class Alerts extends Component {
                 <br />
                 <button
                   id="submitButton"
-                  loading={this.state.loading}
                   title="הוסף התראה"
                   disabled={this.state.loading}
                 >
@@ -267,7 +259,7 @@ function Mapa(props) {
           .geoJSON(alert.geom)
           .getBounds()
           .getCenter();
-        return <Circle radius={alert.radius * 1000} center={center} />;
+        return <Circle radius={alert.radius * 1000} center={center} key={idx} />;
       })}
     </Map>
   );

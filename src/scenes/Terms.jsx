@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
-import t from '../locale/he_IL';
 import './Terms.css';
 
 class Terms extends Component {

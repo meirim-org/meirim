@@ -3,11 +3,10 @@ import React, { Component } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
-import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import api from '../services/api';
 
-import t from '../locale/he_IL';
 import logo from '../assets/logo.png';
 import './Alerts.css';
 

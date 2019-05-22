@@ -3,13 +3,11 @@ import React, { Component } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
-import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import api from '../services/api';
 
-import t from '../locale/he_IL';
 import logo from '../assets/logo.png';
-import './Alerts.css';
 
 class SignIn extends Component {
   state = {
@@ -59,9 +57,9 @@ class SignIn extends Component {
                 <div className="selectAreaAndInterest">
                   לא מצאנו את העמוד, יכול להיות שהתוכנית נמחקה או שהקישור שבור.
                   <br />
-                  בכל מקרה- אפשר לחפש תוכניות שמעניינות אתכם
+                  בכל מקרה- אפשר לחפש תוכניות שמעניינות אתכם&nbsp;
                   <Link to="/plans">
-                    <a> כאן </a>
+                    כאן
                   </Link>
                 </div>
               </div>

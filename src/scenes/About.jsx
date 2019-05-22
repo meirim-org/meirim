@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
-import t from '../locale/he_IL';
 import './About.css';
 
 import eyal from '../assets/team/eyal.png';

@@ -48,7 +48,6 @@ class Home extends Component {
               </p>
             </div>
             <div className="col-lg-4">
-              <a id="register" />
               <RegisterForm />
             </div>
           </div>
