@@ -115,7 +115,7 @@ class Plans extends Component {
             cols={1}
           >
             {plans.map((plan) => (
-              <Card className="card" raised={true}>
+              <Card className="card" raised={true} key={plan.id}>
                 <Link
                   className="card-link"
                   to={`/plan/${plan.id}/${plan.PL_NAME}`}

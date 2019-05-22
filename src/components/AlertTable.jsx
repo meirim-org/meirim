@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import t from '../locale/he_IL';
 
@@ -15,7 +15,7 @@ function AlertTable(props) {
       </thead>
       <tbody>
         {alerts.map((alert) => (
-          <tr>
+          <tr key={alert.id}>
             <td>{alert.address}</td>
             <td>{alert.radius + ' ' + t.km}</td>
             <td>

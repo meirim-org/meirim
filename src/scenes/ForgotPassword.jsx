@@ -4,7 +4,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
 import queryString from 'query-string';
-import { BrowserRouter as Router, Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import api from '../services/api';
 

@@ -11,8 +11,6 @@ import '../assets/bootstrap.css';
 
 import Moment from 'react-moment';
 
-import t from '../locale/he_IL';
-
 class SinglePlan extends Component {
   state = {
     plan: {},
@@ -40,7 +38,7 @@ class SinglePlan extends Component {
     return (
       <React.Fragment>
         <Navigation me={me} />
-        <div className="container" className="container">
+        <div className="container">
           {plan.PL_NAME && (
             <div className="container">
               <h1>{plan.PL_NAME}</h1>
@@ -80,7 +78,7 @@ class SinglePlan extends Component {
                         </Moment>
                       </li>
                       <li>
-                        <a target="_blank" href={plan.plan_url}>
+                        <a target="_blank" rel="noopener noreferrer" href={plan.plan_url}>
                           מסמכי התוכנית באתר משרד האוצר
                         </a>
                       </li>
