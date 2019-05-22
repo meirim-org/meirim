@@ -76,10 +76,10 @@ class Activity extends BaseModel {
   }
 
   upload(files) {
-    //const sampleFile = null;
-    //const width = 400;
-    //const height = 400;
-    //const newPath = `${__dirname}/../../public/upload/`;
+    // const sampleFile = null;
+    // const width = 400;
+    // const height = 400;
+    // const newPath = `${__dirname}/../../public/upload/`;
 
     if (!files) {
       return new Exception.badRequest('No files were uploaded');

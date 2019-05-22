@@ -17,27 +17,26 @@ module.exports = {
     .getBlueLines()
     .then(iPlans => Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan))),
 
-  complete_mavat_data: () =>
-    Plan.query(qb => {
-      qb.where('main_details_from_mavat', '=', '');
-    })
+  complete_mavat_data: () => {
+    return Plan.query(qb => qb.where('main_details_from_mavat', '=', ''))
       .fetchAll()
       .then(planCollection =>
-        Bluebird.mapSeries(planCollection.models, plan => {
+        Bluebird.mapSeries(planCollection.models, (plan) => {
           Log.debug(plan.get('plan_url'));
 
-          return MavatAPI.parseMavat(plan.get('plan_url')).then(mavatData => {
+          return MavatAPI.parseMavat(plan.get('plan_url')).then((mavatData) => {
             Plan.setMavatData(plan, mavatData);
             Log.debug('Saving with mavat', JSON.stringify(mavatData));
             return plan.save();
           });
         }),
-      ),
+      )
+  },
 
-  complete_jurisdiction_from_mavat: () =>
-    Plan.query(qb => qb.where('jurisdiction', 'IS', null))
+  complete_jurisdiction_from_mavat: () => {
+    return Plan.query(qb => qb.where('jurisdiction', 'IS', null))
       .fetchAll()
-      .then(planCollection =>
+      .then((planCollection) => {
         Bluebird.mapSeries(planCollection.models, (plan) => {
           Log.debug(plan.get('plan_url'));
           return MavatAPI.parseMavat(plan.get('plan_url')).then((mavatData) => {
@@ -48,8 +47,9 @@ module.exports = {
             );
             return plan.save();
           });
-        }),
-      ),
+        });
+      });
+  },
 
   sendPlanningAlerts: () => {
     // send emails for each plan to each user in the geographic area the fits
@@ -85,9 +85,9 @@ module.exports = {
               users: 0,
             };
           }
-          return Bluebird.mapSeries(users[0], user =>
-            Email.newPlanAlert(user, unsentPlan, planStaticMap),
-          ).then(() => ({
+          return Bluebird.mapSeries(users[0], (user) => {
+            Email.newPlanAlert(user, unsentPlan, planStaticMap);
+          }).then(() => ({
             plan_id: unsentPlan.get('id'),
             users: users.length,
           }));
@@ -97,9 +97,9 @@ module.exports = {
         const idArray = [];
         successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
         if (idArray.length) {
-          return Plan.maekPlansAsSent(idArray).then(() => 
-            Log.info('Processed plans', idArray),
-          );
+          return Plan.maekPlansAsSent(idArray).then(() => {
+            Log.info('Processed plans', idArray);
+          });
         }
         return true;
         // return successArray.reduce((pv, cv) => pv.users + cv.users, 0);
@@ -133,12 +133,12 @@ const fetchIplan = iPlan =>
       );
     })
     .then(plan => plan.save())
-    .catch(e => {
+    .catch((e) => {
       console.log('iplan exception', JSON.stringify(e));
       return Bluebird.resolve();
     });
 
-const buildPlan = (iPlan, oldPlan) =>
+const buildPlan = (iPlan, oldPlan) => {
   Plan.buildFromIPlan(iPlan, oldPlan).then((plan) => {
     // no mavat url was found
     if (!plan.get('plan_url')) {
@@ -153,3 +153,4 @@ const buildPlan = (iPlan, oldPlan) =>
         return plan;
       });
   });
+};

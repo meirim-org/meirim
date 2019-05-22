@@ -11,7 +11,7 @@ module.exports = {
 
     if (result && result.pagination) {
       data = result.models;
-      pagination = result.pagination;
+      ({ pagination } = result);
     } else {
       data = result;
     }
