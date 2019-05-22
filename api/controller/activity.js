@@ -6,7 +6,7 @@ const { Bookshelf } = require('../service/database');
 class ActivityController extends Controller {
   create(req) {
     let activity = null;
-    return Bookshelf.transaction(t => super.create(req, t)).tap(savedModel => {
+    return Bookshelf.transaction(t => super.create(req, t)).tap((savedModel) => {
       activity = savedModel;
       return activity.addPerson(req.session.person.id);
     });
@@ -20,7 +20,7 @@ class ActivityController extends Controller {
       .fetch()
       .then(activity => activity.canJoin(req.session))
       .then(activity => activity.addPerson(req.session.person.id))
-      .then(activity => {
+      .then((activity) => {
         Log.debug(this.tableName, 'created success id:', activity.get('id'));
         return activity;
       });

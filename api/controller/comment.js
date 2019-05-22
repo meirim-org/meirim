@@ -21,7 +21,7 @@ class CommentController extends Controller {
         id: req.session.person.id,
       })
         .fetch()
-        .then(person => person.save({alias: aliasString}, {patch: true}))
+        .then(person => person.save({ alias: aliasString }, { patch: true }))
         .then((person) => {
           req.session.person = person;
           return false;

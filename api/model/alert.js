@@ -45,36 +45,38 @@ class Alert extends Model {
     // partial validation
     const partialRules = Object.assign(model.rules, {});
     delete partialRules.geom;
-    return new Checkit(partialRules).run(model.attributes).then(() =>
-      Geocoder.geocode(model.get('address')).then((res) => {
-        if (!res[0]) {
-          throw new Exception.NotFound('The address does not exist');
-        }
-        const box = [];
-        const km = 1000;
-        const radius = model.get('radius') * km;
-        box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius),
-        );
-        box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius),
-        );
-        box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius),
-        );
-        box.push(
-          DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius),
-        );
-        box.push(box[0]);
+    return new Checkit(partialRules).run(model.attributes)
+      .then(() => {
+        return Geocoder.geocode(model.get('address'))
+          .then((res) => {
+            if (!res[0]) {
+              throw new Exception.NotFound('The address does not exist');
+            }
+            const box = [];
+            const km = 1000;
+            const radius = model.get('radius') * km;
+            box.push(
+              DegreeToMeter(res[0].longitude, res[0].latitude, radius, radius),
+            );
+            box.push(
+              DegreeToMeter(res[0].longitude, res[0].latitude, -radius, radius),
+            );
+            box.push(
+              DegreeToMeter(res[0].longitude, res[0].latitude, -radius, -radius),
+            );
+            box.push(
+              DegreeToMeter(res[0].longitude, res[0].latitude, radius, -radius),
+            );
+            box.push(box[0]);
 
-        model.set('geom', {
-          type: 'Polygon',
-          coordinates: [box],
+            model.set('geom', {
+              type: 'Polygon',
+              coordinates: [box],
+            });
+            model.set('address', res[0].formattedAddress);
+            return new Checkit(model.rules).run(model.attributes);
+          });
         });
-        model.set('address', res[0].formattedAddress);
-        return new Checkit(model.rules).run(model.attributes);
-      }),
-    );
   }
 
   canRead(session) {
@@ -108,12 +110,12 @@ class Alert extends Model {
 
   unsubsribeToken() {
     const token = Crypt.encrypt(`${this.get('id')}_${this.get('person_id')}`);
-    return new Buffer(token).toString('base64');
+    return Buffer.from(token).toString('base64');
   }
 
   static ByToken(token) {
     const details = Crypt.decrypt(
-      new Buffer(token, 'base64').toString('ascii'),
+      Buffer.from(token, 'base64').toString('ascii'),
     );
     const parts = details.split('_');
     return Alert.forge({

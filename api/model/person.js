@@ -121,9 +121,8 @@ class Person extends BaseModel {
     // hash password
     Log.debug('Password hashed');
     return Bcrypt.hash(model.get('password'), 10).then((hashedPassword) => {
-        model.set('password', hashedPassword);
-      }
-    );
+      model.set('password', hashedPassword);
+    });
   }
 
   // upload(files) {
