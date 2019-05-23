@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { Chart } from "react-charts";
 
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
@@ -13,6 +15,16 @@ import Moment from "react-moment";
 
 import t from "../locale/he_IL";
 
+const parseNumber = string => {
+    string = string.replace(",", "");
+    if (parseInt(string)) {
+        return parseInt(string.replace(",", ""));
+    }
+    if (string.charAt(0) === "-") {
+        return -parseInt(string.slice(1));
+    }
+    return 0;
+};
 class SinglePlan extends Component {
     state = {
         plan: {}
@@ -25,20 +37,72 @@ class SinglePlan extends Component {
             .get("/plan/" + id)
             .then(plan => this.setState({ plan: plan.data }))
             .catch(error => {
-                if (error.response.status === 404) window.location = "/404";
                 this.setState({ error });
             });
     }
 
     render() {
-        const { plan } = this.state;
+        const { plan, error } = this.state;
         const { me } = this.props;
 
         const changes =
-            plan && plan.areaChanges ? JSON.parse(plan.areaChanges) : [];
-        const rowStyle = {
-            direction: "ltr"
-        };
+            plan && plan.areaChanges ? JSON.parse(plan.areaChanges) : null;
+
+        const series = { type: "bar" };
+
+        const dataArea = [
+            {
+                label: "זכויות קיימות",
+                data: []
+            },
+            {
+                label: "זכויות מבוקשות",
+                data: []
+            }
+        ];
+
+        const dataUnits = [
+            {
+                label: "יחידות קיימות",
+                data: []
+            },
+            {
+                label: "יחידות מבוקשות",
+                data: []
+            }
+        ];
+
+        changes &&
+            changes[0].map((change, i) => {
+                if (change[3].includes('מ"ר')) {
+                    dataArea[0].data.push({
+                        x: change[3],
+                        y: parseNumber(change[5])
+                    });
+                    dataArea[1].data.push({
+                        x: change[3],
+                        y: parseNumber(change[6])
+                    });
+                } else {
+                    dataUnits[0].data.push({
+                        x: change[3],
+                        y: parseNumber(change[5])
+                    });
+                    dataUnits[1].data.push({
+                        x: change[3],
+                        y: parseNumber(change[6])
+                    });
+                }
+            });
+
+        const axes = [
+            { primary: true, type: "ordinal", position: "bottom" },
+            { position: "left", type: "linear", stacked: true }
+        ];
+
+        if (error && error.status === 404) {
+            return <Redirect to="/404" />;
+        }
         return (
             <React.Fragment>
                 <Navigation me={me} />
@@ -60,57 +124,36 @@ class SinglePlan extends Component {
                                             html={plan.main_details_from_mavat}
                                         />
                                     </div>
-                                    {changes && (
-                                        <div className="rectangle">
-                                            <h4>נתונים כמותיים עיקריים</h4>
-                                            <table>
-                                                <thead>
-                                                    <th>סוג</th>
-                                                    {/* <th> ערך</th> */}
-                                                    <th>נוכחי</th>
-                                                    <th>שינוי מבוקש</th>
-                                                    <th>סה"כ לאחר אישור</th>
+                                    <div className="rectangle">
+                                        <h4>נתונים כמותיים עיקריים</h4>
+                                        {!!dataUnits &&
+                                            !!dataUnits[0].data.length && (
+                                                <div style={{ height: 300 }}>
+                                                    <Chart
+                                                        series={series}
+                                                        data={dataUnits}
+                                                        axes={axes}
+                                                        tooltip={true}
+                                                    />
+                                                </div>
+                                            )}
+                                        {!!dataArea &&
+                                            !!dataArea[0].data.length && (
+                                                <div style={{ height: 300 }}>
+                                                    <Chart
+                                                        series={series}
+                                                        data={dataArea}
+                                                        axes={axes}
+                                                        tooltip={true}
+                                                    />
+                                                </div>
+                                            )}
+                                        טבלה זו הינה לנתונים סטטיסטים בלבד
+                                        והטבלה הקובעת לעניין זכויות הבניה הינה
+                                        טבלה 5 במסמך הוראות התכנית .אין בנתונים
+                                        המופיעים בטבלה זו אסמכתא משפטית כלשהיא.
+                                    </div>
 
-                                                    <th> הערות</th>
-                                                </thead>
-                                                <tbody>
-                                                    {changes[0].map(row => (
-                                                        <tr>
-                                                            <td>{row[3]}</td>
-                                                            {/* <td>{row[4]}</td> */}
-                                                            <td
-                                                                style={rowStyle}
-                                                            >
-                                                                {row[5]}
-                                                            </td>
-                                                            <td
-                                                                style={rowStyle}
-                                                            >
-                                                                {row[6]}
-                                                            </td>
-                                                            <td
-                                                                style={rowStyle}
-                                                            >
-                                                                {row[7]}
-                                                            </td>
-                                                            <td
-                                                                style={rowStyle}
-                                                            >
-                                                                {row[8] +
-                                                                    row[9]}
-                                                            </td>
-                                                            <td>{row[10]}</td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                            טבלה זו הינה לנתונים סטטיסטים בלבד
-                                            והטבלה הקובעת לעניין זכויות הבניה
-                                            הינה טבלה 5 במסמך הוראות התכנית .אין
-                                            בנתונים המופיעים בטבלה זו אסמכתא
-                                            משפטית כלשהיא.
-                                        </div>
-                                    )}
                                     <div className="rectangle">
                                         <h4>נתוני התוכנית</h4>
                                         <ul>
