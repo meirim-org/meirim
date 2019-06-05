@@ -6,7 +6,8 @@ const Exception = require('../model/exception');
 
 class AlertController extends Controller {
   create(req, res, next) {
-    return super.create(req, res, next)
+    return super
+      .create(req, res, next)
       .then(savedAlert => Email.newAlert(req.session.person, savedAlert).then(() => savedAlert));
   }
 
@@ -26,20 +27,24 @@ class AlertController extends Controller {
         return collection;
       });
   }
+
   /**
    * Unsubscribe from alert by token, when clicking an unsubscribe
    * link in an email
    * @param {IncomingRequest} req
    */
   unsubscribe(req) {
-    return Alert
-      .ByToken(req.query.token)
+    return Alert.ByToken(req.query.token)
       .fetch()
       .then((fetchedModel) => {
         if (!fetchedModel) {
           throw new Exception.NotFound('Nof found');
         }
-        Log.debug(this.tableName, 'unsubscribe success id:', fetchedModel.get('id'));
+        Log.debug(
+          this.tableName,
+          'unsubscribe success id:',
+          fetchedModel.get('id'),
+        );
         return fetchedModel.destroy(req.body);
       });
   }

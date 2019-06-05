@@ -1,8 +1,6 @@
-'use strict';
-const Model = require("./base_model");
-const Bookshelf = require('../service/database').Bookshelf;
-class Status extends Model {
+const Model = require('./base_model');
 
+class Status extends Model {
   get tableName() {
     return 'status';
   }
@@ -14,5 +12,5 @@ class Status extends Model {
   getCollection() {
     return this.collection();
   }
-};
+}
 module.exports = Status;

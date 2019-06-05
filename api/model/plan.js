@@ -1,8 +1,5 @@
 const Bluebird = require('bluebird');
 const Model = require('./base_model');
-const {
-  Knex,
-} = require('../service/database');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 
@@ -10,16 +7,14 @@ class Plan extends Model {
   get rules() {
     return {
       sent: 'integer',
-      OBJECTID: [
-        'required', 'integer',
-      ],
+      OBJECTID: ['required', 'integer'],
       PLAN_COUNTY_NAME: 'string',
       PL_NUMBER: 'string',
       PL_NAME: 'string',
       // PLAN_CHARACTOR_NAME: 'string',
       data: ['required'],
       geom: ['required', 'object'],
-      jurisdiction: 'string'
+      jurisdiction: 'string',
     };
   }
 
@@ -28,6 +23,7 @@ class Plan extends Model {
       sent: 0,
     };
   }
+
   // support json encode for data field
   format(attributes) {
     if (attributes.data) {
@@ -38,11 +34,13 @@ class Plan extends Model {
 
   // support json encode for data field
   parse(attributes) {
-
     try {
       if (attributes.data) {
         attributes.data = JSON.parse(attributes.data);
-        if (attributes.jurisdiction === 'מקומית' && attributes.data.STATION_DESC !== 'מאושרות') {
+        if (
+          attributes.jurisdiction === 'מקומית'
+          && attributes.data.STATION_DESC !== 'מאושרות'
+        ) {
           attributes.notCredible = true;
         }
       }
@@ -79,13 +77,18 @@ class Plan extends Model {
   }
 
   static maekPlansAsSent(plan_ids) {
-    return new Plan().query(qb => {
-      qb.whereIn('id', plan_ids);
-    }).save({
-      sent: '2',
-    }, {
-      method: 'update',
-    });
+    return new Plan()
+      .query((qb) => {
+        qb.whereIn('id', plan_ids);
+      })
+      .save(
+        {
+          sent: '2',
+        },
+        {
+          method: 'update',
+        },
+      );
   }
 
   static fetchByObjectID(objectID) {
@@ -105,6 +108,7 @@ class Plan extends Model {
       geom: iPlan.geometry,
       PLAN_CHARACTOR_NAME: '',
       plan_url: iPlan.properties.PL_URL,
+      status: iPlan.properties.STATION_DESC,
     };
     if (oldPlan) {
       oldPlan.set(data);
@@ -124,7 +128,7 @@ class Plan extends Model {
   }
 
   static getUnsentPlans(userOptions) {
-    const options = userOptions ? userOptions : {};
+    const options = userOptions || {};
     if (!options.limit) {
       options.limit = 1;
     }
@@ -135,8 +139,15 @@ class Plan extends Model {
       }
     }).fetchPage({
       pageSize: options.limit,
-      columns: ['id', 'data', 'goals_from_mavat', 'main_details_from_mavat', 'geom', 'jurisdiction'],
+      columns: [
+        'id',
+        'data',
+        'goals_from_mavat',
+        'main_details_from_mavat',
+        'geom',
+        'jurisdiction',
+      ],
     });
   }
-};
+}
 module.exports = Plan;

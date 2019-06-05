@@ -1,11 +1,9 @@
-const Success = require('../view/success');
 const Checkit = require('checkit');
 const Promise = require('bluebird');
+const Success = require('../view/success');
 const Log = require('../lib/log');
 const Exception = require('../model/exception');
-const {
-  bind,
-} = require('lodash');
+const { bind } = require('lodash');
 
 class Controller {
   constructor(model) {
@@ -15,10 +13,10 @@ class Controller {
       this.tableName = model.prototype.tableName;
     }
   }
+
   // try catch wrapper for all controllers
   static wrap(fn, ctx) {
-    return (req, res, next) => Promise
-      .try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+    return (req, res, next) => Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
       .then(response => Success.set(res, response, req.session))
       .catch(Checkit.Error, (err) => {
         req.error = new Exception.BadRequest(err);
@@ -29,21 +27,37 @@ class Controller {
         next();
       });
   }
-  browse() {
+
+  browse(req, options = {}) {
+    const { query } = req;
+
+    let page = parseInt(query.page, 10) || 1;
+    if (page < 1) page = 1;
+
+    const columns = options.columns || '*';
+    const where = options.where || {};
+
     return this.model
-      .fetchAll()
+      .query(qb => Object.keys(where).map(index => qb.where(index, 'in', where[index])))
+      .fetchPage({
+        columns,
+        page,
+        pageSize: 20,
+      })
       .then((collection) => {
         Log.debug(this.tableName, 'browse success');
         return collection;
       });
   }
+
   read(req) {
     const id = parseInt(req.params.id, 10);
     return this.model
       .forge({
         [this.id_attribute]: id,
       })
-      .fetch().then((fetchedModel) => {
+      .fetch()
+      .then((fetchedModel) => {
         if (!fetchedModel) throw new Exception.NotFound('Nof found');
         return fetchedModel.canRead(req.session);
       })
@@ -52,6 +66,7 @@ class Controller {
         return fetchedModel;
       });
   }
+
   patch(req) {
     const id = parseInt(req.params.id, 10);
     return this.model
@@ -68,6 +83,7 @@ class Controller {
         return fetchedModel.save(req.body);
       });
   }
+
   delete(req) {
     const id = parseInt(req.params.id, 10);
     return this.model
@@ -80,10 +96,15 @@ class Controller {
         return fetchedModel.canEdit(req.session);
       })
       .then((fetchedModel) => {
-        Log.debug(this.tableName, ' delete success id:', fetchedModel.get('id'));
+        Log.debug(
+          this.tableName,
+          ' delete success id:',
+          fetchedModel.get('id'),
+        );
         return fetchedModel.destroy(req.body);
       });
   }
+
   create(req, transaction) {
     let options = {};
     if (transaction) {
@@ -103,14 +124,13 @@ class Controller {
         return savedModel;
       });
   }
+
   upload(req) {
     const id = parseInt(req.params[this.id_attribute], 10);
-    const model = this.model
-      .forge({
-        [this.id_attribute]: id,
-      });
-    return model.canEdit(req.session)
-      .then(() => model.upload(req.files));
+    const model = this.model.forge({
+      [this.id_attribute]: id,
+    });
+    return model.canEdit(req.session).then(() => model.upload(req.files));
   }
 }
 module.exports = Controller;
