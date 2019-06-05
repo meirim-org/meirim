@@ -1,12 +1,13 @@
 const Request = require('request-promise');
 const GeoJSON = require('esri-to-geojson');
-const Log = require('../lib/log');
 const Bluebird = require('bluebird');
-const Config = require('../lib/config');
 const _ = require('lodash');
 const reproject = require('reproject');
+const Config = require('../lib/config');
+const Log = require('../lib/log');
 
-const BASE_AGS_URL = 'https://ags.iplan.gov.il/arcgis/rest/services/PlanningPublic/Xplan2/MapServer';
+const BASE_AGS_URL = 'https://ags.iplan.gov.il/arcgis/rest/services/'
+  + 'PlanningPublic/Xplan2/MapServer';
 
 const options = {
   rejectUnauthorized: false,
@@ -18,7 +19,6 @@ const options = {
   },
   json: true, // Automatically parses the JSON string in the response
 };
-
 
 const fields = [
   'OBJECTID',
@@ -53,26 +53,31 @@ const fields = [
   'PL_TASRIT_PRN_VERSION',
 ];
 
-const EPSG3857 = '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs';
+const EPSG3857 = '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 '
+  + '+x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs';
 
 const getBlueLines = () => {
-  const url = `${BASE_AGS_URL}/0/query?f=json&outFields=${fields.join(',')}&returnGeometry=true&where=OBJECTID>0&orderByFields=LAST_UPDATE DESC`;
+  const url = `${BASE_AGS_URL}/0/query?f=json&outFields=${fields.join(
+    ',',
+  )}&returnGeometry=true&where=OBJECTID>0&orderByFields=LAST_UPDATE DESC`;
   const requestOptions = _.clone(options);
   Log.debug(url);
   requestOptions.uri = url;
-  return Request(requestOptions)
-    .then((data) => {
-      const geojson = GeoJSON.fromEsri(data, {});
-      Log.debug('Got', geojson.features.length, 'plans');
-      return Bluebird
-        .reduce(geojson.features, (coll, datum) => {
-          // overriding geomerty with WGS84 coordinates
-          const res = Object.assign({}, datum, {
-            geometry: reproject.toWgs84(datum.geometry, EPSG3857),
-          });
-          return coll.concat(res);
-        }, []);
-    });
+  return Request(requestOptions).then((data) => {
+    const geojson = GeoJSON.fromEsri(data, {});
+    Log.debug('Got', geojson.features.length, 'plans');
+    return Bluebird.reduce(
+      geojson.features,
+      (coll, datum) => {
+        // overriding geomerty with WGS84 coordinates
+        const res = Object.assign({}, datum, {
+          geometry: reproject.toWgs84(datum.geometry, EPSG3857),
+        });
+        return coll.concat(res);
+      },
+      [],
+    );
+  });
 };
 
 const getPlanningCouncils = () => {

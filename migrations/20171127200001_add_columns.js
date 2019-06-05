@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.table('plan', (table) => {
+  return knex.schema.table('plan', table => {
     table.text('plan_url');
     table.text('goals_from_mavat');
     table.text('main_details_from_mavat');
@@ -7,7 +7,11 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.table('plan', (table) => {
-    table.dropColumns('plan_url', 'goals_from_mavat', 'main_details_from_mavat');
+  return knex.schema.table('plan', table => {
+    table.dropColumns(
+      'plan_url',
+      'goals_from_mavat',
+      'main_details_from_mavat',
+    );
   });
 };

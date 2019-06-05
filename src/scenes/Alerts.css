@@ -1,0 +1,180 @@
+html body {
+  direction: rtl;
+  background-color: #f8f8f8;
+}
+
+.goodMorning {
+  margin: auto;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: -0.9px;
+  text-align: center;
+  color: #3b3b3b;
+  padding-top: 10px;
+  padding-bottom: 30px;
+}
+
+.container-title {
+  font-weight: bold;
+}
+
+.eyelashes {
+  display: block;
+  margin: auto;
+  top: 107px;
+  width: 91px;
+  height: 68px;
+  margin-top: 60px;
+}
+
+.selectAreaAndInterest {
+  margin: auto;
+  text-align: center;
+  font-size: 20px;
+  color: #3b3b3b;
+  padding-top: 20px;
+}
+.selectAreaAndInterest small {
+  color: #a2a2a2;
+  font-size: 13px;
+  display: block;
+  text-align: center;
+}
+
+.dialog {
+  max-width: 400px;
+}
+.widedialog {
+  max-width: 800px;
+}
+
+.rectangle {
+  margin: 29px auto;
+  padding: 30px 30px;
+  /* width: 636px; */
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 9px 14px 0 rgba(0, 0, 0, 0.08);
+}
+
+.group {
+  position: relative;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+table#alertTable {
+  width: 100%;
+  margin-bottom: 30px;
+}
+table#alertTable th {
+  font-size: 15px;
+  color: #9b9b9b;
+  border-bottom: solid 1px #e7e7e7;
+  padding: 20px 0 0 0;
+}
+table#alertTable td {
+  font-size: 15px;
+  color: #9b9b9b;
+  padding: 10px 0;
+}
+
+input[type='text'] {
+  resize: none;
+  background: none;
+  color: #005cbf;
+  font-size: 18px;
+  display: block;
+  border: none;
+  position: relative;
+  border-radius: 0;
+  border-bottom: solid 1px #e7e7e7;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+}
+
+label {
+  color: #005cbf;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+label#homeLabale {
+  display: block;
+}
+
+label#radiusLabale {
+  position: relative;
+  display: inline-block;
+}
+
+#submitButton {
+  border: 0;
+  font-size: 15px;
+  color: #ffffff;
+  margin: 0 auto;
+  width: 129px;
+  height: 40px;
+  border-radius: 20px;
+  text-align: center;
+  display: block;
+  background-color: #005cbf;
+  cursor: pointer;
+}
+
+button.delete {
+  height: 20px;
+  width: 20px;
+  background-color: transparent;
+  position: relative;
+  border: 0;
+  cursor: pointer;
+  color: #9b9b9b;
+}
+button.delete:hover {
+  color: black;
+}
+
+button.delete:after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* content: "\274c"; use the hex value here... */
+  font-size: 30px;
+  /* color:rgba(255, 0, 31, 0.64); */
+  line-height: 23px;
+  text-align: center;
+  cursor: pointer;
+}
+
+input[id='deleteAlert'] {
+  background: none;
+  border: none;
+  color: red;
+  font-weight: bold;
+}
+
+@media (max-width: 576px) {
+  .rectangle {
+    /* padding: 1px; */
+    margin: 10px;
+    width: 100%;
+  }
+
+  .container {
+    padding-right: 0;
+  }
+
+  .radiusRange {
+    max-width: 60%;
+  }
+
+  .selectAreaAndInterest {
+    max-width: 90%;
+  }
+}

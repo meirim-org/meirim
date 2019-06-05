@@ -5,6 +5,13 @@ const Log = require('../lib/log');
 const Email = require('../service/email');
 
 class SignController extends Controller {
+  me(req) {
+    if (!req.session.person) {
+      throw Exception.NotAllowed('Must be logged in');
+    }
+    return true;
+  }
+
   signup(req) {
     // check if user exists and not active
     return this.model
@@ -16,12 +23,15 @@ class SignController extends Controller {
       .then((existingPerson) => {
         // if there is an inactive person we send only a mail
         if (existingPerson) {
-          Log.debug('Person send activation email to:', existingPerson.get('id'));
+          Log.debug(
+            'Person send activation email to:',
+            existingPerson.get('id'),
+          );
           return Email.newSignUp(existingPerson);
         }
 
         // if there is a user but active, this will return an error
-      
+
         return this.model
           .forge(req.body)
           .save()
@@ -38,8 +48,7 @@ class SignController extends Controller {
       throw new Exception.BadRequest('No token provided');
     }
     Log.debug('Person Activate token:', req.body.token);
-    return Person
-      .activateByToken(req.body.token);
+    return Person.activateByToken(req.body.token);
   }
 
   signin(req) {
@@ -54,8 +63,8 @@ class SignController extends Controller {
     Log.debug('Try login with email:', email);
 
     return Person.forge({
-        email,
-      })
+      email,
+    })
       .fetch()
       .then((person) => {
         if (!person) {
@@ -73,30 +82,6 @@ class SignController extends Controller {
       });
   }
 
-  // forgot(req) {
-  //   if (!req.body.email) {
-  //     throw new Exception.BadRequest('No email provided');
-  //   }
-   
-  //   const email = req.body.email.toLowerCase().trim();
-  //   Log.debug('Try login with email:', email);
-
-  //   return Person.forge({
-  //       email,
-  //     })
-  //     .fetch()
-  //     .then(person => {
-  //       // always return true;
-  //       if (!person){
-  //         return Promise.resolve();
-  //       }
-  //       person.resetPasswordCode()
-  //       return Email.sendPasswordResetCode(Object.assign({},person,person.resetPasswordCode()));
-      
-  //     })
-  //     .then(() =>true);
-  // }
-
   signout(req) {
     if (req.session.destroy()) {
       return true;
@@ -104,6 +89,5 @@ class SignController extends Controller {
     return false;
   }
 }
-
 
 module.exports = new SignController(Person);

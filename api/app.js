@@ -1,12 +1,11 @@
 const Express = require('express');
 const BodyParser = require('body-parser');
+const Cors = require('cors');
 const Log = require('./lib/log');
-const Session = require('./model/session');
+const Session = require('./lib/session');
 const Email = require('./service/email');
 const routes = require('./routes');
 const errorHandler = require('./errorHandler');
-const Cors = require('cors');
-const expressLogger = require('express-pino-logger')()
 
 const urlencoded = BodyParser.urlencoded({
   extended: false,
@@ -23,7 +22,6 @@ const cors = Cors({
 
 // init application
 const app = Express();
-app.use(expressLogger);
 app.use(Session);
 app.use(cors);
 app.options('*', cors);

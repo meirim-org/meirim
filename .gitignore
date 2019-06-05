@@ -3,3 +3,4 @@ node_modules
 local.json
 public/upload/
 .idea
+config/local.json

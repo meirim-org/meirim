@@ -6,15 +6,9 @@ const Exception = require('./exception');
 class Comment extends Model {
   get rules() {
     return {
-      person_id: [
-        'required', 'integer',
-      ],
-      content: [
-        'required', 'string',
-      ],
-      plan_id: [
-        'required', 'integer',
-      ],
+      person_id: ['required', 'integer'],
+      content: ['required', 'string'],
+      plan_id: ['required', 'integer'],
       parent_id: ['required', 'integer'],
     };
   }
@@ -56,11 +50,13 @@ class Comment extends Model {
         qb.orderBy('id', 'DESC');
       })
       .fetchAll({
-        withRelated: [{
-          'person': function (qb) {
-            qb.column('id', 'alias');
-          }
-        }],
+        withRelated: [
+          {
+            person(qb) {
+              qb.column('id', 'alias');
+            },
+          },
+        ],
       });
   }
 

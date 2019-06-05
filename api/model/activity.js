@@ -1,10 +1,10 @@
 const Promise = require('bluebird');
+const Checkit = require('checkit');
 const Exception = require('./exception');
 const Upload = require('../lib/upload');
 const PersonActivity = require('../model/person_activity');
 const BaseModel = require('./base_model');
 const Log = require('../lib/log');
-const Checkit = require('checkit');
 const Geocoder = require('../service/geocoder').geocoder;
 
 class Activity extends BaseModel {
@@ -13,23 +13,18 @@ class Activity extends BaseModel {
       // id: [
       //   'required', 'integer'
       // ],
-      headline: [
-        'required', 'string'
-      ],
-      address: [
-        'required', 'string'
-      ],
+      headline: ['required', 'string'],
+      address: ['required', 'string'],
       // latlon: [
       //   'required', 'string'
       // ],
-      description: [
-        'required', 'string'
-      ],
-      status: ['required', 'integer']
-    }
+      description: ['required', 'string'],
+      status: ['required', 'integer'],
+    };
   }
+
   get hidden() {
-    return ['password', 'admin']
+    return ['password', 'admin'];
   }
 
   get tableName() {
@@ -39,6 +34,7 @@ class Activity extends BaseModel {
   get hasTimestamps() {
     return true;
   }
+
   get idAttribute() {
     return 'id';
   }
@@ -49,8 +45,8 @@ class Activity extends BaseModel {
 
   defaults() {
     return {
-      status: 1
-    }
+      status: 1,
+    };
   }
 
   get geometry() {
@@ -60,12 +56,12 @@ class Activity extends BaseModel {
   _saving(model, attrs, options) {
     return Geocoder.geocode(model.get('address')).then(res => {
       model.set('latlon', {
-        'type': 'Point',
-        'coordinates': [res[0].latitude, res[0].longitude]
+        type: 'Point',
+        coordinates: [res[0].latitude, res[0].longitude],
       });
       model.set('address', res[0].formattedAddress);
       return new Checkit(model.rules).run(model.attributes);
-    })
+    });
   }
 
   status() {
@@ -75,15 +71,15 @@ class Activity extends BaseModel {
   addPerson(person_id) {
     return PersonActivity.forge({
       activity_id: this.get('id'),
-      person_id: person_id
+      person_id,
     }).save();
   }
 
   upload(files) {
-    var sampleFile = null,
-      width = 400,
-      height = 400,
-      newPath = __dirname + '/../../public/upload/';
+    // const sampleFile = null;
+    // const width = 400;
+    // const height = 400;
+    // const newPath = `${__dirname}/../../public/upload/`;
 
     if (!files) {
       return new Exception.badRequest('No files were uploaded');
@@ -115,34 +111,37 @@ class Activity extends BaseModel {
   }
 
   static uploadMiddleWareFactory() {
-    var numberOfPhotos = 12;
+    const numberOfPhotos = 12;
     return Upload.middleware.array('photos', numberOfPhotos);
   }
 
   canRead(session) {
     return Promise.resolve(true);
   }
+
   canEdit(session) {
     // if (!session.person || !session.person.admin) {
     // 	throw new Exception.NotAllowed('Must be an admin')
     // }
-    return Promise.resolve(true);;
+    return Promise.resolve(true);
   }
+
   canJoin(session) {
     if (!session.person || !session.person.id) {
-      throw new Exception.NotAllowed('Must be signed in')
+      throw new Exception.NotAllowed('Must be signed in');
     }
     if (!this.status().notActive()) {
-      throw new Exception.NotAllowed('Activity isn\'t active');
+      throw new Exception.NotAllowed("Activity isn't active");
     }
     return Promise.resolve(this);
   }
+
   static canCreate(session) {
     if (!session || !session.person || !session.person.id) {
       throw new Exception.NotAllowed('Must be signed in');
     }
     return Promise.resolve(true);
   }
-};
+}
 // private
 module.exports = Activity;
