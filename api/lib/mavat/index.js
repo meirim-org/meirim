@@ -17,9 +17,13 @@ const init = () =>
             try {
                 if (!browser) {
                     log.debug("Launching chrome");
-                    browser = await puppeteer.launch({ headless: true });
+                    browser = await puppeteer.launch({
+                        headless: true,
+                        args: ["--no-sandbox", "--disable-setuid-sandbox"]
+                    });
                     log.debug("Success launching chrome");
                 }
+
                 resolve(browser);
             } catch (err) {
                 log.error(err);
