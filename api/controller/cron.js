@@ -132,7 +132,7 @@ const fetchIplan = iPlan =>
                           return plan;
                       })
         )
-        .then(plan => plan.save())
+        .then(plan => (plan ? plan.save() : false))
         .catch(e => {
             console.log("iplan exception", JSON.stringify(e));
             return Bluebird.resolve();
