@@ -19,15 +19,9 @@ class Person extends BaseModel {
       // lastName: [
       //   'required', 'string'
       // ],
-      email: [
-        'required', 'email',
-      ],
-      password: [
-        'required', 'string',
-      ],
-      status: [
-        'required', 'integer',
-      ],
+      email: ['required', 'email'],
+      password: ['required', 'string'],
+      status: ['required', 'integer'],
       admin: ['integer'],
     };
   }
@@ -69,10 +63,11 @@ class Person extends BaseModel {
     return Buffer.from(token).toString('base64');
   }
 
-
   static resetPasswordByToken(token, newPassword) {
     const now = new Date().getTime();
-    const details = Crypt.decrypt(Buffer.from(token, 'base64').toString('ascii'));
+    const details = Crypt.decrypt(
+      Buffer.from(token, 'base64').toString('ascii'),
+    );
     const parts = details.split('_');
     if (parts.length !== 2) {
       throw new Exception.BadRequest('Invalid token');
@@ -83,9 +78,17 @@ class Person extends BaseModel {
       Log.debug('resetPasswordByToken:', whenGenerated, 'is in the future');
       throw new Exception.BadRequest('Invalid token');
     }
-    if (now - (7200 * seconds) > whenGenerated) {
-      Log.debug('resetPasswordByToken:', whenGenerated, 'is ', 7200 * seconds, 'in the past');
-      throw new Exception.BadRequest('Invalid token: token is valid for 2 hours only. Please generate a new token');
+    if (now - 7200 * seconds > whenGenerated) {
+      Log.debug(
+        'resetPasswordByToken:',
+        whenGenerated,
+        'is ',
+        7200 * seconds,
+        'in the past',
+      );
+      throw new Exception.BadRequest(
+        'Invalid token: token is valid for 2 hours only. Please generate a new token',
+      );
     }
     return Person.forge({
       id: parts[0],
@@ -111,26 +114,27 @@ class Person extends BaseModel {
     }
     const password = model.get('password');
     if (password.lenth <= passwordLength) {
-      throw new Exception.BadRequest(`Password must be at least ${passwordLength} charcters`);
+      throw new Exception.BadRequest(
+        `Password must be at least ${passwordLength} charcters`,
+      );
     }
     // hash password
     Log.debug('Password hashed');
-    return Bcrypt.hash(model.get('password'), 10)
-      .then(hashedPassword => model.set('password', hashedPassword));
+    return Bcrypt.hash(model.get('password'), 10).then((hashedPassword) => {
+      model.set('password', hashedPassword);
+    });
   }
 
   // upload(files) {
   //   return this;
   // }
   checkPassword(password) {
-    return Bcrypt
-      .compare(password, this.get('password'))
-      .then((res) => {
-        if (!res) {
-          throw new Exception.NotAllowed('Password mismatch');
-        }
-        return this;
-      });
+    return Bcrypt.compare(password, this.get('password')).then((res) => {
+      if (!res) {
+        throw new Exception.NotAllowed('Password mismatch');
+      }
+      return this;
+    });
   }
 
   static canCreate(session) {
@@ -143,10 +147,9 @@ class Person extends BaseModel {
   static activateByToken(token) {
     const data = Buffer.from(token, 'base64').toString('ascii');
     const email = Crypt.decrypt(data);
-    return Person
-      .forge({
-        email,
-      })
+    return Person.forge({
+      email,
+    })
       .fetch()
       .then((fetchedPerson) => {
         if (!fetchedPerson) {
@@ -165,17 +168,34 @@ class Person extends BaseModel {
   static verifyEmail(email) {
     const codes = verifier.verifyCodes;
     return new Promise((resolve, reject) => {
-      verifier.verify(email, { sender: Config.get('email.from_email') }, (err, info) => {
-        Log.debug('Email verifier', info, err);
-        if (err) reject(err);
-        else if (info.success) resolve(true);
-        else if (info.code === codes.domainNotFound) reject(new Exception.BadRequest('Email domain not found'));
-        else if (info.code === codes.invalidEmailStructure) reject(new Exception.BadRequest('Email is not valid'));
-        else if (info.code === codes.noMxRecords) reject(new Exception.BadRequest('The domain doesn\'t receive emails. No MX records'));
-        else if (info.code === codes.SMTPConnectionTimeout) reject(new Exception.BadRequest('SMTP Connection Timeout'));
-        else if (info.code === codes.SMTPConnectionError) reject(new Exception.BadRequest('SMTP Connection Error'));
-        else reject(new Exception.BadRequest('Email isn\'t valid'));
-      });
+      verifier.verify(
+        email,
+        { sender: Config.get('email.from_email') },
+        (err, info) => {
+          Log.debug('Email verifier', info, err);
+          if (err) {
+            reject(err);
+          } else if (info.success) {
+            resolve(true);
+          } else if (info.code === codes.domainNotFound) {
+            reject(new Exception.BadRequest('Email domain not found'));
+          } else if (info.code === codes.invalidEmailStructure) {
+            reject(new Exception.BadRequest('Email is not valid'));
+          } else if (info.code === codes.noMxRecords) {
+            reject(
+              new Exception.BadRequest(
+                "The domain doesn't receive emails. No MX records",
+              ),
+            );
+          } else if (info.code === codes.SMTPConnectionTimeout) {
+            reject(new Exception.BadRequest('SMTP Connection Timeout'));
+          } else if (info.code === codes.SMTPConnectionError) {
+            reject(new Exception.BadRequest('SMTP Connection Error'));
+          } else {
+            reject(new Exception.BadRequest("Email isn't valid"));
+          }
+        },
+      );
     });
   }
 }

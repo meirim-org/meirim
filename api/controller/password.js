@@ -31,8 +31,9 @@ class PasswordController extends Controller {
       throw new Exception.BadRequest('No password provided');
     }
 
-    return Person.resetPasswordByToken(req.body.token, req.body.password)
-      .then(() => true);
+    return Person.resetPasswordByToken(req.body.token, req.body.password).then(
+      () => true,
+    );
   }
 }
 module.exports = PasswordController;

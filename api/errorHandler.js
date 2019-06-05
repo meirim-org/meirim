@@ -13,9 +13,17 @@ module.exports = (req, res) => {
 
   Log.error('User error', JSON.stringify(err));
 
-  if (err.name === 'NotAllowed') return Failure.notAllowed(res, err.message);
-  if (err.name === 'BadRequest') return Failure.badRequest(res, err.message);
-  if (err.name === 'NotFound') return Failure.notFound(res, err.message);
-  if (err.name === 'NotImplemented') return Failure.notImplemented(res, err.message);
+  if (err.name === 'NotAllowed') {
+    return Failure.notAllowed(res, err.message);
+  }
+  if (err.name === 'BadRequest') {
+    return Failure.badRequest(res, err.message);
+  }
+  if (err.name === 'NotFound') {
+    return Failure.notFound(res, err.message);
+  }
+  if (err.name === 'NotImplemented') {
+    return Failure.notImplemented(res, err.message);
+  }
   return Failure.error(res, err.message);
 };

@@ -11,11 +11,10 @@ module.exports = {
 
     if (result && result.pagination) {
       data = result.models;
-      pagination = result.pagination;
+      ({ pagination } = result);
     } else {
       data = result;
     }
-
 
     res.set('Content-Type', 'application/json; charset=utf-8');
     res.json({

@@ -1,5 +1,3 @@
-
-
 const Checkit = require('checkit');
 const { Bookshelf } = require('../service/database');
 const Exception = require('./exception');

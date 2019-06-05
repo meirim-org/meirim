@@ -3,7 +3,6 @@ const StaticMaps = require('staticmaps');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
 
-
 const fetchStaticMap = (lat, lon) => {
   // create map with marker in center
   const map = new StaticMaps({
@@ -20,7 +19,8 @@ const fetchStaticMap = (lat, lon) => {
   map.addMarker(marker);
 
   // resolve with base64 string so we don't pass buffers around
-  return map.render()
+  return map
+    .render()
     .then(() => map.image.image.toString('base64'))
     .catch((err) => {
       // fail with no image

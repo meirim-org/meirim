@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const Config = require('./config');
 
-
 const algorithm = 'aes-256-ctr';
 const password = Config.get('cypher.secret');
 

@@ -10,7 +10,6 @@ const Subscription = require('./controller/subscription');
 // const health = require('./Controller/health');
 const { wrap } = require('./controller/controller');
 
-
 // Sign up
 Router.post('/sign/up', wrap(SignUp.signup, SignUp));
 Router.post('/sign/activate', wrap(SignUp.activate, SignUp));
@@ -25,7 +24,10 @@ Router.get('/plan_county', wrap(Plan.county, Plan));
 Router.get('/plan_status', wrap(Plan.statuses, Plan));
 
 Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
-Router.delete('/plan/:id/subscribe', wrap(Subscription.unsubscribe, Subscription));
+Router.delete(
+  '/plan/:id/subscribe',
+  wrap(Subscription.unsubscribe, Subscription),
+);
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
@@ -43,7 +45,6 @@ Router.delete('/alert/:id', wrap(Alert.delete, Alert));
 
 // me
 Router.get('/me/', wrap(Alert.browse, Alert));
-
 
 // Cron
 // Router.get('/cron/iplan', wrap(iplan));

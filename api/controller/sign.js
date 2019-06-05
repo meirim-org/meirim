@@ -23,7 +23,10 @@ class SignController extends Controller {
       .then((existingPerson) => {
         // if there is an inactive person we send only a mail
         if (existingPerson) {
-          Log.debug('Person send activation email to:', existingPerson.get('id'));
+          Log.debug(
+            'Person send activation email to:',
+            existingPerson.get('id'),
+          );
           return Email.newSignUp(existingPerson);
         }
 
@@ -45,8 +48,7 @@ class SignController extends Controller {
       throw new Exception.BadRequest('No token provided');
     }
     Log.debug('Person Activate token:', req.body.token);
-    return Person
-      .activateByToken(req.body.token);
+    return Person.activateByToken(req.body.token);
   }
 
   signin(req) {
@@ -87,6 +89,5 @@ class SignController extends Controller {
     return false;
   }
 }
-
 
 module.exports = new SignController(Person);

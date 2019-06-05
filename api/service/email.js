@@ -36,28 +36,45 @@ class Email {
     const contents = [];
     let mapper = [];
     return new Promise((resolve, reject) => {
-      dir.readFiles(templateDir, {
-        match: /.mustache$/,
-      },
-      (err, content, next) => {
-        if (err) reject(err);
-        contents.push(content);
-        next();
-      },
-      (err, files) => {
-        if (err) reject(err);
-        mapper = files;
-        resolve();
-      });
+      dir.readFiles(
+        templateDir,
+        {
+          match: /.mustache$/,
+        },
+        (err, content, next) => {
+          if (err) {
+            reject(err);
+          }
+
+          contents.push(content);
+          next();
+        },
+        (err, files) => {
+          if (err) {
+            reject(err);
+          }
+
+          mapper = files;
+          resolve();
+        },
+      );
     }).then(() => {
       mapper.map((file, index) => {
-        const key = file.split('/').pop().split('.').shift();
+        const key = file
+          .split('/')
+          .pop()
+          .split('.')
+          .shift();
         templates[key] = contents[index];
       });
 
       for (const key in templates) {
-        const title = templates[key].match(/<title[^>]*>((.|[\n\r])*)<\/title>/im)[1];
-        const body = templates[key].match(/<body[^>]*>((.|[\n\r])*)<\/body>/im)[1];
+        const title = templates[key].match(
+          /<title[^>]*>((.|[\n\r])*)<\/title>/im,
+        )[1];
+        const body = templates[key].match(
+          /<body[^>]*>((.|[\n\r])*)<\/body>/im,
+        )[1];
         const html = Mustache.render(templates.wrapper, {
           body,
         });
@@ -94,17 +111,23 @@ class Email {
     }
 
     // data.unsubscribeLink = `${this.baseUrl}unsubscribe/?token=${alert.unsubsribeToken()}`;
-    data.unsubscribeLink = `${this.baseUrl}alert/?token=${alert.unsubsribeToken()}`;
-    data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}/${unsentPlan.get('PL_NAME')}`;
+    data.unsubscribeLink = `${
+      this.baseUrl
+    }alert/?token=${alert.unsubsribeToken()}`;
+    data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}/${unsentPlan.get(
+      'PL_NAME',
+    )}`;
     data.jurisdiction = unsentPlan.get('jurisdiction');
     data.isLocalAuthority = data.jurisdiction === 'מקומית';
 
-    data.attachments = [{
-      cid: 'planmap',
-      filename: 'plan_map.png',
-      content: planStaticMap,
-      encoding: 'base64',
-    }];
+    data.attachments = [
+      {
+        cid: 'planmap',
+        filename: 'plan_map.png',
+        content: planStaticMap,
+        encoding: 'base64',
+      },
+    ];
 
     return this.sendWithTemplate(this.templates.alert, data);
   }
@@ -117,21 +140,27 @@ class Email {
   resetPasswordToken(person) {
     const templateProperties = {
       email: person.get('email'),
-      url: `${Config.get('general.domain')}forgot/?token=${person.resetPasswordToken()}`,
+      url: `${Config.get(
+        'general.domain',
+      )}forgot/?token=${person.resetPasswordToken()}`,
     };
-    return this.sendWithTemplate(this.templates.resetPasswordToken, templateProperties);
+    return this.sendWithTemplate(
+      this.templates.resetPasswordToken,
+      templateProperties,
+    );
   }
 
   sendWithTemplate(template, templateProperties) {
-    const attachments = templateProperties.attachments ? templateProperties.attachments : [];
+    const attachments = templateProperties.attachments
+      ? templateProperties.attachments
+      : [];
 
     attachments.push({
       filename: 'logo_email.png',
       path: path.resolve('api/service/email/logo_email.png'),
       cid: 'logomeirim',
     });
-    const subject = Mustache
-      .render(template.title, templateProperties)
+    const subject = Mustache.render(template.title, templateProperties)
       .replace(/\r?\n|\r/g, '')
       .replace(/\s\s+/g, ' ');
 

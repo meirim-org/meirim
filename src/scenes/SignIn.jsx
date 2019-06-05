@@ -3,11 +3,10 @@ import React, { Component } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 
-import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import api from "../services/api";
 
-import t from "../locale/he_IL";
 import logo from "../assets/logo.png";
 import "./Alerts.css";
 
@@ -17,26 +16,19 @@ class SignIn extends Component {
         redirectTo: ((this.props.location || {}).state || {}).redirectTo || "/"
     };
 
-    constructor(props) {
-        super(props);
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
+    handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value,
             success: 0
         });
-    }
+    };
 
-    handleSubmit(event) {
+    handleSubmit = event => {
         event.preventDefault();
         api.post("/sign/in", this.state)
             .then(success => this.setState({ success: 1 }))
             .catch(error => this.setState({ success: -1 }));
-    }
+    };
     render() {
         const { success } = this.state;
         if (success === 1) {
@@ -70,7 +62,7 @@ class SignIn extends Component {
 
                     <div className="rectangle dialog">
                         <form method="post" onSubmit={this.handleSubmit}>
-                            {success == -1 && (
+                            {success === -1 && (
                                 <div
                                     className="alert alert-danger"
                                     role="alert"

@@ -7,7 +7,8 @@ const Config = require("../lib/config");
 const Log = require("../lib/log");
 
 const BASE_AGS_URL =
-    "https://ags.iplan.gov.il/arcgis/rest/services/PlanningPublic/Xplan2/MapServer";
+    "https://ags.iplan.gov.il/arcgis/rest/services/" +
+    "PlanningPublic/Xplan2/MapServer";
 
 const options = {
     rejectUnauthorized: false,

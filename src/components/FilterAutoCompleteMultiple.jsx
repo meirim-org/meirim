@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import Paper from "@material-ui/core/Paper";
-import Chip from "@material-ui/core/Chip";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
+import Paper from '@material-ui/core/Paper';
+import Chip from '@material-ui/core/Chip';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
-import deburr from "lodash/deburr";
+import deburr from 'lodash/deburr';
 
-import Downshift from "downshift";
+import Downshift from 'downshift';
 
-import "./FilterAutoCompleteMultiple.css";
+import './FilterAutoCompleteMultiple.css';
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -30,9 +30,15 @@ function renderInput(inputProps) {
   );
 }
 
-function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
+function renderSuggestion({
+  suggestion,
+  index,
+  itemProps,
+  highlightedIndex,
+  selectedItem,
+}) {
   const isHighlighted = highlightedIndex === index;
-  const isSelected = (selectedItem || "").indexOf(suggestion.label) > -1;
+  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
   return (
     <MenuItem
@@ -59,29 +65,33 @@ renderSuggestion.propTypes = {
 
 class FilterAutoCompleteMultiple extends Component {
   state = {
-    inputValue: "",
+    inputValue: '',
     selectedItem: [],
   };
 
   handleKeyDown = (event) => {
     const { onFilterChange } = this.props;
     let { inputValue, selectedItem } = this.state;
-    
-    if (selectedItem.length && !inputValue.length && event.key === "Backspace") {
+
+    if (
+      selectedItem.length &&
+      !inputValue.length &&
+      event.key === 'Backspace'
+    ) {
       // remove last filter item
       selectedItem.splice(selectedItem.length - 1, 1);
-      
+
       this.setState({
         selectedItem,
       });
 
       onFilterChange(selectedItem);
     }
-  }
+  };
 
   handleInputChange = (event) => {
     this.setState({ inputValue: event.target.value });
-  }
+  };
 
   handleChange = (item) => {
     const { onFilterChange } = this.props;
@@ -92,25 +102,25 @@ class FilterAutoCompleteMultiple extends Component {
     }
 
     this.setState({
-      inputValue: "",
+      inputValue: '',
       selectedItem,
     });
 
     onFilterChange(selectedItem);
-  }
+  };
 
   handleDelete = (item) => () => {
     const { onFilterChange } = this.props;
     let { selectedItem } = this.state;
-    
+
     selectedItem.splice(selectedItem.indexOf(item), 1);
-    
+
     this.setState({
       selectedItem,
     });
 
     onFilterChange(selectedItem);
-  }
+  };
 
   getSuggestions(value) {
     const { inputSuggestions } = this.props;
@@ -123,12 +133,13 @@ class FilterAutoCompleteMultiple extends Component {
       ? []
       : inputSuggestions.filter((suggestion) => {
           const keep =
-            count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-  
+            count < 5 &&
+            suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
+
           if (keep) {
             count += 1;
           }
-  
+
           return keep;
         });
   }
@@ -162,7 +173,7 @@ class FilterAutoCompleteMultiple extends Component {
                     key={item}
                     tabIndex={-1}
                     label={item}
-                    className={"filterChip"}
+                    className={'filterChip'}
                     onDelete={this.handleDelete(item)}
                   />
                 )),
@@ -180,7 +191,7 @@ class FilterAutoCompleteMultiple extends Component {
                     itemProps: getItemProps({ item: suggestion.label }),
                     highlightedIndex,
                     selectedItem: selectedItem2,
-                  }),
+                  })
                 )}
               </Paper>
             ) : null}

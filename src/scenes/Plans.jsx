@@ -33,7 +33,9 @@ class Plans extends Component {
 
     constructor(props) {
         super(props);
+
         this.loadPlans = this.loadPlans.bind(this);
+
         this.loadNextPage = this.loadNextPage.bind(this);
     }
 
@@ -114,7 +116,7 @@ class Plans extends Component {
                         cols={1}
                     >
                         {plans.map(plan => (
-                            <Card className="card" raised={true}>
+                            <Card className="card" raised={true} key={plan.id}>
                                 <Link
                                     className="card-link"
                                     to={`/plan/${plan.id}/${plan.PL_NAME}`}
@@ -163,7 +165,7 @@ class Plans extends Component {
                     loader={<h4 className="centerNote">{t.loading}</h4>}
                     endMessage={
                         <p className="centerNote">
-                            <b>{t.seen_all_plans}</b>
+                            <b>{t.seenAllPlans}</b>
                         </p>
                     }
                 />

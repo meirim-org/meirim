@@ -1,16 +1,10 @@
+const Model = require('./base_model');
 
-const Base_model = require('./base_model');
-const { Bookshelf } = require('../service/database');
-
-class PersonActivity extends Base_model {
+class PersonActivity extends Model {
   get rules() {
     return {
-      activity_id: [
-        'required', 'integer',
-      ],
-      person_id: [
-        'required', 'integer',
-      ],
+      activity_id: ['required', 'integer'],
+      person_id: ['required', 'integer'],
     };
   }
 

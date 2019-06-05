@@ -13,18 +13,12 @@ class Activity extends BaseModel {
       // id: [
       //   'required', 'integer'
       // ],
-      headline: [
-        'required', 'string',
-      ],
-      address: [
-        'required', 'string',
-      ],
+      headline: ['required', 'string'],
+      address: ['required', 'string'],
       // latlon: [
       //   'required', 'string'
       // ],
-      description: [
-        'required', 'string',
-      ],
+      description: ['required', 'string'],
       status: ['required', 'integer'],
     };
   }
@@ -60,7 +54,7 @@ class Activity extends BaseModel {
   }
 
   _saving(model, attrs, options) {
-    return Geocoder.geocode(model.get('address')).then((res) => {
+    return Geocoder.geocode(model.get('address')).then(res => {
       model.set('latlon', {
         type: 'Point',
         coordinates: [res[0].latitude, res[0].longitude],
@@ -82,10 +76,10 @@ class Activity extends BaseModel {
   }
 
   upload(files) {
-    const sampleFile = null;
-    const width = 400;
-    const height = 400;
-    const newPath = `${__dirname}/../../public/upload/`;
+    // const sampleFile = null;
+    // const width = 400;
+    // const height = 400;
+    // const newPath = `${__dirname}/../../public/upload/`;
 
     if (!files) {
       return new Exception.badRequest('No files were uploaded');
@@ -137,7 +131,7 @@ class Activity extends BaseModel {
       throw new Exception.NotAllowed('Must be signed in');
     }
     if (!this.status().notActive()) {
-      throw new Exception.NotAllowed('Activity isn\'t active');
+      throw new Exception.NotAllowed("Activity isn't active");
     }
     return Promise.resolve(this);
   }

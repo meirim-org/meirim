@@ -1,4 +1,3 @@
-
 const tables = [
   `CREATE TABLE activity (
     id int(10) UNSIGNED NOT NULL,
@@ -92,23 +91,26 @@ const statements = [
   'ALTER TABLE person MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
 ];
 
-exports.up = function (knex, Promise) {
-  return Promise.all(tables.map((table) => {
-    try {
-      return knex.raw(table);
-    } catch (e) {
-      console.log(e);
-    }
-  }))
-    .then(Promise.all(statements.map((statement) => {
+exports.up = function(knex, Promise) {
+  return Promise.all(
+    tables.map(table => {
       try {
-        knex.raw(statement);
+        return knex.raw(table);
       } catch (e) {
         console.log(e);
       }
-    })));
+    }),
+  ).then(
+    Promise.all(
+      statements.map(statement => {
+        try {
+          knex.raw(statement);
+        } catch (e) {
+          console.log(e);
+        }
+      }),
+    ),
+  );
 };
 
-exports.down = function (knex, Promise) {
-
-};
+exports.down = function(knex, Promise) {};
