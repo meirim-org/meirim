@@ -1,6 +1,6 @@
 {
-    "axios": {
-      "baseURL":"http://localhost:3001",
-      "withCredentials": true
-    }
+  "axios": {
+    "baseURL": "http://localhost:3001",
+    "withCredentials": true
+  }
 }

@@ -19,7 +19,10 @@ const promises = fs.readdirAsync(dir).map((file) => {
         console.log('=================', file, '=================');
         console.log(result.value);
 
-        if (result.done) return false;
+        if (result.done) {
+          return false;
+        }
+
         return result.value;
       }))
     .then((geoJson) => {

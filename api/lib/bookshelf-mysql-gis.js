@@ -6,7 +6,6 @@
  * https://github.com/joshswan/bookshelf-postgis/blob/master/LICENSE
  */
 
-
 module.exports = (bookshelf) => {
   const proto = bookshelf.Model.prototype;
 
@@ -18,7 +17,9 @@ module.exports = (bookshelf) => {
       if (this.geometry) {
         this.geometry.forEach((attr) => {
           if (attributes[attr]) {
-            attributes[attr] = bookshelf.knex.raw('ST_GeomFromGeoJSON(?)', [JSON.stringify(attributes[attr])]);
+            attributes[attr] = bookshelf.knex.raw('ST_GeomFromGeoJSON(?)', [
+              JSON.stringify(attributes[attr]),
+            ]);
           }
         });
       }

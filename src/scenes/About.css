@@ -1,6 +1,6 @@
 html body {
   direction: rtl;
-  background-color: #f8f8f8
+  background-color: #f8f8f8;
 }
 
 .container {
@@ -10,5 +10,5 @@ html body {
 }
 
 .d-block {
-  color:#007bff;
+  color: #007bff;
 }
