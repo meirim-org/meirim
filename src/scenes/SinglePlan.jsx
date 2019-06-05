@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import geojsonArea from "@mapbox/geojson-area";
 import { Redirect } from "react-router-dom";
 import { Chart } from "react-charts";
 
@@ -14,6 +15,11 @@ import "../assets/bootstrap.css";
 import Moment from "react-moment";
 
 import t from "../locale/he_IL";
+
+const renderMultiplier = areaObj =>
+    Math.round(((areaObj.new + areaObj.exist) / areaObj.exist) * 100) / 100;
+
+const renderPercent = number => Math.round(number * 100);
 
 const parseNumber = string => {
     string = string.replace(",", "");
@@ -50,6 +56,12 @@ class SinglePlan extends Component {
 
         const series = { type: "bar" };
 
+        const textArea = {
+            exist: 0,
+            new: 0,
+            area: plan.geom ? Math.round(geojsonArea.geometry(plan.geom)) : 0
+        };
+
         const dataArea = [
             {
                 label: "זכויות קיימות",
@@ -83,6 +95,9 @@ class SinglePlan extends Component {
                         x: change[3],
                         y: parseNumber(change[6])
                     });
+
+                    textArea.exist += parseNumber(change[5]);
+                    textArea.new += parseNumber(change[6]);
                 } else {
                     dataUnits[0].data.push({
                         x: change[3],
@@ -112,47 +127,78 @@ class SinglePlan extends Component {
                             <h1>{plan.PL_NAME}</h1>
                             <div className="row">
                                 <div className="col">
-                                    <div className="rectangle">
+                                    <div className="empty_rectangle">
                                         <h4>מטרות התוכנית</h4>
                                         <UnsafeRender
                                             html={plan.goals_from_mavat}
                                         />
                                     </div>
-                                    <div className="rectangle">
+                                    <div className="empty_rectangle">
                                         <h4>תיאור התוכנית</h4>
                                         <UnsafeRender
                                             html={plan.main_details_from_mavat}
                                         />
                                     </div>
                                     <div className="rectangle">
-                                        <h4>נתונים כמותיים עיקריים</h4>
-                                        {!!dataUnits &&
-                                            !!dataUnits[0].data.length && (
-                                                <div style={{ height: 300 }}>
-                                                    <Chart
-                                                        series={series}
-                                                        data={dataUnits}
-                                                        axes={axes}
-                                                        tooltip={true}
-                                                    />
-                                                </div>
-                                            )}
-                                        {!!dataArea &&
-                                            !!dataArea[0].data.length && (
-                                                <div style={{ height: 300 }}>
-                                                    <Chart
-                                                        series={series}
-                                                        data={dataArea}
-                                                        axes={axes}
-                                                        tooltip={true}
-                                                    />
-                                                </div>
-                                            )}
-                                        טבלה זו הינה לנתונים סטטיסטים בלבד
-                                        והטבלה הקובעת לעניין זכויות הבניה הינה
-                                        טבלה 5 במסמך הוראות התכנית .אין בנתונים
-                                        המופיעים בטבלה זו אסמכתא משפטית כלשהיא.
+                                        <h4>תגובות</h4>
+                                        <div id="comments" />
+                                        <Comments planId={this.state.planId} />
                                     </div>
+                                </div>
+                                <div className="col">
+                                    <div className="rectangle">
+                                        <h4>מיקום</h4>
+                                        <div
+                                            className="map-container"
+                                            style={{ height: "300px" }}
+                                        >
+                                            <Mapa geom={plan.geom} />
+                                        </div>
+                                    </div>
+                                    {!!dataArea && !!dataArea[0].data.length && (
+                                        <div className="rectangle">
+                                            <h4>שינוי שטח</h4>
+                                            <p>
+                                                תוכנית זו מגדילה את השטח הבנוי
+                                                פי {renderMultiplier(textArea)}{" "}
+                                                (תוספת {textArea.new} מ"ר)
+                                            </p>
+                                            <p>
+                                                {renderPercent(
+                                                    (textArea.new +
+                                                        textArea.exist) /
+                                                        textArea.area
+                                                )}
+                                                % בניה (במקום{" "}
+                                                {renderPercent(
+                                                    textArea.exist /
+                                                        textArea.area
+                                                )}
+                                                % )
+                                            </p>
+                                            <div style={{ height: 200 }}>
+                                                <Chart
+                                                    series={series}
+                                                    data={dataArea}
+                                                    axes={axes}
+                                                    tooltip={true}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                    {!!dataUnits && !!dataUnits[0].data.length && (
+                                        <div className="rectangle">
+                                            <h4>שינוי יחידות דיור</h4>
+                                            <div style={{ height: 200 }}>
+                                                <Chart
+                                                    series={series}
+                                                    data={dataUnits}
+                                                    axes={axes}
+                                                    tooltip={true}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
 
                                     <div className="rectangle">
                                         <h4>נתוני התוכנית</h4>
@@ -216,22 +262,6 @@ class SinglePlan extends Component {
                                                 מופקדת
                                             </div>
                                         )}
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="rectangle">
-                                        <h4>מיקום</h4>
-                                        <div
-                                            className="map-container"
-                                            style={{ height: "300px" }}
-                                        >
-                                            <Mapa geom={plan.geom} />
-                                        </div>
-                                    </div>
-                                    <div className="rectangle">
-                                        <h4>תגובות</h4>
-                                        <div id="comments" />
-                                        <Comments planId={this.state.planId} />
                                     </div>
                                 </div>
                             </div>
