@@ -78,7 +78,18 @@ class Plan extends Model {
             OBJECTID: objectID
         }).fetch();
     }
+    // support json encode for data field
+    parse(attributes) {
+        try {
+            if (attributes.data) {
+                attributes.data = JSON.parse(attributes.data);
+            }
+        } catch (e) {
+            Log.error("Json parse error", attributes.data);
+        }
 
+        return super.parse(attributes);
+    }
     static buildFromIPlan(iPlan, oldPlan = null) {
         const data = {
             OBJECTID: iPlan.properties.OBJECTID,
