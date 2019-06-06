@@ -114,25 +114,32 @@ const fetchIplan = iPlan =>
         PL_NUMBER: iPlan.properties.PL_NUMBER
     })
         .fetch()
-        .then(oldPlan =>
+        .then(oldPlan => {
             // check if there was an update
-            oldPlan &&
-            oldPlan.get("data").LAST_UPDATE === iPlan.properties.LAST_UPDATE
-                ? Bluebird.resolve(oldPlan)
-                : buildPlan(iPlan, oldPlan)
-                      // check if there is an update in the status of the plan and mark it for email update
-                      .then(plan => {
-                          if (
-                              !oldPlan ||
-                              oldPlan.get("data").STATION !==
-                                  iPlan.properties.STATION
-                          ) {
-                              plan.set("sent", oldPlan ? 1 : 0);
-                          }
-                          return plan;
-                      })
-        )
-        .then(plan => (plan ? plan.save() : false))
+
+            if (
+                oldPlan &&
+                oldPlan.get("data").LAST_UPDATE === iPlan.properties.LAST_UPDATE
+            ) {
+                return Bluebird.resolve(oldPlan);
+            }
+
+            return (
+                buildPlan(iPlan, oldPlan)
+                    // check if there is an update in the status of the plan and mark it for email update
+                    .then(plan => {
+                        if (
+                            !oldPlan ||
+                            oldPlan.get("data").STATION !==
+                                iPlan.properties.STATION
+                        ) {
+                            plan.set("sent", oldPlan ? 1 : 0);
+                        }
+                        return plan;
+                    })
+                    .then(plan => plan.save())
+            );
+        })
         .catch(e => {
             console.log("iplan exception", JSON.stringify(e));
             return Bluebird.resolve();
