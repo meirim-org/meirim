@@ -33,6 +33,25 @@ class Plan extends Model {
         return super.format(attributes);
     }
 
+    // support json encode for data field
+    parse(attributes) {
+        try {
+            if (attributes.data) {
+                attributes.data = JSON.parse(attributes.data);
+                if (
+                    attributes.jurisdiction === "מקומית" &&
+                    attributes.data.STATION_DESC !== "מאושרות"
+                ) {
+                    attributes.notCredible = true;
+                }
+            }
+        } catch (e) {
+            Log.error("Json parse error", attributes.data);
+        }
+
+        return super.parse(attributes);
+    }
+
     get geometry() {
         return ["geom"];
     }
