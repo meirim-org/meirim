@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
-    name: 'api',
-    script: 'bin/api',
+    name: 'serve',
+    script: 'bin/serve',
     merge_logs: true,
     out_file: 'logs/combined.log',
     error_file: 'logs/combined.log',

@@ -1,0 +1,139 @@
+#!/usr/bin/env node
+
+const Express = require('express');
+const ExpressHandlebars = require('express-handlebars');
+const BodyParser = require('body-parser');
+const path = require('path');
+const http = require('http');
+const apiApp = require('../api/app');
+
+const apiService = require('../src/services/api');
+const config = require('../src/config.json');
+
+
+// create static app
+const urlencoded = BodyParser.urlencoded({
+  extended: false,
+});
+const staticApp = Express();
+const staticRootDir = path.join(__dirname, '..', 'build');
+
+staticApp.use(urlencoded);
+staticApp.use(Express.static(staticRootDir, {index: false}));
+
+staticApp.set('views', staticRootDir);
+staticApp.engine('html', ExpressHandlebars({extname: '.html', layoutsDir: staticRootDir}));
+staticApp.set('view engine', 'html');
+
+staticApp.get('/plan/:planId/:planName?', function(req, res) {
+  const { planId, planName } = req.params;
+
+  // fetch plan details to populate og tags
+  apiService.get('/plan/' + planId)
+    .then(plan => {
+      let pageDescription;
+
+      // some plans don't have depositing dates
+      if (plan.data.data.DEPOSITING_DATE)
+        pageDescription = `תב"ע ב${plan.data.data.PLAN_COUNTY_NAME} אשר הופקדה ב ${dateToStr(plan.data.data.DEPOSITING_DATE)}`;
+      else
+        pageDescription = `תב"ע ב${plan.data.data.PLAN_COUNTY_NAME}`;
+
+      res.render('index', {
+        layout: false, 
+        pageTitle: `${plan.data.PL_NUMBER} - ${plan.data.PL_NAME} - מעירים`, 
+        pageDescription: pageDescription,
+        pageImage: config.opengraph.basePageImageURL,
+      });
+    }).catch(error => {
+      console.error('failed to fetch plan details for opengraph');
+      console.error(error);
+
+      res.render('index', {
+        layout: false, 
+        pageTitle: 'תוכנית בניה - מעירים', 
+        pageDescription: '',
+        pageImage: config.opengraph.basePageImageURL,
+      });
+    });
+});
+
+// all non-plan pages have static og tag values
+staticApp.get('*', function(req, res) {
+  res.render('index', {
+    layout: false, 
+    pageTitle: 'מעירים - מידע תכנוני ואקטיביזם עירוני', 
+    pageDescription: 'רוצים לדעת אם הגינה הציבורית שלכם עומדת להפוך למגדל?',
+    pageImage: config.opengraph.basePageImageURL,
+    pageUpdatedTime: 0
+  });
+});
+
+// create main app
+const mainApp = Express();
+
+// mount api and static apps
+mainApp.use('/api', apiApp);
+mainApp.use('/', staticApp);
+
+const server = http.createServer(mainApp);
+const port = normalizePort(process.env.PORT || '3000');
+server.listen(port);
+
+server.on('error', (error) => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+});
+
+server.on('listening', () => {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  console.log('Listening on ' + bind);
+});
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  const port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Convert date object to string with "dd/MM/yyyy" format.
+ */
+
+function dateToStr(d) {
+  const day = d.getDate();
+  const month = d.getMonth < 9 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+  const year = d.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
