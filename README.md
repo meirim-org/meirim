@@ -78,7 +78,7 @@ npm start
 
 ## Running in production
 
-Run Server in production (using apache to serve public)
+Run Server in production (using apache or any other servie to proxy requests)
 pm2 start ecosystem.config.js --env production
 
 

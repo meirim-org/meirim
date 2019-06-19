@@ -38,6 +38,7 @@
     "esri-to-geojson": "^1.0.3",
     "express": "~4.15.2",
     "express-fileupload": "^0.1.4",
+    "express-handlebars": "^3.1.0",
     "express-session": "^1.15.3",
     "express-winston": "^3.0.1",
     "html-table-to-json": "^0.2.1",
@@ -93,6 +94,7 @@
   "scripts": {
     "start": "BROWSER=none ./node_modules/react-scripts/bin/react-scripts.js start",
     "server": "node bin/api",
-    "build": "./node_modules/react-scripts/bin/react-scripts.js build"
+    "build": "./node_modules/react-scripts/bin/react-scripts.js build",
+    "serve": "node bin/serve"
   }
 }
