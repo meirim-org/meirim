@@ -40,6 +40,11 @@ class Navigation extends Component {
               {t.plans}
             </Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/vocabulary/">
+              {t.vocabulary}
+            </Link>
+          </li>
         </ul>
 
         <ul className="navbar-nav mr-auto">

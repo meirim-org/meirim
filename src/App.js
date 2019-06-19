@@ -13,6 +13,7 @@ import Alerts from './scenes/Alerts';
 import ForgotPassword from './scenes/ForgotPassword';
 import About from './scenes/About';
 import Terms from './scenes/Terms';
+import Vocabulary from './scenes/Vocabulary';
 import NotFound from './scenes/NotFound';
 import api from './services/api';
 
@@ -76,6 +77,10 @@ class App extends Component {
             <Route
               path="/forgot"
               render={props => <ForgotPassword {...props} me={me} />}
+            />
+             <Route
+              path="/vocabulary"
+              render={props => <Vocabulary {...props} me={me} />}
             />
             <Route
               path="/about"
