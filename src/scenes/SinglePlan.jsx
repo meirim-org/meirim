@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Comments from '../components/Comments';
 import Mapa from '../components/Mapa';
 import UnsafeRender from '../components/UnsafeRender';
+import LandUseVocabulary from '../components/LandUseVocabulary'
 
 import api from '../services/api';
 import '../assets/bootstrap.css';
@@ -63,13 +64,17 @@ class SinglePlan extends Component {
                           {plan.jurisdiction}
                         </li>
                       )}
-                      <li>
-                        תאריך הפקדה:{' '}
-                        <Moment format="DD/MM/YYYY">
-                          {plan.data.DEPOSITING_DATE}
-                        </Moment>
+                      {plan.data.DEPOSITING_DATE &&
+                        <li>
+                          תאריך הפקדה:{' '}
+                          <Moment format="DD/MM/YYYY">
+                            {plan.data.DEPOSITING_DATE}
+                          </Moment>
+                        </li>
+                      }
+                      <li>שימוש קרקע: <LandUseVocabulary string={plan.data.PL_LANDUSE_STRING}/>
+                      {/* {plan.data.PL_LANDUSE_STRING} */}
                       </li>
-                      <li>שימוש קרקע: {plan.data.PL_LANDUSE_STRING}</li>
                       <li>סטטוס: {plan.data.STATION_DESC}</li>
                       <li>
                         עדכון אחרון:{' '}
