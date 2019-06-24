@@ -1,106 +1,132 @@
 // const requestPromise = require('request-promise');
-const cheerio = require('cheerio');
-const Bluebird = require('bluebird');
-const puppeteer = require('puppeteer');
-const HtmlTableToJson = require('html-table-to-json');
-const log = require('../../lib/log');
-// const shapefile = require('shapefile');
+const cheerio = require("cheerio");
+const Bluebird = require("bluebird");
+const puppeteer = require("puppeteer");
+const HtmlTableToJson = require("html-table-to-json");
+const log = require("../../lib/log");
 
-// const downloadDir = '';
+const mavatSearchPage = "http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3";
+
 let browser = false;
-// function fetch(planUrl) {
-//   log.debug('Getting', planUrl);
-//   return requestPromise({
-//     uri: planUrl,
-//     timeout: 10000,
-//     transform: (body) => {
-//       // log.debug('Got', body);
-//       return cheerio.load(body);
-//     },
-//   });
-// }
-function init() {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      try {
-        if (!browser) {
-          log.debug('Launching chrome');
-          browser = await puppeteer.launch();
-          log.debug('Success launching chrome');
-        }
-        resolve(browser);
-      } catch (err) {
-        log.error(err);
-        reject(err);
-      }
-    })();
-  });
-}
 
-function fetch(plaUrl) {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      try {
-        const page = await browser.newPage();
-        // await page.tracing.start({
-        //   path: 'trace.json',
-        //   categories: ['devtools.timeline'],
-        // });
-        log.debug('Fetching', plaUrl);
-        await page.goto(plaUrl);
+const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-        // await page.screenshot({path: 'screenshot.png'});
-        await page.waitForSelector('#ctl00_divPageTitle');
+const init = () =>
+    new Promise((resolve, reject) => {
+        (async () => {
+            try {
+                if (!browser) {
+                    log.debug("Launching chrome");
+                    browser = await puppeteer.launch({
+                        headless: true,
+                        args: ["--no-sandbox", "--disable-setuid-sandbox"]
+                    });
+                    log.debug("Success launching chrome");
+                }
 
-        // execute standard javascript in the context of the page.
-        const bodyHTML = await page.evaluate(() => document.body.innerHTML);
-        // await page.tracing.stop();
-        // await browser.close();
-        // const reportLink = await page.$("#tblDocs .clsTableCell:contains('(SHP)')")
-        //   .nextUntil('> img').last().find('img').get();
-        //   await page._client.send('Page.setDownloadBehavior', {
-        //     behavior: 'allow',
-        //     downloadPath: './',
-        //   });
-        // await reportLink.click({
-        //   clickCount: 1,
-        //   delay: 100,
-        // });
-        //   const js = await page.evaluate(() => {
-        //     const el = $("#tblDocs .clsTableCell:contains('(SHP)')")
-        //       .nextUntil('> img').last().find('img').get();
-        //     $(el).click();
-        //     return el;
-        //   });
-        //   await page.waitForNavigation({ waitUntil: 'networkidle2' });
-        page.close();
-        log.debug('Success loading', plaUrl);
-        resolve(
-          cheerio.load(bodyHTML, {
-            decodeEntities: false,
-          }),
-        );
-      } catch (err) {
-        log.error('Mavat fetch error', err);
-        reject(err);
-      }
-    })();
-  });
-}
+                resolve(browser);
+            } catch (err) {
+                log.error(err);
+                reject(err);
+            }
+        })();
+    });
 
-function getGoalsText(cheerioPage) {
-  return cheerioPage('#ctl00_ContentPlaceHolder1_tdGOALS').html();
-}
+// const fetch = planUrl =>
+//     new Promise((resolve, reject) => {
+//         (async () => {
+//             try {
+//                 const page = await browser.newPage();
+//                 log.debug("Fetching", planUrl);
+//                 await page.goto(planUrl);
 
-function getMainPlanDetailText(cheerioPage) {
-  return cheerioPage('#ctl00_ContentPlaceHolder1_tdINSTRACTIONS').html();
-}
+//                 // await page.screenshot({path: 'screenshot.png'});
+//                 await page.waitForSelector("#ctl00_divPageTitle");
 
-function getAreaChanges(cheerioPage) {
-  const html = cheerioPage('#tblQuantities tbody').html();
-  const jsonTables = new HtmlTableToJson(`<table>${html}</table>`);
-  return JSON.stringify(jsonTables.results);
-}
+//                 // execute standard javascript in the context of the page.
+//                 const bodyHTML = await page.evaluate(
+//                     () => document.body.innerHTML
+//                 );
+//                 page.close();
+//                 log.debug("Success loading", planUrl);
+//                 resolve(
+//                     cheerio.load(bodyHTML, {
+//                         decodeEntities: false
+//                     })
+//                 );
+//             } catch (err) {
+//                 log.error("Mavat fetch error", err);
+//                 reject(err);
+//             }
+//         })();
+//     });
+
+const search = planNumber =>
+    new Promise((resolve, reject) => {
+        (async () => {
+            const page = await browser.newPage();
+            try {
+                log.debug("Loading search page", planNumber);
+
+                await page.goto(mavatSearchPage);
+                await page.waitForSelector(
+                    "#ctl00_ContentPlaceHolder1_txtNumb"
+                );
+                console.log("loaded");
+                await page.type(
+                    "#ctl00_ContentPlaceHolder1_txtNumb",
+                    planNumber
+                );
+
+                await Promise.all([
+                    page.click("#ctl00_ContentPlaceHolder1_btnFilter"),
+                    page.waitForNavigation({ waitUntil: "networkidle0" })
+                ]);
+                await timeout(10 * 1000);
+                console.log("Clicked and waiting");
+                await page.waitForSelector("#divMain");
+
+                // const bodyHTML = await page.evaluate(
+                //     selector => document.querySelectorAll(selector),
+                //     "#divMain"
+                // );
+                const bodyHTML = await page.evaluate(
+                    () => document.body.innerHTML
+                );
+                console.log("content loaded");
+
+                page.close();
+                const dom = cheerio.load(bodyHTML, {
+                    decodeEntities: false
+                });
+                if (!dom) {
+                    reject("cheerio dom is null");
+                }
+                resolve(dom);
+            } catch (err) {
+                log.error("Mavat fetch error", err);
+                page.close();
+                reject(err);
+            }
+        })();
+    });
+const getGoalsText = cheerioPage =>
+    cheerioPage("#ctl00_ContentPlaceHolder1_tdGOALS").html();
+
+const getMainPlanDetailText = cheerioPage =>
+    cheerioPage("#ctl00_ContentPlaceHolder1_tdINSTRACTIONS").html();
+
+const getJurisdictionString = cheerioPage =>
+    cheerioPage("#ctl00_ContentPlaceHolder1_AUTH").val();
+
+const getDirectUrl = cheerioPage =>
+    cheerioPage("#ctl00_ContentPlaceHolder1_PlanLink").attr("href");
+
+const getAreaChanges = cheerioPage => {
+    const html = cheerioPage("#tblQuantities tbody").html();
+    const jsonTables = new HtmlTableToJson(`<table>${html}</table>`);
+    return JSON.stringify(jsonTables.results);
+};
 
 // function getShapeFile(cheerioPage) {
 
@@ -114,25 +140,41 @@ function getAreaChanges(cheerioPage) {
 //         .catch(error => console.error(error.stack));
 // }
 
-function getJurisdictionString(cheerioPage) {
-  return cheerioPage('#ctl00_ContentPlaceHolder1_AUTH').val();
-}
+// const getByUrl = planUrl =>
+//     init()
+//         .then(() => fetch(planUrl))
+//         .then(cheerioPage => {
+//             log.debug("Retrieving", planUrl);
 
-function parseMavat(planUrl) {
-  return init()
-    .then(() => fetch(planUrl))
-    .then((cheerioPage) => {
-      log.debug('Retrieving', planUrl);
+//             return Bluebird.props({
+//                 goals: getGoalsText(cheerioPage),
+//                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
+//                 areaChanges: getAreaChanges(cheerioPage),
+//                 jurisdiction: getJurisdictionString(cheerioPage)
+//             });
+//         });
 
-      return Bluebird.props({
-        goals: getGoalsText(cheerioPage),
-        mainPlanDetails: getMainPlanDetailText(cheerioPage),
-        areaChanges: getAreaChanges(cheerioPage),
-        jurisdiction: getJurisdictionString(cheerioPage),
-      });
-    });
-}
+const getByPlan = plan =>
+    init()
+        .then(() => search(plan.get("PL_NUMBER")))
+        .then(cheerioPage => {
+            log.debug(
+                "Retrieving",
+                plan.get("PL_NUMBER"),
+                getGoalsText(cheerioPage)
+            );
 
+            return Bluebird.props({
+                plan_url: getDirectUrl(cheerioPage),
+                goals: getGoalsText(cheerioPage),
+                mainPlanDetails: getMainPlanDetailText(cheerioPage),
+                areaChanges: getAreaChanges(cheerioPage),
+                jurisdiction: getJurisdictionString(cheerioPage),
+                areaChanges: getAreaChanges(cheerioPage)
+            });
+        });
+// const getByPlan = () => Promise.resolve();
 module.exports = {
-  parseMavat,
+    // getByUrl,
+    getByPlan
 };
