@@ -20,7 +20,6 @@ class LandUseVocabulary extends Component {
     let uses = _.split(usesString, ',')
     //return <div dangerouslySetInnerHTML={this.createMarkup(this.state.html)} />;
     return uses.map(use=>this.renderUse(use))
-    return 'gal'
   }
   renderUse(use) {
     let useTerm = this.finduse(use);

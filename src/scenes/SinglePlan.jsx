@@ -165,7 +165,7 @@ class SinglePlan extends Component {
                                             </li>}
                                             <li>
                                                 שימוש קרקע:{" "}
-                                                <LandUseVocabulary string={plan.data.PL_LANDUSE_STRING}/>
+                                                <LandUseVocabulary landUseJoined={plan.data.PL_LANDUSE_STRING}/>
                                             </li>
                                             <li>
                                                 סטטוס: {plan.data.STATION_DESC}
