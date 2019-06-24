@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
@@ -17,9 +16,7 @@ class LandUseVocabulary extends Component {
   render() {
     const { usesString } = this.state;
     // splitting the uses
-    let uses = _.split(usesString, ',')
-    //return <div dangerouslySetInnerHTML={this.createMarkup(this.state.html)} />;
-    return uses.map(use=>this.renderUse(use))
+    return  usesString.split(',').map(use=>this.renderUse(use))
   }
   renderUse(use) {
     const useTerm = this.finduse(use);
