@@ -154,7 +154,7 @@ class SinglePlan extends Component {
                                             {plan.jurisdiction && (
                                                 <li>
                                                     מוסד התכנון המוסמך להפקיד את
-                                                    התכנית: {plan.jurisdiction}
+                                                    התכנית: וועדה {plan.jurisdiction}
                                                 </li>
                                             )}
                                             {plan.data.DEPOSITING_DATE && <li>
