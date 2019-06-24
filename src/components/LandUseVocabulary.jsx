@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
+import stringSimilarity from 'string-similarity'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
@@ -19,31 +21,33 @@ class LandUseVocabulary extends Component {
     return  usesString.split(',').map(use=>this.renderUse(use))
   }
   renderUse(use) {
-    const useTerm = this.finduse(use);
+    const useTerms = this.finduse(use);
 
-    if(useTerm && useTerm.description){
-        return <OverlayTrigger
-            key={use}
-            overlay={
-            <Tooltip id={`tooltip-${use}`}>
-             <strong>{useTerm.title}</strong> <br></br>
-              {useTerm.description}
-            </Tooltip>
+    if(!useTerms || !useTerms.length >0)
+      return <Button variant="light" disabled>{use}</Button>
+      return <OverlayTrigger
+          key={use}
+          overlay={
+          <Tooltip id={`tooltip-${use}`}>
+          {
+            useTerms.map(u=>{
+              return <span className="landUseTooltip">
+                <strong className="landUseTooltip">{u.title}</strong> 
+                    {u.description}
+                </span>
+            })
           }
-        >
-        <Button variant="light">{use}</Button>
+          </Tooltip>
+        }>
+          <Button variant="light">{use}</Button>
       </OverlayTrigger>
-    }
-    return <Button variant="light" disabled>{use}</Button>
   }
 
-
   finduse(useName){
-    // getting the use name and searching in keywords
-    return _.find(terms, t=>{
-      if(!t.aliases) 
-        return false;
-      return _.indexOf(t.aliases, useName) !== -1
+    return _.filter(terms, t=>{
+      return _.find(t.aliases, a=>{
+        return stringSimilarity.compareTwoStrings(a, useName) >(1-(1/a.length))  
+      })
     })
   }
 }
