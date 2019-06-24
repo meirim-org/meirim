@@ -4,8 +4,9 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
 
-// import uses from '../assets/vocabulary'
 import terms from '../assets/keywords'
+
+import './LandUseVocabulary.css';
 
 class LandUseVocabulary extends Component {
   
