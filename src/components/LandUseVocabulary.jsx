@@ -11,7 +11,7 @@ import './LandUseVocabulary.css';
 class LandUseVocabulary extends Component {
   
   state = {
-    usesString: this.props.string,
+    usesString: this.props.landUseJoined,
   };
 
   render() {
@@ -22,7 +22,7 @@ class LandUseVocabulary extends Component {
     return uses.map(use=>this.renderUse(use))
   }
   renderUse(use) {
-    let useTerm = this.finduse(use);
+    const useTerm = this.finduse(use);
 
     if(useTerm && useTerm.description){
         return <OverlayTrigger
