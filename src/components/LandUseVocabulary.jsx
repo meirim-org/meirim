@@ -28,10 +28,9 @@ class LandUseVocabulary extends Component {
     if(useTerm && useTerm.description){
         return <OverlayTrigger
             key={use}
-          // placement={placement}
-          overlay={
+            overlay={
             <Tooltip id={`tooltip-${use}`}>
-              {/* Use: <strong>{use}</strong>. */}
+             <strong>{useTerm.title}</strong> <br></br>
               {useTerm.description}
             </Tooltip>
           }

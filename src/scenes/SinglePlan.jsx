@@ -141,67 +141,6 @@ class SinglePlan extends Component {
                                         />
                                     </div>
                                     <div className="rectangle">
-                                        <h4>תגובות</h4>
-                                        <div id="comments" />
-                                        <Comments planId={this.state.planId} />
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="rectangle">
-                                        <h4>מיקום</h4>
-                                        <div
-                                            className="map-container"
-                                            style={{ height: "300px" }}
-                                        >
-                                            <Mapa geom={plan.geom} />
-                                        </div>
-                                    </div>
-                                    {!!dataArea && !!dataArea[0].data.length && (
-                                        <div className="rectangle">
-                                            <h4>שינוי שטח</h4>
-                                            <p>
-                                                תוכנית זו מגדילה את השטח הבנוי
-                                                פי {renderMultiplier(textArea)}{" "}
-                                                (תוספת {textArea.new} מ"ר)
-                                            </p>
-                                            <p>
-                                                {renderPercent(
-                                                    (textArea.new +
-                                                        textArea.exist) /
-                                                        textArea.area
-                                                )}
-                                                % בניה (במקום{" "}
-                                                {renderPercent(
-                                                    textArea.exist /
-                                                        textArea.area
-                                                )}
-                                                % )
-                                            </p>
-                                            <div style={{ height: 200 }}>
-                                                <Chart
-                                                    series={series}
-                                                    data={dataArea}
-                                                    axes={axes}
-                                                    tooltip={true}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-                                    {!!dataUnits && !!dataUnits[0].data.length && (
-                                        <div className="rectangle">
-                                            <h4>שינוי יחידות דיור</h4>
-                                            <div style={{ height: 200 }}>
-                                                <Chart
-                                                    series={series}
-                                                    data={dataUnits}
-                                                    axes={axes}
-                                                    tooltip={true}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    <div className="rectangle">
                                         <h4>נתוני התוכנית</h4>
                                         <ul>
                                             <li>
@@ -263,6 +202,67 @@ class SinglePlan extends Component {
                                                 מופקדת
                                             </div>
                                         )}
+                                    </div>
+                                   
+                                </div>
+                                <div className="col">
+                                    <div className="rectangle">
+                                        <h4>מיקום</h4>
+                                        <div
+                                            className="map-container"
+                                            style={{ height: "300px" }}
+                                        >
+                                            <Mapa geom={plan.geom} />
+                                        </div>
+                                    </div>
+                                    {!!dataArea && !!dataArea[0].data.length && (
+                                        <div className="rectangle">
+                                            <h4>שינוי שטח</h4>
+                                            <p>
+                                                תוכנית זו מגדילה את השטח הבנוי
+                                                פי {renderMultiplier(textArea)}{" "}
+                                                (תוספת {textArea.new} מ"ר)
+                                            </p>
+                                            <p>
+                                                {renderPercent(
+                                                    (textArea.new +
+                                                        textArea.exist) /
+                                                        textArea.area
+                                                )}
+                                                % בניה (במקום{" "}
+                                                {renderPercent(
+                                                    textArea.exist /
+                                                        textArea.area
+                                                )}
+                                                % )
+                                            </p>
+                                            <div style={{ height: 200 }}>
+                                                <Chart
+                                                    series={series}
+                                                    data={dataArea}
+                                                    axes={axes}
+                                                    tooltip={true}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                    {!!dataUnits && !!dataUnits[0].data.length && (
+                                        <div className="rectangle">
+                                            <h4>שינוי יחידות דיור</h4>
+                                            <div style={{ height: 200 }}>
+                                                <Chart
+                                                    series={series}
+                                                    data={dataUnits}
+                                                    axes={axes}
+                                                    tooltip={true}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                     <div className="rectangle">
+                                        <h4>תגובות</h4>
+                                        <div id="comments" />
+                                        <Comments planId={this.state.planId} />
                                     </div>
                                 </div>
                             </div>
