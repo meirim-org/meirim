@@ -4,6 +4,7 @@ import stringSimilarity from 'string-similarity'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
+import Chip from '@material-ui/core/Chip';
 
 import terms from '../assets/keywords'
 
@@ -11,21 +12,17 @@ import './LandUseVocabulary.css';
 
 class LandUseVocabulary extends Component {
   
-  state = {
-    usesString: this.props.landUseJoined,
-  };
-
   render() {
-    const { usesString } = this.state;
-    // splitting the uses
-    return  usesString.split(',').map(use=>this.renderUse(use))
+    const { landUseJoined } = this.props;
+    return  landUseJoined.split(',').map(use=>this.renderUse(use))
   }
   renderUse(use) {
     const useTerms = this.finduse(use);
 
     if(!useTerms || !useTerms.length >0)
-      return <Button variant="light" disabled>{use}</Button>
-      return <OverlayTrigger
+      return <Chip variant="light" label={use} disabled></Chip>
+
+    return <OverlayTrigger
           key={use}
           overlay={
           <Tooltip id={`tooltip-${use}`}>
@@ -39,7 +36,7 @@ class LandUseVocabulary extends Component {
           }
           </Tooltip>
         }>
-          <Button variant="light">{use}</Button>
+          <Chip label={use}  variant="light" disabled className="chippi"/> 
       </OverlayTrigger>
   }
 
