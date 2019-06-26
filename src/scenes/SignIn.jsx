@@ -67,11 +67,11 @@ class SignIn extends Component {
                                     className="alert alert-danger"
                                     role="alert"
                                 >
-                                    מייל או סיסמה לא נכונים
+                                    דוא"ל או סיסמה לא נכונים
                                 </div>
                             )}
                             <div className="form-group">
-                                <label htmlFor="loginEmail">כתובת מייל:</label>
+                                <label htmlFor="loginEmail">כתובת דוא"ל:</label>
                                 <Link to="/" className="float-left">
                                     הרשמה
                                 </Link>
