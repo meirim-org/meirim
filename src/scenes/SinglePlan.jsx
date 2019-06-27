@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import geojsonArea from "@mapbox/geojson-area";
 import { Redirect } from "react-router-dom";
 import { Chart } from "react-charts";
 
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Wrapper from "../components/Wrapper";
 import Comments from "../components/Comments";
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
@@ -15,6 +14,11 @@ import "../assets/bootstrap.css";
 import Moment from "react-moment";
 
 import t from "../locale/he_IL";
+
+const axes = [
+    { primary: true, type: "ordinal", position: "bottom" },
+    { position: "left", type: "linear", stacked: true }
+];
 
 const renderMultiplier = areaObj =>
     Math.round(((areaObj.new + areaObj.exist) / areaObj.exist) * 100) / 100;
@@ -38,7 +42,6 @@ class SinglePlan extends Component {
 
     componentDidMount() {
         const { id } = this.props.match.params;
-        this.setState({ planId: id });
         return api
             .get("/plan/" + id)
             .then(plan => this.setState({ plan: plan.data }))
@@ -50,6 +53,11 @@ class SinglePlan extends Component {
     render() {
         const { plan, error } = this.state;
         const { me } = this.props;
+        const { id } = this.props.match.params;
+
+        if (error && error.status === 404) {
+            return <Redirect to="/404" />;
+        }
 
         const changes =
             plan && plan.areaChanges ? JSON.parse(plan.areaChanges) : null;
@@ -110,19 +118,10 @@ class SinglePlan extends Component {
                 }
             });
 
-        const axes = [
-            { primary: true, type: "ordinal", position: "bottom" },
-            { position: "left", type: "linear", stacked: true }
-        ];
-
-        if (error && error.status === 404) {
-            return <Redirect to="/404" />;
-        }
         return (
-            <React.Fragment>
-                <Navigation me={me} />
-                <div className="container" className="container">
-                    {plan.PL_NAME && (
+            <Wrapper me={me}>
+                {plan.PL_NAME && (
+                    <div className="container" className="container">
                         <div className="container">
                             <h1>{plan.PL_NAME}</h1>
                             <div className="row">
@@ -142,7 +141,7 @@ class SinglePlan extends Component {
                                     <div className="rectangle">
                                         <h4>תגובות</h4>
                                         <div id="comments" />
-                                        <Comments planId={this.state.planId} />
+                                        <Comments planId={id} />
                                     </div>
                                 </div>
                                 <div className="col">
@@ -266,10 +265,9 @@ class SinglePlan extends Component {
                                 </div>
                             </div>
                         </div>
-                    )}
-                </div>
-                <Footer />
-            </React.Fragment>
+                    </div>
+                )}
+            </Wrapper>
         );
     }
 }

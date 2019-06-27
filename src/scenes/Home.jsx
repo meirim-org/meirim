@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Wrapper from "../components/Wrapper";
 import RegisterForm from "../components/RegisterForm";
 
 import t from "../locale/he_IL";
@@ -12,8 +11,7 @@ import "./Home.css";
 export default function Home(props) {
     const { me } = props;
     return (
-        <Fragment>
-            <Navigation me={me} />
+        <Wrapper me={me}>
             <div
                 className="d-none d-md-block"
                 style={{
@@ -56,7 +54,6 @@ export default function Home(props) {
                     </div>
                 </div>
             </div>
-            <Footer />
-        </Fragment>
+        </Wrapper>
     );
 }
