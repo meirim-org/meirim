@@ -11,7 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import api from "../services/api";
 
-import Navigation from "../components/Navigation";
+import Wrapper from "../components/Wrapper";
 import Footer from "../components/Footer";
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
@@ -97,8 +97,7 @@ class Plans extends Component {
         const { me } = this.props;
 
         return (
-            <React.Fragment>
-                <Navigation me={me} />
+            <Wrapper me={me}>
                 <div className="container">
                     <FilterAutoCompleteMultiple
                         classes=""
@@ -169,8 +168,7 @@ class Plans extends Component {
                         </p>
                     }
                 />
-                <Footer />
-            </React.Fragment>
+            </Wrapper>
         );
     }
 }

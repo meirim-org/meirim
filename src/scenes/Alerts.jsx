@@ -7,8 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Redirect } from "react-router-dom";
 
 import leaflet from "leaflet";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Wrapper from "../components/Wrapper";
 import AlertTable from "../components/AlertTable";
 import Slider from "rc-slider";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -152,8 +151,7 @@ class Alerts extends Component {
             return <Redirect to={signInURL} />;
         }
         return (
-            <Fragment>
-                <Navigation me={me} />
+            <Wrapper me={me}>
                 <div className="container widedialog">
                     <form className="rectangle" onSubmit={this.handleSubmit}>
                         <h5 className="container-title">{t.newAlert}</h5>
@@ -261,8 +259,7 @@ class Alerts extends Component {
                         <span id="message-id">התראת תכנון התווספה בהצלחה!</span>
                     }
                 />
-                <Footer />
-            </Fragment>
+            </Wrapper>
         );
     }
 }
