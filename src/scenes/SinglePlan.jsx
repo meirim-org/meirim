@@ -2,16 +2,16 @@ import React, { Component, Fragment } from "react";
 import geojsonArea from "@mapbox/geojson-area";
 import { Redirect } from "react-router-dom";
 import { Chart } from "react-charts";
+import Moment from "react-moment";
 
 import Wrapper from "../components/Wrapper";
 import Comments from "../components/Comments";
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
+import LandUseVocabulary from "../components/LandUseVocabulary";
 
 import api from "../services/api";
 import "../assets/bootstrap.css";
-
-import Moment from "react-moment";
 
 import t from "../locale/he_IL";
 
@@ -118,7 +118,6 @@ class SinglePlan extends Component {
                 }
             });
 
-        console.log(Comments);
         return (
             <Wrapper me={me}>
                 {plan.PL_NAME && (
@@ -141,8 +140,7 @@ class SinglePlan extends Component {
                                     </div>
                                     <div className="rectangle">
                                         <h4>תגובות</h4>
-                                        <div id="comments" />
-                                        <Comments planId={id} />
+                                        <Comments planId={id} me={me} />
                                     </div>
                                 </div>
                                 <div className="col">
@@ -214,18 +212,29 @@ class SinglePlan extends Component {
                                             {plan.jurisdiction && (
                                                 <li>
                                                     מוסד התכנון המוסמך להפקיד את
-                                                    התכנית: {plan.jurisdiction}
+                                                    התכנית: וועדה{" "}
+                                                    {plan.jurisdiction}
+                                                </li>
+                                            )}
+                                            {plan.data.DEPOSITING_DATE && (
+                                                <li>
+                                                    תאריך הפקדה:{" "}
+                                                    <Moment format="DD/MM/YYYY">
+                                                        {
+                                                            plan.data
+                                                                .DEPOSITING_DATE
+                                                        }
+                                                    </Moment>
                                                 </li>
                                             )}
                                             <li>
-                                                תאריך הפקדה:{" "}
-                                                <Moment format="DD/MM/YYYY">
-                                                    {plan.data.DEPOSITING_DATE}
-                                                </Moment>
-                                            </li>
-                                            <li>
                                                 שימוש קרקע:{" "}
-                                                {plan.data.PL_LANDUSE_STRING}
+                                                <LandUseVocabulary
+                                                    landUseJoined={
+                                                        plan.data
+                                                            .PL_LANDUSE_STRING
+                                                    }
+                                                />
                                             </li>
                                             <li>
                                                 סטטוס: {plan.data.STATION_DESC}
