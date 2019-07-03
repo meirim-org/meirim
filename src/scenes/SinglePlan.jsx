@@ -52,8 +52,8 @@ class SinglePlan extends Component {
 
     render() {
         const { plan, error } = this.state;
-        const { me } = this.props;
-        const { id } = this.props.match.params;
+        const { me, match } = this.props;
+        const { id } = match.params;
 
         if (error && error.status === 404) {
             return <Redirect to="/404" />;
@@ -118,6 +118,7 @@ class SinglePlan extends Component {
                 }
             });
 
+        console.log(Comments);
         return (
             <Wrapper me={me}>
                 {plan.PL_NAME && (

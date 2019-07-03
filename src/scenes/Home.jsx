@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import Wrapper from "../components/Wrapper";
 import RegisterForm from "../components/RegisterForm";
 
@@ -17,7 +17,6 @@ export default function Home(props) {
                 style={{
                     width: "50%",
                     position: "absolute",
-                    width: "50%",
                     height: "100%",
                     left: 0,
                     top: 0,
