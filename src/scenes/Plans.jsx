@@ -12,7 +12,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import api from "../services/api";
 
 import Wrapper from "../components/Wrapper";
-import Footer from "../components/Footer";
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
 import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
