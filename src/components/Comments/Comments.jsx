@@ -19,6 +19,7 @@ const signInURL = {
 
 class Comments extends Component {
     state = {
+        me: {},
         comments: [],
         isLoading: true,
 
@@ -73,14 +74,14 @@ class Comments extends Component {
     render() {
         const { me } = this.props;
         const { comments } = this.state;
-        return <Fragment />;
+
         return (
             <Fragment>
-                {/* {me.id && <AddComment me={me} submit={this.handleSubmit} />} */}
+                {me.id && <AddComment me={me} submit={this.handleSubmit} />}
                 <ul id="comments-list" className="comments-list ">
-                    {/* {comments.map((comment, idx) => (
+                    {comments.map((comment, idx) => (
                         <Comment id={idx} comment={comment} />
-                    ))} */}
+                    ))}
                 </ul>
                 {!me.id && (
                     <div className="text-center container">
@@ -107,7 +108,8 @@ class Comments extends Component {
 }
 
 Comments.propTypes = {
-    id: PropTypes.number
+    planId: PropTypes.number,
+    me: PropTypes.object
 };
 
 export default Comments;
