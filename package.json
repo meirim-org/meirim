@@ -93,7 +93,7 @@
   ],
   "scripts": {
     "start": "BROWSER=none ./node_modules/react-scripts/bin/react-scripts.js start",
-    "server": "node bin/api",
+    "api": "node bin/api",
     "build": "./node_modules/react-scripts/bin/react-scripts.js build",
     "serve": "node bin/serve"
   }
