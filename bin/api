@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const http = require('http');
-const app = require('../api/app');
+const app = require('../api/apiApp');
 
 
 const port = normalizePort(process.env.PORT || '3001');

@@ -97,6 +97,12 @@ class Plan extends Model {
     }).fetch();
   }
 
+  static fetchByPlanID(planID) {
+    return Plan.forge({
+      [Plan.prototype.idAttribute]: planID,
+    }).fetch();
+  }
+
   static buildFromIPlan(iPlan, oldPlan = null) {
     const data = {
       OBJECTID: iPlan.properties.OBJECTID,
