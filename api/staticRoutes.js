@@ -21,6 +21,7 @@ Router.get(['/plan/:planId', '/plan/:planId/*'], function(req, res, next) {
 
       res.render('index', {
         layout: false, 
+        pageLocale: config.opengraph.locale,
         pageTitle: `${plan.attributes.PL_NUMBER} - ${plan.attributes.PL_NAME} - מעירים`, 
         pageDescription: pageDescription,
         pageImage: `${req.protocol}://${req.get('host')}/favicon.ico`,
@@ -31,6 +32,7 @@ Router.get(['/plan/:planId', '/plan/:planId/*'], function(req, res, next) {
 
       res.render('index', {
         layout: false, 
+        pageLocale: config.opengraph.locale,
         pageTitle: 'תוכנית בניה - מעירים', 
         pageDescription: '',
         pageImage: `${req.protocol}://${req.get('host')}/favicon.ico`,
@@ -42,6 +44,7 @@ Router.get(['/plan/:planId', '/plan/:planId/*'], function(req, res, next) {
 Router.get('*', function(req, res, next) {
   res.render('index', {
     layout: false, 
+    pageLocale: config.opengraph.locale,
     pageTitle: 'מעירים - מידע תכנוני ואקטיביזם עירוני', 
     pageDescription: 'רוצים לדעת אם הגינה הציבורית שלכם עומדת להפוך למגדל?',
     pageImage: `${req.protocol}://${req.get('host')}/favicon.ico`,

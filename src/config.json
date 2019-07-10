@@ -3,4 +3,7 @@
     "baseURL": "http://localhost:3000/api",
     "withCredentials": true
   },
+  "opengraph": {
+    "locale": "he_IL"
+  }
 }
