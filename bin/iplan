@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-const controller = require('../api/controller/cron');
-const Log = require('../api/lib/log');
+const controller = require("../api/controller/cron");
+const Log = require("../api/lib/log");
 
-controller.iplan()
-  .then(() => Log.info('iplan completed'))
+controller
+  .iplan()
+  .then(() => Log.info("iplan completed"))
   .catch(e => Log.error(e))
   .finally(() => process.exit());

@@ -1,57 +1,58 @@
 {
-  "geocoder": {
-    "provider": "openstreetmap"
-  },
-  "staticmap": {
-    "width": 600,
-    "height": 400
-  },
-  "general": {
-    "userAgent": "Meirim.org (info@meirim.org)",
-    "domain": "http://meirim.org/"
-  },
-  "services": {
-    "schedule": {
-      "iplan": "0 0 0 * * *",
-      "sendPlanningAlerts": "0 0 0 * * *"
+    "geocoder": {
+        "provider": "openstreetmap"
+    },
+    "staticmap": {
+        "width": 600,
+        "height": 400,
+        "tileRequestHeader": {}
+    },
+    "general": {
+        "userAgent": "Meirim.org (info@meirim.org)",
+        "domain": "http://meirim.org/"
+    },
+    "services": {
+        "schedule": {
+            "iplan": "0 0 0 * * *",
+            "sendPlanningAlerts": "0 0 0 * * *"
+        }
+    },
+    "session": {
+        "secret": "secret"
+    },
+    "cypher": {
+        "secret": "hvw3fKxl94GLbR7k74zz3B"
+    },
+    "debug": {
+        "database": false
+    },
+    "log": {
+        "access": "logs/access.log",
+        "error": "logs/error.log",
+        "debug": "logs/debug.log"
+    },
+    "database": {
+        "client": "mysql",
+        "connection": {
+            "host": "localhost",
+            "user": "root",
+            "password": "",
+            "database": "meirim",
+            "charset": "utf8"
+        }
+    },
+    "email": {
+        "transport": "SMTP",
+        "from_name": "Meirim",
+        "from_email": "alert@meirim.org",
+        "options": {
+            "host": "smtp.example.com",
+            "port": 465,
+            "secure": true,
+            "auth": {
+                "user": "",
+                "pass": ""
+            }
+        }
     }
-  },
-  "session": {
-    "secret": "secret"
-  },
-  "cypher": {
-    "secret": "hvw3fKxl94GLbR7k74zz3B"
-  },
-  "debug": {
-    "database": false
-  },
-  "log": {
-    "access": "logs/access.log",
-    "error": "logs/error.log",
-    "debug": "logs/debug.log"
-  },
-  "database": {
-    "client": "mysql",
-    "connection": {
-      "host": "localhost",
-      "user": "root",
-      "password": "",
-      "database": "meirim",
-      "charset": "utf8"
-    }
-  },
-  "email": {
-    "transport": "SMTP",
-    "from_name": "Meirim",
-    "from_email": "alert@meirim.org",
-    "options": {
-      "host": "smtp.example.com",
-      "port": 465,
-      "secure": true,
-      "auth": {
-        "user": "",
-        "pass": ""
-      }
-    }
-  }
 }
