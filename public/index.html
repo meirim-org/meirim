@@ -7,19 +7,63 @@ Like looking at code? Help us! https://github.com/meirim-org/meirim
 <!DOCTYPE html>
 <html lang="he">
     <head>
-        <title>מעירים - לסדר יום מרחבי חדש</title>
         <meta charset="utf-8" />
-        <meta
-            name="description"
-            content="שירות המעדכן אתכם בכל פעם שמתפרסמת תוכנית בניין עיר חדשה באיזורכם"
-        />
+
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
 
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="{{ pageLocale }}" />
+        {{#if isMain }}
+        <title>מעירים - מידע תכנוני ואקטיביזם עירוני</title>
+        <meta
+            property="og:title"
+            content="מעירים - מידע תכנוני ואקטיביזם עירוני"
+        />
+        <meta
+            name="description"
+            content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
+        />
+        <meta
+            property="og:description"
+            content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
+        />
+        {{/if}}
+        {{#if isPlan }}
+        <title>{{ data.PL_NUMBER }} - {{ data.PL_NAME }}</title>
+        <meta
+            property="og:title"
+            content="{{ data.PL_NUMBER }} - {{ data.PL_NAME }}"
+        />
+        {{#if data.data.DEPOSITING_DATE }}
+        <meta
+            name="description"
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב {{
+                data.data.DEPOSITING_DATE
+            }}"
+        />
+        <meta
+            property="og:description"
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב {{
+                data.data.DEPOSITING_DATE
+            }}"
+        />
+        {{ else }}
+        <meta
+            name="description"
+            content="תבע ב {{ data.data.PLAN_COUNTY_NAME }}"
+        />
+        <meta
+            property="og:description"
+            content="תבע ב {{ data.data.PLAN_COUNTY_NAME }}"
+        />
+        {{/if}}
+        {{/if}}
 
+        <meta property="og:image" content="{{ pageImage }}" />
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
         <link
             href="https://fonts.googleapis.com/css?family=Heebo"
             rel="stylesheet"

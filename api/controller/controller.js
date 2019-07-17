@@ -58,6 +58,10 @@ class Controller {
 
     read(req) {
         const id = parseInt(req.params.id, 10);
+
+        if (!id) {
+            throw new Exception.NotFound("Nof found");
+        }
         return this.model
             .forge({
                 [this.id_attribute]: id
@@ -79,6 +83,9 @@ class Controller {
 
     patch(req) {
         const id = parseInt(req.params.id, 10);
+        if (!id) {
+            throw new Exception.NotFound("Nof found");
+        }
         return this.model
             .forge({
                 [this.id_attribute]: id
@@ -100,6 +107,9 @@ class Controller {
 
     delete(req) {
         const id = parseInt(req.params.id, 10);
+        if (!id) {
+            throw new Exception.NotFound("Nof found");
+        }
         return this.model
             .forge({
                 [this.id_attribute]: id

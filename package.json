@@ -39,6 +39,7 @@
         "esri-to-geojson": "^1.0.3",
         "express": "~4.15.2",
         "express-fileupload": "^0.1.4",
+        "express-handlebars": "^3.1.0",
         "express-session": "^1.15.3",
         "express-winston": "^3.0.1",
         "html-table-to-json": "^0.2.1",
@@ -63,11 +64,11 @@
         "puppeteer": "^1.5.0",
         "query-string": "^6.2.0",
         "rc-slider": "^8.6.5",
-        "react": "^16.8.6",
+        "react": "^16.5.2",
         "react-bootstrap": "^1.0.0-beta.5",
         "react-chartjs": "^1.2.0",
         "react-charts": "^2.0.0-alpha.12",
-        "react-dom": "^16.8.6",
+        "react-dom": "^16.5.2",
         "react-infinite-scroll-component": "^4.5.2",
         "react-leaflet": "^2.2.0",
         "react-moment": "^0.8.4",
@@ -99,7 +100,8 @@
     ],
     "scripts": {
         "start": "BROWSER=none ./node_modules/react-scripts/bin/react-scripts.js start",
-        "server": "node bin/api",
-        "build": "./node_modules/react-scripts/bin/react-scripts.js build"
+        "api": "node bin/api",
+        "build": "./node_modules/react-scripts/bin/react-scripts.js build",
+        "serve": "node bin/serve"
     }
 }
