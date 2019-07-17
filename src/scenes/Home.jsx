@@ -5,7 +5,7 @@ import RegisterForm from "../components/RegisterForm";
 import t from "../locale/he_IL";
 import traktor from "../assets/traktor_op.png";
 import logoSmall from "../assets/logo_small.png";
-import "../assets/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.css";
 import "./Home.css";
 
 export default function Home(props) {

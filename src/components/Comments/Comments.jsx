@@ -7,7 +7,7 @@ import Comment from "./Comment";
 import AddComment from "./AddComment";
 import api from "../../services/api";
 
-import "../../assets/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.css";
 import "./Comments.css";
 
 const signInURL = {
@@ -77,13 +77,16 @@ class Comments extends Component {
 
         return (
             <Fragment>
-                {me.id && <AddComment me={me} submit={this.handleSubmit} />}
-                <ul id="comments-list" className="comments-list ">
-                    {comments.map((comment, idx) => (
-                        <Comment id={idx} comment={comment} />
-                    ))}
-                </ul>
-                {!me.id && (
+                {/* {<AddComment me={me} submit={this.handleSubmit} />} */}
+                {!!comments.length && (
+                    <ul id="comments-list" className="comments-list ">
+                        {comments.map((comment, idx) => (
+                            <Comment id={idx} comment={comment} />
+                        ))}
+                    </ul>
+                )}
+                {!comments.length && <div>עדיין אין תגובות</div>}
+                {/* {!me.id && (
                     <div className="text-center container">
                         מה דעתך על התוכנית?
                         <br />
@@ -101,7 +104,7 @@ class Comments extends Component {
                             </button>
                         </Link>
                     </div>
-                )}
+                )} */}
             </Fragment>
         );
     }

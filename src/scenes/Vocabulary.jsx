@@ -9,7 +9,7 @@ export default function Vocabulary(props) {
     return (
         <Wrapper me={me}>
             <div className="container">
-                <h1>מילון שימושי קרקע</h1>
+                <h1>מושגי שימושי קרקע</h1>
                 <p>
                     בתכנון עירוני נהוג להגדיר מראש את השימושים המותרים בשטח
                     מסויים. בעוד אסכולות מסוימות דוגלות בחיוניות של הקצאת שטחים

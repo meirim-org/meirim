@@ -6,7 +6,7 @@ export default {
     signout: "התנתקות",
     name: "מעירים",
     plans: "תוכניות",
-    vocabulary: "מילון",
+    vocabulary: "מושגים",
     about: "אודות",
     meirimTitle: "מידע תכנוני ואקטיביזם עירוני",
     newAlert: "התראה חדשה",

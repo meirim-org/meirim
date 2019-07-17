@@ -16,8 +16,7 @@ import api from "./services/api";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import "./assets/bootstrap.css";
-
+import "bootstrap/dist/css/bootstrap.css";
 library.add(faSpinner);
 library.add(faTimes);
 
