@@ -6,44 +6,89 @@ Like looking at code? Help us! https://github.com/meirim-org/meirim
 -->
 <!DOCTYPE html>
 <html lang="he">
-
     <head>
-        <title>מעירים - לסדר יום מרחבי חדש</title>
         <meta charset="utf-8" />
-        <meta name="description" content="שירות המעדכן אתכם בכל פעם שמתפרסמת תוכנית בניין עיר חדשה באיזורכם" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
 
         <meta property="og:type" content="website" />
-        <meta property="og:locale" content="{{pageLocale}}" />
-        <meta property="og:title" content="{{pageTitle}}" />
-        <meta property="og:description" content="{{pageDescription}}" />
-        <meta property="og:image" content="{{pageImage}}" />
+        <meta property="og:locale" content="{{ pageLocale }}" />
+        {{#if isMain }}
+        <title>מעירים - מידע תכנוני ואקטיביזם עירוני</title>
+        <meta
+            property="og:title"
+            content="מעירים - מידע תכנוני ואקטיביזם עירוני"
+        />
+        <meta
+            name="description"
+            content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
+        />
+        <meta
+            property="og:description"
+            content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
+        />
+        {{/if}}
+        {{#if isPlan }}
+        <title>{{ data.PL_NUMBER }} - {{ data.PL_NAME }}</title>
+        <meta
+            property="og:title"
+            content="{{ data.PL_NUMBER }} - {{ data.PL_NAME }}"
+        />
+        {{#if data.data.DEPOSITING_DATE }}
+        <meta
+            name="description"
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב {{
+                data.data.DEPOSITING_DATE
+            }}"
+        />
+        <meta
+            property="og:description"
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב {{
+                data.data.DEPOSITING_DATE
+            }}"
+        />
+        {{ else }}
+        <meta
+            name="description"
+            content="תבע ב {{ data.data.PLAN_COUNTY_NAME }}"
+        />
+        <meta
+            property="og:description"
+            content="תבע ב {{ data.data.PLAN_COUNTY_NAME }}"
+        />
+        {{/if}}
+        {{/if}}
 
+        <meta property="og:image" content="{{ pageImage }}" />
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+        <link
+            href="https://fonts.googleapis.com/css?family=Heebo"
+            rel="stylesheet"
+        />
 
-        <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet" />
-        <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/solid.css" integrity="sha384-Rw5qeepMFvJVEZdSo1nDQD5B6wX0m7c5Z/pLNvjkB14W6Yki1hKbSEQaX9ffUbWe"
-          crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/regular.css" integrity="sha384-EWu6DiBz01XlR6XGsVuabDMbDN6RT8cwNoY+3tIH+6pUCfaNldJYJQfQlbEIWLyA"
-          crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/fontawesome.css" integrity="sha384-GVa9GOgVQgOk+TNYXu7S/InPTfSDTtBalSgkgqQ7sCik56N9ztlkoTr2f/T44oKV"
-          crossorigin="anonymous"> -->
-        
-        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />        
+        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
         <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122025557-1"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-      
-        gtag('config', 'UA-122025557-1');
-      </script>
-      </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=UA-122025557-1"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "UA-122025557-1");
+        </script>
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+        <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -52,6 +97,5 @@ Like looking at code? Help us! https://github.com/meirim-org/meirim
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    --></body>
 </html>
