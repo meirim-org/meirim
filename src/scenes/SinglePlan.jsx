@@ -1,21 +1,24 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import geojsonArea from "@mapbox/geojson-area";
 import { Redirect } from "react-router-dom";
 import { Chart } from "react-charts";
+import Moment from "react-moment";
 
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
-import Comments from '../components/Comments';
-import Mapa from '../components/Mapa';
-import UnsafeRender from '../components/UnsafeRender';
-import LandUseVocabulary from '../components/LandUseVocabulary'
+import Wrapper from "../components/Wrapper";
+import Comments from "../components/Comments";
+import Mapa from "../components/Mapa";
+import UnsafeRender from "../components/UnsafeRender";
+import LandUseVocabulary from "../components/LandUseVocabulary";
 
 import api from "../services/api";
 import "../assets/bootstrap.css";
 
-import Moment from "react-moment";
-
 import t from "../locale/he_IL";
+
+const axes = [
+    { primary: true, type: "ordinal", position: "bottom" },
+    { position: "left", type: "linear", stacked: true }
+];
 
 const renderMultiplier = areaObj =>
     Math.round(((areaObj.new + areaObj.exist) / areaObj.exist) * 100) / 100;
@@ -39,7 +42,6 @@ class SinglePlan extends Component {
 
     componentDidMount() {
         const { id } = this.props.match.params;
-        this.setState({ planId: id });
         return api
             .get("/plan/" + id)
             .then(plan => this.setState({ plan: plan.data }))
@@ -50,7 +52,12 @@ class SinglePlan extends Component {
 
     render() {
         const { plan, error } = this.state;
-        const { me } = this.props;
+        const { me, match } = this.props;
+        const { id } = match.params;
+
+        if (error && error.status === 404) {
+            return <Redirect to="/404" />;
+        }
 
         const changes =
             plan && plan.areaChanges ? JSON.parse(plan.areaChanges) : null;
@@ -111,19 +118,10 @@ class SinglePlan extends Component {
                 }
             });
 
-        const axes = [
-            { primary: true, type: "ordinal", position: "bottom" },
-            { position: "left", type: "linear", stacked: true }
-        ];
-
-        if (error && error.status === 404) {
-            return <Redirect to="/404" />;
-        }
         return (
-            <React.Fragment>
-                <Navigation me={me} />
-                <div className="container" className="container">
-                    {plan.PL_NAME && (
+            <Wrapper me={me}>
+                {plan.PL_NAME && (
+                    <div className="container" className="container">
                         <div className="container">
                             <h1>{plan.PL_NAME}</h1>
                             <div className="row">
@@ -141,69 +139,9 @@ class SinglePlan extends Component {
                                         />
                                     </div>
                                     <div className="rectangle">
-                                        <h4>נתוני התוכנית</h4>
-                                        <ul>
-                                            <li>
-                                                מספר תוכנית:{" "}
-                                                {plan.data.PL_NUMBER}
-                                            </li>
-                                            <li>
-                                                סוג תוכנית:{" "}
-                                                {plan.data.ENTITY_SUBTYPE_DESC}
-                                            </li>
-                                            {plan.jurisdiction && (
-                                                <li>
-                                                    מוסד התכנון המוסמך להפקיד את
-                                                    התכנית: וועדה {plan.jurisdiction}
-                                                </li>
-                                            )}
-                                            {plan.data.DEPOSITING_DATE && <li>
-                                                תאריך הפקדה:{" "}
-                                                <Moment format="DD/MM/YYYY">
-                                                    {plan.data.DEPOSITING_DATE}
-                                                </Moment>
-                                            </li>}
-                                            <li>
-                                                שימוש קרקע:{" "}
-                                                <LandUseVocabulary landUseJoined={plan.data.PL_LANDUSE_STRING}/>
-                                            </li>
-                                            <li>
-                                                סטטוס: {plan.data.STATION_DESC}
-                                            </li>
-                                            <li>
-                                                עדכון אחרון:{" "}
-                                                <Moment
-                                                    parse="YYYYMMDDHHmm"
-                                                    format="DD/MM/YYYY"
-                                                >
-                                                    {plan.data.LAST_UPDATE}
-                                                </Moment>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    target="_blank"
-                                                    href={plan.plan_url}
-                                                >
-                                                    מסמכי התוכנית באתר משרד
-                                                    האוצר
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        {plan.notCredible && (
-                                            <div className="note">
-                                                שימו לב! זוהי תכנית המופקדת
-                                                בסמכות מקומית. מכיוון שהוועדות
-                                                המקומיות לא מדווחות בצורה אחידה
-                                                אודות הסטטוס של התכניות בסמכותן
-                                                אנחנו ממליצים לא להסתמך על סטטוס
-                                                התכניות (גם לא כמו שמופיע באתר
-                                                "תכנון זמין"). התכנית עברה "תנאי
-                                                סף" וכנראה שהיא בהפקדה או תכף
-                                                מופקדת
-                                            </div>
-                                        )}
+                                        <h4>תגובות</h4>
+                                        <Comments planId={id} me={me} />
                                     </div>
-                                   
                                 </div>
                                 <div className="col">
                                     <div className="rectangle">
@@ -259,18 +197,87 @@ class SinglePlan extends Component {
                                             </div>
                                         </div>
                                     )}
-                                     <div className="rectangle">
-                                        <h4>תגובות</h4>
-                                        <div id="comments" />
-                                        <Comments planId={this.state.planId} />
+
+                                    <div className="rectangle">
+                                        <h4>נתוני התוכנית</h4>
+                                        <ul>
+                                            <li>
+                                                מספר תוכנית:{" "}
+                                                {plan.data.PL_NUMBER}
+                                            </li>
+                                            <li>
+                                                סוג תוכנית:{" "}
+                                                {plan.data.ENTITY_SUBTYPE_DESC}
+                                            </li>
+                                            {plan.jurisdiction && (
+                                                <li>
+                                                    מוסד התכנון המוסמך להפקיד את
+                                                    התכנית: וועדה{" "}
+                                                    {plan.jurisdiction}
+                                                </li>
+                                            )}
+                                            {plan.data.DEPOSITING_DATE && (
+                                                <li>
+                                                    תאריך הפקדה:{" "}
+                                                    <Moment format="DD/MM/YYYY">
+                                                        {
+                                                            plan.data
+                                                                .DEPOSITING_DATE
+                                                        }
+                                                    </Moment>
+                                                </li>
+                                            )}
+                                            <li>
+                                                שימוש קרקע:{" "}
+                                                <LandUseVocabulary
+                                                    landUseJoined={
+                                                        plan.data
+                                                            .PL_LANDUSE_STRING
+                                                    }
+                                                />
+                                            </li>
+                                            <li>
+                                                סטטוס: {plan.data.STATION_DESC}
+                                            </li>
+                                            <li>
+                                                עדכון אחרון:{" "}
+                                                <Moment
+                                                    parse="YYYYMMDDHHmm"
+                                                    format="DD/MM/YYYY"
+                                                >
+                                                    {plan.data.LAST_UPDATE}
+                                                </Moment>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    target="_blank"
+                                                    href={plan.plan_url}
+                                                >
+                                                    מסמכי התוכנית באתר משרד
+                                                    האוצר
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {plan.notCredible && (
+                                            <div className="note">
+                                                שימו לב! זוהי תכנית המופקדת
+                                                בסמכות מקומית. מכיוון שהוועדות
+                                                המקומיות לא מדווחות בצורה אחידה
+                                                אודות הסטטוס של התכניות בסמכותן
+                                                אנחנו ממליצים לא להסתמך על סטטוס
+                                                התכניות (גם לא כמו שמופיע באתר
+                                                "תכנון זמין"). התכנית עברה "תנאי
+                                                סף" וכנראה שהיא בהפקדה או תכף
+                                                מופקדת
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    )}
-                </div>
-                <Footer />
-            </React.Fragment>
+                    </div>
+                )}
+            </Wrapper>
         );
     }
 }

@@ -1,10 +1,7 @@
 import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
 
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-
-import { Link } from "react-router-dom";
-
+import Wrapper from "../components/Wrapper";
 import api from "../services/api";
 
 import logo from "../assets/logo.png";
@@ -30,13 +27,14 @@ class SignIn extends Component {
             .catch(error => this.setState({ success: -1 }));
     };
     render() {
-        const { success } = this.state;
+        const { success, redirectTo } = this.state;
+        const { me } = this.props;
+
         if (success === 1) {
-            window.location = this.state.redirectTo;
+            return <Redirect to={redirectTo} />;
         }
         return (
-            <React.Fragment>
-                <Navigation />
+            <Wrapper me={me}>
                 <div className="container">
                     <div className="row">
                         <div className="col">
@@ -109,8 +107,7 @@ class SignIn extends Component {
                         </form>
                     </div>
                 </div>
-                <Footer />
-            </React.Fragment>
+            </Wrapper>
         );
     }
 }
