@@ -1,15 +1,22 @@
 #!/usr/bin/env node
 
+const Express = require('express');
 const http = require('http');
-const app = require('../api/apiApp');
 
+const apiApp = require('../api/apiApp');
+const staticApp = require('../api/staticApp');
 
-const port = normalizePort(process.env.PORT || '3001');
-app.set('port', port);
+// create main app
+const mainApp = Express();
 
-const server = http.createServer(app);
+// mount api and static apps
+mainApp.use('/api', apiApp);
+mainApp.use('/', staticApp);
 
+const server = http.createServer(mainApp);
+const port = normalizePort(process.env.PORT || '3000');
 server.listen(port);
+
 server.on('error', (error) => {
   if (error.syscall !== 'listen') {
     throw error;
