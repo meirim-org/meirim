@@ -24,7 +24,7 @@ Router.get(["/plan/:planId", "/plan/:planId/*"], (req, res, next) => {
         .catch(error => {
             Log.error("failed to fetch plan details");
             Log.error(error);
-            res.render("index", {
+            res.status(404).render("index", {
                 layout: false,
                 isError: true,
                 pageLocale,
