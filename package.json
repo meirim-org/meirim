@@ -88,6 +88,9 @@
     "eslintConfig": {
         "extends": "react-app"
     },
+    "eslintIgnore": [
+        "seeds/import.sql"
+    ],
     "browserslist": [
         ">0.2%",
         "not dead",
