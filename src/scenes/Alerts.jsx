@@ -86,11 +86,13 @@ class Alerts extends Component {
             // is the opposite in RTL
             radius: this.state.slider.max + this.state.slider.min - radius
         })
-            .then(() => this.getAlerts())
+            .then(() => {
+                this.getAlerts()
+                this.setState({added: true})
+            })
             .finally(() => {
                 this.setState({
                     loading: false,
-                    added: true,
                     form: {
                         radius: 3,
                         address: ""
