@@ -15,11 +15,13 @@ import api from "./services/api";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 import "./assets/bootstrap.css";
 
 library.add(faSpinner);
 library.add(faTimes);
+library.add(faWhatsapp);
 
 class App extends Component {
     state = {
