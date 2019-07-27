@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./scenes/Home";
+import Home from "./scenes/Home/Home";
 import Plans from "./scenes/Plans";
 import SinglePlan from "./scenes/SinglePlan";
 import SignIn from "./scenes/SignIn";
@@ -14,12 +14,21 @@ import NotFound from "./scenes/NotFound";
 import api from "./services/api";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSpinner, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+    faSpinner,
+    faTimes,
+    faBuilding,
+    faPaperPlane,
+    faChartArea
+} from "@fortawesome/free-solid-svg-icons";
 
 import "./assets/bootstrap.css";
 
 library.add(faSpinner);
 library.add(faTimes);
+library.add(faBuilding);
+library.add(faPaperPlane);
+library.add(faChartArea);
 
 class App extends Component {
     state = {
