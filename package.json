@@ -47,7 +47,7 @@
         "juice": "^4.2.2",
         "knex": "^0.13.0",
         "leaflet": "^1.4.0",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.15",
         "lodash.deburr": "^4.1.0",
         "moment": "^2.24.0",
         "morgan": "^1.8.2",
