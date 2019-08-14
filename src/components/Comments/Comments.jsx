@@ -19,10 +19,9 @@ const signInURL = {
 
 class Comments extends Component {
     state = {
-        me: {},
         comments: [],
         isLoading: true,
-
+        me : this.props.me ||{},
         error: false
     };
 
@@ -34,8 +33,8 @@ class Comments extends Component {
             .then(comments => {
                 this.setState({
                     comments: comments.data,
-                    me: comments.me,
-                    isLoading: false
+                    isLoading: false,
+                    me: comments.me
                 });
             })
             .catch(error => this.setState({ error }));
@@ -44,7 +43,7 @@ class Comments extends Component {
     handleCommentPublished(data) {
         var newComment = _.merge(data, {
             person: {
-                alias: this.state.alias || this.state.me.alias,
+                alias: this.state.me.alias,
                 id: this.state.me.id
             }
         });
@@ -56,14 +55,19 @@ class Comments extends Component {
             content: "",
             me: newMe
         });
+
         document.getElementByName("newCommentform").reset();
     }
 
-    handleSubmit = state => {
-        const { planId, me } = this.props;
-        const { content, alias } = state;
+    handleSubmit = data => {
+        const { planId } = this.props;
+        const { me } = this.state;
+        const { content, alias } = data;
 
-        api.post("/comment/" + planId, { content, alias, person_id: me.id })
+        let aliasush  = me.alias || alias;
+
+        console.log(' me is :'+me)
+        api.post("/comment/" + planId, { content, alias: aliasush, person_id: me.id, plan_id: planId, parent_id:0 })
             .then(res => {
                 this.setState({ done: true });
                 this.handleCommentPublished(res.data);
@@ -72,8 +76,7 @@ class Comments extends Component {
     };
 
     render() {
-        const { me } = this.props;
-        const { comments } = this.state;
+        const { comments, me} = this.state;
 
         return (
             <Fragment>
