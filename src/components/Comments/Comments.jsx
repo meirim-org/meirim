@@ -67,7 +67,6 @@ class Comments extends Component {
 
         let aliasush  = me.alias || alias;
 
-        console.log(' me is :'+me)
         api.post("/comment/" + planId, { content, alias: aliasush, person_id: me.id, plan_id: planId, parent_id:0 })
             .then(res => {
                 this.setState({ done: true });
