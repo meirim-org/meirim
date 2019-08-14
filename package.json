@@ -15,7 +15,7 @@
     "homepage": "http://meirim.org",
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.16",
-        "@fortawesome/free-solid-svg-icons": "^5.8.0",
+        "@fortawesome/free-regular-svg-icons": "^5.9.0",
         "@fortawesome/react-fontawesome": "^0.1.4",
         "@mapbox/geojson-area": "^0.2.2",
         "@material-ui/core": "^3.9.2",
@@ -47,7 +47,7 @@
         "juice": "^4.2.2",
         "knex": "^0.13.0",
         "leaflet": "^1.4.0",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.15",
         "lodash.deburr": "^4.1.0",
         "moment": "^2.24.0",
         "morgan": "^1.8.2",
@@ -100,7 +100,6 @@
     ],
     "scripts": {
         "start": "BROWSER=none ./node_modules/react-scripts/bin/react-scripts.js start",
-        "api": "node bin/api",
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "serve": "node bin/serve"
     }
