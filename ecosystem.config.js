@@ -5,7 +5,7 @@ module.exports = {
     merge_logs: true,
     out_file: 'logs/combined.log',
     error_file: 'logs/combined.log',
-    cwd: '/path/CitizensForCities',
+    cwd: '/home/bambi/CitizensForCities',
     env: {
       NODE_ENV: 'production',
     },
