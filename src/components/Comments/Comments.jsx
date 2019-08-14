@@ -48,7 +48,6 @@ class Comments extends Component {
             }
         });
 
-        console.log
         // if there hasnt been an alias for current user
         const newMe = this.state.me;
         newMe.alias = newMe.alias || data.person.alias;
