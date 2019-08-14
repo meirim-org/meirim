@@ -24,11 +24,7 @@ import {
 
 import "./assets/bootstrap.css";
 
-library.add(faSpinner);
-library.add(faTimes);
-library.add(faBuilding);
-library.add(faPaperPlane);
-library.add(faChartArea);
+library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea);
 
 class App extends Component {
     state = {
