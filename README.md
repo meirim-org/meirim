@@ -55,7 +55,7 @@ exit;
 Import the sql file
 
 ```bash
-mysql -uroot -p -meirim < backend/doc/import.sql
+mysql -uroot -p -meirim < seeds/import.sql
 ```
 
 Run migrations
@@ -70,17 +70,14 @@ Edit the local configuration file and set your database and email settings
 vi config/local.json
 ```
 
-Run the backend
-
-```bash
-npm start
-```
-
 ## Running in production
 
-Run Server in production (using apache or any other servie to proxy requests)
-pm2 start ecosystem.config.js --env production
+Run Server in production
 
+```bash
+npm run build
+pm2 start ecosystem.config.js --env production
+```
 
 Set up cron
 
@@ -92,12 +89,14 @@ crontab -e
 
 ## Running in development
 
-node bin/api
-node bin/dev_server
+```bash
+npm run build
+npm run serve
+```
 
 ## Authors
 
-See also the list of [contributors](https://github.com/dortheimer/CitizensForCities/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/meirim-org/meirim/contributors) who participated in this project.
 
 ## License
 
