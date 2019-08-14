@@ -117,7 +117,7 @@ class Plans extends Component {
                             <Card className="card" raised={true} key={plan.id}>
                                 <Link
                                     className="card-link"
-                                    to={`/plan/${plan.id}/${plan.PL_NAME}`}
+                                    to={`/plan/${plan.id}`}
                                 >
                                     <CardActionArea className="card-action-area">
                                         <CardMedia
