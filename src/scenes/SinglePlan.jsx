@@ -3,6 +3,7 @@ import geojsonArea from "@mapbox/geojson-area";
 import { Redirect } from "react-router-dom";
 import { Chart } from "react-charts";
 import Moment from "react-moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Wrapper from "../components/Wrapper";
 import Comments from "../components/Comments";
@@ -14,6 +15,7 @@ import api from "../services/api";
 import "../assets/bootstrap.css";
 
 import t from "../locale/he_IL";
+import "./SinglePlan.css";
 
 const axes = [
     { primary: true, type: "ordinal", position: "bottom" },
@@ -271,6 +273,16 @@ class SinglePlan extends Component {
                                                 מופקדת
                                             </div>
                                         )}
+                                        <div className="single-line">
+                                            <p>שתפו אותי:</p>
+                                            <a
+                                                className="share-link"
+                                                target="_blank"
+                                                href={"https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A" + encodeURI(window.location.toString())}
+                                            >
+                                                <FontAwesomeIcon icon={["fab", "whatsapp"]} size="lg" color="#25D366" />
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
