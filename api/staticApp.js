@@ -4,6 +4,7 @@ const Express = require("express");
 const ExpressHandlebars = require("express-handlebars");
 const BodyParser = require("body-parser");
 const path = require("path");
+const moment = require("moment");
 
 const Log = require("./lib/log");
 const routes = require("./staticRoutes");
@@ -23,7 +24,11 @@ app.use(Express.static(staticRootDir, { index: false }));
 app.set("views", staticRootDir);
 app.engine(
     "html",
-    ExpressHandlebars({ extname: ".html", layoutsDir: staticRootDir })
+    ExpressHandlebars({
+        extname: ".html",
+        layoutsDir: staticRootDir,
+        helpers: { formatDate: dt => moment(dt).format('DD/MM/YYYY') }
+    })
 );
 app.set("view engine", "html");
 
