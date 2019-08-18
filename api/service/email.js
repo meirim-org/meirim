@@ -114,9 +114,7 @@ class Email {
     data.unsubscribeLink = `${
       this.baseUrl
     }alert/?token=${alert.unsubsribeToken()}`;
-    data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}/${unsentPlan.get(
-      'PL_NAME',
-    )}`;
+    data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}`;
     data.jurisdiction = unsentPlan.get('jurisdiction');
     data.isLocalAuthority = data.jurisdiction === 'מקומית';
 

@@ -19,18 +19,24 @@ import "rc-slider/assets/index.css";
 import "./Alerts.css";
 import "../../node_modules/leaflet/dist/leaflet.css";
 
+const messages = {
+    alertAdded:'התראת תכנון התווספה בהצלחה!',
+    alertDeleted:'התראת תכנון הוסרה בהצלחה'
+}
 const signInURL = {
     pathname: "/sign/in",
     state: {
         redirectTo: window.location.pathname
     }
 };
+
 class Alerts extends Component {
     state = {
         error: false,
         loading: false,
         alerts: [],
         added: false,
+        deleted: false,
         form: {
             radius: 5,
             address: ""
@@ -86,11 +92,13 @@ class Alerts extends Component {
             // is the opposite in RTL
             radius: this.state.slider.max + this.state.slider.min - radius
         })
-            .then(() => this.getAlerts())
+            .then(() => {
+                this.getAlerts()
+                this.setState({added: true})
+            })
             .finally(() => {
                 this.setState({
                     loading: false,
-                    added: true,
                     form: {
                         radius: 3,
                         address: ""
@@ -104,7 +112,10 @@ class Alerts extends Component {
     }
 
     handleDelete(alertId) {
-        api.delete("/alert/" + alertId).then(() => this.getAlerts());
+        api.delete("/alert/" + alertId).then(() => {
+            this.getAlerts()
+            this.setState({deleted: true})
+        });
     }
 
     componentDidMount() {
@@ -139,11 +150,14 @@ class Alerts extends Component {
             .catch(error => this.setState({ error }));
     }
     handleClose = () => {
-        this.setState({ added: false });
+        this.setState({ 
+            added: false,
+            deleted: false
+        });
     };
 
     render() {
-        const { alerts, form, error, bounds, added } = this.state;
+        const { alerts, form, error, bounds, added, deleted } = this.state;
         const { me } = this.props;
 
         // unauthenticatd
@@ -244,7 +258,7 @@ class Alerts extends Component {
                     </div>
                 </div>
                 <Snackbar
-                    open={added}
+                    open={added || deleted}
                     anchorOrigin={{
                         vertical: "bottom",
                         horizontal: "left"
@@ -256,7 +270,7 @@ class Alerts extends Component {
                         "aria-describedby": "message-id"
                     }}
                     message={
-                        <span id="message-id">התראת תכנון התווספה בהצלחה!</span>
+                        <span id="message-id">{added? messages.alertAdded : messages.alertDeleted}</span>
                     }
                 />
             </Wrapper>

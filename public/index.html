@@ -40,24 +40,24 @@ Like looking at code? Help us! https://github.com/meirim-org/meirim
         {{#if data.data.DEPOSITING_DATE }}
         <meta
             name="description"
-            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב {{
-                data.data.DEPOSITING_DATE
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב{{
+                formatDate data.data.DEPOSITING_DATE
             }}"
         />
         <meta
             property="og:description"
-            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב {{
-                data.data.DEPOSITING_DATE
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב{{
+                formatDate data.data.DEPOSITING_DATE
             }}"
         />
         {{ else }}
         <meta
             name="description"
-            content="תבע ב {{ data.data.PLAN_COUNTY_NAME }}"
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }}"
         />
         <meta
             property="og:description"
-            content="תבע ב {{ data.data.PLAN_COUNTY_NAME }}"
+            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }}"
         />
         {{/if}}
         {{/if}}
