@@ -21,10 +21,11 @@ import {
     faPaperPlane,
     faChartArea
 } from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 import "./assets/bootstrap.css";
 
-library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea);
+library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
 
 class App extends Component {
     state = {

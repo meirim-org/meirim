@@ -13,6 +13,7 @@ class AddComment extends Component {
     };
 
     handleSubmit = e => {
+        // a callback function
         const { submit } = this.props;
         e.preventDefault();
 
