@@ -8,7 +8,7 @@ const Log = require("../lib/log");
 
 const BASE_AGS_URL =
     "https://ags.iplan.gov.il/arcgis/rest/services/" +
-    "PlanningPublic/Xplan2/MapServer";
+    "PlanningPublic/Xplan_2039/MapServer";
 
 const options = {
     rejectUnauthorized: false,
