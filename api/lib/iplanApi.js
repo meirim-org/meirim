@@ -2,6 +2,7 @@ const Request = require("request-promise");
 const GeoJSON = require("esri-to-geojson");
 const Bluebird = require("bluebird");
 const _ = require("lodash");
+const proj4 = require("proj4");
 const reproject = require("reproject");
 const Config = require("../lib/config");
 const Log = require("../lib/log");
@@ -51,6 +52,10 @@ const fields = [
     "PL_TASRIT_PRN_VERSION"
 ];
 
+const EPSG2039 = proj4.Proj(
+    "+proj=tmerc +lat_0=31.73439361111111 +lon_0=35.20451694444445 +k=1.0000067 +x_0=219529.584 +y_0=626907.39 +ellps=GRS80 +towgs84=-48,55,52,0,0,0,0 +units=m +no_defs"
+);
+
 const EPSG3857 =
     "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
 
@@ -69,7 +74,7 @@ const getBlueLines = () => {
             (coll, datum) => {
                 // overriding geomerty with WGS84 coordinates
                 const res = Object.assign({}, datum, {
-                    geometry: reproject.toWgs84(datum.geometry, EPSG3857)
+                    geometry: reproject.toWgs84(datum.geometry, EPSG2039)
                 });
                 return coll.concat(res);
             },
