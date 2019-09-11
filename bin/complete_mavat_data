@@ -4,7 +4,7 @@ const controller = require("../api/controller/cron");
 const Log = require("../api/lib/log");
 
 controller
-  .fix_geodata()
+  .complete_mavat_data()
   .then(() => Log.info("running complete_mavat_data"))
   .catch(e => Log.error(e))
   .finally(() => process.exit());
