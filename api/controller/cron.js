@@ -34,6 +34,27 @@ const complete_mavat_data = () =>
             })
         );
 
+const fix_geodata = () => {
+    return iplanApi.getBlueLines().then(iPlans =>
+        Bluebird.mapSeries(iPlans, iPlan => {
+            return Plan.forge({
+                PL_NUMBER: iPlan.properties.PL_NUMBER
+            })
+                .fetch()
+                .then(oldPlan => {
+                    // check if there was an update
+                    return Plan.buildFromIPlan(iPlan, oldPlan).then(plan => {
+                        return plan.save();
+                    });
+                })
+                .catch(e => {
+                    console.log("iplan exception", JSON.stringify(e));
+                    return Bluebird.resolve();
+                });
+        })
+    );
+};
+
 const complete_jurisdiction_from_mavat = () =>
     Plan.query(qb => {
         qb.where("jurisdiction", "IS", null);
@@ -161,5 +182,6 @@ module.exports = {
     iplan,
     complete_mavat_data,
     sendPlanningAlerts,
-    complete_jurisdiction_from_mavat
+    complete_jurisdiction_from_mavat,
+    fix_geodata
 };
