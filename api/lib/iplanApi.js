@@ -75,7 +75,7 @@ const getBlueLines = () => {
             (coll, datum) => {
                 // overriding geomerty with WGS84 coordinates
                 const res = Object.assign({}, datum, {
-                    geometry: reproject.toWgs84(datum.geometry, EPSG2039)
+                    geometry: reproject.toWgs84(datum.geometry, EPSG3857)
                 });
                 return coll.concat(res);
             },
