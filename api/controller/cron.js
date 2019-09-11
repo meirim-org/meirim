@@ -47,11 +47,18 @@ const complete_mavat_data = () =>
             Bluebird.mapSeries(planCollection.models, plan => {
                 Log.debug(plan.get("plan_url"));
 
-                return MavatAPI.getByPlan(plan).then(mavatData => {
-                    Plan.setMavatData(plan, mavatData);
-                    Log.debug("Saving with mavat", JSON.stringify(mavatData));
-                    return plan.save();
-                });
+                return MavatAPI.getByPlan(plan)
+                    .then(mavatData => {
+                        Plan.setMavatData(plan, mavatData);
+                        Log.debug(
+                            "Saving with mavat",
+                            JSON.stringify(mavatData)
+                        );
+                        return plan.save();
+                    })
+                    .catch(error => {
+                        // do nothing on error
+                    });
             })
         );
 
@@ -183,5 +190,6 @@ module.exports = {
     complete_mavat_data,
     sendPlanningAlerts,
     complete_jurisdiction_from_mavat,
-    fix_geodata
+    fix_geodata,
+    fetchIplan
 };
