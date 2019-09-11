@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+const controller = require("../api/controller/cron");
+const Log = require("../api/lib/log");
+
+controller
+  .fix_geodata()
+  .then(() => Log.info("running fix_geodata"))
+  .catch(e => Log.error(e))
+  .finally(() => process.exit());
