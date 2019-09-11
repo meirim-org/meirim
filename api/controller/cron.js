@@ -17,6 +17,27 @@ const iplan = () =>
         .getBlueLines()
         .then(iPlans => Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan)));
 
+const fix_geodata = () => {
+    return iplanApi.getBlueLines().then(iPlans =>
+        Bluebird.mapSeries(iPlans, iPlan => {
+            return Plan.forge({
+                PL_NUMBER: iPlan.properties.PL_NUMBER
+            })
+                .fetch()
+                .then(oldPlan => {
+                    // check if there was an update
+                    return Plan.buildFromIPlan(iPlan, oldPlan).then(plan => {
+                        return plan.save();
+                    });
+                })
+                .catch(e => {
+                    console.log("iplan exception", JSON.stringify(e));
+                    return Bluebird.resolve();
+                });
+        })
+    );
+};
+
 const complete_mavat_data = () =>
     Plan.query(qb => {
         qb.where("main_details_from_mavat", "=", "");
