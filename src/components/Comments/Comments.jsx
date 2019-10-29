@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { NavLink as Link } from "react-router-dom";
 import _ from "lodash";
-
 import Comment from "./Comment";
 import AddComment from "./AddComment";
 import api from "../../services/api";
@@ -21,7 +20,7 @@ class Comments extends Component {
     state = {
         comments: [],
         isLoading: true,
-        me : this.props.me ||{},
+        me: this.props.me || {},
         error: false
     };
 
@@ -62,12 +61,18 @@ class Comments extends Component {
 
     handleSubmit = data => {
         const { planId } = this.props;
-        const { me } = this.state;
+        const { me, rate } = this.state;
         const { content, alias } = data;
 
-        let aliasush  = me.alias || alias;
+        let aliasush = me.alias || alias;
 
-        api.post("/comment/" + planId, { content, alias: aliasush, person_id: me.id, plan_id: planId, parent_id:0 })
+        return api.post("/comment/" + planId, {
+            content,
+            alias: aliasush,
+            person_id: me.id,
+            plan_id: planId,
+            parent_id: 0
+        })
             .then(res => {
                 this.setState({ done: true });
                 this.handleCommentPublished(res.data);
@@ -76,35 +81,24 @@ class Comments extends Component {
     };
 
     render() {
-        const { comments, me} = this.state;
-
+        const { comments, me } = this.state;
         return (
             <Fragment>
+                {!me.id && (
+                    <div className="text-center container">
+                        <small>יש להתחבר לפני שניתן להגיב</small>
+                        <br />
+                        <Link to={signInURL}>
+                            <button className="btn btn-primary">התחברות</button>
+                        </Link>
+                    </div>
+                )}
                 {me.id && <AddComment me={me} submit={this.handleSubmit} />}
                 <ul id="comments-list" className="comments-list ">
                     {comments.map((comment, idx) => (
                         <Comment id={idx} comment={comment} />
                     ))}
                 </ul>
-                {!me.id && (
-                    <div className="text-center container">
-                        מה דעתך על התוכנית?
-                        <br />
-                        <small>יש להירשם כדי להגיב ולהשתתף בדיון</small>
-                        <br />
-                        <Link to="/">
-                            <button className="btn btn-success">
-                                חשבון חדש
-                            </button>
-                        </Link>
-                        או
-                        <Link to={signInURL}>
-                            <button className="btn btn-primary">
-                                חשבון קיים
-                            </button>
-                        </Link>
-                    </div>
-                )}
             </Fragment>
         );
     }
