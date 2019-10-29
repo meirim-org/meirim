@@ -47,7 +47,7 @@
         "html-table-to-json": "^0.2.1",
         "jade": "~1.11.0",
         "juice": "^4.2.2",
-        "knex": "^0.13.0",
+        "knex": "^0.19.5",
         "leaflet": "^1.4.0",
         "lodash": "^4.17.15",
         "lodash.deburr": "^4.1.0",
