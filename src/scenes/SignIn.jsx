@@ -31,7 +31,8 @@ class SignIn extends Component {
         const { me } = this.props;
 
         if (success === 1) {
-            return <Redirect to={redirectTo} />;
+            window.location = redirectTo;
+            return "";
         }
         return (
             <Wrapper me={me}>
