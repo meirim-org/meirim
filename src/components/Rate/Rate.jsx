@@ -15,30 +15,6 @@ const signInURL = {
     }
 };
 
-// convert ratings to nice rating hash
-const organizeRatings = ratings => {
-    let initRating = {
-        5: 0,
-        4: 0,
-        3: 0,
-        2: 0,
-        1: 0
-    };
-    const max = ratings.reduce((acc, r) => (r.num > acc ? r.num : acc), 0);
-    ratings.map(rating => {
-        initRating[rating.score] = rating.num;
-    });
-    const numRatings = ratings.length;
-    const average = ratings.reduce((acc, r) => acc + r.score, 0) / numRatings;
-
-    return {
-        max,
-        numRatings,
-        average,
-        ratings: initRating
-    };
-};
-
 class Rate extends Component {
     state = {
         score: 0,
@@ -48,7 +24,16 @@ class Rate extends Component {
         me: this.props.me || {},
         error: false,
         goToLogin: false,
-        ratings: []
+        max: 0,
+        numRatings: 0,
+        average: 0,
+        ratings: {
+            5: 0,
+            4: 0,
+            3: 0,
+            2: 0,
+            1: 0
+        }
     };
 
     componentDidMount() {
@@ -56,11 +41,26 @@ class Rate extends Component {
 
         return api
             .get("/rate/" + planId)
-            .then(ratings => {
+            .then(d => {
+                let ratings = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+                const max = d.data.reduce(
+                    (acc, r) => (r.num > acc ? r.num : acc),
+                    0
+                );
+                d.data.map(rating => {
+                    ratings[rating.score] = rating.num;
+                });
+                const numRatings = d.data.length;
+                const average =
+                    d.data.reduce((acc, r) => acc + r.score, 0) / numRatings;
+
                 this.setState({
                     isLoading: false,
-                    me: ratings.me,
-                    ratings: ratings.data
+                    me: d.data.me,
+                    max,
+                    numRatings,
+                    average,
+                    ratings
                 });
             })
             .catch(error => this.setState({ error }));
@@ -85,13 +85,20 @@ class Rate extends Component {
     };
 
     render() {
-        const { me, score, tempRate, goToLogin, ratings } = this.state;
+        const {
+            me,
+            score,
+            tempRate,
+            goToLogin,
+            max,
+            numRatings,
+            average,
+            ratings
+        } = this.state;
         const displayRate = tempRate || score;
         if (goToLogin) {
             return <Redirect to={signInURL} />;
         }
-
-        const organizedRatings = organizeRatings(ratings);
 
         return (
             <Fragment>
@@ -112,44 +119,39 @@ class Rate extends Component {
                             "התוכנית דורשת שיפור ואני מתנגד/ת"}
                         {displayRate === 3 && "לא מתנגד/ת או תומך/ת"}
                         {displayRate === 4 && "התוכנית סבירה ואני תומך/ת"}
-                        {displayRate === 5 && "התוכנית מעולה ואני תומך/ת בה"}
+                        {displayRate === 5 && "התוכנית מעולה ואני תומך/ת"}
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-4">
                         <div style={{ fontSize: 48 }}>
-                            {organizedRatings.average? organizedRatings.average: '- -'}
+                            {average ? average : "- -"}
                         </div>
-                        <div>{organizedRatings.numRatings} דירוגים</div>
+                        <div>{numRatings} דירוגים</div>
                     </div>
                     <div className="col-8">
-                        {Object.values(organizedRatings.ratings).map(
-                            (rating, index) => {
-                                const width =
-                                    (rating / organizedRatings.max) * 100;
-                                return (
-                                    <div className="row">
-                                        <div className="col-2">{index + 1}</div>
-                                        <div className="col-10">
-                                            <div class="progress">
-                                                <div
-                                                    class="progress-bar"
-                                                    role="progressbar"
-                                                    aria-valuenow={rating}
-                                                    style={{
-                                                        width: `${width}%`
-                                                    }}
-                                                    aria-valuemin="0"
-                                                    aria-valuemax={
-                                                        organizedRatings.max
-                                                    }
-                                                ></div>
-                                            </div>
+                        {Object.values(ratings).map((rating, index) => {
+                            const width = (rating / max) * 100;
+                            return (
+                                <div className="row">
+                                    <div className="col-2">{index + 1}</div>
+                                    <div className="col-10">
+                                        <div class="progress">
+                                            <div
+                                                class="progress-bar"
+                                                role="progressbar"
+                                                aria-valuenow={rating}
+                                                style={{
+                                                    width: `${width}%`
+                                                }}
+                                                aria-valuemin="0"
+                                                aria-valuemax={max}
+                                            ></div>
                                         </div>
                                     </div>
-                                );
-                            }
-                        )}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </Fragment>

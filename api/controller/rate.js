@@ -33,7 +33,7 @@ class RateController extends Controller {
         })
         .then(newRating => {
             // update plan table
-            const query = `UPDATE plan SET rating=(SELECT sum(score)/count(*) from rate where plan_id=${plan_id}) WHERE id=${plan_id}`
+            const query = `UPDATE plan SET rating=(SELECT AVG(score) from rate where plan_id=${plan_id}) WHERE id=${plan_id}`
             return Knex.raw(query);
         });
     }
