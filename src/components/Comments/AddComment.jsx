@@ -17,13 +17,8 @@ class AddComment extends Component {
         const { submit } = this.props;
         e.preventDefault();
 
-        submit(this.state);
-        // // api.post("/comment/" + this.state.id, { content, alias, person_id: id })
-        //     .then(res => {
-        //         this.setState({ done: true });
-        //         this.handleCommentPublished(res.data);
-        //     })
-        //     .catch(error => this.setState({ error }));
+        submit(this.state)
+            .then(()=>this.setState({content:''}))
     };
 
     render() {
@@ -42,7 +37,7 @@ class AddComment extends Component {
                     <textarea
                         value={content}
                         required
-                        placeholder="מה דעתך על התוכנית?"
+                        placeholder="מדוע?"
                         name="content"
                         className="form-control"
                         rows="1"

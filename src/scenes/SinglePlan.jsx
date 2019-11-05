@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Wrapper from "../components/Wrapper";
 import Comments from "../components/Comments";
+import Rate from "../components/Rate";
+
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
 import LandUseVocabulary from "../components/LandUseVocabulary";
@@ -44,6 +46,7 @@ class SinglePlan extends Component {
 
     componentDidMount() {
         const { id } = this.props.match.params;
+
         return api
             .get("/plan/" + id)
             .then(plan => this.setState({ plan: plan.data }))
@@ -141,7 +144,11 @@ class SinglePlan extends Component {
                                         />
                                     </div>
                                     <div className="rectangle">
-                                        <h4>תגובות</h4>
+                                        <h4>דעת הציבור</h4>
+                                        <Rate planId={id} me={me} />
+                                    </div>
+                                    <div className="rectangle">
+                                        <h4>דבר הציבור</h4>
                                         <Comments planId={id} me={me} />
                                     </div>
                                 </div>
@@ -278,9 +285,18 @@ class SinglePlan extends Component {
                                             <a
                                                 className="share-link"
                                                 target="_blank"
-                                                href={"https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A" + encodeURI(window.location.toString())}
+                                                href={
+                                                    "https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A" +
+                                                    encodeURI(
+                                                        window.location.toString()
+                                                    )
+                                                }
                                             >
-                                                <FontAwesomeIcon icon={["fab", "whatsapp"]} size="lg" color="#25D366" />
+                                                <FontAwesomeIcon
+                                                    icon={["fab", "whatsapp"]}
+                                                    size="lg"
+                                                    color="#25D366"
+                                                />
                                             </a>
                                         </div>
                                     </div>
