@@ -15,7 +15,8 @@ class Plan extends Model {
             data: ["required"],
             geom: ["required", "object"],
             jurisdiction: "string",
-            areaChanges: "string"
+            areaChanges: "string",
+            rating: ["required", "number"]
         };
     }
 
