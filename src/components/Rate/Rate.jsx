@@ -43,7 +43,7 @@ class Rate extends Component {
         this.loadRatings();
     }
 
-    loadRatings =() => {
+    loadRatings = () => {
         const { planId } = this.props;
 
         return api
@@ -54,7 +54,7 @@ class Rate extends Component {
                     acc[key] = 0;
                     return acc;
                 }, {});
-               
+
                 // set the rating we have
                 for (let i = 0; d.data[i]; i++) {
                     ratings[d.data[i].score] = d.data[i].num;
@@ -77,7 +77,7 @@ class Rate extends Component {
                 });
             })
             .catch(error => this.setState({ error }));
-    }
+    };
 
     setRate = score => {
         const { planId, me } = this.props;
@@ -142,7 +142,7 @@ class Rate extends Component {
                                     <div className="col-10">
                                         <div class="progress">
                                             <div
-                                                class="progress-bar"
+                                                class="progress-bar bg-warning"
                                                 role="progressbar"
                                                 aria-valuenow={rating}
                                                 style={{
