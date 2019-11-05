@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
         t.unique(['person_id', 'plan_id']);
     }).then(()=>{
         return knex.schema.alterTable('plan', function(t) {
-            t.string('rating', 35).notNullable().defaultTo(0);           
+            t.float('rating').notNullable().defaultTo(0);           
           });
     })
 };

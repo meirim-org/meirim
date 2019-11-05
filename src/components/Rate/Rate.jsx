@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
-import _ from "lodash";
 import Rating from "react-rating";
 import api from "../../services/api";
 
@@ -15,11 +14,18 @@ const signInURL = {
     }
 };
 
+const ratingsValues = {
+    5: "התוכנית מעולה ואני תומך/ת",
+    4: "התוכנית סבירה ואני תומך/ת",
+    3: "לא מתנגד/ת או תומך/ת",
+    2: "התוכנית דורשת שיפור ואני מתנגד/ת",
+    1: "התוכנית תפגע בסביבתה ואני מתנגד/ת"
+};
+
 class Rate extends Component {
     state = {
         score: 0,
         tempScore: 0,
-
         isLoading: true,
         me: this.props.me || {},
         error: false,
@@ -27,33 +33,40 @@ class Rate extends Component {
         max: 0,
         numRatings: 0,
         average: 0,
-        ratings: {
-            5: 0,
-            4: 0,
-            3: 0,
-            2: 0,
-            1: 0
-        }
+        ratings: Object.keys(ratingsValues).reduce((acc, key) => {
+            acc[key] = 0;
+            return acc;
+        }, {})
     };
 
     componentDidMount() {
+        this.loadRatings();
+    }
+
+    loadRatings =() => {
         const { planId } = this.props;
 
         return api
             .get("/rate/" + planId)
             .then(d => {
-                let ratings = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+                // init rating display array
+                let ratings = Object.keys(ratingsValues).reduce((acc, key) => {
+                    acc[key] = 0;
+                    return acc;
+                }, {});
+               
+                // set the rating we have
+                for (let i = 0; d.data[i]; i++) {
+                    ratings[d.data[i].score] = d.data[i].num;
+                }
+
+                const numRatings = d.data.length;
+                const average =
+                    d.data.reduce((acc, r) => acc + r.score, 0) / numRatings;
                 const max = d.data.reduce(
                     (acc, r) => (r.num > acc ? r.num : acc),
                     0
                 );
-                d.data.map(rating => {
-                    ratings[rating.score] = rating.num;
-                });
-                const numRatings = d.data.length;
-                const average =
-                    d.data.reduce((acc, r) => acc + r.score, 0) / numRatings;
-
                 this.setState({
                     isLoading: false,
                     me: d.data.me,
@@ -75,7 +88,7 @@ class Rate extends Component {
             .post("/rate/", { score, plan_id: planId })
             .then(ratings => {
                 this.setState({ score });
-                this.componentDidMount();
+                return this.loadRatings();
             })
             .catch(error => this.setState({ error }));
     };
@@ -86,7 +99,6 @@ class Rate extends Component {
 
     render() {
         const {
-            me,
             score,
             tempRate,
             goToLogin,
@@ -112,15 +124,7 @@ class Rate extends Component {
                             initialRating={score}
                         />
                     </div>
-                    <div className="col-7">
-                        {displayRate === 1 &&
-                            "התוכנית תפגע בסביבתה ואני מתנגד/ת"}
-                        {displayRate === 2 &&
-                            "התוכנית דורשת שיפור ואני מתנגד/ת"}
-                        {displayRate === 3 && "לא מתנגד/ת או תומך/ת"}
-                        {displayRate === 4 && "התוכנית סבירה ואני תומך/ת"}
-                        {displayRate === 5 && "התוכנית מעולה ואני תומך/ת"}
-                    </div>
+                    <div className="col-7">{ratingsValues[displayRate]}</div>
                 </div>
                 <div className="row">
                     <div className="col-4">
