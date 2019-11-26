@@ -115,8 +115,8 @@ export default function Home(props) {
                     </div>
                 </div>
             </div>
-            <div className="container">
-                <div className="row">
+            <div className="container how-it-works">
+                <div className="row responsive-title">
                     <h3>כיצד "מעירים" עובדת?</h3>
                 </div>
 
@@ -139,7 +139,7 @@ export default function Home(props) {
                 </div>
             </div>
             <div className="container">
-                <div className="row">
+                <div className="row responsive-title">
                     <h3>אומרים על "מעירים":</h3>
                 </div>
                 <div className="row">
