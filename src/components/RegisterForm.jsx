@@ -63,7 +63,7 @@ class RegisterForm extends Component {
         )}
         {!done && (
           <div>
-            <strong className="d-d-block text-center">{t.signupNow}:</strong>
+            <strong className="d-d-block text-center">{t.signupNow}</strong>
             <div className="form-group">
               <label for="loginEmail">{t.emailAddress}:</label>
               <input
@@ -77,7 +77,7 @@ class RegisterForm extends Component {
               />
             </div>
             <div className="form-group">
-              <label for="loginPassword">{t.password}</label>
+              <label for="loginPassword">{t.password}:</label>
               <input
                 onChange={this.handleChange}
                 value={this.state.password}

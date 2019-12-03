@@ -52,9 +52,6 @@ h2 strong {
 }
 
 @media (min-width: 992px) {
-    .heroContainer {
-        height: 685px;
-    }
     .hero {
         display: block;
     }
@@ -70,6 +67,26 @@ h2 strong {
     .hero .content {
         text-align: right;
         margin-top: 60px;
+    }
+
+    .how-it-works {
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 576px) {
+    .heroContainer {
+        height: calc(100vh - 40px);
+        -o-height: calc(100vh - 40px);
+        -webkit-height: calc(100vh - 40px);
+        -moz-height: calc(100vh - 40px);
+    }
+}
+
+@media (max-width: 576px) {
+    .responsive-title {
+        align-content: center;
+        flex-direction: column;
     }
 }
 
