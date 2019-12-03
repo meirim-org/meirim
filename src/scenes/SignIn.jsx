@@ -10,7 +10,7 @@ import "./Alerts.css";
 class SignIn extends Component {
     state = {
         success: 0,
-        redirectTo: ((this.props.location || {}).state || {}).redirectTo || "/"
+        redirectTo: ((this.props.location || {}).state || {}).redirectTo || "/alerts"
     };
 
     handleChange = event => {
