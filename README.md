@@ -89,9 +89,15 @@ crontab -e
 
 ## Running in development
 
+Both the api and the frontend need to be run separately when developing
+for the auto-reload capabilities of webpack-dev-server.
+The api will run on port 3001 by default, and the frontend will run on
+port 3000 and proxy requests destined to the api from any "/api" location
+to the service at port 3001 (proxy settings live in [src/setupProxy.js](src/setupProxy.js)).
+
 ```bash
-npm run build
-npm run serve
+npm run api
+npm start
 ```
 
 ## Authors
