@@ -40,7 +40,10 @@ const fix_geodata = () => {
 
 const complete_mavat_data = () =>
     Plan.query(qb => {
-        qb.where("main_details_from_mavat", "=", "");
+        // qb.where("main_details_from_mavat", "=", "");
+        qb.whereNull('areaChanges');
+        qb.orderBy("id", "desc");
+
     })
         .fetchAll()
         .then(planCollection =>
