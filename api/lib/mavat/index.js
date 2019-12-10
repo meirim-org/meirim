@@ -195,7 +195,6 @@ const getByPlan = plan =>
                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
-                areaChanges: getAreaChanges(cheerioPage)
             });
         });
 // const getByPlan = () => Promise.resolve();
