@@ -62,7 +62,7 @@ class Rate extends Component {
 
                 const numRatings = d.data.length;
                 const average =
-                    d.data.reduce((acc, r) => acc + r.score, 0) / numRatings;
+                    Math.round(d.data.reduce((acc, r) => acc + r.score, 0) / numRatings * 100)/100;
                 const max = d.data.reduce(
                     (acc, r) => (r.num > acc ? r.num : acc),
                     0
