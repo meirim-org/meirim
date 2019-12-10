@@ -207,7 +207,8 @@ class Plan extends Model {
         return plan.set({
             goals_from_mavat: mavanData.goals,
             main_details_from_mavat: mavanData.mainPlanDetails,
-            jurisdiction: mavanData.jurisdiction
+            jurisdiction: mavanData.jurisdiction,
+            areaChanges: mavanData.areaChanges
         });
     }
 
