@@ -32,34 +32,46 @@ const init = () =>
         })();
     });
 
-// const fetch = planUrl =>
-//     new Promise((resolve, reject) => {
-//         (async () => {
-//             try {
-//                 const page = await browser.newPage();
-//                 log.debug("Fetching", planUrl);
-//                 await page.goto(planUrl);
+const fetch = planUrl =>
+    new Promise((resolve, reject) => {
+        (async () => {
+            const page = await browser.newPage();
+            try {
+                log.debug("Loading plan page", planUrl);
 
-//                 // await page.screenshot({path: 'screenshot.png'});
-//                 await page.waitForSelector("#ctl00_divPageTitle");
+                await page.goto(planUrl);
+                await page.waitForSelector("#divMain");
 
-//                 // execute standard javascript in the context of the page.
-//                 const bodyHTML = await page.evaluate(
-//                     () => document.body.innerHTML
-//                 );
-//                 page.close();
-//                 log.debug("Success loading", planUrl);
-//                 resolve(
-//                     cheerio.load(bodyHTML, {
-//                         decodeEntities: false
-//                     })
-//                 );
-//             } catch (err) {
-//                 log.error("Mavat fetch error", err);
-//                 reject(err);
-//             }
-//         })();
-//     });
+                const bodyHTML = await page.evaluate(
+                    () => document.body.innerHTML
+                );
+                console.log("content loaded");
+
+                page.close();
+                const dom = cheerio.load(bodyHTML, {
+                    decodeEntities: false
+                });
+                if (!dom) {
+                    reject("cheerio dom is null");
+                }
+                resolve(dom);
+            } catch (err) {
+                log.error("Mavat fetch error", err);
+
+                try {
+                    const bodyHTML = await page.evaluate(
+                        () => document.body.innerHTML
+                    );
+                    log.error("Mavat fetch error html", bodyHTML);
+                }
+                catch (htmlError) {
+                    log.error("Mavat fetch error html error", htmlError);
+                }
+                page.close();
+                reject(err);
+            }
+        })();
+    });
 
 const search = planNumber =>
     new Promise((resolve, reject) => {
@@ -105,6 +117,16 @@ const search = planNumber =>
                 resolve(dom);
             } catch (err) {
                 log.error("Mavat fetch error", err);
+
+                try {
+                    const bodyHTML = await page.evaluate(
+                        () => document.body.innerHTML
+                    );
+                    log.error("Mavat fetch error html", bodyHTML);
+                }
+                catch(htmlError) {
+                    log.error("Mavat fetch error html error", htmlError);
+                }
                 page.close();
                 reject(err);
             }
@@ -156,12 +178,15 @@ const getAreaChanges = cheerioPage => {
 
 const getByPlan = plan =>
     init()
-        .then(() => search(plan.get("PL_NUMBER")))
+        .then(() => {
+            return plan.get('plan_url') ? fetch(plan.get('plan_url')) : search(plan.get("PL_NUMBER"))
+        })
         .then(cheerioPage => {
             log.debug(
                 "Retrieving",
                 plan.get("PL_NUMBER"),
-                getGoalsText(cheerioPage)
+                getGoalsText(cheerioPage),
+                getAreaChanges(cheerioPage)
             );
 
             return Bluebird.props({
