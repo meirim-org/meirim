@@ -166,7 +166,7 @@ class Alerts extends Component {
         }
         return (
             <Wrapper me={me}>
-                <div className="container widedialog">
+                <div className="container alerts-container widedialog">
                     <form className="rectangle" onSubmit={this.handleSubmit}>
                         <h5 className="container-title">{t.newAlert}</h5>
                         {error && (
