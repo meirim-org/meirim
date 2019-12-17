@@ -6,6 +6,7 @@ import SinglePlan from "./scenes/SinglePlan";
 import SignIn from "./scenes/SignIn";
 import Activate from "./scenes/Activate";
 import Alerts from "./scenes/Alerts";
+import AlertUnsubscribe from "./scenes/AlertUnsubscribe";
 import ForgotPassword from "./scenes/ForgotPassword";
 import About from "./scenes/About";
 import Terms from "./scenes/Terms";
@@ -50,6 +51,10 @@ class App extends Component {
                             exact
                             path="/"
                             render={props => <Home {...props} me={me} />}
+                        />
+                        <Route
+                            path="/alerts/unsubscribe/:token"
+                            render={props => <AlertUnsubscribe {...props} me={me} />}
                         />
                         <Route
                             path="/alerts"
