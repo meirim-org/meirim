@@ -34,7 +34,7 @@ class AlertController extends Controller {
    * @param {IncomingRequest} req
    */
   unsubscribe(req) {
-    return Alert.ByToken(req.query.token)
+    return Alert.ByToken(req.params.token)
       .fetch()
       .then((fetchedModel) => {
         if (!fetchedModel) {
