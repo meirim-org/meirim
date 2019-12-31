@@ -38,7 +38,9 @@ class AlertController extends Controller {
       .fetch()
       .then((fetchedModel) => {
         if (!fetchedModel) {
-          throw new Exception.NotFound('Nof found');
+          // return successfully even if alert was not found since
+          // it is probably already unsubscribed
+          return null;
         }
         Log.debug(
           this.tableName,
