@@ -59,9 +59,9 @@ class AlertUnsubscribe extends Component {
             return 'טוען...';
         } else if (error) {
             return 'חלה שגיאה בעת מחיקת התראה. אנא נסו שנית';
-        } else {
-            return 'ההתראה נמחקה';
         }
+
+        return 'ההתראה נמחקה';
     }
 }
 
