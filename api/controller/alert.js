@@ -34,11 +34,13 @@ class AlertController extends Controller {
    * @param {IncomingRequest} req
    */
   unsubscribe(req) {
-    return Alert.ByToken(req.query.token)
+    return Alert.ByToken(req.params.token)
       .fetch()
       .then((fetchedModel) => {
         if (!fetchedModel) {
-          throw new Exception.NotFound('Nof found');
+          // return successfully even if alert was not found since
+          // it is probably already unsubscribed
+          return null;
         }
         Log.debug(
           this.tableName,

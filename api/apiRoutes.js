@@ -48,6 +48,7 @@ Router.get("/alert/", wrap(Alert.browse, Alert));
 Router.get("/alert/:id", wrap(Alert.read, Alert));
 Router.post("/alert/", wrap(Alert.create, Alert));
 Router.delete("/alert/:id", wrap(Alert.delete, Alert));
+Router.delete("/alert/_token/:token", wrap(Alert.unsubscribe, Alert));
 
 // me
 Router.get("/me/", wrap(Alert.browse, Alert));
