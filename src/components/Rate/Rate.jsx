@@ -116,7 +116,7 @@ class Rate extends Component {
             <Fragment>
                 עד כמה אתם חושבים שהתוכנית מטיבה עם סביבתה?
                 <div className="row">
-                    <div className="col-5">
+                    <div className="col-5 col-12">
                         <Rating
                             direction="rtl"
                             onClick={this.setRate}
