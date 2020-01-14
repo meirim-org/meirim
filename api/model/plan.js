@@ -39,12 +39,6 @@ class Plan extends Model {
         try {
             if (attributes.data) {
                 attributes.data = JSON.parse(attributes.data);
-                if (
-                    attributes.jurisdiction === "מקומית" &&
-                    attributes.data.STATION_DESC !== "מאושרות"
-                ) {
-                    attributes.notCredible = true;
-                }
             }
         } catch (e) {
             Log.error("Json parse error", attributes.data);
@@ -52,7 +46,6 @@ class Plan extends Model {
 
         return super.parse(attributes);
     }
-
     get geometry() {
         return ["geom"];
     }
@@ -78,83 +71,7 @@ class Plan extends Model {
         throw new Exception.NotAllowed("This option is disabled");
     }
 
-    static maekPlansAsSent(plan_ids) {
-        return new Plan()
-            .query(qb => {
-                qb.whereIn("id", plan_ids);
-            })
-            .save(
-                {
-                    sent: "2"
-                },
-                {
-                    method: "update"
-                }
-            );
-    }
-
-    static fetchByObjectID(objectID) {
-        return Plan.forge({
-            OBJECTID: objectID
-        }).fetch();
-    }
-    // support json encode for data field
-    parse(attributes) {
-        try {
-            if (attributes.data) {
-                attributes.data = JSON.parse(attributes.data);
-            }
-        } catch (e) {
-            Log.error("Json parse error", attributes.data);
-        }
-
-        return super.parse(attributes);
-    }
-    static buildFromIPlan(iPlan, oldPlan = null) {
-        const data = {
-            OBJECTID: iPlan.properties.OBJECTID,
-            PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || "",
-            PL_NUMBER: iPlan.properties.PL_NUMBER || "",
-            PL_NAME: iPlan.properties.PL_NAME || "",
-            // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
-            data: iPlan.properties,
-            geom: iPlan.geometry,
-            PLAN_CHARACTOR_NAME: "",
-            plan_url: iPlan.properties.PL_URL,
-            status: iPlan.properties.STATION_DESC
-        };
-        if (oldPlan) {
-            oldPlan.set(data);
-            return oldPlan.save();
-        }
-    }
-
-    get geometry() {
-        return ["geom"];
-    }
-
-    get tableName() {
-        return "plan";
-    }
-
-    initialize() {
-        this.on("saving", this._saving, this);
-        super.initialize();
-    }
-
-    _saving(model, attrs, options) {
-        // return new Checkit(model.rules).run(model.attributes);
-    }
-
-    canRead(session) {
-        return Bluebird.resolve(this);
-    }
-
-    static canCreate(session) {
-        throw new Exception.NotAllowed("This option is disabled");
-    }
-
-    static maekPlansAsSent(plan_ids) {
+    static markPlansAsSent(plan_ids) {
         return new Plan()
             .query(qb => {
                 qb.whereIn("id", plan_ids);
