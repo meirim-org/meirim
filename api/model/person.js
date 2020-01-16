@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const Bcrypt = require('bcrypt-nodejs');
+const Bcrypt = require('bcrypt-pbkdf');
 const Config = require('config');
 const verifier = require('email-verify');
 const Crypt = require('../lib/crypt');
