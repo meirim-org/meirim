@@ -28,8 +28,8 @@ Download code and dependencies
 
 ```bash
 npm install knex -g
-git clone git@github.com:dortheimer/CitizensForCities.git
-cd CitizensForCities/
+git clone https://github.com/meirim-org/meirim.git
+cd meirim/
 npm i
 ```
 
