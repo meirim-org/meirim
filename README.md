@@ -52,12 +52,6 @@ CREATE DATABASE meirim character set UTF8 collate utf8_bin;
 exit;
 ```
 
-Import the sql file
-
-```bash
-mysql -uroot -p -meirim < seeds/import.sql
-```
-
 Run migrations
 
 ```bash
