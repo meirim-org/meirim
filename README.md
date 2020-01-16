@@ -28,7 +28,7 @@ Download code and dependencies
 
 ```bash
 npm install knex -g
-git clone https://github.com/meirim-org/meirim.git
+git clone git@github.com:meirim-org/meirim.git
 cd meirim/
 npm i
 ```
