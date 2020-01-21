@@ -14,5 +14,11 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropTable("rate");
-};
+    return knex.schema.dropTable("rate").then(()=>{
+        return knex.schema.table('plan', table => {
+            table.dropColumns(
+                'rating'
+                );
+            });
+        })
+    };
