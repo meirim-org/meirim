@@ -81,23 +81,18 @@ class PlanController extends Controller {
         pageSize: 1000
       })
       .then(rows => {
-        rows.map(row => {
-          response.features.push({
-            type: 'Feature',
-            properties: {
-              uri: `${Config.general.domain}plan/${row.get(
-                                'id'
-                            )}/`,
-              name: row.get('PL_NAME'),
-              county: row.get('PLAN_COUNTY_NAME'),
-              number: row.get('PL_NUMBER')
-            },
-            geometry: row.get('geom')
-          })
-        })
-
-        return response
-      })
+        response.features = rows.map(row => ({
+          type: "Feature",
+          properties: {
+              uri: `${Config.general.domain}plan/${row.get("id")}/`,
+              name: row.get("PL_NAME"),
+              county: row.get("PLAN_COUNTY_NAME"),
+              number: row.get("PL_NUMBER")
+          },
+          geometry: row.get("geom")
+      }))
+      return response;
+    }) 
   }
 
   county () {
