@@ -29,11 +29,28 @@ class Controller {
                 });
     }
 
+    // try catch wrapper for all controllers
+    static publicWrapper(fn, ctx) {
+        return (req, res, next) =>
+            Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+                .then(response => Success.public(res, response, req.session))
+                .catch(Checkit.Error, err => {
+                    req.error = new Exception.BadRequest(err);
+                    next();
+                })
+                .catch(err => {
+                    req.error = err;
+                    next();
+                });
+    }
+
     browse(req, options = {}) {
         const { query } = req;
 
         let page = parseInt(query.page, 10) || 1;
         if (page < 1) page = 1;
+
+        let pageSize = parseInt(options.pageSize, 10) || 20;
 
         const columns = options.columns || "*";
         const where = options.where || {};
@@ -41,6 +58,13 @@ class Controller {
         let bsQuery = this.model.query(qb =>
             Object.keys(where).map(index => qb.where(index, "in", where[index]))
         );
+
+        if (options.whereRaw) {
+            bsQuery = bsQuery.query(qb =>
+                options.whereRaw.map(w => qb.where(w))
+            );
+        }
+
         if (options.order) {
             bsQuery = bsQuery.orderBy(options.order);
         }
@@ -48,7 +72,7 @@ class Controller {
             .fetchPage({
                 columns,
                 page,
-                pageSize: 20
+                pageSize
             })
             .then(collection => {
                 Log.debug(this.tableName, "browse success");

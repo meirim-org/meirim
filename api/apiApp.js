@@ -6,6 +6,7 @@ const Session = require('./lib/session');
 const Email = require('./service/email');
 const routes = require('./apiRoutes');
 const errorHandler = require('./errorHandler');
+const compression = require('compression')
 
 const urlencoded = BodyParser.urlencoded({
   extended: false,
@@ -22,6 +23,7 @@ const cors = Cors({
 
 // init application
 const app = Express();
+app.use(compression());
 app.use(Session);
 app.use(cors);
 app.options('*', cors);
