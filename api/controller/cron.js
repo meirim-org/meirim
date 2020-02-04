@@ -130,7 +130,7 @@ const sendPlanningAlerts = () => {
             const idArray = [];
             successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
             if (idArray.length) {
-                return Plan.maekPlansAsSent(idArray).then(() =>
+                return Plan.markPlansAsSent(idArray).then(() =>
                     Log.info("Processed plans", idArray)
                 );
             }
