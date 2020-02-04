@@ -9,7 +9,7 @@
     },
     "general": {
         "userAgent": "Meirim.org (info@meirim.org)",
-        "domain": "http://meirim.org/"
+        "domain": "https://meirim.org/"
     },
     "services": {
         "schedule": {

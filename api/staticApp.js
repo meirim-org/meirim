@@ -5,6 +5,8 @@ const ExpressHandlebars = require("express-handlebars");
 const BodyParser = require("body-parser");
 const path = require("path");
 const moment = require("moment");
+const compression = require("compression");
+
 
 const Log = require("./lib/log");
 const routes = require("./staticRoutes");
@@ -17,6 +19,7 @@ const app = Express();
 const staticRootDir = path.join(__dirname, "..", "build");
 
 app.use(urlencoded);
+app.use(compression());
 app.use(Express.static(staticRootDir, { index: false }));
 
 // set up templating - the only template (index.html) exists in the
