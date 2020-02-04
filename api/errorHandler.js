@@ -11,19 +11,32 @@ module.exports = (req, res) => {
     return Failure.duplicate(res, err.message.substr(index));
   }
 
-  Log.error('User error', JSON.stringify(err));
-
+  const url = `${req.ip} - ${req.method}:${req.path} ${JSON.stringify(req.query)}`
+  
   if (err.name === 'NotAllowed') {
+    Log.info("NotAllowed",err.message,  url);
     return Failure.notAllowed(res, err.message);
   }
   if (err.name === 'BadRequest') {
+    Log.info("BadRequest", err.message, url);
     return Failure.badRequest(res, err.message);
   }
   if (err.name === 'NotFound') {
+    Log.info("NotFound", err.message, url);
     return Failure.notFound(res, err.message);
   }
   if (err.name === 'NotImplemented') {
+    Log.info("NotImplemented", err.message, url);
     return Failure.notImplemented(res, err.message);
   }
-  return Failure.error(res, err.message);
+  // serious errors
+  Log.error("General error", err.code, err.message, url, err.stack);
+
+  //db errors
+  if (err.code === "ER_GIS_INVALID_DATA") {
+      return Failure.badRequest(res, 'GIS data is invalid');
+  }
+
+  Log.error("General error", err.code, err.message, url, err.stack);
+  return Failure.error(res, "General error. Please contact us if you receive this error.");
 };

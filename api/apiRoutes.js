@@ -10,7 +10,7 @@ const Subscription = require("./controller/subscription");
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
-const { wrap } = require("./controller/controller");
+const { wrap, publicWrapper } = require("./controller/controller");
 
 // Sign up
 Router.post("/sign/up", wrap(SignUp.signup, SignUp));
@@ -52,8 +52,8 @@ Router.delete("/alert/:id", wrap(Alert.delete, Alert));
 // me
 Router.get("/me/", wrap(Alert.browse, Alert));
 
-// Cron
-// Router.get('/cron/iplan', wrap(iplan));
+// Public API
+Router.get("/public/plan", publicWrapper(Plan.publicBrowse, Plan));
 // Router.get('/cron/send_planning_alerts', wrap(sendPlanningAlerts));
 
 // Tag
