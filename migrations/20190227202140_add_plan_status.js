@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     })
     .then(() =>
       knex.schema.table('plan', table => {
-        table.index('status', 'status', 'index');
+        table.index('status', 'status');
       }),
     )
     .then(() => {
