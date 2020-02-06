@@ -55,14 +55,7 @@ const tables = [
     PLAN_CHARACTOR_NAME varchar(256) COLLATE utf8_bin NOT NULL,
     data text COLLATE utf8_bin NOT NULL,
     geom geometry NOT NULL
-    jurisdiction varchar(256) COLLATE utf8_bin,
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;`,
-
-  `CREATE TABLE plan_person (
-    plan_id int(11) NOT NULL,
-    person_id int(11) NOT NULL,
-    follow tinyint(4),
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
 
   `CREATE TABLE post (
     post_id int(11) NOT NULL,
@@ -91,7 +84,7 @@ const statements = [
   'ALTER TABLE person MODIFY id int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;',
 ];
 
-exports.up = function(knex, Promise) {
+exports.up = function(knex) {
   return Promise.all(
     tables.map(table => {
       try {
