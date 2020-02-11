@@ -54,5 +54,11 @@
                 "pass": ""
             }
         }
+    },
+    "defaultAllowedOrigins": ["http://localhost:3000", "http://meirim.org", "https://meirim.org"],
+    "apiTokens": {
+        "ashdfioh2io43hri2o3hdioashd": {
+            "allowedOrigins": ["https://www.simplex-mapping.com/"]
+        }
     }
 }

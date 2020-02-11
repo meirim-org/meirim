@@ -1,7 +1,7 @@
 const Express = require('express')
 const compression = require('compression')
 const BodyParser = require('body-parser')
-const Cors = require('cors')
+const Cors = require("./lib/cors")
 const Log = require('./lib/log')
 const Session = require('./lib/session')
 const Email = require('./service/email')
@@ -13,13 +13,7 @@ const urlencoded = BodyParser.urlencoded({
 })
 const json = BodyParser.json()
 
-// const whitelist = ['http://localhost:3000', 'http://meirim.org', 'https://meirim.org']
-const cors = Cors({
-  origin: (origin, callback) => callback(null, true),
-  optionsSuccessStatus: 200,
-  credentials: true,
-  preflightContinue: false
-})
+const cors = Cors()
 
 // init application
 const app = Express()
