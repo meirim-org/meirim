@@ -203,12 +203,12 @@ class Plan extends Model {
         return plan.save();
     }
 
-    static setMavatData(plan, mavanData) {
+    static setMavatData(plan, mavatData) {
         return plan.set({
-            goals_from_mavat: mavanData.goals,
-            main_details_from_mavat: mavanData.mainPlanDetails,
-            jurisdiction: mavanData.jurisdiction,
-            areaChanges: mavanData.areaChanges
+            goals_from_mavat: mavatData.goals,
+            main_details_from_mavat: mavatData.mainPlanDetails,
+            jurisdiction: mavatData.jurisdiction,
+            areaChanges: mavatData.areaChanges
         });
     }
 

@@ -4,12 +4,18 @@ const Bluebird = require("bluebird");
 const puppeteer = require("puppeteer");
 const HtmlTableToJson = require("html-table-to-json");
 const log = require("../../lib/log");
+const path = require('path');
+
+const { clearOldPlanFiles, processPlanInstructionsFile } = require("./planInstructions/");
 
 const mavatSearchPage = "http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3";
 
 let browser = false;
 
 const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const PLAN_DOWNLOAD_PATH = path.join(__dirname, './tmp');
+
 
 const init = () =>
     new Promise((resolve, reject) => {
@@ -18,7 +24,7 @@ const init = () =>
                 if (!browser) {
                     log.debug("Launching chrome");
                     browser = await puppeteer.launch({
-                        headless: true,
+                        headless: false,
                         args: ["--no-sandbox", "--disable-setuid-sandbox"]
                     });
                     log.debug("Success launching chrome");
@@ -32,12 +38,39 @@ const init = () =>
         })();
     });
 
+// download the plan instructions pdf
+const getPlanInstructions = async (page) => {
+    const shouldDownloadPlanInstructions =  await page.evaluate(() => {
+        const matchText = 'הוראות התכנית';
+        let firstRowText = document.querySelector('#trCategory3 .clsTableRowNormal').
+        querySelector('td').innerText;
+        if (firstRowText === matchText) {
+            document.querySelector('#trCategory3 .clsTableRowNormal').
+            querySelector('img').onclick();
+            return true;
+        }
+        return false;
+    });
+
+    if (shouldDownloadPlanInstructions) {
+        try{
+            return processPlanInstructionsFile(PLAN_DOWNLOAD_PATH);
+        } catch (err){
+            log.error("Fetch plan instructions error", err);
+        }
+    }
+};
+
 const fetch = planUrl =>
     new Promise((resolve, reject) => {
         (async () => {
             const page = await browser.newPage();
+            const additionalPageData =  {};
+
             try {
                 log.debug("Loading plan page", planUrl);
+                await clearOldPlanFiles(PLAN_DOWNLOAD_PATH);
+                await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: PLAN_DOWNLOAD_PATH});
 
                 await page.goto(planUrl);
                 await page.waitForSelector("#divMain");
@@ -45,7 +78,8 @@ const fetch = planUrl =>
                 const bodyHTML = await page.evaluate(
                     () => document.body.innerHTML
                 );
-                console.log("content loaded");
+
+                additionalPageData.pageInstructions = await getPlanInstructions(page);
 
                 page.close();
                 const dom = cheerio.load(bodyHTML, {
@@ -54,7 +88,7 @@ const fetch = planUrl =>
                 if (!dom) {
                     reject("cheerio dom is null");
                 }
-                resolve(dom);
+                resolve({cheerioPage: dom, additionalPageData});
             } catch (err) {
                 log.error("Mavat fetch error", err);
 
@@ -98,14 +132,9 @@ const search = planNumber =>
                 console.log("Clicked and waiting");
                 await page.waitForSelector("#divMain");
 
-                // const bodyHTML = await page.evaluate(
-                //     selector => document.querySelectorAll(selector),
-                //     "#divMain"
-                // );
                 const bodyHTML = await page.evaluate(
                     () => document.body.innerHTML
                 );
-                console.log("content loaded");
 
                 page.close();
                 const dom = cheerio.load(bodyHTML, {
@@ -181,7 +210,7 @@ const getByPlan = plan =>
         .then(() => {
             return plan.get('plan_url') ? fetch(plan.get('plan_url')) : search(plan.get("PL_NUMBER"))
         })
-        .then(cheerioPage => {
+        .then(({cheerioPage, additionalPageData}) => {
             log.debug(
                 "Retrieving",
                 plan.get("PL_NUMBER"),
@@ -195,6 +224,7 @@ const getByPlan = plan =>
                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
+                additionalPageData
             });
         });
 // const getByPlan = () => Promise.resolve();
