@@ -1,17 +1,22 @@
 const Config = require("./lib/config");
 const Cors = require("cors");
 
-module.exports = function({ type = "default" }) {
-    const whitelist = Config.defaultAllowedOrigins;
+exports.defaultCors = function () {
+    // const whitelist = ['http://localhost:3000', 'http://meirim.org', 'https://meirim.org']
+    return Cors({
+        origin: (origin, callback) => callback(null, true),
+        optionsSuccessStatus: 200,
+        credentials: true,
+        preflightContinue: false
+    });
+};
 
-    if (type === "public") {
-        const apiTokensAllowedOrigins = Object.values(Config.apiTokens).reduce(
-            (acc, cur) => [...acc, cur.allowedOrigins],
-            []
-        );
-
-        whitelist.push(...apiTokensAllowedOrigins);
-    }
+exports.publicCors = function() {
+    const apiTokens = Config.get('apiTokens');
+    const whitelist = Object.values(apiTokens).reduce(
+        (acc, cur) => [...acc, cur.allowedOrigins],
+        []
+    );
 
     return Cors({
         origin: (origin, callback) => {
