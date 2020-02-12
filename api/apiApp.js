@@ -6,7 +6,7 @@ const Session = require('./lib/session')
 const Email = require('./service/email')
 const routes = require('./apiRoutes')
 const errorHandler = require('./errorHandler')
-const {defaultCors} = require("../lib/cors")
+const {defaultCors} = require("./lib/cors")
 
 const urlencoded = BodyParser.urlencoded({
   extended: false

@@ -5,7 +5,7 @@ const Alert = require("./controller/alert")
 const Plan = require("./controller/plan")
 const Comment = require("./controller/comment")
 const Rate = require("./controller/rate")
-const {publicCors} = require("../lib/cors")
+const {publicCors} = require("./lib/cors")
 
 const Subscription = require("./controller/subscription");
 // const Tag = require('./controller/tag');
