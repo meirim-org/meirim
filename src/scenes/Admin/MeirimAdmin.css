@@ -1,0 +1,4 @@
+.headroom {
+  /* make sure the react-admin toolbar does not hide ours */
+  position: relative !important;
+}

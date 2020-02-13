@@ -5,6 +5,8 @@ const verifier = require('email-verify');
 const Crypt = require('../lib/crypt');
 const Log = require('../lib/log');
 const Alert = require('./alert');
+//const Comment = require('./comment');
+//const Rate = require('./rate');
 const BaseModel = require('./base_model');
 const Exception = require('./exception');
 
@@ -27,7 +29,7 @@ class Person extends BaseModel {
   }
 
   get hidden() {
-    return ['password', 'admin', 'status'];
+    return ['password', 'status'];
   }
 
   get tableName() {

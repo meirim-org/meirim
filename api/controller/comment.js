@@ -45,6 +45,50 @@ class CommentController extends Controller {
       return collection;
     });
   }
+
+  byPlanAdmin(req) {
+    if (!req.session.person) {
+      throw new Exception.NotAllowed('Must be logged in');
+    } else if (!req.session.person.admin) {
+      throw new Exception.NotAllowed('Must be an admin');
+    }
+
+    return this.model.byPlan(req.params.plan_id).then((collection) => {
+      Log.debug(this.tableName, 'Get comment list', req.params.plan_id);
+      return {
+        id: req.params.plan_id,
+        comment_total: collection.length,
+        comments: collection
+      };
+    });
+  }
+
+  browseAdmin(req) {
+    if (!req.session.person) {
+      throw new Exception.NotAllowed('Must be logged in');
+    } else if (!req.session.person.admin) {
+      throw new Exception.NotAllowed('Must be an admin');
+    }
+
+    const columns = [
+        "id",
+        "person_id",
+        "content",
+        "plan_id",
+        "parent_id"
+    ];
+
+    const { query } = req;
+    const where = {};
+
+    const order = query.order || '-id';
+
+    return super.browse(req, {
+        columns,
+        where,
+        order
+    });
+  }
 }
 
 module.exports = new CommentController(Comment);

@@ -1,5 +1,6 @@
 const Controller = require('../controller/controller')
 const Plan = require('../model/plan')
+const Exception = require('../model/exception');
 const Config = require('../lib/config')
 const { Knex } = require('../service/database')
 const Exception = require('../model/exception')
@@ -93,6 +94,41 @@ class PlanController extends Controller {
       }))
       return response;
     }) 
+  }
+
+  browseAdmin(req) {
+    if (!req.session.person) {
+      throw new Exception.NotAllowed('Must be logged in');
+    } else if (!req.session.person.admin) {
+      throw new Exception.NotAllowed('Must be an admin');
+    }
+
+    const columns = [
+      "id",
+      "PLAN_COUNTY_NAME",
+      "PL_NUMBER",
+      "PL_NAME",
+      "data"
+    ];
+
+    const { query } = req;
+    const where = {};
+
+    if (query.status) {
+      where.status = query.status.split(",");
+    }
+
+    if (query.PLAN_COUNTY_NAME) {
+      where.PLAN_COUNTY_NAME = query.PLAN_COUNTY_NAME.split(",");
+    }
+
+    const order = query.order || '-id';
+
+    return super.browse(req, {
+      columns,
+      where,
+      order
+    });
   }
 
   county () {
