@@ -1,4 +1,5 @@
-const { override } = require('customize-cra');
+const path = require('path');
+const { override, addExternalBabelPlugin, babelInclude } = require('customize-cra');
 
 const addHandleBarsLoader = config => {
     // add handlebars-loader so that handlebars templates in
@@ -10,4 +11,9 @@ const addHandleBarsLoader = config => {
 
 module.exports = override(
     addHandleBarsLoader,
+    addExternalBabelPlugin('@babel/plugin-proposal-class-properties'),
+    babelInclude([
+        path.resolve('src'),
+        path.resolve('node_modules/rn-sliding-up-panel'),
+    ]),
 );

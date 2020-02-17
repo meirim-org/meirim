@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./scenes/Home/Home";
 import Plans from "./scenes/Plans";
 import SinglePlan from "./scenes/SinglePlan";
+import NewSinglePlan from "./scenes/NewSinglePlan";
 import SignIn from "./scenes/SignIn";
 import Activate from "./scenes/Activate";
 import Alerts from "./scenes/Alerts";
@@ -67,6 +68,10 @@ class App extends Component {
                         <Route
                             path="/plan/:id"
                             render={props => <SinglePlan {...props} me={me} />}
+                        />
+                        <Route
+                            path="/newplan/:id"
+                            render={props => <NewSinglePlan {...props} me={me} />}
                         />
                         <Route
                             path="/plans"
