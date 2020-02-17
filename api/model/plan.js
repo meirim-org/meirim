@@ -210,6 +210,7 @@ class Plan extends Model {
             jurisdiction: mavatData.jurisdiction,
             areaChanges: mavatData.areaChanges
         });
+        const { pageInstructions } = mavatData.additionalPageData;
     }
 
     static getUnsentPlans(userOptions) {
