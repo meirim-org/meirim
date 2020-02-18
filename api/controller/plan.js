@@ -1,6 +1,5 @@
 const Controller = require('../controller/controller')
 const Plan = require('../model/plan')
-const Exception = require('../model/exception');
 const Config = require('../lib/config')
 const { Knex } = require('../service/database')
 const Exception = require('../model/exception')
