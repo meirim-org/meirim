@@ -126,7 +126,7 @@ class SinglePlan extends Component {
 
         return (
             <Wrapper me={me}>
-                <PlanPanel me={me} planId={id}/>
+                <PlanPanel me={me} planId={id} plan={plan}/>
             </Wrapper>
         );
     }

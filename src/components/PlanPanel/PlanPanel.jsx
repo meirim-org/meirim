@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
 
-import { Text, View, Animated, Dimensions } from 'react-native';
+import { Text, View, Animated, Dimensions, Button } from 'react-native';
 
 import SlidingUpPanel from "rn-sliding-up-panel";
 
-import PropTypes from "prop-types";
 import "./PlanPanel.css";
 
 const { height } = Dimensions.get("window");
@@ -66,14 +65,11 @@ class PlanPanel extends Component {
     componentDidMount() {
     }
 
-    loadRatings = () => {
-        const { planId } = this.props;
-    };
-
     render() {
         const {
-            planId
-        } = this.state;
+            planId,
+            plan
+        } = this.props;
 
         const { top, bottom } = this.props.draggableRange;
 
@@ -138,7 +134,10 @@ class PlanPanel extends Component {
                   ]
                 }}
               >
-                <Text style={styles.textHeader}>Sliding Up Panel</Text>
+                <Text style={styles.textHeader}>{plan.PL_NAME}</Text>
+                {plan.PLAN_COUNTY_NAME && <h5>תוכנית בנין עיר ב{plan.PLAN_COUNTY_NAME}</h5>}
+                {plan.status && <h6>{plan.status}</h6>}
+                <Button text="לתמוך בתוכנית"></Button> 
               </Animated.View>
             </View>
             <View style={styles.container}>
@@ -150,10 +149,5 @@ class PlanPanel extends Component {
         );
     }
 }
-
-PlanPanel.propTypes = {
-    planId: PropTypes.number,
-    me: PropTypes.object
-};
 
 export default PlanPanel;
