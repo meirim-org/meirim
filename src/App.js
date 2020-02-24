@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./scenes/Home/Home";
 import Plans from "./scenes/Plans";
-import SinglePlan from "./scenes/SinglePlan";
+import SinglePlan from "./scenes/SinglePlan.1";
 import NewSinglePlan from "./scenes/NewSinglePlan";
 import SignIn from "./scenes/SignIn";
 import Activate from "./scenes/Activate";
@@ -14,6 +14,10 @@ import Terms from "./scenes/Terms";
 import Vocabulary from "./scenes/Vocabulary";
 import NotFound from "./scenes/NotFound";
 import api from "./services/api";
+
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Container from 'react-bootstrap/Container'
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {

@@ -1,6 +1,13 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
+import Fab from "@material-ui/core/Fab";
+
+import ThumbUp from "@material-ui/icons/ThumbUp";
+import ThumbDown from "@material-ui/icons/ThumbDown";
+import ThumbUpDown from "@material-ui/icons/ThumbsUpDown";
+import Star from "@material-ui/icons/Star";
+
 class AddComment extends Component {
     state = {
         content: "",
@@ -31,13 +38,42 @@ class AddComment extends Component {
                 method="post"
                 onSubmit={this.handleSubmit}
             >
+                <Star />
+                <Star />
+                <Star />
+                <Star />
+                <Star />
+                {/* <Fab
+                    variant="extended"
+                    size="small"
+                    color="secondary"
+                    aria-label="Add"
+                >
+                    <ThumbUp /> כן
+                </Fab>
+                <Fab
+                    variant="extended"
+                    size="small"
+                    color="secondary"
+                    aria-label="Add"
+                >
+                    <ThumbUpDown /> אולי
+                </Fab>
+                <Fab
+                    variant="extended"
+                    size="small"
+                    color="secondary"
+                    aria-label="Add"
+                >
+                    <ThumbDown /> לא
+                </Fab> */}
                 <div className="form-group">
                     <br />
                     <label className="sr-only">Password</label>
                     <textarea
                         value={content}
                         required
-                        placeholder="מדוע?"
+                        placeholder=""
                         name="content"
                         className="form-control"
                         rows="1"
@@ -60,7 +96,7 @@ class AddComment extends Component {
                 )}
 
                 <button type="submit" className="btn btn-success float-left">
-                    שליחה
+                    הוספה
                 </button>
             </form>
         );
