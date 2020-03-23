@@ -27,7 +27,8 @@ class Person extends BaseModel {
   }
 
   get hidden() {
-    return ['password', 'status'];
+    return process.env.ENABLE_ADMIN ?
+      ['password', 'status'] : ['password', 'admin', 'status'];
   }
 
   get tableName() {
