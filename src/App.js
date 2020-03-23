@@ -10,7 +10,7 @@ import AlertUnsubscribe from "./scenes/AlertUnsubscribe";
 import ForgotPassword from "./scenes/ForgotPassword";
 import About from "./scenes/About";
 import Terms from "./scenes/Terms";
-import MeirimAdmin from "./scenes/Admin/MeirimAdmin";
+import Admin from "./scenes/Admin/Admin";
 import Vocabulary from "./scenes/Vocabulary";
 import NotFound from "./scenes/NotFound";
 import api from "./services/api";
@@ -101,7 +101,7 @@ class App extends Component {
                         />
                         <Route
                             path="/admin"
-                            render={props => <MeirimAdmin {...props} me={me} />}
+                            render={props => <Admin {...props} me={me} />}
                         />
                         <Route
                             path="/404"
