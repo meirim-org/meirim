@@ -165,11 +165,21 @@ class SinglePlan extends Component {
                                     {!!dataArea && !!dataArea[0].data.length && (
                                         <div className="rectangle">
                                             <h4>שינוי שטח</h4>
-                                            <p>
-                                                תוכנית זו מגדילה את השטח הבנוי
-                                                פי {renderMultiplier(textArea)}{" "}
-                                                (תוספת {textArea.new} מ"ר)
-                                            </p>
+                                            {textArea.exist !== 0 &&
+                                                <p>
+                                                    תוכנית זו מגדילה את השטח הבנוי
+                                                    פי {renderMultiplier(textArea)}{" "}
+                                                    (תוספת {textArea.new} מ"ר)
+                                                </p>
+                                            }
+                                             {textArea.exist === 0 &&
+                                                <p>
+                                                    תוכנית זו מוסיפה
+                                                   {" "}
+                                                   {textArea.new} מ"ר
+                                                   שטח בנוי
+                                                </p>
+                                            }
                                             <p>
                                                 {renderPercent(
                                                     (textArea.new +
