@@ -41,11 +41,7 @@ CREATE DATABASE meirim character set UTF8 collate utf8_bin;
 exit;
 ```
 
-Edit the local configuration file and set your database and email settings (if needed):
-
-```bash
-$ vi config/local.json
-```
+Edit the local configuration file (located at `config/local.json`) and set your database connection details and email smtp settings (if needed).
 
 Install knex globally and run all migrations:
 ```bash
@@ -83,13 +79,11 @@ $ npm start
 
 ### Instructions for crawler
 
-To run the crawler (for testing or just seeding the database with plan data) you must first install Chromium dependencies for your system (these are for Ubuntu):
+To run the crawler (for testing or just seeding the database with plan data) you must first install all dependencies required by Chromium (which is used by puppeteer) which vary from system to system.
 
-```bash
-$ apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
-```
+If puppeteer is not working properly, check the project's [troubleshooting information](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md).
 
-Then run the crawler (can be killed at any time using Ctrl+C):
+To run the crawler (can be killed at any time using Ctrl+C):
 
 ```bash
 $ npm run crawl
