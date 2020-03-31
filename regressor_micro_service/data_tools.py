@@ -31,7 +31,7 @@ def get_vals(db, clmns, table='plan', top=None):
     """
     :param table: a string that denotes the table
     :param clmns: a list of columns
-    :param top: an integer
+    :param top: an integer, setting the limit for the returned number of tuples
     :return: a list of tuples
     EXAMPLE: To do the query 'SELECT a, b, c FROM someTbl'
     you should use get_vals(db, ['a', 'b', 'c'], 'someTbl')

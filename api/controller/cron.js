@@ -3,6 +3,8 @@ const Log = require("../lib/log");
 const iplanApi = require("../lib/iplanApi");
 const Alert = require("../model/alert");
 const Plan = require("../model/plan");
+const PlanAddress = require("../model/plan_address");
+const PlanAreaChange = require("../model/plan_area_change");
 const Email = require("../service/email");
 const MavatAPI = require("../lib/mavat");
 const { fetchStaticMap } = require("../service/staticmap");
@@ -176,10 +178,23 @@ const fetchIplan = iPlan =>
             return Bluebird.resolve();
         });
 
+
 const buildPlan = (iPlan, oldPlan) => {
     return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
         MavatAPI.getByPlan(plan)
-            .then(mavatData => Plan.setMavatData(plan, mavatData))
+            .then(mavatData => {
+                const planAfterSet = Plan.setMavatData(plan, mavatData);
+                //return Bluebird.join(planAfterSet, PlanAddress.createFromMavatData(planAfterSet, oldPlan, mavatData), (plan, ad) => plan);
+                return Bluebird.all([planAfterSet]
+                        .concat(PlanAddress.createFromMavatData(planAfterSet, oldPlan, mavatData))
+                        .concat(PlanAreaChange.createFromAreaChangesJson(planAfterSet.get('areaChanges'), planAfterSet)))
+                    .then(results => results[0]); //return the plan
+                //return Bluebird.join(planAfterSet,
+                //   PlanAddress.createFromMavatData(planAfterSet, oldPlan, mavatData),
+                //   (planAfterSet, addresses) =>
+                //       Bluebird.all(PlanAreaChange.createFromAreaChangesJson(planAfterSet.get('areaChanges'), plan))
+                  //         .then(changes => planAfterSet));
+            })
             .catch(e => {
                 // mavat might crash gracefully
                 console.log("Mavat error", JSON.stringify(e));

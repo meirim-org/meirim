@@ -150,6 +150,23 @@ const getAreaChanges = cheerioPage => {
     return JSON.stringify(jsonTables.results);
 };
 
+const getAddress = cheerioPage => {
+    const cells = cheerioPage('#Table7 td');
+    const cellsStrings = Array.prototype.map.call(cells, cell => cell.children[0].data.trim());
+    const numberOfClmsInTbl = 6;
+    const tbl = [];
+    // make tbl an array of sub-arrays. The sub-arrays has a length of numberOfClmsInTbl
+    for (let i = 0; i < cellsStrings.length; i += numberOfClmsInTbl) {
+        // make an array with numberOfClmsInTbl entries, and push it to tbl
+        const oneEntry = [];
+        for (let j = i; j < i + numberOfClmsInTbl; j++) {
+            oneEntry.push(cellsStrings[j]);
+        }
+        tbl.push(oneEntry);
+    }
+    return tbl;
+};
+
 // function getShapeFile(cheerioPage) {
 
 //     shapefile.open("example.shp")
@@ -188,13 +205,13 @@ const getByPlan = plan =>
                 getGoalsText(cheerioPage),
                 getAreaChanges(cheerioPage)
             );
-
             return Bluebird.props({
                 plan_url: getDirectUrl(cheerioPage),
                 goals: getGoalsText(cheerioPage),
                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
+                addressesList: getAddress(cheerioPage),
             });
         });
 // const getByPlan = () => Promise.resolve();

@@ -54,6 +54,14 @@ class Plan extends Model {
         return "plan";
     }
 
+    plan_address() {
+        return this.hasMany('PlanAddress')
+    }
+
+    plan_area_changes() {
+        return this.hasMany('PlanAreaChange')
+    }
+
     initialize() {
         this.on("saving", this._saving, this);
         super.initialize();
