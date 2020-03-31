@@ -28,8 +28,8 @@ Download code and dependencies
 
 ```bash
 npm install knex -g
-git clone git@github.com:dortheimer/CitizensForCities.git
-cd CitizensForCities/
+git clone git@github.com:meirim-org/meirim.git
+cd meirim/
 npm i
 ```
 
@@ -50,12 +50,6 @@ Create a new schema:
 ```sql
 CREATE DATABASE meirim character set UTF8 collate utf8_bin;
 exit;
-```
-
-Import the sql file
-
-```bash
-mysql -uroot -p -meirim < seeds/import.sql
 ```
 
 Run migrations
