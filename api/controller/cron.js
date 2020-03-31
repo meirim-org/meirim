@@ -184,16 +184,10 @@ const buildPlan = (iPlan, oldPlan) => {
         MavatAPI.getByPlan(plan)
             .then(mavatData => {
                 const planAfterSet = Plan.setMavatData(plan, mavatData);
-                //return Bluebird.join(planAfterSet, PlanAddress.createFromMavatData(planAfterSet, oldPlan, mavatData), (plan, ad) => plan);
                 return Bluebird.all([planAfterSet]
                         .concat(PlanAddress.createFromMavatData(planAfterSet, oldPlan, mavatData))
                         .concat(PlanAreaChange.createFromAreaChangesJson(planAfterSet.get('areaChanges'), planAfterSet)))
-                    .then(results => results[0]); //return the plan
-                //return Bluebird.join(planAfterSet,
-                //   PlanAddress.createFromMavatData(planAfterSet, oldPlan, mavatData),
-                //   (planAfterSet, addresses) =>
-                //       Bluebird.all(PlanAreaChange.createFromAreaChangesJson(planAfterSet.get('areaChanges'), plan))
-                  //         .then(changes => planAfterSet));
+                    .then(results => results[0]); // return the plan
             })
             .catch(e => {
                 // mavat might crash gracefully
