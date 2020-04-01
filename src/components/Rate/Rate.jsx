@@ -7,13 +7,6 @@ import api from "../../services/api";
 import "../../assets/bootstrap.css";
 import "./Rate.css";
 
-const signInURL = {
-    pathname: "/sign/in",
-    state: {
-        redirectTo: window.location.pathname
-    }
-};
-
 const ratingsValues = {
     5: "התוכנית מעולה ואני תומך/ת",
     4: "התוכנית סבירה ואני תומך/ת",
@@ -109,7 +102,16 @@ class Rate extends Component {
         } = this.state;
         const displayRate = tempRate || score;
         if (goToLogin) {
-            return <Redirect to={signInURL} />;
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/sign/in",
+                        state: {
+                            redirectTo: window.location.pathname
+                        }
+                    }}
+                />
+            );
         }
 
         return (

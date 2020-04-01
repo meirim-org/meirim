@@ -6,103 +6,122 @@ The goal of this project is to empower citizens to effectively organize for thei
 
 ## Getting Started
 
-The project is in development and has two parts:
+This project is under development and has three main parts - backend, frontend and crawler.
 
 ## Setup instructions for development
 
-### Prerequisites for backend
+### Prerequisites
 
 Things you need to install:
 
-* git
-* Nodejs
-* Mysql
+* Git
+* Node.js (we currently support release 8.x)
+* MySQL (required only for the backend & crawler)
 
-Also these requirements:
+Once you have these you can download the code and install dependencies:
 
-https://github.com/nodejs/node-gyp#installation
+```bash
+$ git clone git@github.com:meirim-org/meirim.git
+$ cd meirim/
+$ npm install
+```
 
 ### Instructions for backend
 
-Download code and dependencies
+Connect to your MySQL instance:
 
 ```bash
-npm install knex -g
-git clone git@github.com:dortheimer/CitizensForCities.git
-cd CitizensForCities/
-npm i
+$ mysql -uroot -p
 ```
 
-Install chrome dependencies (for ubuntu):
-
-```bash
- apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
- ```
-
-Import the database schema
-
-```bash
-mysql -uroot -p
-```
-
-Create a new schema:
+Create a database for the project:
 
 ```sql
 CREATE DATABASE meirim character set UTF8 collate utf8_bin;
 exit;
 ```
 
-Import the sql file
+Edit the local configuration file (located at `config/local.json`) and set your database connection details and email smtp settings (if needed).
 
+Install knex globally and run all migrations:
 ```bash
-mysql -uroot -p -meirim < seeds/import.sql
+$ npm install knex -g
+$ knex migrate:latest
 ```
 
-Run migrations
+Finally, run the service:
 
 ```bash
-knex  migrate:latest
+$ npm run api
 ```
 
-Edit the local configuration file and set your database and email settings
+The service will then be available on port 3001.
+
+### Instructions for frontend
+
+Nothing needs to be set up specifically for the frontend (however a working backend service would make it a bit more useful). It can be started using:
 
 ```bash
-vi config/local.json
+$ npm start
+```
+
+And will then be available at [http://localhost:3000](http://localhost:3000)
+
+### Running both backend and frontend
+
+Both the api and the frontend need to be run separately when developing for the auto-reload capabilities of webpack-dev-server.
+The api will run on port 3001 by default, and the frontend will run on port 3000 and proxy requests destined to the api from any path beginning with "/api" to the service at port 3001 (proxy settings live in [src/setupProxy.js](src/setupProxy.js)).
+
+```bash
+$ npm run api
+$ npm start
+```
+
+### Instructions for crawler
+
+To run the crawler (for testing or just seeding the database with plan data) you must first install all dependencies required by Chromium (which is used by puppeteer) which vary from system to system.
+
+If puppeteer is not working properly, check the project's [troubleshooting information](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md).
+
+To run the crawler (can be killed at any time using Ctrl+C):
+
+```bash
+$ npm run crawl
 ```
 
 ## Running in production
 
-Run Server in production
+We use [pm2](https://pm2.keymetrics.io) to run the service in production.
+
+First you must build the frontend react site, then the service (serving both the backend and frontend) can be started:
 
 ```bash
-npm run build
-pm2 start ecosystem.config.js --env production
+$ npm run build
+$ pm2 start ecosystem.config.js --env production
 ```
 
-Set up cron
+Set up cron to schedule two jobs - crawling for new data and emailing alerts to users:
 
 ```bash
-crontab -e
-0 0 * * *  cd /path_to_code/CitizensForCities/ && NODE_ENV='production' /usr/bin/node /path_to_code/CitizensForCities/bin/iplan >> /path_to_code/CitizensForCities/logs/combined.log 2>&1
-* * * * *  cd /path_to_code/CitizensForCities/ && NODE_ENV='production' /usr/bin/node /path_to_code/CitizensForCities/bin/send_emails >> /path_to_code/CitizensForCities/logs/combined.log 2>&1
+$ crontab -e
+0 0 * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/logs/combined.log 2>&1
+* * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
 ```
 
-## Running in development
+## Further info
 
-Both the api and the frontend need to be run separately when developing
-for the auto-reload capabilities of webpack-dev-server.
-The api will run on port 3001 by default, and the frontend will run on
-port 3000 and proxy requests destined to the api from any "/api" location
-to the service at port 3001 (proxy settings live in [src/setupProxy.js](src/setupProxy.js)).
+You can find more technical info about the project under the [docs](./docs) folder.
 
-```bash
-npm run api
-npm start
-```
+## Contributing
+
+We are thankful for any comments, suggestions, issue reports and pull requests anyone might wish to help with.
+We will do our best to acknowledge, review and reply to these contributions to the best of our abilities (we are all volunteers).
+
+For methods of communicating with us, please see our [website](https://meirim.org).
 
 ## Authors
 
-See also the list of [contributors](https://github.com/meirim-org/meirim/contributors) who participated in this project.
+See the list of [contributors](https://github.com/meirim-org/meirim/contributors) who participated in this project <3.
 
 ## License
 
