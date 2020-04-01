@@ -102,7 +102,7 @@ class RegisterForm extends Component {
 
         {done && (
           <div className="alert alert-success">
-            שלחו לך דואר אלקטרוני עם לינק להפעלת החשבון.
+            שלחנו לך דואר אלקטרוני עם לינק להפעלת החשבון.
           </div>
         )}
       </form>
