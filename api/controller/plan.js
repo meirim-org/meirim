@@ -107,6 +107,9 @@ class PlanController extends Controller {
       "PLAN_COUNTY_NAME",
       "PL_NUMBER",
       "PL_NAME",
+      "geom",
+      "jurisdiction",
+      "areaChanges",
       "data"
     ];
 
