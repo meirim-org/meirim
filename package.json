@@ -51,6 +51,7 @@
         "html-table-to-json": "^0.2.1",
         "http-proxy-middleware": "^0.20.0",
         "jade": "~1.11.0",
+        "jsonexport": "^3.0.0",
         "juice": "^4.2.2",
         "knex": "^0.20.0",
         "leaflet": "^1.5.1",

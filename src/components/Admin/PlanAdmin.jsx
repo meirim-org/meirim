@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
+import { List, Datagrid, TextField, ReferenceField, downloadCSV } from 'react-admin';
 import BookIcon from '@material-ui/icons/Book';
 
-import Moment from 'react-moment';
+import moment from 'moment';
 import get from 'lodash/get';
 import geojsonArea from "@mapbox/geojson-area";
+import jsonExport from 'jsonexport/dist';
 
 // TODO: this should be shared with other admin components
 const InnerUrlField = ({ source, urlPrefix = '', record = {} }) => {
@@ -25,12 +26,9 @@ const RateField = ({ source, record = {} }) => {
 }
 
 const LastUpdateField = ({ source, record = {} }) => {
-    const value = get(record, source);
     return (
         <span>
-            <Moment parse="YYYYMMDDHHmm" format="DD/MM/YYYY">
-                {value}
-            </Moment>
+            {formatLastUpdateDate(get(record, source))}
         </span>
     );
 }
@@ -39,29 +37,15 @@ const AreaChangeField = ({ source, unit = '', areaType = '', record = {} }) => {
     if (record[source] === undefined || record[source] === null || unit === '') {
         return null;
     } else {
-        const areaChanges = JSON.parse(record[source]);
-        const unitAreas = areaChanges[0].filter(e => e[3].includes(unit));
-
-        if (unitAreas.length === 0) {
-            return null;
-        } else if (areaType === '') {
+        const areaValue = findPlanAreaByUnitAndType(record[source], unit, areaType);
+        if (areaValue !== null) {
             return (
                 <span>
-                    {unitAreas[0][6] || 0}
+                    {areaValue}
                 </span>
             );
         } else {
-            const unitTypeArea = unitAreas.find(e => e[3].includes(areaType));
-
-            if (unitTypeArea === undefined) {
-                return null;
-            } else {
-                return (
-                    <span>
-                        {unitTypeArea[6] || 0}
-                    </span>
-                );
-            }
+            return null;
         }
     }
 }
@@ -69,13 +53,69 @@ const AreaChangeField = ({ source, unit = '', areaType = '', record = {} }) => {
 const GeometryAreaField = ({ source, record = {} }) => {
     return (
         <span>
-            {record[source] ? Math.round(geojsonArea.geometry(record[source])) : 0}
+            {record[source] ? getGeometryArea(record[source]) : 0}
         </span>
     );
 }
 
+const formatLastUpdateDate = (lastUpdate) => {
+    return moment(lastUpdate, 'YYYYMMDDHHmm').format('DD/MM/YYYY');
+}
+
+const getGeometryArea = (geom) => {
+    return Math.round(geojsonArea.geometry(geom));
+}
+
+const findPlanAreaByUnitAndType = (planArea, unit, areaType) => {
+    const areaChanges = JSON.parse(planArea);
+    const unitAreas = areaChanges[0].filter(e => e[3].includes(unit));
+
+    if (unitAreas.length === 0) {
+        return null;
+    } else if (areaType === '') {
+        return unitAreas[0][6] || 0;
+    } else {
+        const unitTypeArea = unitAreas.find(e => e[3].includes(areaType));
+
+        if (unitTypeArea === undefined) {
+            return null;
+        } else {
+            return unitTypeArea[6] || 0;
+        }
+    }
+}
+
+const PlanExporter = (plans) => {
+    const plansForExport = plans.map(plan => {
+        // separate some fields for formatting
+        const { geom, areaChanges, data, rate_avg, rate_total, ...planForExport } = plan;
+
+        // add calculated fields
+        planForExport.lastUpdate = formatLastUpdateDate(data.LAST_UPDATE);
+        planForExport.status = data.STATION_DESC;
+        planForExport.planAreaMeters = getGeometryArea(geom);
+
+        if (areaChanges !== undefined && areaChanges !== null) {
+            planForExport.taasukaChangeMeters = findPlanAreaByUnitAndType(areaChanges, 'מ"ר', 'תעסוקה');
+            planForExport.mischarChangeMeters = findPlanAreaByUnitAndType(areaChanges, 'מ"ר', 'מסחר');
+            planForExport.megurimChangeMeters = findPlanAreaByUnitAndType(areaChanges, 'מ"ר', 'מגורים');
+            planForExport.megurimChangeUnits = findPlanAreaByUnitAndType(areaChanges, 'יח"ד', 'מגורים');
+            planForExport.tziburChangeMeters = findPlanAreaByUnitAndType(areaChanges, 'מ"ר', 'ציבור');
+        }
+
+        return planForExport;
+    });
+
+    jsonExport(plansForExport, {
+        headers: ['id', 'PLAN_COUNTY_NAME', 'lastUpdate', 'PL_NUMBER', 'PL_NAME', 'status', 'taasukaChangeMeters', 'mischarChangeMeters', 'megurimChangeMeters', 'megurimChangeUnits', 'tziburChangeMeters', 'planAreaMeters', 'jurisdiction'],
+        rename: ['מזהה', 'רשות', 'תאריך עדכון', 'מספר תוכנית', 'שם תוכנית', 'סטטוס', 'שינוי תעסוקה (מ"ר)', 'שינוי מסחר (מ"ר)', 'שינוי מגורים (מ"ר)', 'שינוי מגורים (יח"ד)', 'שינוי ציבור (מ"ר)', 'שטח התוכנית (מ"ר)', 'סמכות תכנון']
+    }, (err, csv) => {
+        downloadCSV(csv, 'plans');
+    });
+};
+
 export const PlanList = (props) => (
-    <List title="תוכניות" {...props}>
+    <List title="תוכניות" {...props} exporter={PlanExporter}>
         <Datagrid>
             <InnerUrlField source="id" urlPrefix="plan" label="מזהה" />
             <TextField source="PLAN_COUNTY_NAME" label="רשות" />
