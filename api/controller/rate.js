@@ -1,5 +1,6 @@
 const Controller = require("../controller/controller");
 const Rate = require("../model/rate");
+const Exception = require("../model/exception");
 const Log = require("../lib/log");
 const { Knex } = require("../service/database");
 
@@ -12,6 +13,23 @@ class RateController extends Controller {
         return this.model.byPlan(req.params.plan_id).then(collection => {
             Log.debug(this.tableName, "Get rate list", req.params.plan_id);
             return collection;
+        });
+    }
+
+    byPlanAdmin(req) {
+        if (!req.session.person) {
+            throw new Exception.NotAllowed('Must be logged in');
+        } else if (!req.session.person.admin) {
+            throw new Exception.NotAllowed('Must be an admin');
+        }
+
+        return this.model.byPlan(req.params.plan_id).then(collection => {
+            Log.debug(this.tableName, "Get rate list", req.params.plan_id);
+            return {
+                id: req.params.plan_id,
+                rate_total: collection.length,
+                rate_avg: collection.reduce( ( p, c ) => p + c.score, 0 ) / collection.length || '-'
+            };
         });
     }
 

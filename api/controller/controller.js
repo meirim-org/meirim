@@ -50,7 +50,10 @@ class Controller {
     let page = parseInt(query.page, 10) || 1
     if (page < 1) page = 1
 
-    const pageSize = parseInt(options.pageSize, 10) || 20
+    let pageSize = parseInt(options.pageSize, 10) ||
+        parseInt(query.pageSize, 10) || 20
+    if (pageSize < 1) pageSize = 1
+    else if (pageSize > 1000) pageSize = 1000
 
     const columns = options.columns || '*'
     const where = options.where || {}

@@ -95,6 +95,44 @@ class PlanController extends Controller {
     }) 
   }
 
+  browseAdmin(req) {
+    if (!req.session.person) {
+      throw new Exception.NotAllowed('Must be logged in');
+    } else if (!req.session.person.admin) {
+      throw new Exception.NotAllowed('Must be an admin');
+    }
+
+    const columns = [
+      "id",
+      "PLAN_COUNTY_NAME",
+      "PL_NUMBER",
+      "PL_NAME",
+      "geom",
+      "jurisdiction",
+      "areaChanges",
+      "data"
+    ];
+
+    const { query } = req;
+    const where = {};
+
+    if (query.status) {
+      where.status = query.status.split(",");
+    }
+
+    if (query.PLAN_COUNTY_NAME) {
+      where.PLAN_COUNTY_NAME = query.PLAN_COUNTY_NAME.split(",");
+    }
+
+    const order = query.order || '-id';
+
+    return super.browse(req, {
+      columns,
+      where,
+      order
+    });
+  }
+
   county () {
     return Knex.raw(
       'SELECT PLAN_COUNTY_NAME, COUNT(*) as num FROM plan GROUP BY PLAN_COUNTY_NAME'

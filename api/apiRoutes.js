@@ -63,6 +63,14 @@ Router.get('/public/plan', publicWrapper(Plan.publicBrowse, Plan))
 // Status
 // Router.get('/', wrap(Status.browse));
 
+// Admin
+if (process.env.ENABLE_ADMIN) {
+  Router.get("/admin/plans", wrap(Plan.browseAdmin, Plan));
+  Router.get("/admin/comments", wrap(Comment.browseAdmin, Comment));
+  Router.get("/admin/comments/:plan_id", wrap(Comment.byPlanAdmin, Comment));
+  Router.get("/admin/rates/:plan_id", wrap(Rate.byPlanAdmin, Rate));
+}
+
 // Health
 Router.get('/health', wrap(() => true))
 
