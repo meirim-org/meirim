@@ -7,6 +7,7 @@ export default {
     name: "מעירים",
     plans: "תוכניות",
     vocabulary: "מילון",
+    funding: "הצטרפות",
     about: "אודות",
     meirimTitle: "מידע תכנוני ואקטיביזם עירוני",
     newAlert: "התראה חדשה",

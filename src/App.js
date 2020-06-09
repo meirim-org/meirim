@@ -11,6 +11,7 @@ import ForgotPassword from "./scenes/ForgotPassword";
 import About from "./scenes/About";
 import Terms from "./scenes/Terms";
 import Vocabulary from "./scenes/Vocabulary";
+import Funding from "./scenes/Funding";
 import NotFound from "./scenes/NotFound";
 import api from "./services/api";
 
@@ -93,6 +94,10 @@ class App extends Component {
                         <Route
                             path="/about"
                             render={props => <About {...props} me={me} />}
+                        />
+                         <Route
+                            path="/funding"
+                            render={props => <Funding {...props} me={me} />}
                         />
                         <Route
                             path="/terms"
