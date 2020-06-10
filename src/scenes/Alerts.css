@@ -83,7 +83,7 @@ table#alertTable td {
     padding: 10px 0;
 }
 
-input[type="text"] {
+input[type="text"], input[type='email'] {
     resize: none;
     background: none;
     color: #005cbf;
