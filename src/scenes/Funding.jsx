@@ -114,7 +114,7 @@ class Funding extends Component {
                                             </Button>
                                             </Form>
                                     </div>
-                                    
+                                    <hr/>
                                     <div className="empty_rectangle">
                                         <h4>שאלות נפוצות</h4>
                                         <div className="single-line">
@@ -122,6 +122,7 @@ class Funding extends Component {
                                            <p> טקסט טקסט טקסט טקסט. </p>
                                         </div>
                                     </div>
+                                    <hr/>
                                 </div>
                             </div>
                         </div>
