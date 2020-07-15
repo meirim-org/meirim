@@ -2,3 +2,41 @@ html body {
   direction: rtl;
   background-color: #f8f8f8;
 }
+
+.donate-options {
+  border: 1px solid rgba(0,0,0,0.8);
+  padding: 5%;
+  cursor: pointer;
+  justify-content: space-between;
+  /* display: flex; */
+  text-align: center;
+}
+
+.donate-options .donate-options-boxes{
+  display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.donate-options .donate-options-box{
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  justify-content: start
+}
+
+.donate-options h2{
+  font-size: 20px;
+    color: rgba(0,0,0,0.8);
+    font-weight: bold;
+    text-align: center;
+}
+
+.donate-options h3{
+    font-size: 8pt;
+    line-height: 11pt;
+    color: rgba(0,0,0,0.8);
+    font-weight: bold;
+    text-align: center;
+}

@@ -1,9 +1,9 @@
 import React, { Fragment, Component } from "react";
 import Wrapper from "../components/Wrapper";
 import ReactPlayer from 'react-player'
-import {Form, Button, ButtonGroup, ToggleButton, ProgressBar} from 'react-bootstrap'
+import {Form, Button, ButtonGroup, ToggleButton} from 'react-bootstrap'
 
-import "./Funding.css";
+import './Funding.css'
 
 class Funding extends Component {
     state = {
@@ -56,63 +56,45 @@ class Funding extends Component {
                                         <h4>רוצים לעשות שינוי? הצטרפו עכשיו לקבוצה של מתכנני ערים ומתכנתים </h4>
                                         ₪
                                     </div>
-                                    <div>
-                                    <ProgressBar animated now={funding.currentSum} max={funding.fundingMonthlyTarget} min="0" label={`₪${funding.currentSum}`} />
-                                    </div>
                                     <div className="empty_rectangle">
                                         <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
                                     </div>
                                 </div>
                                 <div className="col">
-                                    <div className="empty_rectangle">
-                                        <h4>תמיכה חודשית</h4>
-                                        <Form>
-                                            <Form.Group controlId="formBasicName">
-                                                <Form.Label>שם מלא</Form.Label>
-                                                <Form.Control type="text" placeholder="" />
-                                                <Form.Text className="text-muted">
-                                                </Form.Text>
-                                            </Form.Group>
-                                            <Form.Group controlId="formBasicEmail">
-                                                <Form.Label>כתובת אימייל</Form.Label>
-                                                <Form.Control type="email" placeholder="" />
-                                                <Form.Text className="text-muted">
-                                                </Form.Text>
-                                            </Form.Group>
-                                            <Form.Group controlId="formBasicMobile">
-                                                <Form.Label>מספר טלפון</Form.Label>
-                                                <Form.Control type="text" placeholder=""  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></Form.Control>
-                                                <Form.Text className="text-muted">
-                                                </Form.Text>
-                                            </Form.Group>
-                                            <Form.Group controlId="formBasicPassword">
-                                            </Form.Group>
-                                            <Form.Group controlId="formAmount">
-                                            {/* <div className="single-line"> */}
-                                                <Form.Label>סכום לתמיכה חודשית</Form.Label>
-                                                <ButtonGroup toggle>
+                                        <div className="empty_rectangle">
+                                        <div className="donate-options-boxes">
+                                            <div className="donate-options-box">
+                                                <h4>תמיכה חודשית</h4>
+                                                <div className="donation-container">
                                                     {funding.monthlyAmounts.map((amount, idx) => (
-                                                    <ToggleButton
-                                                        key={idx}
-                                                        type="radio"
-                                                        variant="secondary"
-                                                        name="radio"
-                                                        value={amount}
-                                                        checked={20 === amount}
-                                                        // onChange={(e) => setRadioValue(e.currentTarget.value)}
-                                                    >
-                                                        {amount} 
-                                                    </ToggleButton>
+                                                        <div>
+                                                            <div className="donate-options">
+                                                                <h2>
+                                                                    ₪{amount}/ חודש
+                                                                </h2>
+                                                                <h3>
+                                                                    תקבלו תיק
+                                                                </h3>
+                                                            </div>
+                                                        </div>
                                                     ))}
-                                            </ButtonGroup>
-                                            </Form.Group>
-                                            <Form.Group controlId="formBasicCheckbox">
-                                                <Form.Check type="checkbox" label="     אני מסכימ/ה לתנאי התקנון" />
-                                            </Form.Group>
-                                            <Button variant="primary" type="submit" size="lg" block>
-                                                לתשלום מאובטח
-                                            </Button>
-                                            </Form>
+                                                </div>
+                                            </div>
+                                            <div className="donate-options-box">
+                                                <h4>תמיכה חד פעמית</h4>
+                                                <div className="donation-container">
+                                                    {funding.monthlyAmounts.map((amount, idx) => (
+                                                        <div>
+                                                            <div className="donate-options">
+                                                                <h2>
+                                                                    ₪{amount}
+                                                                </h2>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <hr/>
                                     <div className="empty_rectangle">
