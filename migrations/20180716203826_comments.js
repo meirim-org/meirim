@@ -19,5 +19,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTab('comment');
+  return knex.schema.dropTable('comment');
 };
