@@ -89,6 +89,24 @@ To run the crawler (can be killed at any time using Ctrl+C):
 $ npm run crawl
 ```
 
+## Testing
+
+Tests require all prerequisites to be fulfilled and a database instance to be available at port 33060 on localhost. The odd port is for preventing people from running the tests on development databases accidentally (and can be hanged by editing [test/hooks.js](test/hooks.js)).
+
+To set up a test database (user, database and migrations) the docker compose file under the docker folder can be used:
+
+```bash
+$ docker-compose -f docker/test-compose.yml up
+```
+
+Then to run the tests:
+
+```bash
+$ npm run test
+```
+
+NOTE: for some tests to run properly a clean database is needed. The test suite does clean the objects it creates, but some tests will fail if they are run on a database which already has some data.
+
 ## Running in production
 
 We use [pm2](https://pm2.keymetrics.io) to run the service in production.
