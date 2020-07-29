@@ -95,6 +95,7 @@
         "turf": "^3.0.14",
         "winston": "^3.1.0",
         "xml2js": "^0.4.22"
+        "mocha": "^8.0.1"
     },
     "eslintConfig": {
         "extends": "react-app"
