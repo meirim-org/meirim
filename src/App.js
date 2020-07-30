@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./scenes/Home/Home";
 import Plans from "./scenes/Plans";
+import PublicParticipation from "./scenes/PublicParticipation";
+
 import SinglePlan from "./scenes/SinglePlan";
 import SignIn from "./scenes/SignIn";
 import Activate from "./scenes/Activate";
@@ -20,13 +22,16 @@ import {
     faTimes,
     faBuilding,
     faPaperPlane,
-    faChartArea
+    faChartArea,
+    faAngleUp,
+    faAngleDown
 } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 import "./assets/bootstrap.css";
 
-library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
+library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faAngleUp,
+    faAngleDown,faWhatsapp);
 
 class App extends Component {
     state = {
@@ -72,6 +77,11 @@ class App extends Component {
                             path="/plans"
                             render={props => <Plans {...props} me={me} />}
                         />
+                        <Route
+                            path="/public-participation"
+                            render={props => <PublicParticipation {...props} me={me} />}
+                        />
+
                         <Route
                             path="/sign/in"
                             render={props => <SignIn {...props} me={me} />}

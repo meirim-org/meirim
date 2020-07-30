@@ -19,6 +19,12 @@ import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple
 import t from "../locale/he_IL";
 import "./Plans.css";
 
+const cardStyle =     {
+        maxWidth: '335px',
+        margin: '0 1em 3em 1em'
+      }
+      
+
 class Plans extends Component {
     state = {
         error: false,
@@ -114,7 +120,7 @@ class Plans extends Component {
                         cols={1}
                     >
                         {plans.map(plan => (
-                            <Card className="card" raised={true} key={plan.id}>
+                            <Card className="card" style={cardStyle} raised={true} key={plan.id}>
                                 <Link
                                     className="card-link"
                                     to={`/plan/${plan.id}`}

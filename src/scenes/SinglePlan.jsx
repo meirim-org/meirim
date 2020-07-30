@@ -126,189 +126,187 @@ class SinglePlan extends Component {
         return (
             <Wrapper me={me}>
                 {plan.PL_NAME && (
-                    <div className="container" className="container">
-                        <div className="container">
-                            <h1>{plan.PL_NAME}</h1>
-                            <div className="row">
-                                <div className="col">
-                                    <div className="empty_rectangle">
-                                        <h4>מטרות התוכנית</h4>
-                                        <UnsafeRender
-                                            html={plan.goals_from_mavat}
-                                        />
-                                    </div>
-                                    <div className="empty_rectangle">
-                                        <h4>תיאור התוכנית</h4>
-                                        <UnsafeRender
-                                            html={plan.main_details_from_mavat}
-                                        />
-                                    </div>
-                                    <div className="rectangle">
-                                        <h4>דעת הציבור</h4>
-                                        <Rate planId={id} me={me} />
-                                    </div>
-                                    <div className="rectangle">
-                                        <h4>דבר הציבור</h4>
-                                        <Comments planId={id} me={me} />
+                    <div className="container">
+                        <h1>{plan.PL_NAME}</h1>
+                        <div className="row">
+                            <div className="col">
+                                <div className="empty_rectangle">
+                                    <h4>מטרות התוכנית</h4>
+                                    <UnsafeRender
+                                        html={plan.goals_from_mavat}
+                                    />
+                                </div>
+                                <div className="empty_rectangle">
+                                    <h4>תיאור התוכנית</h4>
+                                    <UnsafeRender
+                                        html={plan.main_details_from_mavat}
+                                    />
+                                </div>
+                                <div className="rectangle">
+                                    <h4>דעת הציבור</h4>
+                                    <Rate planId={id} me={me} />
+                                </div>
+                                <div className="rectangle">
+                                    <h4>דבר הציבור</h4>
+                                    <Comments planId={id} me={me} />
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="rectangle">
+                                    <h4>מיקום</h4>
+                                    <div
+                                        className="map-container"
+                                        style={{ height: "300px" }}
+                                    >
+                                        <Mapa geom={plan.geom} />
                                     </div>
                                 </div>
-                                <div className="col">
+                                {!!dataArea && !!dataArea[0].data.length && (
                                     <div className="rectangle">
-                                        <h4>מיקום</h4>
-                                        <div
-                                            className="map-container"
-                                            style={{ height: "300px" }}
-                                        >
-                                            <Mapa geom={plan.geom} />
-                                        </div>
-                                    </div>
-                                    {!!dataArea && !!dataArea[0].data.length && (
-                                        <div className="rectangle">
-                                            <h4>שינוי שטח</h4>
-                                            {textArea.exist !== 0 &&
-                                                <p>
-                                                    תוכנית זו מגדילה את השטח הבנוי
+                                        <h4>שינוי שטח</h4>
+                                        {textArea.exist !== 0 &&
+                                            <p>
+                                                תוכנית זו מגדילה את השטח הבנוי
                                                     פי {renderMultiplier(textArea)}{" "}
                                                     (תוספת {textArea.new} מ"ר)
                                                 </p>
-                                            }
-                                             {textArea.exist === 0 &&
-                                                <p>
-                                                    תוכנית זו מוסיפה
+                                        }
+                                        {textArea.exist === 0 &&
+                                            <p>
+                                                תוכנית זו מוסיפה
                                                    {" "}
-                                                   {textArea.new} מ"ר
+                                                {textArea.new} מ"ר
                                                    שטח בנוי
                                                 </p>
-                                            }
-                                            <p>
-                                                {renderPercent(
-                                                    (textArea.new +
-                                                        textArea.exist) /
-                                                        textArea.area
-                                                )}
+                                        }
+                                        <p>
+                                            {renderPercent(
+                                                (textArea.new +
+                                                    textArea.exist) /
+                                                textArea.area
+                                            )}
                                                 % בניה (במקום{" "}
-                                                {renderPercent(
-                                                    textArea.exist /
-                                                        textArea.area
-                                                )}
+                                            {renderPercent(
+                                                textArea.exist /
+                                                textArea.area
+                                            )}
                                                 % )
                                             </p>
-                                            <div style={{ height: 200 }}>
-                                                <Chart
-                                                    series={series}
-                                                    data={dataArea}
-                                                    axes={axes}
-                                                    tooltip={true}
-                                                />
-                                            </div>
+                                        <div style={{ height: 200 }}>
+                                            <Chart
+                                                series={series}
+                                                data={dataArea}
+                                                axes={axes}
+                                                tooltip={true}
+                                            />
                                         </div>
-                                    )}
-                                    {!!dataUnits && !!dataUnits[0].data.length && (
-                                        <div className="rectangle">
-                                            <h4>שינוי יחידות דיור</h4>
-                                            <div style={{ height: 200 }}>
-                                                <Chart
-                                                    series={series}
-                                                    data={dataUnits}
-                                                    axes={axes}
-                                                    tooltip={true}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-
+                                    </div>
+                                )}
+                                {!!dataUnits && !!dataUnits[0].data.length && (
                                     <div className="rectangle">
-                                        <h4>נתוני התוכנית</h4>
-                                        <ul>
+                                        <h4>שינוי יחידות דיור</h4>
+                                        <div style={{ height: 200 }}>
+                                            <Chart
+                                                series={series}
+                                                data={dataUnits}
+                                                axes={axes}
+                                                tooltip={true}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="rectangle">
+                                    <h4>נתוני התוכנית</h4>
+                                    <ul>
+                                        <li>
+                                            מספר תוכנית:{" "}
+                                            {plan.data.PL_NUMBER}
+                                        </li>
+                                        <li>
+                                            סוג תוכנית:{" "}
+                                            {plan.data.ENTITY_SUBTYPE_DESC}
+                                        </li>
+                                        {plan.jurisdiction && (
                                             <li>
-                                                מספר תוכנית:{" "}
-                                                {plan.data.PL_NUMBER}
-                                            </li>
-                                            <li>
-                                                סוג תוכנית:{" "}
-                                                {plan.data.ENTITY_SUBTYPE_DESC}
-                                            </li>
-                                            {plan.jurisdiction && (
-                                                <li>
-                                                    מוסד התכנון המוסמך להפקיד את
+                                                מוסד התכנון המוסמך להפקיד את
                                                     התכנית: וועדה{" "}
-                                                    {plan.jurisdiction}
-                                                </li>
-                                            )}
-                                            {plan.data.DEPOSITING_DATE && (
-                                                <li>
-                                                    תאריך הפקדה:{" "}
-                                                    <Moment format="DD/MM/YYYY">
-                                                        {
-                                                            plan.data
-                                                                .DEPOSITING_DATE
-                                                        }
-                                                    </Moment>
-                                                </li>
-                                            )}
+                                                {plan.jurisdiction}
+                                            </li>
+                                        )}
+                                        {plan.data.DEPOSITING_DATE && (
                                             <li>
-                                                שימוש קרקע:{" "}
-                                                <LandUseVocabulary
-                                                    landUseJoined={
+                                                תאריך הפקדה:{" "}
+                                                <Moment format="DD/MM/YYYY">
+                                                    {
                                                         plan.data
-                                                            .PL_LANDUSE_STRING
+                                                            .DEPOSITING_DATE
                                                     }
-                                                />
-                                            </li>
-                                            <li>
-                                                סטטוס: {plan.data.STATION_DESC}
-                                            </li>
-                                            <li>
-                                                עדכון אחרון:{" "}
-                                                <Moment
-                                                    parse="YYYYMMDDHHmm"
-                                                    format="DD/MM/YYYY"
-                                                >
-                                                    {plan.data.LAST_UPDATE}
                                                 </Moment>
                                             </li>
-                                            <li>
-                                                <a
-                                                    target="_blank"
-                                                    href={plan.plan_url}
-                                                >
-                                                    מסמכי התוכנית באתר משרד
-                                                    האוצר
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        {plan.notCredible && (
-                                            <div className="note">
-                                                שימו לב! זוהי תכנית המופקדת
-                                                בסמכות מקומית. מכיוון שהוועדות
-                                                המקומיות לא מדווחות בצורה אחידה
-                                                אודות הסטטוס של התכניות בסמכותן
-                                                אנחנו ממליצים לא להסתמך על סטטוס
-                                                התכניות (גם לא כמו שמופיע באתר
-                                                "תכנון זמין"). התכנית עברה "תנאי
-                                                סף" וכנראה שהיא בהפקדה או תכף
-                                                מופקדת
-                                            </div>
                                         )}
-                                        <div className="single-line">
-                                            <p>שתפו אותי:</p>
-                                            <a
-                                                className="share-link"
-                                                target="_blank"
-                                                href={
-                                                    "https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A" +
-                                                    encodeURI(
-                                                        window.location.toString()
-                                                    )
+                                        <li>
+                                            שימוש קרקע:{" "}
+                                            <LandUseVocabulary
+                                                landUseJoined={
+                                                    plan.data
+                                                        .PL_LANDUSE_STRING
                                                 }
+                                            />
+                                        </li>
+                                        <li>
+                                            סטטוס: {plan.data.STATION_DESC}
+                                        </li>
+                                        <li>
+                                            עדכון אחרון:{" "}
+                                            <Moment
+                                                parse="YYYYMMDDHHmm"
+                                                format="DD/MM/YYYY"
                                             >
-                                                <FontAwesomeIcon
-                                                    icon={["fab", "whatsapp"]}
-                                                    size="lg"
-                                                    color="#25D366"
-                                                />
-                                            </a>
+                                                {plan.data.LAST_UPDATE}
+                                            </Moment>
+                                        </li>
+                                        <li>
+                                            <a
+                                                target="_blank"
+                                                href={plan.plan_url}
+                                            >
+                                                מסמכי התוכנית באתר משרד
+                                                האוצר
+                                                </a>
+                                        </li>
+                                    </ul>
+                                    {plan.notCredible && (
+                                        <div className="note">
+                                            שימו לב! זוהי תכנית המופקדת
+                                            בסמכות מקומית. מכיוון שהוועדות
+                                            המקומיות לא מדווחות בצורה אחידה
+                                            אודות הסטטוס של התכניות בסמכותן
+                                            אנחנו ממליצים לא להסתמך על סטטוס
+                                            התכניות (גם לא כמו שמופיע באתר
+                                            "תכנון זמין"). התכנית עברה "תנאי
+                                            סף" וכנראה שהיא בהפקדה או תכף
+                                            מופקדת
                                         </div>
+                                    )}
+                                    <div className="single-line">
+                                        <p>שתפו אותי:</p>
+                                        <a
+                                            className="share-link"
+                                            target="_blank"
+                                            href={
+                                                "https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A" +
+                                                encodeURI(
+                                                    window.location.toString()
+                                                )
+                                            }
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={["fab", "whatsapp"]}
+                                                size="lg"
+                                                color="#25D366"
+                                            />
+                                        </a>
                                     </div>
                                 </div>
                             </div>

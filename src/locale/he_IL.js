@@ -23,6 +23,26 @@ export default {
     seenAllPlans: "זה הכל!",
     callToAction: "הצטרפו למעירים",
     whatToRegister: "רוצים השכמה?",
+    publicParticipation: {
+        question:'שאלה',
+        questions:'שאלות',
+        improvements: 'הצעות לשיפור',
+        improvement: 'הצעה לשיפור',
+        explanation: 'תיאור התוכנית',
+        iHaveIdea: 'יש לי רעיון',
+        iHaveQuestion: 'יש לי שאלה',
+        addIdea: 'הוספת רעיון חדש',
+        addQuestion: 'שליחת שאלה חדשה'  ,
+        questionTitleLabel: 'מה השאלה שלך?',
+        questionDescriptionLabel:'פירוט השאלה',
+        benefits: 'יתרונות',
+        drawbacks: 'חסרונות',
+        descriptionLabel: 'פירוט של הרעיון',
+        benefitsLabel: 'מה הם היתרונות של הרעיון שלך?',
+        drawbacksLabel: 'האם יש לדעתך חסרונות לרעיון שלך?',
+        submit: 'שליחה',
+        submitExplain: 'פרסום התוכן יבוצע לאחר בדיקה של צוות האתר. אנו נשלח לך דואר אלקטרוני כשתוכן יתפרסם'
+    },
     whyRegister: (
         <div>
             רוצים לדעת אם הגינה הציבורית שלכם עומדת{" "}
