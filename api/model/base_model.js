@@ -16,6 +16,15 @@ class Base_model extends Bookshelf.Model {
     return new Checkit(model.rules).run(model.attributes);
   }
 
+  parse(attributes) {
+    // parse boolean fields that are represented as small integers in the database
+    for (const field of this.booleanFields || []) {
+      attributes[field] = !!attributes[field];
+    };
+
+    return super.parse(attributes);
+  }
+
   setPerson(session) {
     if (this.rules.person_id && session.person) {
       this.set('person_id', session.person.id);
