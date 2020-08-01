@@ -70,6 +70,7 @@ Router.get('/public/plan', publicWrapper(Plan.publicBrowse, Plan));
 
 // Public participation
 Router.get('/participation/', wrap(Participation.browse, Participation));
+Router.get('/participation/:id', wrap(Participation.read, Participation));
 Router.get('/improvement/:participation_id', wrap(Improvement.byParticipation, Improvement));
 Router.post('/improvement/:participation_id', wrap(Improvement.create, Improvement));
 Router.get('/question/:participation_id', wrap(Question.byParticipation, Question));

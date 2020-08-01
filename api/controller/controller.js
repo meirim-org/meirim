@@ -84,7 +84,7 @@ class Controller {
     const id = parseInt(req.params.id, 10)
 
     if (!id) {
-      throw new Exception.NotFound('Nof found')
+      throw new Exception.NotFound('Not found')
     }
     return this.model
       .forge({
@@ -92,7 +92,7 @@ class Controller {
       })
       .fetch()
       .then(fetchedModel => {
-        if (!fetchedModel) throw new Exception.NotFound('Nof found')
+        if (!fetchedModel) throw new Exception.NotFound('Not found')
         return fetchedModel.canRead(req.session)
       })
       .then(fetchedModel => {
