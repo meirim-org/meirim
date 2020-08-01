@@ -28,7 +28,8 @@ app.use(Session)
 app.use(cors)
 app.options('*', cors)
 app.use('/', json, urlencoded, routes)
-app.use(errorHandler)
+app.use(errorHandler.controllerErrorHandler)
+app.use(errorHandler.generalErrorHandler)
 
 Email.init().then(() => {
   Log.info('API application loaded')

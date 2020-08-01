@@ -1,30 +1,49 @@
 const Controller = require('../controller/controller');
 const ImprovementComment = require('../model/improvement_comment');
-const Log = require('../lib/log');
 const Exception = require('../model/exception');
 
 class ImprovementCommentController extends Controller {
+  browse (req) {
+    const columns = [
+      'id',
+      'improvement_id',
+      'approved',
+      'reviewed',
+      'title',
+      'description',
+      'created_at'
+    ];
+
+    const { query } = req;
+
+    // show only approved entities
+    const where = { approved: true };
+
+    if (query.improvement_id) {
+      where.improvement_id = query.improvement_id;
+    }
+
+    const order = '-id';
+
+    return super.browse(req, {
+      columns,
+      where,
+      order
+    });
+  }
+
   create(req, res, next) {
     if (!req.session.person) {
       throw new Exception.BadRequest('Must be logged in');
     }
 
-    // add improvement_id to body so we don't need to send it twice
-    // (once as part of the url and another as part of the body)
-    req.body.improvement_id = req.params.improvement_id
+    // remove fields the user is not allowed to set
+    delete req.body.approved;
+    delete req.body.reviewed;
+    delete req.body.created_at;
+    delete req.body.updated_at;
 
     return super.create(req, res, next);
-  }
-
-  /**
-   * Return improvement's comments.
-   * @param {IncomingRequest} req
-   */
-  byImprovement(req) {
-    return this.model.byImprovement(req.params.improvement_id).then((collection) => {
-      Log.debug(this.tableName, 'Get improvement comment list', req.params.improvement_id);
-      return collection;
-    });
   }
 }
 

@@ -71,14 +71,14 @@ Router.get('/public/plan', publicWrapper(Plan.publicBrowse, Plan));
 // Public participation
 Router.get('/participation/', wrap(Participation.browse, Participation));
 Router.get('/participation/:id', wrap(Participation.read, Participation));
-Router.get('/improvement/:participation_id', wrap(Improvement.byParticipation, Improvement));
-Router.post('/improvement/:participation_id', wrap(Improvement.create, Improvement));
-Router.get('/question/:participation_id', wrap(Question.byParticipation, Question));
-Router.post('/question/:participation_id', wrap(Question.create, Question));
-Router.get('/improvement_comment/:improvement_id', wrap(ImprovementComment.byImprovement, ImprovementComment));
-Router.post('/improvement_comment/:improvement_id', wrap(ImprovementComment.create, ImprovementComment));
-Router.get('/question_comment/:question_id', wrap(QuestionComment.byQuestion, QuestionComment));
-Router.post('/question_comment/:question_id', wrap(QuestionComment.create, QuestionComment));
+Router.get('/improvement/', wrap(Improvement.browse, Improvement));
+Router.post('/improvement/', wrap(Improvement.create, Improvement));
+Router.get('/question/', wrap(Question.browse, Question));
+Router.post('/question/', wrap(Question.create, Question));
+Router.get('/improvement_comment/', wrap(ImprovementComment.browse, ImprovementComment));
+Router.post('/improvement_comment/', wrap(ImprovementComment.create, ImprovementComment));
+Router.get('/question_comment/', wrap(QuestionComment.browse, QuestionComment));
+Router.post('/question_comment/', wrap(QuestionComment.create, QuestionComment));
 
 // Health
 Router.get('/health', wrap(() => true));

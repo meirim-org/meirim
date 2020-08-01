@@ -56,7 +56,12 @@ class Controller {
     const where = options.where || {}
 
     let bsQuery = this.model.query(qb =>
-      Object.keys(where).map(index => qb.where(index, 'in', where[index]))
+      Object.keys(where).map(index => {
+        if (Array.isArray(where[index]))
+          return qb.where(index, 'in', where[index])
+        else
+          return qb.where(index, '=', where[index])
+      })
     )
 
     if (options.whereRaw) {

@@ -1,30 +1,49 @@
 const Controller = require('../controller/controller');
 const QuestionComment = require('../model/question_comment');
-const Log = require('../lib/log');
 const Exception = require('../model/exception');
 
 class QuestionCommentController extends Controller {
+  browse (req) {
+    const columns = [
+      'id',
+      'question_id',
+      'approved',
+      'reviewed',
+      'title',
+      'description',
+      'created_at'
+    ];
+
+    const { query } = req;
+
+    // show only approved entities
+    const where = { approved: true };
+
+    if (query.question_id) {
+      where.question_id = query.question_id;
+    }
+
+    const order = '-id';
+
+    return super.browse(req, {
+      columns,
+      where,
+      order
+    });
+  }
+
   create(req, res, next) {
     if (!req.session.person) {
       throw new Exception.BadRequest('Must be logged in');
     }
 
-    // add question_id to body so we don't need to send it twice
-    // (once as part of the url and another as part of the body)
-    req.body.question_id = req.params.question_id
+    // remove fields the user is not allowed to set
+    delete req.body.approved;
+    delete req.body.reviewed;
+    delete req.body.created_at;
+    delete req.body.updated_at;
 
     return super.create(req, res, next);
-  }
-
-  /**
-   * Return question's comments.
-   * @param {IncomingRequest} req
-   */
-  byQuestion(req) {
-    return this.model.byQuestion(req.params.question_id).then((collection) => {
-      Log.debug(this.tableName, 'Get question comment list', req.params.question_id);
-      return collection;
-    });
   }
 }
 
