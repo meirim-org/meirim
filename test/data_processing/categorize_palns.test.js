@@ -188,3 +188,18 @@ describe('classification test', function() {
     });
 
 });
+
+
+describe('split string details to array of details test', () => {
+
+    it('should split correctly', () => {
+        const detailsStr = 'א. שינוי בקווי בניין :<br>1. שינוי בקו בניין קדמי מ- 3.0 לפי המסומן בתשריט.<br>2. שינוי בקו בניין צדדי ( צד דרומי)מ- 3.0 לפי המסומן בתשריט.<br>ב. הגדלת תכסית קרקע מ-36% ל- 45%';
+        const arr = Classifier.detailsStrToDetailsArr(detailsStr);
+        assert.strictEqual(arr[0], 'שינוי בקווי בניין :');
+        assert.strictEqual(arr[1], 'שינוי בקו בניין קדמי מ- 3.0 לפי המסומן בתשריט.');
+        assert.strictEqual(arr[2], 'שינוי בקו בניין צדדי ( צד דרומי)מ- 3.0 לפי המסומן בתשריט.');
+        assert.strictEqual(arr[3], 'הגדלת תכסית קרקע מ-36% ל- 45%');
+    });
+
+});
+
