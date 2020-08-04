@@ -4,7 +4,6 @@ const assert = require('assert');
 //all the tests are from actual tabas
 
 describe('classification test', function() {
-    this.timeout(90000);   //reading the stop words is taking a long time
     let stopWordsSet;
 
     before(async () => {
