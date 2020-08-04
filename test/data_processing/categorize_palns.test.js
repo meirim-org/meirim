@@ -40,20 +40,42 @@ describe('classification test', function() {
         assert.strictEqual(obj.tag, 'Movement');
     });
 
-    it('should be tagged as AreaDesignationChange', () => {
+    it('should be tagged as AreaDesignationChange and be from שצ"פ to דרך מוצעת', () => {
         const obj = Classifier.parseDetail('שינוי יעוד משצ"פ לדרך מוצעת.', stopWordsSet);
         assert.strictEqual(obj.tag, 'AreaDesignationChange');
+        assert.strictEqual(obj.fromArea, 'שצ"פ');
+        assert.strictEqual(obj.toArea, 'דרך מוצעת');
     });
 
-    it('should be tagged as AreaDesignationChange', () => {
+    it('should be tagged as AreaDesignationChange and be from מגורים 5 מיוחד to מגורים ב\'', () => {
         const obj = Classifier.parseDetail('שינוי ייעוד הקרקע ממגורים 5 מיוחד למגורים ב\'.', stopWordsSet);
         assert.strictEqual(obj.tag, 'AreaDesignationChange');
+        assert.strictEqual(obj.fromArea, 'מגורים 5 מיוחד');
+        assert.strictEqual(obj.toArea, 'מגורים ב\'');
     });
 
-    it('should be tagged as AreaDesignationChange', () => {
+    it('should be tagged as AreaDesignationChange and be from אזור מגורים ד\'1 to מגורים ד\'', () => {
         const obj = Classifier.parseDetail('שינוי יעוד מאזור מגורים ד\'1 למגורים ד\'', stopWordsSet);
         assert.strictEqual(obj.tag, 'AreaDesignationChange');
+        assert.strictEqual(obj.fromArea, 'אזור מגורים ד\'1');
+        assert.strictEqual(obj.toArea, 'מגורים ד\'');
     });
+
+    it('should be tagged as AreaDesignationChange and be from שטח חקלאי, שטח ציבורי פתוח ושטח ללא תכנון מפורט to דרך', () => {
+        const obj = Classifier.parseDetail('שינוי ייעוד משטח חקלאי, שטח ציבורי פתוח ושטח ללא תכנון מפורט לדרך.', stopWordsSet);
+        assert.strictEqual(obj.tag, 'AreaDesignationChange');
+        assert.strictEqual(obj.fromArea, 'שטח חקלאי, שטח ציבורי פתוח ושטח ללא תכנון מפורט');
+        assert.strictEqual(obj.toArea, 'דרך');
+    });
+
+    it('should be tagged as AreaDesignationChange and be from מעבר ציבורי להולכי רגל to דרך', () => {
+        const obj = Classifier.parseDetail('שינוי ייעוד ממעבר ציבורי להולכי רגל לדרך.', stopWordsSet);
+        assert.strictEqual(obj.tag, 'AreaDesignationChange');
+        assert.strictEqual(obj.fromArea, 'מעבר ציבורי להולכי רגל');
+        assert.strictEqual(obj.toArea, 'דרך');
+    });
+
+
 
     it('should be tagged as LandUse', () => {
         const obj = Classifier.parseDetail('הגדרת שימושים מותרים לשטח השצ"פ.', stopWordsSet);
