@@ -1,9 +1,10 @@
-const readXlsxFile = require('read-excel-file/node');
+const fs = require('fs');
 const path = require('path');
 
 
 
 //TODO: ADD REF TO https://yeda.cs.technion.ac.il/resources_lexicons_stopwords.html in the readme
+//Processing on the stopwords: taking only the words without the usage statistics, remove מדרך and add מתחם
 //TODO: ADD MIGRATIONS THAT WILL CREATE AND POPULATE plan_area_changes table in DB
 
 
@@ -14,10 +15,9 @@ const path = require('path');
 async function readStopWords() {
     // `rows` is an array of rows
     // each row being an array of cells
-    const pth = path.join(__dirname, 'resources', 'stopwords.xlsx');
-    const rows = await readXlsxFile(pth);
-    rows.shift();     //remove the headers
-    const words = rows.map(row => row[2]);
+    const pth = path.join(__dirname, 'resources', 'stopwords.csv');
+    const data = fs.readFileSync(pth, 'utf8');
+    const words = data.split('\r\n');
     const wordsSet = new Set(words);
     wordsSet.delete('מדרך');   // it's a weird word and it's in there....
     wordsSet.add('מתחם');           //important words in the domain and it's not in the stopwords
