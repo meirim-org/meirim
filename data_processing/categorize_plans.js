@@ -50,16 +50,14 @@ function parseAreaDesignationChange(detail, stopWordsSet) {
     for(let i = 0; i < detail.length; i++) {
         const currChar = detail.charAt(i);
 
-        if (currWord === ' ' || i === detail.length - 1) {
+        if (currChar === ' ' || i === detail.length - 1) {
             //end of the word or the end of the sentence
             currWord = gatherWord;
             gatherWord = '';
             //from now we will check if this word contains the area changes (from... to...)
 
             //clean the word
-            const wordToSearch = currWord.replace(',', '')
-                                         .replace('(', '')
-                                         .replace(')', '');
+            const wordToSearch = currWord.replace(/[,\(\)]/g, '');
 
             if (fromIndex === -1 && currWord.startsWith('מ') && !stopWordsSet.has(wordToSearch)) {
                 //didn't find from yet, starts with 'מ' and not in the stopWords (eliminates words like 'מנורה')
@@ -82,9 +80,16 @@ function parseAreaDesignationChange(detail, stopWordsSet) {
             gatherWord = gatherWord.concat(currChar);
         }
     }
+    //check that the fromIndex was found and that toIndex was found, and that from is before to in the string
     if (fromIndex !== -1 && toIndex !== -1 && fromIndex < toIndex) {
-        const fromArea = detail.slice(fromIndex, toIndex - 2);
-        const toArea = detail.slice(toIndex).replace('.', '');
+        //from and to will always come in something like:
+        //ממגורים א' למגורים ד'
+        //the "from" part is the string between the start of the from word until the start of the to word
+        //in the next line it's toIndex - 2 because we don't want to take the space and the ל.
+        const fromArea = detail.slice(fromIndex, toIndex - 2).trim();
+        //the "to" part is from the beginning of the "to" word until the end of the sentence.
+        //a dot to end the sentence might appear, so we will remove it.
+        const toArea = detail.slice(toIndex).replace('.', '').trim();
         return {tag: 'AreaDesignationChange', fromArea: fromArea, toArea: toArea, detail: detail};
     }
     else {
