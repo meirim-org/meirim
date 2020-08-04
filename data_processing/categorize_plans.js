@@ -5,8 +5,52 @@ const path = require('path');
 
 //TODO: ADD REF TO https://yeda.cs.technion.ac.il/resources_lexicons_stopwords.html in the readme
 //Processing on the stopwords: taking only the words without the usage statistics, remove מדרך and add מתחם
-//TODO: ADD MIGRATIONS THAT WILL CREATE AND POPULATE plan_area_changes table in DB
 
+
+//input is raw details string from the db
+//output is trimmed details in an array
+function detailsStrToDetailsArr(detailsStr) {
+    const firstIndexOfDetail = (detail) => {
+        const isNumber = (char) => char >= '0' && char <= '9';
+        const isHebLetter = (char) => char >= 'א' && char <= 'ת';
+        const findIndexEndOfClauseNumber = () => {
+            let seenNonSpace = false;
+            for(let i = 0; i < detail.length; i++) {
+                const char = detail.charAt(i);
+                if(char !== ' ') {
+                    seenNonSpace = true;
+                }
+                //if it's the last char of the clause number (like the '.' in '2. some text blabla')
+                //and the next char is not a number (for cases like '2.2 some text blabla)
+                if(seenNonSpace && (char === '-' || char === '.' || char === ' ')
+                      && !isNumber(detail.charAt(i+1))) {
+                    return i + 1;
+                }
+            }
+            //should never get here
+            return null;
+        };
+        const indexEndOfClause = findIndexEndOfClauseNumber();
+        if(indexEndOfClause === null) {
+            return 0;
+        }
+        let prevWasSpace = false;
+        // if the index of the start of the clause is mistake somehow, the following code
+        // will know know that there's a mistake, and it will return 0 so we will not miss any data
+        for(let i = 0; i < indexEndOfClause; i++) {
+            const char = detail.charAt(i);
+            // if the previous char was a space and the curr char is a hebrew letter
+            // there's probably a mistake, so we will return 0 in order not to miss any data
+            if(prevWasSpace && isHebLetter(char)) {
+                return 0;
+            }
+            prevWasSpace = char === ' ';
+        }
+        return indexEndOfClause;
+    };
+    const details = detailsStr ? detailsStr.split('<br>') : [];
+    return details.map(detail => detail.substring(firstIndexOfDetail(detail)).trim());
+}
 
 
 //returns a set of hebrew words
@@ -158,7 +202,14 @@ function parseDetail(detail, stopWordsSet) {
     }
 }
 
+function parseStrDetailsOfPlan(detailsStrOfPlan, stopWordsSet) {
+    const detailsArr = detailsStrToDetailsArr(detailsStrOfPlan);
+    return detailsArr.map(detail => parseDetail(detail, stopWordsSet));
+}
+
 module.exports = {
     parseDetail,
-    readStopWords
+    readStopWords,
+    detailsStrToDetailsArr,
+    parseStrDetailsOfPlan
 };
