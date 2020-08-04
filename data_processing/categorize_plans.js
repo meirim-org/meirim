@@ -17,11 +17,8 @@ async function readStopWords() {
     // each row being an array of cells
     const pth = path.join(__dirname, 'resources', 'stopwords.csv');
     const data = fs.readFileSync(pth, 'utf8');
-    const words = data.split('\r\n');
-    const wordsSet = new Set(words);
-    wordsSet.delete('מדרך');   // it's a weird word and it's in there....
-    wordsSet.add('מתחם');           //important words in the domain and it's not in the stopwords
-    return wordsSet;
+    const words = data.split('\n');
+    return new Set(words);
 }
 
 function includesOrList(sentence, words) {
