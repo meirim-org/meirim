@@ -2,6 +2,8 @@ const Bluebird = require("bluebird");
 const Model = require("./base_model");
 const Log = require("../lib/log");
 const Exception = require("./exception");
+const DetailsClassifier = require("../../data_processing/categorize_plans");
+const PlanDetail = require("./plan_detail");
 
 class Plan extends Model {
     get rules() {
@@ -120,13 +122,32 @@ class Plan extends Model {
         return plan.save();
     }
 
-    static setMavatData(plan, mavanData) {
-        return plan.set({
+    static async setMavatData(plan, mavanData) {
+        const prevDetails = plan.main_details_from_mavat;
+        await plan.set({
             goals_from_mavat: mavanData.goals,
             main_details_from_mavat: mavanData.mainPlanDetails,
             jurisdiction: mavanData.jurisdiction,
-            areaChanges: mavanData.areaChanges
-        });
+            areaChanges: mavanData.areaChanges});
+
+        if (prevDetails === mavanData.mainPlanDetails || mavanData.mainPlanDetails === undefined) {
+            return;
+        }
+
+        const stopWords = await DetailsClassifier.readStopWords();
+        const details = DetailsClassifier.parseStrDetailsOfPlan(mavanData.mainPlanDetails, stopWords);
+
+        for (const detail of details) {
+            const detailData = {
+                planId: plan.id,
+                tag: detail.tag,
+                detail: detail.detail,
+                area_designation_from: detail.hasOwnProperty('fromArea') ? detail.fromArea : '',
+                area_designation_to: detail.hasOwnProperty('toArea') ? detail.toArea : ''
+            };
+
+            await new PlanDetail(detailData).save();
+        }
     }
 
     static getUnsentPlans(userOptions) {
