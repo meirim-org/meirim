@@ -66,11 +66,11 @@ async function readStopWords() {
 }
 
 function includesOrList(sentence, words) {
-    return words.reduce((acc, currWord) => acc || sentence.includes(currWord), false);
+    return words.reduce((acc, currWord) => acc || includes(sentence, currWord), false);
 }
 
 function notIncludes(sentence, word) {
-    return !sentence.includes(word);
+    return !includes(sentence, word);
 }
 
 function includes(sentence, word) {
