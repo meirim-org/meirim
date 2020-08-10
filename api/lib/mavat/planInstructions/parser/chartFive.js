@@ -45,24 +45,32 @@ const rowAbstractFactory = (firstPageOfTable) => {
   const backBuildingLineIndex = header1.findIndex(title => title === 'אחורי');
   const sideLeftBuildingLineIndex = header1.findIndex(title => title.includes('צידי') && title.includes('שמאלי'));
   const sideRightBuildingLineIndex = header1.findIndex(title => title.includes('צידי') && title.includes('ימני'));
-  const floorsBelowEntranceIndex = header1.findIndex((title, index) => title === 'מתחת לכניסה הקובעת' &&
-      insideHeader(index, floorNumberIndex, heightIndex));
-  const floorsAboveEntranceIndex = header1.findIndex((title, index) => title === 'מעל הכניסה הקובעת' &&
-      insideHeader(index, floorNumberIndex, heightIndex));
+  const floorsBelowEntranceIndex = floorNumberIndex === -1 || heightIndex === -1 ? -1 :
+      header1.findIndex((title, index) => title === 'מתחת לכניסה הקובעת' &&
+          insideHeader(index, floorNumberIndex, heightIndex));
+  const floorsAboveEntranceIndex = floorNumberIndex === -1 || heightIndex === -1 ? -1 :
+      header1.findIndex((title, index) => title === 'מעל הכניסה הקובעת' &&
+          insideHeader(index, floorNumberIndex, heightIndex));
   const overallBuildingLandIndex = header1.findIndex(title => title === 'סה"כ שטחי בניה');
-  const buildingAboveEntranceIndex = header1.findIndex((title, index) => title === 'מעל הכניסה הקובעת' &&
-      insideHeader(index, buildingAreasIndex, fieldSizeSqmIndex));
-  const buildingBelowEntranceIndex = header1.findIndex((title, index) => title === 'מתחת לכניסה הקובעת' &&
-      insideHeader(index, buildingAreasIndex, fieldSizeSqmIndex));
+  const buildingAboveEntranceIndex = buildingAreasIndex === -1 || fieldSizeSqmIndex === -1 ? -1 :
+      header1.findIndex((title, index) => title === 'מעל הכניסה הקובעת' &&
+          insideHeader(index, buildingAreasIndex, fieldSizeSqmIndex));
+  const buildingBelowEntranceIndex = buildingAreasIndex === -1 || fieldSizeSqmIndex === -1 ? -1 :
+      header1.findIndex((title, index) => title === 'מתחת לכניסה הקובעת' &&
+          insideHeader(index, buildingAreasIndex, fieldSizeSqmIndex));
 
-  const buildingAboveEntranceMainIndex = header2.findIndex((title, index) => title === 'עיקרי' &&
-      insideHeader(index, buildingAboveEntranceIndex, fieldSizeSqmIndex));
-  const buildingAboveEntranceServiceIndex = header2.findIndex((title, index) => title === 'שרות' &&
-      insideHeader(index, buildingAboveEntranceIndex, fieldSizeSqmIndex));
-  const buildingBelowEntranceMainIndex = header2.findIndex((title, index) => title === 'עיקרי' &&
-      insideHeader(index, buildingBelowEntranceIndex, buildingAboveEntranceIndex));
-  const buildingBelowEntranceServiceIndex = header2.findIndex((title, index) => title === 'שרות' &&
-      insideHeader(index, buildingBelowEntranceIndex, buildingAboveEntranceIndex));
+  const buildingAboveEntranceMainIndex = buildingAboveEntranceIndex === -1 || fieldSizeSqmIndex === -1 ? -1 :
+      header2.findIndex((title, index) => title === 'עיקרי' &&
+          insideHeader(index, buildingAboveEntranceIndex, fieldSizeSqmIndex));
+  const buildingAboveEntranceServiceIndex = buildingAboveEntranceIndex === -1 || fieldSizeSqmIndex === -1 ? -1 :
+      header2.findIndex((title, index) => title === 'שרות' &&
+          insideHeader(index, buildingAboveEntranceIndex, fieldSizeSqmIndex));
+  const buildingBelowEntranceMainIndex = buildingBelowEntranceIndex === -1 || buildingAboveEntranceIndex === -1 ? -1 :
+      header2.findIndex((title, index) => title === 'עיקרי' &&
+          insideHeader(index, buildingBelowEntranceIndex, buildingAboveEntranceIndex));
+  const buildingBelowEntranceServiceIndex = buildingBelowEntranceIndex === -1 || buildingAboveEntranceIndex === -1 ? -1 :
+      header2.findIndex((title, index) => title === 'שרות' &&
+          insideHeader(index, buildingBelowEntranceIndex, buildingAboveEntranceIndex));
 
   return (row) => {
     return {
