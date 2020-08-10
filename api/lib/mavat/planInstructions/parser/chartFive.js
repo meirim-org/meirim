@@ -2,7 +2,6 @@ const { pageTablesToDataArray } = require('./chartToArrayBuilder');
 
 //TODO: ADD -1 checks in rowAbstractFactory
 
-// this function is a factory of a factory
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
 const rowAbstractFactory = (firstPageOfTable) => {
 
