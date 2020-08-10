@@ -1,14 +1,11 @@
 
-//TODO: CHANGE THE DOCUMENTATION FOR FACTORY
-
-
 // this function parses the pdf tables and returns and array of elements
 // we need this functionality whenever we want to extract array data from the pdf and supports data which spans multiple pages
 
 /**
  *
  * @param pageTables                            all the tables of all the pages of the pdf
- * @param rowFactory                            build a datum from a row in the table
+ * @param rowAbstractFactory                    given the first page of a table, construct a factory that builds a datum from a row in the table
  * @param startOfChartText                      this should be the text at the beginning of the chart we're interested in - this is how we determine on which page the chart starts
  * @param startRowOfChartFirstPage              the row where data that is interesting for us starts
  * @param continuationChartText                 if a chart spans more that one page, the text at the beginning of the second page which is the predicate for if the chart continues
