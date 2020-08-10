@@ -90,8 +90,7 @@ const rowAbstractFactory = (firstPageOfTable) => {
 };
 
 const dataRowPredicateFn = (row) => {
-  const DESIGNATION_COL = 11;
-  return !!row[DESIGNATION_COL]
+  return row.some(cell => cell !== '');
 };
 
 const extractChartFive = (pageTables) => {

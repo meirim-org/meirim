@@ -60,7 +60,7 @@ const pageTablesToDataArray = ({pageTables,
     const rowFactory = rowAbstractFactory(newDataRows);
     for (let i = startIndex; i < newDataRows.length; i++){
 
-      if (newDataRows[i][0] === chartDoneLine){
+      if (newDataRows[i][0].includes(chartDoneLine)){
         stillInChart = false;
         break;
       }
