@@ -1,4 +1,7 @@
 
+//TODO: CHANGE THE DOCUMENTATION FOR FACTORY
+
+
 // this function parses the pdf tables and returns and array of elements
 // we need this functionality whenever we want to extract array data from the pdf and supports data which spans multiple pages
 
@@ -15,7 +18,7 @@
  * @returns {[]}
  */
 const pageTablesToDataArray = ({pageTables,
-                                 rowFactory,
+                                 rowAbstractFactory,
                                  startOfChartText,
                                  startRowOfChartFirstPage,
                                  continuationChartText,
@@ -54,6 +57,7 @@ const pageTablesToDataArray = ({pageTables,
     }
 
     const newDataRows = pageTables[currentPage].tables;
+    const rowFactory = rowAbstractFactory(newDataRows);
     for (let i = startIndex; i < newDataRows.length; i++){
 
       if (newDataRows[i][0] === chartDoneLine){
@@ -61,7 +65,10 @@ const pageTablesToDataArray = ({pageTables,
         break;
       }
       if (dataRowPredicateFn(newDataRows[i])){
-        chartRows.push(rowFactory(newDataRows[i]))
+        const rowTrimmed = newDataRows[i].map(cell => cell.replace(/\n/g, ' ')
+                                                          .replace(/ {2}/g, ' ')
+                                                          .trim());
+        chartRows.push(rowFactory(rowTrimmed));
       }
     }
     currentPage ++;

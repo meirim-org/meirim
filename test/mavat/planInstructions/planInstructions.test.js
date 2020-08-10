@@ -36,7 +36,7 @@ describe('Taba1 parsing test', () => {
 
         //TODO: translate taei shetah, maybe it's the "areaNumber" attribute?
         it('taei shetah', () =>
-            assert.strictEqual(tbl5_first_row.taeiShetah, '100'));
+            assert.strictEqual(tbl5_first_row.areaNumber, '100'));
 
         //TODO: maybe there are no spaces near the '-' in the string, if this tests fails, check that.
         it('location', () =>
@@ -55,10 +55,10 @@ describe('Taba1 parsing test', () => {
             assert.strictEqual(tbl5_first_row.belowPrimaryMain, '180'));
 
         it('size sqm below service entrance', () =>
-            assert.strictEqual(tbl5_first_row.belowPrimaryMainService, '90'));
+            assert.strictEqual(tbl5_first_row.belowPrimaryService, '50'));
 
-        it('overall building areas (sah hakol shithey bniya)', () =>
-            assert.strictEqual(tbl5_first_row.overallBuildingAreas, '950'));
+        it('overall building lands (sah hakol shithey bniya)', () =>
+            assert.strictEqual(tbl5_first_row.overallBuildingLand, '950'));
 
         it('overall building area sqm (tahsit)', () =>
             assert.strictEqual(tbl5_first_row.tahsit, '122.58'));
@@ -73,7 +73,7 @@ describe('Taba1 parsing test', () => {
             assert.strictEqual(tbl5_first_row.floorsAbove, '3'));
 
         it('floors below entrance', () =>
-            assert.strictEqual(tbl5_first_row.floorstBelow, '1'));
+            assert.strictEqual(tbl5_first_row.floorsBelow, '1'));
 
         it('building right side line', () =>
             assert.strictEqual(tbl5_first_row.sideLineRight, '3'));
@@ -143,8 +143,8 @@ describe('Taba2 parsing test', () => {
         it('size sqm below service entrance', () =>
             assert.strictEqual(tbl5_third_row.belowPrimaryMainService, ''));
 
-        it('overall building areas (sah hakol shithey bniya)', () =>
-            assert.strictEqual(tbl5_third_row.overallBuildingAreas, '717'));
+        it('overall building land (sah hakol shithey bniya)', () =>
+            assert.strictEqual(tbl5_third_row.overallBuildingLand, '717'));
 
         it('overall building area sqm (tahsit)', () =>
             assert.strictEqual(tbl5_third_row.tahsit, '35.64'));
@@ -159,7 +159,7 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(tbl5_third_row.floorsAbove, '1'));
 
         it('floors below entrance', () =>
-            assert.strictEqual(tbl5_third_row.floorstBelow === undefined || tbl5_third_row.floorstBelow ==='',
+            assert.strictEqual(tbl5_third_row.floorsBelow === undefined || tbl5_third_row.floorstBelow ==='',
                 true));
 
         it('building right side line', () =>
