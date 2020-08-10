@@ -34,11 +34,9 @@ describe('Taba1 parsing test', () => {
         it('use', () =>
             assert.strictEqual(tbl5_first_row.use, "מגורים א'"));
 
-        //TODO: translate taei shetah, maybe it's the "areaNumber" attribute?
         it('taei shetah', () =>
             assert.strictEqual(tbl5_first_row.areaNumber, '100'));
 
-        //TODO: maybe there are no spaces near the '-' in the string, if this tests fails, check that.
         it('location', () =>
             assert.strictEqual(tbl5_first_row.location, 'רכס טורעאן - תמ"ל 1008'));
 
@@ -121,9 +119,8 @@ describe('Taba2 parsing test', () => {
         it('use', () =>
             assert.strictEqual(tbl5_third_row.use, "מבני תפעול תחזוקה ובקרה"));
 
-        //TODO: translate taei shetah, maybe it's the "areaNumber" attribute?
         it('taei shetah', () =>
-            assert.strictEqual(tbl5_third_row.taeiShetah, '101'));
+            assert.strictEqual(tbl5_third_row.areaNumber, '101'));
 
         it('location', () =>
             assert.strictEqual(tbl5_third_row.location === undefined || tbl5_third_row.location === '', true));
@@ -141,7 +138,7 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(tbl5_third_row.belowPrimaryMain, ''));
 
         it('size sqm below service entrance', () =>
-            assert.strictEqual(tbl5_third_row.belowPrimaryMainService, ''));
+            assert.strictEqual(tbl5_third_row.belowPrimaryService, ''));
 
         it('overall building land (sah hakol shithey bniya)', () =>
             assert.strictEqual(tbl5_third_row.overallBuildingLand, '717'));
@@ -159,7 +156,7 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(tbl5_third_row.floorsAbove, '1'));
 
         it('floors below entrance', () =>
-            assert.strictEqual(tbl5_third_row.floorsBelow === undefined || tbl5_third_row.floorstBelow ==='',
+            assert.strictEqual(tbl5_third_row.floorsBelow === undefined || tbl5_third_row.floorsBelow ==='',
                 true));
 
         it('building right side line', () =>
