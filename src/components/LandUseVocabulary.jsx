@@ -3,7 +3,6 @@ import _ from 'lodash';
 import stringSimilarity from 'string-similarity'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
-import Button from 'react-bootstrap/Button'
 import Chip from '@material-ui/core/Chip';
 
 import terms from '../assets/keywords'

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import { Map, TileLayer, Circle } from "react-leaflet";
 import _ from "lodash";
