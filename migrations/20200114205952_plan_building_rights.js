@@ -1,8 +1,8 @@
 
-exports.up = function(knex, Promise) {
-    return knex.schema.createTableIfNotExists("table_5_building_rights", t => {
+exports.up = async function(knex, Promise) {
+    await knex.schema.createTableIfNotExists("table_5_building_rights", t => {
         t.increments("id").primary();
-        t.integer("plan_id").notNullable().references('plan.id');
+        t.integer("plan_id").notNullable().references('id').inTable('plan');
         t.string("designation", 1000);
         t.string("use", 1000);
         t.string("area_number", 200);
@@ -25,6 +25,9 @@ exports.up = function(knex, Promise) {
         t.string("side_line_back", 200);
         t.string("side_lLine_front", 200);
     });
+    await knex.schema.table('plan', (table) => {
+        table.string('explanation', 3000);
+    })
 };
 
 exports.down = function(knex, Promise) {
