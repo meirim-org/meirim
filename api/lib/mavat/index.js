@@ -226,7 +226,7 @@ const getByPlan = plan =>
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
                 chartFive: pageInstructions.chartFive,
-                planExplenation: pageInstructions.planExplenation
+                planExplanation: pageInstructions.planExplanation
             });
         });
 // const getByPlan = () => Promise.resolve();
