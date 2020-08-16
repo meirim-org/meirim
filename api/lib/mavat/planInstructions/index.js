@@ -44,7 +44,7 @@ const clearOldPlanFiles = async (fileDir) => {
     for (let i = 0; i < files.length; i++) {
         try {
             await unlink(path.join(fileDir, files[i]));
-            console.log(`trying to delete file ${file}`);
+            console.log(`trying to delete file ${files[i]}`);
         } catch (e){
             console.log('error deleting a file');
         }

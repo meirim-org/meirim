@@ -1,6 +1,5 @@
 const { pageTablesToDataArray } = require('./chartToArrayBuilder');
 
-//TODO: ADD -1 checks in rowAbstractFactory
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
 const rowAbstractFactory = (firstPageOfTable) => {
@@ -36,7 +35,9 @@ const rowAbstractFactory = (firstPageOfTable) => {
   const locationIndex = header0.findIndex(title => title.includes('מקום') && title.includes('בניין'));
   const fieldSizeSqmIndex = header0.findIndex(title => title.includes('גודל מגרש'));
   const buildingAreasIndex = header0.findIndex(title => title.includes('שטחי בניה'));
-  const tahsitIndex = header0.findIndex(title => title.includes('%'));
+  const tahsitIndex = header0.findIndex(title => title.includes('תכסית'));
+  const buildingPercentageIndex = header0.findIndex(title => title.includes('אחוזי') && title.includes('כוללים'));
+  const densityYahadToDunamIndex = header0.findIndex(title => title === 'צפיפות יח"ד לדונם');
   const numOfHousingUnitsIndex = header0.findIndex(title => title.includes('מספר יח"ד'));
   const heightIndex = header0.findIndex(title => title.includes('גובה'));
   const floorNumberIndex = header0.findIndex(title => title === 'מספר קומות');
@@ -83,7 +84,9 @@ const rowAbstractFactory = (firstPageOfTable) => {
       abovePrimaryService: getFromArr(row, buildingAboveEntranceServiceIndex),
       belowPrimaryMain: getFromArr(row, buildingBelowEntranceMainIndex),
       belowPrimaryService: getFromArr(row, buildingBelowEntranceServiceIndex),
+      buildingPercentage: getFromArr(row, buildingPercentageIndex),
       tahsit: getFromArr(row, tahsitIndex),
+      densityYahadToDunam: getFromArr(row, densityYahadToDunamIndex),
       numOfHousingUnits: getFromArr(row, numOfHousingUnitsIndex),
       floorsAbove: getFromArr(row, floorsAboveEntranceIndex),
       floorsBelow: getFromArr(row, floorsBelowEntranceIndex),
