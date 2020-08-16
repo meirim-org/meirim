@@ -65,7 +65,6 @@ const fetch = planUrl =>
     new Promise((resolve, reject) => {
         (async () => {
             const page = await browser.newPage();
-            const additionalPageData =  {};
 
             try {
                 log.debug("Loading plan page", planUrl);
@@ -79,7 +78,7 @@ const fetch = planUrl =>
                     () => document.body.innerHTML
                 );
 
-                additionalPageData.pageInstructions = await getPlanInstructions(page);
+                const pageInstructions = await getPlanInstructions(page);
 
                 page.close();
                 const dom = cheerio.load(bodyHTML, {
@@ -88,7 +87,7 @@ const fetch = planUrl =>
                 if (!dom) {
                     reject("cheerio dom is null");
                 }
-                resolve({cheerioPage: dom, additionalPageData});
+                resolve({cheerioPage: dom, pageInstructions: pageInstructions});
             } catch (err) {
                 log.error("Mavat fetch error", err);
 
@@ -210,7 +209,9 @@ const getByPlan = plan =>
         .then(() => {
             return plan.get('plan_url') ? fetch(plan.get('plan_url')) : search(plan.get("PL_NUMBER"))
         })
-        .then(({cheerioPage, additionalPageData}) => {
+        .then(dict => {
+            const cheerioPage = dict.cheerioPage;
+            const pageInstructions = dict.pageInstructions;
             log.debug(
                 "Retrieving",
                 plan.get("PL_NUMBER"),
@@ -224,7 +225,8 @@ const getByPlan = plan =>
                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
-                additionalPageData
+                chartFive: pageInstructions.chartFive,
+                planExplenation: pageInstructions.planExplenation
             });
         });
 // const getByPlan = () => Promise.resolve();

@@ -203,14 +203,15 @@ class Plan extends Model {
         return plan.save();
     }
 
-    static setMavatData(plan, mavatData) {
-        return plan.set({
+    static async setMavatData(plan, mavatData) {
+        //TODO: migration for plan
+        await plan.set({
             goals_from_mavat: mavatData.goals,
             main_details_from_mavat: mavatData.mainPlanDetails,
             jurisdiction: mavatData.jurisdiction,
             areaChanges: mavatData.areaChanges
         });
-        const { pageInstructions } = mavatData.additionalPageData;
+        //NOT CORRECT: const { pageInstructions } = mavatData.additionalPageData;
     }
 
     static getUnsentPlans(userOptions) {
