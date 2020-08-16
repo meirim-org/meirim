@@ -9,12 +9,12 @@ const pdfTableExtractor = promisify(pdf_table_extractor);
 function parsePdf(result)
 {
   const extractedData = {
-    planExplenation:'',
+    planExplanation:'',
     chartFive:[]
   };
 
   extractedData.chartFive = extractChartFive(result.pageTables);
-  extractedData.planExplenation = extractPlanInformation(result.pageTables);
+  extractedData.planExplanation = extractPlanInformation(result.pageTables);
   return extractedData
 }
 

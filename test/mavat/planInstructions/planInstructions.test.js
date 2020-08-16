@@ -14,7 +14,7 @@ describe('Taba1 parsing test', () => {
         assert.notStrictEqual(data, undefined));
 
     it('explanation', () =>
-        assert.strictEqual(data.planExplenation, 'תכנית זו מוסיפה אחוזי בנייה כללים למגרש מספר 17המאשר לפי תכנית תמ"ל1008 בחלקה מספר 216 גוש \n' +
+        assert.strictEqual(data.planExplanation, 'תכנית זו מוסיפה אחוזי בנייה כללים למגרש מספר 17המאשר לפי תכנית תמ"ל1008 בחלקה מספר 216 גוש \n' +
             '16607 באדמות טורעאן.\n' +
             'התכנית מוספה שטח אחוזי בנייה כללים, מאחר ושטח המגרש הוא גדול בהרבה יחסית לממוצע המגרשים \n' +
             'באותה תכנית, המאפשר שמירה על תכנית הבנוי של התכנית תמ"ל1008, חניון פיתוח וכו\'.'));
@@ -107,8 +107,8 @@ describe('Taba2 parsing test', () => {
         assert.notStrictEqual(data, undefined));
 
     it('explanation', () => {
-        assert.strictEqual(data.planExplenation.includes('מטרת התכנית הינה הגדרת שימושים בקרקע חקלאית בחלקות ב\' במושב ארבל'), true);
-        assert.strictEqual(data.planExplenation.includes('מיוחדות המבוקש בתכנית.'), true);
+        assert.strictEqual(data.planExplanation.includes('מטרת התכנית הינה הגדרת שימושים בקרקע חקלאית בחלקות ב\' במושב ארבל'), true);
+        assert.strictEqual(data.planExplanation.includes('מיוחדות המבוקש בתכנית.'), true);
     });
 
     it('should have 3 rows on table 5', () =>
