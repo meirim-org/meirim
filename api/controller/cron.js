@@ -76,10 +76,9 @@ const complete_jurisdiction_from_mavat = () =>
                 return MavatAPI.getByPlan(plan).then(mavatData => {
                     Plan.setMavatData(plan, mavatData);
                     Log.debug(
-                        "Saving with jurisdiction form mavat",
+                        "saved with jurisdiction from mavat",
                         JSON.stringify(mavatData)
                     );
-                    return plan.save();
                 });
             })
         );

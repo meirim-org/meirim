@@ -18,12 +18,12 @@ exports.up = async function(knex, Promise) {
         t.string("num_of_housing_units", 200);
         t.string("floors_above", 200);
         t.string("floors_below", 200);
-        t.string("overall_building_band", 200);
+        t.string("overall_building_land", 200);
         t.string("height_above_entrance", 200);
         t.string("side_line_right", 200);
         t.string("side_line_left", 200);
         t.string("side_line_back", 200);
-        t.string("side_lLine_front", 200);
+        t.string("side_line_front", 200);
     });
     await knex.schema.table('plan', (table) => {
         table.string('explanation', 3000);

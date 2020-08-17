@@ -35,63 +35,63 @@ describe('Taba1 parsing test', () => {
             assert.strictEqual(tbl5FirstRow.use, "מגורים א'"));
 
         it('taei shetah', () =>
-            assert.strictEqual(tbl5FirstRow.areaNumber, '100'));
+            assert.strictEqual(tbl5FirstRow.area_number, '100'));
 
         it('location', () =>
             assert.strictEqual(tbl5FirstRow.location, 'רכס טורעאן - תמ"ל 1008'));
 
         it('field size sqm test', () =>
-            assert.strictEqual(tbl5FirstRow.fieldSizeSqm, '775'));
+            assert.strictEqual(tbl5FirstRow.field_size_sqm, '775'));
 
         it('size sqm above primary entrance', () =>
-            assert.strictEqual(tbl5FirstRow.abovePrimaryMain, '570'));
+            assert.strictEqual(tbl5FirstRow.above_primary_main, '570'));
 
         it('size sqm above service entrance', () =>
-            assert.strictEqual(tbl5FirstRow.abovePrimaryService, '150'));
+            assert.strictEqual(tbl5FirstRow.above_primary_service, '150'));
 
         it('size sqm below primary entrance', () =>
-            assert.strictEqual(tbl5FirstRow.belowPrimaryMain, '180'));
+            assert.strictEqual(tbl5FirstRow.below_primary_main, '180'));
 
         it('size sqm below service entrance', () =>
-            assert.strictEqual(tbl5FirstRow.belowPrimaryService, '50'));
+            assert.strictEqual(tbl5FirstRow.below_primary_service, '50'));
 
         it('overall building lands (sah hakol shithey bniya)', () =>
-            assert.strictEqual(tbl5FirstRow.overallBuildingLand, '950'));
+            assert.strictEqual(tbl5FirstRow.overall_building_land, '950'));
 
         it('building percentage', () =>
-            assert.strictEqual(tbl5FirstRow.buildingPercentage, '122.58'));
+            assert.strictEqual(tbl5FirstRow.building_percentage, '122.58'));
 
         it('tahsit', () =>
             assert.strictEqual(tbl5FirstRow.tahsit === '' || tbl5FirstRow.tahsit === undefined,
                 true));
 
         it('density yahad to dunam', () =>
-            assert.strictEqual(tbl5FirstRow.densityYahadToDunam === '' || tbl5FirstRow.densityYahadToDunam === undefined,
+            assert.strictEqual(tbl5FirstRow.density_yahad_to_dunam === '' || tbl5FirstRow.densityYahadToDunam === undefined,
                 true));
 
         it('number of housing units', () =>
-            assert.strictEqual(tbl5FirstRow.numOfHousingUnits, '3'));
+            assert.strictEqual(tbl5FirstRow.num_of_housing_units, '3'));
 
         it('height of building meters', () =>
-            assert.strictEqual(tbl5FirstRow.heightAboveEntrance, '12'));
+            assert.strictEqual(tbl5FirstRow.height_above_entrance, '12'));
 
         it('floors above entrance', () =>
-            assert.strictEqual(tbl5FirstRow.floorsAbove, '3'));
+            assert.strictEqual(tbl5FirstRow.floors_above, '3'));
 
         it('floors below entrance', () =>
-            assert.strictEqual(tbl5FirstRow.floorsBelow, '1'));
+            assert.strictEqual(tbl5FirstRow.floors_below, '1'));
 
         it('building right side line', () =>
-            assert.strictEqual(tbl5FirstRow.sideLineRight, '3'));
+            assert.strictEqual(tbl5FirstRow.side_line_right, '3'));
 
         it('building left side line', () =>
-            assert.strictEqual(tbl5FirstRow.sideLineLeft, '3'));
+            assert.strictEqual(tbl5FirstRow.side_line_left, '3'));
 
         it('building back side line', () =>
-            assert.strictEqual(tbl5FirstRow.sideLineBack, '5'));
+            assert.strictEqual(tbl5FirstRow.side_line_back, '5'));
 
         it('building front side line', () =>
-            assert.strictEqual(tbl5FirstRow.sideLineFront, '5'));
+            assert.strictEqual(tbl5FirstRow.side_fine_front, '5'));
 
     });
 });
@@ -128,64 +128,64 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(tbl5ThirdRow.use, "מבני תפעול תחזוקה ובקרה"));
 
         it('taei shetah', () =>
-            assert.strictEqual(tbl5ThirdRow.areaNumber, '101'));
+            assert.strictEqual(tbl5ThirdRow.area_number, '101'));
 
         it('location', () =>
             assert.strictEqual(tbl5ThirdRow.location, ''));
 
         it('field size sqm test', () =>
-            assert.strictEqual(tbl5ThirdRow.fieldSizeSqm, '51453.23'));
+            assert.strictEqual(tbl5ThirdRow.field_size_sqm, '51453.23'));
 
         it('size sqm above primary entrance', () =>
-            assert.strictEqual(tbl5ThirdRow.abovePrimaryMain, '705'));
+            assert.strictEqual(tbl5ThirdRow.above_primary_main, '705'));
 
         it('size sqm above service entrance', () =>
-            assert.strictEqual(tbl5ThirdRow.abovePrimaryService, '12'));
+            assert.strictEqual(tbl5ThirdRow.above_primary_service, '12'));
 
         it('size sqm below primary entrance', () =>
-            assert.strictEqual(tbl5ThirdRow.belowPrimaryMain, ''));
+            assert.strictEqual(tbl5ThirdRow.below_primary_main, ''));
 
         it('size sqm below service entrance', () =>
-            assert.strictEqual(tbl5ThirdRow.belowPrimaryService, ''));
+            assert.strictEqual(tbl5ThirdRow.below_primary_service, ''));
 
         it('overall building land (sah hakol shithey bniya)', () =>
-            assert.strictEqual(tbl5ThirdRow.overallBuildingLand, '717'));
+            assert.strictEqual(tbl5ThirdRow.overall_building_land, '717'));
 
         it('building percentage', () =>
-            assert.strictEqual(tbl5ThirdRow.buildingPercentage === '' ||
-                tbl5ThirdRow.buildingPercentage === undefined, true));
+            assert.strictEqual(tbl5ThirdRow.building_percentage === '' ||
+                tbl5ThirdRow.building_percentage === undefined, true));
 
         it('tahsit', () =>
             assert.strictEqual(tbl5ThirdRow.tahsit, '35.64'));
 
         it('density yahad to dunam', () =>
-            assert.strictEqual(tbl5ThirdRow.densityYahadToDunam === '' ||
-                tbl5ThirdRow.densityYahadToDunam === undefined, true));
+            assert.strictEqual(tbl5ThirdRow.density_yahad_to_dunam === '' ||
+                tbl5ThirdRow.density_yahad_to_dunam === undefined, true));
 
         it('number of housing units', () =>
-            assert.strictEqual(tbl5ThirdRow.numOfHousingUnits, ''));
+            assert.strictEqual(tbl5ThirdRow.num_of_housing_units, ''));
 
         it('height of building meters', () =>
-            assert.strictEqual(tbl5ThirdRow.heightAboveEntrance, '6'));
+            assert.strictEqual(tbl5ThirdRow.height_above_entrance, '6'));
 
         it('floors above entrance', () =>
-            assert.strictEqual(tbl5ThirdRow.floorsAbove, '1'));
+            assert.strictEqual(tbl5ThirdRow.floors_above, '1'));
 
         it('floors below entrance', () =>
-            assert.strictEqual(tbl5ThirdRow.floorsBelow === undefined || tbl5ThirdRow.floorsBelow ==='',
+            assert.strictEqual(tbl5ThirdRow.floors_below === undefined || tbl5ThirdRow.floorsBelow ==='',
                 true));
 
         it('building right side line', () =>
-            assert.strictEqual(tbl5ThirdRow.sideLineRight, '3'));
+            assert.strictEqual(tbl5ThirdRow.side_line_right, '3'));
 
         it('building left side line', () =>
-            assert.strictEqual(tbl5ThirdRow.sideLineLeft, '3'));
+            assert.strictEqual(tbl5ThirdRow.side_line_left, '3'));
 
         it('building back side line', () =>
-            assert.strictEqual(tbl5ThirdRow.sideLineBack, '3'));
+            assert.strictEqual(tbl5ThirdRow.side_line_back, '3'));
 
         it('building front side line', () =>
-            assert.strictEqual(tbl5ThirdRow.sideLineFront, '5'));
+            assert.strictEqual(tbl5ThirdRow.side_fine_front, '5'));
 
     });
 });
@@ -211,13 +211,13 @@ describe('Taba3 parsing test', () => {
             tbl5FirstRow = data.chartFive[0]);
 
         it('building percentage', () =>
-            assert.strictEqual(tbl5FirstRow.buildingPercentage, '144'));
+            assert.strictEqual(tbl5FirstRow.building_percentage, '144'));
 
         it('tahsit', () =>
             assert.strictEqual(tbl5FirstRow.tahsit, '42'));
 
         it('density yahad to dunam', () =>
-            assert.strictEqual(tbl5FirstRow.densityYahadToDunam, '6'));
+            assert.strictEqual(tbl5FirstRow.density_yahad_to_dunam, '6'));
 
     });
 

@@ -2,6 +2,7 @@ const Bluebird = require("bluebird");
 const Model = require("./base_model");
 const Log = require("../lib/log");
 const Exception = require("./exception");
+const PlanChartFiveRow = require('./plan_chart_five_row');
 
 class Plan extends Model {
     get rules() {
@@ -16,7 +17,8 @@ class Plan extends Model {
             geom: ["required", "object"],
             jurisdiction: "string",
             areaChanges: "string",
-            rating: ["required", "number"]
+            rating: ["required", "number"],
+            explanation: "string",
         };
     }
 
@@ -204,14 +206,32 @@ class Plan extends Model {
     }
 
     static async setMavatData(plan, mavatData) {
-        //TODO: migration for plan
         await plan.set({
             goals_from_mavat: mavatData.goals,
             main_details_from_mavat: mavatData.mainPlanDetails,
             jurisdiction: mavatData.jurisdiction,
-            areaChanges: mavatData.areaChanges
+            areaChanges: mavatData.areaChanges,
+            explanation: mavatData.planExplanation
         });
-        //NOT CORRECT: const { pageInstructions } = mavatData.additionalPageData;
+        await plan.save();
+
+        const chartFiveData = mavatData.chartFive;
+        //add plan_id for each row
+        chartFiveData.forEach(row => {
+            row.plan_id = plan.id;
+        });
+
+        for(let i = 0; i < chartFiveData.length; i++) {
+            const chartFiveRowData = chartFiveData[i];
+            if (chartFiveRowData !== undefined) {
+                try {
+                    await new PlanChartFiveRow(chartFiveRowData).save();
+                }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        }
     }
 
     static getUnsentPlans(userOptions) {

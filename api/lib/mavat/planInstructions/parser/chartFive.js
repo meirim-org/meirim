@@ -1,5 +1,6 @@
 const { pageTablesToDataArray } = require('./chartToArrayBuilder');
 
+//TODO: ADD support in chart 5 where there's part aleph and part bet
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
 const rowAbstractFactory = (firstPageOfTable) => {
@@ -16,9 +17,8 @@ const rowAbstractFactory = (firstPageOfTable) => {
   firstPageOfTable = firstPageOfTable.map(row => row.map(cell => cell.replace(/\n/g, ' ')
                                                                       .replace(/ {2}/g, ' ')
                                                                       .trim()));
-  const headersStartIndex = firstPageOfTable.findIndex(row => row.some(cell => cell.includes('קו בנין')) &&
-                                                              row.some(cell => cell.includes('מספר קומות')) &&
-                                                              row.some(cell => cell.includes('%')));
+  const headersStartIndex = firstPageOfTable.findIndex(row => row.some(cell => cell.includes('יעוד')) &&
+                                                              row.some(cell => cell.includes('תאי שטח')));
   if (headersStartIndex === -1) {
       console.log("didn't find headers");
       return (row => {});
@@ -77,25 +77,25 @@ const rowAbstractFactory = (firstPageOfTable) => {
     return {
       designation: getFromArr(row, designationIndex),
       use: getFromArr(row, useIndex),
-      areaNumber: getFromArr(row, areaNumberIndex),
+      area_number: getFromArr(row, areaNumberIndex),
       location: getFromArr(row, locationIndex),
-      fieldSizeSqm: getFromArr(row, fieldSizeSqmIndex),
-      abovePrimaryMain: getFromArr(row, buildingAboveEntranceMainIndex),
-      abovePrimaryService: getFromArr(row, buildingAboveEntranceServiceIndex),
-      belowPrimaryMain: getFromArr(row, buildingBelowEntranceMainIndex),
-      belowPrimaryService: getFromArr(row, buildingBelowEntranceServiceIndex),
-      buildingPercentage: getFromArr(row, buildingPercentageIndex),
+      field_size_sqm: getFromArr(row, fieldSizeSqmIndex),
+      above_primary_main: getFromArr(row, buildingAboveEntranceMainIndex),
+      above_primary_service: getFromArr(row, buildingAboveEntranceServiceIndex),
+      below_primary_main: getFromArr(row, buildingBelowEntranceMainIndex),
+      below_primary_service: getFromArr(row, buildingBelowEntranceServiceIndex),
+      building_percentage: getFromArr(row, buildingPercentageIndex),
       tahsit: getFromArr(row, tahsitIndex),
-      densityYahadToDunam: getFromArr(row, densityYahadToDunamIndex),
-      numOfHousingUnits: getFromArr(row, numOfHousingUnitsIndex),
-      floorsAbove: getFromArr(row, floorsAboveEntranceIndex),
-      floorsBelow: getFromArr(row, floorsBelowEntranceIndex),
-      overallBuildingLand: getFromArr(row, overallBuildingLandIndex),
-      heightAboveEntrance: getFromArr(row, heightIndex),
-      sideLineRight: getFromArr(row, sideRightBuildingLineIndex),
-      sideLineLeft: getFromArr(row, sideLeftBuildingLineIndex),
-      sideLineBack: getFromArr(row, backBuildingLineIndex),
-      sideLineFront: getFromArr(row, frontBuildingLineIndex)
+      density_yahad_to_dunam: getFromArr(row, densityYahadToDunamIndex),
+      num_of_housing_units: getFromArr(row, numOfHousingUnitsIndex),
+      floors_above: getFromArr(row, floorsAboveEntranceIndex),
+      floors_below: getFromArr(row, floorsBelowEntranceIndex),
+      overall_building_land: getFromArr(row, overallBuildingLandIndex),
+      height_above_entrance: getFromArr(row, heightIndex),
+      side_line_right: getFromArr(row, sideRightBuildingLineIndex),
+      side_line_left: getFromArr(row, sideLeftBuildingLineIndex),
+      side_line_back: getFromArr(row, backBuildingLineIndex),
+      side_line_front: getFromArr(row, frontBuildingLineIndex)
     }
   }
 };
