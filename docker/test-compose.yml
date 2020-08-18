@@ -9,11 +9,11 @@ services:
       - 33060:3306
 
   migrator:
-    image: node:10-slim
+    image: node:14-slim
     volumes:
       - ../:/meirim
     environment:
       NODE_CONFIG: "{\"database\": {\"connection\": {\"host\": \"test_mysql\", \"user\": \"root\", \"password\": \"meirim_test\", \"database\": \"meirim_test\"}}}"
-    command: /bin/bash -c "sleep 15 && apt-get update && apt-get install -y rsync mysql-client && rsync -a /meirim/* /workdir/ --exclude node_modules* && cd /workdir && mysql --host=test_mysql --password=meirim_test -e \"CREATE DATABASE meirim_test character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));\" && npm install && node node_modules/knex/bin/cli.js migrate:latest"
+    command: /bin/bash -c "sleep 15 && apt-get update && apt-get install -y rsync mysql-client && rsync -a /meirim/* /workdir/ --exclude node_modules* && cd /workdir && mysql --host=test_mysql --password=meirim_test -e \"CREATE DATABASE meirim_test character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));\" && npm install --only=prod && node node_modules/knex/bin/cli.js migrate:latest"
     depends_on:
       - test_mysql
