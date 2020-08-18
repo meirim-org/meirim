@@ -1,6 +1,7 @@
 const { pageTablesToDataArray } = require('./chartToArrayBuilder');
 
 //TODO: ADD support in chart 5 where there's part aleph and part bet
+//TODO: MAKE SURE THAT TEST_PLAN5 413-0694430 DOES NOT STUCK THE CRAWLER
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
 const rowAbstractFactory = (firstPageOfTable) => {
