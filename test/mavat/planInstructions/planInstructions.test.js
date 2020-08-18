@@ -220,6 +220,21 @@ describe('Taba3 parsing test', () => {
             assert.strictEqual(tbl5FirstRow.density_yahad_to_dunam, '6'));
 
     });
+});
+
+
+// This taba makes the pdf reader library go into an infinite loop
+describe('Taba5 parsing test', () => {
+    let data;
+    const TEST_PLANS_DIR = 'test_plan5';
+
+    before(async () =>
+        data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+
+    it('', () =>
+        assert.strictEqual(true, true));
 
 
 });
+
+
