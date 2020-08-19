@@ -10,7 +10,7 @@
  * @param startRowOfChartFirstPage              the row where data that is interesting for us starts
  * @param continuationChartText                 if a chart spans more that one page, the text at the beginning of the second page which is the predicate for if the chart continues
  * @param startIndexOfChartContinuatingPage     the row where data that is interesting for us starts on continuating pages
- * @param chartDoneLine                         the text that appears when the chart ends, this is how we know to look no further
+ * @param chartDonePredicate                    predicate that take row as input as return true if we are outside of the chart
  * @param dataRowPredicateFn                    given a row, determine if the row is relevant or we need to skip it
  * @returns {[]}
  */
@@ -20,7 +20,7 @@ const pageTablesToDataArray = ({pageTables,
                                  startRowOfChartFirstPage,
                                  continuationChartText,
                                  startIndexOfChartContinuatingPage,
-                                 chartDoneLine,
+                                 chartDonePredicate,
                                  dataRowPredicateFn}) => {
 
   const chartRows = [];
@@ -57,7 +57,7 @@ const pageTablesToDataArray = ({pageTables,
     const rowFactory = rowAbstractFactory(newDataRows);
     for (let i = startIndex; i < newDataRows.length; i++){
 
-      if (newDataRows[i][0].includes(chartDoneLine)){
+      if (chartDonePredicate(newDataRows[i])){
         stillInChart = false;
         break;
       }
