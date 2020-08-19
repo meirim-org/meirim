@@ -91,7 +91,7 @@ describe('Taba1 parsing test', () => {
             assert.strictEqual(tbl5FirstRow.side_line_back, '5'));
 
         it('building front side line', () =>
-            assert.strictEqual(tbl5FirstRow.side_fine_front, '5'));
+            assert.strictEqual(tbl5FirstRow.side_line_front, '5'));
 
     });
 });
@@ -185,7 +185,7 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(tbl5ThirdRow.side_line_back, '3'));
 
         it('building front side line', () =>
-            assert.strictEqual(tbl5ThirdRow.side_fine_front, '5'));
+            assert.strictEqual(tbl5ThirdRow.side_line_front, '5'));
 
     });
 });

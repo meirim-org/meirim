@@ -105,6 +105,12 @@ const dataRowPredicateFn = (row) => {
   return row.some(cell => cell !== '');
 };
 
+const endTablePredicate = (row) => {
+    return row[0].includes( `האמור בטבלה זו גובר, במקרה של סתירה, על הוראות כלליות אחרות, בין בהוראות התכנית ובין בתשריט המצב המוצע.
+גם בטבלה עצמה גוברת הוראה מפורטת על הוראה כללית
+שטחי הבניה המפורטים בטבלה שלעיל כוללים את כל שטחי הבניה המירביים בתכנית זו`);
+};
+
 const extractChartFive = (pageTables) => {
 
   return pageTablesToDataArray({pageTables,
@@ -113,9 +119,7 @@ const extractChartFive = (pageTables) => {
     startRowOfChartFirstPage:6,
     continuationChartText:'מספר קומות',
     startIndexOfChartContinuatingPage: 4,
-    chartDoneLine:  `האמור בטבלה זו גובר, במקרה של סתירה, על הוראות כלליות אחרות, בין בהוראות התכנית ובין בתשריט המצב המוצע.
-גם בטבלה עצמה גוברת הוראה מפורטת על הוראה כללית
-שטחי הבניה המפורטים בטבלה שלעיל כוללים את כל שטחי הבניה המירביים בתכנית זו`,
+    chartDonePredicate: endTablePredicate,
     dataRowPredicateFn});
 };
 
