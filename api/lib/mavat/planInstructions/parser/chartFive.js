@@ -115,12 +115,14 @@ const extractChartFive = (pageTables) => {
 
   return pageTablesToDataArray({pageTables,
     rowAbstractFactory,
-    startOfChartText:'טבלת זכויות והוראות בניה - מצב מוצע5.',
-    startRowOfChartFirstPage:6,
-    continuationChartText:'מספר קומות',
-    startIndexOfChartContinuatingPage: 4,
+    startOfChartPred: (cell) => cell === 'טבלת זכויות והוראות בניה - מצב מוצע5.' || cell.replace("'", '') === 'טבלת זכויות והוראות בניה - מצב מוצע - חלק א5.',
+    offsetOfRowWithDataInChart: 3,    //length of header (header rows) is 3
     chartDonePredicate: endTablePredicate,
-    dataRowPredicateFn});
+    dataRowPredicateFn,
+    getHeaderRowIndex: (page) => page.findIndex(row => row.some(cell => cell.includes('יעוד')) &&
+        row.some(cell => cell.includes('תאי שטח'))),
+    identifier: 'chart 5'
+  });
 };
 
 module.exports = {
