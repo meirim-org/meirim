@@ -22,6 +22,67 @@ describe('Taba1 parsing test', () => {
     it('should have only one row on table 5', () =>
         assert.strictEqual(data.chartFive.length, 1));
 
+    it('should have only one row on table 1.8.1', () =>
+        assert.strictEqual(data.charts18.chart181.length, 1));
+
+    describe('tables 1.8 parsing test', () => {
+
+        describe('table 1.8.1 parsing test', () => {
+            let tbl181FirstRow;
+
+            before(() => {
+               tbl181FirstRow = data.charts18.chart181[0];
+            });
+
+            it('profession', () => {
+                assert.strictEqual(tbl181FirstRow.profession, '');
+            });
+
+            it('type', () => {
+                assert.strictEqual(tbl181FirstRow.type, 'פרטי');
+            });
+
+            it('name', () => {
+                assert.strictEqual(tbl181FirstRow.name, 'עמאר נסאר');
+            });
+
+            it('license number', () => {
+                assert.strictEqual(tbl181FirstRow.licenseNumber, '');
+            });
+
+            it('corporate', () => {
+                assert.strictEqual(tbl181FirstRow.corporate, '');
+            });
+
+            it('city', () => {
+                assert.strictEqual(tbl181FirstRow.city, 'טורעאן');
+            });
+
+            it('street', () => {
+                assert.strictEqual(tbl181FirstRow.street, `דרב אלברג' )1 (`);
+            });
+
+            it('house', () => {
+                assert.strictEqual(tbl181FirstRow.house, '');
+            });
+
+            it('phone', () => {
+                assert.strictEqual(tbl181FirstRow.phone, '04-6412926');
+            });
+
+            it('fax', () => {
+                assert.strictEqual(tbl181FirstRow.fax, '04-6412926');
+            });
+
+            it('email', () => {
+                assert.strictEqual(tbl181FirstRow.email, 'adel.dahly@gmail.com');
+            });
+
+        });
+
+
+    });
+
     describe('table 5 single row parsing test', () => {
         let tbl5FirstRow;
 
@@ -114,6 +175,66 @@ describe('Taba2 parsing test', () => {
     it('should have 3 rows on table 5', () =>
         assert.strictEqual(data.chartFive.length, 3));
 
+    it('should have only one row on table 1.8.1', () =>
+        assert.strictEqual(data.charts18.chart181.length, 1));
+
+
+    describe('tables 1.8 parsing test', () => {
+
+        describe('table 1.8.1 parsing test', () => {
+            let tbl181FirstRow;
+
+            before(() => {
+                tbl181FirstRow = data.charts18.chart181[0];
+            });
+
+            it('profession', () => {
+                assert.strictEqual(tbl181FirstRow.profession, '');
+            });
+
+            it('type', () => {
+                assert.strictEqual(tbl181FirstRow.type, 'אחר');
+            });
+
+            it('name', () => {
+                assert.strictEqual(tbl181FirstRow.name, '');
+            });
+
+            it('license number', () => {
+                assert.strictEqual(tbl181FirstRow.licenseNumber, '');
+            });
+
+            it('corporate', () => {
+                assert.strictEqual(tbl181FirstRow.corporate, 'אגש"ח מושב ארבל');
+            });
+
+            it('city', () => {
+                assert.strictEqual(tbl181FirstRow.city, 'ארבל');
+            });
+
+            it('street', () => {
+                assert.strictEqual(tbl181FirstRow.street, `ארבל`);
+            });
+
+            it('house', () => {
+                assert.strictEqual(tbl181FirstRow.house, '');
+            });
+
+            it('phone', () => {
+                assert.strictEqual(tbl181FirstRow.phone, '04-6732606');
+            });
+
+            it('fax', () => {
+                assert.strictEqual(tbl181FirstRow.fax, '04-6734541');
+            });
+
+            it('email', () => {
+                assert.strictEqual(tbl181FirstRow.email, 'aharony@iec.co.il');
+            });
+
+        });
+    });
+
     describe('table 5 last row parsing test', () => {
         let tbl5ThirdRow;
 
@@ -204,6 +325,66 @@ describe('Taba3 parsing test', () => {
     it('data should have one row on table 5', () =>
         assert.strictEqual(data.chartFive.length, 1));
 
+    it('should have only one row on table 1.8.1', () =>
+        assert.strictEqual(data.charts18.chart181.length, 1));
+
+    // interesting because it's ending is "הערה למגיש התכנית"
+    describe('tables 1.8 parsing test', () => {
+
+        describe('table 1.8.1 parsing test', () => {
+            let tbl181FirstRow;
+
+            before(() => {
+                tbl181FirstRow = data.charts18.chart181[0];
+            });
+
+            it('profession', () => {
+                assert.strictEqual(tbl181FirstRow.profession, '');
+            });
+
+            it('type', () => {
+                assert.strictEqual(tbl181FirstRow.type, 'פרטי');
+            });
+
+            it('name', () => {
+                assert.strictEqual(tbl181FirstRow.name, 'מוסא זבידאת');
+            });
+
+            it('license number', () => {
+                assert.strictEqual(tbl181FirstRow.licenseNumber, '');
+            });
+
+            it('corporate', () => {
+                assert.strictEqual(tbl181FirstRow.corporate, '');
+            });
+
+            it('city', () => {
+                assert.strictEqual(tbl181FirstRow.city, `סח'נין`);
+            });
+
+            it('street', () => {
+                assert.strictEqual(tbl181FirstRow.street, ') 1 (');
+            });
+
+            it('house', () => {
+                assert.strictEqual(tbl181FirstRow.house, '');
+            });
+
+            it('phone', () => {
+                assert.strictEqual(tbl181FirstRow.phone, '054-4657371');
+            });
+
+            it('fax', () => {
+                assert.strictEqual(tbl181FirstRow.fax, '04-6023162');
+            });
+
+            it('email', () => {
+                assert.strictEqual(tbl181FirstRow.email, 'gawad.mosa@gmail.com');
+            });
+
+        });
+    });
+
     describe('Chart 5 parsing test', () => {
        let tbl5FirstRow;
 
@@ -222,7 +403,24 @@ describe('Taba3 parsing test', () => {
     });
 });
 
+// This taba exists in the test to check for a split table 5 (part A...) and across multiple pages
+describe('Taba4 parsing test', () => {
+    let data;
+    const TEST_PLANS_DIR = 'test_plan4';
 
+    before(async () =>
+        data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+
+    it('data should not be undefined', async () =>
+        assert.notStrictEqual(data, undefined));
+
+    it('data should have 13 row on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 13));
+
+});
+
+
+/*
 // This taba makes the pdf reader library go into an infinite loop
 describe('Taba5 parsing test', () => {
     let data;
@@ -236,5 +434,7 @@ describe('Taba5 parsing test', () => {
 
 
 });
+
+ */
 
 
