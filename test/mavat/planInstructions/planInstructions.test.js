@@ -420,7 +420,6 @@ describe('Taba4 parsing test', () => {
 });
 
 
-/*
 // This taba makes the pdf reader library go into an infinite loop
 describe('Taba5 parsing test', () => {
     let data;
@@ -434,7 +433,5 @@ describe('Taba5 parsing test', () => {
 
 
 });
-
- */
 
 
