@@ -1,4 +1,3 @@
-
 // this function parses the pdf tables and returns and array of elements
 // we need this functionality whenever we want to extract array data from the pdf and supports data which spans multiple pages
 
@@ -13,65 +12,70 @@
  * @param identifier                            table name for debug and logs
  * @returns {[]}
  */
-const pageTablesToDataArray = ({pageTables,
-                                 rowAbstractFactory,
-                                 startOfChartPred,
-                                 offsetOfRowWithDataInChart,
-                                 chartDonePredicate,
-                                 getHeaderRowIndex,
-                                 identifier}) => {
+const pageTablesToDataArray = ({
+    pageTables,
+    rowAbstractFactory,
+    startOfChartPred,
+    offsetOfRowWithDataInChart,
+    chartDonePredicate,
+    getHeaderRowIndex,
+    identifier,
+}) => {
 
-  const chartRows = [];
+    const chartRows = [];
 
-  const indexObj = findPageWithStartOfChart(pageTables, startOfChartPred);
-  let currentPageIndex = indexObj.pageIndex;
-  const titleIndexInFirstPage = indexObj.indexOfTitleInPage;
-  if (currentPageIndex === -1) {
-      console.error(`didn't find the starting page of chart ${identifier}`);
-      return [];   //didn't find the page, return an empty chart
-  }
-
-
-  // need to do it for all pages where the chart still exists
-  let stillInChart = true;
-  let firstChartPage = true;
-
-  while (stillInChart && pageTables[currentPageIndex]){
-
-      const indexOfHeader = firstChartPage ? getHeaderRowIndex(pageTables[currentPageIndex].tables, titleIndexInFirstPage) :
-          getHeaderRowIndex(pageTables[currentPageIndex].tables, 0);
-      if (indexOfHeader === -1) {
-          console.error(`didn't find the header of chart ${identifier}`);
-          return [];  //didn't find the table inside page, return an empty chart
-      }
-      else if (!firstChartPage && !isFirstNotNoiseRow(pageTables[currentPageIndex], indexOfHeader)) {
-          // found the header on a non-first page of the chart, but it's not in the right position
-          // or the previous table is done and we moved a page to a different table
-          return chartRows;
-      }
-
-    const indexOfData = indexOfHeader + offsetOfRowWithDataInChart;
-
-    const newDataRows = pageTables[currentPageIndex].tables;
-    const rowFactory = rowAbstractFactory(newDataRows, indexOfHeader);
-    for (let i = indexOfData; i < newDataRows.length; i++){
-
-      if (chartDonePredicate(newDataRows[i])){
-        stillInChart = false;
-        break;
-      }
-      if (dataRowPredicateFn(newDataRows[i])){
-        const rowTrimmed = newDataRows[i].map(cell => cell.replace(/\n/g, ' ')
-                                                          .replace(/ {2}/g, ' ')
-                                                          .trim());
-        chartRows.push(rowFactory(rowTrimmed));
-      }
+    const indexObj = findPageWithStartOfChart(pageTables, startOfChartPred);
+    let currentPageIndex = indexObj.pageIndex;
+    const titleIndexInFirstPage = indexObj.indexOfTitleInPage;
+    if (currentPageIndex === -1) {
+        console.error(`didn't find the starting page of chart ${identifier}`);
+        return []; //didn't find the page, return an empty chart
     }
 
-    firstChartPage = false;
-    currentPageIndex++;
-  }
-  return chartRows;
+    // need to do it for all pages where the chart still exists
+    let stillInChart = true;
+    let firstChartPage = true;
+
+    while (stillInChart && pageTables[currentPageIndex]) {
+        const indexOfHeader = firstChartPage
+            ? getHeaderRowIndex(
+                  pageTables[currentPageIndex].tables,
+                  titleIndexInFirstPage
+              )
+            : getHeaderRowIndex(pageTables[currentPageIndex].tables, 0);
+        if (indexOfHeader === -1) {
+            console.error(`didn't find the header of chart ${identifier}`);
+            return []; //didn't find the table inside page, return an empty chart
+        } else if (
+            !firstChartPage &&
+            !isFirstNotNoiseRow(pageTables[currentPageIndex], indexOfHeader)
+        ) {
+            // found the header on a non-first page of the chart, but it's not in the right position
+            // or the previous table is done and we moved a page to a different table
+            return chartRows;
+        }
+
+        const indexOfData = indexOfHeader + offsetOfRowWithDataInChart;
+
+        const newDataRows = pageTables[currentPageIndex].tables;
+        const rowFactory = rowAbstractFactory(newDataRows, indexOfHeader);
+        for (let i = indexOfData; i < newDataRows.length; i++) {
+            if (chartDonePredicate(newDataRows[i])) {
+                stillInChart = false;
+                break;
+            }
+            if (dataRowPredicateFn(newDataRows[i])) {
+                const rowTrimmed = newDataRows[i].map((cell) =>
+                    cell.replace(/\n/g, " ").replace(/ {2}/g, " ").trim()
+                );
+                chartRows.push(rowFactory(rowTrimmed));
+            }
+        }
+
+        firstChartPage = false;
+        currentPageIndex++;
+    }
+    return chartRows;
 };
 
 // find the page that the chart is starting at
@@ -84,10 +88,12 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
 
             for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
                 if (startOfChartPred(row[cellIndex])) {
-                    return {pageIndex: pageIndex, indexOfTitleInPage: rowIndex};
+                    return {
+                        pageIndex: pageIndex,
+                        indexOfTitleInPage: rowIndex,
+                    };
                 }
             }
-
         }
     }
     return -1;
@@ -95,14 +101,13 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
 
 // returns true if the row is not empty
 const dataRowPredicateFn = (row) => {
-    return row.some(cell => cell !== '');
+    return row.some((cell) => cell !== "");
 };
-
 
 //returns true if the row in the given index is the first row that is not a noise row (noise row is a row with empty cells only)
 const isFirstNotNoiseRow = (page, rowIndex) => {
     for (let i = 0; i < rowIndex; i++) {
-        if (!page.tables[i].every(cell => cell === '')) {
+        if (!page.tables[i].every((cell) => cell === "")) {
             return false;
         }
     }
@@ -110,5 +115,5 @@ const isFirstNotNoiseRow = (page, rowIndex) => {
 };
 
 module.exports = {
-  pageTablesToDataArray
+    pageTablesToDataArray,
 };
