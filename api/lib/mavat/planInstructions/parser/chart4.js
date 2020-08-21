@@ -94,13 +94,13 @@ const processChartFour = (chartFour) => {
         if (father_cat_match !== null || (!clause_num && father_cat_match_backup !== null)) {
             // it's a father category, but it's not saying anything, yet. we save it for later.
             if (clause_num !== '' && clause_num !== undefined) {
-                father_cat = description;
-                father_cat_number = clause_num;
+                father_cat = description.trim();
+                father_cat_number = clause_num.trim();
             }
             else {
                 // the data is a mess - we will extract the description and the clause_num
-                father_cat = description.replace(father_cat_match_backup[0], '');
-                father_cat_number = father_cat_match_backup[0];
+                father_cat = description.replace(father_cat_match_backup[0], '').trim();
+                father_cat_number = father_cat_match_backup[0].trim();
             }
         }
 
@@ -110,18 +110,18 @@ const processChartFour = (chartFour) => {
             const curr_cat_match_backup = /(?<!\.)\d\.\d\.\d(?!\.)/.exec(description);
             if (curr_cat_match !== null || (!clause_num && curr_cat_match_backup !== null)) {
                 if (clause_num !== '' && clause_num !== undefined) {
-                    curr_cat = description;
-                    curr_cat_number = clause_num;
+                    curr_cat = description.trim();
+                    curr_cat_number = clause_num.trim();
                 }
                 else {
                     // the data is a mess - we will extract the description and the clause_num
-                    curr_cat = description.replace(curr_cat_match_backup[0], '');
-                    curr_cat_number = curr_cat_match_backup[0];
+                    curr_cat = description.replace(curr_cat_match_backup[0], '').trim();
+                    curr_cat_number = curr_cat_match_backup[0].trim();
                 }
             }
 
             // it's not defining a category, it's actual data
-            else {
+            else if (description !== '' && description !== father_cat) {   // if the description is the same as the category, we dont want to push it
                 // it doesn't have a category. If the category wasn't changed, we should push this data to the previous row
                 if (clause_num === '' &&
                     processedChartFour.length > 0 &&

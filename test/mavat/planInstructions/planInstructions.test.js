@@ -19,11 +19,14 @@ describe('Taba1 parsing test', () => {
             'התכנית מוספה שטח אחוזי בנייה כללים, מאחר ושטח המגרש הוא גדול בהרבה יחסית לממוצע המגרשים \n' +
             'באותה תכנית, המאפשר שמירה על תכנית הבנוי של התכנית תמ"ל1008, חניון פיתוח וכו\'.'));
 
-    it('should have only one row on table 5', () =>
-        assert.strictEqual(data.chartFive.length, 1));
-
     it('should have only one row on table 1.8.1', () =>
         assert.strictEqual(data.charts18.chart181.length, 1));
+
+    it('should have 5 rows on table 4', () =>
+        assert.strictEqual(data.chartFour.length, 5));
+
+    it('should have only one row on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 1));
 
     //table 1.8.2 parses wrong in this pdf
 
@@ -82,6 +85,55 @@ describe('Taba1 parsing test', () => {
 
         });
 
+
+    });
+
+    describe('table 4 parsing test', () => {
+       let chartFour;
+
+       before(() =>
+           chartFour = data.chartFour);
+
+       it('row 0 test', () => {
+           assert.strictEqual(chartFour[0].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[0].father_category_number, '4.1');
+           assert.strictEqual(chartFour[0].category, 'שימושים');
+           assert.strictEqual(chartFour[0].category_number, '4.1.1');
+           assert.strictEqual(chartFour[0].text, `א. מגורים. ב. חניה, מחסנים. ג. משרד לבעלי מקצוע חופשי לדייר המבנה/ מסחר קמעונאי. ד. מעונות יום.`);
+       });
+
+       it('row 1 test', () => {
+           assert.strictEqual(chartFour[1].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[1].father_category_number, '4.1');
+           assert.strictEqual(chartFour[1].category, 'הוראות');
+           assert.strictEqual(chartFour[1].category_number, '4.1.2');
+           assert.strictEqual(chartFour[1].text, `הוראות בינוי  1 .`);
+       });
+
+       it('row 2 test', () => {
+           assert.strictEqual(chartFour[2].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[2].father_category_number, '4.1');
+           assert.strictEqual(chartFour[2].category, 'הוראות');
+           assert.strictEqual(chartFour[2].category_number, '4.1.2');
+           assert.strictEqual(chartFour[2].text.length > 1000, true);
+           assert.strictEqual(chartFour[2].text.includes('לא תותר כניסה נפרדת למרתף'), true);
+       });
+
+       it('row 3 test', () => {
+           assert.strictEqual(chartFour[3].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[3].father_category_number, '4.1');
+           assert.strictEqual(chartFour[3].category, 'הוראות');
+           assert.strictEqual(chartFour[3].category_number, '4.1.2');
+           assert.strictEqual(chartFour[3].text.includes('עיצוב אדריכלי'), true);
+       });
+
+        it('row 4 test', () => {
+            assert.strictEqual(chartFour[4].father_category, 'מגורים א\'');
+            assert.strictEqual(chartFour[4].father_category_number, '4.1');
+            assert.strictEqual(chartFour[4].category, 'הוראות');
+            assert.strictEqual(chartFour[4].category_number, '4.1.2');
+            assert.strictEqual(chartFour[4].text.includes('תכנית פיתוח שתוגש לאישור הועדה המקומית'), true);
+        });
 
     });
 
@@ -174,9 +226,6 @@ describe('Taba2 parsing test', () => {
         assert.strictEqual(data.planExplanation.includes('מיוחדות המבוקש בתכנית.'), true);
     });
 
-    it('should have 3 rows on table 5', () =>
-        assert.strictEqual(data.chartFive.length, 3));
-
     it('should have only one row on table 1.8.1', () =>
         assert.strictEqual(data.charts18.chart181.length, 1));
 
@@ -185,6 +234,12 @@ describe('Taba2 parsing test', () => {
 
     it('should have only no rows on table 1.8.3', () =>
         assert.strictEqual(data.charts18.chart183.length, 0));
+
+    it('should have 8 rows on table 4', () =>
+        assert.strictEqual(data.chartFour.length, 8));
+
+    it('should have 3 rows on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 3));
 
     describe('tables 1.8 parsing test', () => {
 
@@ -289,6 +344,55 @@ describe('Taba2 parsing test', () => {
             });
 
         });
+    });
+
+    // this is an example for a pdf that it's data is messy
+    describe('table 4 parsing test', () => {
+        let chartFour;
+
+        before(() =>
+            chartFour = data.chartFour);
+
+        it('row 0 test', () => {
+            assert.strictEqual(chartFour[0].father_category, 'קרקע חקלאית');
+            assert.strictEqual(chartFour[0].father_category_number, '4.1');
+            assert.strictEqual(chartFour[0].category, 'שימושים');
+            assert.strictEqual(chartFour[0].category_number, '4.1.1');
+            assert.strictEqual(chartFour[0].text.includes('תותר הקמת חממות לחוות ריבוי וגידול'), true);
+        });
+
+        it('row 1 test', () => {
+            assert.strictEqual(chartFour[1].father_category, 'קרקע חקלאית');
+            assert.strictEqual(chartFour[1].father_category_number, '4.1');
+            assert.strictEqual(chartFour[1].category, 'הוראות');
+            assert.strictEqual(chartFour[1].category_number, '4.1.2');
+            assert.strictEqual(chartFour[1].text.includes('תבנה גדר עפ"י הנחיות משרד הבריאות'),true);
+        });
+
+        it('row 2 test', () => {
+            assert.strictEqual(chartFour[2].father_category, 'קרקע חקלאית');
+            assert.strictEqual(chartFour[2].father_category_number, '4.1');
+            assert.strictEqual(chartFour[2].category, 'הוראות');
+            assert.strictEqual(chartFour[2].category_number, '4.1.2');
+            assert.strictEqual(chartFour[2].text.includes('תנאי להיתר הינו בכפוף למילוי כל הדרישות'), true);
+        });
+
+        it('row 3 test', () => {
+            assert.strictEqual(chartFour[3].father_category, 'שטח פרטי פתוח');
+            assert.strictEqual(chartFour[3].father_category_number, '4.2');
+            assert.strictEqual(chartFour[3].category, 'שימושים');
+            assert.strictEqual(chartFour[3].category_number, '4.2.1');
+            assert.strictEqual(chartFour[3].text === 'ישמש לנטיעות והסתרה נופית.', true);
+        });
+
+        it('row 4 test', () => {
+            assert.strictEqual(chartFour[4].father_category, 'שטח פרטי פתוח');
+            assert.strictEqual(chartFour[4].father_category_number, '4.2');
+            assert.strictEqual(chartFour[4].category, 'הוראות');
+            assert.strictEqual(chartFour[4].category_number, '4.2.2');
+            assert.strictEqual(chartFour[4].text.includes('אסורה כל בניה.'), true);
+        });
+
     });
 
     describe('table 5 last row parsing test', () => {
@@ -591,7 +695,6 @@ describe('Taba5 parsing test', () => {
 
     it('', () =>
         assert.strictEqual(true, true));
-
 
 });
 
