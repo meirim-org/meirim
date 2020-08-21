@@ -129,7 +129,7 @@ class Email {
   }
 
   newAlert(person, alert) {
-    const templateProperties = Object.assign({}, person.attributes, alert.toJSON());
+    const templateProperties = Object.assign({}, person, alert.toJSON());
     return this.sendWithTemplate(this.templates.newAlert, templateProperties);
   }
 
