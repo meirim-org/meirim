@@ -35,7 +35,7 @@ const rowAbstractFactoryCharts18 = (firstPageOfTable, headersStartIndex) => {
     return (row) => {
         let shouldBeDescription = getFromArr(row, descriptionIndex);
         let shouldBeType = getFromArr(row, typeIndex);
-        //to fix taba4 1.8.3 parsing test. type is less likely to be empty.
+        //to fix test_plan4 1.8.3 parsing test. type is less likely to be empty.
         if (shouldBeType === '' && shouldBeDescription !== '' && shouldBeDescription !== undefined) {
             shouldBeType = shouldBeDescription;
             shouldBeDescription = '';
