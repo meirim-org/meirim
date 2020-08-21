@@ -99,7 +99,7 @@ describe('Emails', function() {
     }
     await signController.activate(firstUserActivationReq);
 
-    //create the second user
+    // create the second user
     const secondUserReq = {
       body: {
         email: secondUserEmail,
@@ -136,7 +136,9 @@ describe('Emails', function() {
         address: 'רימון 1 ערד',
         radius: 1
       },
-      session: firstUserReq.session
+      session: {
+        person: firstUserReq.session.person.attributes
+      }
     };
     firstAlert = await alertController.create(firstUserAlertReq);
 
@@ -153,7 +155,9 @@ describe('Emails', function() {
         address: 'קניון ערד',
         radius: 1
       },
-      session: secondUserReq.session
+      session: {
+        person: secondUserReq.session.person.attributes
+      }
     };
     secondAlert = await alertController.create(secondUserAlertReq);
 
