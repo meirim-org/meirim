@@ -99,10 +99,6 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
   }
 };
 
-const dataRowPredicateFn = (row) => {
-  return row.some(cell => cell !== '');
-};
-
 const endTablePredicate = (row) => {
     return row[0].includes( `האמור בטבלה זו גובר, במקרה של סתירה, על הוראות כלליות אחרות, בין בהוראות התכנית ובין בתשריט המצב המוצע.
 גם בטבלה עצמה גוברת הוראה מפורטת על הוראה כללית
@@ -116,7 +112,6 @@ const extractChartFive = (pageTables) => {
     startOfChartPred: (cell) => cell === 'טבלת זכויות והוראות בניה - מצב מוצע5.' || cell.replace("'", '') === 'טבלת זכויות והוראות בניה - מצב מוצע - חלק א5.',
     offsetOfRowWithDataInChart: 3,    //length of header (header rows) is 3
     chartDonePredicate: endTablePredicate,
-    dataRowPredicateFn,
     getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => (row.some(cell => cell.includes('יעוד')) &&
         row.some(cell => cell.includes('תאי שטח'))) || (row.some(cell => cell.includes('יעוד')) && row.some(cell => cell.includes('שימוש')))) + searchFrom,   //add searchFrom back to be aligned with the original array
     identifier: 'chart 5'

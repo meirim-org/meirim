@@ -9,7 +9,6 @@
  * @param startOfChartText                      this should be the text at the beginning of the chart we're interested in - this is how we determine on which page the chart starts
  * @param offsetOfRowWithDataInChart            the offset to the row where data that is interesting for us starts
  * @param chartDonePredicate                    predicate that take row as input as return true if we are outside of the chart
- * @param dataRowPredicateFn                    given a row, determine if the row is relevant or we need to skip it
  * @param getHeaderRowIndex                     given a page and the index of the title of the chart (0 if it's the second page of the chart), returns the index of the chart header in him. If no chart header is found, returns -1
  * @param identifier                            table name for debug and logs
  * @returns {[]}
@@ -19,7 +18,6 @@ const pageTablesToDataArray = ({pageTables,
                                  startOfChartPred,
                                  offsetOfRowWithDataInChart,
                                  chartDonePredicate,
-                                 dataRowPredicateFn,
                                  getHeaderRowIndex,
                                  identifier}) => {
 
@@ -93,6 +91,11 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
         }
     }
     return -1;
+};
+
+// returns true if the row is not empty
+const dataRowPredicateFn = (row) => {
+    return row.some(cell => cell !== '');
 };
 
 
