@@ -19,7 +19,7 @@ class LandUseVocabulary extends Component {
     const useTerms = this.finduse(use);
 
     if(!useTerms || !useTerms.length >0)
-      return <Chip variant="light" label={use} disabled></Chip>
+      return <Chip label={use}></Chip>
 
     return <OverlayTrigger
           key={use}
@@ -35,7 +35,7 @@ class LandUseVocabulary extends Component {
           }
           </Tooltip>
         }>
-          <Chip label={use}  variant="light" disabled className="chippi"/> 
+          <Chip label={use} className="chippi"/>
       </OverlayTrigger>
   }
 
