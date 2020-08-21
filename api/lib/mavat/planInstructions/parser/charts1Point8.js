@@ -57,32 +57,6 @@ const rowAbstractFactoryCharts18 = (firstPageOfTable, headersStartIndex) => {
     }
 };
 
-const endOfTable181Predicate = (row) => {
-    return row.some(cell => cell.includes('1.8.2') || row.some(cell => cell.includes('הערה')));
-};
-
-// this function look for the correct columns for the given headers, and returns a factory embedded with these findings
-const rowAbstractFactoryChart182 = (firstPageOfTable) => {
-
-};
-
-const endOfTable182Predicate = (row) => {
-    return row.some(cell => cell.includes('1.8.3' || cell.includes('כתובת:')))
-};
-
-// this function look for the correct columns for the given headers, and returns a factory embedded with these findings
-const rowAbstractFactoryChart183 = (firstPageOfTable) => {
-
-};
-
-const endOfTable183Predicate = (row) => {
-    return row.some(cell => cell === '1.8.4') || row[0].includes('(1)')  //watch this (1), it might be inaccurate
-};
-
-const dataRowPredicateFn = (row) => {
-    return row.some(cell => cell !== '');
-};
-
 
 const extractCharts1Point8 = (pageTables) => {
     return {
@@ -94,7 +68,6 @@ const extractCharts1Point8 = (pageTables) => {
           chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.2') || row.some(cell => cell.includes('הערה'))),
           getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
               row.some(cell => cell.includes('שם'))) + searchFrom,
-          dataRowPredicateFn,
           identifier: '1.8.1'}),
         chart182: pageTablesToDataArray({
            pageTables,
@@ -104,7 +77,6 @@ const extractCharts1Point8 = (pageTables) => {
            chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.3' || cell.includes('כתובת:'))),
            getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
                row.some(cell => cell.includes('שם'))) + searchFrom,
-           dataRowPredicateFn,
            identifier: '1.8.2'}),
         chart183: pageTablesToDataArray({
             pageTables,
@@ -114,7 +86,6 @@ const extractCharts1Point8 = (pageTables) => {
             chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.4') || cell.includes('כתובת:')),
             getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
                 row.some(cell => cell.includes('שם'))) + searchFrom,
-            dataRowPredicateFn,
             identifier: '1.8.3'})
     };
 };
