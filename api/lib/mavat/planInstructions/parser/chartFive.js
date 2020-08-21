@@ -99,19 +99,23 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
   }
 };
 
-const endTablePredicate = (row) => {
+const endChartPredicate = (row) => {
     return row[0].includes( `האמור בטבלה זו גובר, במקרה של סתירה, על הוראות כלליות אחרות, בין בהוראות התכנית ובין בתשריט המצב המוצע.
 גם בטבלה עצמה גוברת הוראה מפורטת על הוראה כללית
 שטחי הבניה המפורטים בטבלה שלעיל כוללים את כל שטחי הבניה המירביים בתכנית זו`);
+};
+
+const startChart5Predicate = (cell) => {
+    return cell === 'טבלת זכויות והוראות בניה - מצב מוצע5.' || cell.replace("'", '') === 'טבלת זכויות והוראות בניה - מצב מוצע - חלק א5.'
 };
 
 const extractChartFive = (pageTables) => {
 
   return pageTablesToDataArray({pageTables,
     rowAbstractFactory,
-    startOfChartPred: (cell) => cell === 'טבלת זכויות והוראות בניה - מצב מוצע5.' || cell.replace("'", '') === 'טבלת זכויות והוראות בניה - מצב מוצע - חלק א5.',
+    startOfChartPred: startChart5Predicate,
     offsetOfRowWithDataInChart: 3,    //length of header (header rows) is 3
-    chartDonePredicate: endTablePredicate,
+    chartDonePredicate: endChartPredicate,
     getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => (row.some(cell => cell.includes('יעוד')) &&
         row.some(cell => cell.includes('תאי שטח'))) || (row.some(cell => cell.includes('יעוד')) && row.some(cell => cell.includes('שימוש')))) + searchFrom,   //add searchFrom back to be aligned with the original array
     identifier: 'chart 5'
@@ -119,5 +123,6 @@ const extractChartFive = (pageTables) => {
 };
 
 module.exports = {
-  extractChartFive
+  extractChartFive,
+  startChart5Predicate
 };
