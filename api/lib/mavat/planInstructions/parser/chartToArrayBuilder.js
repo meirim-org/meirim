@@ -10,7 +10,7 @@
  * @param offsetOfRowWithDataInChart            the offset to the row where data that is interesting for us starts
  * @param chartDonePredicate                    predicate that take row as input as return true if we are outside of the chart
  * @param dataRowPredicateFn                    given a row, determine if the row is relevant or we need to skip it
- * @param getHeaderRowIndex                     given a page, returns the index of the chart header in him. If no chart header is found, returns -1
+ * @param getHeaderRowIndex                     given a page and the index of the title of the chart (0 if it's the second page of the chart), returns the index of the chart header in him. If no chart header is found, returns -1
  * @param identifier                            table name for debug and logs
  * @returns {[]}
  */
@@ -25,7 +25,9 @@ const pageTablesToDataArray = ({pageTables,
 
   const chartRows = [];
 
-  let currentPageIndex = findPageWithStartOfChart(pageTables, startOfChartPred);
+  const indexObj = findPageWithStartOfChart(pageTables, startOfChartPred);
+  let currentPageIndex = indexObj.pageIndex;
+  const titleIndexInFirstPage = indexObj.indexOfTitleInPage;
   if (currentPageIndex === -1) {
       console.error(`didn't find the starting page of chart ${identifier}`);
       return [];   //didn't find the page, return an empty chart
@@ -38,7 +40,8 @@ const pageTablesToDataArray = ({pageTables,
 
   while (stillInChart && pageTables[currentPageIndex]){
 
-      const indexOfHeader = getHeaderRowIndex(pageTables[currentPageIndex].tables);
+      const indexOfHeader = firstChartPage ? getHeaderRowIndex(pageTables[currentPageIndex].tables, titleIndexInFirstPage) :
+          getHeaderRowIndex(pageTables[currentPageIndex].tables, 0);
       if (indexOfHeader === -1) {
           console.error(`didn't find the header of chart ${identifier}`);
           return [];  //didn't find the table inside page, return an empty chart
@@ -52,7 +55,7 @@ const pageTablesToDataArray = ({pageTables,
     const indexOfData = indexOfHeader + offsetOfRowWithDataInChart;
 
     const newDataRows = pageTables[currentPageIndex].tables;
-    const rowFactory = rowAbstractFactory(newDataRows);
+    const rowFactory = rowAbstractFactory(newDataRows, indexOfHeader);
     for (let i = indexOfData; i < newDataRows.length; i++){
 
       if (chartDonePredicate(newDataRows[i])){
@@ -81,9 +84,12 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
         for (let rowIndex = 0; rowIndex < page.length; rowIndex++) {
             const row = page[rowIndex];
 
-            if (startOfChartPred(row[0])) {
-                return pageIndex;
+            for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
+                if (startOfChartPred(row[cellIndex])) {
+                    return {pageIndex: pageIndex, indexOfTitleInPage: rowIndex};
+                }
             }
+
         }
     }
     return -1;

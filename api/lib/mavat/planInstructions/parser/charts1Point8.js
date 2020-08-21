@@ -2,7 +2,7 @@ const { pageTablesToDataArray } = require('./chartToArrayBuilder');
 
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
-const rowAbstractFactoryChart181 = (firstPageOfTable) => {
+const rowAbstractFactoryCharts18 = (firstPageOfTable, headersStartIndex) => {
     const getFromArr = (arr, index) => {
         return index === undefined || index === -1 ? undefined : arr[index];
     };
@@ -12,8 +12,6 @@ const rowAbstractFactoryChart181 = (firstPageOfTable) => {
         .replace(/ {2}/g, ' ')
         .trim()));
 
-    const headersStartIndex = firstPageOfTable.findIndex(row => row.some(cell => cell.includes('סוג')) &&
-        row.some(cell => cell.includes('שם')));
     if (headersStartIndex === -1) {
         console.log("didn't find headers");
         return (row => {});
@@ -23,6 +21,7 @@ const rowAbstractFactoryChart181 = (firstPageOfTable) => {
 
     const professionIndex = header.findIndex(title => title.includes('מקצוע'));
     const typeIndex = header.findIndex(title => title === 'סוג');
+    const descriptionIndex = header.findIndex(title => title === 'תיאור');
     const nameIndex = header.findIndex(title => title === 'שם');
     const licenseNumberIndex = header.findIndex(title => title === 'מספר רשיון');
     const corporateIndex = header.findIndex(title => title === 'שם תאגיד');
@@ -34,9 +33,17 @@ const rowAbstractFactoryChart181 = (firstPageOfTable) => {
     const emailIndex = header.findIndex(title => title === 'דוא"ל');
 
     return (row) => {
+        let shouldBeDescription = getFromArr(row, descriptionIndex);
+        let shouldBeType = getFromArr(row, typeIndex);
+        //to fix taba4 1.8.3 parsing test. type is less likely to be empty.
+        if (shouldBeType === '' && shouldBeDescription !== '' && shouldBeDescription !== undefined) {
+            shouldBeType = shouldBeDescription;
+            shouldBeDescription = '';
+        }
         return {
             profession: getFromArr(row, professionIndex),
-            type: getFromArr(row, typeIndex),
+            type: shouldBeType,
+            description: shouldBeDescription,
             name: getFromArr(row, nameIndex),
             licenseNumber: getFromArr(row, licenseNumberIndex),
             corporate: getFromArr(row, corporateIndex),
@@ -51,7 +58,7 @@ const rowAbstractFactoryChart181 = (firstPageOfTable) => {
 };
 
 const endOfTable181Predicate = (row) => {
-    return row.some(cell => cell === '1.8.2') || row.some(cell => cell.includes('הערה'));
+    return row.some(cell => cell.includes('1.8.2') || row.some(cell => cell.includes('הערה')));
 };
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
@@ -60,7 +67,7 @@ const rowAbstractFactoryChart182 = (firstPageOfTable) => {
 };
 
 const endOfTable182Predicate = (row) => {
-    return row.some(cell => cell  === '1.8.3') || row[0].includes('(1)')  //watch this (1), it might be inaccurate
+    return row.some(cell => cell.includes('1.8.3' || cell.includes('כתובת:')))
 };
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
@@ -81,14 +88,34 @@ const extractCharts1Point8 = (pageTables) => {
     return {
         chart181: pageTablesToDataArray({
           pageTables,
-          rowAbstractFactory: rowAbstractFactoryChart181,
+          rowAbstractFactory: rowAbstractFactoryCharts18,
           startOfChartPred: (cell) => cell === 'מגיש התכנית1.8.1',
           offsetOfRowWithDataInChart: 1,
-          chartDonePredicate: endOfTable181Predicate,
-          getHeaderRowIndex: (page) => page.findIndex(row => row.some(cell => cell.includes('סוג')) &&
-              row.some(cell => cell.includes('שם'))),
+          chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.2') || row.some(cell => cell.includes('הערה'))),
+          getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
+              row.some(cell => cell.includes('שם'))) + searchFrom,
           dataRowPredicateFn,
           identifier: '1.8.1'}),
+        chart182: pageTablesToDataArray({
+           pageTables,
+           rowAbstractFactory: rowAbstractFactoryCharts18,
+           startOfChartPred: (cell) => cell.includes('1.8.2'),
+           offsetOfRowWithDataInChart: 1,
+           chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.3' || cell.includes('כתובת:'))),
+           getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
+               row.some(cell => cell.includes('שם'))) + searchFrom,
+           dataRowPredicateFn,
+           identifier: '1.8.2'}),
+        chart183: pageTablesToDataArray({
+            pageTables,
+            rowAbstractFactory: rowAbstractFactoryCharts18,
+            startOfChartPred: (cell) => cell.includes('1.8.3') && !cell.includes('1.8.4'),
+            offsetOfRowWithDataInChart: 1,
+            chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.4') || cell.includes('כתובת:')),
+            getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
+                row.some(cell => cell.includes('שם'))) + searchFrom,
+            dataRowPredicateFn,
+            identifier: '1.8.3'})
     };
 };
 

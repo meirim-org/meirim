@@ -25,6 +25,8 @@ describe('Taba1 parsing test', () => {
     it('should have only one row on table 1.8.1', () =>
         assert.strictEqual(data.charts18.chart181.length, 1));
 
+    //table 1.8.2 parses wrong in this pdf
+
     describe('tables 1.8 parsing test', () => {
 
         describe('table 1.8.1 parsing test', () => {
@@ -178,6 +180,11 @@ describe('Taba2 parsing test', () => {
     it('should have only one row on table 1.8.1', () =>
         assert.strictEqual(data.charts18.chart181.length, 1));
 
+    it('should have only one row on table 1.8.2', () =>
+        assert.strictEqual(data.charts18.chart182.length, 1));
+
+    it('should have only no rows on table 1.8.3', () =>
+        assert.strictEqual(data.charts18.chart183.length, 0));
 
     describe('tables 1.8 parsing test', () => {
 
@@ -230,6 +237,55 @@ describe('Taba2 parsing test', () => {
 
             it('email', () => {
                 assert.strictEqual(tbl181FirstRow.email, 'aharony@iec.co.il');
+            });
+
+        });
+
+        describe('table 1.8.2 parsing test', () => {
+            let tbl182FirstRow;
+
+            before(() => {
+                tbl182FirstRow = data.charts18.chart182[0];
+            });
+
+            it('type', () => {
+                assert.strictEqual(tbl182FirstRow.type, 'פרטי');
+            });
+
+            it('name', () => {
+                assert.strictEqual(tbl182FirstRow.name, 'אלי יצחק');
+            });
+
+            it('license number', () => {
+                assert.strictEqual(tbl182FirstRow.licenseNumber, '');
+            });
+
+            it('corporate', () => {
+                assert.strictEqual(tbl182FirstRow.corporate, '');
+            });
+
+            it('city', () => {
+                assert.strictEqual(tbl182FirstRow.city, 'ארבל');
+            });
+
+            it('street', () => {
+                assert.strictEqual(tbl182FirstRow.street, `ארבל`);
+            });
+
+            it('house', () => {
+                assert.strictEqual(tbl182FirstRow.house, '');
+            });
+
+            it('phone', () => {
+                assert.strictEqual(tbl182FirstRow.phone, '04-6733324');
+            });
+
+            it('fax', () => {
+                assert.strictEqual(tbl182FirstRow.fax, '');
+            });
+
+            it('email', () => {
+                assert.strictEqual(tbl182FirstRow.email, 'Mtrack@012.net.il');
             });
 
         });
@@ -328,6 +384,12 @@ describe('Taba3 parsing test', () => {
     it('should have only one row on table 1.8.1', () =>
         assert.strictEqual(data.charts18.chart181.length, 1));
 
+    it('should have only one row on table 1.8.2', () =>
+        assert.strictEqual(data.charts18.chart182.length, 1));
+
+    it('should have no rows on table 1.8.3', () =>
+        assert.strictEqual(data.charts18.chart183.length, 0));
+
     // interesting because it's ending is "הערה למגיש התכנית"
     describe('tables 1.8 parsing test', () => {
 
@@ -383,6 +445,55 @@ describe('Taba3 parsing test', () => {
             });
 
         });
+
+        describe('table 1.8.2 parsing test', () => {
+            let tbl182FirstRow;
+
+            before(() => {
+                tbl182FirstRow = data.charts18.chart182[0];
+            });
+
+            it('type', () => {
+                assert.strictEqual(tbl182FirstRow.type, 'פרטי');
+            });
+
+            it('name', () => {
+                assert.strictEqual(tbl182FirstRow.name, 'מוסא זבידאת');
+            });
+
+            it('license number', () => {
+                assert.strictEqual(tbl182FirstRow.licenseNumber, '');
+            });
+
+            it('corporate', () => {
+                assert.strictEqual(tbl182FirstRow.corporate, '');
+            });
+
+            it('city', () => {
+                assert.strictEqual(tbl182FirstRow.city, `סח'נין`);
+            });
+
+            it('street', () => {
+                assert.strictEqual(tbl182FirstRow.street, `) 1 (`);
+            });
+
+            it('house', () => {
+                assert.strictEqual(tbl182FirstRow.house, '');
+            });
+
+            it('phone', () => {
+                assert.strictEqual(tbl182FirstRow.phone, '054-4657371');
+            });
+
+            it('fax', () => {
+                assert.strictEqual(tbl182FirstRow.fax, '04-6023162');
+            });
+
+            it('email', () => {
+                assert.strictEqual(tbl182FirstRow.email, 'gawad.mosa@gmail.com');
+            });
+
+        });
     });
 
     describe('Chart 5 parsing test', () => {
@@ -417,9 +528,60 @@ describe('Taba4 parsing test', () => {
     it('data should have 13 row on table 5', () =>
         assert.strictEqual(data.chartFive.length, 13));
 
+    it('data should have 1 row on table 1.8.3', () =>
+        assert.strictEqual(data.charts18.chart183.length, 1));
+
+    describe('table 1.8.3 parsing test', () => {
+        let tbl183FirstRow;
+
+        before(() => {
+            tbl183FirstRow = data.charts18.chart183[0];
+        });
+
+        it('type', () => {
+            assert.strictEqual(tbl183FirstRow.type, 'בבעלות רשות מקומית');
+        });
+
+        it('description', () => {
+            assert.strictEqual(tbl183FirstRow.description, '');
+        });
+
+        it('name', () => {
+            assert.strictEqual(tbl183FirstRow.name, '');
+        });
+
+        it('license number', () => {
+            assert.strictEqual(tbl183FirstRow.licenseNumber, '');
+        });
+
+        it('corporate', () => {
+            assert.strictEqual(tbl183FirstRow.corporate, 'עיריית תל אביב-יפו');
+        });
+
+        it('city', () => {
+            assert.strictEqual(tbl183FirstRow.city, `תל אביב- יפו`);
+        });
+
+        it('street', () => {
+            assert.strictEqual(tbl183FirstRow.street, `אבן גבירול`);
+        });
+
+        it('house', () => {
+            assert.strictEqual(tbl183FirstRow.house, '69');
+        });
+
+        it('phone', () => {
+            assert.strictEqual(tbl183FirstRow.phone, '03-7247259');
+        });
+
+        // the library parses email and fax columns wrong
+
+    });
+
 });
 
 
+/*
 // This taba makes the pdf reader library go into an infinite loop
 describe('Taba5 parsing test', () => {
     let data;
@@ -431,6 +593,79 @@ describe('Taba5 parsing test', () => {
     it('', () =>
         assert.strictEqual(true, true));
 
+
+});
+
+ */
+
+describe('Taba6 parsing test', () => {
+    let data;
+    const TEST_PLANS_DIR = 'test_plan6';
+
+    before(async () =>
+        data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+
+    it('data should not be undefined', async () =>
+        assert.notStrictEqual(data, undefined));
+
+    it('should have 3 rows on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 3));
+
+    it('should have only one row on table 1.8.1', () =>
+        assert.strictEqual(data.charts18.chart181.length, 1));
+
+    it('should have only one row on table 1.8.2', () =>
+        assert.strictEqual(data.charts18.chart182.length, 1));
+
+    it('should have only one row on table 1.8.3', () =>
+        assert.strictEqual(data.charts18.chart183.length, 1));
+
+    describe('table 1.8.3 parsing test', () => {
+        let tbl183FirstRow;
+
+        before(() => {
+            tbl183FirstRow = data.charts18.chart183[0];
+        });
+
+        it('type', () => {
+            assert.strictEqual(tbl183FirstRow.type, 'בעלים');
+        });
+
+        it('description', () => {
+            assert.strictEqual(tbl183FirstRow.description, '');
+        });
+
+        it('name', () => {
+            assert.strictEqual(tbl183FirstRow.name, 'משה ברנס');
+        });
+
+        it('license number', () => {
+            assert.strictEqual(tbl183FirstRow.licenseNumber, '');
+        });
+
+        it('corporate', () => {
+            assert.strictEqual(tbl183FirstRow.corporate, '');
+        });
+
+        it('city', () => {
+            assert.strictEqual(tbl183FirstRow.city, `רמת גן`);
+        });
+
+        it('street', () => {
+            assert.strictEqual(tbl183FirstRow.street, `טור הברושים`);
+        });
+
+        it('house', () => {
+            assert.strictEqual(tbl183FirstRow.house, '3');
+        });
+
+        it('phone', () => {
+            assert.strictEqual(tbl183FirstRow.phone, '');
+        });
+
+
+
+    });
 
 });
 

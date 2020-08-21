@@ -1,10 +1,9 @@
 const { pageTablesToDataArray } = require('./chartToArrayBuilder');
 
-//TODO: ADD support in chart 5 where there's part aleph and part bet
 //TODO: MAKE SURE THAT TEST_PLAN5 413-0694430 DOES NOT STUCK THE CRAWLER
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
-const rowAbstractFactory = (firstPageOfTable) => {
+const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
 
   const insideHeader = (currIndex, indexOfHeaderToBeInside, indexOfHeaderToTheRight) => {
     return currIndex >= indexOfHeaderToBeInside && currIndex < indexOfHeaderToTheRight;
@@ -18,8 +17,7 @@ const rowAbstractFactory = (firstPageOfTable) => {
   firstPageOfTable = firstPageOfTable.map(row => row.map(cell => cell.replace(/\n/g, ' ')
                                                                       .replace(/ {2}/g, ' ')
                                                                       .trim()));
-  const headersStartIndex = firstPageOfTable.findIndex(row => row.some(cell => cell.includes('יעוד')) &&
-                                                              row.some(cell => cell.includes('תאי שטח')));
+
   if (headersStartIndex === -1) {
       console.log("didn't find headers");
       return (row => {});
@@ -119,8 +117,8 @@ const extractChartFive = (pageTables) => {
     offsetOfRowWithDataInChart: 3,    //length of header (header rows) is 3
     chartDonePredicate: endTablePredicate,
     dataRowPredicateFn,
-    getHeaderRowIndex: (page) => page.findIndex(row => row.some(cell => cell.includes('יעוד')) &&
-        row.some(cell => cell.includes('תאי שטח'))),
+    getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => (row.some(cell => cell.includes('יעוד')) &&
+        row.some(cell => cell.includes('תאי שטח'))) || (row.some(cell => cell.includes('יעוד')) && row.some(cell => cell.includes('שימוש')))) + searchFrom,   //add searchFrom back to be aligned with the original array
     identifier: 'chart 5'
   });
 };
