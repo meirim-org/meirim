@@ -49,7 +49,7 @@ describe('Taba1 parsing test', () => {
             });
 
             it('license number', () => {
-                assert.strictEqual(tbl181FirstRow.licenseNumber, '');
+                assert.strictEqual(tbl181FirstRow.license_number, '');
             });
 
             it('corporate', () => {
@@ -208,7 +208,7 @@ describe('Taba2 parsing test', () => {
             });
 
             it('license number', () => {
-                assert.strictEqual(tbl181FirstRow.licenseNumber, '');
+                assert.strictEqual(tbl181FirstRow.license_number, '');
             });
 
             it('corporate', () => {
@@ -257,7 +257,7 @@ describe('Taba2 parsing test', () => {
             });
 
             it('license number', () => {
-                assert.strictEqual(tbl182FirstRow.licenseNumber, '');
+                assert.strictEqual(tbl182FirstRow.license_number, '');
             });
 
             it('corporate', () => {
@@ -413,7 +413,7 @@ describe('Taba3 parsing test', () => {
             });
 
             it('license number', () => {
-                assert.strictEqual(tbl181FirstRow.licenseNumber, '');
+                assert.strictEqual(tbl181FirstRow.license_number, '');
             });
 
             it('corporate', () => {
@@ -462,7 +462,7 @@ describe('Taba3 parsing test', () => {
             });
 
             it('license number', () => {
-                assert.strictEqual(tbl182FirstRow.licenseNumber, '');
+                assert.strictEqual(tbl182FirstRow.license_number, '');
             });
 
             it('corporate', () => {
@@ -551,7 +551,7 @@ describe('Taba4 parsing test', () => {
         });
 
         it('license number', () => {
-            assert.strictEqual(tbl183FirstRow.licenseNumber, '');
+            assert.strictEqual(tbl183FirstRow.license_number, '');
         });
 
         it('corporate', () => {
@@ -640,7 +640,7 @@ describe('Taba6 parsing test', () => {
         });
 
         it('license number', () => {
-            assert.strictEqual(tbl183FirstRow.licenseNumber, '');
+            assert.strictEqual(tbl183FirstRow.license_number, '');
         });
 
         it('corporate', () => {
