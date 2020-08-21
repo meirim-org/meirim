@@ -45,7 +45,7 @@ const rowAbstractFactoryCharts18 = (firstPageOfTable, headersStartIndex) => {
             type: shouldBeType,
             description: shouldBeDescription,
             name: getFromArr(row, nameIndex),
-            licenseNumber: getFromArr(row, licenseNumberIndex),
+            license_number: getFromArr(row, licenseNumberIndex),
             corporate: getFromArr(row, corporateIndex),
             city: getFromArr(row, cityIndex),
             street: getFromArr(row, streetIndex),

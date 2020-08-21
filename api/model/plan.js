@@ -3,6 +3,7 @@ const Model = require("./base_model");
 const Log = require("../lib/log");
 const Exception = require("./exception");
 const PlanChartFiveRow = require('./plan_chart_five_row');
+const PlanChart18Row = require('./plan_chart_1_point_8_row');
 
 class Plan extends Model {
     get rules() {
@@ -223,15 +224,43 @@ class Plan extends Model {
 
         for(let i = 0; i < chartFiveData.length; i++) {
             const chartFiveRowData = chartFiveData[i];
-            if (chartFiveRowData !== undefined) {
-                try {
-                    await new PlanChartFiveRow(chartFiveRowData).save();
-                }
-                catch(e) {
-                    console.log(e);
-                }
+            try {
+                await new PlanChartFiveRow(chartFiveRowData).save();
+            }
+            catch(e) {
+                console.log(e);
             }
         }
+
+        const chart181 = mavatData.charts18.chart181;
+        //add plain_id and origin
+        chart181.forEach(row => {
+            row.plan_id = plan.id;
+            row.origin = '1.8.1';
+        });
+
+        const chart182 = mavatData.charts18.chart182;
+        chart182.forEach(row => {
+            row.plan_id = plan.id;
+            row.origin = '1.8.2';
+        });
+
+        const chart183 = mavatData.charts18.chart183;
+        chart183.forEach(row => {
+            row.plan_id = plan.id;
+            row.origin = '1.8.3';
+        });
+
+        const charts18 = chart181.concat(chart182, chart183);
+        for(let i = 0; i < charts18.length; i++) {
+            try {
+                await new PlanChart18Row(charts18[i]).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
     }
 
     static getUnsentPlans(userOptions) {
