@@ -22,7 +22,7 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
 
     const header = firstPageOfTable[headersStartIndex];
 
-    const clauseNumberIndex = header.findIndex(title => /^6\.\d$/.exec(title) !== null);
+    const clauseNumberIndex = header.findIndex(title => /^6\.\d+$/.exec(title) !== null);
     if(clauseNumberIndex === -1) {
         // the data is a mess. There are some pdfs that are a mess... We can't distinguish the description from the
         // clause number in that case
@@ -56,14 +56,14 @@ const extractChartSix = (pageTables) => {
         rowAbstractFactory,
         startOfChartPred: startChart6Predicate,
         offsetOfRowWithDataInChart: 0,  //the header is data too
-        chartDonePredicate: (row) => row.some(cell => cell.includes('ביצוע התכנית')),
+        chartDonePredicate: (row) => row.some(cell => cell === 'ביצוע התכנית7.'),
         // table 6 will always start in a new page and it has no actual header beyond the title
         getHeaderRowIndex: (page, searchFrom) => {
             // these two cases (the if and the else) could have been merged, but the code on the else is more specific
             // for the case of the first page
             if (searchFrom === 0) {
                 // not the first page
-                return page.findIndex(row => row.some(cell => /^6.\d/.exec(cell) !== null));
+                return page.findIndex(row => row.some(cell => /^6.\d+/.exec(cell) !== null));
             }
             else {
                 // the first page
@@ -124,7 +124,7 @@ const processChartSix = (chartSix) => {
         else if (description !== '' && description !== curr_cat) {   // if the description is the same as the category, we dont want to push it
             // it's not defining a category, it's actual data
             // it's data of a previous category - probably caused by new page split
-            if (clause_num === '' &&
+            if ((clause_num === '' || clause_num === undefined) &&
                 processedChartSix.length > 0 &&
                 processedChartSix[processedChartSix.length - 1].category === curr_cat) {
                 // add the current description to the previous entry with a newline

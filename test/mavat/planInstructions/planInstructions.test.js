@@ -597,9 +597,6 @@ describe('Taba3 parsing test', () => {
     it('data should not be undefined', async () =>
         assert.notStrictEqual(data, undefined));
 
-    it('data should have one row on table 5', () =>
-        assert.strictEqual(data.chartFive.length, 1));
-
     it('should have only one row on table 1.8.1', () =>
         assert.strictEqual(data.charts18.chart181.length, 1));
 
@@ -608,6 +605,12 @@ describe('Taba3 parsing test', () => {
 
     it('should have no rows on table 1.8.3', () =>
         assert.strictEqual(data.charts18.chart183.length, 0));
+
+    it('data should have one row on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 1));
+
+    it('should have 17 rows on table 6', () =>
+        assert.strictEqual(data.chartSix.length, 17));
 
     // interesting because it's ending is "הערה למגיש התכנית"
     describe('tables 1.8 parsing test', () => {
@@ -744,11 +747,15 @@ describe('Taba4 parsing test', () => {
     it('data should not be undefined', async () =>
         assert.notStrictEqual(data, undefined));
 
+    it('data should have 1 row on table 1.8.3', () =>
+        assert.strictEqual(data.charts18.chart183.length, 1));
+
     it('data should have 13 row on table 5', () =>
         assert.strictEqual(data.chartFive.length, 13));
 
-    it('data should have 1 row on table 1.8.3', () =>
-        assert.strictEqual(data.charts18.chart183.length, 1));
+    // note that 'עיצוב אדריכלי' and 'איכות סביבה' is appearing twice in the pdf, but appearing once in the parsed data. it's the wanted behavior.
+    it('should have 16 rows on table 6', () =>
+        assert.strictEqual(data.chartSix.length, 16));
 
     describe('table 1.8.3 parsing test', () => {
         let tbl183FirstRow;
@@ -824,9 +831,6 @@ describe('Taba6 parsing test', () => {
     it('data should not be undefined', async () =>
         assert.notStrictEqual(data, undefined));
 
-    it('should have 3 rows on table 5', () =>
-        assert.strictEqual(data.chartFive.length, 3));
-
     it('should have only one row on table 1.8.1', () =>
         assert.strictEqual(data.charts18.chart181.length, 1));
 
@@ -835,6 +839,12 @@ describe('Taba6 parsing test', () => {
 
     it('should have only one row on table 1.8.3', () =>
         assert.strictEqual(data.charts18.chart183.length, 1));
+
+    it('should have 3 rows on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 3));
+
+    it('should have 8 rows on table 6', () =>
+        assert.strictEqual(data.chartSix.length, 8));
 
     describe('table 1.8.3 parsing test', () => {
         let tbl183FirstRow;

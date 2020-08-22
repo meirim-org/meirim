@@ -22,7 +22,7 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
 
     const header = firstPageOfTable[headersStartIndex];
 
-    const clauseNumberIndex = header.findIndex(title => /^4\.\d$/.exec(title) !== null);
+    const clauseNumberIndex = header.findIndex(title => /^4\.\d+$/.exec(title) !== null);
     if(clauseNumberIndex === -1) {
         // the data is a mess. There are some pdfs that are a mess... We can't distinguish the description from the
         // clause number in that case
@@ -63,7 +63,7 @@ const extractChartFour = (pageTables) => {
             // for the case of the first page
             if (searchFrom === 0) {
                 // not the first page
-                return page.findIndex(row => row.some(cell => /^4.\d/.exec(cell) !== null));
+                return page.findIndex(row => row.some(cell => /^4.\d+/.exec(cell) !== null));
             }
             else {
                 // the first page
@@ -95,7 +95,7 @@ const processChartFour = (chartFour) => {
         const description = chartFour[i].description;
 
         // it's something like 4.1 or 4.3 (number dot number)
-        const father_cat_match = is_data_damaged ? /(?<!\.)4\.\d(?!\.)/.exec(description) : /^4\.\d$/.exec(clause_num);
+        const father_cat_match = is_data_damaged ? /(?<!\.)4\.\d+(?!\.)/.exec(description) : /^4\.\d+$/.exec(clause_num);
         if (father_cat_match !== null) {
             // it's a father category, but it's not saying anything, yet. we save it for later.
             if (!is_data_damaged) {
@@ -111,7 +111,7 @@ const processChartFour = (chartFour) => {
 
         else {
             // it's somehting like 4.1.1 or 4.3.2 (number dot number dot number)
-            const curr_cat_match = is_data_damaged ? /(?<!\.)4\.\d\.\d(?!\.)/.exec(description) : /^4\.\d\.\d$/.exec(clause_num);
+            const curr_cat_match = is_data_damaged ? /(?<!\.)4\.\d+\.\d+(?!\.)/.exec(description) : /^4\.\d+\.\d+$/.exec(clause_num);
             if (curr_cat_match !== null) {
                 if (!is_data_damaged) {
                     curr_cat = description.trim();
