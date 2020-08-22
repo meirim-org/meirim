@@ -15,7 +15,7 @@ This project is under development and has three main parts - backend, frontend a
 Things you need to install:
 
 * Git
-* Node.js (we currently support release 8.x)
+* Node.js (we support and run on version 14.x)
 * MySQL (required only for the backend & crawler)
 
 Once you have these you can download the code and install dependencies:
@@ -91,7 +91,7 @@ $ npm run crawl
 
 ## Testing
 
-Tests require all prerequisites to be fulfilled and a database instance to be available at port 33060 on localhost. The odd port is for preventing people from running the tests on development databases accidentally (and can be hanged by editing [test/hooks.js](test/hooks.js)).
+Tests require all prerequisites to be fulfilled and a database instance to be available at port 33060 on localhost. The odd port is for preventing people from running the tests on development databases accidentally (and can be changed by editing [test/hooks.js](test/hooks.js)).
 
 To set up a test database (user, database and migrations) the docker compose file under the docker folder can be used:
 
@@ -99,13 +99,30 @@ To set up a test database (user, database and migrations) the docker compose fil
 $ docker-compose -f docker/test-compose.yml up
 ```
 
-Then to run the tests:
+### Backend tests
 
 ```bash
 $ npm run test
 ```
 
 NOTE: for some tests to run properly a clean database is needed. The test suite does clean the objects it creates, but some tests will fail if they are run on a database which already has some data.
+
+### End-to-end tests
+
+Cypress is used for e2e tests and is meant to test the frontend and backend as served using the `serve` script.
+
+First build the frontend and run the serve script:
+
+```bash
+$ npm run build
+$ npm run serve
+```
+
+Then the tests can be run (use a browser of your choice out of your installed browsers. To see which browsers cypress recognizes use `$(npm bin)/cypress info`):
+
+```bash
+$ $(npm bin)/cypress run --browser chromium
+```
 
 ## Running in production
 
