@@ -1,6 +1,7 @@
 const { extractChartFive } = require ('./chartFive');
 const {extractCharts1Point8} = require('./charts1Point8');
 const {extractChartFour, processChartFour} = require('./chart4');
+const {extractChartSix, processChartSix} = require('./chart6');
 const { extractPlanInformation } = require ('./planInformation');
 let pdf_table_extractor = require("pdf-table-extractor");
 
@@ -19,6 +20,8 @@ function parsePdf(result)
   const chartFour = extractChartFour(result.pageTables);
   extractedData.chartFour = processChartFour(chartFour);
   extractedData.chartFive = extractChartFive(result.pageTables);
+  const chartSix = extractChartSix(result.pageTables);
+  extractedData.chartSix = processChartSix(chartSix);
   extractedData.planExplanation = extractPlanInformation(result.pageTables);
   return extractedData;
 }

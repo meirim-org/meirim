@@ -28,6 +28,9 @@ describe('Taba1 parsing test', () => {
     it('should have only one row on table 5', () =>
         assert.strictEqual(data.chartFive.length, 1));
 
+    it('should have 10 rows on table 6', () =>
+        assert.strictEqual(data.chartSix.length, 10));
+
     //table 1.8.2 parses wrong in this pdf
 
     describe('tables 1.8 parsing test', () => {
@@ -99,7 +102,10 @@ describe('Taba1 parsing test', () => {
            assert.strictEqual(chartFour[0].father_category_number, '4.1');
            assert.strictEqual(chartFour[0].category, 'שימושים');
            assert.strictEqual(chartFour[0].category_number, '4.1.1');
-           assert.strictEqual(chartFour[0].text, `א. מגורים. ב. חניה, מחסנים. ג. משרד לבעלי מקצוע חופשי לדייר המבנה/ מסחר קמעונאי. ד. מעונות יום.`);
+           assert.strictEqual(chartFour[0].text, `א. מגורים.
+ב. חניה, מחסנים.
+ג. משרד לבעלי מקצוע חופשי לדייר המבנה/ מסחר קמעונאי.
+ד. מעונות יום.`);
        });
 
        it('row 1 test', () => {
@@ -107,7 +113,8 @@ describe('Taba1 parsing test', () => {
            assert.strictEqual(chartFour[1].father_category_number, '4.1');
            assert.strictEqual(chartFour[1].category, 'הוראות');
            assert.strictEqual(chartFour[1].category_number, '4.1.2');
-           assert.strictEqual(chartFour[1].text, `הוראות בינוי  1 .`);
+           assert.strictEqual(chartFour[1].text, `הוראות בינוי 
+1 .`);
        });
 
        it('row 2 test', () => {
@@ -132,7 +139,7 @@ describe('Taba1 parsing test', () => {
             assert.strictEqual(chartFour[4].father_category_number, '4.1');
             assert.strictEqual(chartFour[4].category, 'הוראות');
             assert.strictEqual(chartFour[4].category_number, '4.1.2');
-            assert.strictEqual(chartFour[4].text.includes('תכנית פיתוח שתוגש לאישור הועדה המקומית'), true);
+            assert.strictEqual(chartFour[4].text.includes(`של המבנים ע''פ תכנית פיתוח שתוגש`), true);
         });
 
     });
@@ -209,6 +216,65 @@ describe('Taba1 parsing test', () => {
             assert.strictEqual(tbl5FirstRow.side_line_front, '5'));
 
     });
+
+    describe('table 6 parsing test', () => {
+        let chartSix;
+
+        before(() =>
+            chartSix = data.chartSix);
+
+        it('row 0', () => {
+            assert.strictEqual(chartSix[0].category_number, '6.1');
+            assert.strictEqual(chartSix[0].category, 'סביבה ונוף');
+            assert.strictEqual(chartSix[0].text, `פסולת :
+א. תכנית בינוי פיתוח ועיצוב אדריכלי כהגדרתה בסעיף 6.1 א' , תנחה עקרונות לטיפול בפסולת 
+בשכונה הכוללת מקום צלהצבת מכלים לצאירת פסולת מעורבת ולמחזור לפי הנחיות הרשות 
+המקומית . 
+רעש בעת ההקמה : 
+ב . בזמן עבודות ההקמה יינקטו אמצעים למניעת פגיעה באיכות האוויר כדוגמת הרחפת אבק . 
+ג. בזמן עבודות ההקמה יינקטו אמצעים למניעת מטרדי רעש .`);
+        });
+
+        it('row 1', () => {
+            assert.strictEqual(chartSix[1].category_number, '6.2');
+            assert.strictEqual(chartSix[1].category, 'עתיקות');
+            assert.strictEqual(chartSix[1].text, `על-פי חוק העתיקות , התשל''ח 1978 , אם יתגלו בשטח התכנית עתיקות יש להפסיק מיד את 
+העבודות , להודיע על כך לרשות העתיקות ולא להמשיך בעבודות עד לקבלת הודעה אחרת 
+מרשות העתיקות .`);
+        });
+
+        it('row 2', () => {
+            assert.strictEqual(chartSix[2].category_number, '6.3');
+            assert.strictEqual(chartSix[2].category, 'חניה');
+            assert.strictEqual(chartSix[2].text, `א. מקומות החניה למגורים , למסחר , למבנים / מוסדות ציבור ולפארקים / גנים ציבוריים , 
+יהיו בתחום המגרש . 
+ב. החניה תהיה על פי התקן התקף בעת מתן היתרי בניה .`);
+        });
+
+        it('row 3', () => {
+            assert.strictEqual(chartSix[3].category_number, '6.4');
+            assert.strictEqual(chartSix[3].category, 'חשמל');
+            assert.strictEqual(chartSix[3].text, '');
+
+        });
+
+        it('row 5', () => {
+            assert.strictEqual(chartSix[5].category_number, '6.6');
+            assert.strictEqual(chartSix[5].category, 'ניהול מי נגר');
+            assert.strictEqual(chartSix[5].text, `בשטחים הפתוחים ישולבו אמצעים להשהיית נגר עילי ותכנונם ייעשה ע''י אדרי' נוף בשיתוף
+יועץ שימור נגר . בשיפועים גדולים מ 2% יבוצעו סכרונים ו / או טרסות למיתון ושימוש בכיסוי 
+צמיחה תואמת אקלים . בכל המגרשים בתכנית יובטח שטח מחלחל בהיקף של 15% משטח 
+המגרש .`);
+        });
+
+        it('row 9', () => {
+            assert.strictEqual(chartSix[9].category_number, '6.10');
+            assert.strictEqual(chartSix[9].category, 'מגבלות בניה לגובה');
+            assert.strictEqual(chartSix[9].text, `הגובה לא יחרוג מ-24 מ' מעל פני השטח אלא באישור של נציג שרהב''ט בועדה מחוזית צפון . 
+האמור כולל בינוי ומתקנים הנדסיים ובכלל זה עגורנים בזמן העבודות .`);
+        });
+
+    });
 });
 
 describe('Taba2 parsing test', () => {
@@ -240,6 +306,9 @@ describe('Taba2 parsing test', () => {
 
     it('should have 3 rows on table 5', () =>
         assert.strictEqual(data.chartFive.length, 3));
+
+    it('should have 11 rows on table 6', () =>
+        assert.strictEqual(data.chartSix.length, 11));
 
     describe('tables 1.8 parsing test', () => {
 
@@ -469,6 +538,52 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(tbl5ThirdRow.side_line_front, '5'));
 
     });
+
+    describe('table 6 parsing test', () => {
+        let chartSix;
+
+        before(() =>
+            chartSix = data.chartSix);
+
+        it('row 0', () => {
+            assert.strictEqual(chartSix[0].category_number, '6.1');
+            assert.strictEqual(chartSix[0].category, 'קווי תשתית');
+            assert.strictEqual(chartSix[0].text, `קווי ביוב-
+קווי ביוב בתחום התכנית יתוכננו בתיאום עם חברת "מקורות". לא יחצה קו ביוב מעל קו מים 
+ראשי, אלא מתחתיו, במרחק מתאים עם מיגונים מתאימים, וזאת בכפוף לתיאום ואישור חברת 
+"מקורות" ואישור משרד הבריאות.`);
+        });
+
+        it('row 1', () => {
+            assert.strictEqual(chartSix[1].category_number, '6.2');
+            assert.strictEqual(chartSix[1].category, 'חניה');
+            assert.strictEqual(chartSix[1].text, `החניה תהיה בתחום המגרש בהתאם לדרישות תקן החניה )הוראות תקנות התכנון והבניה 
+2016( או לתקנות התקפות במועד הוצאת ההיתר. תנאי למתן היתר בניה הבטחת מקומות חניה 
+כנדרש בתקנות.`);
+        });
+
+        it('row 2', () => {
+            assert.strictEqual(chartSix[2].category_number, '6.3');
+            assert.strictEqual(chartSix[2].category, 'חלוקה ו/ או רישום');
+            assert.strictEqual(chartSix[2].text, `רישום יעשה עפ"י חוק.`);
+        });
+
+        it('row 7', () => {
+            assert.strictEqual(chartSix[7].category_number, '6.8');
+            assert.strictEqual(chartSix[7].category, 'פיקוד העורף');
+            assert.strictEqual(chartSix[7].text, `תנאי למתן היתר בניה יהיה אישור פיקוד העורף לפתרונות המיגון במגרש. לא יוצא היתר בניה 
+למבנה בשטח התכנית אלא אם כלול בו מקלט או ממ"ד בהתאם לתקנון ההתגוננות האזרחית.`);
+        });
+
+        it('row 10', () => {
+            assert.strictEqual(chartSix[10].category_number, '6.11');
+            assert.strictEqual(chartSix[10].category, 'היטל השבחה');
+            assert.strictEqual(chartSix[10].text, `הוועדה המקומית תטיל ותגבה היטל השבחה בהתאם להוראות התוספת השלישית לחוק.`);
+        });
+
+    });
+
+
 });
 
 // This taba exists in the test to check for a case of tahsit and building percentage at one table
