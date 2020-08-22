@@ -4,7 +4,7 @@ const {startChart5Predicate} = require('./chartFive');
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
 const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
     // firstPageOfTable should be table with 2 columns
-    // the column of the clause should be the one that has "4.1" in it.
+    // the column of the clause should be the one that has "4.1" in it if we are in the first page for example.
 
     const getFromArr = (arr, index) => {
         return index === undefined || index === -1 ? undefined : arr[index];
@@ -22,7 +22,7 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
 
     const header = firstPageOfTable[headersStartIndex];
 
-    const clauseNumberIndex = header.findIndex(title => title === '4.1');
+    const clauseNumberIndex = header.findIndex(title => /^4\.\d$/.exec(title) !== null);
     if(clauseNumberIndex === -1) {
         // the data is a mess. There are some pdfs that are a mess... We can't distinguish the description from the
         // clause number in that case
@@ -63,7 +63,7 @@ const extractChartFour = (pageTables) => {
             // for the case of the first page
             if (searchFrom === 0) {
                 // not the first page
-                return page.findIndex(row => row.some(cell => /^\d.\d/.exec(cell) !== null));
+                return page.findIndex(row => row.some(cell => /^4.\d/.exec(cell) !== null));
             }
             else {
                 // the first page
@@ -84,39 +84,43 @@ const processChartFour = (chartFour) => {
     let curr_cat = '';
     let curr_cat_number = '';
 
+    if (chartFour === undefined || chartFour.length === 0) {
+        return [];
+    }
+
+    const is_data_damaged = chartFour[0].clause_number === '' || chartFour[0].clause_number === undefined;
+
     for (let i = 0; i < chartFour.length; i++) {
         const clause_num = chartFour[i].clause_number;
         const description = chartFour[i].description;
 
         // it's something like 4.1 or 4.3 (number dot number)
-        const father_cat_match = /^\d\.\d$/.exec(clause_num);
-        const father_cat_match_backup = /(?<!\.)\d\.\d(?!\.)/.exec(description);
-        if (father_cat_match !== null || (!clause_num && father_cat_match_backup !== null)) {
+        const father_cat_match = is_data_damaged ? /(?<!\.)4\.\d(?!\.)/.exec(description) : /^4\.\d$/.exec(clause_num);
+        if (father_cat_match !== null) {
             // it's a father category, but it's not saying anything, yet. we save it for later.
-            if (clause_num !== '' && clause_num !== undefined) {
+            if (!is_data_damaged) {
                 father_cat = description.trim();
                 father_cat_number = clause_num.trim();
             }
             else {
                 // the data is a mess - we will extract the description and the clause_num
-                father_cat = description.replace(father_cat_match_backup[0], '').trim();
-                father_cat_number = father_cat_match_backup[0].trim();
+                father_cat = description.replace(father_cat_match[0], '').trim();
+                father_cat_number = father_cat_match[0].trim();
             }
         }
 
         else {
             // it's somehting like 4.1.1 or 4.3.2 (number dot number dot number)
-            const curr_cat_match = /^\d\.\d\.\d$/.exec(clause_num);
-            const curr_cat_match_backup = /(?<!\.)\d\.\d\.\d(?!\.)/.exec(description);
-            if (curr_cat_match !== null || (!clause_num && curr_cat_match_backup !== null)) {
-                if (clause_num !== '' && clause_num !== undefined) {
+            const curr_cat_match = is_data_damaged ? /(?<!\.)4\.\d\.\d(?!\.)/.exec(description) : /^4\.\d\.\d$/.exec(clause_num);
+            if (curr_cat_match !== null) {
+                if (!is_data_damaged) {
                     curr_cat = description.trim();
                     curr_cat_number = clause_num.trim();
                 }
                 else {
                     // the data is a mess - we will extract the description and the clause_num
-                    curr_cat = description.replace(curr_cat_match_backup[0], '').trim();
-                    curr_cat_number = curr_cat_match_backup[0].trim();
+                    curr_cat = description.replace(curr_cat_match[0], '').trim();
+                    curr_cat_number = curr_cat_match[0].trim();
                 }
             }
 

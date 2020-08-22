@@ -1,6 +1,8 @@
 // this function parses the pdf tables and returns and array of elements
 // we need this functionality whenever we want to extract array data from the pdf and supports data which spans multiple pages
 
+//TODO: 2nd PAGE ON CHART 6 IS NOT GOOD, 2nd PAGE ON CHART 4 IS GOOD. YYYYYYYYYY
+
 /**
  *
  * @param pageTables                            all the tables of all the pages of the pdf
@@ -44,8 +46,8 @@ const pageTablesToDataArray = ({
               )
             : getHeaderRowIndex(pageTables[currentPageIndex].tables, 0);
         if (indexOfHeader === -1) {
-            console.error(`didn't find the header of chart ${identifier}`);
-            return []; //didn't find the table inside page, return an empty chart
+            // it can be the page after the last page of the chart
+            return chartRows;
         } else if (
             !firstChartPage &&
             !isFirstNotNoiseRow(pageTables[currentPageIndex], indexOfHeader)
@@ -65,9 +67,9 @@ const pageTablesToDataArray = ({
                 break;
             }
             if (dataRowPredicateFn(newDataRows[i])) {
-                const rowTrimmed = newDataRows[i].map((cell) =>
-                    cell.replace(/\n/g, " ").replace(/ {2}/g, " ").trim()
-                );
+                const rowTrimmed = identifier !== 'chart 6' && identifier !== 'chart 4' ?
+                    newDataRows[i].map((cell) => cell.replace(/\n/g, " ").replace(/ {2}/g, " ").trim()) :
+                    newDataRows[i].map(cell => cell.replace(/ {2}/g, " ").trim());
                 chartRows.push(rowFactory(rowTrimmed));
             }
         }
