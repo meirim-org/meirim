@@ -63,7 +63,7 @@ const extractChartFour = (pageTables) => {
             // for the case of the first page
             if (searchFrom === 0) {
                 // not the first page
-                return page.findIndex(row => row.some(cell => /^4.\d+/.exec(cell) !== null));
+                return page.findIndex(row => row.some(cell => /4.\d+/.exec(cell) !== null));
             }
             else {
                 // the first page
@@ -88,9 +88,9 @@ const processChartFour = (chartFour) => {
         return [];
     }
 
-    const is_data_damaged = chartFour[0].clause_number === '' || chartFour[0].clause_number === undefined;
 
     for (let i = 0; i < chartFour.length; i++) {
+        const is_data_damaged = chartFour[i].clause_number === undefined;
         const clause_num = chartFour[i].clause_number;
         const description = chartFour[i].description;
 
@@ -112,7 +112,8 @@ const processChartFour = (chartFour) => {
         else {
             // it's somehting like 4.1.1 or 4.3.2 (number dot number dot number)
             const curr_cat_match = is_data_damaged ? /(?<!\.)4\.\d+\.\d+(?!\.)/.exec(description) : /^4\.\d+\.\d+$/.exec(clause_num);
-            if (curr_cat_match !== null) {
+            // If the description is long but contains a clause number, it's not a new clause declaration. This case can appear in damaged data only.
+            if (curr_cat_match !== null && (!is_data_damaged || description.length < 30)) {
                 if (!is_data_damaged) {
                     curr_cat = description.trim();
                     curr_cat_number = clause_num.trim();

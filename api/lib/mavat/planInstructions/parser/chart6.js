@@ -63,7 +63,7 @@ const extractChartSix = (pageTables) => {
             // for the case of the first page
             if (searchFrom === 0) {
                 // not the first page
-                return page.findIndex(row => row.some(cell => /^6.\d+/.exec(cell) !== null));
+                return page.findIndex(row => row.some(cell => /6.\d+/.exec(cell) !== null));
             }
             else {
                 // the first page
@@ -86,14 +86,14 @@ const processChartSix = (chartSix) => {
         return [];
     }
 
-    // if the data is damaged, the clause number is empty because it's in the description
-    const is_data_damaged = chartSix[0].clause_number === '' || chartSix[0].clause_number === undefined;
 
     for (let i = 0; i < chartSix.length; i++) {
+        // if the data is damaged, the clause number is empty because it's in the description
+        const is_data_damaged = chartSix[i].clause_number === undefined;
         const clause_num = chartSix[i].clause_number;
         const description = chartSix[i].description;
 
-        // it's something like 4.1 or 4.3 (number dot number)
+        // it's something like 6.1 or 6.3 (number dot number)
         const cat_match = is_data_damaged ? /(?<!\.)6\.\d+(?!\.)/.exec(description) : /^6\.\d+$/.exec(clause_num);
         if (cat_match !== null) {
             const prev_cat = curr_cat;
