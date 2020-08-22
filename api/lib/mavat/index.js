@@ -225,9 +225,11 @@ const getByPlan = plan =>
                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
-                chartFive: pageInstructions.chartFive,
                 planExplanation: pageInstructions.planExplanation,
-                charts18: pageInstructions.charts18
+                charts18: pageInstructions.charts18,
+                chartFour: pageInstructions.chartFour,
+                chartFive: pageInstructions.chartFive,
+                chartSix: pageInstructions.chartSix
             });
         });
 // const getByPlan = () => Promise.resolve();
