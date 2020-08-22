@@ -1,7 +1,6 @@
 // this function parses the pdf tables and returns and array of elements
 // we need this functionality whenever we want to extract array data from the pdf and supports data which spans multiple pages
 
-//TODO: 2nd PAGE ON CHART 6 IS NOT GOOD, 2nd PAGE ON CHART 4 IS GOOD. YYYYYYYYYY
 
 /**
  *

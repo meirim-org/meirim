@@ -895,4 +895,32 @@ describe('Taba6 parsing test', () => {
 
 });
 
+describe('Taba7 parsing test', () => {
+    let data;
+    const TEST_PLANS_DIR = 'test_plan7';
+
+    before(async () =>
+        data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+
+    it('table 1.8.1 should have 1 rows', () =>
+        assert.strictEqual(data.charts18.chart181.length, 1));
+
+    it('table 1.8.2 should have 1 rows', () =>
+        assert.strictEqual(data.charts18.chart182.length, 1));
+
+    it('table 1.8.3 should have 1 rows', () =>
+        assert.strictEqual(data.charts18.chart183.length, 1));
+
+    // this test fails because we have no way to know that 'מסחר' at the end of page 14 is the beginning of the first row at page 15 (1-indexed)
+    it('table 4 should have 25 rows', () =>
+        assert.strictEqual(data.chartFour.length, 25));
+
+    it('table 5 should have 59 rows', () =>
+        assert.strictEqual(data.chartFive.length, 59));
+
+    it('table 6 should have 11 rows', () =>
+        assert.strictEqual(data.chartSix.length, 11));
+
+});
+
 
