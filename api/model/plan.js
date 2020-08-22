@@ -4,6 +4,8 @@ const Log = require("../lib/log");
 const Exception = require("./exception");
 const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChart18Row = require('./plan_chart_1_point_8_row');
+const PlanChartFourRow = require('./plan_chart_four_row');
+const PlanChartSixRow = require('./plan_chart_six_row');
 
 class Plan extends Model {
     get rules() {
@@ -207,6 +209,10 @@ class Plan extends Model {
     }
 
     static async setMavatData(plan, mavatData) {
+        const addPlanIdToChart = (chart) => {
+            chart.forEach(row => row.plan_id = plan.id);
+        };
+
         await plan.set({
             goals_from_mavat: mavatData.goals,
             main_details_from_mavat: mavatData.mainPlanDetails,
@@ -215,22 +221,6 @@ class Plan extends Model {
             explanation: mavatData.planExplanation
         });
         await plan.save();
-
-        const chartFiveData = mavatData.chartFive;
-        //add plan_id for each row
-        chartFiveData.forEach(row => {
-            row.plan_id = plan.id;
-        });
-
-        for(let i = 0; i < chartFiveData.length; i++) {
-            const chartFiveRowData = chartFiveData[i];
-            try {
-                await new PlanChartFiveRow(chartFiveRowData).save();
-            }
-            catch(e) {
-                console.log(e);
-            }
-        }
 
         const chart181 = mavatData.charts18.chart181;
         //add plain_id and origin
@@ -260,6 +250,46 @@ class Plan extends Model {
                 console.log(e);
             }
         }
+
+        const chartFourData = mavatData.chartFour;
+        addPlanIdToChart(chartFourData);
+
+        for(let i = 0; i < chartFourData.length; i++) {
+            const chartFourRowData = chartFourData[i];
+            try {
+                await new PlanChartFourRow(chartFourRowData).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
+        const chartFiveData = mavatData.chartFive;
+        addPlanIdToChart(chartFiveData);
+
+        for(let i = 0; i < chartFiveData.length; i++) {
+            const chartFiveRowData = chartFiveData[i];
+            try {
+                await new PlanChartFiveRow(chartFiveRowData).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
+        const chartSixData = mavatData.chartSix;
+        addPlanIdToChart(chartSixData);
+
+        for(let i = 0; i < chartSixData.length; i++) {
+            const chartSixRowData = chartSixData[i];
+            try {
+                await new PlanChartSixRow(chartSixRowData).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
 
     }
 
