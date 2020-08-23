@@ -161,11 +161,10 @@ class Plan extends Model {
         });
 
         const charts18 = chart181.concat(chart182, chart183);
-        for(let i = 0; i < charts18.length; i++) {
+        for (let i = 0; i < charts18.length; i++) {
             try {
                 await new PlanChart18Row(charts18[i]).save();
-            }
-            catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         }
@@ -173,12 +172,11 @@ class Plan extends Model {
         const chartFourData = mavatData.chartFour;
         addPlanIdToChart(chartFourData);
 
-        for(let i = 0; i < chartFourData.length; i++) {
+        for (let i = 0; i < chartFourData.length; i++) {
             const chartFourRowData = chartFourData[i];
             try {
                 await new PlanChartFourRow(chartFourRowData).save();
-            }
-            catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         }
@@ -186,12 +184,11 @@ class Plan extends Model {
         const chartFiveData = mavatData.chartFive;
         addPlanIdToChart(chartFiveData);
 
-        for(let i = 0; i < chartFiveData.length; i++) {
+        for (let i = 0; i < chartFiveData.length; i++) {
             const chartFiveRowData = chartFiveData[i];
             try {
                 await new PlanChartFiveRow(chartFiveRowData).save();
-            }
-            catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         }
@@ -199,31 +196,31 @@ class Plan extends Model {
         const chartSixData = mavatData.chartSix;
         addPlanIdToChart(chartSixData);
 
-        for(let i = 0; i < chartSixData.length; i++) {
+        for (let i = 0; i < chartSixData.length; i++) {
             const chartSixRowData = chartSixData[i];
             try {
                 await new PlanChartSixRow(chartSixRowData).save();
-            }
-            catch(e) {
+            } catch (e) {
                 console.log(e);
             }
-        if (prevDetails === mavatData.mainPlanDetails || mavatData.mainPlanDetails === undefined) {
-            return;
-        }
+            if (prevDetails === mavatData.mainPlanDetails || mavatData.mainPlanDetails === undefined) {
+                return;
+            }
 
-        const stopWords = await DetailsClassifier.readStopWords();
-        const details = DetailsClassifier.parseStrDetailsOfPlan(mavatData.mainPlanDetails, stopWords);
+            const stopWords = await DetailsClassifier.readStopWords();
+            const details = DetailsClassifier.parseStrDetailsOfPlan(mavatData.mainPlanDetails, stopWords);
 
-        for (const detail of details) {
-            const detailData = {
-                planId: plan.id,
-                tag: detail.tag,
-                detail: detail.detail,
-                area_designation_from: detail.hasOwnProperty('fromArea') ? detail.fromArea : '',
-                area_designation_to: detail.hasOwnProperty('toArea') ? detail.toArea : ''
-            };
+            for (const detail of details) {
+                const detailData = {
+                    planId: plan.id,
+                    tag: detail.tag,
+                    detail: detail.detail,
+                    area_designation_from: detail.hasOwnProperty('fromArea') ? detail.fromArea : '',
+                    area_designation_to: detail.hasOwnProperty('toArea') ? detail.toArea : ''
+                };
 
-            await new PlanDetail(detailData).save();
+                await new PlanDetail(detailData).save();
+            }
         }
     }
 
