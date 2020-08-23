@@ -3,11 +3,7 @@ const {extractCharts1Point8} = require('./charts1Point8');
 const {extractChartFour, processChartFour} = require('./chart4');
 const {extractChartSix, processChartSix} = require('./chart6');
 const { extractPlanInformation } = require ('./planInformation');
-let pdf_table_extractor = require("pdf-table-extractor");
-
-const { promisify } = require('util');
-
-const pdfTableExtractor = promisify(pdf_table_extractor);
+const pdfTableExtractor = require("@florpor/pdf-table-extractor");
 
 function parsePdf(result)
 {
@@ -28,20 +24,19 @@ function parsePdf(result)
 
 const extractPdfData = async (path) =>  {
     try{
-        const data = await pdfTableExtractor(path);
+        const tableData = await pdfTableExtractor(path, {maxEdgesPerPage: 10000})
+            .then(data => {
+                if (data.pageTables && data.numPages && data.currentPages){
+                    const tableData = parsePdf(data);
+                    return tableData;
+                } else {
+                    console.log(`error reading plan instruction pdf`, data)
+                }
+            });
 
-        // it never gets here
-        const tableData = success(data);
         return tableData;
-    } catch (data){
-        // for some reason it throws an error but the object is the data we actually need
-        // check that we actually get the data in the right format  and it's not an error
-        if (data.pageTables && data.numPages && data.currentPages){
-            const tableData = parsePdf(data);
-            return tableData;
-        } else {
-            console.log(`error reading plan instruction pdf`, data)
-        }
+    } catch (err){
+        console.log(`error reading plan instruction pdf\n` + err.message + '\n' + err.stack)
     }
 };
 

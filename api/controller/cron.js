@@ -163,11 +163,18 @@ const fetchIplan = iPlan =>
                             oldPlan.get("data").STATION !==
                                 iPlan.properties.STATION
                         ) {
-                            plan.set("sent", oldPlan ? 1 : 0);
+                            // TODO: check why plan is undefined here
+                            if (plan !== undefined) {
+                                plan.set("sent", oldPlan ? 1 : 0);
+                            }
                         }
                         return plan;
                     })
-                    .then(plan => plan.save())
+                    .then(plan => {
+                        if (plan !== undefined) {
+                            plan.save();
+                        }
+                    })
             );
         })
         .catch(e => {
