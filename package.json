@@ -92,7 +92,8 @@
         "string-similarity": "^3.0.0",
         "turf": "^3.0.14",
         "winston": "^3.1.0",
-        "xml2js": "^0.4.22"
+        "xml2js": "^0.4.22",
+        "follow-redirects": "^1.13.0"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -111,5 +112,8 @@
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "api": "node bin/api",
         "serve": "node bin/serve"
+    },
+    "devDependencies": {
+        "prettier": "^2.0.5"
     }
 }

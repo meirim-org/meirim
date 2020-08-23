@@ -5,6 +5,8 @@ const puppeteer = require("puppeteer");
 const HtmlTableToJson = require("html-table-to-json");
 const log = require("../../lib/log");
 const path = require('path');
+const http = require('follow-redirects').http;
+const fs = require('fs');
 
 const { clearOldPlanFiles, processPlanInstructionsFile } = require("./planInstructions/");
 
@@ -38,21 +40,57 @@ const init = () =>
         })();
     });
 
-// download the plan instructions pdf
+
+const downloadFile = (url, file, entityDocId, entityDocNumber) => {
+    return new Promise((resolve, reject) => {
+        http.get(url, (response) => {
+            response.pipe(file);
+            file.on('finish', async function() {
+                await file.close();
+                resolve(true);
+            });
+        }).on('error', (err) => {
+            console.log(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
+            console.log(err);
+            resolve(false);
+        });
+    });
+};
+
+
+const downloadPlanPDF = async (functionCallText) => {
+    if (functionCallText === undefined) {
+        return false;
+    }
+
+    const matches = functionCallText.match(/'[\dA-Z]+'/g);
+    if (matches === null) {
+        return false;
+    }
+
+    const entityDocId = matches[0].slice(1, matches[0].length - 1);   // without the beginning and ending quotes
+    const entityDocNumber = matches[1].slice(1, matches[1].length - 1);
+    const downloadUrl = `http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=${entityDocId}&edn=${entityDocNumber}&opener=AttachmentError.aspx`;
+    const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
+    return await downloadFile(downloadUrl, file, entityDocId, entityDocNumber);
+};
+
+
 const getPlanInstructions = async (page) => {
-    const shouldDownloadPlanInstructions =  await page.evaluate(() => {
+    const functionCallText =  await page.evaluate(() => {
         const matchText = 'הוראות התכנית';
         let firstRowText = document.querySelector('#trCategory3 .clsTableRowNormal').
         querySelector('td').innerText;
         if (firstRowText === matchText) {
-            document.querySelector('#trCategory3 .clsTableRowNormal').
-            querySelector('img').onclick();
-            return true;
+            return document.querySelector('#trCategory3 .clsTableRowNormal').
+            querySelector('img').getAttribute('onclick');
         }
-        return false;
+        return undefined;
     });
 
-    if (shouldDownloadPlanInstructions) {
+    const hasDownloaded = await downloadPlanPDF(functionCallText);
+
+    if (hasDownloaded) {
         try{
             return processPlanInstructionsFile(PLAN_DOWNLOAD_PATH);
         } catch (err){
@@ -225,11 +263,11 @@ const getByPlan = plan =>
                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
-                planExplanation: pageInstructions.planExplanation,
-                charts18: pageInstructions.charts18,
-                chartFour: pageInstructions.chartFour,
-                chartFive: pageInstructions.chartFive,
-                chartSix: pageInstructions.chartSix
+                planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
+                charts18: pageInstructions ? pageInstructions.charts18 : undefined,
+                chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
+                chartFive: pageInstructions ? pageInstructions.chartFive : undefined,
+                chartSix: pageInstructions ? pageInstructions.chartSix : undefined
             });
         });
 // const getByPlan = () => Promise.resolve();
