@@ -26,7 +26,7 @@ exports.up = async function(knex, Promise) {
         t.string("side_line_front", 200);
     });
     await knex.schema.table('plan', (table) => {
-        table.string('explanation', 20000);
+        table.text('explanation');
     })
 };
 
