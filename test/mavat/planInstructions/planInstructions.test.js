@@ -925,3 +925,32 @@ describe('Taba7 parsing test', () => {
 });
 
 
+//test plan 8 is to check the absent of 1.8.2 and 1.8.3
+describe('Taba8 parsing test', function() {
+    let data;
+    const TEST_PLANS_DIR = 'test_plan8';
+
+    before(async () =>
+        data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+
+    it('chart 1.8.1 should have one row', () =>
+        assert.strictEqual(data.charts18.chart181.length, 1));
+
+    it('chart 1.8.2 should have 0 rows', () =>
+        assert.strictEqual(data.charts18.chart182.length, 0));
+
+    it('chart 1.8.3 should have 0 rows', () =>
+        assert.strictEqual(data.charts18.chart183.length, 0));
+
+    it('chart 4 should have 3 rows', () =>
+        assert.strictEqual(data.chartFour.length, 3));
+
+    it('chart 5 should have 2 rows', () =>
+        assert.strictEqual(data.chartFive.length, 2));
+
+    it('chart 6 should have 7 rows', () =>
+        assert.strictEqual(data.chartSix.length, 7));
+
+
+
+});
