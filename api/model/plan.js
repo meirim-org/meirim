@@ -132,6 +132,8 @@ class Plan extends Model {
             chart.forEach(row => row.plan_id = plan.id);
         };
 
+        const prevDetails = plan.main_details_from_mavat;
+
         await plan.set({
             goals_from_mavat: mavatData.goals,
             main_details_from_mavat: mavatData.mainPlanDetails,
@@ -141,76 +143,91 @@ class Plan extends Model {
         });
         await plan.save();
 
-        const chart181 = mavatData.charts18.chart181;
-        //add plain_id and origin
-        chart181.forEach(row => {
-            row.plan_id = plan.id;
-            row.origin = '1.8.1';
-        });
+        if (mavatData.charts18 !== undefined) {
+            const chart181 = mavatData.charts18.chart181;
+            //add plain_id and origin
+            chart181.forEach(row => {
+                row.plan_id = plan.id;
+                row.origin = '1.8.1';
+            });
 
-        const chart182 = mavatData.charts18.chart182;
-        chart182.forEach(row => {
-            row.plan_id = plan.id;
-            row.origin = '1.8.2';
-        });
+            const chart182 = mavatData.charts18.chart182;
+            chart182.forEach(row => {
+                row.plan_id = plan.id;
+                row.origin = '1.8.2';
+            });
 
-        const chart183 = mavatData.charts18.chart183;
-        chart183.forEach(row => {
-            row.plan_id = plan.id;
-            row.origin = '1.8.3';
-        });
+            const chart183 = mavatData.charts18.chart183;
+            chart183.forEach(row => {
+                row.plan_id = plan.id;
+                row.origin = '1.8.3';
+            });
 
-        const charts18 = chart181.concat(chart182, chart183);
-        for (let i = 0; i < charts18.length; i++) {
-            try {
-                await new PlanChart18Row(charts18[i]).save();
-            } catch (e) {
-                console.log(e);
+            const charts18 = chart181.concat(chart182, chart183);
+            for (let i = 0; i < charts18.length; i++) {
+                try {
+                    await new PlanChart18Row(charts18[i]).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 
         const chartFourData = mavatData.chartFour;
-        addPlanIdToChart(chartFourData);
+        if (chartFourData !== undefined) {
 
-        for (let i = 0; i < chartFourData.length; i++) {
-            const chartFourRowData = chartFourData[i];
-            try {
-                await new PlanChartFourRow(chartFourRowData).save();
-            } catch (e) {
-                console.log(e);
+            addPlanIdToChart(chartFourData);
+
+            for (let i = 0; i < chartFourData.length; i++) {
+                const chartFourRowData = chartFourData[i];
+                try {
+                    await new PlanChartFourRow(chartFourRowData).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 
         const chartFiveData = mavatData.chartFive;
-        addPlanIdToChart(chartFiveData);
+        if (chartFiveData !== undefined) {
 
-        for (let i = 0; i < chartFiveData.length; i++) {
-            const chartFiveRowData = chartFiveData[i];
-            try {
-                await new PlanChartFiveRow(chartFiveRowData).save();
-            } catch (e) {
-                console.log(e);
+            addPlanIdToChart(chartFiveData);
+
+            for (let i = 0; i < chartFiveData.length; i++) {
+                const chartFiveRowData = chartFiveData[i];
+                try {
+                    await new PlanChartFiveRow(chartFiveRowData).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 
         const chartSixData = mavatData.chartSix;
-        addPlanIdToChart(chartSixData);
+        if (chartSixData !== undefined) {
 
-        for (let i = 0; i < chartSixData.length; i++) {
-            const chartSixRowData = chartSixData[i];
-            try {
-                await new PlanChartSixRow(chartSixRowData).save();
-            } catch (e) {
-                console.log(e);
+            addPlanIdToChart(chartSixData);
+
+            for (let i = 0; i < chartSixData.length; i++) {
+                const chartSixRowData = chartSixData[i];
+                try {
+                    await new PlanChartSixRow(chartSixRowData).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
-            if (prevDetails === mavatData.mainPlanDetails || mavatData.mainPlanDetails === undefined) {
-                return;
-            }
+        }
 
-            const stopWords = await DetailsClassifier.readStopWords();
-            const details = DetailsClassifier.parseStrDetailsOfPlan(mavatData.mainPlanDetails, stopWords);
 
-            for (const detail of details) {
+        if (prevDetails === mavatData.mainPlanDetails || mavatData.mainPlanDetails === undefined) {
+            return;
+        }
+
+        const stopWords = await DetailsClassifier.readStopWords();
+        const details = DetailsClassifier.parseStrDetailsOfPlan(mavatData.mainPlanDetails, stopWords);
+
+        for (const detail of details) {
+            if (detail !== undefined) {
                 const detailData = {
                     planId: plan.id,
                     tag: detail.tag,
