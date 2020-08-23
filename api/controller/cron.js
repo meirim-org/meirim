@@ -31,7 +31,7 @@ const fix_geodata = () => {
                     });
                 })
                 .catch(e => {
-                    console.log("iplan exception", JSON.stringify(e));
+                    console.log("iplan exception\n" + e.message + '\n' + e.stack);
                     return Bluebird.resolve();
                 });
         })
@@ -76,10 +76,9 @@ const complete_jurisdiction_from_mavat = () =>
                 return MavatAPI.getByPlan(plan).then(mavatData => {
                     Plan.setMavatData(plan, mavatData);
                     Log.debug(
-                        "Saving with jurisdiction form mavat",
+                        "saved with jurisdiction from mavat",
                         JSON.stringify(mavatData)
                     );
-                    return plan.save();
                 });
             })
         );
@@ -172,7 +171,7 @@ const fetchIplan = iPlan =>
             );
         })
         .catch(e => {
-            console.log("iplan exception", JSON.stringify(e));
+            console.log("iplan exception\n" + e.message + '\n' + e.stack);
             return Bluebird.resolve();
         });
 
@@ -182,7 +181,7 @@ const buildPlan = (iPlan, oldPlan) => {
             .then(mavatData => Plan.setMavatData(plan, mavatData))
             .catch(e => {
                 // mavat might crash gracefully
-                console.log("Mavat error", JSON.stringify(e));
+                console.log("Mavat error\n" + e.message + '\n' + e.stack);
                 return plan;
             })
     );

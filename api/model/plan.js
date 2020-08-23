@@ -4,6 +4,10 @@ const Log = require("../lib/log");
 const Exception = require("./exception");
 const DetailsClassifier = require("../../data_processing/categorize_plans");
 const PlanDetail = require("./plan_detail");
+const PlanChartFiveRow = require('./plan_chart_five_row');
+const PlanChart18Row = require('./plan_chart_1_point_8_row');
+const PlanChartFourRow = require('./plan_chart_four_row');
+const PlanChartSixRow = require('./plan_chart_six_row');
 
 class Plan extends Model {
     get rules() {
@@ -18,7 +22,8 @@ class Plan extends Model {
             geom: ["required", "object"],
             jurisdiction: "string",
             areaChanges: "string",
-            rating: ["required", "number"]
+            rating: ["required", "number"],
+            explanation: "string",
         };
     }
 
@@ -122,20 +127,92 @@ class Plan extends Model {
         return plan.save();
     }
 
-    static async setMavatData(plan, mavanData) {
-        const prevDetails = plan.main_details_from_mavat;
-        await plan.set({
-            goals_from_mavat: mavanData.goals,
-            main_details_from_mavat: mavanData.mainPlanDetails,
-            jurisdiction: mavanData.jurisdiction,
-            areaChanges: mavanData.areaChanges});
+    static async setMavatData(plan, mavatData) {
+        const addPlanIdToChart = (chart) => {
+            chart.forEach(row => row.plan_id = plan.id);
+        };
 
-        if (prevDetails === mavanData.mainPlanDetails || mavanData.mainPlanDetails === undefined) {
+        await plan.set({
+            goals_from_mavat: mavatData.goals,
+            main_details_from_mavat: mavatData.mainPlanDetails,
+            jurisdiction: mavatData.jurisdiction,
+            areaChanges: mavatData.areaChanges,
+            explanation: mavatData.planExplanation
+        });
+        await plan.save();
+
+        const chart181 = mavatData.charts18.chart181;
+        //add plain_id and origin
+        chart181.forEach(row => {
+            row.plan_id = plan.id;
+            row.origin = '1.8.1';
+        });
+
+        const chart182 = mavatData.charts18.chart182;
+        chart182.forEach(row => {
+            row.plan_id = plan.id;
+            row.origin = '1.8.2';
+        });
+
+        const chart183 = mavatData.charts18.chart183;
+        chart183.forEach(row => {
+            row.plan_id = plan.id;
+            row.origin = '1.8.3';
+        });
+
+        const charts18 = chart181.concat(chart182, chart183);
+        for(let i = 0; i < charts18.length; i++) {
+            try {
+                await new PlanChart18Row(charts18[i]).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
+        const chartFourData = mavatData.chartFour;
+        addPlanIdToChart(chartFourData);
+
+        for(let i = 0; i < chartFourData.length; i++) {
+            const chartFourRowData = chartFourData[i];
+            try {
+                await new PlanChartFourRow(chartFourRowData).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
+        const chartFiveData = mavatData.chartFive;
+        addPlanIdToChart(chartFiveData);
+
+        for(let i = 0; i < chartFiveData.length; i++) {
+            const chartFiveRowData = chartFiveData[i];
+            try {
+                await new PlanChartFiveRow(chartFiveRowData).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
+        const chartSixData = mavatData.chartSix;
+        addPlanIdToChart(chartSixData);
+
+        for(let i = 0; i < chartSixData.length; i++) {
+            const chartSixRowData = chartSixData[i];
+            try {
+                await new PlanChartSixRow(chartSixRowData).save();
+            }
+            catch(e) {
+                console.log(e);
+            }
+        if (prevDetails === mavatData.mainPlanDetails || mavatData.mainPlanDetails === undefined) {
             return;
         }
 
         const stopWords = await DetailsClassifier.readStopWords();
-        const details = DetailsClassifier.parseStrDetailsOfPlan(mavanData.mainPlanDetails, stopWords);
+        const details = DetailsClassifier.parseStrDetailsOfPlan(mavatData.mainPlanDetails, stopWords);
 
         for (const detail of details) {
             const detailData = {

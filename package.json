@@ -67,6 +67,7 @@
         "nodemailer": "^4.1.0",
         "passport": "^0.3.2",
         "passport-local": "^1.0.0",
+        "pdf-table-extractor": "^1.0.3",
         "proj4": "^2.5.0",
         "puppeteer": "^1.20.0",
         "query-string": "^6.8.3",
@@ -94,7 +95,8 @@
         "terraformer-wkt-parser": "^1.2.1",
         "turf": "^3.0.14",
         "winston": "^3.1.0",
-        "xml2js": "^0.4.22"
+        "xml2js": "^0.4.22",
+        "follow-redirects": "^1.13.0"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -115,6 +117,7 @@
         "serve": "node bin/serve"
     },
     "devDependencies": {
+<<<<<<< HEAD
         "@typescript-eslint/eslint-plugin": "^2.19.0",
         "@typescript-eslint/parser": "^2.19.0",
         "eslint": "^6.8.0",
@@ -124,5 +127,8 @@
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-standard": "^4.0.1"
+=======
+        "prettier": "^2.0.5"
+>>>>>>> plan-rights-model
     }
 }
