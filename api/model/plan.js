@@ -8,6 +8,7 @@ const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChart18Row = require('./plan_chart_1_point_8_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
+const PlanTag = require('./plan_tag');
 
 class Plan extends Model {
     get rules() {
@@ -128,7 +129,7 @@ class Plan extends Model {
     }
 
     static async setMavatData(plan, mavatData) {
-        const addPlanIdToChart = (chart) => {
+        const addPlanIdToArray = (chart) => {
             chart.forEach(row => row.plan_id = plan.id);
         };
 
@@ -176,7 +177,7 @@ class Plan extends Model {
         const chartFourData = mavatData.chartFour;
         if (chartFourData !== undefined) {
 
-            addPlanIdToChart(chartFourData);
+            addPlanIdToArray(chartFourData);
 
             for (let i = 0; i < chartFourData.length; i++) {
                 const chartFourRowData = chartFourData[i];
@@ -191,7 +192,7 @@ class Plan extends Model {
         const chartFiveData = mavatData.chartFive;
         if (chartFiveData !== undefined) {
 
-            addPlanIdToChart(chartFiveData);
+            addPlanIdToArray(chartFiveData);
 
             for (let i = 0; i < chartFiveData.length; i++) {
                 const chartFiveRowData = chartFiveData[i];
@@ -206,7 +207,7 @@ class Plan extends Model {
         const chartSixData = mavatData.chartSix;
         if (chartSixData !== undefined) {
 
-            addPlanIdToChart(chartSixData);
+            addPlanIdToArray(chartSixData);
 
             for (let i = 0; i < chartSixData.length; i++) {
                 const chartSixRowData = chartSixData[i];
@@ -238,6 +239,13 @@ class Plan extends Model {
 
                 await new PlanDetail(detailData).save();
             }
+        }
+
+        const tags = DetailsClassifier.makeTags(mavatData);
+        addPlanIdToArray(tags);
+
+        for (const tag of tags) {
+            await new PlanTag(tag).save();
         }
     }
 
