@@ -207,9 +207,17 @@ function parseStrDetailsOfPlan(detailsStrOfPlan, stopWordsSet) {
     return detailsArr.map(detail => parseDetail(detail, stopWordsSet));
 }
 
+
+
+function makeTags(mavatData) {
+    return [];
+}
+
+
 module.exports = {
     parseDetail,
     readStopWords,
     detailsStrToDetailsArr,
-    parseStrDetailsOfPlan
+    parseStrDetailsOfPlan,
+    makeTags
 };
