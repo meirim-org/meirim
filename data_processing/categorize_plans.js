@@ -208,7 +208,7 @@ function parseStrDetailsOfPlan(detailsStrOfPlan, stopWordsSet) {
 }
 
 
-
+// returns list of {origin, tag}
 function makeTags(mavatData) {
     return [];
 }
