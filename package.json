@@ -42,7 +42,7 @@
         "email-verify": "^0.2.1",
         "esri-to-geojson": "^1.0.3",
         "express": "~4.15.2",
-        "express-fileupload": "^0.1.4",
+        "express-fileupload": "^1.1.10",
         "express-handlebars": "^3.1.0",
         "express-session": "^1.16.2",
         "express-winston": "^3.3.0",
