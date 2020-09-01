@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import geojsonArea from "@mapbox/geojson-area";
-import { Redirect } from "react-router-dom";
+import { Redirect, NavLink as Link } from "react-router-dom";
 import { Chart } from "react-charts";
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -129,6 +129,16 @@ class SinglePlan extends Component {
                     <div className="container" className="container">
                         <div className="container">
                             <h1>{plan.PL_NAME}</h1>
+                            {!me && (
+                                <div className="row">
+                                    <div className="col">
+                                        <h5>רוצים לקבל הודעה כשהתוכנית מתקדמת?</h5>
+                                        <Link className="register-link" to="/">
+                                            הרשמו למערכת ההתראות שלנו כאן
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
                             <div className="row">
                                 <div className="col">
                                     <div className="empty_rectangle">
