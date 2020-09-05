@@ -30,6 +30,9 @@ exports.up = async function(knex, Promise) {
     })
 };
 
-exports.down = function(knex, Promise) {
-    return knex.schema.dropTableIfExists('table_5_building_rights');
+exports.down = async function(knex) {
+    await knex.schema.dropTableIfExists('table_5_building_rights');
+    await knex.schema.table('plan', table => {
+        table.dropColumns('explanation');
+    });
 };
