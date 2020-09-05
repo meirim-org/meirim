@@ -67,7 +67,7 @@
         "nodemailer": "^4.1.0",
         "passport": "^0.3.2",
         "passport-local": "^1.0.0",
-        "@florpor/pdf-table-extractor": "^1.0.4",
+        "@florpor/pdf-table-extractor": "^1.0.6",
         "proj4": "^2.5.0",
         "puppeteer": "^1.20.0",
         "query-string": "^6.8.3",
