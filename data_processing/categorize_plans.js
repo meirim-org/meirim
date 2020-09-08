@@ -210,6 +210,18 @@ function parseStrDetailsOfPlan(detailsStrOfPlan, stopWordsSet) {
 
 // returns list of {origin, tag}
 function makeTags(mavatData) {
+    const chartFive = mavatData.chartFive;
+    for (let i = 0 ; i < chartFive.length ; i++) {
+        const floorsAbove = chartFive[i].floors_above;
+        if(parseInt(floorsAbove) >= 12) {
+            return [{
+                origin:"chart_5",
+                tag:"tower"
+            }]
+        }
+
+
+    }
     return [];
 }
 
