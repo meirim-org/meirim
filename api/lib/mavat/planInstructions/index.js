@@ -10,6 +10,7 @@ async function sleep(ms) {
 
 const readdir = util.promisify(fs.readdir);
 const unlink = util.promisify(fs.unlink);
+const mkdir = util.promisify(fs.mkdir);
 
 const processPlanInstructionsFile = async (fileDir) => {
     let files;
@@ -37,8 +38,19 @@ const clearOldPlanFiles = async (fileDir) => {
 
     try {
         files = await readdir(fileDir);
-    } catch (e){
-        console.log('error getting files');
+    } catch (e) {
+        // the directory is not there
+        if (e.code === 'ENOENT') {
+            try {
+                // try to create the directory
+                await mkdir(fileDir);
+                // if we created it, it's empty and we don't need to clean it
+                return;
+            }
+            catch(e) {
+                console.log('error getting files');
+            }
+        }
     }
 
     for (let i = 0; i < files.length; i++) {
