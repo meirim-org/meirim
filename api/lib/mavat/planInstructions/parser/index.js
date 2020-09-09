@@ -24,7 +24,7 @@ function parsePdf(result)
 
 const extractPdfData = async (path) =>  {
     try{
-        const tableData = await pdfTableExtractor(path, {maxEdgesPerPage: 10000})
+        const tableData = await pdfTableExtractor(path, {maxEdgesPerPage: 3000})
             .then(data => {
                 if (data.pageTables && data.numPages && data.currentPages){
                     const tableData = parsePdf(data);
