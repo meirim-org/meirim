@@ -5,3 +5,5 @@ local.json
 public/upload/
 .idea
 config/local.json
+cypress/videos/
+cypress/screenshots/

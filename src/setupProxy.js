@@ -1,4 +1,4 @@
-const proxy = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
     // requests meant to the development api server
@@ -6,7 +6,7 @@ module.exports = function(app) {
     // proxied from "/api..." addresses
     app.use(
         '/api',
-        proxy({
+        createProxyMiddleware({
             target: 'http://localhost:3001',
             pathRewrite: { '^/api': '' }
         })
