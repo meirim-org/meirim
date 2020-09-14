@@ -136,10 +136,11 @@ class Plans extends Component {
                                                 gutterBottom
                                                 variant="h5"
                                                 component="h2"
+                                                color="textPrimary"
                                             >
                                                 {plan.PL_NAME}
                                             </Typography>
-                                            <Typography component="p">
+                                            <Typography component="p" color="textPrimary">
                                                 <UnsafeRender
                                                     html={
                                                         plan.main_details_from_mavat
