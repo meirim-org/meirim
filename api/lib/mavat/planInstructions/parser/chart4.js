@@ -95,7 +95,7 @@ const processChartFour = (chartFour) => {
         const description = chartFour[i].description;
 
         // it's something like 4.1 or 4.3 (number dot number)
-        const father_cat_match = is_data_damaged ? /(?<!\.)4\.\d+(?!\.)/.exec(description) : /^4\.\d+$/.exec(clause_num);
+        const father_cat_match = is_data_damaged ? /(?<!\.)4\.\d+(?!\.)$/.exec(description) : /^4\.\d+$/.exec(clause_num);
         if (father_cat_match !== null) {
             // it's a father category, but it's not saying anything, yet. we save it for later.
             if (!is_data_damaged) {
