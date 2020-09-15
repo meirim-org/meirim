@@ -77,14 +77,20 @@ const downloadPlanPDF = async (functionCallText) => {
 
 
 const getPlanInstructions = async (page) => {
-    const functionCallText =  await page.evaluate(() => {
-        const matchText = 'הוראות התכנית';
-        let firstRowText = document.querySelector('#trCategory3 .clsTableRowNormal').
-        querySelector('td').innerText;
-        if (firstRowText === matchText) {
-            return document.querySelector('#trCategory3 .clsTableRowNormal').
-            querySelector('img').getAttribute('onclick');
+    const functionCallText = await page.evaluate(() => {
+        const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
+        const innerTexts =  elements.map(ele => ele.innerText.trim());
+        // elements look like this:
+        // [kind, description, thoola, date, file, kind, description, thoola, date, file...]
+        // (flattened table)
+        for (let i = 0; i < innerTexts.length; i += 5) {
+            // before approval
+            if ((innerTexts[i] === 'הוראות התכנית' && innerTexts[i + 1] ===  'הוראות התכנית') ||      // before approval
+                (innerTexts[i] === 'מסמכים חתומים' && innerTexts[i + 1] === 'תדפיס הוראות התכנית - חתום לאישור')) {   // after approval
+                return elements[i + 4].querySelector('img').getAttribute('onclick');
+            }
         }
+        console.log('got undefined');
         return undefined;
     });
 
@@ -110,7 +116,14 @@ const fetch = planUrl =>
                 await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: PLAN_DOWNLOAD_PATH});
 
                 await page.goto(planUrl);
-                await page.waitForSelector("#divMain");
+                try {
+                    await page.waitForSelector("#divMain");
+                }
+                catch(e) {
+                    page.close();
+                    console.error(e);
+                    reject(e);
+                }
 
                 const bodyHTML = await page.evaluate(
                     () => document.body.innerHTML
@@ -273,5 +286,7 @@ const getByPlan = plan =>
 // const getByPlan = () => Promise.resolve();
 module.exports = {
     // getByUrl,
-    getByPlan
+    getByPlan,
+    init,
+    fetch
 };
