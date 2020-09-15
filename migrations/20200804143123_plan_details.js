@@ -5,7 +5,7 @@ exports.up = async function(knex) {
      t.increments('id').primary();
      t.integer('planId').references('id').inTable('plan');
      t.string('tag');
-     t.string('detail', 1000);
+     t.text('detail');
      t.string('area_designation_from', 1000);
      t.string('area_designation_to', 1000);
   });

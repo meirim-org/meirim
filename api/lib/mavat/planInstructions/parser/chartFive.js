@@ -116,8 +116,7 @@ const extractChartFive = (pageTables) => {
     startOfChartPred: startChart5Predicate,
     offsetOfRowWithDataInChart: 3,    //length of header (header rows) is 3
     chartDonePredicate: endChartPredicate,
-    getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => (row.some(cell => cell.includes('יעוד')) &&
-        row.some(cell => cell.includes('תאי שטח'))) || (row.some(cell => cell.includes('יעוד')) && row.some(cell => cell.includes('שימוש')))) + searchFrom,   //add searchFrom back to be aligned with the original array
+    getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => (row.some(cell => cell.includes('יעוד')))) + searchFrom,   //add searchFrom back to be aligned with the original array
     identifier: 'chart 5'
   });
 };
