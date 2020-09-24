@@ -66,8 +66,7 @@ const extractCharts1Point8 = (pageTables) => {
           startOfChartPred: (cell) => cell === 'מגיש התכנית1.8.1',
           offsetOfRowWithDataInChart: 1,
           chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.2')) || row.some(cell => cell.includes('הערה')),
-          getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
-              row.some(cell => cell.includes('שם'))) + searchFrom,
+          getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('שם'))) + searchFrom,
           identifier: '1.8.1'}),
         chart182: pageTablesToDataArray({
            pageTables,
@@ -75,8 +74,7 @@ const extractCharts1Point8 = (pageTables) => {
            startOfChartPred: (cell) => cell.includes('1.8.2') && !cell.includes('1.8.3'),
            offsetOfRowWithDataInChart: 1,
            chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.3' || cell.includes('כתובת:'))),
-           getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
-               row.some(cell => cell.includes('שם'))) + searchFrom,
+           getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('שם'))) + searchFrom,
            identifier: '1.8.2'}),
         chart183: pageTablesToDataArray({
             pageTables,
