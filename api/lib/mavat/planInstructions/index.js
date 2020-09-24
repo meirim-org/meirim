@@ -25,6 +25,8 @@ const processPlanInstructionsFile = async (fileDir) => {
         currentTry++;
     }
 
+    files = files.filter(fileName => fileName.endsWith(".pdf"));
+
     if (files.length > 0){
         // we just want the one file, at least for now
         const filePath = path.join(fileDir, files[0]);
