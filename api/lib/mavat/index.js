@@ -115,8 +115,8 @@ const fetch = planUrl =>
                 await clearOldPlanFiles(PLAN_DOWNLOAD_PATH);
                 await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: PLAN_DOWNLOAD_PATH});
 
-                await page.goto(planUrl);
                 try {
+                    await page.goto(planUrl);
                     await page.waitForSelector("#divMain");
                 }
                 catch(e) {
@@ -131,7 +131,14 @@ const fetch = planUrl =>
 
                 const pageInstructions = await getPlanInstructions(page);
 
-                page.close();
+                try {
+                    page.close();
+                }
+                catch(e) {
+                    console.error(e);
+                    reject(e);
+                }
+
                 const dom = cheerio.load(bodyHTML, {
                     decodeEntities: false
                 });
@@ -151,7 +158,12 @@ const fetch = planUrl =>
                 catch (htmlError) {
                     log.error("Mavat fetch error html error", htmlError);
                 }
-                page.close();
+                try {
+                    page.close();
+                }
+                catch(e) {
+                    console.error(e);
+                }
                 reject(err);
             }
         })();
