@@ -210,9 +210,49 @@ function parseStrDetailsOfPlan(detailsStrOfPlan, stopWordsSet) {
 
 // returns list of {origin, tag}
 function makeTags(mavatData) {
-    return [];
+    const tags = [];
+    const towerTag = makeTowerTag(mavatData);
+   // const publicOwnerTag = makePublicOwnerTag(mavatData);
+    if(towerTag !== undefined) {
+        tags.push(towerTag);
+    }
+    // if (publicOwnerTag !== undefined) {
+    //     tags.push(publicOwnerTag);
+    // }
+    return tags;
 }
 
+function makeTowerTag(mavatData){
+    function isTower(chartFiveRow) {
+        return parseInt(chartFiveRow.floors_above) >= 12;
+    }
+
+    if (mavatData.chartFive.some(isTower)) {
+        return {
+            origin: "chart_5",
+            tag:    "tower"
+        }
+    }
+    return undefined;
+}
+
+function makePublicOwnerTag(mavatData) {
+    function isPublicOwner (chart18Row) {
+       if(chart18Row.type === 'בעלים'){
+           // todo check corporate
+       }
+       else {
+           //todo check type
+       }
+    }
+    if (mavatData.chart183.some(isPublicOwner)) {
+        return {
+            tag:    "publicLandOwner",
+            origin: "chart1.8.3"
+        }
+    }
+    return undefined;
+}
 
 module.exports = {
     parseDetail,
