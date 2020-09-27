@@ -211,14 +211,23 @@ function parseStrDetailsOfPlan(detailsStrOfPlan, stopWordsSet) {
 // returns list of {origin, tag}
 function makeTags(mavatData) {
     const tags = [];
-    const towerTag = makeTowerTag(mavatData);
-   // const publicOwnerTag = makePublicOwnerTag(mavatData);
-    if(towerTag !== undefined) {
-        tags.push(towerTag);
-    }
-    // if (publicOwnerTag !== undefined) {
-    //     tags.push(publicOwnerTag);
-    // }
+
+    // function that makes it easy to add the output of the tags maker functions into the tags list
+    const addToTags = (tagOrUndefined) => {
+        if (tagOrUndefined !== undefined) {
+            tags.push(tagOrUndefined);
+        }
+    };
+
+    // list of functions that takes mavatData as argument and returns undefined or tag
+    const tagMakers = [
+        makeTowerTag,
+        //makePublicOwnerTag,
+    ];
+
+    // apply the tag makers on mavatData and add the tags that came out from it into the tags list
+    tagMakers.map(tagMaker => tagMaker(mavatData)).forEach(addToTags);
+
     return tags;
 }
 
