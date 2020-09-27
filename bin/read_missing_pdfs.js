@@ -24,7 +24,14 @@ const readMissingPdfs = async () => {
 
         if (planUrl) {
             await mavat.init();
-            const fetchRes = await mavat.fetch(planUrl);
+            let fetchRes;
+            try {
+                fetchRes = await mavat.fetch(planUrl);
+            }
+            catch(e) {
+                console.error('mavat fetch failed');
+                continue;
+            }
             const readRes = fetchRes.pageInstructions;
 
             if (readRes === undefined) {
