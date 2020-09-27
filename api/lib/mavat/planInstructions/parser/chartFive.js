@@ -100,9 +100,7 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
 };
 
 const endChartPredicate = (row) => {
-    return row[0].includes( `האמור בטבלה זו גובר, במקרה של סתירה, על הוראות כלליות אחרות, בין בהוראות התכנית ובין בתשריט המצב המוצע.
-גם בטבלה עצמה גוברת הוראה מפורטת על הוראה כללית
-שטחי הבניה המפורטים בטבלה שלעיל כוללים את כל שטחי הבניה המירביים בתכנית זו`);
+    return row[0].includes(`האמור בטבלה זו גובר, במקרה של סתירה, על הוראות כלליות אחרות`);
 };
 
 const startChart5Predicate = (cell) => {
