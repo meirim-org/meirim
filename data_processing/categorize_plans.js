@@ -223,6 +223,7 @@ function makeTags(mavatData) {
     const tagMakers = [
         makeTowerTag,
         //makePublicOwnerTag,
+        makeUndergroundParkingTag,
     ];
 
     // apply the tag makers on mavatData and add the tags that came out from it into the tags list
@@ -238,7 +239,7 @@ function makeTowerTag(mavatData){
 
     if (mavatData.chartFive.some(isTower)) {
         return {
-            origin: "chart_5",
+            origin: "chart 5",
             tag:    "tower"
         }
     }
@@ -257,10 +258,31 @@ function makePublicOwnerTag(mavatData) {
     if (mavatData.chart183.some(isPublicOwner)) {
         return {
             tag:    "publicLandOwner",
-            origin: "chart1.8.3"
+            origin: "chart 1.8.3"
         }
     }
     return undefined;
+}
+
+function makeUndergroundParkingTag(mavatData) {
+    const isUndergroundParking = (chart5Row) => {
+        const use = chart5Row.use;
+
+        return (
+            chart5Row.floors_below.match("^[1-9]+") && // starts with some number (not 0, not empty)
+            (use.includes("משרדים") ||
+                use.includes("מגורים") ||
+                use.includes("תעסוקה") ||
+                use.includes("מבנים ומוסדות ציבור"))
+        );
+    };
+
+    return mavatData.chartFive.some(isUndergroundParking)
+        ? {
+              tag: "undergroundParking",
+              origin: "chart 5",
+          }
+        : undefined;
 }
 
 module.exports = {
