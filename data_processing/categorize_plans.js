@@ -268,7 +268,7 @@ function makeUndergroundParkingTag(mavatData) {
     const isUndergroundParking = (chart5Row) => {
         const use = chart5Row.use;
 
-        return (
+        return (chart5Row.floors_below && use &&       // check that the strings are not undefined or null
             chart5Row.floors_below.match("^[1-9]+") && // starts with some number (not 0, not empty)
             (use.includes("משרדים") ||
                 use.includes("מגורים") ||
