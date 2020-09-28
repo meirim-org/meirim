@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { NavLink as Link } from 'react-router-dom';
+
 import api from '../services/api';
 import t from '../locale/he_IL';
 import './RegisterForm.css';
@@ -90,12 +92,17 @@ class RegisterForm extends Component {
             <div className="form-group text-center">
               <button type="submit">{t.signup}</button>
             </div>
+            <div className="text-start">
+              <Link to="/sign/in">
+                {t.alreadyGotAccount}
+              </Link>
+            </div>
           </div>
         )}
 
         {done && (
           <div className="alert alert-success">
-            שלחו לך דואר אלקטרוני עם לינק להפעלת החשבון.
+            שלחנו לך דואר אלקטרוני עם לינק להפעלת החשבון.
           </div>
         )}
       </form>

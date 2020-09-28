@@ -2,10 +2,13 @@ const Bluebird = require("bluebird");
 const Model = require("./base_model");
 const Log = require("../lib/log");
 const Exception = require("./exception");
+const DetailsClassifier = require("../../data_processing/categorize_plans");
+const PlanDetail = require("./plan_detail");
 const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChart18Row = require('./plan_chart_1_point_8_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
+const PlanTag = require('./plan_tag');
 
 class Plan extends Model {
     get rules() {
@@ -44,12 +47,6 @@ class Plan extends Model {
         try {
             if (attributes.data) {
                 attributes.data = JSON.parse(attributes.data);
-                if (
-                    attributes.jurisdiction === "מקומית" &&
-                    attributes.data.STATION_DESC !== "מאושרות"
-                ) {
-                    attributes.notCredible = true;
-                }
             }
         } catch (e) {
             Log.error("Json parse error", attributes.data);
@@ -57,7 +54,6 @@ class Plan extends Model {
 
         return super.parse(attributes);
     }
-
     get geometry() {
         return ["geom"];
     }
@@ -83,83 +79,7 @@ class Plan extends Model {
         throw new Exception.NotAllowed("This option is disabled");
     }
 
-    static maekPlansAsSent(plan_ids) {
-        return new Plan()
-            .query(qb => {
-                qb.whereIn("id", plan_ids);
-            })
-            .save(
-                {
-                    sent: "2"
-                },
-                {
-                    method: "update"
-                }
-            );
-    }
-
-    static fetchByObjectID(objectID) {
-        return Plan.forge({
-            OBJECTID: objectID
-        }).fetch();
-    }
-    // support json encode for data field
-    parse(attributes) {
-        try {
-            if (attributes.data) {
-                attributes.data = JSON.parse(attributes.data);
-            }
-        } catch (e) {
-            Log.error("Json parse error", attributes.data);
-        }
-
-        return super.parse(attributes);
-    }
-    static buildFromIPlan(iPlan, oldPlan = null) {
-        const data = {
-            OBJECTID: iPlan.properties.OBJECTID,
-            PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || "",
-            PL_NUMBER: iPlan.properties.PL_NUMBER || "",
-            PL_NAME: iPlan.properties.PL_NAME || "",
-            // 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
-            data: iPlan.properties,
-            geom: iPlan.geometry,
-            PLAN_CHARACTOR_NAME: "",
-            plan_url: iPlan.properties.PL_URL,
-            status: iPlan.properties.STATION_DESC
-        };
-        if (oldPlan) {
-            oldPlan.set(data);
-            return oldPlan.save();
-        }
-    }
-
-    get geometry() {
-        return ["geom"];
-    }
-
-    get tableName() {
-        return "plan";
-    }
-
-    initialize() {
-        this.on("saving", this._saving, this);
-        super.initialize();
-    }
-
-    _saving(model, attrs, options) {
-        // return new Checkit(model.rules).run(model.attributes);
-    }
-
-    canRead(session) {
-        return Bluebird.resolve(this);
-    }
-
-    static canCreate(session) {
-        throw new Exception.NotAllowed("This option is disabled");
-    }
-
-    static maekPlansAsSent(plan_ids) {
+    static markPlansAsSent(plan_ids) {
         return new Plan()
             .query(qb => {
                 qb.whereIn("id", plan_ids);
@@ -209,9 +129,11 @@ class Plan extends Model {
     }
 
     static async setMavatData(plan, mavatData) {
-        const addPlanIdToChart = (chart) => {
+        const addPlanIdToArray = (chart) => {
             chart.forEach(row => row.plan_id = plan.id);
         };
+
+        const prevDetails = plan.main_details_from_mavat;
 
         await plan.set({
             goals_from_mavat: mavatData.goals,
@@ -222,75 +144,109 @@ class Plan extends Model {
         });
         await plan.save();
 
-        const chart181 = mavatData.charts18.chart181;
-        //add plain_id and origin
-        chart181.forEach(row => {
-            row.plan_id = plan.id;
-            row.origin = '1.8.1';
-        });
+        if (mavatData.charts18 !== undefined) {
+            const chart181 = mavatData.charts18.chart181;
+            //add plain_id and origin
+            chart181.forEach(row => {
+                row.plan_id = plan.id;
+                row.origin = '1.8.1';
+            });
 
-        const chart182 = mavatData.charts18.chart182;
-        chart182.forEach(row => {
-            row.plan_id = plan.id;
-            row.origin = '1.8.2';
-        });
+            const chart182 = mavatData.charts18.chart182;
+            chart182.forEach(row => {
+                row.plan_id = plan.id;
+                row.origin = '1.8.2';
+            });
 
-        const chart183 = mavatData.charts18.chart183;
-        chart183.forEach(row => {
-            row.plan_id = plan.id;
-            row.origin = '1.8.3';
-        });
+            const chart183 = mavatData.charts18.chart183;
+            chart183.forEach(row => {
+                row.plan_id = plan.id;
+                row.origin = '1.8.3';
+            });
 
-        const charts18 = chart181.concat(chart182, chart183);
-        for(let i = 0; i < charts18.length; i++) {
-            try {
-                await new PlanChart18Row(charts18[i]).save();
-            }
-            catch(e) {
-                console.log(e);
+            const charts18 = chart181.concat(chart182, chart183);
+            for (let i = 0; i < charts18.length; i++) {
+                try {
+                    await new PlanChart18Row(charts18[i]).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 
         const chartFourData = mavatData.chartFour;
-        addPlanIdToChart(chartFourData);
+        if (chartFourData !== undefined) {
 
-        for(let i = 0; i < chartFourData.length; i++) {
-            const chartFourRowData = chartFourData[i];
-            try {
-                await new PlanChartFourRow(chartFourRowData).save();
-            }
-            catch(e) {
-                console.log(e);
+            addPlanIdToArray(chartFourData);
+
+            for (let i = 0; i < chartFourData.length; i++) {
+                const chartFourRowData = chartFourData[i];
+                try {
+                    await new PlanChartFourRow(chartFourRowData).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 
         const chartFiveData = mavatData.chartFive;
-        addPlanIdToChart(chartFiveData);
+        if (chartFiveData !== undefined) {
 
-        for(let i = 0; i < chartFiveData.length; i++) {
-            const chartFiveRowData = chartFiveData[i];
-            try {
-                await new PlanChartFiveRow(chartFiveRowData).save();
-            }
-            catch(e) {
-                console.log(e);
+            addPlanIdToArray(chartFiveData);
+
+            for (let i = 0; i < chartFiveData.length; i++) {
+                const chartFiveRowData = chartFiveData[i];
+                try {
+                    await new PlanChartFiveRow(chartFiveRowData).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 
         const chartSixData = mavatData.chartSix;
-        addPlanIdToChart(chartSixData);
+        if (chartSixData !== undefined) {
 
-        for(let i = 0; i < chartSixData.length; i++) {
-            const chartSixRowData = chartSixData[i];
-            try {
-                await new PlanChartSixRow(chartSixRowData).save();
-            }
-            catch(e) {
-                console.log(e);
+            addPlanIdToArray(chartSixData);
+
+            for (let i = 0; i < chartSixData.length; i++) {
+                const chartSixRowData = chartSixData[i];
+                try {
+                    await new PlanChartSixRow(chartSixRowData).save();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 
 
+        if (prevDetails === mavatData.mainPlanDetails || mavatData.mainPlanDetails === undefined) {
+            return;
+        }
+
+        const stopWords = await DetailsClassifier.readStopWords();
+        const details = DetailsClassifier.parseStrDetailsOfPlan(mavatData.mainPlanDetails, stopWords);
+
+        for (const detail of details) {
+            if (detail !== undefined) {
+                const detailData = {
+                    planId: plan.id,
+                    tag: detail.tag,
+                    detail: detail.detail,
+                    area_designation_from: detail.hasOwnProperty('fromArea') ? detail.fromArea : '',
+                    area_designation_to: detail.hasOwnProperty('toArea') ? detail.toArea : ''
+                };
+
+                await new PlanDetail(detailData).save();
+            }
+        }
+
+        const tags = DetailsClassifier.makeTags(mavatData);
+        addPlanIdToArray(tags);
+
+        for (const tag of tags) {
+            await new PlanTag(tag).save();
+        }
     }
 
     static getUnsentPlans(userOptions) {

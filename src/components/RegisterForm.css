@@ -14,9 +14,11 @@
   height: 40px;
   padding: 10px 30px;
 }
+
 .eyelashes_nav {
   width: 32px;
 }
+
 .hpForm .form-group.active_field label {
   display: none;
 }
@@ -58,4 +60,10 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s;
   text-align: left;
   direction: ltr;
+}
+
+.hpForm a {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
 }

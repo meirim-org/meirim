@@ -26,10 +26,13 @@ exports.up = async function(knex, Promise) {
         t.string("side_line_front", 200);
     });
     await knex.schema.table('plan', (table) => {
-        table.string('explanation', 20000);
+        table.text('explanation');
     })
 };
 
-exports.down = function(knex, Promise) {
-    return knex.schema.dropTableIfExists('table_5_building_rights');
+exports.down = async function(knex) {
+    await knex.schema.dropTableIfExists('table_5_building_rights');
+    await knex.schema.table('plan', table => {
+        table.dropColumns('explanation');
+    });
 };
