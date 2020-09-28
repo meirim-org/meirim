@@ -5,7 +5,7 @@ const unlink = util.promisify(fs.unlink);
 const { Knex } = require('../api/service/database');
 const categorizePlans = require('../data_processing/categorize_plans');
 
-// FIRST AGRUMENT: NAME OF TAG TO MAKE A REPORT ON
+// FIRST ARGUMENT: NAME OF TAG TO MAKE A REPORT ON
 // SECOND ARGUMENT: NUMBER OF PLANS TO FETCH FROM THE DB TO MAKE THE REPORT. OPTIONAL!
 
 const tagToExport = process.argv[2];
