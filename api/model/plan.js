@@ -2,13 +2,10 @@ const Bluebird = require("bluebird");
 const Model = require("./base_model");
 const Log = require("../lib/log");
 const Exception = require("./exception");
-const DetailsClassifier = require("../../data_processing/categorize_plans");
-const PlanDetail = require("./plan_detail");
 const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChart18Row = require('./plan_chart_1_point_8_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
-const PlanTag = require('./plan_tag');
 
 class Plan extends Model {
     get rules() {
@@ -217,35 +214,6 @@ class Plan extends Model {
                     console.log(e);
                 }
             }
-        }
-
-
-        if (prevDetails === mavatData.mainPlanDetails || mavatData.mainPlanDetails === undefined) {
-            return;
-        }
-
-        const stopWords = await DetailsClassifier.readStopWords();
-        const details = DetailsClassifier.parseStrDetailsOfPlan(mavatData.mainPlanDetails, stopWords);
-
-        for (const detail of details) {
-            if (detail !== undefined) {
-                const detailData = {
-                    planId: plan.id,
-                    tag: detail.tag,
-                    detail: detail.detail,
-                    area_designation_from: detail.hasOwnProperty('fromArea') ? detail.fromArea : '',
-                    area_designation_to: detail.hasOwnProperty('toArea') ? detail.toArea : ''
-                };
-
-                await new PlanDetail(detailData).save();
-            }
-        }
-
-        const tags = DetailsClassifier.makeTags(mavatData);
-        addPlanIdToArray(tags);
-
-        for (const tag of tags) {
-            await new PlanTag(tag).save();
         }
     }
 
