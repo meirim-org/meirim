@@ -129,7 +129,7 @@ const sendPlanningAlerts = () => {
             const idArray = [];
             successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
             if (idArray.length) {
-                return Plan.maekPlansAsSent(idArray).then(() =>
+                return Plan.markPlansAsSent(idArray).then(() =>
                     Log.info("Processed plans", idArray)
                 );
             }
@@ -163,11 +163,18 @@ const fetchIplan = iPlan =>
                             oldPlan.get("data").STATION !==
                                 iPlan.properties.STATION
                         ) {
-                            plan.set("sent", oldPlan ? 1 : 0);
+                            // TODO: check why plan is undefined here
+                            if (plan !== undefined) {
+                                plan.set("sent", oldPlan ? 1 : 0);
+                            }
                         }
                         return plan;
                     })
-                    .then(plan => plan.save())
+                    .then(plan => {
+                        if (plan !== undefined) {
+                            plan.save();
+                        }
+                    })
             );
         })
         .catch(e => {

@@ -1,3 +1,4 @@
+const Promise = require('bluebird')
 const tables = [
   `CREATE TABLE activity (
     id int(10) UNSIGNED NOT NULL,
@@ -57,7 +58,7 @@ const tables = [
     PLAN_CHARACTOR_NAME varchar(256) COLLATE utf8_bin NOT NULL,
     data text COLLATE utf8_bin NOT NULL,
     geom geometry NOT NULL
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;`,
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
 
   `CREATE TABLE post (
     post_id int(11) NOT NULL,

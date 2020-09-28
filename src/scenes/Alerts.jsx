@@ -23,12 +23,6 @@ const messages = {
     alertAdded:'התראת תכנון התווספה בהצלחה!',
     alertDeleted:'התראת תכנון הוסרה בהצלחה'
 }
-const signInURL = {
-    pathname: "/sign/in",
-    state: {
-        redirectTo: window.location.pathname
-    }
-};
 
 class Alerts extends Component {
     state = {
@@ -162,7 +156,14 @@ class Alerts extends Component {
 
         // unauthenticatd
         if (error && error.response && error.response.status === 403) {
-            return <Redirect to={signInURL} />;
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/sign/in",
+                        state: { redirectTo: window.location.pathname }
+                    }}
+                />
+            );
         }
         return (
             <Wrapper me={me}>
