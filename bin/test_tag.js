@@ -27,7 +27,7 @@ const getReport = async () => {
     fileStream.write(`planId,is tagged with ${tagToExport},explanation,planUrl\n`);
 
     const writeToCsv = async (planId, isTagged, explanation, planUrl) => {
-        fileStream.write(`${planId},${isTagged},${explanation},${planUrl}\n`);
+        fileStream.write(`${planId},${isTagged},${explanation ? explanation.replace(/\n/g, ' ').replace(/,/g, '') : explanation},${planUrl}\n`);
     };
 
     const buildChart = (chartData) => {
