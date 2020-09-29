@@ -211,14 +211,24 @@ function parseStrDetailsOfPlan(detailsStrOfPlan, stopWordsSet) {
 // returns list of {origin, tag}
 function makeTags(mavatData) {
     const tags = [];
-    const towerTag = makeTowerTag(mavatData);
-   // const publicOwnerTag = makePublicOwnerTag(mavatData);
-    if(towerTag !== undefined) {
-        tags.push(towerTag);
-    }
-    // if (publicOwnerTag !== undefined) {
-    //     tags.push(publicOwnerTag);
-    // }
+
+    // function that makes it easy to add the output of the tags maker functions into the tags list
+    const addToTags = (tagOrUndefined) => {
+        if (tagOrUndefined !== undefined) {
+            tags.push(tagOrUndefined);
+        }
+    };
+
+    // list of functions that takes mavatData as argument and returns undefined or tag
+    const tagMakers = [
+        makeTowerTag,
+        //makePublicOwnerTag,
+        makeUndergroundParkingTag,
+    ];
+
+    // apply the tag makers on mavatData and add the tags that came out from it into the tags list
+    tagMakers.map(tagMaker => tagMaker(mavatData)).forEach(addToTags);
+
     return tags;
 }
 
@@ -229,27 +239,50 @@ function makeTowerTag(mavatData){
 
     if (mavatData.chartFive.some(isTower)) {
         return {
-            origin: "chart_5",
+            origin: "chart 5",
             tag:    "tower"
         }
     }
     return undefined;
 }
-// todo split to two functions: 1. makeStateOwnerTag 2.makeLocalAuthorityOwnerTag. arg = mavatData
+
 function makePublicOwnerTag(mavatData) {
     function isPublicOwner (chart18Row) {
        if(chart18Row.type === 'בעלים'){
            // todo check corporate
-           return (chart18Row.corporate.includes('מדינה') || chart18Row.corporate.includes('עיר') ) 
        }
        else {
            //todo check type
        }
     }
     if (mavatData.chart183.some(isPublicOwner)) {
-        // todo
+        return {
+            tag:    "publicLandOwner",
+            origin: "chart 1.8.3"
+        }
     }
     return undefined;
+}
+
+function makeUndergroundParkingTag(mavatData) {
+    const isUndergroundParking = (chart5Row) => {
+        const use = chart5Row.use;
+
+        return (chart5Row.floors_below && use &&       // check that the strings are not undefined or null
+            chart5Row.floors_below.match("^[1-9]+") && // starts with some number (not 0, not empty)
+            (use.includes("משרדים") ||
+                use.includes("מגורים") ||
+                use.includes("תעסוקה") ||
+                use.includes("מבנים ומוסדות ציבור"))
+        );
+    };
+
+    return mavatData.chartFive.some(isUndergroundParking)
+        ? {
+              tag: "undergroundParking",
+              origin: "chart 5",
+          }
+        : undefined;
 }
 
 module.exports = {
