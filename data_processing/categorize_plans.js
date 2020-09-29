@@ -235,21 +235,19 @@ function makeTowerTag(mavatData){
     }
     return undefined;
 }
-
+// todo split to two functions: 1. makeStateOwnerTag 2.makeLocalAuthorityOwnerTag. arg = mavatData
 function makePublicOwnerTag(mavatData) {
     function isPublicOwner (chart18Row) {
        if(chart18Row.type === 'בעלים'){
            // todo check corporate
+           return (chart18Row.corporate.includes('מדינה') || chart18Row.corporate.includes('עיר') ) 
        }
        else {
            //todo check type
        }
     }
     if (mavatData.chart183.some(isPublicOwner)) {
-        return {
-            tag:    "publicLandOwner",
-            origin: "chart1.8.3"
-        }
+        // todo
     }
     return undefined;
 }
