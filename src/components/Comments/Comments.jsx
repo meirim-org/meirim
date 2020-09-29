@@ -61,7 +61,7 @@ class Comments extends Component {
 
     handleSubmit = data => {
         const { planId } = this.props;
-        const { me, rate } = this.state;
+        const { me } = this.state;
         const { content, alias } = data;
 
         let aliasush = me.alias || alias;

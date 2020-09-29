@@ -100,7 +100,7 @@ exports.up = function(knex) {
     Promise.all(
       statements.map(statement => {
         try {
-          knex.raw(statement);
+          return knex.raw(statement);
         } catch (e) {
           console.log(e);
         }

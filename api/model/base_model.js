@@ -7,6 +7,16 @@ class Base_model extends Bookshelf.Model {
     return false;
   }
 
+  // this is added since we upgraded bookshelf past version 1.0 which made
+  // fetch() calls require a record is returned, otherwise a custom error
+  // is thrown. since we wrote our controllers using a previous version we
+  // rely on a value or null to be returned in any case. when creating new
+  // models we recommend this is overriden with the default true value and
+  // fetch calls be written with this in mind
+  get requireFetch() {
+    return false;
+  }
+
   initialize() {
     this.on('saving', this._saving, this);
     super.initialize();

@@ -5,6 +5,7 @@
     "staticmap": {
         "width": 600,
         "height": 400,
+        "tileRequestLimit": 20,
         "tileRequestHeader": {}
     },
     "general": {
