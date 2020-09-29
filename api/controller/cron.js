@@ -185,7 +185,7 @@ const fetchIplan = iPlan =>
 const buildPlan = (iPlan, oldPlan) => {
     return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
         MavatAPI.getByPlan(plan)
-            .then(mavatData => Plan.setMavatData(plan, mavatData))
+            .then(mavatData => Plan.setMavatData(plan, mavatData, oldPlan))
             .catch(e => {
                 // mavat might crash gracefully
                 console.log("Mavat error\n" + e.message + '\n' + e.stack);
