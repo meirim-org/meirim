@@ -125,7 +125,14 @@ class Plan extends Model {
         return plan.save();
     }
 
-    static async setMavatData(plan, mavatData) {
+    static async setMavatData(plan, mavatData, oldPlan = null) {
+
+        // TODO: UPDATE PLAN INSTEAD OF DON'T DO NOTHING
+        if (oldPlan) {
+            console.log(`exits in db already, don't fetch mavatData`);
+            return;
+        }
+
         const addPlanIdToArray = (chart) => {
             chart.forEach(row => row.plan_id = plan.id);
         };
