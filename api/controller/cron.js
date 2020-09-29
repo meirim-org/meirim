@@ -12,10 +12,17 @@ const Turf = require("turf");
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
 //   .then(plan => !plan);
 
-const iplan = () =>
+const iplan = (limit = -1) =>
     iplanApi
         .getBlueLines()
-        .then(iPlans => Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan)));
+        .then(iPlans => {
+            // limit blue lines found so we output only *limit* plans
+            if (limit > -1) {
+                iPlans.splice(limit);
+            }
+
+            return Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan))
+        });
 
 const fix_geodata = () => {
     return iplanApi.getBlueLines().then(iPlans =>
@@ -154,28 +161,26 @@ const fetchIplan = iPlan =>
                 return Bluebird.resolve(oldPlan);
             }
 
-            return (
-                buildPlan(iPlan, oldPlan)
-                    // check if there is an update in the status of the plan and mark it for email update
-                    .then(plan => {
-                        if (
-                            !oldPlan ||
-                            oldPlan.get("data").STATION !==
-                                iPlan.properties.STATION
-                        ) {
-                            // TODO: check why plan is undefined here
-                            if (plan !== undefined) {
-                                plan.set("sent", oldPlan ? 1 : 0);
-                            }
-                        }
-                        return plan;
-                    })
-                    .then(plan => {
+            return buildPlan(iPlan, oldPlan)
+                // check if there is an update in the status of the plan and mark it for email update
+                .then(plan => {
+                    if (
+                        !oldPlan ||
+                        oldPlan.get("data").STATION !==
+                        iPlan.properties.STATION
+                    ) {
+                        // TODO: check why plan is undefined here
                         if (plan !== undefined) {
-                            plan.save();
+                            plan.set("sent", oldPlan ? 1 : 0);
                         }
-                    })
-            );
+                    }
+                    return plan;
+                })
+                .then(plan => {
+                    if (plan !== undefined) {
+                        plan.save();
+                    }
+                })
         })
         .catch(e => {
             console.log("iplan exception\n" + e.message + '\n' + e.stack);

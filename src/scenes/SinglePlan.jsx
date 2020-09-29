@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import geojsonArea from "@mapbox/geojson-area";
-import { Redirect } from "react-router-dom";
+import { Redirect, NavLink as Link } from "react-router-dom";
 import { Chart } from "react-charts";
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +16,7 @@ import LandUseVocabulary from "../components/LandUseVocabulary";
 import api from "../services/api";
 import "../assets/bootstrap.css";
 
-import t from "../locale/he_IL";
+//import t from "../locale/he_IL";
 import "./SinglePlan.css";
 
 const axes = [
@@ -98,7 +98,7 @@ class SinglePlan extends Component {
         ];
 
         changes &&
-            changes[0].map((change, i) => {
+            changes[0].forEach(change => {
                 if (change[3].includes('מ"ר')) {
                     dataArea[0].data.push({
                         x: change[3],
@@ -126,9 +126,19 @@ class SinglePlan extends Component {
         return (
             <Wrapper me={me}>
                 {plan.PL_NAME && (
-                    <div className="container" className="container">
+                    <div className="container">
                         <div className="container">
                             <h1>{plan.PL_NAME}</h1>
+                            {!me && (
+                                <div className="row">
+                                    <div className="col">
+                                        <h5>רוצים לקבל הודעה כשהתוכנית מתקדמת?</h5>
+                                        <Link className="register-link" to="/">
+                                            הרשמו למערכת ההתראות שלנו כאן
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
                             <div className="row">
                                 <div className="col">
                                     <div className="empty_rectangle">
@@ -270,6 +280,7 @@ class SinglePlan extends Component {
                                             <li>
                                                 <a
                                                     target="_blank"
+                                                    rel="noopener noreferrer"
                                                     href={plan.plan_url}
                                                 >
                                                     מסמכי התוכנית באתר משרד
@@ -295,6 +306,7 @@ class SinglePlan extends Component {
                                             <a
                                                 className="share-link"
                                                 target="_blank"
+                                                rel="noopener noreferrer"
                                                 href={
                                                     "https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A" +
                                                     encodeURI(

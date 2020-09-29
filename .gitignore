@@ -6,3 +6,5 @@ public/upload/
 .idea
 config/local.json
 .DS_Store
+cypress/videos/
+cypress/screenshots/
