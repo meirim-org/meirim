@@ -40,6 +40,13 @@
             "password": "",
             "database": "meirim",
             "charset": "utf8"
+        },
+        "testconnection": {
+            "host": "localhost",
+            "user": "root",
+            "password": "password",
+            "database": "test_meirim",
+            "charset": "utf8"
         }
     },
     "email": {
