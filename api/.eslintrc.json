@@ -1,17 +1,30 @@
-{
-    "env": {
-        "browser": true,
+ {
+	"env": {
+        "node": true,
         "commonjs": true,
-        "es6": true
+		"jest": true
     },
-    "extends": "standard",
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+	"extends": ["eslint:recommended", "prettier"],
+	"parserOptions": {
+		"ecmaVersion": 12,
+		"sourceType": "module"
     },
-    "parserOptions": {
-        "ecmaVersion": 2018
-    },
-    "rules": {
+	"rules": {
+		"indent": [
+			"error",
+			"tab"
+        ],
+		"linebreak-style": [
+			"error",
+			"unix"
+        ],
+		"quotes": [
+			"error",
+			"single"
+        ],
+		"semi": [
+			"error",
+			"always"
+        ]
     }
 }
