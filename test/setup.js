@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const Promise = require('bluebird');
 const Config = require('../api/lib/config');
 const Knex = require('knex');
