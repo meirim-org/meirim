@@ -33,8 +33,8 @@ const mockDatabase = {
 				if(!exists) {
 					console.log(`creating table ${table}`);
 					await connection.knex.schema.createTable(table, function(t){
-						t.increments();
-						t.string('firstName', 255);
+						t.increments(); // temp
+						t.string('firstName', 255); // temp
 					});
 					return connection.knex('person').insert({firstName: 'first'});
    		} 
