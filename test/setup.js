@@ -10,7 +10,47 @@ const tables = [
 ];
 
 let connection;
-function truncate () {
+
+const database = {
+	 connection: null,
+	 initialize: function() {
+		const K = Knex({
+ 			client: Config.get('database.client'),
+  		connection: Config.get('database.testconnection'),
+  		debug: false
+		})
+		connection = Bookshelf(K)
+	 },
+	 truncate: function(tables) {
+
+  return Promise.each(tables, function (table) {
+		return connection.knex.schema.hasTable(table).then(function(exists) {
+			if(exists){
+				console.log(`dropping table ${table}`);
+    		return connection.knex.schema.dropTable(table);
+			}
+		})
+  });
+	 },
+	 seed: function(tables) {
+
+  return Promise.each(tables, function (table) {
+		return connection.knex.schema.hasTable(table).then(async function(exists) {
+			if(!exists) {
+					console.log(`creating table ${table}`);
+					await connection.knex.schema.createTable(table, function(t){
+					t.increments()
+					t.string('firstName', 255)
+				})
+				return connection.knex('person').insert({firstName: 'first'});
+   		} 
+		})
+  });
+};
+	 }
+}
+
+function truncate (tables) {
   return Promise.each(tables, function (table) {
 		return connection.knex.schema.hasTable(table).then(function(exists) {
 			if(exists){
@@ -21,7 +61,7 @@ function truncate () {
   });
 };
 
-function seed () {
+function seed (tables) {
   return Promise.each(tables, function (table) {
 		return connection.knex.schema.hasTable(table).then(async function(exists) {
 			if(!exists) {
@@ -47,21 +87,15 @@ exports.mochaHooks = {
 	},
 
   afterAll() {
-		// close DB server
 		console.log('afterAll')
   },
 
   beforeEach() {
-		// Remove current DB connection if exist
-		// Create new connection to DB
 		console.log('before each')
 		return truncate().then(seed);
   },
 
   afterEach() {
-		// Remove current DB connection
-		console.log('after each')
-
 		return truncate()
   },
 
