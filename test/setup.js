@@ -1,32 +1,27 @@
 const Promise = require('bluebird');
-const Config = require('../api/lib/config');
-const Knex = require('knex');
-const Bookshelf = require('bookshelf');
-// Bookshelf.plugin(require('../lib/bookshelf-mysql-gis'))
+const mockRequire = require('mock-require');
+const importFresh = require('import-fresh');
 
 const tables = [
 	'person',
 ];
 
-let connection;
 
 const database = {
 	 connection: null,
 
-	 initialize: function() {
-		if (connection != null){
-			 return connection;
+	 initialize: function(clientConnection) {
+		if (this.connection != null){
+			 return this.connection;
 		}
-		const K = Knex({
- 			client: Config.get('database.client'),
-  		connection: Config.get('database.testconnection'),
-  		debug: false
-		});
-		connection = Bookshelf(K);
-		return connection;
+		this.connection = clientConnection;
+
+		console.log('DATABASE CONNECTION CONFIG', this.connection.knex.context.client.config);
+		return this.connection;
 	 },
 
 	 truncate: function(tables) {
+		const connection = this.connection;
 		return Promise.each(tables, function (table) {
 			return connection.knex.schema.hasTable(table).then(function(exists) {
 				if(exists){
@@ -38,6 +33,7 @@ const database = {
 	 },
 
 	 seed: function(tables) {
+		const connection = this.connection;
 		return Promise.each(tables, function (table) {
 			return connection.knex.schema.hasTable(table).then(async function(exists) {
 				if(!exists) {
@@ -55,20 +51,34 @@ const database = {
 
 exports.mochaHooks = {
 	beforeAll() {
-		database.initialize();
+		process.env.NODE_CONFIG = JSON.stringify({
+			database: {
+				connection: {
+			    'host': 'localhost',
+					'user': 'root',
+					'password': 'password',
+					'database': 'test_meirim',
+					'charset': 'utf8'
+				}
+			}
+		});
+		const testConfig = importFresh('config');
+		mockRequire('config', testConfig);
+		const { Bookshelf } = require('../api/service/database');
+    
+		database.initialize(Bookshelf);
 	},
 
 	afterAll() {
-		console.log('afterAll');
+		mockRequire.stop('config');
 	},
 
 	beforeEach() {
-		console.log('before each');
-		return database.seed(tables);
+		database.seed(tables);
 	},
 
 	afterEach() {
-		return database.truncate(tables);
+		database.truncate(tables);
 	},
 
 };
