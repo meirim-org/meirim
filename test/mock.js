@@ -7,6 +7,7 @@ const mockDatabase = {
 		if (this.connection != null){
 			 return this.connection;
 		}
+
 		this.connection = clientConnection;
 
 		console.log('DATABASE CONNECTION CONFIG', this.connection.knex.context.client.config);
@@ -19,23 +20,23 @@ const mockDatabase = {
 			return connection.knex.schema.hasTable(table).then(function(exists) {
 				if(exists){
 					console.log(`dropping table ${table}`);
-    		return connection.knex.schema.dropTable(table);
+    			return connection.knex.schema.dropTable(table);
 				}
 			});
 		});
 	 },
 
-	 seed: function(tables) {
+	 seed: function(tables, seeders) {
 		const connection = this.connection;
-		return Promise.each(tables, function (table) {
+		return Promise.each(tables, function (table, index) {
 			return connection.knex.schema.hasTable(table).then(async function(exists) {
 				if(!exists) {
 					console.log(`creating table ${table}`);
 					await connection.knex.schema.createTable(table, function(t){
-						t.increments(); // temp
-						t.string('firstName', 255); // temp
+						const seeder = seeders[index];
+						seeder(t);
 					});
-					return connection.knex('person').insert({firstName: 'first'});
+					// return connection.knex('person').insert({firstName: 'first'});
    		} 
 			});
 		});
@@ -44,4 +45,4 @@ const mockDatabase = {
 
 module.exports = {
 	mockDatabase
-}
+};
