@@ -4,7 +4,6 @@ const structs = require('./tables_structs');
 const tableActions = {
 	createTable: async function(knexClient, tableName) {
 		return await knexClient.schema.createTable(tableName, function(t){
-			console.log('structs', structs);
 			const table = structs[tableName](t);
 			console.log(`created table ${tableName}`);
 			return table;
@@ -13,7 +12,6 @@ const tableActions = {
 
 	isExist: async function(knexClient, tableName) {
 		return await knexClient.schema.hasTable(tableName).then(function(exists){
-			console.log('exists', exists);
 			return exists;});
 	},
 
