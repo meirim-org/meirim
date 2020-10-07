@@ -8,7 +8,7 @@ describe('archive_notification model', function() {
 		expect(rules.person_id).to.eql(['required', 'integer']);
 		expect(rules.plan_id).to.eql(['required', 'integer']);
 		expect(rules.seen).to.eql('boolean');
-		expect(rules.type).to.eql(['required', 'object' ]);
+		expect(rules.type).to.eql(['required', 'string' ]);
 	});
 
 	it('has the right table name', async function() {

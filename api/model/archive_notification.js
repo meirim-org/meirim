@@ -8,7 +8,7 @@ class ArchiveNotification extends Model {
 			person_id: ['required', 'integer'],
 			plan_id: ['required', 'integer'],
 			seen: 'boolean',
-			type: ['required', 'object']
+			type: ['required', 'string']
 		};
 	}	
 
