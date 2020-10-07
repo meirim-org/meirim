@@ -47,6 +47,9 @@ class SinglePlan extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
 
+        // log impression
+        api.post(`/impression/${id}`)
+        
         return api
             .get("/plan/" + id)
             .then(plan => this.setState({ plan: plan.data }))
@@ -99,6 +102,7 @@ class SinglePlan extends Component {
 
         changes &&
             changes[0].forEach(change => {
+                if (!change[3]) return;
                 if (change[3].includes('מ"ר')) {
                     dataArea[0].data.push({
                         x: change[3],
