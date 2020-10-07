@@ -39,9 +39,6 @@ class Activity extends BaseModel {
 		return 'id';
 	}
 
-	get hasTimestamps() {
-		return true;
-	}
 
 	defaults() {
 		return {
