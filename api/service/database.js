@@ -2,9 +2,11 @@ const Config = require('../lib/config');
 
 const Knex = require('knex');
 
+const env = process.env.NODE_ENV === 'test' ? 'test.database' : 'database';
+
 const KnexConnection = Knex({
-	client: Config.get('database.client'),
-	connection: Config.get('database.connection'),
+	client: Config.get(`${env}.client`),
+	connection: Config.get(`${env}.connection`),
 	debug: Config.get('debug.database'),
 });
 

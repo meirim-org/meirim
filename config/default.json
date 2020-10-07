@@ -32,6 +32,18 @@
 		"error": "logs/error.log",
 		"debug": "logs/debug.log"
 	},
+	"test": {
+		"database": {
+			"client": "mysql",
+			"connection": {
+				"host": "localhost",
+				"user": "root",
+				"password": "password",
+				"database": "test_meirim",
+				"charset": "utf8"
+			}
+		}
+	},
 	"database": {
 		"client": "mysql",
 		"connection": {
