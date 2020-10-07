@@ -2,6 +2,8 @@ const Bluebird = require("bluebird");
 const Model = require("./base_model");
 const Log = require("../lib/log");
 const Exception = require("./exception");
+const { Knex } = require('../service/database')
+
 
 class Plan extends Model {
     get rules() {
@@ -16,7 +18,9 @@ class Plan extends Model {
             geom: ["required", "object"],
             jurisdiction: "string",
             areaChanges: "string",
-            rating: ["required", "number"]
+            rating: ["required", "number"],
+            views: ["required", "number"],
+            erosion_views: ["required", "number"]
         };
     }
 
@@ -150,6 +154,11 @@ class Plan extends Model {
                 "jurisdiction"
             ]
         });
+    }
+
+    static erode_views() {
+        const query = 'UPDATE plan SET erosion_views = FLOOR(erosion_views/2)';
+        return Knex.raw(query)
     }
 }
 module.exports = Plan;

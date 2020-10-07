@@ -5,6 +5,7 @@ const Alert = require('./controller/alert')
 const Plan = require('./controller/plan')
 const Comment = require('./controller/comment')
 const Rate = require('./controller/rate')
+const Impression = require('./controller/impression')
 
 const Subscription = require('./controller/subscription')
 // const Tag = require('./controller/tag');
@@ -38,6 +39,9 @@ Router.post('/comment/:plan_id', wrap(Comment.create, Comment))
 // Rate
 Router.get('/rate/:plan_id', wrap(Rate.byPlan, Rate))
 Router.post('/rate/', wrap(Rate.create, Rate))
+
+// impression
+Router.post('/impression/:plan_id', wrap(Impression.create, Impression))
 
 // Password
 Router.post('/password/sendResetToken', wrap(Password.sendResetToken))
