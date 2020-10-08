@@ -1,4 +1,4 @@
-const ArchiveNotificationStruct = function(table) {
+const NotificationStruct = function(table) {
 	table.increments();
 	table.integer('plan_id');
 	table.integer('person_id');
@@ -8,4 +8,4 @@ const ArchiveNotificationStruct = function(table) {
 	return table;
 };
 
-module.exports = ArchiveNotificationStruct;
+module.exports = NotificationStruct;
