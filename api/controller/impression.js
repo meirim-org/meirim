@@ -1,63 +1,84 @@
-const Bluebird = require("bluebird");
-const Controller = require("../controller/controller");
-const Impression = require("../model/impression");
-const Plan = require("../model/plan");
+const Bluebird = require('bluebird')
+const Controller = require('../controller/controller')
+const Impression = require('../model/impression')
+const Plan = require('../model/plan')
 const { Knex } = require('../service/database')
 
+const hashCode = (s) => {
+  var hash = 0
+  if (s.length === 0) {
+    return hash
+  }
+  for (var i = 0; i < s.length; i++) {
+    var char = s.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash = hash & hash // Convert to 32bit integer
+  }
+  console.log(hash)
+  return hash
+}
+const getIp = (req) => {
+  return req.headers['x-forwarded-for'] || req.connection.remoteAddress
+}
 class ImpressionController extends Controller {
+  create (req, transaction) {
+    const body = req.body
+    body.plan_id = parseInt(req.params.plan_id, 10)
+    body.ip = hashCode(getIp(req))
+    body.person_id = req.session.person ? req.session.person.id : 0
+    return (
+      this.model
+        .forge(body)
+        .save()
+      // we don't was to ruturn data
+        .then(() => true)
+    )
+  }
 
-    getIp = (req) => {
-        return req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    };
-
-    create(req, transaction) {
-        const body = req.body;
-        body.plan_id = parseInt(req.params.plan_id, 10);
-        body.ip = this.getIp(req);
-        body.person_id = req.session.person ? req.session.person.id : 0;
-        console.log(body)
-        return this.model.forge(body).save()
-        // we don't was to ruturn data
-            .then(() => true)
-    }
-
-    /**
+  /**
      * Aggregate impressions and update view count in plan table.
-     * Should be executed by cron every hour or day
+     * Should be executed by cron every day.
+     * This should not be run every hour since we erode the views.
      */
-    aggregate() {
-        
+  aggregate () {
+    // update views to get a relative
+    return Plan.erodeViews()
+    // get new impressions, remove them and update plan table
+      .then(() => Knex.transaction((trx) => {
         // get aggregated count for every plan
-        const query = 'select a.plan_id, count(*) as num from (SELECT plan_id, ip FROM `impression` group by plan_id, ip) as a group by a.plan_id ';
-      
-        return Plan.erode_views()
-            .then(() => {
-                return Knex.raw(query)
-            })
+        const query = 'SELECT plan_id, COUNT(DISTINCT ip) as num FROM impression GROUP BY plan_id'
+        return trx
+          .raw(query)
+          // remove impressions and return the results of the select query
+          .then((results) => trx.raw('TRUNCATE impression').then(() => results))
+          // get the aggregated impressions and update the plans table
+          .then((results) => {
+            // map plans by views
+            const map = results[0].reduce((acc, item) => {
+              if (acc[item.num]) {
+                acc[item.num].push(item.plan_id)
+              } else {
+                acc[item.num] = [item.plan_id]
+              }
+              return acc
+            }, {})
 
-            .then(results => {
-                //map plans by planid
-                const map = {}
-                results[0].map(item => {
-                    map[item.num] ? map[item.num].push(item.plan_id) : map[item.num] = [item.plan_id];
-                })
-                
-                // build update queries
-                const queries = Object.keys(map)
-                    .map(key => `UPDATE plan SET 
-                        views=views+${key}, 
-                        erosion_views=erosion_views +${key} 
-                        WHERE id IN(${map[key].join(',')})`);
+            // build update queries
+            const queries = Object.keys(map).map(
+              (key) => `UPDATE plan SET 
+                                    views=views+${key}, 
+                                    erosion_views=erosion_views +${key} 
+                                    WHERE id IN(${map[key].join(',')})`
+            )
 
-                // update the plan table
-                return Bluebird.mapSeries(queries, query => Knex.raw(query))
-            })
-            .then(() => {
-                // remove impressions
-                return Knex.raw('TRUNCATE impression')
-            })
-    }
-
+            // update the plan table
+            return Bluebird.mapSeries(queries, (query) =>
+              trx.raw(query)
+            )
+          })
+      })
+      )
+  }
 }
 
-module.exports = new ImpressionController(Impression);
+module.exports = new ImpressionController(Impression)
