@@ -18,5 +18,5 @@ BookshelfConnection.plugin(require('../lib/bookshelf-mysql-gis'));
 
 module.exports = {
 	Bookshelf: BookshelfConnection,
-	Knex,
+	Knex: KnexConnection,
 };
