@@ -7,6 +7,8 @@ class ArchiveNotification extends Model {
 		return {
 			person_id: ['required', 'integer'],
 			plan_id: ['required', 'integer'],
+			seen: 'boolean',
+			type: ['required', 'string']
 		};
 	}	
 
@@ -16,6 +18,12 @@ class ArchiveNotification extends Model {
 
 	get hasTimestamps() {
 		return true;
+	}
+
+	defaults() {
+		return {
+			seen: false 
+		};
 	}
 
 	static canCreate(session) {

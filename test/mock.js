@@ -32,13 +32,14 @@ const mockDatabase = {
 	knexClient: null,
 
 	initialize: function(clientConnection) {
-		if (this.connection != null){
-			 return this.connection;
-		}
+		const { database } = clientConnection.knex.context.client.config.connection;
+		if(database !== 'test_meirim'){
+			console.log('wrong database');
+			return null;
+		} 
 		this.connection = clientConnection;
 		this.knexClient = clientConnection.knex;
 		console.log('DATABASE CONNECTION CONFIG', this.knexClient.context.client.config);
-
 		return this.connection;
 	},
 

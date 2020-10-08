@@ -1,50 +1,31 @@
-const assert = require('chai').assert;
+const expect = require('chai').expect;
+const { ArchiveNotification } = require('../../api/model');
 
-const ArchiveNotificationSeed = function(t) {
-	t.increments();
-	t.integer('plan_id');
-	t.integer('person_id');
-	t.timestamps();
-};
-
-const getMockDatabase = () => {
-	let mock = undefined;
-	
-	if(!mock){
-		const { mockDatabase } = require('../mock');
-		mock = mockDatabase;
-	}
-	return mock;
-};
-
-const tables = ['archive_notification'];
-const seeders = [ArchiveNotificationSeed];
-
-describe('init', function() {
-
-	beforeEach(async function() {
-		const mockDatabase = getMockDatabase(); 
-		await mockDatabase.truncate(tables);
-		await mockDatabase.seed(tables, seeders);
+describe('archive_notification model', function() {
+	it('has the right rules', async function() {
+		const instance = new ArchiveNotification();
+		const rules = instance.rules;
+		expect(rules.person_id).to.eql(['required', 'integer']);
+		expect(rules.plan_id).to.eql(['required', 'integer']);
+		expect(rules.seen).to.eql('boolean');
+		expect(rules.type).to.eql(['required', 'string' ]);
 	});
 
-	afterEach(async function() {
-		const mockDatabase = getMockDatabase();
-		await mockDatabase.truncate(tables);
+	it('has the right table name', async function() {
+		const instance = new ArchiveNotification();
+		const tableName = instance.tableName;
+		expect(tableName).to.eql('archive_notification');
 	});
 
-	it('first', async function() {
-		const {ArchiveNotificationController} = require('../../api/controller');
-		const req = {
-			session: {
-				person: 'fake'
-			},
-			body: {
-				person_id: 123,
-				plan_id: 123,
-			}
-		};
+	it('has the right defaults', async function() {
+		const instance = new ArchiveNotification();
+		const defaults = instance.defaults();
+		expect(defaults).to.eql({seen: false});
+	});
 
-		 await ArchiveNotificationController.create(req);
+	it('has timestamps', async function() {
+		const instance = new ArchiveNotification();
+		const isTimestamps = instance.hasTimestamps;
+		expect(isTimestamps).to.eql(true);
 	});
 });
