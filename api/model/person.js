@@ -13,12 +13,6 @@ const seconds = 1000;
 class Person extends BaseModel {
 	static get rules() {
 		return {
-			// firstName: [
-			//   'required', 'string'kshelf
-			// ],
-			// lastName: [
-			//   'required', 'string'
-			// ],
 			email: ['required', 'email'],
 			password: ['required', 'string'],
 			status: ['required', 'integer'],
@@ -125,9 +119,6 @@ class Person extends BaseModel {
 		});
 	}
 
-	// upload(files) {
-	//   return this;
-	// }
 	checkPassword(password) {
 		return Bcrypt.compare(password, this.get('password')).then((res) => {
 			if (!res) {
