@@ -25,12 +25,11 @@ class ImpressionController extends Controller {
     const body = req.body
     body.plan_id = parseInt(req.params.plan_id, 10)
     body.ip = hashCode(getIp(req))
-    body.person_id = req.session.person ? req.session.person.id : 0
     return (
       this.model
         .forge(body)
         .save()
-      // we don't was to ruturn data
+      // we don't want to return data
         .then(() => true)
     )
   }
