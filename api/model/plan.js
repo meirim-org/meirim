@@ -46,10 +46,15 @@ class Plan extends Model {
 
 		return super.parse(attributes);
 	}
+
 	get geometry() {
 		return ['geom'];
 	}
 
+	get hasTimestamps() {
+		return true;
+	}
+	
 	get tableName() {
 		return 'plan';
 	}
