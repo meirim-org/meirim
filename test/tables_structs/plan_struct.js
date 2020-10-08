@@ -6,10 +6,10 @@ const PlanStruct = function(table) {
 	table.string('PL_NUMBER');
 	table.string('PL_NAME');
 	table.string('data');
-	table.object('geom');
+	// table.object('geom');
 	table.string('jurisdiction');
 	table.string('areaChanges');
-	table.number('rating');
+	table.integer('rating');
 	table.timestamps();
 	return table;
 };

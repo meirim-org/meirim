@@ -73,7 +73,10 @@ class Plan extends Model {
 	}
 
 	static canCreate(session) {
-		throw new Exception.NotAllowed('This option is disabled');
+		if (!session.person || !session.person.admin) {
+			throw new Exception.NotAllowed('Must be logged in');
+		}
+		return Promise.resolve(this);
 	}
 
 	static markPlansAsSent(plan_ids) {
