@@ -24,6 +24,10 @@ class Person extends BaseModel {
 		return ['password', 'admin', 'status'];
 	}
 
+	get hasTimestamps() {
+		return true;
+	}
+
 	get tableName() {
 		return 'person';
 	}
