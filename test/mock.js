@@ -12,7 +12,8 @@ const tableActions = {
 
 	isExist: async function(knexClient, tableName) {
 		return await knexClient.schema.hasTable(tableName).then(function(exists){
-			return exists;});
+			return exists;
+		});
 	},
 
 	dropTable: async function(knexClient, tableName) {
@@ -24,6 +25,11 @@ const tableActions = {
 			return await knexClient(tableName).insert(data);
 		});
 	},
+	selectDataFromTable: async function(knexClient, tableName, condition) {
+		return knexClient(tableName).then(function(rows) {
+			return rows;
+		});
+	}
 };
 
 
@@ -84,6 +90,15 @@ const mockDatabase = {
 			tableActions.insertDataToTable(knexClient, tableName, tableData);
 			return;
 		});
+	},
+
+	selectData: async function(tableName, condition){
+		const knexClient = this.knexClient;
+		const isTableExist = await tableActions.isExist(knexClient, tableName);
+		if(isTableExist){
+			await tableActions.selectDataFromTable(knexClient, tableName, condition);
+		}
+		return;
 	}
 };
 
