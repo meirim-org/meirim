@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+const controller = require('../api/controller/impression');
+const Log = require('../api/lib/log');
+
+
+controller.aggregate()
+  .then(() => Log.info('aggregateViews completed'))
+  .catch(e => Log.error(e.message))
+  .finally(() => process.exit());
