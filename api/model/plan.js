@@ -60,11 +60,22 @@ class Plan extends Model {
 	}
 
 	initialize() {
-		this.on('saving', this._saving, this);
+		this.on('saving',this._saving ,this);
+		this.on('updated', this._updated, this);
+		this.on('created', this._created, this);
 		super.initialize();
 	}
 
+	_created(model, attrs, options) {
+		console.log('on created model', model);
+		// return new Checkit(model.rules).run(model.attributes);
+	}
+	_updated(model, attrs, options) {
+		console.log('on updated model', model);
+		// return new Checkit(model.rules).run(model.attributes);
+	}
 	_saving(model, attrs, options) {
+		console.log('on saving model', model);
 		// return new Checkit(model.rules).run(model.attributes);
 	}
 
