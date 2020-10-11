@@ -3,6 +3,16 @@ const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 
+const handleNewModel = function(model) {
+	console.log('new model');
+};
+
+const handleOldModel = function(model) {
+	console.log('old model');
+};
+
+
+
 class Plan extends Model {
 	get rules() {
 		return {
@@ -11,11 +21,13 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
-			// PLAN_CHARACTOR_NAME: 'string',
+			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
 			geom: ['required', 'object'],
 			jurisdiction: 'string',
 			areaChanges: 'string',
+			plan_url: 'string',
+			status: 'string',
 			rating: ['required', 'number']
 		};
 	}
@@ -60,22 +72,21 @@ class Plan extends Model {
 	}
 
 	initialize() {
-		this.on('saving',this._saving ,this);
-		this.on('updated', this._updated, this);
-		this.on('created', this._created, this);
-		super.initialize();
+		this.on('saving', this._saving ,this);
+		// super.initialize();
 	}
 
-	_created(model, attrs, options) {
-		console.log('on created model', model);
-		// return new Checkit(model.rules).run(model.attributes);
-	}
-	_updated(model, attrs, options) {
-		console.log('on updated model', model);
-		// return new Checkit(model.rules).run(model.attributes);
-	}
 	_saving(model, attrs, options) {
-		console.log('on saving model', model);
+		const isNewModel = model.isNew();
+		if(isNewModel) {
+			handleNewModel(model);
+		} else {
+			handleOldModel(model);
+		}
+		return; 
+		// console.log('Plan -> _saved -> isModelNew', isNewModel);
+		// console.log('Plan -> _saved -> model', model);
+		
 		// return new Checkit(model.rules).run(model.attributes);
 	}
 
@@ -123,7 +134,6 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
 			PL_NUMBER: iPlan.properties.PL_NUMBER || '',
 			PL_NAME: iPlan.properties.PL_NAME || '',
-			// 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
 			data: iPlan.properties,
 			geom: iPlan.geometry,
 			PLAN_CHARACTOR_NAME: '',
