@@ -6,6 +6,10 @@ const PlanStruct = function(table) {
 	table.string('PL_NUMBER');
 	table.string('PL_NAME');
 	table.string('data');
+	table.string('PLAN_CHARACTOR_NAME');
+	table.string('plan_url');
+	table.string('status');
+	table.string('geom');
 	// table.object('geom');
 	table.string('jurisdiction');
 	table.string('areaChanges');
