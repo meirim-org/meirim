@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const { mockDatabase } = require('../mock');
 const { Plan } = require('../../api/model');
 
 describe('Plan model', function() {
@@ -20,6 +21,8 @@ describe('Plan model', function() {
 		expect(rules.jurisdiction).to.eql('string');
 		expect(rules.areaChanges).to.eql('string');
 		expect(rules.PL_NAME).to.eql('string');
+		expect(rules.status).to.eql('string');
+		expect(rules.plan_url).to.eql('string');
 		expect(rules.data).to.eql([ 'required' ]);
 		expect(rules.geom).to.eql([ 'required', 'object' ]);
 		expect(rules.PLAN_COUNTY_NAME).to.eql('string');
@@ -39,4 +42,76 @@ describe('Plan model', function() {
 		const isTimestamps = instance.hasTimestamps;
 		expect(isTimestamps).to.eql(true);
 	});
+
+});
+
+describe('Plan and Notification models integration', function() {
+	const tables = ['plan', 'notification'];
+	beforeEach(async function() {
+		await mockDatabase.dropTables(tables);
+		await mockDatabase.createTables(tables);
+	});
+
+	afterEach(async function() {
+		await mockDatabase.dropTables(tables);
+	});
+	it('Adds a row in notification table for new plan', async function() {
+		const iPlan = {
+			properties : 
+				{
+					OBJECTID: 4,
+					PLAN_COUNTY_NAME: 'COUNTNAME',
+					PL_NUMBER: 'plannumber',
+					PL_NAME: 'planname',
+					data: 'data',
+					PL_URL: 'plurl',
+					STATION_DESC: '50'
+				},
+		};
+		 await Plan.buildFromIPlan(iPlan);
+	});
+
+	it('Adds a row in notification table for updated plan', async function() {
+		const iPlan = {
+			properties : 
+				{
+					OBJECTID: 4,
+					PLAN_COUNTY_NAME: 'COUNTNAME',
+					PL_NUMBER: 'plannumber',
+					PL_NAME: 'planname',
+					data: 'data',
+					PL_URL: 'plurl',
+					STATION_DESC: '50'
+				},
+		};
+		const inst = await Plan.buildFromIPlan(iPlan);
+		const forgeresponse = await Plan.forge({PL_NUMBER: iPlan.properties.PL_NUMBER}).fetch();
+		iPlan.properties.OBJECTID = 2;
+
+		// await wait(2);
+		const data = {
+			OBJECTID: 1,
+			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
+			PL_NUMBER: iPlan.properties.PL_NUMBER || '',
+			PL_NAME: iPlan.properties.PL_NAME || '',
+			data: iPlan.properties,
+			geom: iPlan.geometry,
+			PLAN_CHARACTOR_NAME: '',
+			plan_url: iPlan.properties.PL_URL,
+			status: '60',
+			updated_at: new Date()
+		};
+		await forgeresponse.set(data);
+		await forgeresponse.save();
+		
+		// console.log('secondsaveresponse ', secondsaveresponse );
+		// console.log('inst ', inst );
+		// const rules = instance.rules;
+		// expect(rules.areaChanges).to.eql('string');
+	});
+
+	// it('buildFromIPlan success on old plan', function() {
+	// 	const rules = instance.rules;
+	// 	expect(rules.areaChanges).to.eql('string');
+	// });
 });
