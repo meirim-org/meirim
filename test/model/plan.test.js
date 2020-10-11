@@ -68,7 +68,9 @@ describe('Plan and Notification models integration', function() {
 					STATION_DESC: '50'
 				},
 		};
-		 await Plan.buildFromIPlan(iPlan);
+		await Plan.buildFromIPlan(iPlan);
+		const notifications = await mockDatabase.selectData('notifications', {	plan_id: 1	});
+		expect(notifications.length).to.eql(1);
 	});
 
 	it('Adds a row in notification table for updated plan', async function() {
@@ -84,11 +86,9 @@ describe('Plan and Notification models integration', function() {
 					STATION_DESC: '50'
 				},
 		};
-		const inst = await Plan.buildFromIPlan(iPlan);
-		const forgeresponse = await Plan.forge({PL_NUMBER: iPlan.properties.PL_NUMBER}).fetch();
-		iPlan.properties.OBJECTID = 2;
+		await Plan.buildFromIPlan(iPlan);
+		const plan = await Plan.forge({PL_NUMBER: iPlan.properties.PL_NUMBER}).fetch();
 
-		// await wait(2);
 		const data = {
 			OBJECTID: 1,
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
@@ -101,17 +101,10 @@ describe('Plan and Notification models integration', function() {
 			status: '60',
 			updated_at: new Date()
 		};
-		await forgeresponse.set(data);
-		await forgeresponse.save();
-		
-		// console.log('secondsaveresponse ', secondsaveresponse );
-		// console.log('inst ', inst );
-		// const rules = instance.rules;
-		// expect(rules.areaChanges).to.eql('string');
+		await plan.set(data);
+		await plan.save();
+		const notifications = await mockDatabase.selectData('notifications', {	plan_id: 1	});
+		expect(notifications.length).to.eql(2);
 	});
 
-	// it('buildFromIPlan success on old plan', function() {
-	// 	const rules = instance.rules;
-	// 	expect(rules.areaChanges).to.eql('string');
-	// });
 });
