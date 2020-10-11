@@ -96,7 +96,7 @@ const mockDatabase = {
 		const knexClient = this.knexClient;
 		const isTableExist = await tableActions.isExist(knexClient, tableName);
 		if(isTableExist){
-			await tableActions.selectDataFromTable(knexClient, tableName, condition);
+			return tableActions.selectDataFromTable(knexClient, tableName, condition);
 		}
 		return;
 	}

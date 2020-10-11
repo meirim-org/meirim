@@ -1,35 +1,48 @@
 const Bluebird = require('bluebird');
 const Model = require('./base_model');
 const Log = require('../lib/log');
+const Notification = require('./notification');
 const Exception = require('./exception');
 
-const getPlanArea = function(plan) {
-	return 'plan area';
-};
+// const getPlanArea = function(plan) {
+// 	return 'plan area';
+// };
 
 // const getPlanGroups = function(plan) {
 // 	return 'plan groups';
 // };
 
-const getUsersInArea = function({area ={}}){
-	return 'get users in area';
-};
+// const getUsersInArea = function({area ={}}){
+// 	return 'get users in area';
+// };
 
 // const getUsersInGroups = function({area ={}}){
 // 	return 'get users in groups';
 // };
 
-const generateNotificationsFor = function({users}){
-	return 'generate notifications';
+const generateNotificationsFor = async function({users, model}){
+	for(let i = 0; i<users.length; i++) {
+		const user = users[i];
+		const data = {
+			person_id: user.id,
+			plan_id: model.id || 2,
+			type: 'mekimock'
+		};
+		const instance = new Notification(data);
+		const res = await instance.save();
+		console.log(`generated notification for user ${res.attributes.person_id}`);
+	}
+
+	return;
 };
 
-const handleNewModel = function(model) {
-	const planArea = getPlanArea(model);
+const handleNewModel = async function(model) {
+	// const planArea = getPlanArea(model);
 	// const planGroups = getPlanGroups(model);
-	const usersInPlanArea = getUsersInArea({area: planArea});
+	const usersInPlanArea = [{id: 1}]; 
+	// const usersInPlanArea = getUsersInArea({area: planArea});
 	// const usersInPlanGroups = getUsersInGroups({groups: planGroups});
-	generateNotificationsFor({users: usersInPlanArea});
-	console.log('new model');
+	await generateNotificationsFor({users: usersInPlanArea, model});
 };
 
 const handleOldModel = function(model) {
