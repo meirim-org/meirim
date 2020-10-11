@@ -3,7 +3,32 @@ const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 
+const getPlanArea = function(plan) {
+	return 'plan area';
+};
+
+// const getPlanGroups = function(plan) {
+// 	return 'plan groups';
+// };
+
+const getUsersInArea = function({area ={}}){
+	return 'get users in area';
+};
+
+// const getUsersInGroups = function({area ={}}){
+// 	return 'get users in groups';
+// };
+
+const generateNotificationsFor = function({users}){
+	return 'generate notifications';
+};
+
 const handleNewModel = function(model) {
+	const planArea = getPlanArea(model);
+	// const planGroups = getPlanGroups(model);
+	const usersInPlanArea = getUsersInArea({area: planArea});
+	// const usersInPlanGroups = getUsersInGroups({groups: planGroups});
+	generateNotificationsFor({users: usersInPlanArea});
 	console.log('new model');
 };
 
@@ -84,10 +109,6 @@ class Plan extends Model {
 			handleOldModel(model);
 		}
 		return; 
-		// console.log('Plan -> _saved -> isModelNew', isNewModel);
-		// console.log('Plan -> _saved -> model', model);
-		
-		// return new Checkit(model.rules).run(model.attributes);
 	}
 
 	canRead(session) {
