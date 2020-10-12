@@ -1,55 +1,34 @@
 const Bluebird = require('bluebird');
 const Model = require('./base_model');
 const Log = require('../lib/log');
-const Notification = require('./notification');
 const Exception = require('./exception');
+const {	notification_types } = require('../constants');
+const { createNotificationsFor } = require('./notification');
 
-// const getPlanArea = function(plan) {
-// 	return 'plan area';
-// };
-
-// const getPlanGroups = function(plan) {
-// 	return 'plan groups';
-// };
-
-// const getUsersInArea = function({area ={}}){
-// 	return 'get users in area';
-// };
-
-// const getUsersInGroups = function({area ={}}){
-// 	return 'get users in groups';
-// };
-
-const generateNotificationsFor = async function({users, model}){
-	for(let i = 0; i<users.length; i++) {
-		const user = users[i];
-		const data = {
-			person_id: user.id,
-			plan_id: model.id || 2,
-			type: 'mekimock'
-		};
-		const instance = new Notification(data);
-		const res = await instance.save();
-		console.log(`generated notification for user ${res.attributes.person_id}`);
-	}
-
-	return;
+const handleNewModel = function(model) {
+	const planId = model.id;
+	const usersInPlanArea = [{ id: 1 }]; // temp mock
+	createNotificationsFor({
+		users: usersInPlanArea, 
+		planId,
+		type:	notification_types['NEW_PLAN_IN_AREA'] 
+	});
 };
 
-const handleNewModel = async function(model) {
-	// const planArea = getPlanArea(model);
-	// const planGroups = getPlanGroups(model);
-	const usersInPlanArea = [{id: 1}]; 
-	// const usersInPlanArea = getUsersInArea({area: planArea});
-	// const usersInPlanGroups = getUsersInGroups({groups: planGroups});
-	await generateNotificationsFor({users: usersInPlanArea, model});
+const getUpdateType = function(model){
+	const attrs = model.attributes;
+	const prevAttrs = model._previousAttributes;
+	if(attrs.status !== prevAttrs.status) {
+		return notification_types['STATUS_CHANGE'];
+	}
 };
 
 const handleOldModel = function(model) {
-	console.log('old model');
+	const planId = model.id;
+	const usersInPlanArea = [{id: 1}]; // temp mock
+	const type = getUpdateType(model);
+	createNotificationsFor({users: usersInPlanArea, planId, type});
 };
-
-
 
 class Plan extends Model {
 	get rules() {
@@ -110,18 +89,16 @@ class Plan extends Model {
 	}
 
 	initialize() {
-		this.on('saving', this._saving ,this);
+		this.on('created', this._created, this);
+		this.on('updated', this._updated, this);
 		// super.initialize();
 	}
 
-	_saving(model, attrs, options) {
-		const isNewModel = model.isNew();
-		if(isNewModel) {
-			handleNewModel(model);
-		} else {
-			handleOldModel(model);
-		}
-		return; 
+	_updated(model, attrs, options){
+		handleOldModel(model);
+	}
+	_created(model, attrs, options) {
+		handleNewModel(model);
 	}
 
 	canRead(session) {
@@ -215,4 +192,37 @@ class Plan extends Model {
 		});
 	}
 }
+
 module.exports = Plan;
+
+
+// const getPlanArea = function(plan) {
+// 	return 'plan area';
+// };
+
+// const getPlanGroups = function(plan) {
+// 	return 'plan groups';
+// };
+
+// const getUsersInArea = function({area ={}}){
+// 	return 'get users in area';
+// };
+
+// const getUsersInGroups = function({area ={}}){
+// 	return 'get users in groups';
+// };
+
+
+// const handleNewModel = async function(model) {
+// 	// const planArea = getPlanArea(model);
+// 	// const planGroups = getPlanGroups(model);
+// 	// const usersInPlanArea = getUsersInArea({area: planArea});
+// 	// const usersInPlanGroups = getUsersInGroups({groups: planGroups});
+// 	const usersInPlanArea = [{id: 1}, {id: 2}]; 
+// 	// const usersInPlanGroups = [{id: 1}]; 
+// 	await generateNotificationsFor({
+// 		users: usersInPlanArea, 
+// 		model, 
+// 		type:notification_types['NEW_PLAN_IN_AREA'] 
+// 	});
+// };
