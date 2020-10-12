@@ -72,7 +72,7 @@ describe('Plan and Notification models integration', function() {
 				},
 		};
 		await Plan.buildFromIPlan(iPlan);
-		await wait(5);
+		await wait(1);
 		const notifications = await mockDatabase.selectData('notification', {	plan_id: 1	});
 		expect(notifications.length).to.eql(1);
 	});
