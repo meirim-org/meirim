@@ -75,6 +75,8 @@ describe('Plan and Notification models integration', function() {
 		await wait(1);
 		const notifications = await mockDatabase.selectData('notification', {	plan_id: 1	});
 		expect(notifications.length).to.eql(1);
+		const [firstNotification] = notifications;
+		expect(firstNotification.type).to.eql('NEW_PLAN_IN_AREA');
 	});
 
 	it('Adds a row in notification table for updated plan', async function() {
@@ -110,6 +112,9 @@ describe('Plan and Notification models integration', function() {
 		await wait(1);
 		const notifications = await mockDatabase.selectData('notification', {	plan_id: 1	});
 		expect(notifications.length).to.eql(2);
+		const [firstNotification, secondNotification] = notifications;
+		expect(firstNotification.type).to.eql('NEW_PLAN_IN_AREA');
+		expect(secondNotification.type).to.eql('STATUS_CHANGE');
 	});
 
 });
