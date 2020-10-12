@@ -1,7 +1,6 @@
 exports.up = function (knex, Promise) {
     return knex.schema.createTableIfNotExists("impression", t => {
         t.increments("id").primary();
-        t.integer("person_id").notNullable();
         t.integer("plan_id").notNullable();
         t.integer("ip").notNullable();
         t.timestamp("created_at").defaultTo(knex.fn.now());
