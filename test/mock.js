@@ -5,7 +5,6 @@ const tableActions = {
 	createTable: async function(knexClient, tableName) {
 		return await knexClient.schema.createTable(tableName, function(t){
 			const table = structs[tableName](t);
-			console.log(`created table ${tableName}`);
 			return table;
 		}); 
 	},
