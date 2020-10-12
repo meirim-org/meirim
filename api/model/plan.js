@@ -5,29 +5,33 @@ const Exception = require('./exception');
 const {	notification_types } = require('../constants');
 const { createNotificationsFor } = require('./notification');
 
-const handleNewModel = function(model) {
-	const planId = model.id;
-	const usersInPlanArea = [{ id: 1 }]; // temp mock
-	createNotificationsFor({
-		users: usersInPlanArea, 
-		planId,
-		type:	notification_types['NEW_PLAN_IN_AREA'] 
-	});
-};
-
-const getUpdateType = function(model){
+// very basic for now
+const getPlanUpdateTypes = function(model){
+	const updates = [];
 	const attrs = model.attributes;
 	const prevAttrs = model._previousAttributes;
 	if(attrs.status !== prevAttrs.status) {
-		return notification_types['STATUS_CHANGE'];
+		updates.push(notification_types['STATUS_CHANGE']);
 	}
+	return updates;
 };
 
-const handleOldModel = function(model) {
+const handleNewPlan = function(model) {
+	const planId = model.id;
+	const usersInPlanArea = [{ id: 1 }];  // temp mock
+	const type = notification_types['NEW_PLAN_IN_AREA']; // temp
+	createNotificationsFor({ users: usersInPlanArea, planId, type });
+	/// createNotificationsFor({ users: usersInGroups, planId, type: notification_types['USERS_IN_GROUPS'] });
+	/// const usersInGroups = ...
+};
+
+const handleUpdatedPlan = function(model) {
 	const planId = model.id;
 	const usersInPlanArea = [{id: 1}]; // temp mock
-	const type = getUpdateType(model);
-	createNotificationsFor({users: usersInPlanArea, planId, type});
+	const types = getPlanUpdateTypes(model);
+	for(let type of types) {
+		createNotificationsFor({ users: usersInPlanArea, planId, type });
+	}
 };
 
 class Plan extends Model {
@@ -91,14 +95,14 @@ class Plan extends Model {
 	initialize() {
 		this.on('created', this._created, this);
 		this.on('updated', this._updated, this);
-		// super.initialize();
+		// super.initialize(); temp as checkit doesnt allow geom to be empty
 	}
 
 	_updated(model, attrs, options){
-		handleOldModel(model);
+		handleUpdatedPlan(model);
 	}
 	_created(model, attrs, options) {
-		handleNewModel(model);
+		handleNewPlan(model);
 	}
 
 	canRead(session) {
