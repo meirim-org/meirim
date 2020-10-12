@@ -105,7 +105,6 @@ describe('Plan and Notification models integration', function() {
 			PLAN_CHARACTOR_NAME: '',
 			plan_url: iPlan.properties.PL_URL,
 			status: '60',
-			updated_at: new Date()
 		};
 		await plan.set(data);
 		await plan.save();
