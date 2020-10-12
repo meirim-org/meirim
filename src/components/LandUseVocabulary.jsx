@@ -3,7 +3,6 @@ import _ from 'lodash';
 import stringSimilarity from 'string-similarity'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
-import Button from 'react-bootstrap/Button'
 import Chip from '@material-ui/core/Chip';
 
 import terms from '../assets/keywords'
@@ -20,7 +19,7 @@ class LandUseVocabulary extends Component {
     const useTerms = this.finduse(use);
 
     if(!useTerms || !useTerms.length >0)
-      return <Chip variant="light" label={use} disabled></Chip>
+      return <Chip label={use}></Chip>
 
     return <OverlayTrigger
           key={use}
@@ -36,7 +35,7 @@ class LandUseVocabulary extends Component {
           }
           </Tooltip>
         }>
-          <Chip label={use}  variant="light" disabled className="chippi"/> 
+          <Chip label={use} className="chippi"/>
       </OverlayTrigger>
   }
 
