@@ -1,4 +1,4 @@
-const Notification = require('./notification');
+const { Notification } = require('./notification');
 const ArchiveNotification = require('./archive_notification');
 const Plan = require('./plan');
 
