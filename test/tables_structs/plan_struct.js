@@ -10,7 +10,6 @@ const PlanStruct = function(table) {
 	table.string('plan_url');
 	table.string('status');
 	table.string('geom');
-	// table.object('geom');
 	table.string('jurisdiction');
 	table.string('areaChanges');
 	table.integer('rating');
