@@ -28,10 +28,10 @@ describe('Plan controller', function() {
 				PL_NUMBER: 'plannumber',
 				PL_NAME: 'planname',
 				data: 'data',
-				// geom:{prop:'imobj'},
 				jurisdiction: 'juris',
 				areaChanges: 'areachanges',
 				rating: 2,
+				tags: ['firsttag', 'secondtag']
 			}
 		};
 		const {attributes} = await PlanController.create(req);
@@ -44,5 +44,6 @@ describe('Plan controller', function() {
 		expect(attributes.areaChanges).to.eql(req.body.areaChanges);
 		expect(attributes.rating).to.eql(req.body.rating);
 		expect(attributes.sent).to.eql(0);
+		expect(attributes.tags).to.eql(req.body.tags);
 	});
 });

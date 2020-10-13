@@ -20,7 +20,9 @@ class Plan extends Model {
 			areaChanges: 'string',
 			plan_url: 'string',
 			status: 'string',
-			rating: ['required', 'number']
+			rating: ['required', 'number'],
+			tags: 'array'
+
 		};
 	}
 
@@ -80,6 +82,8 @@ class Plan extends Model {
 	}
 
 	handleNewPlan (model) {
+		// fetch users in Plan area
+		// fetch users in Plan interest group
 		const planId = model.id;
 		const { users } = this.getUsersInPlanArea(model);
 		const type = notification_types['NEW_PLAN_IN_AREA']; // temp
@@ -87,6 +91,9 @@ class Plan extends Model {
 	};
 
 	handleUpdatedPlan (model) {
+		// fetch users in Plan area
+		// fetch users in Plan interest group
+		// fetch users who bookmarked this plan
 		const planId = model.id;
 		const { users } = this.getUsersInPlanArea(model);
 		const types = this.getPlanUpdateTypes(model);
@@ -155,6 +162,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
 			PL_NUMBER: iPlan.properties.PL_NUMBER || '',
 			PL_NAME: iPlan.properties.PL_NAME || '',
+			tags: iPlan.properties.tags || [],
 			data: iPlan.properties,
 			geom: iPlan.geometry,
 			PLAN_CHARACTOR_NAME: '',
