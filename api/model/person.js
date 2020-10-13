@@ -15,9 +15,15 @@ class Person extends BaseModel {
 		return {
 			email: ['required', 'email'],
 			password: ['required', 'string'],
-			status: ['required', 'integer'],
+			status: 'integer',
 			admin: ['integer'],
 			subscribed_tags: 'array'
+		};
+	}
+
+	defaults() {
+		return {
+			status: 0
 		};
 	}
 

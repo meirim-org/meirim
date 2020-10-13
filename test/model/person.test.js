@@ -15,7 +15,7 @@ describe('Person model', function() {
 		const rules = instance.rules;
 		expect(rules.email).to.eql(['required', 'email']);
 		expect(rules.password).to.eql(['required', 'string']);
-		expect(rules.status).to.eql(['required', 'integer']);
+		expect(rules.status).to.eql('integer');
 		expect(rules.admin).to.eql(['integer']);
 		expect(rules.subscribed_tags).to.eql('array');
 	});
