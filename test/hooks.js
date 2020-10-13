@@ -1,7 +1,0 @@
-exports.mochaHooks = {
-	beforeAll() {
-	},
-  
-	afterAll() {
-	},  
-};

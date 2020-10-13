@@ -18,7 +18,7 @@ describe('Emails', function() {
 	let firstPerson, secondPerson;
 	let firstAlert, secondAlert;
 
-	before(async function() {
+	beforeEach(async function() {
 		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		signController = require('../../api/controller/sign');
@@ -41,7 +41,7 @@ describe('Emails', function() {
 		await Email.init();
 	});
 
-	after(async function() {
+	afterEach(async function() {
 		mockDatabase.dropTables(tables);
 		sinonSandbox.restore();
 	});
