@@ -24,6 +24,7 @@ describe('Plan model', function() {
 		expect(rules.PL_NAME).to.eql('string');
 		expect(rules.status).to.eql('string');
 		expect(rules.plan_url).to.eql('string');
+		expect(rules.tags).to.eql('array');
 		expect(rules.data).to.eql([ 'required' ]);
 		expect(rules.geom).to.eql([ 'required', 'object' ]);
 		expect(rules.PLAN_COUNTY_NAME).to.eql('string');
@@ -68,7 +69,8 @@ describe('Plan and Notification models integration', function() {
 					PL_NAME: 'planname',
 					data: 'data',
 					PL_URL: 'plurl',
-					STATION_DESC: '50'
+					STATION_DESC: '50',
+					tags: JSON.stringify(['tag1', 'tag2'])
 				},
 		};
 		await Plan.buildFromIPlan(iPlan);
@@ -89,7 +91,8 @@ describe('Plan and Notification models integration', function() {
 					PL_NAME: 'planname',
 					data: 'data',
 					PL_URL: 'plurl',
-					STATION_DESC: '50'
+					STATION_DESC: '50',
+					tags: JSON.stringify(['tag1', 'tag2'] )
 				},
 		};
 		await Plan.buildFromIPlan(iPlan);
@@ -100,6 +103,7 @@ describe('Plan and Notification models integration', function() {
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
 			PL_NUMBER: iPlan.properties.PL_NUMBER || '',
 			PL_NAME: iPlan.properties.PL_NAME || '',
+			tags: iPlan.properties.tags,
 			data: iPlan.properties,
 			geom: iPlan.geometry,
 			PLAN_CHARACTOR_NAME: '',
