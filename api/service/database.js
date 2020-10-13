@@ -2,7 +2,7 @@ const Config = require('../lib/config');
 
 const Knex = require('knex');
 
-const env = process.env.NODE_ENV === 'test' ? 'test.database' : 'database';
+const env = process.env.NODE_ENV === 'test' ? 'test.database' : 'database'; /// hack, should be fixed
 
 const KnexConnection = Knex({
 	client: Config.get(`${env}.client`),
