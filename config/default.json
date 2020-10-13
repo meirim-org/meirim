@@ -42,6 +42,17 @@
 				"database": "test_meirim",
 				"charset": "utf8"
 			}
+		},
+		"email": {
+			"options": {
+				"host": "smtp.example.com",
+				"port": 465,
+				"secure": true,
+				"auth": {
+					"user": "user",
+					"pass": "pass"
+				}
+			}
 		}
 	},
 	"database": {
@@ -49,11 +60,12 @@
 		"connection": {
 			"host": "localhost",
 			"user": "root",
-			"password": "",
+			"password": "password",
 			"database": "meirim",
 			"charset": "utf8"
 		}
 	},
+
 	"email": {
 		"transport": "SMTP",
 		"from_name": "Meirim",
