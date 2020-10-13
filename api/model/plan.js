@@ -95,8 +95,11 @@ class Plan extends Model {
 	initialize() {
 		this.on('created', this._created, this);
 		this.on('updated', this._updated, this);
-		// super.initialize(); temp as checkit doesnt allow geom to be empty
+		this.on('saving', this._saving, this);
+		super.initialize();
 	}
+
+	_saving(model,attrs, options) {}
 
 	_updated(model, attrs, options){
 		handleUpdatedPlan(model);
@@ -198,35 +201,3 @@ class Plan extends Model {
 }
 
 module.exports = Plan;
-
-
-// const getPlanArea = function(plan) {
-// 	return 'plan area';
-// };
-
-// const getPlanGroups = function(plan) {
-// 	return 'plan groups';
-// };
-
-// const getUsersInArea = function({area ={}}){
-// 	return 'get users in area';
-// };
-
-// const getUsersInGroups = function({area ={}}){
-// 	return 'get users in groups';
-// };
-
-
-// const handleNewModel = async function(model) {
-// 	// const planArea = getPlanArea(model);
-// 	// const planGroups = getPlanGroups(model);
-// 	// const usersInPlanArea = getUsersInArea({area: planArea});
-// 	// const usersInPlanGroups = getUsersInGroups({groups: planGroups});
-// 	const usersInPlanArea = [{id: 1}, {id: 2}]; 
-// 	// const usersInPlanGroups = [{id: 1}]; 
-// 	await generateNotificationsFor({
-// 		users: usersInPlanArea, 
-// 		model, 
-// 		type:notification_types['NEW_PLAN_IN_AREA'] 
-// 	});
-// };
