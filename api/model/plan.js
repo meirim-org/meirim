@@ -5,35 +5,6 @@ const Exception = require('./exception');
 const {	notification_types } = require('../constants');
 const { createNotificationsFor } = require('./notification');
 
-// very basic for now
-const getPlanUpdateTypes = function(model){
-	const updates = [];
-	const attrs = model.attributes;
-	const prevAttrs = model._previousAttributes;
-	if(attrs.status !== prevAttrs.status) {
-		updates.push(notification_types['STATUS_CHANGE']);
-	}
-	return updates;
-};
-
-const handleNewPlan = function(model) {
-	const planId = model.id;
-	const usersInPlanArea = [{ id: 1 }];  // temp mock
-	const type = notification_types['NEW_PLAN_IN_AREA']; // temp
-	createNotificationsFor({ users: usersInPlanArea, planId, type });
-	/// createNotificationsFor({ users: usersInGroups, planId, type: notification_types['USERS_IN_GROUPS'] });
-	/// const usersInGroups = ...
-};
-
-const handleUpdatedPlan = function(model) {
-	const planId = model.id;
-	const usersInPlanArea = [{id: 1}]; // temp mock
-	const types = getPlanUpdateTypes(model);
-	for(let type of types) {
-		createNotificationsFor({ users: usersInPlanArea, planId, type });
-	}
-};
-
 class Plan extends Model {
 	get rules() {
 		return {
@@ -102,11 +73,43 @@ class Plan extends Model {
 	_saving(model,attrs, options) {}
 
 	_updated(model, attrs, options){
-		handleUpdatedPlan(model);
+		this.handleUpdatedPlan(model);
 	}
 	_created(model, attrs, options) {
-		handleNewPlan(model);
+		this.handleNewPlan(model);
 	}
+
+	handleNewPlan (model) {
+		const planId = model.id;
+		const { users } = this.getUsersInPlanArea(model);
+		const type = notification_types['NEW_PLAN_IN_AREA']; // temp
+		createNotificationsFor({ users, planId, type });
+	};
+
+	handleUpdatedPlan (model) {
+		const planId = model.id;
+		const { users } = this.getUsersInPlanArea(model);
+		const types = this.getPlanUpdateTypes(model);
+		for(let type of types) {
+			createNotificationsFor({ users, planId, type });
+		}
+	};
+
+	getUsersInPlanArea (model) {
+		return {
+			users: [{id: 1}],
+		};
+	};
+
+	getPlanUpdateTypes (model){
+		const updates = [];
+		const attrs = model.attributes;
+		const prevAttrs = model._previousAttributes;
+		if(attrs.status !== prevAttrs.status) {
+			updates.push(notification_types['STATUS_CHANGE']);
+		}
+		return updates;
+	};
 
 	canRead(session) {
 		return Bluebird.resolve(this);
