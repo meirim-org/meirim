@@ -20,6 +20,8 @@ class Plan extends Model {
 			areaChanges: 'string',
 			plan_url: 'string',
 			status: 'string',
+			goals_from_mavat: 'string',
+			main_details_from_mavat: 'string',
 			rating: ['required', 'number']
 		};
 	}
