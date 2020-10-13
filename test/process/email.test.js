@@ -17,7 +17,6 @@ describe('Emails', function() {
 	// the test is over
 	let firstPerson, secondPerson;
 	let firstAlert, secondAlert;
-	let firstPlan, secondPlan, thirdPlan, fourthPlan;
 
 	before(async function() {
 		await mockDatabase.dropTables(tables);
@@ -43,28 +42,7 @@ describe('Emails', function() {
 	});
 
 	after(async function() {
-		// delete plans
-		// if (firstPlan)
-		// 	await firstPlan.destroy({require: true});
-		// if (secondPlan)
-		// 	await secondPlan.destroy({require: true});
-		// if (thirdPlan)
-		// 	await thirdPlan.destroy({require: true});
-		// if (fourthPlan)
-		// 	await fourthPlan.destroy({require: true});
-
-		// // delete alerts
-		// if (firstAlert)
-		// 	await firstAlert.destroy({require: true});
-		// if (secondAlert)
-		// 	await secondAlert.destroy({require: true});
-
-		// // delete users
-		// if (firstPerson)
-		// 	await firstPerson.destroy({require: true});
-		// if (secondPerson)
-		// 	await secondPerson.destroy({require: true});
-
+		mockDatabase.dropTables(tables);
 		sinonSandbox.restore();
 	});
 
@@ -213,7 +191,7 @@ describe('Emails', function() {
 				]
 			}
 		};
-		firstPlan = await planModel.buildFromIPlan(firstIPlan);
+		await planModel.buildFromIPlan(firstIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
@@ -259,7 +237,7 @@ describe('Emails', function() {
 				]
 			}
 		};
-		secondPlan = await planModel.buildFromIPlan(secondIPlan);
+		await planModel.buildFromIPlan(secondIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
@@ -306,7 +284,7 @@ describe('Emails', function() {
 				]
 			}
 		};
-		thirdPlan = await planModel.buildFromIPlan(thirdIPlan);
+		await planModel.buildFromIPlan(thirdIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
@@ -353,7 +331,7 @@ describe('Emails', function() {
 				]
 			}
 		};
-		fourthPlan = await planModel.buildFromIPlan(fourthIPlan);
+		await planModel.buildFromIPlan(fourthIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
