@@ -3,7 +3,7 @@ const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 const {	notification_types } = require('../constants');
-const { createNotificationsFor } = require('./notification');
+const Notification = require('./notification');
 
 class Plan extends Model {
 	get rules() {
@@ -83,7 +83,7 @@ class Plan extends Model {
 		const planId = model.id;
 		const { users } = this.getUsersInPlanArea(model);
 		const type = notification_types['NEW_PLAN_IN_AREA']; // temp
-		createNotificationsFor({ users, planId, type });
+		Notification.createNotifications({ users, planId, type });
 	};
 
 	handleUpdatedPlan (model) {
@@ -91,7 +91,7 @@ class Plan extends Model {
 		const { users } = this.getUsersInPlanArea(model);
 		const types = this.getPlanUpdateTypes(model);
 		for(let type of types) {
-			createNotificationsFor({ users, planId, type });
+			Notification.createNotifications({ users, planId, type });
 		}
 	};
 

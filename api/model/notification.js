@@ -1,18 +1,6 @@
 const Model = require('./base_model');
 const Exception = require('./exception');
 
-const createNotificationsFor = function({ users, planId, type }) {
-	return users.map(function(user) {
-		const data = {
-			person_id: user.id,
-			plan_id: planId,
-			type,
-		};
-		const instance = new Notification(data);
-	 	return instance.save();
-	});
-};
-
 class Notification extends Model {
 	get rules() {
 		return {
@@ -31,6 +19,18 @@ class Notification extends Model {
 		return true;
 	}
 
+	static createNotifications({ users, planId, type }) {
+		return users.map(function(user) {
+			const data = {
+				person_id: user.id,
+				plan_id: planId,
+				type,
+			};
+			const instance = new Notification(data);
+	 	return instance.save();
+		});
+	};
+
 	defaults() {
 		return {
 			seen: false 
@@ -45,4 +45,4 @@ class Notification extends Model {
 	}
 }
 
-module.exports = { Notification, createNotificationsFor };
+module.exports = Notification;
