@@ -2,6 +2,8 @@ const Bluebird = require('bluebird');
 const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
+const {	notification_types } = require('../constants');
+const Notification = require('./notification');
 
 class Plan extends Model {
 	get rules() {
@@ -11,11 +13,13 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
-			// PLAN_CHARACTOR_NAME: 'string',
+			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
 			geom: ['required', 'object'],
 			jurisdiction: 'string',
 			areaChanges: 'string',
+			plan_url: 'string',
+			status: 'string',
 			rating: ['required', 'number']
 		};
 	}
@@ -60,13 +64,52 @@ class Plan extends Model {
 	}
 
 	initialize() {
+		this.on('created', this._created, this);
+		this.on('updated', this._updated, this);
 		this.on('saving', this._saving, this);
 		super.initialize();
 	}
 
-	_saving(model, attrs, options) {
-		// return new Checkit(model.rules).run(model.attributes);
+	_saving(model,attrs, options) {}
+
+	_updated(model, attrs, options){
+		this.handleUpdatedPlan(model);
 	}
+	_created(model, attrs, options) {
+		this.handleNewPlan(model);
+	}
+
+	handleNewPlan (model) {
+		const planId = model.id;
+		const { users } = this.getUsersInPlanArea(model);
+		const type = notification_types['NEW_PLAN_IN_AREA']; // temp
+		Notification.createNotifications({ users, planId, type });
+	};
+
+	handleUpdatedPlan (model) {
+		const planId = model.id;
+		const { users } = this.getUsersInPlanArea(model);
+		const types = this.getPlanUpdateTypes(model);
+		for(let type of types) {
+			Notification.createNotifications({ users, planId, type });
+		}
+	};
+
+	getUsersInPlanArea (model) {
+		return {
+			users: [{id: 1}],
+		};
+	};
+
+	getPlanUpdateTypes (model){
+		const updates = [];
+		const attrs = model.attributes;
+		const prevAttrs = model._previousAttributes;
+		if(attrs.status !== prevAttrs.status) {
+			updates.push(notification_types['STATUS_CHANGE']);
+		}
+		return updates;
+	};
 
 	canRead(session) {
 		return Bluebird.resolve(this);
@@ -112,7 +155,6 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
 			PL_NUMBER: iPlan.properties.PL_NUMBER || '',
 			PL_NAME: iPlan.properties.PL_NAME || '',
-			// 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
 			data: iPlan.properties,
 			geom: iPlan.geometry,
 			PLAN_CHARACTOR_NAME: '',
@@ -160,4 +202,5 @@ class Plan extends Model {
 		});
 	}
 }
+
 module.exports = Plan;
