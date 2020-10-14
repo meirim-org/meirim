@@ -20,7 +20,8 @@ class Email {
    */
 	constructor() {
 		// create reusable transporter object using the default SMTP transport
-		this.config = Config.get('email');
+		const env = process.env.NODE_ENV === 'test' ? 'test.email' : 'email'; // hack, should be fixed
+		this.config = Config.get(`${env}`);
 		this.baseUrl = Config.get('general.domain');
 		this.transporter = Nodemailer.createTransport(this.config.options);
 		this.templates = {};

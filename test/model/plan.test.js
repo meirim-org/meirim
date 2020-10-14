@@ -23,6 +23,8 @@ describe('Plan model', function() {
 		expect(rules.areaChanges).to.eql('string');
 		expect(rules.PL_NAME).to.eql('string');
 		expect(rules.status).to.eql('string');
+		expect(rules.goals_from_mavat).to.eql('string');
+		expect(rules.main_details_from_mavat).to.eql('string');
 		expect(rules.plan_url).to.eql('string');
 		expect(rules.data).to.eql([ 'required' ]);
 		expect(rules.geom).to.eql([ 'required', 'object' ]);
