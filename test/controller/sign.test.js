@@ -8,7 +8,8 @@ const { mockDatabase } = require('../mock');
 chai.use(chaiAsPromised);
 const assert = chai.assert;
 const sinonSandbox = sinon.createSandbox();
-let tables = ['person'];
+const tables = ['person'];
+
 describe('Sign controller', function() {
 	let signController;
 	let personModel;
