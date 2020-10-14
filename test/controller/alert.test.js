@@ -1,20 +1,27 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
-
 const Mailer = require('nodemailer/lib/mailer');
 const verifier = require('email-verify');
+const {	mockDatabase } = require('../mock');
 
 let sinonSandbox = sinon.createSandbox();
+const tables = ['person', 'alert'];
 
 describe('Alert controller', function() {
 	let alertController;
-	let personModel;
 
-	let person, alert;
+	let person = {
+		email: 'test@meirim.org',
+		password: 'xxxx',
+		id: 1,	
+	};
 
-	before(async function() {
+	beforeEach(async function() {
+
+		await mockDatabase.dropTables(tables);
+		await mockDatabase.createTables(tables);
+		await mockDatabase.insertData(['person'], {'person': [person]});
 		alertController = require('../../api/controller/alert');
-		personModel = require('../../api/model/person');
 
 		// init email service to load email templates
 		const Email = require('../../api/service/email');
@@ -31,22 +38,9 @@ describe('Alert controller', function() {
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 	});
 
-	after(function() {
+	afterEach(function() {
+		mockDatabase.dropTables(tables);
 		sinonSandbox.restore();
-	});
-
-	beforeEach(function() {
-		person = personModel.forge({
-			email: 'test@meirim.org',
-			password: 'xxxx',
-			id: 1,
-		});
-	});
-
-	afterEach(async function() {
-		// delete test objects (person is never saved so need not be destroyed)
-		if (alert)
-			await alert.destroy({require: true});
 	});
 
 	it('Create alert should work', async function() {
@@ -61,7 +55,7 @@ describe('Alert controller', function() {
 			}
 		};
 
-		alert = await alertController.create(req);
+		const alert = await alertController.create(req);
 
 		assert.isOk(alert);
 	});
