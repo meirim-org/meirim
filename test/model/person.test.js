@@ -17,7 +17,6 @@ describe('Person model', function() {
 		expect(rules.password).to.eql(['required', 'string']);
 		expect(rules.status).to.eql('integer');
 		expect(rules.admin).to.eql(['integer']);
-		expect(rules.subscribed_tags).to.eql('array');
 	});
 
 	it('has the right table name', function() {
