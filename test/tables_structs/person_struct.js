@@ -4,7 +4,6 @@ const PersonStruct = function(table) {
 	table.string('password');
 	table.string('email');
 	table.integer('status');
-	table.json('subscribed_tags');
 	table.timestamps();
 	return table;
 };

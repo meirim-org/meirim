@@ -17,7 +17,6 @@ class Person extends BaseModel {
 			password: ['required', 'string'],
 			status: 'integer',
 			admin: ['integer'],
-			subscribed_tags: 'array'
 		};
 	}
 
