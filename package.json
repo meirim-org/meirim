@@ -94,8 +94,7 @@
 		"build": "./node_modules/react-scripts/bin/react-scripts.js build",
 		"api": "node bin/api",
 		"serve": "node bin/serve",
-		"test": "mocha --exit --recursive --require test/hooks.js",
-		"alttest": "NODE_ENV=test mocha -g 'archive_notification controller'  --exit --recursive --require test/setup.js"
+		"test": "NODE_ENV=test mocha  --exit --recursive --require test/setup.js"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.9.1",

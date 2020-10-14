@@ -1,41 +1,37 @@
 const assert = require('chai').assert;
+const { mockDatabase } = require('../mock');
+
+const tables = ['plan', 'notification'];
 
 describe('Crawler', function() {
-  let planController;
-  let cronController;
-  let planModel;
+	let planController;
+	let cronController;
 
-  let plans;
+	let plans;
 
-  before(function() {
-    planController = require('../../api/controller/plan');
-    cronController = require('../../api/controller/cron');
-    planModel = require('../../api/model/plan');
-  });
+	before(async function() {
+		await mockDatabase.dropTables(tables);
+		await mockDatabase.createTables(tables);
+		planController = require('../../api/controller/plan');
+		cronController = require('../../api/controller/cron');
+	});
 
-  after(async function() {
-    // clean crawled plans
-    if (plans) {
-      for (let i = 0; i < plans.length; i++) {
-        await planModel.forge({
-          [planModel.prototype.idAttribute]: plans.at(i)[planModel.prototype.idAttribute]
-        }).destroy({require: true});
-      };
-    }
-  });
+	after(async function() {
+		await mockDatabase.dropTables(tables);
+	});
 
-  it('should run', async function() {
-    this.timeout(60000);
+	it('should run', async function() {
+		this.timeout(60000);
 
-    // make sure there are currently no plans in the database
-    plans = await planController.browse({query: {status: null, query: null}});
-    assert.equal(plans.length, 0);
+		// make sure there are currently no plans in the database
+		plans = await planController.browse({query: {status: null, query: null}});
+		assert.equal(plans.length, 0);
 
-    // run crawler cron with limit of 5 plans
-    await cronController.iplan(5);
+		// run crawler cron with limit of 2 plans
+		await cronController.iplan(2);
 
-    // now there should be 5 plans (with mavat data?)
-    plans = await planController.browse({query: {status: null, query: null}});
-    assert.equal(plans.length, 5);
-  });
+		// now there should be 2 plans (with mavat data?)
+		plans = await planController.browse({query: {status: null, query: null}});
+		assert.equal(plans.length, 2);
+	});
 });
