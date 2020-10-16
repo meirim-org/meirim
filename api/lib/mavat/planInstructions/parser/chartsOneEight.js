@@ -1,19 +1,19 @@
-const { pageTablesToDataArray } = require('./chartToArrayBuilder');
+const { chartToArrayBuilder } = require('./chartToArrayBuilder');
+const { getFromArr } = require('./parsersUtils');
+const log = require('../../../log');
 
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
-const rowAbstractFactoryCharts18 = (firstPageOfTable, headersStartIndex) => {
-    const getFromArr = (arr, index) => {
-        return index === undefined || index === -1 ? undefined : arr[index];
-    };
+const rowAbstractFactoryChartsOneEight = (firstPageOfTable, headersStartIndex) => {
 
-    //clean the headers
+    // clean the headers
     firstPageOfTable = firstPageOfTable.map(row => row.map(cell => cell.replace(/\n/g, ' ')
         .replace(/ {2}/g, ' ')
         .trim()));
 
     if (headersStartIndex === -1) {
-        console.log("didn't find headers");
+        // chart 1.8.3 doesn't have to be in the pdf (for example)
+        log.info("didn't find headers for some chart 1.8");
         return (row => {});
     }
 
@@ -58,37 +58,40 @@ const rowAbstractFactoryCharts18 = (firstPageOfTable, headersStartIndex) => {
 };
 
 
-const extractCharts1Point8 = (pageTables) => {
+const extractChartsOneEight = (pageTables) => {
     return {
-        chart181: pageTablesToDataArray({
+        chart181: chartToArrayBuilder({
           pageTables,
-          rowAbstractFactory: rowAbstractFactoryCharts18,
+          rowAbstractFactory: rowAbstractFactoryChartsOneEight,
           startOfChartPred: (cell) => cell === 'מגיש התכנית1.8.1',
           offsetOfRowWithDataInChart: 1,
           chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.2')) || row.some(cell => cell.includes('הערה')),
           getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('שם'))) + searchFrom,
+          rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
           identifier: '1.8.1'}),
-        chart182: pageTablesToDataArray({
+        chart182: chartToArrayBuilder({
            pageTables,
-           rowAbstractFactory: rowAbstractFactoryCharts18,
+           rowAbstractFactory: rowAbstractFactoryChartsOneEight,
            startOfChartPred: (cell) => cell.includes('1.8.2') && !cell.includes('1.8.3'),
            offsetOfRowWithDataInChart: 1,
            chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.3' || cell.includes('כתובת:'))),
            getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('שם'))) + searchFrom,
+           rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
            identifier: '1.8.2'}),
-        chart183: pageTablesToDataArray({
+        chart183: chartToArrayBuilder({
             pageTables,
-            rowAbstractFactory: rowAbstractFactoryCharts18,
+            rowAbstractFactory: rowAbstractFactoryChartsOneEight,
             startOfChartPred: (cell) => cell.includes('1.8.3') && !cell.includes('1.8.4'),
             offsetOfRowWithDataInChart: 1,
             chartDonePredicate: (row) => row.some(cell => cell.includes('1.8.4') || cell.includes('כתובת:')),
             getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
                 row.some(cell => cell.includes('שם'))) + searchFrom,
+            rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
             identifier: '1.8.3'})
     };
 };
 
 
 module.exports = {
-    extractCharts1Point8
+    extractChartsOneEight
 };

@@ -2,7 +2,8 @@
 exports.up = async function(knex, Promise) {
     await knex.schema.createTableIfNotExists("table_5_building_rights", t => {
         t.increments("id").primary();
-        t.integer("plan_id").notNullable().references('id').inTable('plan');
+        t.integer("plan_id").notNullable().references('id')
+            .inTable('plan').onDelete('CASCADE');
         t.string("designation", 1000);
         t.string("use", 1000);
         t.string("area_number", 200);

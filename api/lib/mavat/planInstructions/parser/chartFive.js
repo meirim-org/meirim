@@ -1,6 +1,6 @@
-const { pageTablesToDataArray } = require('./chartToArrayBuilder');
-
-//TODO: MAKE SURE THAT TEST_PLAN5 413-0694430 DOES NOT STUCK THE CRAWLER
+const { chartToArrayBuilder } = require('./chartToArrayBuilder');
+const { getFromArr } = require('./parsersUtils');
+const log = require('../../../log');
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
 const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
@@ -9,17 +9,13 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
     return currIndex >= indexOfHeaderToBeInside && currIndex < indexOfHeaderToTheRight;
   };
 
-  const getFromArr = (arr, index) => {
-    return index === undefined || index === -1 ? undefined : arr[index];
-  };
-
-  //clean the headers
+  // clean the headers
   firstPageOfTable = firstPageOfTable.map(row => row.map(cell => cell.replace(/\n/g, ' ')
                                                                       .replace(/ {2}/g, ' ')
                                                                       .trim()));
 
   if (headersStartIndex === -1) {
-      console.log("didn't find headers");
+      log.info("didn't find headers for chart five");
       return (row => {});
   }
   const headers = firstPageOfTable.slice(headersStartIndex, headersStartIndex + 3);
@@ -103,23 +99,24 @@ const endChartPredicate = (row) => {
     return row[0].includes(`האמור בטבלה זו גובר, במקרה של סתירה, על הוראות כלליות אחרות`);
 };
 
-const startChart5Predicate = (cell) => {
+const startChartFivePredicate = (cell) => {
     return cell === 'טבלת זכויות והוראות בניה - מצב מוצע5.' || cell.replace("'", '') === 'טבלת זכויות והוראות בניה - מצב מוצע - חלק א5.'
 };
 
 const extractChartFive = (pageTables) => {
 
-  return pageTablesToDataArray({pageTables,
+  return chartToArrayBuilder({pageTables,
     rowAbstractFactory,
-    startOfChartPred: startChart5Predicate,
+    startOfChartPred: startChartFivePredicate,
     offsetOfRowWithDataInChart: 3,    //length of header (header rows) is 3
     chartDonePredicate: endChartPredicate,
     getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => (row.some(cell => cell.includes('יעוד')))) + searchFrom,   //add searchFrom back to be aligned with the original array
+    rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
     identifier: 'chart 5'
   });
 };
 
 module.exports = {
   extractChartFive,
-  startChart5Predicate
+  startChart5Predicate: startChartFivePredicate
 };

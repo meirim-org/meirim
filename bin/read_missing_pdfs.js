@@ -14,8 +14,8 @@ const readMissingPdfs = async () => {
 
     const knexRes = await Knex.raw(`SELECT id, plan_url
           FROM plan
-          WHERE (id NOT IN (SELECT plan_id FROM table_4_area_designation_and_usage)) AND
-           (id NOT IN (SELECT plan_id FROM table_6_additional_instructions))`);
+          WHERE explanation = ''`);
+
     const idsAndUrls = knexRes[0];
     let howMuchLeft = idsAndUrls.length;
     for (const {id: planId, plan_url: planUrl} of idsAndUrls) {
@@ -41,9 +41,9 @@ const readMissingPdfs = async () => {
             try {
                 await Knex.raw(`UPDATE plan SET explanation=? WHERE id=?`, [readRes.planExplanation, planId]);
 
-                await insertTo18('1.8.1', readRes.charts18.chart181, planId);
-                await insertTo18('1.8.2', readRes.charts18.chart182, planId);
-                await insertTo18('1.8.3', readRes.charts18.chart183, planId);
+                await insertTo18('1.8.1', readRes.chartsOneEight.chart181, planId);
+                await insertTo18('1.8.2', readRes.chartsOneEight.chart182, planId);
+                await insertTo18('1.8.3', readRes.chartsOneEight.chart183, planId);
 
                 for (const rowIn4 of readRes.chartFour) {
                     await Knex.raw(`INSERT INTO table_4_area_designation_and_usage (plan_id, category_number, category, father_category_number, father_category, text)

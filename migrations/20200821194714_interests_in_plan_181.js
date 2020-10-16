@@ -2,7 +2,8 @@
 exports.up = async function(knex) {
     await knex.schema.createTableIfNotExists("tables_18_interests_in_plan", t => {
         t.increments("id").primary();
-        t.integer("plan_id").notNullable().references('id').inTable('plan');
+        t.integer("plan_id").notNullable().references('id')
+            .inTable('plan').onDelete('CASCADE');
         t.string("origin", 10);  // 1.8.1 or 1.8.2 or 1.8.3
         t.string("profession", 300);
         t.string("type", 300);
