@@ -50,8 +50,8 @@ const downloadFile = (url, file, entityDocId, entityDocNumber) => {
                 resolve(true);
             });
         }).on('error', (err) => {
-            console.log(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
-            console.log(err);
+            log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
+            log.error(err);
             resolve(false);
         });
     });
@@ -63,6 +63,10 @@ const downloadPlanPDF = async (functionCallText) => {
         return false;
     }
 
+    // functionCallText is in the format `openDoc(X, Y)`
+    // where X can be `'6000611696321'` for example
+    // and Y can be `'0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE'` for example
+    // we wish to find X and Y, so we look for substrings that has numbers and letters between two ' chars.
     const matches = functionCallText.match(/'[\dA-Z]+'/g);
     if (matches === null) {
         return false;
@@ -79,18 +83,18 @@ const downloadPlanPDF = async (functionCallText) => {
 const getPlanInstructions = async (page) => {
     const functionCallText = await page.evaluate(() => {
         const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
-        const innerTexts =  elements.map(ele => ele.innerText.trim());
+        const innerTexts = elements.map(ele => ele.innerText.trim());
         // elements look like this:
         // [kind, description, thoola, date, file, kind, description, thoola, date, file...]
         // (flattened table)
         for (let i = 0; i < innerTexts.length; i += 5) {
             // before approval
-            if ((innerTexts[i] === 'הוראות התכנית' && innerTexts[i + 1] ===  'הוראות התכנית') ||      // before approval
+            if ((innerTexts[i] === 'הוראות התכנית' && innerTexts[i + 1] === 'הוראות התכנית') ||      // before approval
                 (innerTexts[i] === 'מסמכים חתומים' && innerTexts[i + 1] === 'תדפיס הוראות התכנית - חתום לאישור')) {   // after approval
                 return elements[i + 4].querySelector('img').getAttribute('onclick');
             }
         }
-        console.log('got undefined');
+        log.error(`couldn't find the plan details PDF link on this web page`);
         return undefined;
     });
 
@@ -113,7 +117,6 @@ const fetch = planUrl =>
             try {
                 log.debug("Loading plan page", planUrl);
                 await clearOldPlanFiles(PLAN_DOWNLOAD_PATH);
-                await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: PLAN_DOWNLOAD_PATH});
 
                 try {
                     await page.goto(planUrl);
@@ -121,7 +124,7 @@ const fetch = planUrl =>
                 }
                 catch(e) {
                     page.close();
-                    console.error(e);
+                    log.error(e);
                     reject(e);
                 }
 
@@ -131,13 +134,7 @@ const fetch = planUrl =>
 
                 const pageInstructions = await getPlanInstructions(page);
 
-                try {
-                    page.close();
-                }
-                catch(e) {
-                    console.error(e);
-                    reject(e);
-                }
+                page.close();
 
                 const dom = cheerio.load(bodyHTML, {
                     decodeEntities: false
@@ -158,12 +155,7 @@ const fetch = planUrl =>
                 catch (htmlError) {
                     log.error("Mavat fetch error html error", htmlError);
                 }
-                try {
-                    page.close();
-                }
-                catch(e) {
-                    console.error(e);
-                }
+                page.close();
                 reject(err);
             }
         })();
@@ -289,7 +281,7 @@ const getByPlan = plan =>
                 areaChanges: getAreaChanges(cheerioPage),
                 jurisdiction: getJurisdictionString(cheerioPage),
                 planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
-                charts18: pageInstructions ? pageInstructions.charts18 : undefined,
+                chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
                 chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
                 chartFive: pageInstructions ? pageInstructions.chartFive : undefined,
                 chartSix: pageInstructions ? pageInstructions.chartSix : undefined

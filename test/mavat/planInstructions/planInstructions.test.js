@@ -20,7 +20,7 @@ describe('Taba1 parsing test', () => {
             'באותה תכנית, המאפשר שמירה על תכנית הבנוי של התכנית תמ"ל1008, חניון פיתוח וכו\'.'));
 
     it('should have only one row on table 1.8.1', () =>
-        assert.strictEqual(data.charts18.chart181.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
     it('should have 5 rows on table 4', () =>
         assert.strictEqual(data.chartFour.length, 5));
@@ -39,7 +39,7 @@ describe('Taba1 parsing test', () => {
             let tbl181FirstRow;
 
             before(() => {
-               tbl181FirstRow = data.charts18.chart181[0];
+               tbl181FirstRow = data.chartsOneEight.chart181[0];
             });
 
             it('profession', () => {
@@ -293,13 +293,13 @@ describe('Taba2 parsing test', () => {
     });
 
     it('should have only one row on table 1.8.1', () =>
-        assert.strictEqual(data.charts18.chart181.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
     it('should have only one row on table 1.8.2', () =>
-        assert.strictEqual(data.charts18.chart182.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
     it('should have only no rows on table 1.8.3', () =>
-        assert.strictEqual(data.charts18.chart183.length, 0));
+        assert.strictEqual(data.chartsOneEight.chart183.length, 0));
 
     it('should have 8 rows on table 4', () =>
         assert.strictEqual(data.chartFour.length, 8));
@@ -316,7 +316,7 @@ describe('Taba2 parsing test', () => {
             let tbl181FirstRow;
 
             before(() => {
-                tbl181FirstRow = data.charts18.chart181[0];
+                tbl181FirstRow = data.chartsOneEight.chart181[0];
             });
 
             it('profession', () => {
@@ -369,7 +369,7 @@ describe('Taba2 parsing test', () => {
             let tbl182FirstRow;
 
             before(() => {
-                tbl182FirstRow = data.charts18.chart182[0];
+                tbl182FirstRow = data.chartsOneEight.chart182[0];
             });
 
             it('type', () => {
@@ -598,13 +598,13 @@ describe('Taba3 parsing test', () => {
         assert.notStrictEqual(data, undefined));
 
     it('should have only one row on table 1.8.1', () =>
-        assert.strictEqual(data.charts18.chart181.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
     it('should have only one row on table 1.8.2', () =>
-        assert.strictEqual(data.charts18.chart182.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
     it('should have no rows on table 1.8.3', () =>
-        assert.strictEqual(data.charts18.chart183.length, 0));
+        assert.strictEqual(data.chartsOneEight.chart183.length, 0));
 
     it('data should have one row on table 5', () =>
         assert.strictEqual(data.chartFive.length, 1));
@@ -619,7 +619,7 @@ describe('Taba3 parsing test', () => {
             let tbl181FirstRow;
 
             before(() => {
-                tbl181FirstRow = data.charts18.chart181[0];
+                tbl181FirstRow = data.chartsOneEight.chart181[0];
             });
 
             it('profession', () => {
@@ -672,7 +672,7 @@ describe('Taba3 parsing test', () => {
             let tbl182FirstRow;
 
             before(() => {
-                tbl182FirstRow = data.charts18.chart182[0];
+                tbl182FirstRow = data.chartsOneEight.chart182[0];
             });
 
             it('type', () => {
@@ -748,7 +748,7 @@ describe('Taba4 parsing test', () => {
         assert.notStrictEqual(data, undefined));
 
     it('data should have 1 row on table 1.8.3', () =>
-        assert.strictEqual(data.charts18.chart183.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
     it('data should have 13 row on table 5', () =>
         assert.strictEqual(data.chartFive.length, 13));
@@ -761,7 +761,7 @@ describe('Taba4 parsing test', () => {
         let tbl183FirstRow;
 
         before(() => {
-            tbl183FirstRow = data.charts18.chart183[0];
+            tbl183FirstRow = data.chartsOneEight.chart183[0];
         });
 
         it('type', () => {
@@ -833,13 +833,13 @@ describe('Taba6 parsing test', () => {
         assert.notStrictEqual(data, undefined));
 
     it('should have only one row on table 1.8.1', () =>
-        assert.strictEqual(data.charts18.chart181.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
     it('should have only one row on table 1.8.2', () =>
-        assert.strictEqual(data.charts18.chart182.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
     it('should have only one row on table 1.8.3', () =>
-        assert.strictEqual(data.charts18.chart183.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
     it('should have 3 rows on table 5', () =>
         assert.strictEqual(data.chartFive.length, 3));
@@ -851,7 +851,7 @@ describe('Taba6 parsing test', () => {
         let tbl183FirstRow;
 
         before(() => {
-            tbl183FirstRow = data.charts18.chart183[0];
+            tbl183FirstRow = data.chartsOneEight.chart183[0];
         });
 
         it('type', () => {
@@ -904,13 +904,13 @@ describe('Taba7 parsing test', () => {
         data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
 
     it('table 1.8.1 should have 1 rows', () =>
-        assert.strictEqual(data.charts18.chart181.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
     it('table 1.8.2 should have 1 rows', () =>
-        assert.strictEqual(data.charts18.chart182.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
     it('table 1.8.3 should have 1 rows', () =>
-        assert.strictEqual(data.charts18.chart183.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
     // this test fails because we have no way to know that 'מסחר' at the end of page 14 is the beginning of the first row at page 15 (1-indexed)
     // THIS TEST SHOULD FAIL, BUT PASSES TO SEE GREEN TICKS!
@@ -935,13 +935,13 @@ describe('Taba8 parsing test', function() {
         data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
 
     it('chart 1.8.1 should have one row', () =>
-        assert.strictEqual(data.charts18.chart181.length, 1));
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
     it('chart 1.8.2 should have 0 rows', () =>
-        assert.strictEqual(data.charts18.chart182.length, 0));
+        assert.strictEqual(data.chartsOneEight.chart182.length, 0));
 
     it('chart 1.8.3 should have 0 rows', () =>
-        assert.strictEqual(data.charts18.chart183.length, 0));
+        assert.strictEqual(data.chartsOneEight.chart183.length, 0));
 
     it('chart 4 should have 3 rows', () =>
         assert.strictEqual(data.chartFour.length, 3));

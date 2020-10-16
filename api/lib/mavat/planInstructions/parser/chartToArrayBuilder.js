@@ -1,6 +1,7 @@
+const log = require('../../../log');
+
 // this function parses the pdf tables and returns and array of elements
 // we need this functionality whenever we want to extract array data from the pdf and supports data which spans multiple pages
-
 
 /**
  *
@@ -10,6 +11,7 @@
  * @param offsetOfRowWithDataInChart            the offset to the row where data that is interesting for us starts
  * @param chartDonePredicate                    predicate that take row as input as return true if we are outside of the chart
  * @param getHeaderRowIndex                     given a page and the index of the title of the chart (0 if it's the second page of the chart), returns the index of the chart header in him. If no chart header is found, returns -1
+ * @param rowTrimmer                            accepts an array (a row) as argument and returns the row trimmed (should be same dimensions)
  * @param identifier                            table name for debug and logs
  * @returns {[]}
  */
@@ -20,6 +22,7 @@ const pageTablesToDataArray = ({
     offsetOfRowWithDataInChart,
     chartDonePredicate,
     getHeaderRowIndex,
+    rowTrimmer,
     identifier,
 }) => {
 
@@ -29,7 +32,7 @@ const pageTablesToDataArray = ({
     let currentPageIndex = indexObj.pageIndex;
     const titleIndexInFirstPage = indexObj.indexOfTitleInPage;
     if (currentPageIndex === -1) {
-        console.error(`didn't find the starting page of chart ${identifier}`);
+        // it's fine sometimes - tables like 1.8.3 can be missing
         return []; //didn't find the page, return an empty chart
     }
 
@@ -66,9 +69,7 @@ const pageTablesToDataArray = ({
                 break;
             }
             if (dataRowPredicateFn(newDataRows[i])) {
-                const rowTrimmed = identifier !== 'chart 6' && identifier !== 'chart 4' ?
-                    newDataRows[i].map((cell) => cell.replace(/\n/g, " ").replace(/ {2}/g, " ").trim()) :
-                    newDataRows[i].map(cell => cell.replace(/ {2}/g, " ").trim());
+                const rowTrimmed = rowTrimmer(newDataRows[i]);
                 chartRows.push(rowFactory(rowTrimmed));
             }
         }
@@ -97,7 +98,10 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
             }
         }
     }
-    return -1;
+    return {
+        pageIndex: -1,
+        indexOfTitleInPage: -1,
+    };
 };
 
 // returns true if the row is not empty
@@ -116,5 +120,5 @@ const isFirstNotNoiseRow = (page, rowIndex) => {
 };
 
 module.exports = {
-    pageTablesToDataArray,
+    chartToArrayBuilder: pageTablesToDataArray,
 };

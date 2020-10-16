@@ -1,38 +1,28 @@
 const fs = require('fs');
 const util = require('util');
 const path = require('path');
+const log = require('../../log');
 
 const { extractPdfData } = require('./parser/');
-
-async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 const readdir = util.promisify(fs.readdir);
 const unlink = util.promisify(fs.unlink);
 const mkdir = util.promisify(fs.mkdir);
 
 const processPlanInstructionsFile = async (fileDir) => {
-    let files;
-    let currentTry = 0;
 
-    files = await readdir(fileDir);
+    const files = await readdir(fileDir);
 
-    while ((!files || !files.length)  && currentTry < 3){
-        // naive way to poll on file download
-        await sleep(2000);
-        files = await readdir(fileDir);
-        currentTry++;
-    }
+    const pdfs = files.filter(fileName => fileName.endsWith('.pdf'));
 
-    files = files.filter(fileName => fileName.endsWith(".pdf"));
-
-    if (files.length > 0){
+    if (pdfs.length > 0) {
         // we just want the one file, at least for now
-        const filePath = path.join(fileDir, files[0]);
+        const filePath = path.join(fileDir, pdfs[0]);
         const data = await extractPdfData(filePath);
         return data;
     }
+
+    return undefined;
 };
 
 const clearOldPlanFiles = async (fileDir) => {
@@ -50,7 +40,7 @@ const clearOldPlanFiles = async (fileDir) => {
                 return;
             }
             catch(e) {
-                console.log('error getting files');
+                log.error('error getting files');
             }
         }
     }
@@ -58,9 +48,9 @@ const clearOldPlanFiles = async (fileDir) => {
     for (let i = 0; i < files.length; i++) {
         try {
             await unlink(path.join(fileDir, files[i]));
-            console.log(`trying to delete file ${files[i]}`);
-        } catch (e){
-            console.log('error deleting a file');
+            log.info(`trying to delete file ${files[i]}`);
+        } catch (e) {
+            log.error('error deleting a file');
         }
     }
 };

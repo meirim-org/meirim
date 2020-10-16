@@ -3,7 +3,7 @@ const Model = require("./base_model");
 const Log = require("../lib/log");
 const Exception = require("./exception");
 const PlanChartFiveRow = require('./plan_chart_five_row');
-const PlanChart18Row = require('./plan_chart_1_point_8_row');
+const PlanChartOneEightRow = require('./plan_chart_one_eight_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
 
@@ -129,15 +129,13 @@ class Plan extends Model {
 
         // TODO: UPDATE PLAN INSTEAD OF DON'T DO NOTHING
         if (oldPlan) {
-            console.log(`exits in db already, don't fetch mavatData`);
+            // exits in db already, don't fetch mavatData
             return;
         }
 
         const addPlanIdToArray = (chart) => {
-            chart.forEach(row => row.plan_id = plan.id);
+            chart.forEach(row => { row.plan_id = plan.id });
         };
-
-        const prevDetails = plan.main_details_from_mavat;
 
         await plan.set({
             goals_from_mavat: mavatData.goals,
@@ -148,32 +146,32 @@ class Plan extends Model {
         });
         await plan.save();
 
-        if (mavatData.charts18 !== undefined) {
-            const chart181 = mavatData.charts18.chart181;
-            //add plain_id and origin
+        if (mavatData.chartsOneEight !== undefined) {
+            const chart181 = mavatData.chartsOneEight.chart181;
+            // add plan_id and origin
             chart181.forEach(row => {
                 row.plan_id = plan.id;
                 row.origin = '1.8.1';
             });
 
-            const chart182 = mavatData.charts18.chart182;
+            const chart182 = mavatData.chartsOneEight.chart182;
             chart182.forEach(row => {
                 row.plan_id = plan.id;
                 row.origin = '1.8.2';
             });
 
-            const chart183 = mavatData.charts18.chart183;
+            const chart183 = mavatData.chartsOneEight.chart183;
             chart183.forEach(row => {
                 row.plan_id = plan.id;
                 row.origin = '1.8.3';
             });
 
-            const charts18 = chart181.concat(chart182, chart183);
-            for (let i = 0; i < charts18.length; i++) {
+            const chartsOneEight = chart181.concat(chart182, chart183);
+            for (let i = 0; i < chartsOneEight.length; i++) {
                 try {
-                    await new PlanChart18Row(charts18[i]).save();
+                    await new PlanChartOneEightRow(chartsOneEight[i]).save();
                 } catch (e) {
-                    console.log(e);
+                    Log.error(e);
                 }
             }
         }
@@ -184,11 +182,10 @@ class Plan extends Model {
             addPlanIdToArray(chartFourData);
 
             for (let i = 0; i < chartFourData.length; i++) {
-                const chartFourRowData = chartFourData[i];
                 try {
-                    await new PlanChartFourRow(chartFourRowData).save();
+                    await new PlanChartFourRow(chartFourData[i]).save();
                 } catch (e) {
-                    console.log(e);
+                    Log.error(e);
                 }
             }
         }
@@ -199,11 +196,10 @@ class Plan extends Model {
             addPlanIdToArray(chartFiveData);
 
             for (let i = 0; i < chartFiveData.length; i++) {
-                const chartFiveRowData = chartFiveData[i];
                 try {
-                    await new PlanChartFiveRow(chartFiveRowData).save();
+                    await new PlanChartFiveRow(chartFiveData[i]).save();
                 } catch (e) {
-                    console.log(e);
+                    Log.error(e);
                 }
             }
         }
@@ -214,11 +210,10 @@ class Plan extends Model {
             addPlanIdToArray(chartSixData);
 
             for (let i = 0; i < chartSixData.length; i++) {
-                const chartSixRowData = chartSixData[i];
                 try {
-                    await new PlanChartSixRow(chartSixRowData).save();
+                    await new PlanChartSixRow(chartSixData[i]).save();
                 } catch (e) {
-                    console.log(e);
+                    Log.error(e);
                 }
             }
         }

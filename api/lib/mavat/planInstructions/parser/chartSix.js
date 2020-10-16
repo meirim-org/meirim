@@ -1,22 +1,19 @@
-const { pageTablesToDataArray } = require('./chartToArrayBuilder');
-const {startChart5Predicate} = require('./chartFive');
+const { chartToArrayBuilder } = require('./chartToArrayBuilder');
+const { getFromArr } = require('./parsersUtils');
+const log = require('../../../log');
 
 // this function look for the correct columns for the given headers, and returns a factory embedded with these findings
 const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
     // firstPageOfTable should be table with 2 columns
     // the column of the clause should be the one that has "6.1" in it if we are in the first page for example.
 
-    const getFromArr = (arr, index) => {
-        return index === undefined || index === -1 ? undefined : arr[index];
-    };
-
-    //clean the headers
+    // clean the headers
     firstPageOfTable = firstPageOfTable.map(row => row.map(cell => cell.replace(/\n/g, ' ')
         .replace(/ {2}/g, ' ')
         .trim()));
 
     if (headersStartIndex === -1) {
-        console.log("didn't find headers");
+        log.error("didn't find headers for chart six");
         return (row => {});
     }
 
@@ -45,17 +42,17 @@ const rowAbstractFactory = (firstPageOfTable, headersStartIndex) => {
     };
 };
 
-const startChart6Predicate = (cell) => {
+const startChartSixPredicate = (cell) => {
     return cell === 'הוראות נוספות6.';
 };
 
 
 
 const extractChartSix = (pageTables) => {
-    return pageTablesToDataArray({pageTables,
+    const chartSixData = chartToArrayBuilder({pageTables,
         rowAbstractFactory,
-        startOfChartPred: startChart6Predicate,
-        offsetOfRowWithDataInChart: 0,  //the header is data too
+        startOfChartPred: startChartSixPredicate,
+        offsetOfRowWithDataInChart: 0,  // the header is data too
         chartDonePredicate: (row) => row.some(cell => cell === 'ביצוע התכנית7.'),
         // table 6 will always start in a new page and it has no actual header beyond the title
         getHeaderRowIndex: (page, searchFrom) => {
@@ -67,13 +64,16 @@ const extractChartSix = (pageTables) => {
             }
             else {
                 // the first page
-                const ind = page.findIndex(row => row.some(cell => startChart6Predicate(cell)));
+                const ind = page.findIndex(row => row.some(cell => startChartSixPredicate(cell)));
                 return ind === -1 ? -1 : ind + 2;
             }
 
         },
+        rowTrimmer: (row) => row.map(cell => cell.replace(/ {2}/g, ' ').trim()),
         identifier: 'chart 6'
     });
+
+    return processChartSix(chartSixData);
 };
 
 // the input is chart 6 from the parser, the output is processed and grouped chart 6
