@@ -14,7 +14,7 @@ const readMissingPdfs = async () => {
 
     const knexRes = await Knex.raw(`SELECT id, plan_url
           FROM plan
-          WHERE explanation IS NULL`);
+          WHERE explanation IS NULL ORDER BY id DESC`);
 
     const idsAndUrls = knexRes[0];
     let howMuchLeft = idsAndUrls.length;
