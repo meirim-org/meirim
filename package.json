@@ -14,6 +14,7 @@
     },
     "homepage": "http://meirim.org",
     "dependencies": {
+        "@florpor/pdf-table-extractor": "^1.0.6",
         "@fortawesome/fontawesome-svg-core": "^1.2.30",
         "@fortawesome/free-brands-svg-icons": "^5.14.0",
         "@fortawesome/free-solid-svg-icons": "^5.14.0",
@@ -38,6 +39,7 @@
         "express": "^4.17.1",
         "express-handlebars": "^5.1.0",
         "express-session": "^1.17.1",
+        "follow-redirects": "^1.13.0",
         "geojson-validation": "^1.0.2",
         "handlebars-loader": "^1.7.1",
         "html-table-to-json": "^1.0.0",
@@ -112,6 +114,7 @@
         "import-fresh": "^3.2.1",
         "mocha": "^8.1.1",
         "mock-require": "^3.0.3",
+        "prettier": "^2.0.5",
         "sinon": "^9.0.3"
     }
 }
