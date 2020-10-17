@@ -38,7 +38,7 @@ const fix_geodata = () => {
                     });
                 })
                 .catch(e => {
-                    console.log("iplan exception", JSON.stringify(e));
+                    console.log("iplan exception\n" + e.message + '\n' + e.stack);
                     return Bluebird.resolve();
                 });
         })
@@ -83,10 +83,9 @@ const complete_jurisdiction_from_mavat = () =>
                 return MavatAPI.getByPlan(plan).then(mavatData => {
                     Plan.setMavatData(plan, mavatData);
                     Log.debug(
-                        "Saving with jurisdiction form mavat",
+                        "saved with jurisdiction from mavat",
                         JSON.stringify(mavatData)
                     );
-                    return plan.save();
                 });
             })
         );
@@ -163,31 +162,38 @@ const fetchIplan = iPlan =>
             }
 
             return buildPlan(iPlan, oldPlan)
-                    // check if there is an update in the status of the plan and mark it for email update
-                    .then(plan => {
-                        if (
-                            !oldPlan ||
-                            oldPlan.get("data").STATION !==
-                                iPlan.properties.STATION
-                        ) {
+                // check if there is an update in the status of the plan and mark it for email update
+                .then(plan => {
+                    if (
+                        !oldPlan ||
+                        oldPlan.get("data").STATION !==
+                        iPlan.properties.STATION
+                    ) {
+                        // TODO: check why plan is undefined here
+                        if (plan !== undefined) {
                             plan.set("sent", oldPlan ? 1 : 0);
                         }
-                        return plan;
-                    })
-                    .then(plan => plan.save());
+                    }
+                    return plan;
+                })
+                .then(plan => {
+                    if (plan !== undefined) {
+                        plan.save();
+                    }
+                })
         })
         .catch(e => {
-            console.log("iplan exception", JSON.stringify(e));
+            console.log("iplan exception\n" + e.message + '\n' + e.stack);
             return Bluebird.resolve();
         });
 
 const buildPlan = (iPlan, oldPlan) => {
     return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
         MavatAPI.getByPlan(plan)
-            .then(mavatData => Plan.setMavatData(plan, mavatData))
+            .then(mavatData => Plan.setMavatData(plan, mavatData, oldPlan))
             .catch(e => {
                 // mavat might crash gracefully
-                console.log("Mavat error", JSON.stringify(e));
+                console.log("Mavat error\n" + e.message + '\n' + e.stack);
                 return plan;
             })
     );
