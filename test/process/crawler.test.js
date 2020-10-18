@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 const { mockDatabase } = require('../mock');
 
-const tables = ['plan', 'notification'];
+const tables = ['plan', 'notification', 'alert', 'person'];
 
 describe('Crawler', function() {
 	let planController;
