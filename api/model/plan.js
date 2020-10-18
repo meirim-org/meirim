@@ -4,6 +4,7 @@ const Log = require('../lib/log');
 const Exception = require('./exception');
 const {	notification_types } = require('../constants');
 const Notification = require('./notification');
+const Alert = require('./alert');
 
 class Plan extends Model {
 	get rules() {
@@ -77,15 +78,16 @@ class Plan extends Model {
 	_updated(model, attrs, options){
 		this.handleUpdatedPlan(model);
 	}
+
 	_created(model, attrs, options) {
 		this.handleNewPlan(model);
 	}
 
-	handleNewPlan (model) {
+	async handleNewPlan (model) {
 		const planId = model.id;
-		const { users } = this.getUsersInPlanArea(model);
-		const type = notification_types['NEW_PLAN_IN_AREA']; // temp
-		Notification.createNotifications({ users, planId, type });
+		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
+		const type = notification_types['NEW_PLAN_IN_AREA']; 
+		return Notification.createNotifications({ users: usersSubscribedToPlanArea, planId, type });
 	};
 
 	handleUpdatedPlan (model) {
