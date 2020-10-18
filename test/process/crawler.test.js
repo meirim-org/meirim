@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 const { mockDatabase } = require('../mock');
 
-const tables = ['plan', 'notification'];
+const tables = ['plan', 'notification', 'alert', 'person'];
 
 describe('Crawler', function() {
 	let planController;
@@ -9,14 +9,14 @@ describe('Crawler', function() {
 
 	let plans;
 
-	before(async function() {
+	beforeEach(async function() {
 		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		planController = require('../../api/controller/plan');
 		cronController = require('../../api/controller/cron');
 	});
 
-	after(async function() {
+	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
 	});
 

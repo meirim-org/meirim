@@ -22,12 +22,12 @@ class Notification extends Model {
 	static createNotifications({ users, planId, type }) {
 		return users.map(function(user) {
 			const data = {
-				person_id: user.id,
+				person_id: user.person_id,
 				plan_id: planId,
 				type,
 			};
 			const instance = new Notification(data);
-	 	return instance.save();
+	 		return instance.save();
 		});
 	};
 
