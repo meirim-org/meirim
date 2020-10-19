@@ -58,7 +58,7 @@ jobs:
             - name: run migrations
               env:
                   NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}}'
-              run: cd db-utils && node node_modules/knex/bin/cli.js migrate:latest
+              run: cd server && node node_modules/knex/bin/cli.js migrate:latest
 
             - name: test
               run: cd server && npm run test
