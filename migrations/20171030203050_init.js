@@ -46,6 +46,8 @@ const tables = [
     person_id int(11) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
 
+  // the following row was written inside plan CREATE TABLE, but there's a whole migration about it:
+  // jurisdiction varchar(256) COLLATE utf8_bin
   `CREATE TABLE plan (
     id int(11) NOT NULL,
     sent tinyint(4) NOT NULL,
@@ -107,4 +109,4 @@ exports.up = function(knex) {
   );
 };
 
-exports.down = function(knex, Promise) {};
+exports.down = function(knex) {};

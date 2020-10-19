@@ -47,6 +47,13 @@ class SinglePlan extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
 
+        // log impression
+        api.post(`/impression/${id}`)
+            .catch(error => {
+           // this may fail gracefully
+           console.error(error)
+        });
+        
         return api
             .get("/plan/" + id)
             .then(plan => this.setState({ plan: plan.data }))
@@ -99,6 +106,8 @@ class SinglePlan extends Component {
 
         changes &&
             changes[0].forEach(change => {
+                // some data may be corrupt and result with an empty row
+                if (!change[3]) return;
                 if (change[3].includes('מ"ר')) {
                     dataArea[0].data.push({
                         x: change[3],

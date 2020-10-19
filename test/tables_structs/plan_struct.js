@@ -14,6 +14,7 @@ const PlanStruct = function(table) {
 	table.binary('geom');
 	table.string('jurisdiction');
 	table.string('areaChanges');
+	table.string('explanation');
 	table.integer('rating');
 	table.timestamps();
 	return table;
