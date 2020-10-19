@@ -83,5 +83,6 @@ jobs:
 
             - name: e2e test
               run: |
-                  cd client && $(npm bin)/cypress run --browser chrome --headless
-                  cd client && $(npm bin)/cypress run --browser firefox --headless
+                  cd client &&
+                  $(npm bin)/cypress run --browser chrome --headless && 
+                  $(npm bin)/cypress run --browser firefox --headless
