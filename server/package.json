@@ -75,7 +75,7 @@
         "start": "node bin/api",
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "serve": "node bin/serve",
-        "test": "mocha --exit --recursive --require test/hooks.js"
+        "test": "mocha --exit --recursive --require ../test/hooks.js"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^3.9.1",
