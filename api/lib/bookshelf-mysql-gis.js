@@ -17,6 +17,7 @@ module.exports = (bookshelf) => {
 			if (this.geometry) {
 				this.geometry.forEach((attr) => {
 					if (attributes[attr]) {
+						console.log('format -> attributes[attr]', attributes[attr]);
 						attributes[attr] = bookshelf.knex.raw('ST_GeomFromGeoJSON(?)', [
 							JSON.stringify(attributes[attr]),
 						]);

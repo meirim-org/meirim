@@ -44,6 +44,7 @@ describe('notification model', function() {
 });
 
 describe('Notification model integration with different models', function() {
+	this.timeout(10000);
 	const sinonSandbox = sinon.createSandbox();
 	const tables = ['person', 'alert', 'plan', 'notification'];
 	const person = {
@@ -51,6 +52,42 @@ describe('Notification model integration with different models', function() {
 		password: 'xxxx',
 		status: 1,
 		id: 1,	
+	};
+	const geom ={
+		'type': 'FeatureCollection',
+		'features': [
+			{
+				'type': 'Feature',
+				'properties': {},
+				'geometry': {
+					'type': 'Polygon',
+					'coordinates': [
+						[
+							[
+								34.76991534233093,
+								32.05974580128699
+							],
+							[
+								34.7698187828064,
+								32.059591226352595
+							],
+							[
+								34.76977586746216,
+								32.059363909798144
+							],
+							[
+								34.77029085159302,
+								32.059409373154224
+							],
+							[
+								34.76991534233093,
+								32.05974580128699
+							]
+						]
+					]
+				}
+			}
+		]
 	};
 
 	beforeEach(async function() {
@@ -71,44 +108,8 @@ describe('Notification model integration with different models', function() {
 		sinonSandbox.restore();
 	});
 
-	it.only('mememe', async function() {
-		this.timeout(10000);
-		const geom ={
-			'type': 'FeatureCollection',
-			'features': [
-				{
-					'type': 'Feature',
-					'properties': {},
-					'geometry': {
-						'type': 'Polygon',
-						'coordinates': [
-							[
-								[
-									34.76991534233093,
-									32.05974580128699
-								],
-								[
-									34.7698187828064,
-									32.059591226352595
-								],
-								[
-									34.76977586746216,
-									32.059363909798144
-								],
-								[
-									34.77029085159302,
-									32.059409373154224
-								],
-								[
-									34.76991534233093,
-									32.05974580128699
-								]
-							]
-						]
-					}
-				}
-			]
-		}; 
+	it('creates notification for a user based on subscribed area ', async function() {
+ 
 
 		const req = {
 			body: {
@@ -142,6 +143,16 @@ describe('Notification model integration with different models', function() {
 		expect(notifications[0].seen).to.eql(0);
 	});
 	it('Adds a row in notification table for updated plan', async function() {
+		const req = {
+			body: {
+				address: 'מטלון 18 תל אביב',
+				radius: 20
+			},
+			session: {
+				person
+			}
+		};
+		await AlertController.create(req);
 		const iPlan = {
 			properties : 
 				{
@@ -153,10 +164,13 @@ describe('Notification model integration with different models', function() {
 					PL_URL: 'plurl',
 					STATION_DESC: '50'
 				},
+			geometry: geom
 		};
 		await Plan.buildFromIPlan(iPlan);
 		const plan = await Plan.forge({PL_NUMBER: iPlan.properties.PL_NUMBER}).fetch();
 
+		const noti1 = await mockDatabase.selectData('notification', {	plan_id: 1	});
+		expect(noti1.length).to.eql(1);
 		const data = {
 			OBJECTID: 1,
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
