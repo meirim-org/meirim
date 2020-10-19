@@ -52,7 +52,6 @@
         "proj4": "^2.6.2",
         "puppeteer": "^5.2.1",
         "query-string": "^6.13.1",
-        "rc-slider": "^9.3.1",
         "reproject": "^1.2.6",
         "request-promise": "^4.2.6",
         "staticmaps": "^1.4.1",
@@ -73,9 +72,8 @@
         "not op_mini all"
     ],
     "scripts": {
-        "start": "BROWSER=none ./node_modules/react-app-rewired/bin/index.js start",
+        "start": "node bin/api",
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
-        "api": "node bin/api",
         "serve": "node bin/serve",
         "test": "mocha --exit --recursive --require test/hooks.js"
     },
