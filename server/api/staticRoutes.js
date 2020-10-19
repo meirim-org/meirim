@@ -2,7 +2,7 @@ const Router = require("express").Router();
 
 const Log = require("./lib/log");
 const Plan = require("./model/plan");
-const config = require("../src/config.json");
+const config = require("../client/src/config.json");
 
 const pageLocale = config.opengraph.locale;
 
