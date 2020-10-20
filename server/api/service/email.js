@@ -31,7 +31,7 @@ class Email {
 	/**
    * Init the class and load the template files.
    */
-	init() {
+	init () {
 		const templateDir = `${__dirname}/email/`;
 		const templates = {};
 		const contents = [];
@@ -40,7 +40,7 @@ class Email {
 			dir.readFiles(
 				templateDir,
 				{
-					match: /.mustache$/,
+					match: /.mustache$/
 				},
 				(err, content, next) => {
 					if (err) {
@@ -57,7 +57,7 @@ class Email {
 
 					mapper = files;
 					resolve();
-				},
+				}
 			);
 		}).then(() => {
 			mapper.map((file, index) => {
@@ -71,37 +71,37 @@ class Email {
 
 			for (const key in templates) {
 				const title = templates[key].match(
-					/<title[^>]*>((.|[\n\r])*)<\/title>/im,
+					/<title[^>]*>((.|[\n\r])*)<\/title>/im
 				)[1];
 				const body = templates[key].match(
-					/<body[^>]*>((.|[\n\r])*)<\/body>/im,
+					/<body[^>]*>((.|[\n\r])*)<\/body>/im
 				)[1];
 				const html = Mustache.render(templates.wrapper, {
-					body,
+					body
 				});
 
 				this.templates[key] = {
 					title,
-					body: Juice(html),
+					body: Juice(html)
 				};
 			}
 		});
 	}
 
-	newSignUp(person) {
+	newSignUp (person) {
 		const token = person.getActivationToken();
 		const templateProperties = {
 			url: `${this.baseUrl}activate/?token=${token}`,
-			email: person.get('email'),
+			email: person.get('email')
 		};
 		// setup email data with unicode symbols
 		return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
 	}
 
-	newPlanAlert(user, unsentPlan, planStaticMap) {
+	newPlanAlert (user, unsentPlan, planStaticMap) {
 		const alert = new Alert({
 			id: user.alert_id,
-			person_id: user.person_id,
+			person_id: user.person_id
 		});
 		const data = user;
 
@@ -111,7 +111,7 @@ class Email {
 			data.data.DEPOSITING_DATE = dates[0];
 		}
 
-		data.unsubscribeLink = 
+		data.unsubscribeLink =
       `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
 		data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}`;
 		data.jurisdiction = unsentPlan.get('jurisdiction');
@@ -122,32 +122,32 @@ class Email {
 				cid: 'planmap',
 				filename: 'plan_map.png',
 				content: planStaticMap,
-				encoding: 'base64',
-			},
+				encoding: 'base64'
+			}
 		];
 
 		return this.sendWithTemplate(this.templates.alert, data);
 	}
 
-	newAlert(person, alert) {
+	newAlert (person, alert) {
 		const templateProperties = Object.assign({}, person, alert.toJSON());
 		return this.sendWithTemplate(this.templates.newAlert, templateProperties);
 	}
 
-	resetPasswordToken(person) {
+	resetPasswordToken (person) {
 		const templateProperties = {
 			email: person.get('email'),
 			url: `${Config.get(
-				'general.domain',
-			)}forgot/?token=${person.resetPasswordToken()}`,
+				'general.domain'
+			)}forgot/?token=${person.resetPasswordToken()}`
 		};
 		return this.sendWithTemplate(
 			this.templates.resetPasswordToken,
-			templateProperties,
+			templateProperties
 		);
 	}
 
-	sendWithTemplate(template, templateProperties) {
+	sendWithTemplate (template, templateProperties) {
 		const attachments = templateProperties.attachments
 			? templateProperties.attachments
 			: [];
@@ -155,7 +155,7 @@ class Email {
 		attachments.push({
 			filename: 'logo_email.png',
 			path: path.resolve('api/service/email/logo_email.png'),
-			cid: 'logomeirim',
+			cid: 'logomeirim'
 		});
 		const subject = Mustache.render(template.title, templateProperties)
 			.replace(/\r?\n|\r/g, '')
@@ -168,7 +168,7 @@ class Email {
 			html: Mustache.render(template.body, templateProperties), // html body
 			attachments,
 			encoding: 'utf8',
-			textEncoding: 'base64',
+			textEncoding: 'base64'
 		};
 
 		return this.send(email);
@@ -178,7 +178,7 @@ class Email {
    * send mail with defined transport object
    * @param {*} mailOptions
    */
-	send(mailOptions) {
+	send (mailOptions) {
 		return this.transporter
 			.sendMail(mailOptions)
 			.then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));

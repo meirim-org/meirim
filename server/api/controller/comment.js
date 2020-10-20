@@ -5,7 +5,7 @@ const Log = require('../lib/log');
 const Exception = require('../model/exception');
 
 class CommentController extends Controller {
-	create(req, res, next) {
+	create (req, res, next) {
 		if (!req.session.person) {
 			throw new Exception.BadRequest('Must be logged in');
 		}
@@ -18,7 +18,7 @@ class CommentController extends Controller {
 			}
 			const aliasString = req.body.alias;
 			alias = Person.forge({
-				id: req.session.person.id,
+				id: req.session.person.id
 			})
 				.fetch()
 				.then(person => person.save({ alias: aliasString }, { patch: true }))
@@ -31,7 +31,7 @@ class CommentController extends Controller {
 		delete req.body.alias;
 
 		return Promise.all([alias, super.create(req, res, next)]).then(
-			result => result[1],
+			result => result[1]
 		);
 	}
 
@@ -39,7 +39,7 @@ class CommentController extends Controller {
    * Return person's alerts. Must be logged in.
    * @param {IncomingRequest} req
    */
-	byPlan(req) {
+	byPlan (req) {
 		return this.model.byPlan(req.params.plan_id).then((collection) => {
 			Log.debug(this.tableName, 'Get comment list', req.params.plan_id);
 			return collection;

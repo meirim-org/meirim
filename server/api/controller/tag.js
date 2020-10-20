@@ -5,5 +5,5 @@ class TagController extends Controller {}
 
 module.exports = {
 	class: TagController,
-	instance: new TagController(Tag),
+	instance: new TagController(Tag)
 };

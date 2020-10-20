@@ -4,7 +4,7 @@ const Activity = require('../model/activity');
 const { Bookshelf } = require('../service/database');
 
 class ActivityController extends Controller {
-	create(req) {
+	create (req) {
 		let activity = null;
 		return Bookshelf.transaction(t => super.create(req, t)).tap((savedModel) => {
 			activity = savedModel;
@@ -12,10 +12,10 @@ class ActivityController extends Controller {
 		});
 	}
 
-	join(req) {
+	join (req) {
 		return this.model
 			.forge({
-				id: parseInt(req.params.id, 10),
+				id: parseInt(req.params.id, 10)
 			})
 			.fetch()
 			.then(activity => activity.canJoin(req.session))

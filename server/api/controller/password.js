@@ -5,7 +5,7 @@ const Log = require('../lib/log');
 const Email = require('../service/email');
 
 class PasswordController extends Controller {
-	static sendResetToken(req) {
+	static sendResetToken (req) {
 		if (!req.body.email) {
 			throw new Exception.BadRequest('No email provided');
 		}
@@ -23,7 +23,7 @@ class PasswordController extends Controller {
 			.then(() => true);
 	}
 
-	static resetWithToken(req) {
+	static resetWithToken (req) {
 		if (!req.body.token) {
 			throw new Exception.BadRequest('No token provided');
 		}
@@ -32,7 +32,7 @@ class PasswordController extends Controller {
 		}
 
 		return Person.resetPasswordByToken(req.body.token, req.body.password).then(
-			() => true,
+			() => true
 		);
 	}
 }

@@ -1,9 +1,10 @@
 const Log = require('../lib/log');
 const Controller = require('./controller');
 const PlanPerson = require('../model/plan_person');
+const Exception = require('../model/exception');
 
 class PlanPersonController extends Controller {
-	subscribe(req) {
+	subscribe (req) {
 		if (!req.session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}
@@ -13,12 +14,12 @@ class PlanPersonController extends Controller {
 			.then((subscription) => {
 				Log.debug(
 					'Person subscription created create success id:',
-					subscription.get('person_id'),
+					subscription.get('person_id')
 				);
 			});
 	}
 
-	unsubscribe(req) {
+	unsubscribe (req) {
 		if (!req.session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}

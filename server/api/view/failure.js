@@ -1,7 +1,7 @@
 const set = (res, status, message) => {
 	res.status(status).json({
 		status: 'Failure',
-		data: message,
+		data: message
 	});
 };
 
@@ -20,5 +20,5 @@ module.exports = {
 	},
 	notFound: (res, message) => {
 		set(res, 404, message);
-	},
+	}
 };

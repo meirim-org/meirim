@@ -1,21 +1,21 @@
 const Model = require('./base_model');
 
 class PlanPerson extends Model {
-	get rules() {
+	get rules () {
 		return {
 			plan_id: ['required', 'integer'],
-			person_id: ['required', 'integer'],
+			person_id: ['required', 'integer']
 		};
 	}
 
-	get tableName() {
+	get tableName () {
 		return 'plan_person';
 	}
 
-	static subscribe(person_id, plan_id) {
+	static subscribe (person_id, plan_id) {
 		return this.forge({
 			person_id,
-			plan_id,
+			plan_id
 		})
 			.fetchAll()
 			.then((existingSubscription) => {
@@ -25,12 +25,12 @@ class PlanPerson extends Model {
 				}
 				return this.forge({
 					person_id,
-					plan_id,
+					plan_id
 				}).save();
 			});
 	}
 
-	static unsubscribe(person_id, plan_id) {
+	static unsubscribe (person_id, plan_id) {
 		return this.query('where', 'person_id', '=', person_id)
 			.query('where', 'plan_id', '=', plan_id)
 			.destroy()

@@ -1,15 +1,15 @@
 const Model = require('./base_model');
 
 class Status extends Model {
-	get tableName() {
+	get tableName () {
 		return 'status';
 	}
 
-	canRead(session) {
+	canRead () {
 		return true;
 	}
 
-	getCollection() {
+	getCollection () {
 		return this.collection();
 	}
 }
