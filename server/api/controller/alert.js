@@ -3,9 +3,9 @@ const Alert = require('../model/alert');
 const Email = require('../service/email');
 const Log = require('../lib/log');
 const Exception = require('../model/exception');
-
+//test
 class AlertController extends Controller {
-	create (req, res, next) {
+	create ( res, next) {
 		return super
 			.create(req, res, next)
 			.then(savedAlert => Email.newAlert(req.session.person, savedAlert).then(() => savedAlert));
