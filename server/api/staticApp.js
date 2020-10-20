@@ -16,7 +16,7 @@ const urlencoded = BodyParser.urlencoded({
     extended: false
 });
 const app = Express();
-const staticRootDir = path.join(__dirname, "..", "build");
+const staticRootDir = path.join(__dirname, "../../client/", "build");
 
 app.use(urlencoded);
 app.use(compression());
