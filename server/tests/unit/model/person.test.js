@@ -1,8 +1,8 @@
 
 const expect = require('chai').expect;
-const { Person } = require('../../api/model');
+const { Person } = require('../../../api/model');
 
-describe.only('Person model', function() {
+describe('Person model', function() {
 	let instance;
 	beforeEach(function () {
 		instance = new Person();

@@ -153,7 +153,7 @@ class Alert extends Model {
     INNER JOIN person ON person.id=alert.person_id
     WHERE plan.id=${planId} AND
     person.status=1
-    GROUP BY person.id`;
+    GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
 	}
 }

@@ -2,9 +2,9 @@ const assert = require('chai').assert;
 const sinon = require('sinon');
 const Mailer = require('nodemailer/lib/mailer');
 const verifier = require('email-verify');
-const {	mockDatabase } = require('../mock');
-const alertController = require('../../api/controller/alert');
-const Email = require('../../api/service/email');
+const {	mockDatabase } = require('../../mock');
+const alertController = require('../../../api/controller/alert');
+const Email = require('../../../api/service/email');
 
 describe('Alert controller', function() {
 	const sinonSandbox = sinon.createSandbox();
