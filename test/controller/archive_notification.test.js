@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
 const { mockDatabase } = require('../mock');
 
-const tables = ['archive_notification'];
 describe('archive_notification controller', function() {
+	const tables = ['archive_notification'];
 	beforeEach(async function() {
 		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
