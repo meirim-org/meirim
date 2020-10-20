@@ -2,8 +2,8 @@
 const expect = require('chai').expect;
 const { mockDatabase } = require('../mock');
 
-const tables = ['alert', 'plan', 'notification', 'person'];
 describe('Plan controller', function() {
+	const tables = ['alert', 'plan', 'notification', 'person'];
 	beforeEach(async function() {
 		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
