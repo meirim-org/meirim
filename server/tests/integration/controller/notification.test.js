@@ -1,46 +1,44 @@
 const expect = require('chai').expect;
-const sinon = require('sinon');
+const { mockDatabase } = require('../../mock');
 const Mailer = require('nodemailer/lib/mailer');
 const verifier = require('email-verify');
-const {	mockDatabase } = require('../mock');
-const Email = require('../../api/service/email');
-const { wait } = require('../utils');
-const { Notification, Plan } = require('../../api/model');
-const { AlertController  } = require('../../api/controller');
+const Email = require('../../../api/service/email');
+const { wait } = require('../../utils');
+const sinon = require('sinon');
+const { AlertController  } = require('../../../api/controller');
+const { Plan } = require('../../../api/model');
 
-describe('notification model', function() {
-	let instance;
-	beforeEach(function () {
-		instance = new Notification();
-	}); 
-	
-	afterEach(function() {
-		instance = null;
+describe('notification controller', function() {
+	const tables = ['notification'];
+	beforeEach(async function() {
+		await mockDatabase.dropTables(tables);
+		await mockDatabase.createTables(tables);
 	});
 
-	it('has the right rules', function() {
-		const rules = instance.rules;
-		expect(rules.person_id).to.eql(['required', 'integer']);
-		expect(rules.plan_id).to.eql(['required', 'integer']);
-		expect(rules.seen).to.eql('boolean');
-		expect(rules.type).to.eql(['required', 'string' ]);
+	afterEach(async function() {
+		await mockDatabase.dropTables(tables);
 	});
 
-	it('has the right table name', function() {
-		const tableName = instance.tableName;
-		expect(tableName).to.eql('notification');
+	it('creates row in db successfuly', async function() {
+		const { NotificationController } = require('../../../api/controller');
+		const req = {
+			session: {
+				person: { 
+					id: 1 
+				} 
+			},
+			body: {
+				person_id: 1,
+				plan_id: 123,
+				type: 'type',
+			}
+		};
+		const {attributes} = await NotificationController.create(req);
+		expect(attributes.person_id).to.eql(req.body.person_id);
+		expect(attributes.plan_id).to.eql(req.body.plan_id);
+		expect(attributes.type).to.eql(req.body.type);
+		expect(attributes.seen).to.eql(0);
 	});
-
-	it('has the right defaults', function() {
-		const defaults = instance.defaults();
-		expect(defaults).to.eql({seen: false});
-	});
-
-	it('has timestamps', function() {
-		const isTimestamps = instance.hasTimestamps;
-		expect(isTimestamps).to.eql(true);
-	});
-	
 });
 
 describe('Notification model integration with different models', function() {

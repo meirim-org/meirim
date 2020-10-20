@@ -5,16 +5,16 @@ const sinon = require('sinon');
 const Mailer = require('nodemailer/lib/mailer');
 const verifier = require('email-verify');
 const Bcrypt = require('bcrypt');
-const { mockDatabase } = require('../mock');
-const { fakeEmailVerification } = require('../utils');
-const Email = require('../../api/service/email');
-const	signController = require('../../api/controller/sign');
-const	personModel = require('../../api/model/person');
+const { mockDatabase } = require('../../mock');
+const { fakeEmailVerification } = require('../../utils');
+const Email = require('../../../api/service/email');
+const	signController = require('../../../api/controller/sign');
+const	personModel = require('../../../api/model/person');
 // const	Exception = require('../../api/model/exception');
 // chai.use(chaiAsPromised);
 // const assert = chai.assert;
 
-describe.only('Sign Controller - Signup' ,function() {
+describe('Sign Controller - Signup' ,function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];

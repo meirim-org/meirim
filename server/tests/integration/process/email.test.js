@@ -2,12 +2,13 @@ const assert = require('chai').assert;
 const sinon = require('sinon');
 const Mailer = require('nodemailer/lib/mailer');
 const verifier = require('email-verify');
-const { mockDatabase } = require('../mock');
-const Email = require('../../api/service/email');
-const signController = require('../../api/controller/sign');
-const	alertController = require('../../api/controller/alert');
-const cronController = require('../../api/controller/cron');
-const planModel = require('../../api/model/plan');
+const { mockDatabase } = require('../../mock');
+const Email = require('../../../api/service/email');
+const signController = require('../../../api/controller/sign');
+const	alertController = require('../../../api/controller/alert');
+const cronController = require('../../../api/controller/cron');
+const planModel = require('../../../api/model/plan');
+const { fakeEmailVerification } = require('../../utils');
 
 let sinonSandbox = sinon.createSandbox();
 
@@ -16,13 +17,7 @@ describe('Emails', function() {
 	before(async function() {
 		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
-
-		// mock email-verify and nodemailer so we can 
-		// fake-send emails and tell when and with what 
-		// arguments these emails were "sent"
-		const fakeVerifyEmail = sinon.fake(function(email, options, cb) {
-			cb(null, {success: true, code: 1, banner: 'string'});
-		});
+		const fakeVerifyEmail = fakeEmailVerification; 
 		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
@@ -73,7 +68,8 @@ describe('Emails', function() {
 		const secondUserReq = {
 			body: {
 				email: secondUserEmail,
-				password: '1234'
+				password: '1234',
+				status: 0
 			},
 			session: {}
 		};

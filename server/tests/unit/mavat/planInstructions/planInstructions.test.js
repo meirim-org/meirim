@@ -1,4 +1,4 @@
-const ParserIndex = require('../../../server/api/lib/mavat/planInstructions/index');
+const ParserIndex = require('../../../../api/lib/mavat/planInstructions/index');
 const path = require('path');
 const assert = require('assert');
 

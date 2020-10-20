@@ -1,6 +1,6 @@
 
 const expect = require('chai').expect;
-const { mockDatabase } = require('../mock');
+const { mockDatabase } = require('../../mock');
 
 describe('Plan controller', function() {
 	const tables = ['alert', 'plan', 'notification', 'person'];
@@ -14,7 +14,7 @@ describe('Plan controller', function() {
 	});
 
 	it('creates row in db successfuly', async function() {
-		const {PlanController} = require('../../api/controller');
+		const {PlanController} = require('../../../api/controller');
 		const req = {
 			session: {
 				person: { 

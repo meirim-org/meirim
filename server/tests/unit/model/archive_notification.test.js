@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const { ArchiveNotification } = require('../../api/model');
+const { ArchiveNotification } = require('../../../api/model');
 
 describe('archive_notification model', function() {
 	it('has the right rules', async function() {

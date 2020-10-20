@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const { Plan } = require('../../api/model');
+const { Plan } = require('../../../api/model');
 
 describe('Plan model', function() {
 	let instance;

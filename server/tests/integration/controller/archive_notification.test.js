@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const { mockDatabase } = require('../mock');
+const { mockDatabase } = require('../../mock');
 
 describe('archive_notification controller', function() {
 	const tables = ['archive_notification'];
@@ -13,7 +13,7 @@ describe('archive_notification controller', function() {
 	});
 
 	it('creates row in db successfuly', async function() {
-		const { ArchiveNotificationController } = require('../../api/controller');
+		const { ArchiveNotificationController } = require('../../../api/controller');
 		const req = {
 			session: {
 				person: { 
