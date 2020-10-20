@@ -59,24 +59,12 @@
         "turf": "^3.0.14",
         "winston": "^3.3.3"
     },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "eslintIgnore": [
-        "seeds/import.sql"
-    ],
-    "browserslist": [
-        ">0.2%",
-        "not dead",
-        "not ie <= 11",
-        "not op_mini all"
-    ],
     "scripts": {
         "start": "node bin/api",
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "serve": "node bin/serve",
         "lint": "./node_modules/.bin/eslint . --fix",
-        "test": "mocha --exit --recursive --require ../test/hooks.js"
+        "test": "NODE_ENV=test ./node_modules/.bin/mocha ./test/**/*.js --exit --recursive --require ./test/setup.js"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^3.9.1",
