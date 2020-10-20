@@ -8,7 +8,7 @@ const Log = require('../lib/log');
 const Geocoder = require('../service/geocoder').geocoder;
 
 class Activity extends BaseModel {
-	get rules() {
+	get rules () {
 		return {
 			// id: [
 			//   'required', 'integer'
@@ -19,60 +19,59 @@ class Activity extends BaseModel {
 			//   'required', 'string'
 			// ],
 			description: ['required', 'string'],
-			status: ['required', 'integer'],
+			status: ['required', 'integer']
 		};
 	}
 
-	get hidden() {
+	get hidden () {
 		return ['password', 'admin'];
 	}
 
-	get tableName() {
+	get tableName () {
 		return 'activity';
 	}
 
-	get hasTimestamps() {
+	get hasTimestamps () {
 		return true;
 	}
 
-	get idAttribute() {
+	get idAttribute () {
 		return 'id';
 	}
 
-
-	defaults() {
+	defaults () {
 		return {
-			status: 1,
+			status: 1
 		};
 	}
 
-	get geometry() {
+	get geometry () {
 		return ['latlon'];
 	}
 
-	_saving(model, attrs, options) {
+	_saving (model) {
 		return Geocoder.geocode(model.get('address')).then(res => {
 			model.set('latlon', {
 				type: 'Point',
-				coordinates: [res[0].latitude, res[0].longitude],
+				coordinates: [res[0].latitude, res[0].longitude]
 			});
 			model.set('address', res[0].formattedAddress);
 			return new Checkit(model.rules).run(model.attributes);
 		});
 	}
 
-	status() {
+	status () {
 		return this.belongsTo('status', 'status');
 	}
 
-	addPerson(person_id) {
+	addPerson (person_id) {
 		return PersonActivity.forge({
 			activity_id: this.get('id'),
-			person_id,
+			person_id
 		}).save();
 	}
 
-	upload(files) {
+	upload (files) {
 		// const sampleFile = null;
 		// const width = 400;
 		// const height = 400;
@@ -107,23 +106,23 @@ class Activity extends BaseModel {
 		return true;
 	}
 
-	static uploadMiddleWareFactory() {
+	static uploadMiddleWareFactory () {
 		const numberOfPhotos = 12;
 		return Upload.middleware.array('photos', numberOfPhotos);
 	}
 
-	canRead(session) {
+	canRead () {
 		return Promise.resolve(true);
 	}
 
-	canEdit(session) {
+	canEdit () {
 		// if (!session.person || !session.person.admin) {
 		// 	throw new Exception.NotAllowed('Must be an admin')
 		// }
 		return Promise.resolve(true);
 	}
 
-	canJoin(session) {
+	canJoin (session) {
 		if (!session.person || !session.person.id) {
 			throw new Exception.NotAllowed('Must be signed in');
 		}
@@ -133,7 +132,7 @@ class Activity extends BaseModel {
 		return Promise.resolve(this);
 	}
 
-	static canCreate(session) {
+	static canCreate (session) {
 		if (!session || !session.person || !session.person.id) {
 			throw new Exception.NotAllowed('Must be signed in');
 		}

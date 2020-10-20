@@ -1,13 +1,13 @@
 const Router = require('express').Router();
 
-const Log = require("./lib/log");
-const Plan = require("./model/plan");
-const config = require("../../client/src/config.json");
+const Log = require('./lib/log');
+const Plan = require('./model/plan');
+const config = require('../../client/src/config.json');
 
 const pageLocale = config.opengraph.locale;
 
 // all plan pages should render opengraph tags
-Router.get(['/plan/:planId', '/plan/:planId/*'], (req, res, next) => {
+Router.get(['/plan/:planId', '/plan/:planId/*'], (req, res) => {
 	const { planId } = req.params;
 
 	// fetch plan details to populate opengraph tags
@@ -34,7 +34,7 @@ Router.get(['/plan/:planId', '/plan/:planId/*'], (req, res, next) => {
 });
 
 // all non-plan pages have static opengraph tag values
-Router.get('*', (req, res, next) => {
+Router.get('*', (req, res) => {
 	res.render('index', {
 		layout: false,
 		isMain: true,

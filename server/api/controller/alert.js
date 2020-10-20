@@ -5,7 +5,7 @@ const Log = require('../lib/log');
 const Exception = require('../model/exception');
 
 class AlertController extends Controller {
-	create(req, res, next) {
+	create (req, res, next) {
 		return super
 			.create(req, res, next)
 			.then(savedAlert => Email.newAlert(req.session.person, savedAlert).then(() => savedAlert));
@@ -15,7 +15,7 @@ class AlertController extends Controller {
    * Return person's alerts. Must be logged in.
    * @param {IncomingRequest} req
    */
-	browse(req) {
+	browse (req) {
 		if (!req.session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}
@@ -33,7 +33,7 @@ class AlertController extends Controller {
    * link in an email
    * @param {IncomingRequest} req
    */
-	unsubscribe(req) {
+	unsubscribe (req) {
 		return Alert.ByToken(req.params.token)
 			.fetch()
 			.then((fetchedModel) => {
@@ -45,7 +45,7 @@ class AlertController extends Controller {
 				Log.debug(
 					this.tableName,
 					'unsubscribe success id:',
-					fetchedModel.get('id'),
+					fetchedModel.get('id')
 				);
 				return fetchedModel.destroy(req.body);
 			});

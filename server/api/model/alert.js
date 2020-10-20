@@ -9,7 +9,7 @@ const DegreeToMeter = require('../service/geocoder').degreeToMeter;
 const Exception = require('./exception');
 
 class Alert extends Model {
-	get rules() {
+	get rules () {
 		return {
 			person_id: ['required', 'integer'],
 			address: ['required', 'string'],
@@ -18,30 +18,30 @@ class Alert extends Model {
 		};
 	}
 
-	defaults() {
+	defaults () {
 		return {
 			radius: 5
 		};
 	}
 
-	get geometry() {
+	get geometry () {
 		return ['geom'];
 	}
 
-	get tableName() {
+	get tableName () {
 		return 'alert';
 	}
 
-	initialize() {
+	initialize () {
 		this.on('saving', this._saving, this);
 		super.initialize();
 	}
 
-	alerts() {
+	alerts () {
 		return this.belongsTo(Person);
 	}
 
-	_saving(model, attrs, options) {
+	_saving (model) {
 		// partial validation
 		const partialRules = Object.assign(model.rules, {});
 		delete partialRules.geom;
@@ -97,7 +97,7 @@ class Alert extends Model {
 		});
 	}
 
-	canRead(session) {
+	canRead (session) {
 		if (!session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}
@@ -107,18 +107,18 @@ class Alert extends Model {
 		return Promise.resolve(this);
 	}
 
-	canEdit(session) {
+	canEdit (session) {
 		return this.canRead(session);
 	}
 
-	static canCreate(session) {
+	static canCreate (session) {
 		if (!session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}
 		return Promise.resolve(this);
 	}
 
-	getCollection() {
+	getCollection () {
 		return this.collection()
 			.query('where', {
 				person_id: this.get('person_id')
@@ -126,14 +126,14 @@ class Alert extends Model {
 			.fetch();
 	}
 
-	unsubsribeToken() {
+	unsubsribeToken () {
 		const token = Crypt.encrypt(
 			`${this.get('id')}_${this.get('person_id')}`
 		);
 		return Buffer.from(token).toString('base64');
 	}
 
-	static ByToken(token) {
+	static ByToken (token) {
 		const details = Crypt.decrypt(
 			Buffer.from(token, 'base64').toString('ascii')
 		);
@@ -143,7 +143,7 @@ class Alert extends Model {
 		});
 	}
 
-	static getUsersByGeometry(planId) {
+	static getUsersByGeometry (planId) {
 		const sql = `SELECT 
     person.email,
     person.id as person_id,
@@ -153,7 +153,7 @@ class Alert extends Model {
     INNER JOIN person ON person.id=alert.person_id
     WHERE plan.id=${planId} AND
     person.status=1
-    GROUP BY person.id, alert.id`;
+    GROUP BY person.id`;
 		return Knex.raw(sql);
 	}
 }

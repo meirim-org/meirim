@@ -6,7 +6,11 @@ const Person = require('./person');
 const Exception = require('./exception');
 
 class Rate extends Model {
+<<<<<<< HEAD
 	get rules() {
+=======
+	get rules () {
+>>>>>>> a76d0d323714d08bdaa353557ca41510be41eacd
 		return {
 			person_id: ['required', 'integer'],
 			score: ['required', 'integer'],
@@ -14,35 +18,35 @@ class Rate extends Model {
 		};
 	}
 
-	get tableName() {
+	get tableName () {
 		return 'rate';
 	}
 
-	person() {
+	person () {
 		return this.belongsTo(Person);
 	}
 
-	initialize() {
+	initialize () {
 		this.on('saving', this._saving, this);
 		super.initialize();
 	}
 
-	_saving(model, attrs, options) {
+	_saving (model) {
 		return new Checkit(model.rules).run(model.attributes);
 	}
 
-	canRead(session) {
+	canRead () {
 		return Promise.resolve(this);
 	}
 
-	canEdit(session) {
+	canEdit (session) {
 		if (session.person.id !== this.get('person_id')) {
 			throw new Exception.NotAllowed('You cannot edit this rating');
 		}
 		return Promise.resolve(this);
 	}
 
-	static byPlan(planId) {
+	static byPlan (planId) {
 		if (!planId) {
 			throw new Exception.BadRequest('Must provide planId');
 		}
@@ -53,7 +57,7 @@ class Rate extends Model {
 			.groupBy('score');
 	}
 
-	static canCreate(session) {
+	static canCreate (session) {
 		if (!session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}

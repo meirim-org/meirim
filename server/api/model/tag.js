@@ -1,15 +1,15 @@
 const Model = require('./base_model');
 
 class Tag extends Model {
-	get tableName() {
+	get tableName () {
 		return 'tag';
 	}
 
-	canRead(session) {
+	canRead () {
 		return true;
 	}
 
-	getCollection() {
+	getCollection () {
 		return this.collection();
 	}
 }

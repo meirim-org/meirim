@@ -5,19 +5,19 @@ const Log = require('../lib/log');
 const Email = require('../service/email');
 
 class SignController extends Controller {
-	me(req) {
+	me (req) {
 		if (!req.session.person) {
 			throw Exception.NotAllowed('Must be logged in');
 		}
 		return true;
 	}
 
-	signup(req) {
+	signup (req) {
 		// check if user exists and not active
 		return this.model
 			.forge({
 				email: req.body.email,
-				status: 0,
+				status: 0
 			})
 			.fetch()
 			.then((existingPerson) => {
@@ -25,7 +25,7 @@ class SignController extends Controller {
 				if (existingPerson) {
 					Log.debug(
 						'Person send activation email to:',
-						existingPerson.get('id'),
+						existingPerson.get('id')
 					);
 					return Email.newSignUp(existingPerson);
 				}
@@ -43,7 +43,7 @@ class SignController extends Controller {
 			});
 	}
 
-	activate(req) {
+	activate (req) {
 		if (!req.body.token) {
 			throw new Exception.BadRequest('No token provided');
 		}
@@ -51,7 +51,7 @@ class SignController extends Controller {
 		return Person.activateByToken(req.body.token);
 	}
 
-	signin(req) {
+	signin (req) {
 		if (!req.body.email) {
 			throw new Exception.BadRequest('No email provided');
 		}
@@ -63,7 +63,7 @@ class SignController extends Controller {
 		Log.debug('Try login with email:', email);
 
 		return Person.forge({
-			email,
+			email
 		})
 			.fetch()
 			.then((person) => {
@@ -82,7 +82,7 @@ class SignController extends Controller {
 			});
 	}
 
-	signout(req) {
+	signout (req) {
 		if (req.session.destroy()) {
 			return true;
 		}

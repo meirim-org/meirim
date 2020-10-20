@@ -92,7 +92,7 @@ class PlanController extends Controller {
 					geometry: row.get('geom')
 				}));
 				return response;
-			}); 
+			});
 	}
 
 	county () {

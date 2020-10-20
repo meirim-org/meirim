@@ -3,7 +3,7 @@ const { Bookshelf } = require('../service/database');
 const Exception = require('./exception');
 
 class Base_model extends Bookshelf.Model {
-	get hasTimestamps() {
+	get hasTimestamps () {
 		return false;
 	}
 
@@ -13,34 +13,34 @@ class Base_model extends Bookshelf.Model {
 	// rely on a value or null to be returned in any case. when creating new
 	// models we recommend this is overriden with the default true value and
 	// fetch calls be written with this in mind
-	get requireFetch() {
+	get requireFetch () {
 		return false;
 	}
 
-	initialize() {
+	initialize () {
 		this.on('saving', this._saving, this);
 		super.initialize();
 	}
 
-	_saving(model, attrs, options) {
+	_saving (model) {
 		return new Checkit(model.rules).run(model.attributes);
 	}
 
-	setPerson(session) {
+	setPerson (session) {
 		if (this.rules.person_id && session.person) {
 			this.set('person_id', session.person.id);
 		}
 	}
 
-	canRead(session) {
+	canRead () {
 		throw new Exception.NotAllowed('Must be logged in');
 	}
 
-	static canCreate(session) {
+	static canCreate () {
 		throw new Exception.NotAllowed('Must be logged in');
 	}
 
-	getCollection() {
+	getCollection () {
 		return this.collection().fetch();
 	}
 }

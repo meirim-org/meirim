@@ -4,44 +4,44 @@ const Person = require('./person');
 const Exception = require('./exception');
 
 class Comment extends Model {
-	get rules() {
+	get rules () {
 		return {
 			person_id: ['required', 'integer'],
 			content: ['required', 'string'],
 			plan_id: ['required', 'integer'],
-			parent_id: ['required', 'integer'],
+			parent_id: ['required', 'integer']
 		};
 	}
 
-	get tableName() {
+	get tableName () {
 		return 'comment';
 	}
 
-	person() {
+	person () {
 		return this.belongsTo(Person);
 	}
 
-	initialize() {
+	initialize () {
 		this.on('saving', this._saving, this);
 		super.initialize();
 	}
 
-	_saving(model, attrs, options) {
+	_saving (model) {
 		return new Checkit(model.rules).run(model.attributes);
 	}
 
-	canRead(session) {
+	canRead () {
 		return Promise.resolve(this);
 	}
 
-	canEdit(session) {
+	canEdit (session) {
 		if (session.person.id !== this.get('person_id')) {
 			throw new Exception.NotAllowed('You cannot edit this comment');
 		}
 		return Promise.resolve(this);
 	}
 
-	static byPlan(planId) {
+	static byPlan (planId) {
 		if (!planId) {
 			throw new Exception.BadRequest('Must provide planId');
 		}
@@ -52,15 +52,15 @@ class Comment extends Model {
 			.fetchAll({
 				withRelated: [
 					{
-						person(qb) {
+						person (qb) {
 							qb.column('id', 'alias');
-						},
-					},
-				],
+						}
+					}
+				]
 			});
 	}
 
-	static canCreate(session) {
+	static canCreate (session) {
 		if (!session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}

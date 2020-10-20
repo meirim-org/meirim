@@ -28,11 +28,11 @@ class Plan extends Model {
 			views: ['required', 'number'],
 			// numeric indicator of interestingness. It is update like the views field, but also eroded over time
 			erosion_views: ['required', 'number'],
-			explanation: 'string',
 			plan_url: 'string',
 			status: 'string',
 			goals_from_mavat: 'string',
 			main_details_from_mavat: 'string',
+			explanation: 'string'
 		};
 	}
 
@@ -187,7 +187,7 @@ class Plan extends Model {
 		return plan.save();
 	}
 
-	static async setMavatData(plan, mavatData, oldPlan = null) {
+	static async setMavatData (plan, mavatData, oldPlan = null) {
 		// TODO: UPDATE PLAN INSTEAD OF DON'T DO NOTHING
 		if (oldPlan) {
 			// exits in db already, don't fetch mavatData
