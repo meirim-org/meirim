@@ -96,9 +96,7 @@ class Plan extends Model {
 
 	async handleNewPlan (model) {
 		const planId = model.id;
-		console.log('Plan -> handleNewPlan -> planId', planId);
 		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
-		console.log('Plan -> handleNewPlan -> usersSubscribedToPlanArea', usersSubscribedToPlanArea);
 		const type = notification_types['NEW_PLAN_IN_AREA']; 
 		return Notification.createNotifications({ users: usersSubscribedToPlanArea, planId, type });
 	};
@@ -107,7 +105,6 @@ class Plan extends Model {
 		const planId = model.id;
 		const { users } = this.getUsersInPlanArea(model);
 		const types = this.getPlanUpdateTypes(model);
-		console.log('Plan -> handleUpdatedPlan -> types', types);
 		for(let type of types) {
 			Notification.createNotifications({ users, planId, type });
 		}

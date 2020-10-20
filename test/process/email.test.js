@@ -3,28 +3,19 @@ const sinon = require('sinon');
 const Mailer = require('nodemailer/lib/mailer');
 const verifier = require('email-verify');
 const { mockDatabase } = require('../mock');
+const Email = require('../../api/service/email');
+const signController = require('../../api/controller/sign');
+const	alertController = require('../../api/controller/alert');
+const cronController = require('../../api/controller/cron');
+const planModel = require('../../api/model/plan');
 
 let sinonSandbox = sinon.createSandbox();
 
 const tables = ['alert', 'person', 'plan', 'notification'];
 describe('Emails', function() {
-	let signController;
-	let alertController;
-	let cronController;
-	let planModel;
-
-	// variables holding the models we create so we can delete them when
-	// the test is over
-	let firstPerson, secondPerson;
-	let firstAlert, secondAlert;
-
-	beforeEach(async function() {
+	before(async function() {
 		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
-		signController = require('../../api/controller/sign');
-		alertController = require('../../api/controller/alert');
-		cronController = require('../../api/controller/cron');
-		planModel = require('../../api/model/plan');
 
 		// mock email-verify and nodemailer so we can 
 		// fake-send emails and tell when and with what 
@@ -35,14 +26,11 @@ describe('Emails', function() {
 		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
-
-		// init email service to load email templates
-		const Email = require('../../api/service/email');
 		await Email.init();
 	});
 
-	afterEach(async function() {
-		mockDatabase.dropTables(tables);
+	after(async function() {
+		await mockDatabase.dropTables(tables);
 		sinonSandbox.restore();
 	});
 
@@ -62,7 +50,7 @@ describe('Emails', function() {
 			},
 			session: {}
 		};
-		firstPerson = await signController.signup(firstUserReq);
+		const firstPerson = await signController.signup(firstUserReq);
 
 		assert.equal(firstPerson.attributes.email, firstUserEmail, 'person email should match provided value');
 		assert.equal(firstPerson.attributes.status, 0, 'person status should be waiting for activation');
@@ -89,7 +77,7 @@ describe('Emails', function() {
 			},
 			session: {}
 		};
-		secondPerson = await signController.signup(secondUserReq);
+		const secondPerson = await signController.signup(secondUserReq);
 
 		assert.equal(secondPerson.attributes.email, secondUserEmail, 'person email should match provided value');
 		assert.equal(secondPerson.attributes.status, 0, 'person status should be waiting for activation');
@@ -122,7 +110,7 @@ describe('Emails', function() {
 				person: firstUserReq.session.person.attributes
 			}
 		};
-		firstAlert = await alertController.create(firstUserAlertReq);
+		const	firstAlert = await alertController.create(firstUserAlertReq);
 
 		assert.equal(firstAlert.attributes.person_id, firstPerson.id, 'alert person id should match created person id');
 		assert.isAtLeast(firstAlert.id, 0, 'an alert id should have been generated');
@@ -141,7 +129,7 @@ describe('Emails', function() {
 				person: secondUserReq.session.person.attributes
 			}
 		};
-		secondAlert = await alertController.create(secondUserAlertReq);
+		const secondAlert = await alertController.create(secondUserAlertReq);
 
 		assert.equal(secondAlert.attributes.person_id, secondPerson.id, 'alert person id should match created person id');
 		assert.isAtLeast(secondAlert.id, 0, 'an alert id should have been generated');
