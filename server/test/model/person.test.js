@@ -2,7 +2,7 @@
 const expect = require('chai').expect;
 const { Person } = require('../../api/model');
 
-describe('Person model', function() {
+describe.only('Person model', function() {
 	let instance;
 	beforeEach(function () {
 		instance = new Person();

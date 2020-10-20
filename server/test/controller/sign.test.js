@@ -14,7 +14,7 @@ const	personModel = require('../../api/model/person');
 // chai.use(chaiAsPromised);
 // const assert = chai.assert;
 
-describe('Sign Controller - Signup' ,function() {
+describe.only('Sign Controller - Signup' ,function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];

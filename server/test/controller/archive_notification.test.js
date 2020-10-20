@@ -13,7 +13,7 @@ describe('archive_notification controller', function() {
 	});
 
 	it('creates row in db successfuly', async function() {
-		const {ArchiveNotificationController} = require('../../api/controller');
+		const { ArchiveNotificationController } = require('../../api/controller');
 		const req = {
 			session: {
 				person: { 
