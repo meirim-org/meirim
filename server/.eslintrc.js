@@ -2,6 +2,8 @@ module.exports = {
 	'env': {
 		'commonjs': true,
 		'node': true,
+		'es6': true,
+		'browser':true,
 	},
 	'extends': 'eslint:recommended',
 	'globals': {
@@ -12,7 +14,7 @@ module.exports = {
 		'ecmaVersion': 2018
 	},
 	'rules': {
-		"camelcase": "off",
+		"camelcase": 'off',
 		'indent': [
 			'error',
 			'tab'
