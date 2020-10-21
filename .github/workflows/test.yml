@@ -60,9 +60,6 @@ jobs:
                   NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}}'
               run: cd server && node node_modules/knex/bin/cli.js migrate:latest
 
-            - name: test
-              run: cd server && npm run test
-
             - name: build frontend
               run: cd client && npm run build
 
@@ -79,6 +76,9 @@ jobs:
               run: |
                   cd server && npm run serve &
                   sleep 3
+
+            - name: server test
+              run: cd server && npm run test
 
             - name: e2e test
               run: |
