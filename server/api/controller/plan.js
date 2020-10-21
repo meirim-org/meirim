@@ -4,7 +4,6 @@ const Config = require('../lib/config');
 const { Knex } = require('../service/database');
 const Exception = require('../model/exception');
 const wkt = require('terraformer-wkt-parser');
-const GJV = require('geojson-validation');
 
 class PlanController extends Controller {
 	browse (req) {
