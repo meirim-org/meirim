@@ -1,84 +1,88 @@
 name: test
 
 on:
-  push:
-    branches:
-      - master
-      - node_upgrade
-  pull_request:
-    branches:
-      - master
-      - node_upgrade
+    push:
+        branches:
+            - master
+            - node_upgrade
+    pull_request:
+        branches:
+            - master
+            - node_upgrade
 
 jobs:
-  test:
-    runs-on: ubuntu-18.04
+    test:
+        runs-on: ubuntu-18.04
 
-    strategy:
-      matrix:
-        node-version: [ 14.x ]
+        strategy:
+            matrix:
+                node-version: [14.x]
 
-    services:
-      test_mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: meirim_test
-        ports:
-          - 33060:3306
+        services:
+            test_mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ROOT_PASSWORD: meirim_test
+                ports:
+                    - 33060:3306
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - name: use node v${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: use node v${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-      - name: cache node modules
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache
-            !~/.cache/exclude
-            **/node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
-          restore-keys:
-            ${{ runner.OS }}-build-${{ env.cache-name }}
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
+            - name: cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: |
+                      ~/.cache
+                      !~/.cache/exclude
+                      **/node_modules
+                  key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: ${{ runner.OS }}-build-${{ env.cache-name }}
+                      ${{ runner.OS }}-build-
+                      ${{ runner.OS }}-
 
-      - name: install dependencies
-        run: npm install
+            - name: install server dependencies
+              run: cd server && npm install
 
-      - name: create database
-        run: mysql --protocol=tcp --host=localhost --port=33060 --user=root --password=meirim_test -e "CREATE DATABASE meirim_test character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));"
+            - name: install client dependencies
+              run: cd client && npm install
 
-      - name: run migrations
-        env:
-          NODE_CONFIG: "{\"database\": {\"connection\": {\"host\": \"localhost\", \"port\": \"33060\", \"user\": \"root\", \"password\": \"meirim_test\", \"database\": \"meirim_test\"}}}"
-        run: node node_modules/knex/bin/cli.js migrate:latest
+            - name: create database
+              run: mysql --protocol=tcp --host=localhost --port=33060 --user=root --password=meirim_test -e "CREATE DATABASE meirim_test character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));"
 
-      - name: test
-        run: npm run test
+            - name: run migrations
+              env:
+                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}}'
+              run: cd server && node node_modules/knex/bin/cli.js migrate:latest
 
-      - name: build frontend
-        run: npm run build
+            # - name: test
+            #   run: cd server && npm run test
+            # temp - we should integrate the new tests here
 
-      - name: get ethereal credentials
-        id: get_ethereal_credentials
-        run: |
-          response=$(curl -XPOST -d "{\"requestor\": \"meirim-test\", \"version\": \"0.0.1\"}" -H "Content-Type: application/json" https://api.nodemailer.com/user)
-          echo "::set-output name=user::$(echo $response | jq -r '.user')"
-          echo "::set-output name=pass::$(echo $response | jq -r '.pass')"
+            - name: build frontend
+              run: cd client && npm run build
 
-      - name: serve
-        env:
-          NODE_CONFIG: "{\"database\": {\"connection\": {\"host\": \"localhost\", \"port\": \"33060\", \"user\": \"root\", \"password\": \"meirim_test\", \"database\": \"meirim_test\"}}, \"email\": {\"options\": {\"host\": \"smtp.ethereal.email\", \"port\": 587, \"secure\": false, \"auth\": {\"user\": \"${{ steps.get_ethereal_credentials.outputs.user }}\", \"pass\": \"${{ steps.get_ethereal_credentials.outputs.pass }}\"}}}}"
-        run: |
-          npm run serve &
-          sleep 3
+            - name: get ethereal credentials
+              id: get_ethereal_credentials
+              run: |
+                  response=$(curl -XPOST -d "{\"requestor\": \"meirim-test\", \"version\": \"0.0.1\"}" -H "Content-Type: application/json" https://api.nodemailer.com/user)
+                  echo "::set-output name=user::$(echo $response | jq -r '.user')"
+                  echo "::set-output name=pass::$(echo $response | jq -r '.pass')"
 
-      - name: e2e test
-        run: |
-          $(npm bin)/cypress run --browser chrome --headless
-          $(npm bin)/cypress run --browser firefox --headless
+            - name: serve
+              env:
+                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
+              run: |
+                  cd server && npm run serve &
+                  sleep 3
+
+            - name: e2e test
+              run: |
+                  cd client &&
+                  $(npm bin)/cypress run --browser chrome --headless && 
+                  $(npm bin)/cypress run --browser firefox --headless
