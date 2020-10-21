@@ -94,7 +94,8 @@
 		"build": "./node_modules/react-scripts/bin/react-scripts.js build",
 		"api": "node bin/api",
 		"serve": "node bin/serve",
-		"test": "NODE_ENV=test mocha  --exit --recursive --require test/setup.js"
+		"test": "NODE_ENV=test mocha  --exit --recursive --require test/setup.js",
+        "watch": "nodemon bin/api"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.9.1",
@@ -114,6 +115,7 @@
 		"import-fresh": "^3.2.1",
 		"mocha": "^8.1.1",
 		"mock-require": "^3.0.3",
+		"nodemon": "^2.0.5",
 		"prettier": "2.1.2",
 		"sinon": "^9.0.3"
 	}

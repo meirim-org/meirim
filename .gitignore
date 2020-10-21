@@ -7,3 +7,4 @@ public/upload/
 config/local.json
 cypress/videos/
 cypress/screenshots/
+http-client/
