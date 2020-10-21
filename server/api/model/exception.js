@@ -8,10 +8,10 @@ class NotFound extends Exception.LogicalException {}
 class Error extends Exception.LogicalException {}
 
 module.exports = {
-  BadRequest,
-  Duplicate,
-  NotAllowed,
-  NotImplemented,
-  NotFound,
-  Error,
+	BadRequest,
+	Duplicate,
+	NotAllowed,
+	NotImplemented,
+	NotFound,
+	Error
 };
