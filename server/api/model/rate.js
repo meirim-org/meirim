@@ -6,11 +6,7 @@ const Person = require('./person');
 const Exception = require('./exception');
 
 class Rate extends Model {
-<<<<<<< HEAD
-	get rules() {
-=======
 	get rules () {
->>>>>>> a76d0d323714d08bdaa353557ca41510be41eacd
 		return {
 			person_id: ['required', 'integer'],
 			score: ['required', 'integer'],
