@@ -1,0 +1,11 @@
+build/
+node_modules
+*.log
+local.json
+public/upload/
+.idea
+config/local.json
+.DS_Store
+cypress/videos/
+cypress/screenshots/
+http-client/
