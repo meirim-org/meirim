@@ -809,7 +809,7 @@ describe('Taba4 parsing test', () => {
 
 // This taba has a big appendix, make sure that our program doesn't get stuck from it
 describe('Taba5 parsing test', function() {
-    this.timeout(10000);     // it's a big appendix!
+    this.timeout(20000);     // it's a big appendix!
     let data;
     const TEST_PLANS_DIR = 'test_plan5';
 
