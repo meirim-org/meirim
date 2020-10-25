@@ -1,4 +1,4 @@
-name: test
+name: CI
 
 on:
     push:
@@ -22,7 +22,7 @@ jobs:
             test_mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_ROOT_PASSWORD: meirim_test
+                    MYSQL_ROOT_PASSWORD: password
                 ports:
                     - 33060:3306
 
@@ -53,16 +53,12 @@ jobs:
               run: cd client && npm install
 
             - name: create database
-              run: mysql --protocol=tcp --host=localhost --port=33060 --user=root --password=meirim_test -e "CREATE DATABASE meirim_test character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));"
+              run: mysql --protocol=tcp --host=localhost --port=33060 --user=root --password=password -e "CREATE DATABASE test_meirim character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));"
 
             - name: run migrations
               env:
-                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}}'
+                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}}'
               run: cd server && node node_modules/knex/bin/cli.js migrate:latest
-
-            # - name: test
-            #   run: cd server && npm run test
-            # temp - we should integrate the new tests here
 
             - name: build frontend
               run: cd client && npm run build
@@ -76,10 +72,13 @@ jobs:
 
             - name: serve
               env:
-                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
+                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
               run: |
                   cd server && npm run serve &
                   sleep 3
+
+            - name: server test
+              run: cd server && npm run test
 
             - name: e2e test
               run: |
