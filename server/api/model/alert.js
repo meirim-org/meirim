@@ -145,15 +145,15 @@ class Alert extends Model {
 
 	static getUsersByGeometry (planId) {
 		const sql = `SELECT 
-    person.email,
-    person.id as person_id,
-    alert.id as alert_id
-    FROM alert 
-    INNER JOIN plan ON ST_Intersects(plan.geom,alert.geom)
-    INNER JOIN person ON person.id=alert.person_id
-    WHERE plan.id=${planId} AND
-    person.status=1
-    GROUP BY person.id`;
+			     person.email,
+			     person.id as person_id,
+			     alert.id as alert_id
+			     FROM alert
+			     INNER JOIN plan ON ST_Intersects(plan.geom,alert.geom)
+			     INNER JOIN person ON person.id=alert.person_id
+			     WHERE plan.id=${planId} AND
+			     person.status=1
+			     GROUP BY person.id`;
 		return Knex.raw(sql);
 	}
 }
