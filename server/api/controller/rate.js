@@ -5,9 +5,9 @@ const { Knex } = require('../service/database');
 
 class RateController extends Controller {
 	/**
-     * Return person's alerts. Must be logged in.
-     * @param {IncomingRequest} req
-     */
+	 * Return person's alerts. Must be logged in.
+	 * @param {IncomingRequest} req
+	 */
 	byPlan (req) {
 		return this.model.byPlan(req.params.plan_id).then(collection => {
 			Log.debug(this.tableName, 'Get rate list', req.params.plan_id);
