@@ -13,7 +13,7 @@ class RegisterForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' };
+    this.state = { email: '', password: '', name: '' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -67,7 +67,19 @@ class RegisterForm extends Component {
           <div>
             <strong className="d-d-block text-center">{t.signupNow}</strong>
             <div className="form-group">
-              <label for="loginEmail">{t.emailAddress}:</label>
+              <label htmlFor="loginName">{t.fullName}:</label>
+              <input
+                onChange={this.handleChange}
+                value={this.state.name}
+                required
+                type="text"
+                name="name"
+                id="loginName"
+                placeholder="Full Name"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="loginEmail">{t.emailAddress}:</label>
               <input
                 onChange={this.handleChange}
                 value={this.state.email}
@@ -79,7 +91,7 @@ class RegisterForm extends Component {
               />
             </div>
             <div className="form-group">
-              <label for="loginPassword">{t.password}:</label>
+              <label htmlFor="loginPassword">{t.password}:</label>
               <input
                 onChange={this.handleChange}
                 value={this.state.password}
