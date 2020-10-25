@@ -72,10 +72,11 @@
         "not op_mini all"
     ],
     "scripts": {
-        "start": "node bin/api",
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
-        "serve": "node bin/serve",
+        "crawl": "node bin/iplan",
         "lint": "./node_modules/.bin/eslint . --fix",
+        "start": "node bin/api",
+        "serve": "node bin/serve",
         "test": "mocha --exit --recursive --require ../test/hooks.js"
     },
     "devDependencies": {
