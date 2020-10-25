@@ -23,6 +23,11 @@ describe('Person model', function() {
 		expect(rules.admin).to.eql(['integer']);
 	});
 
+	it('has the right defaults', function() {
+		const defaults = instance.defaults();
+		expect(defaults).to.eql({type: 'citizen'});
+	});
+
 	it('has the right table name', function() {
 		const tableName = instance.tableName;
 		expect(tableName).to.eql('person');

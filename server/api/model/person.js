@@ -24,6 +24,12 @@ class Person extends BaseModel {
 		};
 	}
 
+	defaults () {
+		return {
+			type:'citizen'
+		};
+	}
+
 	get hidden () {
 		return ['password', 'admin', 'status'];
 	}
