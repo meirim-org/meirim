@@ -4,11 +4,9 @@ on:
     push:
         branches:
             - master
-            - node_upgrade
     pull_request:
         branches:
             - master
-            - node_upgrade
 
 jobs:
     test:
