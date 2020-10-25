@@ -68,14 +68,14 @@ const getGeometryArea = (geom) => {
 
 const findPlanAreaByUnitAndType = (planArea, unit, areaType) => {
     const areaChanges = JSON.parse(planArea);
-    const unitAreas = areaChanges[0].filter(e => e[3].includes(unit));
+    const unitAreas = areaChanges[0].filter(e => e && e.length >= 3 && e[3].includes(unit));
 
     if (unitAreas.length === 0) {
         return null;
     } else if (areaType === '') {
         return unitAreas[0][6] || 0;
     } else {
-        const unitTypeArea = unitAreas.find(e => e[3].includes(areaType));
+        const unitTypeArea = unitAreas.find(e => e && e.length >= 3 && e[3].includes(areaType));
 
         if (unitTypeArea === undefined) {
             return null;
