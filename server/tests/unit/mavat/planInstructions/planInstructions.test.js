@@ -3,8 +3,7 @@ const path = require('path');
 const assert = require('assert');
 
 
-describe('Taba1 parsing test', function() {
-    this.timeout(5000);
+describe('Taba1 parsing test', () => {
     let data;
     const TEST_PLANS_DIR = 'test_plan1';
 
@@ -40,7 +39,7 @@ describe('Taba1 parsing test', function() {
             let tbl181FirstRow;
 
             before(() => {
-                tbl181FirstRow = data.chartsOneEight.chart181[0];
+               tbl181FirstRow = data.chartsOneEight.chart181[0];
             });
 
             it('profession', () => {
@@ -93,47 +92,47 @@ describe('Taba1 parsing test', function() {
     });
 
     describe('table 4 parsing test', () => {
-        let chartFour;
+       let chartFour;
 
-        before(() =>
-            chartFour = data.chartFour);
+       before(() =>
+           chartFour = data.chartFour);
 
-        it('row 0 test', () => {
-            assert.strictEqual(chartFour[0].father_category, 'מגורים א\'');
-            assert.strictEqual(chartFour[0].father_category_number, '4.1');
-            assert.strictEqual(chartFour[0].category, 'שימושים');
-            assert.strictEqual(chartFour[0].category_number, '4.1.1');
-            assert.strictEqual(chartFour[0].text, `א. מגורים.
+       it('row 0 test', () => {
+           assert.strictEqual(chartFour[0].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[0].father_category_number, '4.1');
+           assert.strictEqual(chartFour[0].category, 'שימושים');
+           assert.strictEqual(chartFour[0].category_number, '4.1.1');
+           assert.strictEqual(chartFour[0].text, `א. מגורים.
 ב. חניה, מחסנים.
 ג. משרד לבעלי מקצוע חופשי לדייר המבנה/ מסחר קמעונאי.
 ד. מעונות יום.`);
-        });
+       });
 
-        it('row 1 test', () => {
-            assert.strictEqual(chartFour[1].father_category, 'מגורים א\'');
-            assert.strictEqual(chartFour[1].father_category_number, '4.1');
-            assert.strictEqual(chartFour[1].category, 'הוראות');
-            assert.strictEqual(chartFour[1].category_number, '4.1.2');
-            assert.strictEqual(chartFour[1].text, `הוראות בינוי 
+       it('row 1 test', () => {
+           assert.strictEqual(chartFour[1].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[1].father_category_number, '4.1');
+           assert.strictEqual(chartFour[1].category, 'הוראות');
+           assert.strictEqual(chartFour[1].category_number, '4.1.2');
+           assert.strictEqual(chartFour[1].text, `הוראות בינוי 
 1 .`);
-        });
+       });
 
-        it('row 2 test', () => {
-            assert.strictEqual(chartFour[2].father_category, 'מגורים א\'');
-            assert.strictEqual(chartFour[2].father_category_number, '4.1');
-            assert.strictEqual(chartFour[2].category, 'הוראות');
-            assert.strictEqual(chartFour[2].category_number, '4.1.2');
-            assert.strictEqual(chartFour[2].text.length > 1000, true);
-            assert.strictEqual(chartFour[2].text.includes('לא תותר כניסה נפרדת למרתף'), true);
-        });
+       it('row 2 test', () => {
+           assert.strictEqual(chartFour[2].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[2].father_category_number, '4.1');
+           assert.strictEqual(chartFour[2].category, 'הוראות');
+           assert.strictEqual(chartFour[2].category_number, '4.1.2');
+           assert.strictEqual(chartFour[2].text.length > 1000, true);
+           assert.strictEqual(chartFour[2].text.includes('לא תותר כניסה נפרדת למרתף'), true);
+       });
 
-        it('row 3 test', () => {
-            assert.strictEqual(chartFour[3].father_category, 'מגורים א\'');
-            assert.strictEqual(chartFour[3].father_category_number, '4.1');
-            assert.strictEqual(chartFour[3].category, 'הוראות');
-            assert.strictEqual(chartFour[3].category_number, '4.1.2');
-            assert.strictEqual(chartFour[3].text.includes('עיצוב אדריכלי'), true);
-        });
+       it('row 3 test', () => {
+           assert.strictEqual(chartFour[3].father_category, 'מגורים א\'');
+           assert.strictEqual(chartFour[3].father_category_number, '4.1');
+           assert.strictEqual(chartFour[3].category, 'הוראות');
+           assert.strictEqual(chartFour[3].category_number, '4.1.2');
+           assert.strictEqual(chartFour[3].text.includes('עיצוב אדריכלי'), true);
+       });
 
         it('row 4 test', () => {
             assert.strictEqual(chartFour[4].father_category, 'מגורים א\'');
@@ -436,7 +435,7 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(chartFour[1].father_category_number, '4.1');
             assert.strictEqual(chartFour[1].category, 'הוראות');
             assert.strictEqual(chartFour[1].category_number, '4.1.2');
-            assert.strictEqual(chartFour[1].text.includes('תבנה גדר עפ"י הנחיות משרד הבריאות'), true);
+            assert.strictEqual(chartFour[1].text.includes('תבנה גדר עפ"י הנחיות משרד הבריאות'),true);
         });
 
         it('row 2 test', () => {
@@ -523,7 +522,7 @@ describe('Taba2 parsing test', () => {
             assert.strictEqual(tbl5ThirdRow.floors_above, '1'));
 
         it('floors below entrance', () =>
-            assert.strictEqual(tbl5ThirdRow.floors_below === undefined || tbl5ThirdRow.floorsBelow === '',
+            assert.strictEqual(tbl5ThirdRow.floors_below === undefined || tbl5ThirdRow.floorsBelow ==='',
                 true));
 
         it('building right side line', () =>
@@ -720,7 +719,7 @@ describe('Taba3 parsing test', () => {
     });
 
     describe('Chart 5 parsing test', () => {
-        let tbl5FirstRow;
+       let tbl5FirstRow;
 
         before(() =>
             tbl5FirstRow = data.chartFive[0]);
@@ -809,8 +808,8 @@ describe('Taba4 parsing test', () => {
 
 
 // This taba has a big appendix, make sure that our program doesn't get stuck from it
-describe('Taba5 parsing test', function () {
-    this.timeout(10000);     // it's a big appendix!
+describe('Taba5 parsing test', function() {
+    this.timeout(20000);     // it's a big appendix!
     let data;
     const TEST_PLANS_DIR = 'test_plan5';
 
@@ -892,6 +891,7 @@ describe('Taba6 parsing test', () => {
         });
 
 
+
     });
 
 });
@@ -927,7 +927,7 @@ describe('Taba7 parsing test', () => {
 
 
 //test plan 8 is to check the absent of 1.8.2 and 1.8.3
-describe('Taba8 parsing test', function () {
+describe('Taba8 parsing test', function() {
     let data;
     const TEST_PLANS_DIR = 'test_plan8';
 
@@ -951,6 +951,7 @@ describe('Taba8 parsing test', function () {
 
     it('chart 6 should have 7 rows', () =>
         assert.strictEqual(data.chartSix.length, 7));
+
 
 
 });
