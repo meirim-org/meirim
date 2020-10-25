@@ -41,7 +41,9 @@ describe('Emails', function() {
 			body: {
 				email: firstUserEmail,
 				password: '1234',
-				status: 0
+				status: 0,
+				name: 'my name',
+				type: 'user_type'
 			},
 			session: {}
 		};
@@ -69,7 +71,9 @@ describe('Emails', function() {
 			body: {
 				email: secondUserEmail,
 				password: '1234',
-				status: 0
+				status: 0,
+				name: 'my name',
+				type: 'user_type'
 			},
 			session: {}
 		};

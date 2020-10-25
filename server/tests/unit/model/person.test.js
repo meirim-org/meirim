@@ -17,7 +17,7 @@ describe('Person model', function() {
 		expect(rules.password).to.eql(['required', 'string']);
 		expect(rules.name).to.eql(['required', 'string']);
 		expect(rules.type).to.eql(['required', 'string']);
-		expect(rules.social_network_link).to.eql('string');
+		expect(rules.social_network_url).to.eql('string');
 		expect(rules.about_me).to.eql('string');
 		expect(rules.status).to.eql('integer');
 		expect(rules.admin).to.eql(['integer']);

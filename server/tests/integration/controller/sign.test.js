@@ -41,7 +41,9 @@ describe('Sign Controller - Signup' ,function() {
 			body: {
 				email,
 				password,
-				status: 0
+				status: 0,
+				name: 'my name',
+				type: 'user_type'
 			},
 			session: {}
 		};
@@ -88,6 +90,8 @@ describe('Sign Controller - Signin' , function() {
 				password: hashedPassword,
 				status: 1,
 				admin: 0,
+				name: 'my name',
+				type: 'user_type',
 				created_at: new Date(Date.now()), 
 				updated_at: new Date(Date.now()), 
 			}]
