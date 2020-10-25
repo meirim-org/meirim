@@ -17,7 +17,7 @@ class Person extends BaseModel {
 			password: ['required', 'string'],
 			name: ['required', 'string'],
 			type: ['required', 'string'],
-			social_network_link: 'string',
+			social_network_url: 'string',
 			about_me: 'string',
 			status: 'integer',
 			admin: ['integer']
