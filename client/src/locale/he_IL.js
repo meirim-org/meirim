@@ -11,6 +11,7 @@ export default {
     meirimTitle: "מידע תכנוני ואקטיביזם עירוני",
     newAlert: "התראה חדשה",
     emailAddress: 'כתובת דוא"ל',
+    fullName: 'שם מלא',
     password: "סיסמה",
     signup: "הרשמה",
     signupNow: "הרשמו עכשיו",
