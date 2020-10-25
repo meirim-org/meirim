@@ -3,6 +3,7 @@ const ArchiveNotification = require('./archive_notification');
 const Plan = require('./plan');
 const Person = require('./person');
 const Alert = require('./alert');
+const Comment = require('./comment');
 
 
 module.exports = {
@@ -10,5 +11,6 @@ module.exports = {
 	Notification,
 	Plan,
 	Person,
-	Alert
+	Alert,
+	Comment
 };

@@ -1,6 +1,4 @@
 const expect = require('chai').expect;
-const { mockDatabase } = require('../../mock');
-
 const { Alert } = require('../../../api/model');
 
 describe('Alert model', function() {
