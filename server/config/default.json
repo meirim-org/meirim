@@ -37,6 +37,7 @@
 			"client": "mysql",
 			"connection": {
 				"host": "localhost",
+				"port": 33060,
 				"user": "root",
 				"password": "password",
 				"database": "test_meirim",
