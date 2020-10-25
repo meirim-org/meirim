@@ -15,6 +15,10 @@ class Person extends BaseModel {
 		return {
 			email: ['required', 'email'],
 			password: ['required', 'string'],
+			name: ['required', 'string'],
+			type: ['required', 'string'],
+			social_network_link: 'string',
+			about_me: 'string',
 			status: 'integer',
 			admin: ['integer']
 		};
