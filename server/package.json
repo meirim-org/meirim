@@ -64,7 +64,7 @@
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "serve": "node bin/serve",
         "lint": "./node_modules/.bin/eslint . --fix",
-        "test": "NODE_ENV=test ./node_modules/.bin/mocha ./tests/integration/* ./tests/unit/* --exit --recursive --require ./tests/setup.js",
+        "test": "NODE_ENV=test ./node_modules/.bin/mocha ./tests/integration/* ./tests/unit/* --exit --recursive --timeout 8000 --require ./tests/setup.js",
         "watch": "nodemon bin/api"
     },
     "devDependencies": {

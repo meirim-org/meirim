@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
-const { mockDatabase } = require('../mock');
+const { mockDatabase } = require('../../mock');
 
-const { Alert } = require('../../api/model');
+const { Alert } = require('../../../api/model');
 
 describe('Alert model', function() {
 	let instance;
