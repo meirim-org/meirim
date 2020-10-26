@@ -4,11 +4,9 @@ on:
     push:
         branches:
             - master
-            - node_upgrade
     pull_request:
         branches:
             - master
-            - node_upgrade
 
 jobs:
     test:
@@ -47,21 +45,30 @@ jobs:
                       ${{ runner.OS }}-
 
             - name: install server dependencies
-              run: cd server && npm install
+              working-directory: server
+              run: npm install
 
             - name: install client dependencies
-              run: cd client && npm install
+              working-directory: client
+              run: npm install
 
             - name: create database
               run: mysql --protocol=tcp --host=localhost --port=33060 --user=root --password=password -e "CREATE DATABASE test_meirim character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));"
 
             - name: run migrations
               env:
-                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}}'
-              run: cd server && node node_modules/knex/bin/cli.js migrate:latest
+                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}}'
+              working-directory: server
+              run: node node_modules/knex/bin/cli.js migrate:latest
+
+            # - name: test
+            #   working-directory: server
+            #   run: npm run test
+            # temp - we should integrate the new tests here
 
             - name: build frontend
-              run: cd client && npm run build
+              working-directory: client
+              run: npm run build
 
             - name: get ethereal credentials
               id: get_ethereal_credentials
@@ -72,16 +79,17 @@ jobs:
 
             - name: serve
               env:
-                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
+                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "meirim_test", "database": "meirim_test"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
+              working-directory: server
               run: |
-                  cd server && npm run serve &
+                  npm run serve &
                   sleep 3
 
             - name: server test
               run: cd server && npm run test
 
             - name: e2e test
+              working-directory: client
               run: |
-                  cd client &&
                   $(npm bin)/cypress run --browser chrome --headless && 
                   $(npm bin)/cypress run --browser firefox --headless

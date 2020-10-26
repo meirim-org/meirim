@@ -21,7 +21,6 @@
         "@mapbox/geojson-area": "^0.2.2",
         "@material-ui/core": "^4.11.0",
         "axios": "^0.19.2",
-        "connect-session-knex": "^1.7.3",
         "customize-cra": "^1.0.0",
         "downshift": "^6.0.5",
         "handlebars": "^4.7.6",
