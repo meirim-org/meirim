@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Wrapper from "../../components/Wrapper";
-import { RegisterForm } from "../../components/forms";
+import { RegisterForm } from "../../components";
 
 import t from "../../locale/he_IL";
 import traktor from "../../assets/traktor_op.png";
