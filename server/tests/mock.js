@@ -16,7 +16,7 @@ const tableActions = {
 	},
 
 	dropTable: async function(knexClient, tableName) {
-		return await knexClient.schema.dropTable(tableName);
+		 return await knexClient.raw(`DROP TABLE ${tableName} CASCADE`);
 	},
 
 	insertDataToTable: async function(knexClient, tableName, tableData) {
