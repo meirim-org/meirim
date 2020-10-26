@@ -1,65 +1,46 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { NavLink as Link } from 'react-router-dom';
 
 import api from '../services/api';
 import t from '../locale/he_IL';
 import './RegisterForm.css';
 
-class RegisterForm extends Component {
-  state = {
-    error: false,
-    done: false,
-  };
+const RegisterForm = (props) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState(false);
+  const [done, setDone] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('')
 
-  constructor(props) {
-    super(props);
-    this.state = { email: '', password: '', name: '' };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value,
-    });
-
+  const handleSubmit = (event) => {
     event.preventDefault();
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    let {password, email} = this.state;
     api
       .post('/sign/up/', {
         password, email
       })
-      .then((res) => this.setState({ done: true }))
-      .catch((error) => this.setState({ error }));
+      .then(() => setDone(true))
+      .catch((error) => setError(error));
   }
 
-  render() {
-    const { done, error } = this.state;
-    let errorMessage = '';
+  React.useEffect(() => {
     if (error) {
       if (error.response) {
         if (error.response.status === 409) {
-          errorMessage = t.emailExists;
+           setErrorMessage(t.emailExists);
         } else if (error.response.data && error.response.data.data) {
-          errorMessage = error.response.data.data;
+          setErrorMessage(error.response.data.data);
         }
       }
       if (!errorMessage) {
-        errorMessage = t.error;
+        setErrorMessage(t.error);
       }
     }
+  },[error])
 
     return (
-      <form className="hpForm" onSubmit={this.handleSubmit}>
+      <form className="hpForm" onSubmit={handleSubmit}>
         {(errorMessage && !done) && (
           <div className="alert alert-danger">{errorMessage}</div>
         )}
@@ -69,8 +50,8 @@ class RegisterForm extends Component {
             <div className="form-group">
               <label htmlFor="loginName">{t.fullName}:</label>
               <input
-                onChange={this.handleChange}
-                value={this.state.name}
+                onChange={(e) => setName(e.target.value)}
+                value={name}
                 required
                 type="text"
                 name="name"
@@ -81,8 +62,8 @@ class RegisterForm extends Component {
             <div className="form-group">
               <label htmlFor="loginEmail">{t.emailAddress}:</label>
               <input
-                onChange={this.handleChange}
-                value={this.state.email}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 required
                 type="email"
                 name="email"
@@ -93,8 +74,8 @@ class RegisterForm extends Component {
             <div className="form-group">
               <label htmlFor="loginPassword">{t.password}:</label>
               <input
-                onChange={this.handleChange}
-                value={this.state.password}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 required
                 type="password"
                 name="password"
@@ -119,7 +100,6 @@ class RegisterForm extends Component {
         )}
       </form>
     );
-  }
 }
 
 export default RegisterForm;
