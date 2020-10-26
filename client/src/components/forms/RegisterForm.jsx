@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { NavLink as Link } from 'react-router-dom';
 
-import api from '../services/api';
-import t from '../locale/he_IL';
+import api from '../../services/api';
+import t from '../../locale/he_IL';
 import './RegisterForm.css';
 
-const RegisterForm = (props) => {
+const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState(false);
   const [done, setDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState('')
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
