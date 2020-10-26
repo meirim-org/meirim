@@ -53,7 +53,7 @@ class Controller {
     let pageSize = parseInt(options.pageSize, 10) ||
         parseInt(query.pageSize, 10) || 20
     if (pageSize < 1) pageSize = 1
-    else if (pageSize > 1000) pageSize = 1000
+    else if (pageSize > (options.maxPageSize || 1000)) pageSize = options.maxPageSize || 1000
 
     const columns = options.columns || '*'
     const where = options.where || {}

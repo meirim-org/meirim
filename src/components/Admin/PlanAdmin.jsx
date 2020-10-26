@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { List, Datagrid, TextField, ReferenceField, downloadCSV } from 'react-admin';
+import { CardActions, Datagrid, downloadCSV, ExportButton, List, ReferenceField } from 'react-admin';
+import { RefreshButton, TextField } from 'react-admin';
 import BookIcon from '@material-ui/icons/Book';
 
 import moment from 'moment';
@@ -114,8 +115,49 @@ const PlanExporter = (plans) => {
     });
 };
 
+const PlanActions = ({
+    bulkActions,
+    basePath,
+    currentSort,
+    displayedFilters,
+    exporter,
+    filters,
+    filterValues,
+    onUnselectItems,
+    resource,
+    selectedIds,
+    showFilter,
+    total
+}) => (
+    <CardActions>
+        {bulkActions && React.cloneElement(bulkActions, {
+            basePath,
+            filterValues,
+            resource,
+            selectedIds,
+            onUnselectItems,
+        })}
+        {filters && React.cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        }) }
+        <ExportButton
+            disabled={total === 0}
+            resource={resource}
+            sort={currentSort}
+            filter={filterValues}
+            exporter={exporter}
+            maxResults={100000}
+        />
+        <RefreshButton />
+    </CardActions>
+);
+
 export const PlanList = (props) => (
-    <List title="תוכניות" {...props} exporter={PlanExporter}>
+    <List title="תוכניות" {...props} exporter={PlanExporter} actions={<PlanActions />}>
         <Datagrid>
             <InnerUrlField source="id" urlPrefix="plan" label="מזהה" />
             <TextField source="PLAN_COUNTY_NAME" label="רשות" />

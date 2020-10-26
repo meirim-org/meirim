@@ -129,7 +129,8 @@ class PlanController extends Controller {
     return super.browse(req, {
       columns,
       where,
-      order
+      order,
+      maxPageSize: 100000
     });
   }
 
