@@ -13,8 +13,8 @@ const { fakeEmailVerification } = require('../../utils');
 let sinonSandbox = sinon.createSandbox();
 
 describe.only('Emails', function() {
-	before(async function() {
-		const tables = ['alert', 'person', 'plan', 'notification'];
+	const tables = ['alert', 'person', 'plan', 'notification'];
+	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 		const fakeVerifyEmail = fakeEmailVerification; 
 		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
@@ -23,7 +23,7 @@ describe.only('Emails', function() {
 		await Email.init();
 	});
 
-	after(async function() {
+	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
 		await sinonSandbox.restore();
 	});
