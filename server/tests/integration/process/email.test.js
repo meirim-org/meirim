@@ -12,10 +12,9 @@ const { fakeEmailVerification } = require('../../utils');
 
 let sinonSandbox = sinon.createSandbox();
 
-const tables = ['alert', 'person', 'plan', 'notification'];
-describe('Emails', function() {
+describe.only('Emails', function() {
 	before(async function() {
-		await mockDatabase.dropTables(tables);
+		const tables = ['alert', 'person', 'plan', 'notification'];
 		await mockDatabase.createTables(tables);
 		const fakeVerifyEmail = fakeEmailVerification; 
 		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});

@@ -10,7 +10,7 @@ describe.only('Crawler', function() {
 	let plans;
 
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		planController = require('../../../api/controller/plan');
 		cronController = require('../../../api/controller/cron');
