@@ -41,7 +41,7 @@ describe.only('notification controller', function() {
 	});
 });
 
-describe('Notification model integration with different models', function() {
+describe.only('Notification model integration with different models', function() {
 	this.timeout(10000);
 	const sinonSandbox = sinon.createSandbox();
 	const tables = ['person', 'alert', 'plan', 'notification'];
@@ -89,7 +89,7 @@ describe('Notification model integration with different models', function() {
 	};
 
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		await mockDatabase.insertData(['person'], {'person': [person]});
 		await Email.init();
@@ -103,7 +103,7 @@ describe('Notification model integration with different models', function() {
 
 	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('creates notification for a user based on subscribed area ', async function() {

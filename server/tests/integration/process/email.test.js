@@ -26,7 +26,7 @@ describe('Emails', function() {
 
 	after(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('should send notifications to users with alerts intersecting a new plan', async function() {
