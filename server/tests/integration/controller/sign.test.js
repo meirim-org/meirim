@@ -14,13 +14,12 @@ const	personModel = require('../../../api/model/person');
 // chai.use(chaiAsPromised);
 // const assert = chai.assert;
 
-describe.only('Sign Controller - Signup' ,function() {
+describe('Sign Controller - Signup' ,function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
 	beforeEach(async function() {
 		sinonSandbox = sinon.createSandbox();
-		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		await Email.init;
 		const fakeVerifyEmail = fakeEmailVerification;
@@ -68,7 +67,7 @@ describe.only('Sign Controller - Signup' ,function() {
 	});
 });
 
-describe.only('Sign Controller - Signin' , function() {
+describe('Sign Controller - Signin' , function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
@@ -76,7 +75,6 @@ describe.only('Sign Controller - Signin' , function() {
 	const password = '123456';
 	beforeEach(async function() {
 		sinonSandbox = sinon.createSandbox();
-		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		const hashedPassword = await Bcrypt.hash(password, 10).then((hashedPassword) => {
 			return hashedPassword;
@@ -136,7 +134,7 @@ describe.only('Sign Controller - Signin' , function() {
 
 });
 
-describe.only('Sign Controller - Signout' , function() {
+describe('Sign Controller - Signout' , function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
@@ -144,7 +142,6 @@ describe.only('Sign Controller - Signout' , function() {
 	const password = '123456';
 	beforeEach(async function() {
 		sinonSandbox = sinon.createSandbox();
-		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		const hashedPassword = await Bcrypt.hash(password, 10).then((hashedPassword) => {
 			console.log('hashedPassword', hashedPassword);

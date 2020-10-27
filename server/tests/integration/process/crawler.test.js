@@ -3,14 +3,13 @@ const { mockDatabase } = require('../../mock');
 
 const tables = ['plan', 'notification', 'alert', 'person'];
 
-describe.only('Crawler', function() {
+describe('Crawler', function() {
 	let planController;
 	let cronController;
 
 	let plans;
 
 	beforeEach(async function() {
-		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		planController = require('../../../api/controller/plan');
 		cronController = require('../../../api/controller/cron');
