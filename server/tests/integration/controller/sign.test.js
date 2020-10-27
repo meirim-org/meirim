@@ -14,15 +14,15 @@ const	personModel = require('../../../api/model/person');
 // chai.use(chaiAsPromised);
 // const assert = chai.assert;
 
-describe('Sign Controller - Signup' ,function() {
+describe.only('Sign Controller - Signup' ,function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
 	beforeEach(async function() {
 		sinonSandbox = sinon.createSandbox();
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
-		await Email.init();
+		await Email.init;
 		const fakeVerifyEmail = fakeEmailVerification;
 		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
