@@ -6,7 +6,7 @@ const {	mockDatabase } = require('../../mock');
 const alertController = require('../../../api/controller/alert');
 const Email = require('../../../api/service/email');
 
-describe('Alert controller', function() {
+describe.only('Alert controller', function() {
 	const sinonSandbox = sinon.createSandbox();
 	const tables = ['person', 'alert', 'plan', 'notification'];
 	const person = {
