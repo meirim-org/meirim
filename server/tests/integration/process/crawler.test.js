@@ -3,7 +3,7 @@ const { mockDatabase } = require('../../mock');
 
 const tables = ['plan', 'notification', 'alert', 'person'];
 
-describe.skip('Crawler', function() {
+describe('Crawler', function() {
 	let planController;
 	let cronController;
 
@@ -28,10 +28,10 @@ describe.skip('Crawler', function() {
 		assert.equal(plans.length, 0);
 
 		// run crawler cron with limit of 2 plans
-		await cronController.iplan(1);
+		await cronController.iplan(2);
 
 		// now there should be 2 plans (with mavat data?)
 		plans = await planController.browse({query: {status: null, query: null}});
-		assert.equal(plans.length, 1);
+		assert.equal(plans.length, 2);
 	});
 });
