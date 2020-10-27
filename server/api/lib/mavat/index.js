@@ -90,7 +90,7 @@ const getPlanInstructions = async (page) => {
 				return elements[i + 4].querySelector('img').getAttribute('onclick');
 			}
 		}
-		log.error('couldn\'t find the plan details PDF link on this web page');
+		console.log('couldn\'t find the plan details PDF link on this web page');
 		return undefined;
 	});
 
