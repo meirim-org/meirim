@@ -17,7 +17,7 @@ describe.only('Alert controller', function() {
 	};
 
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		await mockDatabase.insertData(['person'], {'person': [person]});
 		await Email.init();
@@ -31,7 +31,7 @@ describe.only('Alert controller', function() {
 
 	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('Create alert should work', async function() {
