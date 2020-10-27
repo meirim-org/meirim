@@ -55,30 +55,30 @@ jobs:
             - name: create database
               run: mysql --protocol=tcp --host=localhost --port=33060 --user=root --password=password -e "CREATE DATABASE test_meirim character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));"
 
-            - name: run migrations
-              env:
-                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}}'
-              working-directory: server
-              run: node node_modules/knex/bin/cli.js migrate:latest
+            # - name: run migrations
+            #   env:
+            #       NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}}'
+            #   working-directory: server
+            #   run: node node_modules/knex/bin/cli.js migrate:latest
 
             # - name: build frontend
             #   working-directory: client
             #   run: npm run build
 
-            - name: get ethereal credentials
-              id: get_ethereal_credentials
-              run: |
-                  response=$(curl -XPOST -d "{\"requestor\": \"meirim-test\", \"version\": \"0.0.1\"}" -H "Content-Type: application/json" https://api.nodemailer.com/user)
-                  echo "::set-output name=user::$(echo $response | jq -r '.user')"
-                  echo "::set-output name=pass::$(echo $response | jq -r '.pass')"
+            # - name: get ethereal credentials
+            #   id: get_ethereal_credentials
+            #   run: |
+            #       response=$(curl -XPOST -d "{\"requestor\": \"meirim-test\", \"version\": \"0.0.1\"}" -H "Content-Type: application/json" https://api.nodemailer.com/user)
+            #       echo "::set-output name=user::$(echo $response | jq -r '.user')"
+            #       echo "::set-output name=pass::$(echo $response | jq -r '.pass')"
 
-            - name: serve
-              env:
-                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
-              working-directory: server
-              run: |
-                  npm run serve &
-                  sleep 3
+            # - name: serve
+            #   env:
+            #       NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
+            #   working-directory: server
+            #   run: |
+            #       npm run serve &
+            #       sleep 3
 
             - name: test
               working-directory: server
