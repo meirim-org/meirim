@@ -3,7 +3,7 @@ const { mockDatabase } = require('../../mock');
 
 const tables = ['plan', 'notification', 'alert', 'person'];
 
-describe('Crawler', function() {
+describe.only('Crawler', function() {
 	let planController;
 	let cronController;
 
