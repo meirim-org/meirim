@@ -68,7 +68,7 @@ describe.only('Sign Controller - Signup' ,function() {
 	});
 });
 
-describe('Sign Controller - Signin' , function() {
+describe.only('Sign Controller - Signin' , function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
@@ -76,7 +76,7 @@ describe('Sign Controller - Signin' , function() {
 	const password = '123456';
 	beforeEach(async function() {
 		sinonSandbox = sinon.createSandbox();
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		const hashedPassword = await Bcrypt.hash(password, 10).then((hashedPassword) => {
 			return hashedPassword;
@@ -100,7 +100,7 @@ describe('Sign Controller - Signin' , function() {
 
 	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('User can signin successfully', async function () {
@@ -136,7 +136,7 @@ describe('Sign Controller - Signin' , function() {
 
 });
 
-describe('Sign Controller - Signout' , function() {
+describe.only('Sign Controller - Signout' , function() {
  	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
@@ -144,7 +144,7 @@ describe('Sign Controller - Signout' , function() {
 	const password = '123456';
 	beforeEach(async function() {
 		sinonSandbox = sinon.createSandbox();
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		const hashedPassword = await Bcrypt.hash(password, 10).then((hashedPassword) => {
 			console.log('hashedPassword', hashedPassword);
@@ -169,7 +169,7 @@ describe('Sign Controller - Signout' , function() {
 
 	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('User can signout successfully', async function () {
