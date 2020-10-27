@@ -31,7 +31,7 @@ describe('Sign Controller - Signup' ,function() {
 
 	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('User can signup successfully', async function () {

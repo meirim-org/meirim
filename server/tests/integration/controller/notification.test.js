@@ -8,10 +8,10 @@ const sinon = require('sinon');
 const { AlertController  } = require('../../../api/controller');
 const { Plan } = require('../../../api/model');
 
-describe('notification controller', function() {
+describe.only('notification controller', function() {
 	const tables = ['notification'];
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 	});
 

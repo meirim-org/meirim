@@ -1,10 +1,10 @@
 const expect = require('chai').expect;
 const { mockDatabase } = require('../../mock');
 
-describe('archive_notification controller', function() {
+describe.only('archive_notification controller', function() {
 	const tables = ['archive_notification'];
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
+		// await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 	});
 
