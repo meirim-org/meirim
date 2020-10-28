@@ -63,9 +63,6 @@ class PlanController extends Controller {
 			type: 'Polygon',
 			coordinates: [points]
 		};
-		if (!GJV.valid(geojson)) {
-			throw new Exception.BadRequest('polygon is invalid');
-		}
 		const polygon = wkt.convert(geojson);
 		const whereRaw = [
 			Knex.raw(`ST_Intersects(geom, ST_GeomFromText("${polygon}",4326))`)

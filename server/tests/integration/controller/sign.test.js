@@ -15,7 +15,7 @@ const	personModel = require('../../../api/model/person');
 // const assert = chai.assert;
 
 describe('Sign Controller - Signup' ,function() {
- 	this.timeout(10000);
+	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
 	beforeEach(async function() {
@@ -68,7 +68,6 @@ describe('Sign Controller - Signup' ,function() {
 });
 
 describe('Sign Controller - Signin' , function() {
- 	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
 	const email = 'test@meirim.com';
@@ -135,7 +134,6 @@ describe('Sign Controller - Signin' , function() {
 });
 
 describe('Sign Controller - Signout' , function() {
- 	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
 	const email = 'test@meirim.com';

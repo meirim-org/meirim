@@ -3,9 +3,10 @@ module.exports = {
 		'commonjs': true,
 		'node': true,
 		'es6': true,
+		"jest": true,
 		'browser':true,
 	},
-	'extends': ['prettier', 'eslint:recommended'],
+	'extends': ['eslint:recommended'],
 	'globals': {
 		'Atomics': 'readonly',
 		'SharedArrayBuffer': 'readonly'
