@@ -685,222 +685,195 @@ describe('Taba3 parsing test', async () => {
     });
 });
 
-// // This taba exists in the test to check for a split table 5 (part A...) and across multiple pages
-// describe('Taba4 parsing test', () => {
-//     let data;
-//     const TEST_PLANS_DIR = 'test_plan4';
+// This taba exists in the test to check for a split table 5 (part A...) and across multiple pages
+describe('Taba4 parsing test', async () => {
+    const TEST_PLANS_DIR = 'test_plan4';
+    const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
-//     before(async () =>
-//         data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+    it('data should not be undefined', async () =>
+        assert.notStrictEqual(data, undefined));
 
-//     it('data should not be undefined', async () =>
-//         assert.notStrictEqual(data, undefined));
+    it('data should have 1 row on table 1.8.3', () =>
+        assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
-//     it('data should have 1 row on table 1.8.3', () =>
-//         assert.strictEqual(data.chartsOneEight.chart183.length, 1));
+    it('data should have 13 row on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 13));
 
-//     it('data should have 13 row on table 5', () =>
-//         assert.strictEqual(data.chartFive.length, 13));
+    // note that 'עיצוב אדריכלי' and 'איכות סביבה' is appearing twice in the pdf, but appearing once in the parsed data. it's the wanted behavior.
+    it('should have 16 rows on table 6', () =>
+        assert.strictEqual(data.chartSix.length, 16));
 
-//     // note that 'עיצוב אדריכלי' and 'איכות סביבה' is appearing twice in the pdf, but appearing once in the parsed data. it's the wanted behavior.
-//     it('should have 16 rows on table 6', () =>
-//         assert.strictEqual(data.chartSix.length, 16));
+    describe('table 1.8.3 parsing test', () => {
+        const tbl183FirstRow = data.chartsOneEight.chart183[0];
 
-//     describe('table 1.8.3 parsing test', () => {
-//         let tbl183FirstRow;
+        it('type', () => {
+            assert.strictEqual(tbl183FirstRow.type, 'בבעלות רשות מקומית');
+        });
 
-//         before(() => {
-//             tbl183FirstRow = data.chartsOneEight.chart183[0];
-//         });
+        it('description', () => {
+            assert.strictEqual(tbl183FirstRow.description, '');
+        });
 
-//         it('type', () => {
-//             assert.strictEqual(tbl183FirstRow.type, 'בבעלות רשות מקומית');
-//         });
+        it('name', () => {
+            assert.strictEqual(tbl183FirstRow.name, '');
+        });
 
-//         it('description', () => {
-//             assert.strictEqual(tbl183FirstRow.description, '');
-//         });
+        it('license number', () => {
+            assert.strictEqual(tbl183FirstRow.license_number, '');
+        });
 
-//         it('name', () => {
-//             assert.strictEqual(tbl183FirstRow.name, '');
-//         });
+        it('corporate', () => {
+            assert.strictEqual(tbl183FirstRow.corporate, 'עיריית תל אביב-יפו');
+        });
 
-//         it('license number', () => {
-//             assert.strictEqual(tbl183FirstRow.license_number, '');
-//         });
+        it('city', () => {
+            assert.strictEqual(tbl183FirstRow.city, `תל אביב- יפו`);
+        });
 
-//         it('corporate', () => {
-//             assert.strictEqual(tbl183FirstRow.corporate, 'עיריית תל אביב-יפו');
-//         });
+        it('street', () => {
+            assert.strictEqual(tbl183FirstRow.street, `אבן גבירול`);
+        });
 
-//         it('city', () => {
-//             assert.strictEqual(tbl183FirstRow.city, `תל אביב- יפו`);
-//         });
+        it('house', () => {
+            assert.strictEqual(tbl183FirstRow.house, '69');
+        });
 
-//         it('street', () => {
-//             assert.strictEqual(tbl183FirstRow.street, `אבן גבירול`);
-//         });
+        it('phone', () => {
+            assert.strictEqual(tbl183FirstRow.phone, '03-7247259');
+        });
 
-//         it('house', () => {
-//             assert.strictEqual(tbl183FirstRow.house, '69');
-//         });
+        // the library parses email and fax columns wrong
 
-//         it('phone', () => {
-//             assert.strictEqual(tbl183FirstRow.phone, '03-7247259');
-//         });
+    });
 
-//         // the library parses email and fax columns wrong
+});
 
-//     });
 
-// });
+// This taba has a big appendix, make sure that our program doesn't get stuck from it
+describe('Taba5 parsing test', async () =>  {
+    const TEST_PLANS_DIR = 'test_plan5';
+    const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
+    it('', () =>
+        assert.strictEqual(true, true));
 
-// // This taba has a big appendix, make sure that our program doesn't get stuck from it
-// describe('Taba5 parsing test', function() {
-//     this.timeout(20000);     // it's a big appendix!
-//     let data;
-//     const TEST_PLANS_DIR = 'test_plan5';
+});
 
-//     before(async () =>
-//         data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
 
-//     it('', () =>
-//         assert.strictEqual(true, true));
+describe('Taba6 parsing test', async () => {
+    const TEST_PLANS_DIR = 'test_plan6';
+    const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
-// });
+    it('data should not be undefined', async () =>
+        assert.notStrictEqual(data, undefined));
 
+    it('should have only one row on table 1.8.1', () =>
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
-// describe('Taba6 parsing test', () => {
-//     let data;
-//     const TEST_PLANS_DIR = 'test_plan6';
+    it('should have only one row on table 1.8.2', () =>
+        assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
-//     before(async () =>
-//         data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+    it('should have only one row on table 1.8.3', () =>
+        assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
-//     it('data should not be undefined', async () =>
-//         assert.notStrictEqual(data, undefined));
+    it('should have 3 rows on table 5', () =>
+        assert.strictEqual(data.chartFive.length, 3));
 
-//     it('should have only one row on table 1.8.1', () =>
-//         assert.strictEqual(data.chartsOneEight.chart181.length, 1));
+    it('should have 8 rows on table 6', () =>
+        assert.strictEqual(data.chartSix.length, 8));
 
-//     it('should have only one row on table 1.8.2', () =>
-//         assert.strictEqual(data.chartsOneEight.chart182.length, 1));
+    describe('table 1.8.3 parsing test', () => {
+ 				const tbl183FirstRow = data.chartsOneEight.chart183[0];
 
-//     it('should have only one row on table 1.8.3', () =>
-//         assert.strictEqual(data.chartsOneEight.chart183.length, 1));
+        it('type', () => {
+            assert.strictEqual(tbl183FirstRow.type, 'בעלים');
+        });
 
-//     it('should have 3 rows on table 5', () =>
-//         assert.strictEqual(data.chartFive.length, 3));
+        it('description', () => {
+            assert.strictEqual(tbl183FirstRow.description, '');
+        });
 
-//     it('should have 8 rows on table 6', () =>
-//         assert.strictEqual(data.chartSix.length, 8));
+        it('name', () => {
+            assert.strictEqual(tbl183FirstRow.name, 'משה ברנס');
+        });
 
-//     describe('table 1.8.3 parsing test', () => {
-//         let tbl183FirstRow;
+        it('license number', () => {
+            assert.strictEqual(tbl183FirstRow.license_number, '');
+        });
 
-//         before(() => {
-//             tbl183FirstRow = data.chartsOneEight.chart183[0];
-//         });
+        it('corporate', () => {
+            assert.strictEqual(tbl183FirstRow.corporate, '');
+        });
 
-//         it('type', () => {
-//             assert.strictEqual(tbl183FirstRow.type, 'בעלים');
-//         });
+        it('city', () => {
+            assert.strictEqual(tbl183FirstRow.city, `רמת גן`);
+        });
 
-//         it('description', () => {
-//             assert.strictEqual(tbl183FirstRow.description, '');
-//         });
+        it('street', () => {
+            assert.strictEqual(tbl183FirstRow.street, `טור הברושים`);
+        });
 
-//         it('name', () => {
-//             assert.strictEqual(tbl183FirstRow.name, 'משה ברנס');
-//         });
+        it('house', () => {
+            assert.strictEqual(tbl183FirstRow.house, '3');
+        });
 
-//         it('license number', () => {
-//             assert.strictEqual(tbl183FirstRow.license_number, '');
-//         });
+        it('phone', () => {
+            assert.strictEqual(tbl183FirstRow.phone, '');
+        });
 
-//         it('corporate', () => {
-//             assert.strictEqual(tbl183FirstRow.corporate, '');
-//         });
 
-//         it('city', () => {
-//             assert.strictEqual(tbl183FirstRow.city, `רמת גן`);
-//         });
 
-//         it('street', () => {
-//             assert.strictEqual(tbl183FirstRow.street, `טור הברושים`);
-//         });
+    });
 
-//         it('house', () => {
-//             assert.strictEqual(tbl183FirstRow.house, '3');
-//         });
+});
 
-//         it('phone', () => {
-//             assert.strictEqual(tbl183FirstRow.phone, '');
-//         });
+describe('Taba7 parsing test', async () => {
+    const TEST_PLANS_DIR = 'test_plan7';
+    const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
+    it('table 1.8.1 should have 1 rows', () =>
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
+    it('table 1.8.2 should have 1 rows', () =>
+        assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
-//     });
+    it('table 1.8.3 should have 1 rows', () =>
+        assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
-// });
+    // this test fails because we have no way to know that 'מסחר' at the end of page 14 is the beginning of the first row at page 15 (1-indexed)
+    // THIS TEST SHOULD FAIL, BUT PASSES TO SEE GREEN TICKS!
+    it('table 4 should have 25 rows', () =>
+        assert.notStrictEqual(data.chartFour.length, 25));
 
-// describe('Taba7 parsing test', () => {
-//     let data;
-//     const TEST_PLANS_DIR = 'test_plan7';
+    it('table 5 should have 59 rows', () =>
+        assert.strictEqual(data.chartFive.length, 59));
 
-//     before(async () =>
-//         data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+    it('table 6 should have 11 rows', () =>
+        assert.strictEqual(data.chartSix.length, 11));
 
-//     it('table 1.8.1 should have 1 rows', () =>
-//         assert.strictEqual(data.chartsOneEight.chart181.length, 1));
+});
 
-//     it('table 1.8.2 should have 1 rows', () =>
-//         assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
-//     it('table 1.8.3 should have 1 rows', () =>
-//         assert.strictEqual(data.chartsOneEight.chart183.length, 1));
+//test plan 8 is to check the absent of 1.8.2 and 1.8.3
+describe('Taba8 parsing test', async () => {
+    const TEST_PLANS_DIR = 'test_plan8';
+		const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
-//     // this test fails because we have no way to know that 'מסחר' at the end of page 14 is the beginning of the first row at page 15 (1-indexed)
-//     // THIS TEST SHOULD FAIL, BUT PASSES TO SEE GREEN TICKS!
-//     it('table 4 should have 25 rows', () =>
-//         assert.notStrictEqual(data.chartFour.length, 25));
+    it('chart 1.8.1 should have one row', () =>
+        assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
-//     it('table 5 should have 59 rows', () =>
-//         assert.strictEqual(data.chartFive.length, 59));
+    it('chart 1.8.2 should have 0 rows', () =>
+        assert.strictEqual(data.chartsOneEight.chart182.length, 0));
 
-//     it('table 6 should have 11 rows', () =>
-//         assert.strictEqual(data.chartSix.length, 11));
+    it('chart 1.8.3 should have 0 rows', () =>
+        assert.strictEqual(data.chartsOneEight.chart183.length, 0));
 
-// });
+    it('chart 4 should have 3 rows', () =>
+        assert.strictEqual(data.chartFour.length, 3));
 
+    it('chart 5 should have 2 rows', () =>
+        assert.strictEqual(data.chartFive.length, 2));
 
-// //test plan 8 is to check the absent of 1.8.2 and 1.8.3
-// describe('Taba8 parsing test', function() {
-//     let data;
-//     const TEST_PLANS_DIR = 'test_plan8';
-
-//     before(async () =>
-//         data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
-
-//     it('chart 1.8.1 should have one row', () =>
-//         assert.strictEqual(data.chartsOneEight.chart181.length, 1));
-
-//     it('chart 1.8.2 should have 0 rows', () =>
-//         assert.strictEqual(data.chartsOneEight.chart182.length, 0));
-
-//     it('chart 1.8.3 should have 0 rows', () =>
-//         assert.strictEqual(data.chartsOneEight.chart183.length, 0));
-
-//     it('chart 4 should have 3 rows', () =>
-//         assert.strictEqual(data.chartFour.length, 3));
-
-//     it('chart 5 should have 2 rows', () =>
-//         assert.strictEqual(data.chartFive.length, 2));
-
-//     it('chart 6 should have 7 rows', () =>
-//         assert.strictEqual(data.chartSix.length, 7));
-
-
-
-// });
+    it('chart 6 should have 7 rows', () =>
+        assert.strictEqual(data.chartSix.length, 7));
+});
