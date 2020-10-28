@@ -759,7 +759,6 @@ describe('Taba5 parsing test', async () =>  {
 
 });
 
-
 describe('Taba6 parsing test', async () => {
     const TEST_PLANS_DIR = 'test_plan6';
     const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
