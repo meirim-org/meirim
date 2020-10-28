@@ -1,5 +1,6 @@
 const Bluebird = require('bluebird');
 const Model = require('./base_model');
+const Checkit = require('checkit');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 const { Knex } = require('../service/database');
@@ -82,15 +83,15 @@ class Plan extends Model {
 		super.initialize();
 	}
 
-	_saving (model, attrs, options) {
+	_saving () {
 		// return new Checkit(model.rules).run(model.attributes);
 	}
 
-  	_updated(model, attrs, options){
+	_updated(model){
 		this.handleUpdatedPlan(model);
 	}
 
-	_created(model, attrs, options) {
+	_created(model) {
 		this.handleNewPlan(model);
 	}
 
@@ -99,7 +100,7 @@ class Plan extends Model {
 		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
 		const type = notification_types['NEW_PLAN_IN_AREA']; 
 		return Notification.createNotifications({ users: usersSubscribedToPlanArea, planId, type });
-	};
+	}
 
 	handleUpdatedPlan (model) {
 		const planId = model.id;
@@ -108,13 +109,13 @@ class Plan extends Model {
 		for(let type of types) {
 			Notification.createNotifications({ users, planId, type });
 		}
-	};
+	}
 
-	getUsersInPlanArea (model) {
+	getUsersInPlanArea () {
 		return {
 			users: [{person_id: 1}],
 		};
-	};
+	}
 
 	getPlanUpdateTypes (model){
 		const updates = [];
@@ -124,10 +125,10 @@ class Plan extends Model {
 			updates.push(notification_types['STATUS_CHANGE']);
 		}
 		return updates;
-	};
+	}
 
 
-	canRead (session) {
+	canRead () {
 		return Bluebird.resolve(this);
 	}
 
