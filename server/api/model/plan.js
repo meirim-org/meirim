@@ -1,6 +1,5 @@
 const Bluebird = require('bluebird');
 const Model = require('./base_model');
-const Checkit = require('checkit');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 const { Knex } = require('../service/database');
@@ -102,19 +101,15 @@ class Plan extends Model {
 		return Notification.createNotifications({ users: usersSubscribedToPlanArea, planId, type });
 	}
 
-	handleUpdatedPlan (model) {
-		const planId = model.id;
-		const { users } = this.getUsersInPlanArea(model);
+	async handleUpdatedPlan (model) {
 		const types = this.getPlanUpdateTypes(model);
-		for(let type of types) {
-			Notification.createNotifications({ users, planId, type });
-		}
-	}
+		if(!types.length) return null;
 
-	getUsersInPlanArea () {
-		return {
-			users: [{person_id: 1}],
-		};
+		const planId = model.id;
+		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
+		for(let type of types) {
+			Notification.createNotifications({ users:usersSubscribedToPlanArea ,  planId, type });
+		}
 	}
 
 	getPlanUpdateTypes (model){
