@@ -15,7 +15,7 @@ class Person extends BaseModel {
 		return {
 			email: ['required', 'email'],
 			password: ['required', 'string'],
-			status: 'integer',
+			status: ['required', 'integer'], 
 			admin: ['integer']
 		};
 	}
