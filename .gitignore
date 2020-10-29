@@ -1,4 +1,5 @@
-node_modules
+server/node_modules
+client/node_modules
 *.log
 local.json
 .idea
@@ -8,3 +9,4 @@ client/public/upload/
 client/cypress/videos/
 client/cypress/screenshots/
 server/config/local.json
+server/api/lib/mavat/tmp/tmpPDF.pdf
