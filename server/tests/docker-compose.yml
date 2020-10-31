@@ -1,3 +1,6 @@
+# spins up a mysql service with "meirim" and "test_meirim" databases,
+# a GUI for it and an email testing tool
+
 version: '3.6'
 
 services:
