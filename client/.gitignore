@@ -8,4 +8,3 @@ config/local.json
 .DS_Store
 cypress/videos/
 cypress/screenshots/
-http-client/

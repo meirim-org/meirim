@@ -63,8 +63,8 @@
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "serve": "node bin/serve",
         "lint": "./node_modules/.bin/eslint . --fix",
-        "test": "NODE_ENV=test ./node_modules/.bin/mocha ./tests/integration/* ./tests/unit/* --exit --recursive --timeout 8000 --require ./tests/setup.js",
-        "watch": "nodemon bin/api"
+        "test": "NODE_ENV=test ./node_modules/.bin/mocha ./tests/integration/* ./tests/unit/* --exit --recursive --timeout 10000 --require ./tests/setup.js",
+        "watch": "./node_modules/.bin/nodemon bin/api"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^3.9.1",
