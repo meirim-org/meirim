@@ -7,6 +7,9 @@ const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChartOneEightRow = require('./plan_chart_one_eight_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
+const {	notification_types } = require('../constants');
+const Notification = require('./notification');
+const Alert = require('./alert');
 
 class Plan extends Model {
 	get rules () {
@@ -16,7 +19,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
-			// PLAN_CHARACTOR_NAME: 'string',
+			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
 			geom: ['required', 'object'],
 			jurisdiction: 'string',
@@ -25,6 +28,10 @@ class Plan extends Model {
 			views: ['required', 'number'],
 			// numeric indicator of interestingness. It is update like the views field, but also eroded over time
 			erosion_views: ['required', 'number'],
+			plan_url: 'string',
+			status: 'string',
+			goals_from_mavat: 'string',
+			main_details_from_mavat: 'string',
 			explanation: 'string'
 		};
 	}
@@ -41,6 +48,10 @@ class Plan extends Model {
 			attributes.data = JSON.stringify(attributes.data);
 		}
 		return super.format(attributes);
+	}
+
+	get hasTimestamps() {
+		return true;
 	}
 
 	// support json encode for data field
@@ -64,7 +75,9 @@ class Plan extends Model {
 		return 'plan';
 	}
 
-	initialize () {
+	initialize() {
+		this.on('created', this._created, this);
+		this.on('updated', this._updated, this);
 		this.on('saving', this._saving, this);
 		super.initialize();
 	}
@@ -73,12 +86,52 @@ class Plan extends Model {
 		// return new Checkit(model.rules).run(model.attributes);
 	}
 
+	_updated(model){
+		this.handleUpdatedPlan(model);
+	}
+
+	_created(model) {
+		this.handleNewPlan(model);
+	}
+
+	async handleNewPlan (model) {
+		const planId = model.id;
+		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
+		const type = notification_types['NEW_PLAN_IN_AREA']; 
+		return Notification.createNotifications({ users: usersSubscribedToPlanArea, planId, type });
+	}
+
+	async handleUpdatedPlan (model) {
+		const types = this.getPlanUpdateTypes(model);
+		if(!types.length) return null;
+
+		const planId = model.id;
+		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
+		for(let type of types) {
+			Notification.createNotifications({ users:usersSubscribedToPlanArea ,  planId, type });
+		}
+	}
+
+	getPlanUpdateTypes (model){
+		const updates = [];
+		const attrs = model.attributes;
+		const prevAttrs = model._previousAttributes;
+		if(attrs.status !== prevAttrs.status) {
+			updates.push(notification_types['STATUS_CHANGE']);
+		}
+		return updates;
+	}
+
+
 	canRead () {
 		return Bluebird.resolve(this);
 	}
 
-	static canCreate () {
-		throw new Exception.NotAllowed('This option is disabled');
+	static canCreate(session) {
+		if (!session.person || !session.person.admin) {
+			throw new Exception.NotAllowed('Must be logged in');
+		}
+		return Promise.resolve(this);
 	}
 
 	static markPlansAsSent (plan_ids) {

@@ -13,21 +13,19 @@ const seconds = 1000;
 class Person extends BaseModel {
 	static get rules () {
 		return {
-			// firstName: [
-			//   'required', 'string'kshelf
-			// ],
-			// lastName: [
-			//   'required', 'string'
-			// ],
 			email: ['required', 'email'],
 			password: ['required', 'string'],
-			status: ['required', 'integer'],
+			status: ['required', 'integer'], 
 			admin: ['integer']
 		};
 	}
 
 	get hidden () {
 		return ['password', 'admin', 'status'];
+	}
+
+	get hasTimestamps() {
+		return true;
 	}
 
 	get tableName () {

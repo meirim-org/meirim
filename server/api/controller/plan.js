@@ -1,11 +1,10 @@
 const Controller = require('../controller/controller');
 const Plan = require('../model/plan');
+const GJV = require('geojson-validation'); 
 const Config = require('../lib/config');
 const { Knex } = require('../service/database');
 const Exception = require('../model/exception');
 const wkt = require('terraformer-wkt-parser');
-const GJV = require('geojson-validation');
-
 class PlanController extends Controller {
 	browse (req) {
 		const columns = [
@@ -64,8 +63,8 @@ class PlanController extends Controller {
 			type: 'Polygon',
 			coordinates: [points]
 		};
-		if (!GJV.valid(geojson)) {
-			throw new Exception.BadRequest('polygon is invalid');
+		if(!GJV.valid(geojson)){
+			throw new Exception.BadRequest('polygon is invalid'); 
 		}
 		const polygon = wkt.convert(geojson);
 		const whereRaw = [
