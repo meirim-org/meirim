@@ -2,7 +2,7 @@
 
 The Meirim crawler is written in Javascript using [Puppeteer](https://pptr.dev).
 
-The crawler code is currently mixed with the backend code which lives under the [api](../api) folder. Separating these is a pending task.
+The crawler code is currently mixed with the backend code which lives under the [server](../server) folder. Separating these is a pending task.
 
 ## Executing
 
