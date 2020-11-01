@@ -11,7 +11,7 @@ const Exception = require('./exception');
 const seconds = 1000;
 
 class Person extends BaseModel {
-	get rules () {
+	static get rules () {
 		return {
 			email: ['required', 'email'],
 			password: ['required', 'string'],
