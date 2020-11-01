@@ -4,8 +4,7 @@ exports.up = async function(knex) {
 		t.increments('id').primary();
 		t.integer('plan_id').notNullable().references('id')
 			.inTable('plan').onDelete('CASCADE');
-		t.integer('person_id').notNullable().references('id')
-			.inTable('person').onDelete('CASCADE');
+		t.integer('person_id');
 		t.boolean('seen');
 		t.string('type').notNullable();
 		t.timestamps();
