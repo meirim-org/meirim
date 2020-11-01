@@ -57,13 +57,7 @@ const tables = [
     PL_NAME varchar(256) COLLATE utf8_bin NOT NULL,
     PLAN_CHARACTOR_NAME varchar(256) COLLATE utf8_bin NOT NULL,
     data text COLLATE utf8_bin NOT NULL,
-    geom geometry NOT NULL,
-    plan_url varchar(256) DEFAULT NULL,
-    status varchar(256) DEFAULT NULL,
-    goals_from_mavat varchar(256) DEFAULT NULL,
-    main_details_from_mavat varchar(256) DEFAULT NULL,
-    created_at datetime DEFAULT NULL,
-    updated_at datetime DEFAULT NULL
+    geom geometry NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
 
 	`CREATE TABLE post (
