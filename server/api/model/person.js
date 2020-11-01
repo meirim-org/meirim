@@ -11,13 +11,17 @@ const Exception = require('./exception');
 const seconds = 1000;
 
 class Person extends BaseModel {
-	static get rules () {
+	get rules () {
 		return {
 			email: ['required', 'email'],
 			password: ['required', 'string'],
 			status: ['required', 'integer'], 
 			admin: ['integer']
 		};
+	}
+
+	get defaults () {
+		return {status: 0};
 	}
 
 	get hidden () {
@@ -43,7 +47,6 @@ class Person extends BaseModel {
 	}
 
 	assignValues (model) {
-		model.attributes.status = 0;
 		model.attributes.email = model.attributes.email.toLowerCase().trim();
 		return Person.verifyEmail(model.attributes.email);
 	}

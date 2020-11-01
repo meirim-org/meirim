@@ -11,7 +11,7 @@ describe('Person model', function() {
 	afterEach(function() {
 		instance = null;
 	});
-	it.skip('has the right rules', function() {
+	it('has the right rules', function() {
 		const rules = instance.rules;
 		expect(rules.email).to.eql(['required', 'email']);
 		expect(rules.password).to.eql(['required', 'string']);
