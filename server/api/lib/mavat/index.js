@@ -222,7 +222,17 @@ const getDirectUrl = cheerioPage =>
 
 const getAreaChanges = cheerioPage => {
 	const html = cheerioPage('#tblQuantities tbody').html();
-	const jsonTables = new HtmlTableToJson(`<table>${html}</table>`);
+
+	// a library update led to this conversion using the first row as field names
+	// instead of using the field ids as their names, so create a fake first row
+	// to be used as headers. in the future we probably should stop using this
+	// library in favour of a bit of custom cheerio value extraction code
+	const jsonTables = new HtmlTableToJson(
+		`<table>
+			<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+			${html}
+		</table>`
+	);
 	return JSON.stringify(jsonTables.results);
 };
 
