@@ -33,7 +33,7 @@ class SignController extends Controller {
 				// if there is a user but active, this will return an error
 
 				return this.model
-					.forge(req.body)
+					.forge({ ...req.body, status:0 })
 					.save()
 					.then((person) => {
 						Log.debug('Person create success id:', person.get('id'));
