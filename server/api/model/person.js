@@ -19,15 +19,13 @@ class Person extends BaseModel {
 			type: ['required', 'string'],
 			social_network_url: 'string',
 			about_me: 'string',
-			status: 'integer',
+			status: ['required', 'integer'], 
 			admin: ['integer']
 		};
 	}
 
-	defaults () {
-		return {
-			type:'citizen'
-		};
+	get defaults () {
+		return {status: 0, type: 'citizen'};
 	}
 
 	get hidden () {
@@ -53,7 +51,6 @@ class Person extends BaseModel {
 	}
 
 	assignValues (model) {
-		model.attributes.status = 0;
 		model.attributes.email = model.attributes.email.toLowerCase().trim();
 		return Person.verifyEmail(model.attributes.email);
 	}

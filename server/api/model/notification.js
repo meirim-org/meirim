@@ -27,9 +27,9 @@ class Notification extends Model {
 				type,
 			};
 			const instance = new Notification(data);
-	 		return instance.save();
+			return instance.save();
 		});
-	};
+	}
 
 	defaults() {
 		return {

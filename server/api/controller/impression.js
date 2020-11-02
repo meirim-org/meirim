@@ -63,10 +63,10 @@ class ImpressionController extends Controller {
 
 						// build update queries
 						const queries = Object.keys(map).map(
-							(key) => `UPDATE plan SET 
-                                    views=views+${key}, 
-                                    erosion_views=erosion_views +${key} 
-                                    WHERE id IN(${map[key].join(',')})`
+							(key) => `UPDATE plan SET
+								  views=views+${key},
+								  erosion_views=erosion_views +${key}
+								  WHERE id IN(${map[key].join(',')})`
 						);
 
 						// update the plan table
