@@ -3,7 +3,7 @@ const AlertStruct = function(table) {
 	table.integer('person_id');
 	table.string('address');
 	table.integer('radius');
-	table.binary('geom');
+	table.specificType('geom', 'GEOMETRY');
 	return table;
 };
 

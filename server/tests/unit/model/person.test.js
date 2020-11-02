@@ -19,7 +19,7 @@ describe('Person model', function() {
 		expect(rules.type).to.eql(['required', 'string']);
 		expect(rules.social_network_url).to.eql('string');
 		expect(rules.about_me).to.eql('string');
-		expect(rules.status).to.eql('integer');
+		expect(rules.status).to.eql(['required','integer']);
 		expect(rules.admin).to.eql(['integer']);
 	});
 
