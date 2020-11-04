@@ -11,7 +11,7 @@ const PlanStruct = function(table) {
 	table.string('PLAN_CHARACTOR_NAME');
 	table.string('plan_url');
 	table.string('status');
-	table.binary('geom');
+	table.specificType('geom', 'GEOMETRY');
 	table.string('jurisdiction');
 	table.string('areaChanges');
 	table.text('explanation', 65535);

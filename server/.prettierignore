@@ -1,9 +1,0 @@
-migrations
-seeds
-build/
-node_modules
-*.log
-local.json
-.idea
-config/local.json
-.DS_Store

@@ -7,6 +7,7 @@ The goal of this project is to empower citizens to effectively organize for thei
 ## Getting Started
 
 This project is under development and has three main parts - backend, frontend and crawler.
+Currently two separate packages live in this repository - server (which includes the crawler code) and client.
 
 ## Setup instructions for development
 
@@ -18,46 +19,60 @@ Things you need to install:
 * Node.js (we support and run on version 14.x)
 * MySQL (required only for the backend & crawler)
 
-Once you have these you can download the code and install dependencies:
+Once you have these you can clone the code:
 
 ```bash
 $ git clone git@github.com:meirim-org/meirim.git
-$ cd meirim/
-$ npm install
+$ cd meirim
 ```
 
 ### Instructions for backend
 
+Cd into the package directory and install dependencies:
+
+```bash
+$ cd server
+$ npm install
+```
+
 Connect to your MySQL instance:
 
 ```bash
-$ mysql -uroot -p
+$ mysql -u root -p
 ```
 
-Create a database for the project:
+Create and setup a database for the project:
 
 ```sql
 CREATE DATABASE meirim character set UTF8 collate utf8_bin;
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));
 exit;
 ```
 
-Edit the local configuration file (located at `config/local.json`) and set your database connection details and email smtp settings (if needed).
+Edit your local configuration file and set your database connection details and email smtp settings (if needed). The default configuration files resides at `server/config/default.json`. To override configuration values without accidentally committing them make a copy of the file at `server/config/local.json`, delete whichever values you don't wish to override and leave the ones you do and change their values.
 
-Install knex globally and run all migrations:
+Run all database migrations:
+
 ```bash
-$ npm install knex -g
-$ knex migrate:latest
+$ $(npm bin)/knex migrate:latest
 ```
 
 Finally, run the service:
 
 ```bash
-$ npm run api
+$ npm start
 ```
 
 The service will then be available on port 3001.
 
 ### Instructions for frontend
+
+Cd into the package directory and install dependencies:
+
+```bash
+$ cd client
+$ npm install
+```
 
 Nothing needs to be set up specifically for the frontend (however a working backend service would make it a bit more useful). It can be started using:
 
@@ -69,43 +84,32 @@ And will then be available at [http://localhost:3000](http://localhost:3000)
 
 ### Running both backend and frontend
 
-Both the api and the frontend need to be run separately when developing for the auto-reload capabilities of webpack-dev-server.
-The api will run on port 3001 by default, and the frontend will run on port 3000 and proxy requests destined to the api from any path beginning with "/api" to the service at port 3001 (proxy settings live in [src/setupProxy.js](src/setupProxy.js)).
-
-```bash
-$ npm run api
-$ npm start
-```
+Both the backend and the frontend should be run separately when developing for the auto-reload capabilities of webpack-dev-server.
+The backend will run on port 3001 by default, and the frontend will run on port 3000 and proxy requests destined to the backend from any path beginning with "/api" to the service at port 3001 (proxy settings live in [client/src/setupProxy.js](client/src/setupProxy.js)).
 
 ### Instructions for crawler
 
-To run the crawler (for testing or just seeding the database with plan data) you must first install all dependencies required by Chromium (which is used by puppeteer) which vary from system to system.
+To run the crawler (for testing or seeding the database with plan data) you must first install all dependencies required by Chromium (which is used by puppeteer) which vary from system to system.
 
 If puppeteer is not working properly, check the project's [troubleshooting information](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md).
 
-To run the crawler (can be killed at any time using Ctrl+C):
+To run the crawler after installing server dependencies and setting up a database (can be killed at any time using Ctrl+C):
 
 ```bash
+$ cd server
 $ npm run crawl
 ```
 
 ## Testing
 
-Tests require all prerequisites to be fulfilled and a database instance to be available at port 33060 on localhost. The odd port is for preventing people from running the tests on development databases accidentally (and can be changed by editing [test/hooks.js](test/hooks.js)).
-
-To set up a test database (user, database and migrations) the docker compose file under the docker folder can be used:
-
-```bash
-$ docker-compose -f docker/test-compose.yml up
-```
+Tests require all prerequisites to be fulfilled and a database instance to be available at port 33060 on localhost. The odd port is for preventing people from running the tests on development databases accidentally (and can be changed by overriding the test section at [server/config/default.json](server/config/default.json)).
 
 ### Backend tests
 
 ```bash
+$ cd server
 $ npm run test
 ```
-
-NOTE: for some tests to run properly a clean database is needed. The test suite does clean the objects it creates, but some tests will fail if they are run on a database which already has some data.
 
 ### End-to-end tests
 
@@ -114,13 +118,16 @@ Cypress is used for e2e tests and is meant to test the frontend and backend as s
 First build the frontend and run the serve script:
 
 ```bash
+$ cd client
 $ npm run build
+$ cd ../server
 $ npm run serve
 ```
 
 Then the tests can be run (use a browser of your choice out of your installed browsers. To see which browsers cypress recognizes use `$(npm bin)/cypress info`):
 
 ```bash
+$ cd ../client
 $ $(npm bin)/cypress run --browser chromium
 ```
 
@@ -131,16 +138,19 @@ We use [pm2](https://pm2.keymetrics.io) to run the service in production.
 First you must build the frontend react site, then the service (serving both the backend and frontend) can be started:
 
 ```bash
+$ cd client
 $ npm run build
+$ cd ..
 $ pm2 start ecosystem.config.js --env production
 ```
 
-Set up cron to schedule two jobs - crawling for new data and emailing alerts to users:
+Set up cron to schedule three jobs - crawling for new data, emailing alerts to users and aggregating impressions:
 
 ```bash
 $ crontab -e
-0 0 * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/logs/combined.log 2>&1
+0 14 * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/logs/combined.log 2>&1
 * * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
+30 * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/aggregate_views >> /path_to_code/meirim/logs/combined.log 2>&1
 ```
 
 ## Further info

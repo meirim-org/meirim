@@ -16,7 +16,7 @@ const tableActions = {
 	},
 
 	dropTable: async function(knexClient, tableName) {
-		return await knexClient.schema.dropTable(tableName);
+		return await knexClient.raw(`DROP TABLE ${tableName} CASCADE`);
 	},
 
 	insertDataToTable: async function(knexClient, tableName, tableData) {
@@ -24,7 +24,7 @@ const tableActions = {
 			return await knexClient(tableName).insert(data);
 		});
 	},
-	selectDataFromTable: async function(knexClient, tableName, condition) {
+	selectDataFromTable: async function(knexClient, tableName) {
 		return knexClient(tableName).then(function(rows) {
 			return rows;
 		});

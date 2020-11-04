@@ -82,15 +82,15 @@ class Plan extends Model {
 		super.initialize();
 	}
 
-	_saving (model, attrs, options) {
+	_saving () {
 		// return new Checkit(model.rules).run(model.attributes);
 	}
 
-  	_updated(model, attrs, options){
+	_updated(model){
 		this.handleUpdatedPlan(model);
 	}
 
-	_created(model, attrs, options) {
+	_created(model) {
 		this.handleNewPlan(model);
 	}
 
@@ -99,22 +99,18 @@ class Plan extends Model {
 		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
 		const type = notification_types['NEW_PLAN_IN_AREA']; 
 		return Notification.createNotifications({ users: usersSubscribedToPlanArea, planId, type });
-	};
+	}
 
-	handleUpdatedPlan (model) {
-		const planId = model.id;
-		const { users } = this.getUsersInPlanArea(model);
+	async handleUpdatedPlan (model) {
 		const types = this.getPlanUpdateTypes(model);
-		for(let type of types) {
-			Notification.createNotifications({ users, planId, type });
-		}
-	};
+		if(!types.length) return null;
 
-	getUsersInPlanArea (model) {
-		return {
-			users: [{person_id: 1}],
-		};
-	};
+		const planId = model.id;
+		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
+		for(let type of types) {
+			Notification.createNotifications({ users:usersSubscribedToPlanArea ,  planId, type });
+		}
+	}
 
 	getPlanUpdateTypes (model){
 		const updates = [];
@@ -124,10 +120,10 @@ class Plan extends Model {
 			updates.push(notification_types['STATUS_CHANGE']);
 		}
 		return updates;
-	};
+	}
 
 
-	canRead (session) {
+	canRead () {
 		return Bluebird.resolve(this);
 	}
 

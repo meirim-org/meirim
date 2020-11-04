@@ -11,7 +11,6 @@ const { Plan } = require('../../../api/model');
 describe('notification controller', function() {
 	const tables = ['notification'];
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 	});
 
@@ -89,7 +88,6 @@ describe('Notification model integration with different models', function() {
 	};
 
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		await mockDatabase.insertData(['person'], {'person': [person]});
 		await Email.init();
@@ -103,7 +101,7 @@ describe('Notification model integration with different models', function() {
 
 	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('creates notification for a user based on subscribed area ', async function() {

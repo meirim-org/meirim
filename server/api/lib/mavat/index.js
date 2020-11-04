@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const Bluebird = require('bluebird');
 const puppeteer = require('puppeteer');
 const HtmlTableToJson = require('html-table-to-json');
-const log = require('../../lib/log');
+const Log = require('../../lib/log');
 const path = require('path');
 const http = require('follow-redirects').http;
 const fs = require('fs');
@@ -23,17 +23,17 @@ const init = () =>
 		(async () => {
 			try {
 				if (!browser) {
-					log.debug('Launching chrome');
+					Log.debug('Launching chrome');
 					browser = await puppeteer.launch({
 						headless: true,
 						args: ['--no-sandbox', '--disable-setuid-sandbox']
 					});
-					log.debug('Success launching chrome');
+					Log.debug('Success launching chrome');
 				}
 
 				resolve(browser);
 			} catch (err) {
-				log.error(err);
+				Log.error(err);
 				reject(err);
 			}
 		})();
@@ -48,8 +48,8 @@ const downloadFile = (url, file, entityDocId, entityDocNumber) => {
 				resolve(true);
 			});
 		}).on('error', (err) => {
-			log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
-			log.error(err);
+			Log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
+			Log.error(err);
 			resolve(false);
 		});
 	});
@@ -90,7 +90,7 @@ const getPlanInstructions = async (page) => {
 				return elements[i + 4].querySelector('img').getAttribute('onclick');
 			}
 		}
-		log.error('couldn\'t find the plan details PDF link on this web page');
+		console.log('couldn\'t find the plan details PDF link on this web page');
 		return undefined;
 	});
 
@@ -100,7 +100,7 @@ const getPlanInstructions = async (page) => {
 		try {
 			return processPlanInstructionsFile(PLAN_DOWNLOAD_PATH);
 		} catch (err) {
-			log.error('Fetch plan instructions error', err);
+			Log.error('Fetch plan instructions error', err);
 		}
 	}
 };
@@ -111,7 +111,7 @@ const fetch = planUrl =>
 			const page = await browser.newPage();
 
 			try {
-				log.debug('Loading plan page', planUrl);
+				Log.debug('Loading plan page', planUrl);
 				await clearOldPlanFiles(PLAN_DOWNLOAD_PATH);
 
 				try {
@@ -119,7 +119,7 @@ const fetch = planUrl =>
 					await page.waitForSelector('#divMain');
 				} catch (e) {
 					page.close();
-					log.error(e);
+					Log.error(e);
 					reject(e);
 				}
 
@@ -139,15 +139,15 @@ const fetch = planUrl =>
 				}
 				resolve({ cheerioPage: dom, pageInstructions: pageInstructions });
 			} catch (err) {
-				log.error('Mavat fetch error', err);
+				Log.error('Mavat fetch error', err);
 
 				try {
 					const bodyHTML = await page.evaluate(
 						() => document.body.innerHTML
 					);
-					log.error('Mavat fetch error html', bodyHTML);
+					Log.error('Mavat fetch error html', bodyHTML);
 				} catch (htmlError) {
-					log.error('Mavat fetch error html error', htmlError);
+					Log.error('Mavat fetch error html error', htmlError);
 				}
 				page.close();
 				reject(err);
@@ -160,13 +160,13 @@ const search = planNumber =>
 		(async () => {
 			const page = await browser.newPage();
 			try {
-				log.debug('Loading search page', planNumber);
+				Log.debug('Loading search page', planNumber);
 
 				await page.goto(mavatSearchPage);
 				await page.waitForSelector(
 					'#ctl00_ContentPlaceHolder1_txtNumb'
 				);
-				console.log('loaded');
+				Log.debug('loaded');
 				await page.type(
 					'#ctl00_ContentPlaceHolder1_txtNumb',
 					planNumber
@@ -177,7 +177,7 @@ const search = planNumber =>
 					page.waitForNavigation({ waitUntil: 'networkidle0' })
 				]);
 				await timeout(10 * 1000);
-				console.log('Clicked and waiting');
+				Log.debug('Clicked and waiting');
 				await page.waitForSelector('#divMain');
 
 				const bodyHTML = await page.evaluate(
@@ -193,15 +193,15 @@ const search = planNumber =>
 				}
 				resolve(dom);
 			} catch (err) {
-				log.error('Mavat fetch error', err);
+				Log.error('Mavat fetch error', err);
 
 				try {
 					const bodyHTML = await page.evaluate(
 						() => document.body.innerHTML
 					);
-					log.error('Mavat fetch error html', bodyHTML);
+					Log.error('Mavat fetch error html', bodyHTML);
 				} catch (htmlError) {
-					log.error('Mavat fetch error html error', htmlError);
+					Log.error('Mavat fetch error html error', htmlError);
 				}
 				page.close();
 				reject(err);
@@ -222,7 +222,17 @@ const getDirectUrl = cheerioPage =>
 
 const getAreaChanges = cheerioPage => {
 	const html = cheerioPage('#tblQuantities tbody').html();
-	const jsonTables = new HtmlTableToJson(`<table>${html}</table>`);
+
+	// a library update led to this conversion using the first row as field names
+	// instead of using the field ids as their names, so create a fake first row
+	// to be used as headers. in the future we probably should stop using this
+	// library in favour of a bit of custom cheerio value extraction code
+	const jsonTables = new HtmlTableToJson(
+		`<table>
+			<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+			${html}
+		</table>`
+	);
 	return JSON.stringify(jsonTables.results);
 };
 
@@ -260,7 +270,7 @@ const getByPlan = plan =>
 		.then(dict => {
 			const cheerioPage = dict.cheerioPage;
 			const pageInstructions = dict.pageInstructions;
-			log.debug(
+			Log.debug(
 				'Retrieving',
 				plan.get('PL_NUMBER'),
 				getGoalsText(cheerioPage),
@@ -280,7 +290,7 @@ const getByPlan = plan =>
 				chartSix: pageInstructions ? pageInstructions.chartSix : undefined
 			});
 		});
-// const getByPlan = () => Promise.resolve();
+
 module.exports = {
 	// getByUrl,
 	getByPlan,
