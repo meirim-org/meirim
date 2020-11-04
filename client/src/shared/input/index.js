@@ -28,7 +28,7 @@ const TextInput = ({name, variant = "outlined", type, label, required = false, s
 				type={type}
 				size={size}
 				InputProps={{
-					classes: classes.input
+					classes:{  root: classes.input }
 				}}
 			/>
 		</>
