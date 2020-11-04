@@ -4,7 +4,6 @@ const { mockDatabase } = require('../../mock');
 describe('archive_notification controller', function() {
 	const tables = ['archive_notification'];
 	beforeEach(async function() {
-		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 	});
 
@@ -33,20 +32,3 @@ describe('archive_notification controller', function() {
 		expect(attributes.seen).to.eql(0);
 	});
 });
-
-// const tablesData = {
-// 	archive_notification: [{
-// 		plan_id: '123',
-// 		person_id: '435',
-// 		created_at: new Date(),
-// 		updated_at: new Date()
-// 	},
-// 	{
-// 		plan_id: '135',
-// 		person_id: '325',
-// 		created_at: new Date(),
-// 		updated_at: new Date()
-// 	}]
-// };
-
-// await mockDatabase.insertData(tables, tablesData);

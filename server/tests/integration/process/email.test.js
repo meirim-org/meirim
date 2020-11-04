@@ -12,10 +12,9 @@ const { fakeEmailVerification } = require('../../utils');
 
 let sinonSandbox = sinon.createSandbox();
 
-const tables = ['alert', 'person', 'plan', 'notification'];
 describe('Emails', function() {
-	before(async function() {
-		await mockDatabase.dropTables(tables);
+	const tables = ['alert', 'person', 'plan', 'notification'];
+	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 		const fakeVerifyEmail = fakeEmailVerification; 
 		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
@@ -24,9 +23,9 @@ describe('Emails', function() {
 		await Email.init();
 	});
 
-	after(async function() {
+	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
-		sinonSandbox.restore();
+		await sinonSandbox.restore();
 	});
 
 	it('should send notifications to users with alerts intersecting a new plan', async function() {
