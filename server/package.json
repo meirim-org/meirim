@@ -33,6 +33,7 @@
         "express-handlebars": "^5.1.0",
         "express-session": "^1.17.1",
         "follow-redirects": "^1.13.0",
+        "geojson-validation": "^1.0.2",
         "handlebars-loader": "^1.7.1",
         "html-table-to-json": "^1.0.0",
         "http-proxy-middleware": "^1.0.5",
