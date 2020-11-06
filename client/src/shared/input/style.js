@@ -1,9 +1,5 @@
 import styled from "styled-components"
 
-export const Star = styled.span`
-  color:red;
-`
-
 export const Label = styled.div`
   font-family: Assistant;
   font-size: 16px;

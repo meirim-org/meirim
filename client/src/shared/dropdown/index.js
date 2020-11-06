@@ -5,12 +5,9 @@ import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
 
 const useStyles = makeStyles((theme) => ({
-	formControl: {
-		margin: theme.spacing(1),
-		minWidth: 120,
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(2),
+	root :{
+		backgroundColor: "white",
+		borderRadius: "12px"
 	},
 	svg: {
 		left: 0,
@@ -34,8 +31,9 @@ export default function SimpleSelect() {
 				id="demo-simple-select"
 				variant="outlined"
 				value={age}
+				className={classes.root}
 				inputProps={{
-					classes: { icon: classes.svg }
+					classes: { root: classes.root, icon: classes.svg }
 				}}
 				onChange={handleChange}
 			>
