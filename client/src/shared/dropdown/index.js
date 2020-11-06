@@ -3,46 +3,48 @@ import { makeStyles } from "@material-ui/core/styles"
 import InputLabel from "@material-ui/core/InputLabel"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
+import PropTypes from "prop-types"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	root :{
 		backgroundColor: "white",
 		borderRadius: "12px"
 	},
 	svg: {
-		left: 0,
+		left: 10,
 		right: "auto"
 	}
 }))
 
-export default function SimpleSelect() {
+const Dropdown = ({ options }) => {
+
 	const classes = useStyles()
-	const [age, setAge] = React.useState(5)
+	const [value, setValue] = React.useState(options[0].value)
 
 	const handleChange = (event) => {
-		setAge(event.target.value)
+		setValue(event.target.value)
 	}
 
 	return (
 		<>
 			<InputLabel id="demo-simple-select-label">מי אני</InputLabel>
 			<Select
-				labelId="demo-simple-select-label"
-				id="demo-simple-select"
 				variant="outlined"
-				value={age}
+				value={value}
 				className={classes.root}
 				inputProps={{
 					classes: { root: classes.root, icon: classes.svg }
 				}}
 				onChange={handleChange}
 			>
-
-				<MenuItem value={5}>תושב/ת שכאפת לו/ה</MenuItem>
-				<MenuItem value={10}>אחד</MenuItem>
-				<MenuItem value={20}>שתים</MenuItem>
-				<MenuItem value={30}>שלוש</MenuItem>
+				{options.map(( optn, index ) => <MenuItem key={index} value={optn.value}>{optn.text}</MenuItem>)}
 			</Select>
 		</>
 	)
 }
+
+Dropdown.propTypes = {
+	options: PropTypes.object.isRequired
+}
+
+export default Dropdown
