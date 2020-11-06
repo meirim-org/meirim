@@ -4,6 +4,7 @@ export const ModalWrapper = styled.div`
 	padding-top: 0.5em;
 	padding-right: 0.5em;
 `
+
 export const ModalContentWRapper = styled.div`
 	display:flex;
 	width: 504px;

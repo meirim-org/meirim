@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-const MainModal = ({children}) => {
+const MainModal = ({ children }) => {
 	const classes = useStyles()
 
 	return (

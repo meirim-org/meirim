@@ -1,4 +1,3 @@
-
 import React from "react"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import { makeStyles } from "@material-ui/core/styles"
@@ -20,7 +19,7 @@ const HelperText = ({ text }) => {
 	)
 }
 
-HelperText.propTypes ={
+HelperText.propTypes = {
 	text: PropTypes.string.isRequired
 }
 
