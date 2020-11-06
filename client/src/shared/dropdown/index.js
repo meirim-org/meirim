@@ -1,9 +1,9 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import InputLabel from "@material-ui/core/InputLabel"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
 import PropTypes from "prop-types"
+import { Label } from "../../style/components"
 
 const useStyles = makeStyles(() => ({
 	root :{
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
 	}
 }))
 
-const Dropdown = ({ options }) => {
+const Dropdown = ({ options, label, required }) => {
 
 	const classes = useStyles()
 	const [value, setValue] = React.useState(options[0].value)
@@ -27,8 +27,9 @@ const Dropdown = ({ options }) => {
 
 	return (
 		<>
-			<InputLabel id="demo-simple-select-label">מי אני</InputLabel>
+			{label &&	<Label required={required} text={label} />}
 			<Select
+				required={required}
 				variant="outlined"
 				value={value}
 				className={classes.root}
@@ -44,6 +45,8 @@ const Dropdown = ({ options }) => {
 }
 
 Dropdown.propTypes = {
+	label: PropTypes.string,
+	required: PropTypes.bool,
 	options: PropTypes.object.isRequired
 }
 
