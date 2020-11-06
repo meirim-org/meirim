@@ -2,7 +2,7 @@ import React from "react"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from "@material-ui/core/styles"
 import PropTypes from "prop-types"
-import * as SC from "./style"
+import { Label } from "../../style/components"
 
 const useStyles = makeStyles(() => ({
 	input: {
@@ -21,7 +21,7 @@ const TextInput = ({name, variant = "outlined", type, label, required = false, s
 
 	return (
 		<>
-			{label && <SC.Label> {label} {required && <SC.Star>*</SC.Star>} </SC.Label>}
+			<Label required={required} text={label} />
 			<TextField
 				name={name}
 				variant={variant}

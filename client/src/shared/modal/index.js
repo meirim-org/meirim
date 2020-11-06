@@ -38,5 +38,4 @@ MainModal.propTypes = {
 	children: React.element
 }
 
-
 export default MainModal
