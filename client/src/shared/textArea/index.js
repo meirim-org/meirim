@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
 	}
 }))
 
-const TextArea = ({ label, required }) => {
+const TextArea = ({ helperText, label, required }) => {
 	const classes = useStyles()
 
 	return (
@@ -22,7 +22,9 @@ const TextArea = ({ label, required }) => {
 			{label && <Label text={label} required={required}/>}
 			<FormControl>
 				<TextareaAutosize aria-label="text-area" rowsMin={4} rowsMax={4} className={classes.textArea} />
-				<HelperText text="תרשום משהו כדי שאנשים ידעו מי אתה"/>
+				{ 
+					helperText && <HelperText text={helperText}/>
+				}
 			</FormControl>
 		</>
 	)
@@ -30,6 +32,7 @@ const TextArea = ({ label, required }) => {
 
 TextArea.propTypes = {
 	label: PropTypes.string,
+	helperText:PropTypes.string,
 	required: PropTypes.bool,
 }
 export default TextArea

@@ -7,9 +7,9 @@ export const ModalWrapper = styled.div`
 
 export const ModalContentWRapper = styled.div`
 	display:flex;
-	width: 504px;
+	/* width: 504px; */
 	flex-direction: column;
-	height: 656px;
+	/* height: 656px; */
 	background-color: #ffffff;
 	border-radius: 15px 15px;
 `

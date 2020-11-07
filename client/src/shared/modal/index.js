@@ -25,7 +25,7 @@ const MainModal = ({ children }) => {
 			>
 				<SC.ModalContentWRapper>
 					<SC.IconWrapper>
-						<CloseIcon style={{cursor: "pointer"}}/>
+						<CloseIcon style={{cursor: "pointer", fill: "gray"}}/>
 					</SC.IconWrapper>
 					{children}
 				</SC.ModalContentWRapper>
