@@ -8,6 +8,7 @@ const useStyles = makeStyles(() => ({
 		borderRadius: "12px",
 		backgroundColor: "#652dd0",
 		height:"48px",
+		width: "24em",
 		fontFamily: "Assistant",
 		fontSize: "16px",
 		fontWeight: "bold",

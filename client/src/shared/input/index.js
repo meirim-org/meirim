@@ -2,12 +2,13 @@ import React from "react"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from "@material-ui/core/styles"
 import PropTypes from "prop-types"
-import { Label } from "../../style/components"
+import { HelperText, Label } from "../../style/components"
 
 const useStyles = makeStyles(() => ({
 	input: {
 		backgroundColor: "white",
 		height: "44px",
+		width: "24em",
 		borderRadius: "12px",
 		border: "none"
 	},
@@ -16,7 +17,7 @@ const useStyles = makeStyles(() => ({
 	}
 }))
 
-const TextInput = ({name, variant = "outlined", type, label, required = false, size = "small"}) => {
+const TextInput = ({helperText, name, variant = "outlined", type, label, required = false, size = "small"}) => {
 	const classes = useStyles()
 
 	return (
@@ -31,6 +32,9 @@ const TextInput = ({name, variant = "outlined", type, label, required = false, s
 					classes:{  root: classes.input }
 				}}
 			/>
+			{ 
+				helperText && <HelperText text={helperText}/>
+			}
 		</>
 	)
 }
@@ -40,9 +44,9 @@ TextInput.propTypes = {
 	type: PropTypes.string.isRequired,
 	size: PropTypes.string,
 	required: PropTypes.bool,
+	helperText: PropTypes.string, 
 	label: PropTypes.string,
 	variant: PropTypes.string,
-
 }
 
 export default TextInput
