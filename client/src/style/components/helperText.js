@@ -5,7 +5,15 @@ import PropTypes from "prop-types"
 
 const useStyles = makeStyles(() => ({
 	helperText: {
-		textAlign:"right"
+		textAlign:"right",
+		fontFamily: "Assistant",
+		fontSize: "12px",
+		fontWeight: "normal",
+		fontStretch: "normal",
+		fontStyle: "normal",
+		lineHeight: 1.5,
+		letterSpacing: "normal",
+		color: "#8f5de2",
 	},
 }))
 
