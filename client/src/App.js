@@ -13,6 +13,7 @@ import Terms from "./scenes/Terms";
 import Vocabulary from "./scenes/Vocabulary";
 import NotFound from "./scenes/NotFound";
 import api from "./services/api";
+import './App.css' // this!:w
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -23,7 +24,6 @@ import {
     faChartArea
 } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-
 import "./assets/bootstrap.css";
 
 library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
@@ -32,13 +32,15 @@ class App extends Component {
     state = {
         me: null
     };
-    componentWillMount() {
-        api.get("/me")
-            .then(me => this.setState({ me: true }))
-            .catch(error => this.setState({ me: false }));
-    }
+    // componentWillMount() {
+    //     api.get("/me")
+    //         .then(me => this.setState({ me: true }))
+    //         .catch(error => {
+    //             console.log('error',error)
+    //             this.setState({ me: false }) });
+    // }
     render() {
-        const { me } = this.state;
+        const { me } = false
 
         if (me === null) {
             return <div>Loading...</div>;

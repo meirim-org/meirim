@@ -1,3 +1,3 @@
-import RegisterForm from "./register"
+import { UserInfoForm, RegisterForm } from "./register"
 
-export { RegisterForm }
+export { UserInfoForm, RegisterForm }
