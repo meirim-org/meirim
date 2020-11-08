@@ -2,24 +2,23 @@ import React from "react"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from "@material-ui/core/styles"
 import PropTypes from "prop-types"
-import { HelperText, Label } from "../../style/components"
+import { HelperText, Label } from "../"
 
 const useStyles = makeStyles(() => ({
 	input: {
 		backgroundColor: "white",
-		height: "44px",
+		height: "2.75em",
 		width: "24em",
 		borderRadius: "12px",
 		border: "none"
 	},
 	adornedEnd: {
-		height: "40px"
+		height: "2.75em"
 	}
 }))
 
 const TextInput = ({helperText, name, variant = "outlined", type, label, required = false, size = "small"}) => {
 	const classes = useStyles()
-
 	return (
 		<>
 			<Label required={required} text={label} />

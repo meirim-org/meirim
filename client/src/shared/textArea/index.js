@@ -2,7 +2,7 @@ import React from "react"
 import FormControl from "@material-ui/core/FormControl"
 import TextareaAutosize from "@material-ui/core/TextareaAutosize"
 import { makeStyles } from "@material-ui/core/styles"
-import { HelperText, Label } from "../../style/components"
+import { HelperText, Label } from "../"
 import PropTypes from "prop-types"
 
 const useStyles = makeStyles(() => ({
