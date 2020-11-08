@@ -1,41 +1,55 @@
-import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
+import { Element } from "react"
 import Modal from "@material-ui/core/Modal"
+import styled from "styled-components"
 import CloseIcon from "@material-ui/icons/Close"
-import * as SC from "./style"
 
-const useStyles = makeStyles(() => ({
-	modal: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-}))
+const StyledModal = styled(Modal)`
+		display: flex;
+		align-items: center;
+		justify-content: center;
+`
+
+const StyledIcon = styled(CloseIcon)`
+	color: gray;
+	cursor: pointer;
+`
+
+const ModalWrapper = styled.div`
+	padding-top: 0.5em;
+	padding-right: 0.5em;
+`
+
+const ModalContentWRapper = styled.div`
+	display:flex;
+	flex-direction: column;
+	background-color: #ffffff;
+	border-radius: 15px 15px;
+`
+
+const IconWrapper = styled.div`
+	padding-top: 0.5em;
+	padding-right: 0.5em;
+`
 
 const MainModal = ({ children }) => {
-	const classes = useStyles()
-
 	return (
-		<SC.ModalWrapper>
-			<Modal
+		<ModalWrapper>
+			<StyledModal
 				open
-				aria-labelledby="server-modal-title"
-				aria-describedby="server-modal-description"
-				className={classes.modal}
 			>
-				<SC.ModalContentWRapper>
-					<SC.IconWrapper>
-						<CloseIcon style={{cursor: "pointer", fill: "gray"}}/>
-					</SC.IconWrapper>
+				<ModalContentWRapper>
+					<IconWrapper>
+						<StyledIcon/>
+					</IconWrapper>
 					{children}
-				</SC.ModalContentWRapper>
-			</Modal>
-		</SC.ModalWrapper>
+				</ModalContentWRapper>
+			</StyledModal>
+		</ModalWrapper>
 	)
 }
 
 MainModal.propTypes = {
-	children: React.element
+	children: Element
 }
 
 export default MainModal
