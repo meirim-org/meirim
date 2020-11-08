@@ -1,5 +1,8 @@
 const assert = require('chai').assert;
 const nock = require('nock');
+const puppeteerBrowser = require('puppeteer/lib/cjs/puppeteer/common/Browser').Browser;
+const requestPromise = require('request-promise');
+const sinon = require('sinon');
 
 const { mockDatabase } = require('../../mock');
 const { wait } = require('../../utils');
@@ -44,6 +47,8 @@ describe('Crawler', function() {
 });
 
 describe('Crawler scraped data', function() {
+	let sinonSandbox;
+
 	let planController;
 	let cronController;
 	let chartOneEightModel;
@@ -61,6 +66,51 @@ describe('Crawler scraped data', function() {
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 
+		// use sinon to override puppeteer browser newPage function so for each newly
+		// created page we can register an event handler to intercept requests and do
+		// the actual resource fetching ourselves. this allows us to mock puppeteer
+		// responses using nock just the same as we mock normal fetch responses so that
+		// we can mock the mavat plan page contents
+		sinonSandbox = sinon.createSandbox();
+		const newPageStub = sinonSandbox.stub(puppeteerBrowser.prototype, 'newPage').callsFake(
+			sinonSandbox.fake(async () => {
+				// create a new page using the original function
+				const newPage = await newPageStub.wrappedMethod.call(newPageStub.thisValues[0]);
+
+				// this is required for us to be able to respond with custom responses
+				await newPage.setRequestInterception(true);
+
+				// register the event handler
+				newPage.on('request', (request) => {
+					const options = {
+						gzip: true,  // allow both gzipped and non-gzipped responses
+						url: request.url(),
+						method: request.method(),
+						headers: request.headers(),
+						body: request.postData()
+					};
+
+					// use request-promise (which uses the http/https modules) to actually
+					// make the request. if the request matches a nock rule the response
+					// will be mocked
+					requestPromise(options, (err, response, body) => {
+						if (err) {
+							request.abort(500);
+						} else {
+							request.respond({
+								status: response.statusCode,
+								headers: response.headers,
+								body: body
+							});
+						}
+					});
+				});
+
+				// return the new page with the registered event handler
+				return newPage;
+			})
+		);
+
 		// make sure nock is active
 		if (!nock.isActive())
 			nock.activate();
@@ -76,6 +126,9 @@ describe('Crawler scraped data', function() {
 	afterEach(async function() {
 		// restore unmocked networking
 		nock.restore()
+
+		// restore mocked functions
+		await sinonSandbox.restore();
 
 		await mockDatabase.dropTables(tables);
 	});
@@ -96,7 +149,7 @@ describe('Crawler scraped data', function() {
 			.reply(200, {"displayFieldName":"PLAN_NAME","fieldAliases":{"OBJECTID":"OBJECTID","PLAN_AREA_CODE":"קוד מרחב תכנון","JURSTICTION_CODE":"קוד גבול שיפוט","PLAN_COUNTY_NAME":"ישוב","PLAN_COUNTY_CODE":"קוד ישוב","ENTITY_SUBTYPE_DESC":"סוג תכנית","PL_NUMBER":"מספר תכנית","PL_NAME":"שם תכנית","PL_AREA_DUNAM":"שטח תכנית בדונם","DEPOSITING_DATE":"הפקדה","PL_DATE_8":"פרסום לאישור ברשומות","מטרות":"מטרות","PL_LANDUSE_STRING":"PL_LANDUSE_STRING","STATION":"תחנה","STATION_DESC":"STATION_DESC","PL_BY_AUTH_OF":"סמכות","PL_URL":"PL_URL","Shape_Area":"SHAPE_Area","QUANTITY_DELTA_120":"QUANTITY_DELTA_120","QUANTITY_DELTA_60":"תעסוקה","QUANTITY_DELTA_75":"מסחר","QUANTITY_DELTA_80":"מבני ציבור","QUANTITY_DELTA_105":"תירות","QUANTITY_DELTA_125":"מגורים","LAYER_ID":"LAYER_ID","DEFQ":"DEFQ","MAVAT_CODE":"MAVAT_CODE","REMARKS":"REMARKS","LAST_UPDATE":"LAST_UPDATE","PL_ORDER_PRINT_VERSION":"PL_ORDER_PRINT_VERSION","PL_TASRIT_PRN_VERSION":"PL_TASRIT_PRN_VERSION","pa_concat":"pa_concat","ja_concat":"ja_concat","en_concat":"en_concat"},"geometryType":"esriGeometryPolygon","spatialReference":{"wkid":102100,"latestWkid":3857},"fields":[{"name":"OBJECTID","type":"esriFieldTypeOID","alias":"OBJECTID"},{"name":"PLAN_AREA_CODE","type":"esriFieldTypeDouble","alias":"קוד מרחב תכנון"},{"name":"JURSTICTION_CODE","type":"esriFieldTypeDouble","alias":"קוד גבול שיפוט"},{"name":"PLAN_COUNTY_NAME","type":"esriFieldTypeString","alias":"ישוב","length":78},{"name":"PLAN_COUNTY_CODE","type":"esriFieldTypeDouble","alias":"קוד ישוב"},{"name":"ENTITY_SUBTYPE_DESC","type":"esriFieldTypeString","alias":"סוג תכנית","length":78},{"name":"PL_NUMBER","type":"esriFieldTypeString","alias":"מספר תכנית","length":78},{"name":"PL_NAME","type":"esriFieldTypeString","alias":"שם תכנית","length":78},{"name":"PL_AREA_DUNAM","type":"esriFieldTypeDouble","alias":"שטח תכנית בדונם"},{"name":"DEPOSITING_DATE","type":"esriFieldTypeDate","alias":"הפקדה","length":8},{"name":"PL_DATE_8","type":"esriFieldTypeDate","alias":"פרסום לאישור ברשומות","length":8},{"name":"מטרות","type":"esriFieldTypeString","alias":"מטרות","length":250},{"name":"PL_LANDUSE_STRING","type":"esriFieldTypeString","alias":"PL_LANDUSE_STRING","length":4000},{"name":"STATION","type":"esriFieldTypeDouble","alias":"תחנה"},{"name":"STATION_DESC","type":"esriFieldTypeString","alias":"STATION_DESC","length":26},{"name":"PL_BY_AUTH_OF","type":"esriFieldTypeDouble","alias":"סמכות"},{"name":"PL_URL","type":"esriFieldTypeString","alias":"PL_URL","length":255},{"name":"Shape_Area","type":"esriFieldTypeDouble","alias":"SHAPE_Area"},{"name":"QUANTITY_DELTA_120","type":"esriFieldTypeDouble","alias":"QUANTITY_DELTA_120"},{"name":"QUANTITY_DELTA_60","type":"esriFieldTypeDouble","alias":"תעסוקה"},{"name":"QUANTITY_DELTA_75","type":"esriFieldTypeDouble","alias":"מסחר"},{"name":"QUANTITY_DELTA_80","type":"esriFieldTypeDouble","alias":"מבני ציבור"},{"name":"QUANTITY_DELTA_105","type":"esriFieldTypeDouble","alias":"תירות"},{"name":"QUANTITY_DELTA_125","type":"esriFieldTypeDouble","alias":"מגורים"},{"name":"LAYER_ID","type":"esriFieldTypeInteger","alias":"LAYER_ID"},{"name":"DEFQ","type":"esriFieldTypeInteger","alias":"DEFQ"},{"name":"MAVAT_CODE","type":"esriFieldTypeInteger","alias":"MAVAT_CODE"},{"name":"REMARKS","type":"esriFieldTypeString","alias":"REMARKS","length":200},{"name":"LAST_UPDATE","type":"esriFieldTypeString","alias":"LAST_UPDATE","length":20},{"name":"PL_ORDER_PRINT_VERSION","type":"esriFieldTypeDouble","alias":"PL_ORDER_PRINT_VERSION"},{"name":"PL_TASRIT_PRN_VERSION","type":"esriFieldTypeDouble","alias":"PL_TASRIT_PRN_VERSION"},{"name":"pa_concat","type":"esriFieldTypeString","alias":"pa_concat","length":500},{"name":"ja_concat","type":"esriFieldTypeString","alias":"ja_concat","length":500},{"name":"en_concat","type":"esriFieldTypeString","alias":"en_concat","length":500}],"features":[{"attributes":{"OBJECTID":17737,"PLAN_AREA_CODE":262,"JURSTICTION_CODE":7500,"PLAN_COUNTY_NAME":"סח'נין","PLAN_COUNTY_CODE":7500,"ENTITY_SUBTYPE_DESC":"תכנית מתאר מקומית","PL_NUMBER":"262-0907907","PL_NAME":"שינוי בהוראות וזכויות הבניה בית עטיה אבו סאלח - סכנין","PL_AREA_DUNAM":0.65600000000000003,"DEPOSITING_DATE":null,"PL_DATE_8":null,"מטרות":"שינוי בהוראות וזכויות הבניה בית עטיה אבו סאלח - סכנין ^ שינוי בהוראות וזכויות הבניה במגרש בנוי בשכונה המזרחית בסכנין ^ הסדרת קוי בניין\r\nהגדלת תכסית קרקע\r\nהגדלת אחוזי בניה\r\nקביעת תנאים להריסת סככה חורגת בתוואי דרך\r\nקביעת תנאים למתן היתר בניה","PL_LANDUSE_STRING":"מגורים ב","STATION":70,"STATION_DESC":"סמכות מקומית בתהליך","PL_BY_AUTH_OF":3,"PL_URL":"http://mavat.moin.gov.il/MavatPS/Forms/SV4.aspx?tid=4&mp_id=6oPTq5cInWPLIDZGBgm%2FSnfalx%2FVwm9UcvmKLvTYaL%2FuYZolDZ5tUxUpY3ytnoDHbxhrz2lPI%2ByU%2F9tTjWKx2ulXWKLPLb4PmLuaqSOPt7Y%3D&et=1","Shape_Area":656.2206166598944,"QUANTITY_DELTA_120":0,"QUANTITY_DELTA_60":0,"QUANTITY_DELTA_75":0,"QUANTITY_DELTA_80":0,"QUANTITY_DELTA_105":0,"QUANTITY_DELTA_125":0,"LAYER_ID":4058837,"DEFQ":null,"MAVAT_CODE":20010,"REMARKS":null,"LAST_UPDATE":"20201003092718      ","PL_ORDER_PRINT_VERSION":1,"PL_TASRIT_PRN_VERSION":1,"pa_concat":"לב הגליל","ja_concat":"סח'נין","en_concat":null},"geometry":{"rings":[[[3930053.80647879,3876669.3068521186],[3930064.968131646,3876668.5508384234],[3930070.2667117235,3876669.4035235811],[3930070.9940953101,3876649.9953845385],[3930038.6509795687,3876649.3163289493],[3930036.3711044192,3876650.5552507825],[3930033.3768539387,3876650.9356909227],[3930021.2490044674,3876652.6631158828],[3930023.3139998987,3876665.7636409458],[3930027.2544126092,3876670.919169195],[3930034.105045598,3876670.5496508735],[3930042.8205890162,3876670.0507389829],[3930053.80647879,3876669.3068521186]]]}}]});
 
 		// mock mavat single plan page
-		const mavatScope = nock('http://mavat.moin.gov.il')
+		const mavatScope = nock('http://mavat.moin.gov.il', { allowUnmocked: true })
 			.get('/MavatPS/Forms/SV4.aspx')
 			// query string will be exactly as provided by the iplan mocked response
 			.query({
@@ -290,7 +343,7 @@ describe('Crawler scraped data', function() {
 			.reply(200, {"displayFieldName":"PLAN_NAME","fieldAliases":{"OBJECTID":"OBJECTID","PLAN_AREA_CODE":"קוד מרחב תכנון","JURSTICTION_CODE":"קוד גבול שיפוט","PLAN_COUNTY_NAME":"ישוב","PLAN_COUNTY_CODE":"קוד ישוב","ENTITY_SUBTYPE_DESC":"סוג תכנית","PL_NUMBER":"מספר תכנית","PL_NAME":"שם תכנית","PL_AREA_DUNAM":"שטח תכנית בדונם","DEPOSITING_DATE":"הפקדה","PL_DATE_8":"פרסום לאישור ברשומות","מטרות":"מטרות","PL_LANDUSE_STRING":"PL_LANDUSE_STRING","STATION":"תחנה","STATION_DESC":"STATION_DESC","PL_BY_AUTH_OF":"סמכות","PL_URL":"PL_URL","Shape_Area":"SHAPE_Area","QUANTITY_DELTA_120":"QUANTITY_DELTA_120","QUANTITY_DELTA_60":"תעסוקה","QUANTITY_DELTA_75":"מסחר","QUANTITY_DELTA_80":"מבני ציבור","QUANTITY_DELTA_105":"תירות","QUANTITY_DELTA_125":"מגורים","LAYER_ID":"LAYER_ID","DEFQ":"DEFQ","MAVAT_CODE":"MAVAT_CODE","REMARKS":"REMARKS","LAST_UPDATE":"LAST_UPDATE","PL_ORDER_PRINT_VERSION":"PL_ORDER_PRINT_VERSION","PL_TASRIT_PRN_VERSION":"PL_TASRIT_PRN_VERSION","pa_concat":"pa_concat","ja_concat":"ja_concat","en_concat":"en_concat"},"geometryType":"esriGeometryPolygon","spatialReference":{"wkid":102100,"latestWkid":3857},"fields":[{"name":"OBJECTID","type":"esriFieldTypeOID","alias":"OBJECTID"},{"name":"PLAN_AREA_CODE","type":"esriFieldTypeDouble","alias":"קוד מרחב תכנון"},{"name":"JURSTICTION_CODE","type":"esriFieldTypeDouble","alias":"קוד גבול שיפוט"},{"name":"PLAN_COUNTY_NAME","type":"esriFieldTypeString","alias":"ישוב","length":78},{"name":"PLAN_COUNTY_CODE","type":"esriFieldTypeDouble","alias":"קוד ישוב"},{"name":"ENTITY_SUBTYPE_DESC","type":"esriFieldTypeString","alias":"סוג תכנית","length":78},{"name":"PL_NUMBER","type":"esriFieldTypeString","alias":"מספר תכנית","length":78},{"name":"PL_NAME","type":"esriFieldTypeString","alias":"שם תכנית","length":78},{"name":"PL_AREA_DUNAM","type":"esriFieldTypeDouble","alias":"שטח תכנית בדונם"},{"name":"DEPOSITING_DATE","type":"esriFieldTypeDate","alias":"הפקדה","length":8},{"name":"PL_DATE_8","type":"esriFieldTypeDate","alias":"פרסום לאישור ברשומות","length":8},{"name":"מטרות","type":"esriFieldTypeString","alias":"מטרות","length":250},{"name":"PL_LANDUSE_STRING","type":"esriFieldTypeString","alias":"PL_LANDUSE_STRING","length":4000},{"name":"STATION","type":"esriFieldTypeDouble","alias":"תחנה"},{"name":"STATION_DESC","type":"esriFieldTypeString","alias":"STATION_DESC","length":26},{"name":"PL_BY_AUTH_OF","type":"esriFieldTypeDouble","alias":"סמכות"},{"name":"PL_URL","type":"esriFieldTypeString","alias":"PL_URL","length":255},{"name":"Shape_Area","type":"esriFieldTypeDouble","alias":"SHAPE_Area"},{"name":"QUANTITY_DELTA_120","type":"esriFieldTypeDouble","alias":"QUANTITY_DELTA_120"},{"name":"QUANTITY_DELTA_60","type":"esriFieldTypeDouble","alias":"תעסוקה"},{"name":"QUANTITY_DELTA_75","type":"esriFieldTypeDouble","alias":"מסחר"},{"name":"QUANTITY_DELTA_80","type":"esriFieldTypeDouble","alias":"מבני ציבור"},{"name":"QUANTITY_DELTA_105","type":"esriFieldTypeDouble","alias":"תירות"},{"name":"QUANTITY_DELTA_125","type":"esriFieldTypeDouble","alias":"מגורים"},{"name":"LAYER_ID","type":"esriFieldTypeInteger","alias":"LAYER_ID"},{"name":"DEFQ","type":"esriFieldTypeInteger","alias":"DEFQ"},{"name":"MAVAT_CODE","type":"esriFieldTypeInteger","alias":"MAVAT_CODE"},{"name":"REMARKS","type":"esriFieldTypeString","alias":"REMARKS","length":200},{"name":"LAST_UPDATE","type":"esriFieldTypeString","alias":"LAST_UPDATE","length":20},{"name":"PL_ORDER_PRINT_VERSION","type":"esriFieldTypeDouble","alias":"PL_ORDER_PRINT_VERSION"},{"name":"PL_TASRIT_PRN_VERSION","type":"esriFieldTypeDouble","alias":"PL_TASRIT_PRN_VERSION"},{"name":"pa_concat","type":"esriFieldTypeString","alias":"pa_concat","length":500},{"name":"ja_concat","type":"esriFieldTypeString","alias":"ja_concat","length":500},{"name":"en_concat","type":"esriFieldTypeString","alias":"en_concat","length":500}],"features":[{"attributes":{"OBJECTID":17737,"PLAN_AREA_CODE":262,"JURSTICTION_CODE":7500,"PLAN_COUNTY_NAME":"סח'נין","PLAN_COUNTY_CODE":7500,"ENTITY_SUBTYPE_DESC":"תכנית מתאר מקומית","PL_NUMBER":"262-0907907","PL_NAME":"שינוי בהוראות וזכויות הבניה בית עטיה אבו סאלח - סכנין","PL_AREA_DUNAM":0.65600000000000003,"DEPOSITING_DATE":null,"PL_DATE_8":null,"מטרות":"שינוי בהוראות וזכויות הבניה בית עטיה אבו סאלח - סכנין ^ שינוי בהוראות וזכויות הבניה במגרש בנוי בשכונה המזרחית בסכנין ^ הסדרת קוי בניין\r\nהגדלת תכסית קרקע\r\nהגדלת אחוזי בניה\r\nקביעת תנאים להריסת סככה חורגת בתוואי דרך\r\nקביעת תנאים למתן היתר בניה","PL_LANDUSE_STRING":"מגורים ב","STATION":70,"STATION_DESC":"סמכות מקומית בתהליך","PL_BY_AUTH_OF":3,"PL_URL":"http://mavat.moin.gov.il/MavatPS/Forms/SV4.aspx?tid=4&mp_id=6oPTq5cInWPLIDZGBgm%2FSnfalx%2FVwm9UcvmKLvTYaL%2FuYZolDZ5tUxUpY3ytnoDHbxhrz2lPI%2ByU%2F9tTjWKx2ulXWKLPLb4PmLuaqSOPt7Y%3D&et=1","Shape_Area":656.2206166598944,"QUANTITY_DELTA_120":0,"QUANTITY_DELTA_60":0,"QUANTITY_DELTA_75":0,"QUANTITY_DELTA_80":0,"QUANTITY_DELTA_105":0,"QUANTITY_DELTA_125":0,"LAYER_ID":4058837,"DEFQ":null,"MAVAT_CODE":20010,"REMARKS":null,"LAST_UPDATE":"20201003092718      ","PL_ORDER_PRINT_VERSION":1,"PL_TASRIT_PRN_VERSION":1,"pa_concat":"לב הגליל","ja_concat":"סח'נין","en_concat":null},"geometry":{"rings":[[[3930053.80647879,3876669.3068521186],[3930064.968131646,3876668.5508384234],[3930070.2667117235,3876669.4035235811],[3930070.9940953101,3876649.9953845385],[3930038.6509795687,3876649.3163289493],[3930036.3711044192,3876650.5552507825],[3930033.3768539387,3876650.9356909227],[3930021.2490044674,3876652.6631158828],[3930023.3139998987,3876665.7636409458],[3930027.2544126092,3876670.919169195],[3930034.105045598,3876670.5496508735],[3930042.8205890162,3876670.0507389829],[3930053.80647879,3876669.3068521186]]]}}]});
 
 		// mock mavat single plan page
-		const mavatScope = nock('http://mavat.moin.gov.il')
+		const mavatScope = nock('http://mavat.moin.gov.il', { allowUnmocked: true })
 			.get('/MavatPS/Forms/SV4.aspx')
 			// query string will be exactly as provided by the iplan mocked response
 			.query({
