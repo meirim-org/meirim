@@ -1,4 +1,3 @@
-import React from "react"
 import PropTypes from "prop-types"
 import MUIButton from "@material-ui/core/Button"
 import styled from "styled-components"

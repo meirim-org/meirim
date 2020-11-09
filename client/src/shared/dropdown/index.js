@@ -1,4 +1,4 @@
-import React from "react"
+import { useState } from "react"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
 import PropTypes from "prop-types"
@@ -15,7 +15,7 @@ const StyledSelect = styled(Select)`
 `
 
 const Dropdown = ({ options, label, required }) => {
-	const [value, setValue] = React.useState(options[0].value)
+	const [value, setValue] = useState(options[0].value)
 
 	const handleChange = (event) => {
 		setValue(event.target.value)
