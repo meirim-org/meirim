@@ -1,4 +1,3 @@
-import React from "react"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import PropTypes from "prop-types"
 import styled from "styled-components"
