@@ -15,10 +15,11 @@ const StyledButton = styled(MUIButton)`
 	letter-spacing: normal;
 	text-align: center;
 	color: #ffffff;
+	background-color: #652dd0 !important;
 `
 const Button = ({text}) => {
 	return ( 
-		<StyledButton size="small" variant="contained">
+		<StyledButton size="small" variant="contained" color="primary">
 			{text}
 		</StyledButton>
 	)

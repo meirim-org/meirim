@@ -1,35 +1,30 @@
 import React from "react"
 import TextField from "@material-ui/core/TextField"
-import { makeStyles } from "@material-ui/core/styles"
 import PropTypes from "prop-types"
+import styled from "styled-components"
 import { HelperText, Label } from "../"
 
-const useStyles = makeStyles(() => ({
-	input: {
-		backgroundColor: "white",
-		height: "2.75em",
-		width: "24em",
-		borderRadius: "12px",
-		border: "none"
-	},
-	adornedEnd: {
-		height: "2.75em"
+const StyledInput = styled(TextField)`
+	background-color: white;
+	height: 2.75em;
+	width: 24em;
+	border-radius: 12px !important;
+	& > div {
+		border-radius: 12px !important;
+		height: 2.75em;
 	}
-}))
+`
 
 const TextInput = ({helperText, name, variant = "outlined", type, label, required = false, size = "small"}) => {
-	const classes = useStyles()
+
 	return (
 		<>
 			<Label required={required} text={label} />
-			<TextField
+			<StyledInput
 				name={name}
 				variant={variant}
 				type={type}
 				size={size}
-				InputProps={{
-					classes:{  root: classes.input }
-				}}
 			/>
 			{ 
 				helperText && <HelperText text={helperText}/>
