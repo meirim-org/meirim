@@ -8,7 +8,7 @@ html body {
   padding: 5%;
   cursor: pointer;
   justify-content: space-between;
-  /* display: flex; */
+  margin-top: 10px;
   text-align: center;
 }
 
