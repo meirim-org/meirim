@@ -1,1 +1,0 @@
-export const mainColor = "#652dd0"
