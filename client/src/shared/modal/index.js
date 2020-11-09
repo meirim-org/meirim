@@ -1,7 +1,7 @@
-import { Element } from "react"
 import Modal from "@material-ui/core/Modal"
 import styled from "styled-components"
 import CloseIcon from "@material-ui/icons/Close"
+import PropTypes from "prop-types"
 
 const StyledModal = styled(Modal)`
 		display: flex;
@@ -49,7 +49,7 @@ const MainModal = ({ children }) => {
 }
 
 MainModal.propTypes = {
-	children: Element
+	children: PropTypes.object
 }
 
 export default MainModal

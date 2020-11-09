@@ -39,7 +39,7 @@ const Dropdown = ({ options, label, required }) => {
 Dropdown.propTypes = {
 	label: PropTypes.string,
 	required: PropTypes.bool,
-	options: PropTypes.object.isRequired
+	options: PropTypes.array.isRequired
 }
 
 export default Dropdown
