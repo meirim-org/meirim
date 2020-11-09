@@ -1,12 +1,13 @@
+import { useState } from "react"
 import Modal from "@material-ui/core/Modal"
 import styled from "styled-components"
 import CloseIcon from "@material-ui/icons/Close"
 import PropTypes from "prop-types"
 
 const StyledModal = styled(Modal)`
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `
 
 const StyledIcon = styled(CloseIcon)`
@@ -32,14 +33,14 @@ const IconWrapper = styled.div`
 `
 
 const MainModal = ({ children }) => {
+	const [isOpen, setIsOpen] = useState(true)
+
 	return (
 		<ModalWrapper>
-			<StyledModal
-				open
-			>
+			<StyledModal open={isOpen}>
 				<ModalContentWRapper>
 					<IconWrapper>
-						<StyledIcon/>
+						<StyledIcon onClick={() => setIsOpen(false)}/>
 					</IconWrapper>
 					{children}
 				</ModalContentWRapper>
