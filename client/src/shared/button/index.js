@@ -1,32 +1,26 @@
-import React from "react"
 import PropTypes from "prop-types"
 import MUIButton from "@material-ui/core/Button"
-import { makeStyles } from "@material-ui/core/styles"
+import styled from "styled-components"
 
-const useStyles = makeStyles(() => ({
-	btn: {
-		borderRadius: "12px",
-		backgroundColor: "#652dd0",
-		height:"48px",
-		width: "24em",
-		fontFamily: "Assistant",
-		fontSize: "16px",
-		fontWeight: "bold",
-		fontStretch: "normal",
-		fontStyle: "normal",
-		lineHeight: 1.5,
-		letterSpacing: "normal",
-		textAlign: "center",
-		color: "#ffffff",
-	},
-}))
-
+const StyledButton = styled(MUIButton)`
+	border-radius: 12px;
+	height: 2.75em;
+	font-family: Assistant;
+	font-size: 16px;
+	font-weight: bold;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.5;
+	letter-spacing: normal;
+	text-align: center;
+	color: #ffffff;
+	background-color: #652dd0 !important;
+`
 const Button = ({text}) => {
-	const classes = useStyles()
 	return ( 
-		<MUIButton size="small" variant="contained" color="primary" classes={{root: classes.btn}}>
+		<StyledButton size="small" variant="contained" color="primary">
 			{text}
-		</MUIButton>
+		</StyledButton>
 	)
 }
 

@@ -1,8 +1,8 @@
 import React from "react"
-import { Modal,Dropdown, TextInput, TextArea, Button } from "../../shared"
+import { Modal, Dropdown, TextInput, TextArea, Button, Link } from "../../../shared"
 import * as SC from "./style"
 
-export const RegisterForm = () => {
+const FirstStepSignup = () => {
 	return (
 		<Modal>
 			<SC.MainWrapper>
@@ -10,7 +10,7 @@ export const RegisterForm = () => {
 					<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
 					<SC.SubTitleWrapper>
 						<SC.SubTitle>כדי להשלים את הפעולה עלכים להיות מחוברים</SC.SubTitle>
-						<SC.SubTitle>כבר רשומים? <SC.Link>התחברות</SC.Link></SC.SubTitle>
+						<SC.SubTitle>כבר רשומים? <Link text="התחברות"/></SC.SubTitle>
 					</SC.SubTitleWrapper>
 				</SC.Titles>
 				<SC.InputsWrapper>
@@ -22,7 +22,7 @@ export const RegisterForm = () => {
 						<TextInput name="email" label="אימייל" type="email" required={true}/>
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<TextInput name="password" label="סיסמא" type="password" required={true}/>
+						<TextInput name="signuppassword" label="סיסמא" type="password" required={true}/>
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
@@ -33,12 +33,20 @@ export const RegisterForm = () => {
 	)
 }
 
-export const UserInfoForm = () => {
+const SecondStepSignup = () => {
 	const dropDownOptions =  [
 		{
 			value: 1,
 			text:" תושב/ת שכאפת לו/ה"
-		}
+		},
+		{
+			value: 2,
+			text:"אתה אתה אתה"
+		},
+		{
+			value: 3,
+			text:"אני אני אני"
+		},
 	]
 
 	return ( 
@@ -65,3 +73,11 @@ export const UserInfoForm = () => {
 		</Modal>
 	)
 }
+
+const Signup = () => {
+	return (
+		<SecondStepSignup />
+	)
+}
+
+export default Signup

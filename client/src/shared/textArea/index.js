@@ -1,27 +1,23 @@
-import React from "react"
 import FormControl from "@material-ui/core/FormControl"
 import TextareaAutosize from "@material-ui/core/TextareaAutosize"
-import { makeStyles } from "@material-ui/core/styles"
-import { HelperText, Label } from "../../style/components"
 import PropTypes from "prop-types"
+import styled from "styled-components"
+import { HelperText, Label } from "../"
 
-const useStyles = makeStyles(() => ({
-	textArea :{
-		borderRadius: "14px",
-		border: "solid 1px #d1ccd5",
-		backgroundColor: "#ffffff",
-		resize:"none"
-	}
-}))
+const StyledTextArea = styled(TextareaAutosize)`
+	border-radius: 14px;
+	border: solid 1px #d1ccd5;
+	background-color: #ffffff;
+	resize: none;
+`
 
 const TextArea = ({ helperText, label, required }) => {
-	const classes = useStyles()
 
 	return (
 		<>
 			{label && <Label text={label} required={required}/>}
 			<FormControl>
-				<TextareaAutosize aria-label="text-area" rowsMin={4} rowsMax={4} className={classes.textArea} />
+				<StyledTextArea aria-label="text-area" rowsMin={4} rowsMax={4} />
 				{ 
 					helperText && <HelperText text={helperText}/>
 				}
@@ -35,4 +31,5 @@ TextArea.propTypes = {
 	helperText:PropTypes.string,
 	required: PropTypes.bool,
 }
+
 export default TextArea

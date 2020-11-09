@@ -1,7 +1,7 @@
 import React from "react"
 import * as SC from "./style"
 
-export const EmailSent = () => {
+const EmailSent = () => {
     return (
         <SC.MainWrapper>
             <SC.ContentCol>
@@ -21,3 +21,4 @@ export const EmailSent = () => {
     )
 }
 
+export default EmailSent;
