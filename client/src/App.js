@@ -12,7 +12,7 @@ import About from "./scenes/About";
 import Terms from "./scenes/Terms";
 import Vocabulary from "./scenes/Vocabulary";
 import NotFound from "./scenes/NotFound";
-import {EmailSent} from "./scenes/signup";
+import {EmailSent} from "./scenes/Register";
 import api from "./services/api";
 import './App.css' // this!:w
 
