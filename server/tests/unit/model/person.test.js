@@ -33,6 +33,11 @@ describe('Person model', function() {
 		expect(tableName).to.eql('person');
 	});
 
+	it('has the right defaults', function() {
+		const defaults = instance.defaults;
+		expect(defaults).to.eql({status: 0});
+	});
+
 	it('has timestamps', function() {
 		const isTimestamps = instance.hasTimestamps;
 		expect(isTimestamps).to.eql(true);
