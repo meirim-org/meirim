@@ -14,12 +14,14 @@ const StyledInput = styled(TextField)`
 	}
 `
 
-const TextInput = ({helperText, name, variant = "outlined", type, label, required = false, size = "small"}) => {
+const TextInput = ({helperText, value, onChange, name, variant = "outlined", type, label, required = false, size = "small"}) => {
 
 	return (
 		<>
 			<Label required={required} text={label} />
 			<StyledInput
+				value={value}
+				onChange={onChange}
 				name={name}
 				variant={variant}
 				type={type}
@@ -35,7 +37,9 @@ const TextInput = ({helperText, name, variant = "outlined", type, label, require
 TextInput.propTypes = {
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
+	value: PropTypes.string.isRequired,
 	size: PropTypes.string,
+	onChange: PropTypes.func.isRequired,
 	required: PropTypes.bool,
 	helperText: PropTypes.string, 
 	label: PropTypes.string,

@@ -16,16 +16,18 @@ const StyledButton = styled(MUIButton)`
 	color: #ffffff;
 	background-color: #652dd0 !important;
 `
-const Button = ({text}) => {
+
+const Button = ({text, onClick}) => {
 	return ( 
-		<StyledButton size="small" variant="contained" color="primary">
+		<StyledButton size="small" onClick={onClick} variant="contained" color="primary">
 			{text}
 		</StyledButton>
 	)
 }
 
 Button.propTypes = {
-	text: PropTypes.string.isRequired
+	text: PropTypes.string.isRequired,
+	onClick: PropTypes.func
 }
 
 export default Button

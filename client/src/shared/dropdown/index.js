@@ -2,8 +2,8 @@ import { useState } from "react"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
 import PropTypes from "prop-types"
-import { Label } from "../"
 import styled from "styled-components"
+import { Label } from "../"
 
 const StyledSelect = styled(Select)`
 	background-color: white;
