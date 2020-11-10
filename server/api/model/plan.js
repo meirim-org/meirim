@@ -10,6 +10,7 @@ const PlanChartSixRow = require('./plan_chart_six_row');
 const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
+const PlanStatus = require('./plan_status');
 
 class Plan extends Model {
 	get rules () {
@@ -201,7 +202,10 @@ class Plan extends Model {
 
 			// delete existing chart rows since we have no identifiers for the single
 			// rows and so scrape them all again each time
-			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
+			for (let modelClass of [
+				PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow,
+				PlanStatus
+			]) {
 				const chartRows = await modelClass.query(qb => {
 					qb.where('plan_id', plan.id);
 				}).fetchAll();
@@ -273,6 +277,18 @@ class Plan extends Model {
 				for (let i = 0; i < chartSixData.length; i++) {
 					try {
 						await new PlanChartSixRow(chartSixData[i]).save(null, {transacting: transaction});
+					} catch (e) {
+						Log.error(e);
+					}
+				}
+			}
+
+			if (mavatData.statusHistory !== undefined) {
+				addPlanIdToArray(mavatData.statusHistory);
+
+				for (let i = 0; i < mavatData.statusHistory.length; i++) {
+					try {
+						await new PlanStatus(mavatData.statusHistory[i]).save(null, {transacting: transaction});
 					} catch (e) {
 						Log.error(e);
 					}

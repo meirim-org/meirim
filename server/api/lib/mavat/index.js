@@ -7,6 +7,7 @@ const Log = require('../../lib/log');
 const path = require('path');
 const http = require('follow-redirects').http;
 const fs = require('fs');
+const moment = require('moment');
 
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
 
@@ -236,6 +237,18 @@ const getAreaChanges = cheerioPage => {
 	return JSON.stringify(jsonTables.results);
 };
 
+const getStatusHistory = cheerioPage => {
+	const statusHistory = cheerioPage("#tblInternet tbody tr").map((rowId, row) => {
+		const cols = cheerio(row).find("td");
+		return {
+			status: cheerio(cols[0]).text().trim(),
+			date: moment(cheerio(cols[1]).text().trim(), 'DD/MM/YYYY').toDate()
+		};
+	}).get();
+
+	return statusHistory;
+};
+
 // function getShapeFile(cheerioPage) {
 
 //     shapefile.open("example.shp")
@@ -287,7 +300,8 @@ const getByPlan = plan =>
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
 				chartFive: pageInstructions ? pageInstructions.chartFive : undefined,
-				chartSix: pageInstructions ? pageInstructions.chartSix : undefined
+				chartSix: pageInstructions ? pageInstructions.chartSix : undefined,
+				statusHistory: getStatusHistory(cheerioPage)
 			});
 		});
 
