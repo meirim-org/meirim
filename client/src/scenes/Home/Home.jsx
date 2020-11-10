@@ -2,7 +2,7 @@ import React, { Fragment } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Wrapper from "../../components/Wrapper"
-import { RegisterForm, UserInfoForm } from "../../forms"
+import { Signup } from "../Register"
 
 import t from "../../locale/he_IL"
 import traktor from "../../assets/traktor_op.png"
@@ -111,7 +111,7 @@ export default function Home(props) {
 						<p>{t.howItWorks}</p>
 					</div>
 					<div className="col-lg-4">
-						<UserInfoForm />
+						<Signup />
 					</div>
 				</div>
 			</div>
