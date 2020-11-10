@@ -1,7 +1,7 @@
 import { useState } from "react"
+import CloseIcon from "@material-ui/icons/Close"
 import Modal from "@material-ui/core/Modal"
 import styled from "styled-components"
-import CloseIcon from "@material-ui/icons/Close"
 import PropTypes from "prop-types"
 
 const StyledModal = styled(Modal)`
