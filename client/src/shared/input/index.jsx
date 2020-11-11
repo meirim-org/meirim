@@ -1,7 +1,9 @@
-import TextField from "@material-ui/core/TextField"
-import PropTypes from "prop-types"
-import styled from "styled-components"
-import { HelperText, Label } from "../"
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import HelperText from '../helperText';
+import Label from '../label';
 
 const StyledInput = styled(TextField)`
 	background-color: white;
@@ -9,30 +11,37 @@ const StyledInput = styled(TextField)`
 	width: 24em;
 	border-radius: 12px !important;
 	& > div {
-		border-radius: 12px !important;
+    border-radius: 12px !important;
 		height: 2.75em;
 	}
-`
+`;
 
-const TextInput = ({helperText, value, onChange, name, variant = "outlined", type, label, required = false, size = "small"}) => {
+const TextInput = ({
+	helperText, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small',
+}) => (
+	<>
+		<Label required={required} text={label} />
+		<StyledInput
+			value={value}
+			onChange={onChange}
+			name={name}
+			variant={variant}
+			type={type}
+			size={size}
+		/>
+		{
+			helperText && <HelperText text={helperText} />
+		}
+	</>
+);
 
-	return (
-		<>
-			<Label required={required} text={label} />
-			<StyledInput
-				value={value}
-				onChange={onChange}
-				name={name}
-				variant={variant}
-				type={type}
-				size={size}
-			/>
-			{ 
-				helperText && <HelperText text={helperText}/>
-			}
-		</>
-	)
-}
+TextInput.defaultProps = {
+	size: 'small',
+	required: false,
+	helperText: '',
+	label: '',
+	variant: 'outlined',
+};
 
 TextInput.propTypes = {
 	name: PropTypes.string.isRequired,
@@ -41,12 +50,12 @@ TextInput.propTypes = {
 	size: PropTypes.string,
 	onChange: PropTypes.func.isRequired,
 	required: PropTypes.bool,
-	helperText: PropTypes.string, 
+	helperText: PropTypes.string,
 	label: PropTypes.string,
 	variant: PropTypes.string,
-}
+};
 
-export default TextInput
+export default TextInput;
 
 // const [showPassword, setShowPassword] = useState(true)
 
