@@ -14,10 +14,14 @@ const columns = [
 	'PLAN_CHARACTOR_NAME',
 	'geom'
 ];
-
 class PlanController extends Controller {
 
 	browse (req) {
+		const cols = [...columns,
+			'goals_from_mavat',
+			'main_details_from_mavat',
+		];
+
 		const { query } = req;
 		const where = {};
 
@@ -31,14 +35,14 @@ class PlanController extends Controller {
 		const order = '-id';
 
 		return super.browse(req, {
-			columns,
+			cols,
 			where,
 			order
 		});
 	}
 
 	publicBrowse (req) {
-
+		
 		const { query } = req;
 		const response = {
 			type: 'FeatureCollection',
@@ -47,7 +51,7 @@ class PlanController extends Controller {
 		};
 
 		if (!query.polygon) {
-			throw new Exception.BadRequest('Missing polygon and point params');
+			throw new Exception.BadRequest('Missing polygon param');
 		}
 
 		const points = req.query.polygon.split(';').map((i) => i.split(',').map((i) => parseFloat(i)));
@@ -139,10 +143,6 @@ class PlanController extends Controller {
 		return Knex.raw(
 			'SELECT status, COUNT(*) as num  FROM plan GROUP BY status'
 		).then(results => results[0]);
-	}
-
-	mapResult(){
-
 	}
 }
 
