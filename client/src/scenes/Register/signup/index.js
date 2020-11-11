@@ -49,7 +49,7 @@ const SecondStepSignup = () => {
 		},
 	]
 
-	return ( 
+	return (
 		<Modal>
 			<SC.MainWrapper>
 				<SC.Titles>
@@ -57,7 +57,7 @@ const SecondStepSignup = () => {
 				</SC.Titles>
 				<SC.InputsWrapper>
 					<SC.InputWrapper>
-						<TextInput name="name" label="כתובת" type="text" helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית"/>
+						<TextInput name="name" label="כתובת" type="text" helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" error={true}/>
 					</SC.InputWrapper>
 					<SC.InputWrapper>
 						<Dropdown options={dropDownOptions} required={true} label="מי אני"/>

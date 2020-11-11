@@ -12,6 +12,11 @@ const StyledSelect = styled(Select)`
 		left: 0.2em;
 		right: auto;
 	}
+    &.Mui-focused > fieldset,
+    &:hover > fieldset
+     {
+		border-color: #8f5de2 !important;
+	}
 `
 
 const Dropdown = ({ options, label, required }) => {
