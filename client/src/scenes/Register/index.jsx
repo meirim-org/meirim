@@ -72,12 +72,11 @@ const SignupForms = () => {
 			/>
 		)
 		: (
-		    <SuccessMessage />
-                // <FirstStepSignup
-                //     values={firstStepValues}
-                //     setValues={setFirstStepValues}
-                //     handleSubmit={handleFirstFormSubmit}
-                // />
+                <FirstStepSignup
+                    values={firstStepValues}
+                    setValues={setFirstStepValues}
+                    handleSubmit={handleFirstFormSubmit}
+                />
 		);
 };
 
