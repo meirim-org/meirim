@@ -30,16 +30,7 @@
 		transform: rotate(360deg);
 	}
 }
-.MuiOutlinedInput-input {
-	border: none;
-}
-.MuiInputBase-input {
-	border: none;
-}
 
-input[type='text'] {
-	border: none;
-}
-.MuiFormHelperText-root {
-	text-align: right !important;
+.MuiOutlinedInput-input {
+	padding: 14px 14px !important;
 }
