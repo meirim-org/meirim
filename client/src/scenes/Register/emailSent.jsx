@@ -1,7 +1,8 @@
-import styled from "styled-components"
-import { device } from '../../../style';
+import React from 'react';
+import styled from 'styled-components';
+import { device } from '../../style';
 
-export const MainWrapper = styled.div`
+const MainWrapper = styled.div`
     width: 100%;
     display: grid;
     grid-template-rows: 1fr;
@@ -10,9 +11,9 @@ export const MainWrapper = styled.div`
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
     }
-`
+`;
 
-export const ImageCol = styled.div`
+const ImageCol = styled.div`
     position: relative;
     overflow: hidden;
     display: none;
@@ -40,14 +41,16 @@ export const ImageCol = styled.div`
     @media ${device.tablet} { 
         display: block;  
     }
-`
-export const Image = styled.img`
+`;
+
+const Image = styled.img`
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: right;
-`
-export const ContentCol = styled.div`
+`;
+
+const ContentCol = styled.div`
     padding-top: 20vh;
     @media ${device.tablet} { 
         padding-top: 0;
@@ -55,16 +58,18 @@ export const ContentCol = styled.div`
         align-items: center;
         justify-content: center;
     }
-`
-export const Content = styled.div`
+`;
+
+const Content = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0 3.5rem;
     @media ${device.tablet} { 
         padding: 0 1rem;
     }
-`
-export const PreTitle = styled.span`
+`;
+
+const PreTitle = styled.span`
     font-size: 16px;
     font-family: Assistant;
     font-weight: 600;
@@ -78,8 +83,9 @@ export const PreTitle = styled.span`
     @media ${device.tablet} { 
         font-size: 24px;
     }
-`
-export const Title = styled.h1`
+`;
+
+const Title = styled.h1`
     font-family: Assistant;
     font-size: 32px;
     font-weight: 600;
@@ -94,8 +100,9 @@ export const Title = styled.h1`
         margin-bottom: 1.4rem;
         font-weight: 700;
     }
-`
-export const Text = styled.span`
+`;
+
+const Text = styled.span`
     font-family: Assistant;
     font-size: 16px;
     font-weight: normal;
@@ -111,12 +118,13 @@ export const Text = styled.span`
         padding: 0;
       font-size: 20px;
     }
-`
+`;
 
-export const SmallTextWrapper = styled.div`
+const SmallTextWrapper = styled.div`
   text-align: center;
-`
-export const SmallText = styled.span`
+`;
+
+const SmallText = styled.span`
   font-family: Assistant;
   font-size: 16px;
   font-weight: normal;
@@ -126,9 +134,9 @@ export const SmallText = styled.span`
   letter-spacing: normal;
   text-align: center;
   color: #000000;
-`
+`;
 
-export const Link = styled.span`
+const Link = styled.span`
   cursor: pointer;
   font-family: Assistant;
   font-size: 16px;
@@ -140,5 +148,30 @@ export const Link = styled.span`
   text-align: center;
   color: var(--meirim-purple);
   text-decoration: underline;
-	color: #652dd0;
-`
+  color: #652dd0;
+`;
+
+const EmailSent = () => (
+	<MainWrapper>
+		<ContentCol>
+			<Content>
+				<PreTitle>כמעט סיימנו...</PreTitle>
+				<Title>
+					נשאר רק לאשר את
+					<br />
+					כתובת האימייל שלך
+				</Title>
+				<Text>שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
+				<SmallTextWrapper>
+					<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
+					<Link>לחצו כאן</Link>
+				</SmallTextWrapper>
+			</Content>
+		</ContentCol>
+		<ImageCol>
+			<Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image" />
+		</ImageCol>
+	</MainWrapper>
+);
+
+export default EmailSent;
