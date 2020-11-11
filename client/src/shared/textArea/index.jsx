@@ -11,6 +11,12 @@ const StyledTextArea = styled(TextareaAutosize)`
 	border: solid 1px #d1ccd5;
 	background-color: #ffffff;
 	resize: none;
+    &:hover {
+        border-color: #8f5de2 !important;
+    }   
+    &:focus {
+        outline-color: #8f5de2 !important;
+    }
 `;
 
 const TextArea = ({
