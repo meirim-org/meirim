@@ -125,7 +125,8 @@ class PlanController extends Controller {
 						uri: `${Config.general.domain}plan/${row.get('id')}/`,
 						name: row.get('PL_NAME'),
 						county: row.get('PLAN_COUNTY_NAME'),
-						number: row.get('PL_NUMBER')
+						number: row.get('PL_NUMBER'),
+						distance:row.get('distance')
 					},
 					geometry: row.get('geom')
 				}));
