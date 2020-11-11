@@ -14,20 +14,10 @@ const columns = [
 	'PLAN_CHARACTOR_NAME',
 	'geom'
 ];
+
 class PlanController extends Controller {
 
 	browse (req) {
-		const columns = [
-			'id',
-			'PLAN_COUNTY_NAME',
-			'PL_NUMBER',
-			'PL_NAME',
-			'PLAN_CHARACTOR_NAME',
-			'goals_from_mavat',
-			'main_details_from_mavat',
-			'geom'
-		];
-
 		const { query } = req;
 		const where = {};
 
@@ -48,14 +38,6 @@ class PlanController extends Controller {
 	}
 
 	publicBrowse (req) {
-		const columns = [
-			'id',
-			'PLAN_COUNTY_NAME',
-			'PL_NUMBER',
-			'PL_NAME',
-			'PLAN_CHARACTOR_NAME',
-			'geom'
-		];
 
 		const { query } = req;
 		const response = {
@@ -125,14 +107,12 @@ class PlanController extends Controller {
 			throw new Exception.BadRequest('point is invalid'); 
 		}
 		const polygon = wkt.convert(geojson);
-		//columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`))
-		//const order = 'distance';
-
+		
 		return super
 			.browse(req, {
 				columns:[...columns, Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`)],
 				orderByRaw:['distance'],
-				pageSize: 1000
+				pageSize: 10
 			})
 			.then(rows => {
 				response.features = rows.map(row => ({
