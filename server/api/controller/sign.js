@@ -12,6 +12,17 @@ class SignController extends Controller {
 		return true;
 	}
 
+	async	authenticateEmail (req) {
+		const { email } = req.body;
+		if(!email) return false;
+		const isValidEmail = await Person.verifyEmail(email);
+		const isUserRegistered = await Person.isUserExist(email);
+
+		
+		console.log('SignController -> authenticateEmail -> isValidEmail && !isUserRegistered;', isValidEmail && !isUserRegistered);
+		return { validEmail: isValidEmail && !isUserRegistered };
+	}
+
 	signup (req) {
 		// check if user exists and not active
 		return this.model
@@ -27,7 +38,8 @@ class SignController extends Controller {
 						'Person send activation email to:',
 						existingPerson.get('id')
 					);
-					return Email.newSignUp(existingPerson);
+					return existingPerson;
+					// return Email.newSignUp(existingPerson);
 				}
 
 				// if there is a user but active, this will return an error
@@ -37,9 +49,10 @@ class SignController extends Controller {
 					.save()
 					.then((person) => {
 						Log.debug('Person create success id:', person.get('id'));
-						return Email.newSignUp(person);
-					})
-					.then(() => this.signin(req));
+						return person;
+						// return Email.newSignUp(person);
+					});
+				// .then(() => this.signin(req));
 			});
 	}
 

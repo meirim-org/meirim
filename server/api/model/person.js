@@ -19,6 +19,7 @@ class Person extends BaseModel {
 			type: ['required', 'string'],
 			social_network_url: 'string',
 			about_me: 'string',
+			address: 'string',
 			status: ['required', 'integer'], 
 			admin: ['integer']
 		};
@@ -166,6 +167,12 @@ class Person extends BaseModel {
 			.then(() => true);
 	}
 
+	static isUserExist (email) {
+		return Person.forge({email}).fetch().then(p => {
+			if(!p) return false;
+			else return true;
+		});
+	}
 	/**
    * Verify and email returning a promise
    * @param {string} email
