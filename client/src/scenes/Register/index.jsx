@@ -7,6 +7,7 @@ import { authenticateEmail, registerUser } from './handlers';
 import FirstStepSignup from './firstStep';
 import EmailSent from './emailSent';
 import SecondStepSignup from './secondStep';
+import SuccessMessage from './emailVerified.jsx';
 
 const dropDownOptions = [
 	{
@@ -71,11 +72,12 @@ const SignupForms = () => {
 			/>
 		)
 		: (
-			<FirstStepSignup
-				values={firstStepValues}
-				setValues={setFirstStepValues}
-				handleSubmit={handleFirstFormSubmit}
-			/>
+		    <SuccessMessage />
+                // <FirstStepSignup
+                //     values={firstStepValues}
+                //     setValues={setFirstStepValues}
+                //     handleSubmit={handleFirstFormSubmit}
+                // />
 		);
 };
 

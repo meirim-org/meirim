@@ -11,13 +11,14 @@ const StyledInput = styled(TextField)`
 	width: 24em;
 	border-radius: 12px !important;
 	& > div {
-    border-radius: 12px !important;
+        border-radius: 12px !important;
 		height: 2.75em;
 	}
     & > div.Mui-focused > fieldset,
     & > div:hover > fieldset
     {
 		border-color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
+        border-width: 2px;  
 	}
 	fieldset {
 	    border-color: ${(props) => (props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)')}
