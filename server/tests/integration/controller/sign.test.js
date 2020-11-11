@@ -14,7 +14,7 @@ const	personModel = require('../../../api/model/person');
 // chai.use(chaiAsPromised);
 // const assert = chai.assert;
 
-describe('Sign Controller - Signup' ,function() {
+describe.only('Sign Controller - Signup' ,function() {
 	this.timeout(10000);
 	let sinonSandbox;
 	const tables = ['person'];
@@ -47,8 +47,12 @@ describe('Sign Controller - Signup' ,function() {
 			session: {}
 		};
 
+		const isValidEmail = await personModel.verifyEmail(email);
+		const isAlreadyExist = await personModel.isUserExist(email);
+		expect(isAlreadyExist).to.eql(false);
+		expect(isValidEmail).to.eql(true);
 		const person = await signController.signup(req);
-
+		expect (await personModel.isUserExist(email)).to.eql(true);
 		expect(person.attributes.email).to.eql(req.body.email);
 		expect(person.attributes.status).to.eql(req.body.status);
 		const user = personModel.forge({
@@ -118,8 +122,8 @@ describe('Sign Controller - Signin' , function() {
 		expect(attributes.email).to.eql(email);
 		expect(attributes.id).to.eql(1);
 		expect(attributes.status).to.eql(1);
-
 	});
+
 	it('sign in should work with uppercase email', async function() {
 		const req = {
 			body: {
