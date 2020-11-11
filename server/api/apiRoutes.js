@@ -59,6 +59,7 @@ Router.get('/me/', wrap(Alert.browse, Alert));
 
 // Public API
 Router.get('/public/plan', publicWrapper(Plan.publicBrowse, Plan));
+Router.get('/public/plan/distance', publicWrapper(Plan.publicBrowseDistance, Plan));
 // Router.get('/cron/send_planning_alerts', wrap(sendPlanningAlerts));
 
 // Tag
