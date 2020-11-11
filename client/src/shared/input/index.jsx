@@ -14,10 +14,21 @@ const StyledInput = styled(TextField)`
     border-radius: 12px !important;
 		height: 2.75em;
 	}
+    & > div.Mui-focused > fieldset,
+    & > div:hover > fieldset
+    {
+		border-color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
+	}
+	fieldset {
+	    border-color: ${(props) => (props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)')}
+	}
+	& + p {
+	    color: ${(props) => (props.error ? 'red !important' : 'rgba(0, 0, 0, 0.23)')};
+	}
 `;
 
 const TextInput = ({
-	helperText, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small',
+	helperText, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false,
 }) => (
 	<>
 		<Label required={required} text={label} />
@@ -28,6 +39,7 @@ const TextInput = ({
 			variant={variant}
 			type={type}
 			size={size}
+			error={error}
 		/>
 		{
 			helperText && <HelperText text={helperText} />
@@ -41,6 +53,7 @@ TextInput.defaultProps = {
 	helperText: '',
 	label: '',
 	variant: 'outlined',
+	error: false,
 };
 
 TextInput.propTypes = {
@@ -53,6 +66,7 @@ TextInput.propTypes = {
 	helperText: PropTypes.string,
 	label: PropTypes.string,
 	variant: PropTypes.string,
+	error: PropTypes.bool,
 };
 
 export default TextInput;
