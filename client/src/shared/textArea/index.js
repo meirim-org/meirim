@@ -9,6 +9,12 @@ const StyledTextArea = styled(TextareaAutosize)`
 	border: solid 1px #d1ccd5;
 	background-color: #ffffff;
 	resize: none;
+    &:hover {
+        border-color: #8f5de2 !important;
+    }   
+    &:focus {
+        outline-color: #8f5de2 !important;
+    }
 `
 
 const TextArea = ({ helperText, label, required }) => {
@@ -18,7 +24,7 @@ const TextArea = ({ helperText, label, required }) => {
 			{label && <Label text={label} required={required}/>}
 			<FormControl>
 				<StyledTextArea aria-label="text-area" rowsMin={4} rowsMax={4} />
-				{ 
+				{
 					helperText && <HelperText text={helperText}/>
 				}
 			</FormControl>

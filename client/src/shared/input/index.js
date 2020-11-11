@@ -1,7 +1,8 @@
 import TextField from "@material-ui/core/TextField"
 import PropTypes from "prop-types"
 import styled from "styled-components"
-import { HelperText, Label } from "../"
+import {HelperText, Label} from "../"
+
 
 const StyledInput = styled(TextField)`
 	background-color: white;
@@ -12,38 +13,51 @@ const StyledInput = styled(TextField)`
 		border-radius: 12px !important;
 		height: 2.75em;
 	}
+    & > div.Mui-focused > fieldset,
+    & > div:hover > fieldset
+    {
+		border-color: ${props => props.error ? '#ff3a68' : '#8f5de2 !important'} ;
+	}
+	fieldset {
+	    border-color: ${props => props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)'}
+	}
+	& + p {
+	    color: ${props => props.error ? 'red !important' : 'rgba(0, 0, 0, 0.23)'};
+	}
 `
 
-const TextInput = ({helperText, value, onChange, name, variant = "outlined", type, label, required = false, size = "small"}) => {
+const TextInput = ({helperText, value, onChange, name, variant = "outlined", type, label, required = false, size = "small", error = false}) => {
 
-	return (
-		<>
-			<Label required={required} text={label} />
-			<StyledInput
-				value={value}
-				onChange={onChange}
-				name={name}
-				variant={variant}
-				type={type}
-				size={size}
-			/>
-			{ 
-				helperText && <HelperText text={helperText}/>
-			}
-		</>
-	)
+    return (
+        <>
+            <Label required={required} text={label}/>
+            <StyledInput
+                value={value}
+                onChange={onChange}
+                name={name}
+                variant={variant}
+                type={type}
+                size={size}
+                error={error}
+            />
+            {
+                helperText && <HelperText text={helperText}/>
+            }
+        </>
+    )
 }
 
 TextInput.propTypes = {
-	name: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	value: PropTypes.string.isRequired,
-	size: PropTypes.string,
-	onChange: PropTypes.func.isRequired,
-	required: PropTypes.bool,
-	helperText: PropTypes.string, 
-	label: PropTypes.string,
-	variant: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    size: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    required: PropTypes.bool,
+    helperText: PropTypes.string,
+    label: PropTypes.string,
+    variant: PropTypes.string,
+    error: PropTypes.bool,
 }
 
 export default TextInput
