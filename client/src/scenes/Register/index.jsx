@@ -6,6 +6,7 @@ import api from '../../services/api';
 import { authenticateEmail, registerUser } from './handlers';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
+import SuccessMessage from './emailVerified.jsx';
 
 const dropDownOptions = [
 	{

@@ -10,7 +10,7 @@ export const Required = styled.span`
 const Label = ({ required = false, text }) => (
 	<InputLabel>
 		{text}
-		{required && <Required>*</Required>}
+		{required && <Required> *</Required>}
 	</InputLabel>
 );
 
