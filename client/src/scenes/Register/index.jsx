@@ -4,11 +4,8 @@ import { Redirect } from "react-router-dom"
 import PropTypes from 'prop-types';
 import api from '../../services/api';
 import { authenticateEmail, registerUser } from './handlers';
-// import { validateForm } from '../validate';
 import FirstStepSignup from './firstStep';
-import EmailSent from './emailSent';
 import SecondStepSignup from './secondStep';
-import * as yup from 'yup';
 
 const dropDownOptions = [
 	{
