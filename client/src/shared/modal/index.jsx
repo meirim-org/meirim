@@ -4,6 +4,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import MUIModal from '@material-ui/core/Modal';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { device } from '../../style';
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -26,6 +27,10 @@ const ModalContentWRapper = styled.div`
 	flex-direction: column;
 	background-color: #ffffff;
 	border-radius: 15px 15px;
+	max-width: 93vw;
+    @media ${device.tablet} {
+      max-width: initial;
+    }
 `;
 
 const IconWrapper = styled.div`
