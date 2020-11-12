@@ -6,9 +6,9 @@ import {
 } from '../../shared';
 import * as SC from './style';
 
-const FirstStepSignup = ({ handleSubmit, values, setValues }) => {
+const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const { name, email, password } = values;
-
+	const { nameError, emailError, passwordError } = errors
 	return (
 		<Modal>
 			<SC.MainWrapper>
@@ -25,13 +25,22 @@ const FirstStepSignup = ({ handleSubmit, values, setValues }) => {
 				<SC.InputsWrapper>
 					<SC.InputsTitle>הרשמה למעירים</SC.InputsTitle>
 					<SC.InputWrapper>
-						<TextInput name="name" label="שם מלא" type="text" value={name} onChange={({ target: { value } }) => setValues({ name: value, email, password })} required />
+						<TextInput name="name" onFocus={inputFocus} onBlur={inputBlur} error={!nameError.isValid} label="שם מלא" type="text" value={name} onChange={({ target: { value } }) => setValues({ name: value, email, password })} required />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<TextInput name="email" label="אימייל" type="email" value={email} onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
+						<TextInput 
+							name="email" 
+							helperText={!emailError.isValid && emailError.message ? emailError.message : ''} 
+							onFocus={inputFocus} 
+							onBlur={inputBlur} 
+							error={!emailError.isValid}
+							label="אימייל" 
+							type="email" 
+							value={email} 
+							onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<TextInput name="password" label="סיסמא" type="password" value={password} onChange={({ target: { value } }) => setValues({ name, email, password: value })} required />
+						<TextInput name="password" onFocus={inputFocus} onBlur={inputBlur} error={!passwordError.isValid} label="סיסמא" type="password" value={password} onChange={({ target: { value } }) => setValues({ name, email, password: value })} required />
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
@@ -50,6 +59,7 @@ FirstStepSignup.propTypes = {
 	}).isRequired,
 	setValues: PropTypes.func.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
+	errors: PropTypes.object.isRequired
 };
 
 export default FirstStepSignup;
