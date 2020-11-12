@@ -7,7 +7,6 @@ const MainWrapper = styled.div`
     width: 100%;
     display: grid;
     grid-template-rows: 1fr;
-    height: 100vh;
     grid-template-columns: 1fr;
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
