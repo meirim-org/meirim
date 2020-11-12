@@ -41,6 +41,8 @@ describe.only('Sign Controller - Signup' ,function() {
 				email,
 				password,
 				status: 0,
+				address: 'addre',
+				about_me: 'aboutme',
 				name: 'my name',
 				type: 'user_type'
 			},

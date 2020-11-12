@@ -1,12 +1,12 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { useState } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
-import Modal from '@material-ui/core/Modal';
+import MUIModal from '@material-ui/core/Modal';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { device } from '../../style';
 
-const StyledModal = styled(Modal)`
+const StyledModal = styled(MUIModal)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -38,7 +38,7 @@ const IconWrapper = styled.div`
 	padding-right: 0.5em;
 `;
 
-const MainModal = ({ children }) => {
+const Modal = ({ children }) => {
 	const [isOpen, setIsOpen] = useState(true);
 
 	return (
@@ -55,8 +55,8 @@ const MainModal = ({ children }) => {
 	);
 };
 
-MainModal.propTypes = {
+Modal.propTypes = {
 	children: PropTypes.object.isRequired,
 };
 
-export default MainModal;
+export default Modal;

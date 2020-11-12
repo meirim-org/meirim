@@ -29,8 +29,9 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-	helperText, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false,
-}) => (
+	helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false 
+}) =>{ 
+	return (
 	<>
 		<Label required={required} text={label} />
 		<StyledInput
@@ -38,15 +39,17 @@ const TextInput = ({
 			onChange={onChange}
 			name={name}
 			variant={variant}
+			onFocus={() => onFocus && onFocus(name)}
+			onBlur={() => onBlur && onBlur(name)}
 			type={type}
 			size={size}
 			error={error}
 		/>
 		{
-			helperText && <HelperText text={helperText} />
+			helperText && <HelperText error={error} text={helperText} />
 		}
 	</>
-);
+); }
 
 TextInput.defaultProps = {
 	size: 'small',
