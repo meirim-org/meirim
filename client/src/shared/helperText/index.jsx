@@ -12,10 +12,10 @@ const StyledHelperText = styled(FormHelperText)`
 	line-height: 1.5;
 	text-align: right !important;
   letter-spacing: normal;
-  color: #8f5de2 !important;
+  color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
 `;
 
-const HelperText = ({ text }) => (
+const HelperText = ({ error, text }) => (
 	<>
 		<StyledHelperText>{text}</StyledHelperText>
 	</>
