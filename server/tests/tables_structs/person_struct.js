@@ -6,6 +6,7 @@ const PersonStruct = function(table) {
 	table.string('name');
 	table.string('social_network_url');
 	table.string('about_me');
+	table.string('address');
 	table.string('email');
 	table.integer('status');
 	table.timestamps();

@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { device } from '../../style';
+import Wrapper from "../../components/Wrapper";
 
 const MainWrapper = styled.div`
     width: 100%;
     display: grid;
     grid-template-rows: 1fr;
-    height: 100vh;
     grid-template-columns: 1fr;
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
@@ -152,26 +152,28 @@ const Link = styled.span`
 `;
 
 const EmailSent = () => (
-	<MainWrapper>
-		<ContentCol>
-			<Content>
-				<PreTitle>כמעט סיימנו...</PreTitle>
-				<Title>
-					נשאר רק לאשר את
-					<br />
-					כתובת האימייל שלך
-				</Title>
-				<Text>שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
-				<SmallTextWrapper>
-					<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
-					<Link>לחצו כאן</Link>
-				</SmallTextWrapper>
-			</Content>
-		</ContentCol>
-		<ImageCol>
-			<Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image" />
-		</ImageCol>
-	</MainWrapper>
+    <Wrapper>
+        <MainWrapper>
+            <ContentCol>
+                <Content>
+                    <PreTitle>כמעט סיימנו...</PreTitle>
+                    <Title>
+                        נשאר רק לאשר את
+                        <br />
+                        כתובת האימייל שלך
+                    </Title>
+                    <Text>שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
+                    <SmallTextWrapper>
+                        <SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
+                        <Link>לחצו כאן</Link>
+                    </SmallTextWrapper>
+                </Content>
+            </ContentCol>
+            <ImageCol>
+                <Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image" />
+            </ImageCol>
+        </MainWrapper>
+    </Wrapper>
 );
 
 export default EmailSent;

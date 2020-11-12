@@ -12,7 +12,7 @@ import About from "./scenes/About";
 import Terms from "./scenes/Terms";
 import Vocabulary from "./scenes/Vocabulary";
 import NotFound from "./scenes/NotFound";
-// import {EmailSent} from "./scenes/Register";
+import EmailSent from "./scenes/Register/emailSent";
 import api from "./services/api";
 import './App.css' // this!:w
 
@@ -105,10 +105,10 @@ class App extends Component {
                             path="/404"
                             render={props => <NotFound {...props} me={me} />}
                         />
-                        {/* <Route
+                        <Route
                             path="/email-sent"
                             render={props => <EmailSent {...props} me={me} />}
-                        /> */}
+                        />
                         <Route component={NotFound} />
                     </Switch>
                 </div>
