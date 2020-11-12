@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const StyledLink = styled.span`
   font-family: Assistant;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: ${(props) => (props.bold ? '700' : '400')} ;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -16,12 +16,13 @@ const StyledLink = styled.span`
   cursor: pointer;
 `;
 
-const Link = ({ text }) => (
-	<StyledLink href="#">{text}</StyledLink>
+const Link = ({ text, bold = false }) => (
+	<StyledLink href="#" bold={bold}>{text}</StyledLink>
 );
 
 Link.propTypes = {
 	text: PropTypes.string.isRequired,
+    bold: PropTypes.bool,
 };
 
 export default Link;
