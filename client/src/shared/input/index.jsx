@@ -29,27 +29,38 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-	helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false 
+	helperText,
+	onFocus, 
+	onBlur, 
+	value, 
+	onChange, 
+	name, 
+	variant = 'outlined', 
+	type, 
+	label, 
+	required = false, 
+	size = 'small', 
+	error = false 
 }) =>{ 
 	return (
-	<>
-		<Label required={required} text={label} />
-		<StyledInput
-			value={value}
-			onChange={onChange}
-			name={name}
-			variant={variant}
-			onFocus={() => onFocus && onFocus(name)}
-			onBlur={() => onBlur && onBlur(name)}
-			type={type}
-			size={size}
-			error={error}
-		/>
-		{
-			helperText && <HelperText error={error} text={helperText} />
-		}
-	</>
-); }
+		<>
+			<Label required={required} text={label} />
+			<StyledInput
+				value={value}
+				onChange={onChange}
+				name={name}
+				variant={variant}
+				onFocus={() => onFocus && onFocus(name)}
+				onBlur={() => onBlur && onBlur(name)}
+				type={type}
+				size={size}
+				error={error}
+			/>
+			{
+				helperText && <HelperText error={error} text={helperText} />
+			}
+		</>
+	); }
 
 TextInput.defaultProps = {
 	size: 'small',
@@ -58,6 +69,8 @@ TextInput.defaultProps = {
 	label: '',
 	variant: 'outlined',
 	error: false,
+	onBlur: {},
+	onFocus: {},
 };
 
 TextInput.propTypes = {
@@ -70,6 +83,8 @@ TextInput.propTypes = {
 	helperText: PropTypes.string,
 	label: PropTypes.string,
 	variant: PropTypes.string,
+	onFocus: PropTypes.func,
+	onBlur: PropTypes.func,
 	error: PropTypes.bool,
 };
 

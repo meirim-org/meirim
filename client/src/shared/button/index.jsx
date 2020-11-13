@@ -14,19 +14,19 @@ const StyledButton = styled(MUIButton)`
 	text-align: center;
 	color: #ffffff;
 	background-color: #652dd0 !important;
-    min-height: ${(props) => (props.small ? '1em' : '3.7em')}
+  min-height: ${(props) => (props.small ? '1em' : '3.7em')};
 `;
 
 const Button = ({text, onClick, small = false}) => (
-    <StyledButton size="small" onClick={onClick} variant="contained" color="primary" small={small}>
-        {text}
-    </StyledButton>
+	<StyledButton size="small" onClick={onClick} variant="contained" color="primary" small={small}>
+		{text}
+	</StyledButton>
 );
 
 Button.propTypes = {
-    text: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    small: PropTypes.bool,
+	text: PropTypes.string.isRequired,
+	onClick: PropTypes.func.isRequired,
+	small: PropTypes.bool,
 };
 
 export default Button;
