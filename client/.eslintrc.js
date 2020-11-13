@@ -1,28 +1,41 @@
 module.exports = {
-	env: {
-		browser: true,
-		es2021: true,
+	'env': {
+		'browser': true,
+		'es6': true
 	},
-	extends: [
-		'plugin:react/recommended',
-		'airbnb',
+	'extends': [
+		'eslint:recommended',
+		'plugin:react/recommended'
 	],
-	parserOptions: {
-		ecmaFeatures: {
-			jsx: true,
+	'globals': {
+		'Atomics': 'readonly',
+		'SharedArrayBuffer': 'readonly'
+	},
+	'parserOptions': {
+		'ecmaFeatures': {
+			'jsx': true
 		},
-		ecmaVersion: 12,
-		sourceType: 'module',
+		'ecmaVersion': 2018,
+		'sourceType': 'module'
 	},
-	plugins: [
-		'react',
+	'plugins': [
+		'react'
 	],
-	rules: {
-		indent: [2, 'tab', { SwitchCase: 1, VariableDeclarator: 1 }],
-		'no-undef': 'warn',
-		'no-tabs': 0,
-		'react/jsx-indent': [2, 'tab'],
-		'react/jsx-indent-props': [2, 'tab'],
-
-	},
-};
+	'rules': {
+		'indent': [
+			'error',
+			'tab'
+		],
+		'linebreak-style': [
+			'error',
+			'unix'
+		],
+		'quotes': [
+			'error',
+			'single'
+		],
+		'newline-before-return': [
+			'error'
+		]
+	}
+}

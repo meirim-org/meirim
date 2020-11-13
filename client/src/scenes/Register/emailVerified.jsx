@@ -1,10 +1,8 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import styled from 'styled-components';
 import { Modal, Button, Link } from '../../shared';
 import SucessIcon from '../../assets/svg/successIcon';
 import { device } from '../../style';
-
 
 const MainWrapper = styled.div`
 `;

@@ -22,7 +22,7 @@ const Link = ({ text, bold = false }) => (
 
 Link.propTypes = {
 	text: PropTypes.string.isRequired,
-    bold: PropTypes.bool,
+	bold: PropTypes.bool,
 };
 
 export default Link;

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,6 +8,7 @@ import * as SC from './style';
 const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const { name, email, password } = values;
 	const { nameError, emailError, passwordError } = errors
+	
 	return (
 		<Modal>
 			<SC.MainWrapper>
@@ -40,7 +40,17 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 							onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<TextInput name="password" onFocus={inputFocus} onBlur={inputBlur} error={!passwordError.isValid} label="סיסמא" type="password" value={password} onChange={({ target: { value } }) => setValues({ name, email, password: value })} required />
+						<TextInput 
+							name="password" 
+							helperText={!emailError.isValid && emailError.message ? emailError.message : ''} 
+							onFocus={inputFocus} 
+							onBlur={inputBlur} 
+							error={!passwordError.isValid}
+							label="סיסמא" 
+							type="password"
+							value={password}
+							onChange={({ target: { value } }) => setValues({ name, email, password: value })} 
+							required />
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
@@ -59,7 +69,9 @@ FirstStepSignup.propTypes = {
 	}).isRequired,
 	setValues: PropTypes.func.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
-	errors: PropTypes.object.isRequired
+	errors: PropTypes.object.isRequired,
+	inputFocus: PropTypes.func,
+	inputBlur: PropTypes.func,
 };
 
 export default FirstStepSignup;
