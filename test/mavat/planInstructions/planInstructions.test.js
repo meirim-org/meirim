@@ -954,3 +954,27 @@ describe('Taba8 parsing test', function() {
 
 
 });
+
+describe('local test1', function() {
+    let data;
+    const TEST_PLANS_DIR = 'testLocal1';
+
+    before(async () =>
+        data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+
+    it('testing testing', () =>
+        assert.strictEqual(true,true));
+
+});
+
+describe('local test3', function() {
+    let data;
+    const TEST_PLANS_DIR = 'testLocal3';
+
+    before(async () =>
+        data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR)));
+
+    it('testing testing', () =>
+        assert.strictEqual(true,true));
+
+});
