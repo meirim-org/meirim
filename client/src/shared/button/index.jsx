@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const StyledButton = styled(MUIButton)`
 	border-radius: 12px;
 	height: 2.75em;
-	font-family: Assistant;
+	font-family: Assistant
 	font-size: 16px;
 	font-weight: bold;
 	font-stretch: normal;
@@ -19,14 +19,14 @@ const StyledButton = styled(MUIButton)`
 `;
 
 const Button = ({ text, onClick }) => (
-	<StyledButton size="small" onClick={onClick} variant="contained" color="primary">
-		{text}
-	</StyledButton>
+    <StyledButton size="small" onClick={onClick} variant="contained" color="primary">
+        {text}
+    </StyledButton>
 );
 
 Button.propTypes = {
-	text: PropTypes.string.isRequired,
-	onClick: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default Button;
