@@ -1,23 +1,34 @@
 import styled from 'styled-components';
+import { device } from '../../style';
 
 export const Titles = styled.div`
-  padding-bottom: 2em;
+  padding: 0 1.5em 0;
   display: grid;
+  @media ${device.tablet} {
+     padding: 0 1.5em 0;
+  }
 `;
 
 export const Title = styled.h1`
-	font-size: 1.8em;
+  font-size: 24px;
+  font-weight: 400;
   text-align: center;
   font-family: Assistant !important; 
   font-weight: 600;
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
+  margin-bottom: 1.3em;
   letter-spacing: normal;
   color: #29244a;
+  @media ${device.tablet} {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 1em;
+  }
 `;
 
-export const SubTitle = styled.h1`
+export const SubTitle = styled.h2`
   font-family: Assistant !important;
   font-size: 16px;
   font-weight: normal;
@@ -27,32 +38,40 @@ export const SubTitle = styled.h1`
   line-height: 1.5;
   text-align: center;
   color: #000000;
+  margin-bottom: 0;
 `;
 
 export const SubTitleWrapper = styled.div`
+    padding-bottom: 3em;
+    @media ${device.tablet} {
+     padding-bottom: 2.5em;
+    }
 `;
 
 export const InputsWrapper = styled.div`
-  display: grid;
   background-color: #f1eef2;
-  padding-top: 1em;
+  padding: 1.5em 1.5em 0.5em;
+  @media ${device.tablet} {
+     padding: 1.5em 3.7em 1em;
+  }
 `;
 
 export const MainWrapper = styled.div`
-  display: grid;
 `;
 
 export const InputWrapper = styled.div`
-  padding: 1em 4em 0 4em;
   display: flex;
   flex-direction: column;
+  margin-bottom: 1.5em;
+  .MuiFormControl-root {
+    max-width: 100%;
+  }
 `;
 
 export const InputsTitle = styled.div`
   font-family: Assistant !important;
   font-size: 20px;
   font-weight: normal;
-  padding-top: 1em;
   padding-bottom: 0;
   font-stretch: normal;
   font-style: normal;
@@ -60,13 +79,18 @@ export const InputsTitle = styled.div`
   letter-spacing: normal;
   text-align: center;
   color: #3e385c;
+  margin-bottom: 1.2em;
 `;
 
 export const ButtonWrapper = styled.div`
   border-radius:0 0 12px 12px;
   background-color: #f1eef2;
   display: grid;
-  padding: 2.5em 4em 2em 4em;
+  padding: 0 1.5em 2.45em;
+    @media ${device.tablet} {
+     max-width: initial;
+     padding: 0 3.7em 2.45em;
+  }
 `;
 
 export const Label = styled.div`
@@ -84,4 +108,3 @@ export const Label = styled.div`
 export const Star = styled.span`
   color:red;
 `;
-

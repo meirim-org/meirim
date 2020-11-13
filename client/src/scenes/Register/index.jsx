@@ -1,11 +1,10 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import { Redirect } from "react-router-dom"
-import PropTypes from 'prop-types';
-import api from '../../services/api';
 import { authenticateEmail, registerUser } from './handlers';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
+import SuccessMessage from './emailVerified.jsx';
 
 const dropDownOptions = [
 	{
