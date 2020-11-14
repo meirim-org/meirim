@@ -50,10 +50,10 @@ const SignupForms = () => {
 		const isValidEmail = onFocusInput.email  || Boolean(email)? true : !dirtyInputs.email
 		const isValidName = onFocusInput.name  || Boolean(name) ? true : !dirtyInputs.name
 		const isValidPassword = onFocusInput.password  || password.length > 6 ? true : !dirtyInputs.password
-		const emailError = {isValid: isValidEmail, message: email? 'שדה חובה' : ''}
-		const nameError = {isValid: isValidName, message: name? 'שדה חובה' : ''}
-		const passwordError = {isValid: isValidPassword, message: password? 'לפחות ששה תווים' : ''}
-		setFormErrors({...formErrors, emailError, nameError, passwordError})
+		const emailError = {isValid: isValidEmail, message: isValidEmail? '' : 'שדה חובה'}
+		const nameError = {isValid: isValidName, message: isValidName ? '' : 'שדה חובה'}
+		const passwordError = {isValid: isValidPassword, message: isValidPassword ? '' : 'לפחות ששה תווים'}
+		setFormErrors(f => ({...f, emailError, nameError, passwordError}))
 	}, [firstStepValues, onFocusInput, dirtyInputs])
 
 	const handleSecondFormSubmit = async () => {
