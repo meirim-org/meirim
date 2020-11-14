@@ -25,7 +25,16 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 				<SC.InputsWrapper>
 					<SC.InputsTitle>הרשמה למעירים</SC.InputsTitle>
 					<SC.InputWrapper>
-						<TextInput name="name" onFocus={inputFocus} onBlur={inputBlur} error={!nameError.isValid} label="שם מלא" type="text" value={name} onChange={({ target: { value } }) => setValues({ name: value, email, password })} required />
+						<TextInput 
+							name="name" 
+							onFocus={inputFocus} 
+							onBlur={inputBlur} 
+							error={!nameError.isValid} 
+							label="שם מלא" 
+							type="text" 
+							value={name} 
+							onChange={({ target: { value } }) => setValues({ name: value, email, password })} 
+							required />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
 						<TextInput 
@@ -42,7 +51,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<SC.InputWrapper>
 						<TextInput 
 							name="password" 
-							helperText={!emailError.isValid && emailError.message ? emailError.message : ''} 
+							helperText={!passwordError.isValid && passwordError.message ? passwordError.message : ''} 
 							onFocus={inputFocus} 
 							onBlur={inputBlur} 
 							error={!passwordError.isValid}
