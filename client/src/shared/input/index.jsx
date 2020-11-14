@@ -16,7 +16,7 @@ const StyledInput = styled(TextField)`
 	}
     & > div.Mui-focused > fieldset,
     & > div:hover > fieldset,
-    & > divMui-error > fieldset
+    & > .Mui-error > fieldset
     {
 		border-color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
         border-width: 2px !important;  
