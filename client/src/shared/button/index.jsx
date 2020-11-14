@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 const StyledButton = styled(MUIButton)`
 	border-radius: ${(props) => (props.small ? '8px !important' : '12px !important')};
-	font-family: Assistant;
 	font-size: 16px;
 	font-weight: bold !important;
 	font-stretch: normal;
@@ -14,7 +13,13 @@ const StyledButton = styled(MUIButton)`
 	text-align: center;
 	color: #ffffff;
 	background-color: #652dd0 !important;
-    min-height: ${(props) => (props.small ? '1em' : '3.7em')}
+    min-height: ${(props) => (props.small ? '1em' : '3.7em')};
+    .MuiButton-label  {
+    	font-family: Assistant !important;
+    }
+    &:focus {
+       outline: none;
+    }
 `;
 
 const Button = ({text, onClick, small = false}) => (
