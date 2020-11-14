@@ -164,7 +164,7 @@ const EmailSent = ({fullPage = true}) => {
 							<br/>
                             כתובת האימייל שלך
 						</Title>
-						<Text>שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
+						<Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
 						<SmallTextWrapper>
 							<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
 							<Link>לחצו כאן</Link>

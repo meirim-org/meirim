@@ -10,7 +10,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 	const { nameError, emailError, passwordError } = errors
 	
 	return (
-		<Modal>
+		<Modal id="register-firststep-modal">
 			<SC.MainWrapper>
 				<SC.Titles>
 					<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
@@ -18,7 +18,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						<SC.SubTitle>כדי להשלים את הפעולה עלכים להיות מחוברים</SC.SubTitle>
 						<SC.SubTitle>
 							<span>כבר רשומים? </span>
-							<Link text="התחברות" bold={true} />
+							<Link id="register-signin-link" text="התחברות" bold={true} />
 						</SC.SubTitle>
 					</SC.SubTitleWrapper>
 				</SC.Titles>
@@ -66,7 +66,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
-					<Button text="המשך" onClick={handleSubmit} />
+					<Button id="register-firststep-button" text="המשך" onClick={handleSubmit} />
 				</SC.ButtonWrapper>
 			</SC.MainWrapper>
 		</Modal>

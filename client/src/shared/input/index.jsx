@@ -40,7 +40,7 @@ const TextInput = ({
 }) =>{
 	return (
 		<>
-			<Label required={required} text={label} />
+			<Label id={`${id}-label`}required={required} text={label} />
 			<StyledInput
 				id={id}
 				value={value}
@@ -54,7 +54,7 @@ const TextInput = ({
 				error={error}
 			/>
 			{
-				helperText && <HelperText error={error} text={helperText} />
+				helperText && <HelperText id={`${id}-helperText`} error={error} text={helperText} />
 			}
 		</>
 	); }
@@ -66,8 +66,8 @@ TextInput.defaultProps = {
 	label: '',
 	variant: 'outlined',
 	error: false,
-	onFocus: {},
-	onBlur: {}
+	onFocus:() => {}, 
+	onBlur: () => {}
 };
 
 TextInput.propTypes = {
@@ -75,8 +75,8 @@ TextInput.propTypes = {
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
-	onFocus: PropTypes.string.isRequired,
-	onBlur: PropTypes.string.isRequired,
+	onFocus: PropTypes.func.isRequired,
+	onBlur: PropTypes.func.isRequired,
 	size: PropTypes.string,
 	onChange: PropTypes.func.isRequired,
 	required: PropTypes.bool,
