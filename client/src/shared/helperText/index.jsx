@@ -15,15 +15,16 @@ const StyledHelperText = styled(FormHelperText)`
   color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
 `;
 
-const HelperText = ({ text }) => { 
+const HelperText = ({ id, text }) => { 
 	return (
 		<>
-			<StyledHelperText>{text}</StyledHelperText>
+			<StyledHelperText id={id}>{text}</StyledHelperText>
 		</>
 	); 
 }
 
 HelperText.propTypes = {
+	id: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 };
 

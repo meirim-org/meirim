@@ -36,48 +36,54 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-  helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false
-  }) =>{
-    return (
-        <>
-            <Label required={required} text={label} />
-            <StyledInput
-                value={value}
-                onChange={onChange}
-                name={name}
-                variant={variant}
-                onFocus={() => onFocus && onFocus(name)}
-                onBlur={() => onBlur && onBlur(name)}
-                type={type}
-                size={size}
-                error={error}
-            />
-            {
-                helperText && <HelperText error={error} text={helperText} />
-            }
-        </>
-    ); }
+	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false
+}) =>{
+	return (
+		<>
+			<Label required={required} text={label} />
+			<StyledInput
+				id={id}
+				value={value}
+				onChange={onChange}
+				name={name}
+				variant={variant}
+				onFocus={() => onFocus && onFocus(name)}
+				onBlur={() => onBlur && onBlur(name)}
+				type={type}
+				size={size}
+				error={error}
+			/>
+			{
+				helperText && <HelperText error={error} text={helperText} />
+			}
+		</>
+	); }
 
 TextInput.defaultProps = {
-    size: 'small',
-    required: false,
-    helperText: '',
-    label: '',
-    variant: 'outlined',
-    error: false,
+	size: 'small',
+	required: false,
+	helperText: '',
+	label: '',
+	variant: 'outlined',
+	error: false,
+	onFocus: {},
+	onBlur: {}
 };
 
 TextInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    size: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    required: PropTypes.bool,
-    helperText: PropTypes.string,
-    label: PropTypes.string,
-    variant: PropTypes.string,
-    error: PropTypes.bool,
+	id: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	type: PropTypes.string.isRequired,
+	value: PropTypes.string.isRequired,
+	onFocus: PropTypes.string.isRequired,
+	onBlur: PropTypes.string.isRequired,
+	size: PropTypes.string,
+	onChange: PropTypes.func.isRequired,
+	required: PropTypes.bool,
+	helperText: PropTypes.string,
+	label: PropTypes.string,
+	variant: PropTypes.string,
+	error: PropTypes.bool,
 };
 
 export default TextInput;

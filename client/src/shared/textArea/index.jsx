@@ -25,31 +25,32 @@ const StyledTextArea = styled(TextareaAutosize)`
 `;
 
 const TextArea = ({
-                      value, onChange, helperText, label, required,
-                  }) => (
-    <>
-        {label && <Label text={label} required={required} />}
-        <FormControl>
-            <StyledTextArea value={value} onChange={onChange} aria-label="text-area" rowsMin={3} rowsMax={3} />
-            {
-                helperText && <HelperText text={helperText} />
-            }
-        </FormControl>
-    </>
+	id, value, onChange, helperText, label, required,
+}) => (
+	<>
+		{label && <Label text={label} required={required} />}
+		<FormControl>
+			<StyledTextArea id={id} value={value} onChange={onChange} aria-label="text-area" rowsMin={3} rowsMax={3} />
+			{
+				helperText && <HelperText text={helperText} />
+			}
+		</FormControl>
+	</>
 );
 
 TextArea.defaultProps = {
-    label: '',
-    helperText: '',
-    required: false,
+	label: '',
+	helperText: '',
+	required: false,
 };
 
 TextArea.propTypes = {
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    label: PropTypes.string,
-    helperText: PropTypes.string,
-    required: PropTypes.bool,
+	value: PropTypes.string.isRequired,
+	onChange: PropTypes.func.isRequired,
+	label: PropTypes.string,
+	helperText: PropTypes.string,
+	id: PropTypes.string.isRequired,
+	required: PropTypes.bool,
 };
 
 export default TextArea;

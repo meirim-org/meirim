@@ -37,12 +37,12 @@ const IconWrapper = styled.div`
 	padding-right: 0.5em;
 `;
 
-const Modal = ({ children }) => {
+const Modal = ({ id, children }) => {
 	const [isOpen, setIsOpen] = useState(true);
 
 	return (
 		<ModalWrapper>
-			<StyledModal open={isOpen}>
+			<StyledModal id={id} open={isOpen}>
 				<ModalContentWRapper>
 					<IconWrapper>
 						<StyledIcon onClick={() => setIsOpen(false)} />
@@ -56,6 +56,7 @@ const Modal = ({ children }) => {
 
 Modal.propTypes = {
 	children: PropTypes.object.isRequired,
+	id: PropTypes.string.isRequired,
 };
 
 export default Modal;
