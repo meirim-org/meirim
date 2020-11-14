@@ -49,7 +49,7 @@ const SignupForms = () => {
 		const { email , name, password } = firstStepValues
 		const isValidEmail = onFocusInput.email  || Boolean(email)? true : !dirtyInputs.email
 		const isValidName = onFocusInput.name  || Boolean(name) ? true : !dirtyInputs.name
-		const isValidPassword = onFocusInput.password  || password.length > 6 ? true : !dirtyInputs.password
+		const isValidPassword = onFocusInput.password  || password.length >= 6 ? true : !dirtyInputs.password
 		const emailError = {isValid: isValidEmail, message: isValidEmail? '' : 'שדה חובה'}
 		const nameError = {isValid: isValidName, message: isValidName ? '' : 'שדה חובה'}
 		const passwordError = {isValid: isValidPassword, message: isValidPassword ? '' : 'לפחות ששה תווים'}
@@ -83,16 +83,21 @@ const SignupForms = () => {
 		if(!email || !name || !password) {
 			let emailError = {isValid: Boolean(email), message: email? 'שדה חובה' : ''}
 			let nameError = {isValid: Boolean(name), message: name? 'שדה חובה' : ''}
-			let passwordError = {isValid: password.length > 6, message: password? 'לפחות ששה תווים' : ''}
+			let passwordError = {isValid: password.length >= 6, message: password? 'לפחות ששה תווים' : ''}
 			setFormErrors({...formErrors, emailError, nameError, passwordError})
+	
 			return
 		}
 		try {
 			const response = await authenticateEmail(email);
-			if (response.status === 'OK' && response.data.validEmail) {
+			const { status, data: { isUserRegistered, validEmail } } = response
+			if (status === 'OK' && validEmail && !isUserRegistered) {
 				setFirstStepSucess(true);
-			} else if (!response.data.validEmail) {
-				const emailError = { isValid: false, message: 'המייל רשום במערכת'}
+			} else if (!validEmail) {
+				const emailError = { isValid: false, message: 'המייל לא תקין'}
+				setFormErrors({...formErrors, emailError})
+			} else if (isUserRegistered) {
+				const emailError = { isValid: false, message: 'המייל קיים במערכת'}
 				setFormErrors({...formErrors, emailError})
 			}
 		} catch (err) {

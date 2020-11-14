@@ -28,6 +28,10 @@ const Button = ({text, id, onClick, small = false}) => (
 	</StyledButton>
 );
 
+Button.defaultProps = {
+	small: false
+}
+
 Button.propTypes = {
 	id: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,

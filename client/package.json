@@ -61,7 +61,7 @@
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "api": "node bin/api",
         "serve": "node bin/serve",
-        "test": "mocha --exit --recursive --require test/hooks.js"
+        "cypress": "./node_modules/.bin/cypress open"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^3.9.1",

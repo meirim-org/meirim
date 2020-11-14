@@ -51,7 +51,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 					</SC.InputWrapper>
 					<SC.InputWrapper>
 						<TextArea 
-							id="register-type-input"
+							id="register-aboutme-input"
 							value={aboutme} 
 							onChange={({ target: { value } }) => setValues({ type, aboutme: value, address })} 
 							helperText="כדי ששאר חברי הקהילה יכירו אותך" 
