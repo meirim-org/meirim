@@ -16,12 +16,13 @@ const StyledLink = styled.span`
   cursor: pointer;
 `;
 
-const Link = ({ text, bold = false }) => (
-	<StyledLink href="#" bold={bold}>{text}</StyledLink>
+const Link = ({ id, text, bold = false }) => (
+	<StyledLink id={id} href="#" bold={bold}>{text}</StyledLink>
 );
 
 Link.propTypes = {
 	text: PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired,
 	bold: PropTypes.bool,
 };
 

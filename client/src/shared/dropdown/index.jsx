@@ -27,38 +27,40 @@ const StyledSelect = styled(Select)`
 	}
 `;
 
-const Dropdown = ({ options, label, required }) => {
-    const [value, setValue] = useState(options[0].value);
+const Dropdown = ({ id, options, label, required }) => {
+	const [value, setValue] = useState(options[0].value);
 
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
+	const handleChange = (event) => {
+		setValue(event.target.value);
+	};
 
-    return (
-        <>
-            {label &&	<Label required={required} text={label} />}
-            <StyledSelect
-                required={required}
-                variant="outlined"
-                value={value}
-                onChange={handleChange}
-            >
-                {
-                    options.map((optn) => <MenuItem key={optn.value} value={optn.value}>{optn.text}</MenuItem>)
-                }
-            </StyledSelect>
-        </>
-    );
+	return (
+		<>
+			{label &&	<Label required={required} text={label} />}
+			<StyledSelect
+				required={required}
+				variant="outlined"
+				value={value}
+				id={id}
+				onChange={handleChange}
+			>
+				{
+					options.map((optn) => <MenuItem key={optn.value} value={optn.value}>{optn.text}</MenuItem>)
+				}
+			</StyledSelect>
+		</>
+	);
 };
 
 Dropdown.defaultProps = {
-    label: '',
-    required: false,
+	label: '',
+	required: false,
 };
 Dropdown.propTypes = {
-    label: PropTypes.string,
-    required: PropTypes.bool,
-    options: PropTypes.array.isRequired,
+	label: PropTypes.string,
+	required: PropTypes.bool,
+	options: PropTypes.array.isRequired,
+	id: PropTypes.string.isRequired,
 };
 
 export default Dropdown;

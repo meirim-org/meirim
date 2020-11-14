@@ -7,8 +7,8 @@ export const Required = styled.span`
   color:red;
 `;
 
-const Label = ({ required = false, text }) => (
-	<InputLabel>
+const Label = ({ id, required = false, text }) => (
+	<InputLabel id={id}>
 		{text}
 		{required && <Required> *</Required>}
 	</InputLabel>
@@ -20,6 +20,7 @@ Label.defaultProps = {
 
 Label.propTypes = {
 	required: PropTypes.bool,
+	id: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /// <reference types="cypress" />
 
 context('Register and login', () => {
