@@ -15,13 +15,14 @@ const StyledInput = styled(TextField)`
 		height: 2.75em;
 	}
     & > div.Mui-focused > fieldset,
-    & > div:hover > fieldset
+    & > div:hover > fieldset,
+    & > divMui-error > fieldset
     {
 		border-color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
-        border-width: 2px;  
+        border-width: 2px !important;  
 	}
 	fieldset {
-	    border-color: ${(props) => (props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)')}
+	    border-color: ${(props) => (props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)')};
 	}
 	& + p {
 	    color: ${(props) => (props.error ? 'red !important' : 'rgba(0, 0, 0, 0.23)')};
