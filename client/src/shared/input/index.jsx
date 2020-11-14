@@ -30,7 +30,8 @@ const StyledInput = styled(TextField)`
 	    font-family: Assistant !important;
         color: #232323;
         font-size: 16px;
-	}
+        border: 0;
+    }
 `;
 
 const TextInput = ({

@@ -12,13 +12,17 @@ const StyledSelect = styled(Select)`
     font-size: 16px;
 	background-color: white;
 	border-radius: 12px !important;
-	& > svg {
+	> svg {
 		left: 0.2em;
 		right: auto;
+	}
+	> div {
+        background-color: transparent !important;
 	}
     &.Mui-focused > fieldset,
     &:hover > fieldset
      {
+        border-width: 2px;
 		border-color: #8f5de2 !important;
 	}
 `;
