@@ -7,44 +7,50 @@ import Label from '../label';
 import HelperText from '../helperText';
 
 const StyledTextArea = styled(TextareaAutosize)`
+    font-family: Assistant !important;
 	border-radius: 14px;
+	padding: 14px 14px !important;
 	border: solid 1px #d1ccd5;
 	background-color: #ffffff;
+    color: #232323;
+    font-size: 16px;
 	resize: none;
     &:hover {
-        border-color: #8f5de2 !important;
+    	border: solid 2px #8f5de2 !important;
     }   
     &:focus {
-        outline-color: #8f5de2 !important;
+    	border: solid 2px #8f5de2 !important;
+        outline: transparent !important;
     }
 `;
 
 const TextArea = ({
-	value, onChange, helperText, label, required,
-}) => (
-	<>
-		{label && <Label text={label} required={required} />}
-		<FormControl>
-			<StyledTextArea value={value} onChange={onChange} aria-label="text-area" rowsMin={4} rowsMax={4} />
-			{
-				helperText && <HelperText text={helperText} />
-			}
-		</FormControl>
-	</>
+                      value, onChange, helperText, label, required,
+                  }) => (
+    <>
+        {label && <Label text={label} required={required} />}
+        <FormControl>
+            <StyledTextArea value={value} onChange={onChange} aria-label="text-area" rowsMin={3} rowsMax={3} />
+            {
+                helperText && <HelperText text={helperText} />
+            }
+        </FormControl>
+    </>
 );
 
 TextArea.defaultProps = {
-	label: '',
-	helperText: '',
-	required: false,
+    label: '',
+    helperText: '',
+    required: false,
 };
 
 TextArea.propTypes = {
-	value: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
-	label: PropTypes.string,
-	helperText: PropTypes.string,
-	required: PropTypes.bool,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    label: PropTypes.string,
+    helperText: PropTypes.string,
+    required: PropTypes.bool,
 };
 
 export default TextArea;
+

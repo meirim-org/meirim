@@ -15,77 +15,69 @@ const StyledInput = styled(TextField)`
 		height: 2.75em;
 	}
     & > div.Mui-focused > fieldset,
-    & > div:hover > fieldset
+    & > div:hover > fieldset,
+    & > .Mui-error > fieldset
     {
 		border-color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
-        border-width: 2px;  
+        border-width: 2px !important;  
 	}
 	fieldset {
-	    border-color: ${(props) => (props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)')}
+	    border-color: ${(props) => (props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)')};
 	}
 	& + p {
 	    color: ${(props) => (props.error ? 'red !important' : 'rgba(0, 0, 0, 0.23)')};
 	}
+	input[type] {
+	    font-family: Assistant !important;
+        color: #232323;
+        font-size: 16px;
+        border: 0;
+    }
 `;
 
 const TextInput = ({
-	helperText,
-	onFocus, 
-	onBlur, 
-	value, 
-	onChange, 
-	name, 
-	variant = 'outlined', 
-	type, 
-	label, 
-	required = false, 
-	size = 'small', 
-	error = false 
-}) =>{ 
-	return (
-		<>
-			<Label required={required} text={label} />
-			<StyledInput
-				value={value}
-				onChange={onChange}
-				name={name}
-				variant={variant}
-				onFocus={() => onFocus && onFocus(name)}
-				onBlur={() => onBlur && onBlur(name)}
-				type={type}
-				size={size}
-				error={error}
-			/>
-			{
-				helperText && <HelperText error={error} text={helperText} />
-			}
-		</>
-	); }
+  helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false
+  }) =>{
+    return (
+        <>
+            <Label required={required} text={label} />
+            <StyledInput
+                value={value}
+                onChange={onChange}
+                name={name}
+                variant={variant}
+                onFocus={() => onFocus && onFocus(name)}
+                onBlur={() => onBlur && onBlur(name)}
+                type={type}
+                size={size}
+                error={error}
+            />
+            {
+                helperText && <HelperText error={error} text={helperText} />
+            }
+        </>
+    ); }
 
 TextInput.defaultProps = {
-	size: 'small',
-	required: false,
-	helperText: '',
-	label: '',
-	variant: 'outlined',
-	error: false,
-	onBlur: {},
-	onFocus: {},
+    size: 'small',
+    required: false,
+    helperText: '',
+    label: '',
+    variant: 'outlined',
+    error: false,
 };
 
 TextInput.propTypes = {
-	name: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	value: PropTypes.string.isRequired,
-	size: PropTypes.string,
-	onChange: PropTypes.func.isRequired,
-	required: PropTypes.bool,
-	helperText: PropTypes.string,
-	label: PropTypes.string,
-	variant: PropTypes.string,
-	onFocus: PropTypes.func,
-	onBlur: PropTypes.func,
-	error: PropTypes.bool,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    size: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    required: PropTypes.bool,
+    helperText: PropTypes.string,
+    label: PropTypes.string,
+    variant: PropTypes.string,
+    error: PropTypes.bool,
 };
 
 export default TextInput;
@@ -118,3 +110,4 @@ export default TextInput;
 // const handleMouseDownPassword = (event) => {
 // 	event.preventDefault()
 // }
+
