@@ -86,7 +86,7 @@ const SignupForms = () => {
 			let nameError = {isValid: Boolean(name), message: Boolean(name)? 'שדה חובה' : ''}
 			let passwordError = {isValid: Boolean(password), message: Boolean(password)? 'שדה חובה' : ''}
 			setFormErrors({...formErrors, emailError, nameError, passwordError})
-			return 
+			return
 		}
 		try {
 			const response = await authenticateEmail(email);
