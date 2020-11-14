@@ -25,7 +25,8 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 				<SC.InputsWrapper>
 					<SC.InputsTitle>הרשמה למעירים</SC.InputsTitle>
 					<SC.InputWrapper>
-						<TextInput 
+						<TextInput
+							id="register-name-input"
 							name="name" 
 							onFocus={inputFocus} 
 							onBlur={inputBlur} 
@@ -38,6 +39,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					</SC.InputWrapper>
 					<SC.InputWrapper>
 						<TextInput 
+							id="register-email-input"
 							name="email" 
 							helperText={!emailError.isValid && emailError.message ? emailError.message : ''} 
 							onFocus={inputFocus} 
@@ -50,6 +52,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					</SC.InputWrapper>
 					<SC.InputWrapper>
 						<TextInput 
+							id="register-password-input"
 							name="password" 
 							helperText={!passwordError.isValid && passwordError.message ? passwordError.message : ''} 
 							onFocus={inputFocus} 
