@@ -2,6 +2,7 @@ import api from '../../services/api';
 
 const SIGN_UP = '/sign/up'
 const AUTHENTICATE_EMAIL = '/sign/auth/email'
+
 export const registerUser = async (values) => {
 	const {
 		name, password, email, about_me, type, address,

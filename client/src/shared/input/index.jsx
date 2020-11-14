@@ -36,8 +36,8 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-                       helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false
-                   }) =>{
+  helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false
+  }) =>{
     return (
         <>
             <Label required={required} text={label} />
