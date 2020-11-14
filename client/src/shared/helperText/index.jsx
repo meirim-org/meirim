@@ -15,7 +15,7 @@ const StyledHelperText = styled(FormHelperText)`
   color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
 `;
 
-const HelperText = ({ error, text }) => (
+const HelperText = ({ text }) => (
 	<>
 		<StyledHelperText>{text}</StyledHelperText>
 	</>

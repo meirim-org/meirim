@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import React, { useState } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import MUIModal from '@material-ui/core/Modal';

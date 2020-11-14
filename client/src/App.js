@@ -33,13 +33,13 @@ class App extends Component {
     state = {
         me: null
     };
-    // componentWillMount() {
-    //     api.get("/me")
-    //         .then(me => this.setState({ me: true }))
-    //         .catch(error => {
-    //             console.log('error',error)
-    //             this.setState({ me: false }) });
-    // }
+    componentWillMount() {
+        api.get("/me")
+            .then(me => this.setState({ me: true }))
+            .catch(error => {
+                console.log('error',error)
+                this.setState({ me: false }) });
+    }
     render() {
         const { me } = false
 
