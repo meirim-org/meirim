@@ -13,7 +13,8 @@ export const Title = styled.h1`
   font-size: 24px;
   font-weight: 400;
   text-align: center;
-  font-family: Assistant;
+  font-family: Assistant !important; 
+  font-weight: 600;
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
@@ -28,7 +29,7 @@ export const Title = styled.h1`
 `;
 
 export const SubTitle = styled.h2`
-  font-family: Assistant;
+  font-family: Assistant !important;
   font-size: 16px;
   font-weight: normal;
   font-stretch: normal;
@@ -68,7 +69,7 @@ export const InputWrapper = styled.div`
 `;
 
 export const InputsTitle = styled.div`
-  font-family: Assistant;
+  font-family: Assistant !important;
   font-size: 20px;
   font-weight: normal;
   padding-bottom: 0;
@@ -93,7 +94,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const Label = styled.div`
-  font-family: Assistant;
+  font-family: Assistant !important;
   font-size: 16px;
   font-weight: normal;
   font-stretch: normal;

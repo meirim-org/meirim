@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { device } from '../../style';
-import Wrapper from '../../components/Wrapper';
+import {device} from '../../style';
+import Wrapper from "../../components/Wrapper";
 
 const MainWrapper = styled.div`
     width: 100%;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
+    height: ${props => props.navHeight ? `calc(100vh - ${props.navHeight}px);` : "auto"};
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
     }
@@ -151,29 +152,31 @@ const Link = styled.span`
   color: #652dd0;
 `;
 
-const EmailSent = () => (
-	<Wrapper>
-		<MainWrapper>
-			<ContentCol>
-				<Content>
-					<PreTitle>כמעט סיימנו...</PreTitle>
-					<Title>
-                        נשאר רק לאשר את
-						<br />
-                        כתובת האימייל שלך
-					</Title>
-					<Text>שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
-					<SmallTextWrapper>
-						<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
-						<Link>לחצו כאן</Link>
-					</SmallTextWrapper>
-				</Content>
-			</ContentCol>
-			<ImageCol>
-				<Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image" />
-			</ImageCol>
-		</MainWrapper>
-	</Wrapper>
-);
+const EmailSent = ({fullPage = true}) => {
+    return (
+        <Wrapper fullPage={fullPage}>
+            <MainWrapper style>
+                <ContentCol>
+                    <Content>
+                        <PreTitle>כמעט סיימנו...</PreTitle>
+                        <Title>
+                            נשאר רק לאשר את
+                            <br/>
+                            כתובת האימייל שלך
+                        </Title>
+                        <Text>שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
+                        <SmallTextWrapper>
+                            <SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
+                            <Link>לחצו כאן</Link>
+                        </SmallTextWrapper>
+                    </Content>
+                </ContentCol>
+                <ImageCol>
+                    <Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image"/>
+                </ImageCol>
+            </MainWrapper>
+        </Wrapper>
+    )
+};
 
 export default EmailSent;
