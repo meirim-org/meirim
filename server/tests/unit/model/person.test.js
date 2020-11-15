@@ -23,11 +23,6 @@ describe('Person model', function() {
 		expect(rules.admin).to.eql(['integer']);
 	});
 
-	it('has the right defaults', function() {
-		const defaults = instance.defaults();
-		expect(defaults).to.eql({type: 'citizen'});
-	});
-
 	it('has the right table name', function() {
 		const tableName = instance.tableName;
 		expect(tableName).to.eql('person');
@@ -35,7 +30,7 @@ describe('Person model', function() {
 
 	it('has the right defaults', function() {
 		const defaults = instance.defaults;
-		expect(defaults).to.eql({status: 0});
+		expect(defaults).to.eql({status: 0, type: 'citizen'});
 	});
 
 	it('has timestamps', function() {
