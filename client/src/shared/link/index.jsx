@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const StyledLink = styled.span`
+const StyledLink = styled(RouterLink)`
   font-family: Assistant;
   font-size: 16px;
   font-weight: ${(props) => (props.bold ? '700' : '400')} ;
@@ -16,11 +17,12 @@ const StyledLink = styled.span`
   cursor: pointer;
 `;
 
-const Link = ({ id, text, bold = false }) => (
-	<StyledLink id={id} href="#" bold={bold}>{text}</StyledLink>
+const Link = ({ id, to, text, bold = false }) => (
+	<StyledLink id={id} to={to} bold={bold}>{text}</StyledLink>
 );
 
 Link.propTypes = {
+	to: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,
 	bold: PropTypes.bool,

@@ -11,7 +11,7 @@ context('Register and login', () => {
   })
 
   describe('Registration flow', () => {
-    it.skip('alerts should not be visible from the get go', () => {
+    it('alerts should not be visible from the get go', () => {
       cy.get('div.alert-danger')
         .should('not.be.visible');
       cy.get('div.alert-success')
@@ -34,10 +34,10 @@ context('Register and login', () => {
         .should('be.visible')
     });
 
-    it.only('register with an valid email should work', () => {
+    it('register with an valid email should work', () => {
 
       cy.get('#register-email-input')
-        .type('rabbit.v2@gmail.com')
+        .type('test@meirim.org')
         .get('#register-password-input')
         .type('123456')
         .get('#register-name-input')
@@ -59,10 +59,9 @@ context('Register and login', () => {
     });
   });
 
-  describe.skip('Login flow', () => {
+  describe('Login flow', () => {
     it('alerts should not be visible from the get go', () => {
-      cy.get('a[href*="/sign/in"]')
-        .first()
+      cy.get('#register-signin-link')
         .click();
 
       cy.url().should('include', '/sign/in');
@@ -72,8 +71,7 @@ context('Register and login', () => {
     });
 
     it('login with wrong credentials should not work', () => {
-      cy.get('a[href*="/sign/in"]')
-        .first()
+      cy.get('#register-signin-link')
         .click();
 
       cy.url().should('include', '/sign/in');
@@ -93,8 +91,7 @@ context('Register and login', () => {
     });
 
     it('login with existing credentials should work', () => {
-      cy.get('a[href*="/sign/in"]')
-        .first()
+      cy.get('#register-signin-link')
         .click();
 
       cy.url().should('include', '/sign/in');
@@ -102,7 +99,7 @@ context('Register and login', () => {
       cy.get('input#loginEmail')
         .type('test@meirim.org')
         .get('input#loginPassword')
-        .type('1234');
+        .type('123456');
 
       cy.get('form')
         .submit();
