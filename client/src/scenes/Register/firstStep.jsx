@@ -18,7 +18,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						<SC.SubTitle>כדי להשלים את הפעולה עלכים להיות מחוברים</SC.SubTitle>
 						<SC.SubTitle>
 							<span>כבר רשומים? </span>
-							<Link id="register-signin-link" text="התחברות" bold={true} />
+							<Link id="register-signin-link" text="התחברות" to="/sign/in" bold={true} />
 						</SC.SubTitle>
 					</SC.SubTitleWrapper>
 				</SC.Titles>
