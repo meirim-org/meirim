@@ -22,6 +22,7 @@ Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 // Plan
 Router.get('/plan/', wrap(Plan.browse, Plan));
 Router.get('/plan/:id', wrap(Plan.read, Plan));
+Router.get('/plan/distance', wrap(Plan.browseDistance, Plan));
 
 Router.get('/plan_county', wrap(Plan.county, Plan));
 Router.get('/plan_status', wrap(Plan.statuses, Plan));
@@ -59,7 +60,6 @@ Router.get('/me/', wrap(Alert.browse, Alert));
 
 // Public API
 Router.get('/public/plan', publicWrapper(Plan.publicBrowse, Plan));
-Router.get('/public/plan/distance', publicWrapper(Plan.publicBrowseDistance, Plan));
 // Router.get('/cron/send_planning_alerts', wrap(sendPlanningAlerts));
 
 // Tag

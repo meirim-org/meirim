@@ -24,6 +24,7 @@ class PlanController extends Controller {
 
 		const { query } = req;
 		const where = {};
+		let order = '-id'
 
 		if (query.status) {
 			where.status = query.status.split(',');
@@ -32,7 +33,6 @@ class PlanController extends Controller {
 		if (query.PLAN_COUNTY_NAME) {
 			where.PLAN_COUNTY_NAME = query.PLAN_COUNTY_NAME.split(',');
 		}
-		const order = '-id';
 
 		return super.browse(req, {
 			cols,
@@ -90,23 +90,20 @@ class PlanController extends Controller {
 			});
 	}
 
-	publicBrowseDistance (req) {
+	browseDistance (req) {
 		const { query } = req;
-		const response = {
-			type: 'FeatureCollection',
-			bbox: [],
-			features: []
-		};
 
 		if (!query.point){
 			throw new Exception.BadRequest('Missing point params');
 		}
 
 		let points = query.point.split(',').map(i => parseFloat(i))
+
 		const geojson = {
 			type: 'Point',
 			coordinates: points
 		};
+
 		if(!GJV.valid(geojson)){
 			throw new Exception.BadRequest('point is invalid'); 
 		}
@@ -114,24 +111,14 @@ class PlanController extends Controller {
 		
 		return super
 			.browse(req, {
-				columns:[...columns, Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`)],
+				columns:[...columns, 
+					'goals_from_mavat',
+					'main_details_from_mavat',
+					Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`)
+				],
 				orderByRaw:['distance'],
 				pageSize: 10
 			})
-			.then(rows => {
-				response.features = rows.map(row => ({
-					type: 'Feature',
-					properties: {
-						uri: `${Config.general.domain}plan/${row.get('id')}/`,
-						name: row.get('PL_NAME'),
-						county: row.get('PLAN_COUNTY_NAME'),
-						number: row.get('PL_NUMBER'),
-						distance:row.get('distance')
-					},
-					geometry: row.get('geom')
-				}));
-				return response;
-			});
 	}
 
 	county () {
