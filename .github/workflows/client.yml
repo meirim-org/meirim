@@ -83,5 +83,4 @@ jobs:
             - name: e2e test
               working-directory: client
               run: |
-                  $(npm bin)/cypress run --browser chrome --headless &&
-                  $(npm bin)/cypress run --browser firefox --headless
+                  $(npm bin)/cypress run --browser chrome --headless
