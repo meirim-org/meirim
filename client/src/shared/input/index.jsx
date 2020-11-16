@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import HelperText from '../helperText';
 import Label from '../label';
+import { Link } from 'react-router-dom';
+
 
 const StyledInput = styled(TextField)`
 	background-color: white;
@@ -36,11 +38,14 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false
+	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false, forgetPassword = false
 }) =>{
 	return (
 		<>
 			<Label id={`${id}-label`}required={required} text={label} />
+			{forgetPassword &&
+            <Link to='/forgot-password'>forgetPassword</Link>
+			}
 			<StyledInput
 				id={id}
 				value={value}
@@ -66,7 +71,7 @@ TextInput.defaultProps = {
 	label: '',
 	variant: 'outlined',
 	error: false,
-	onFocus:() => {}, 
+	onFocus:() => {},
 	onBlur: () => {}
 };
 
