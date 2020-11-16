@@ -8,7 +8,7 @@ const MainWrapper = styled.div`
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    height: ${props => props.navHeight ? `calc(100vh - ${props.navHeight}px);` : 'auto'};
+    height: calc(100vh - 7rem);
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
     }
@@ -153,30 +153,31 @@ const Link = styled.span`
 `;
 
 const EmailSent = ({fullPage = true}) => {
-	return (
-		<Wrapper fullPage={fullPage}>
-			<MainWrapper style>
-				<ContentCol>
-					<Content>
-						<PreTitle>כמעט סיימנו...</PreTitle>
-						<Title>
+    return (
+        <Wrapper fullPage={fullPage}>
+            <MainWrapper style>
+                <ContentCol>
+                    <Content>
+                        <PreTitle>כמעט סיימנו...</PreTitle>
+                        <Title>
                             נשאר רק לאשר את
-							<br/>
+                            <br/>
                             כתובת האימייל שלך
-						</Title>
-						<Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
-						<SmallTextWrapper>
-							<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
-							<Link>לחצו כאן</Link>
-						</SmallTextWrapper>
-					</Content>
-				</ContentCol>
-				<ImageCol>
-					<Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image"/>
-				</ImageCol>
-			</MainWrapper>
-		</Wrapper>
-	)
+                        </Title>
+                        <Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את
+                            הרשמתך</Text>
+                        <SmallTextWrapper>
+                            <SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
+                            <Link>לחצו כאן</Link>
+                        </SmallTextWrapper>
+                    </Content>
+                </ContentCol>
+                <ImageCol>
+                    <Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image"/>
+                </ImageCol>
+            </MainWrapper>
+        </Wrapper>
+    )
 };
 
 export default EmailSent;
