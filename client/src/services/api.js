@@ -1,9 +1,9 @@
-const axios = require("axios")
-const config = require("../config.json")
+import axios from 'axios'
+import config from '../config.json'
 
 const instance = axios.create(config.axios)
 
-module.exports = {
+export default {
 	get: (path, data, options) => instance.get(path, { params: data }, options)
 		.then(results => results.data),
 	post: (path, data, options) => instance.post(path, data, options)
