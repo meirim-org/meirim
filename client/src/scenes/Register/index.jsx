@@ -21,21 +21,6 @@ const getFormErrors = ({isValidEmail, isValidName, isValidPassword}) => {
 	return {emailError, nameError, passwordError}
 }
 
-const dropDownOptions = [
-	{
-		value: '1',
-		text: ' תושב/ת שכאפת לו/ה',
-	},
-	{
-		value: '2',
-		text: 'אתה אתה אתה',
-	},
-	{
-		value: '3',
-		text: 'אני אני אני',
-	},
-];
-
 const SignupForms = () => {
 	const [firstStepSuccess, setFirstStepSucess] = useState(false);
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
@@ -83,7 +68,6 @@ const SignupForms = () => {
 		try {
 			const response = await registerUser(requestData)
 			if (response.status === 'OK') {
-				if(address.length) { registerUserAlert(address) }
 				setSecondStepSucess(true);
 			}
 		} catch (err) {
@@ -140,5 +124,20 @@ const SignupForms = () => {
 			/>
 		);
 };
+
+const dropDownOptions = [
+	{
+		value: '1',
+		text: ' תושב/ת שכאפת לו/ה',
+	},
+	{
+		value: '2',
+		text: 'אתה אתה אתה',
+	},
+	{
+		value: '3',
+		text: 'אני אני אני',
+	},
+];
 
 export default SignupForms;
