@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom'
-import { authenticateEmail, registerUser } from './handlers';
+import { authenticateEmail, registerUser  } from './handlers';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
+import { EMAIL_SENT_PAGE } from '../../router/contants'
+
+const formValidation = ({ name, email, password, dirtyInputs, onFocusInput }) => {
+	const isValidEmail = onFocusInput.email  || Boolean(email)? true : !dirtyInputs.email
+	const isValidName = onFocusInput.name  || Boolean(name) ? true : !dirtyInputs.name
+	const isValidPassword = onFocusInput.password  || password.length >= 6 ? true : !dirtyInputs.password
+
+	return { isValidEmail, isValidName, isValidPassword }
+}
+
+const getFormErrors = ({isValidEmail, isValidName, isValidPassword}) => {
+	const emailError = {isValid: isValidEmail, message: isValidEmail? '' : 'שדה חובה'}
+	const nameError = {isValid: isValidName, message: isValidName ? '' : 'שדה חובה'}
+	const passwordError = {isValid: isValidPassword, message: isValidPassword ? '' : 'לפחות ששה תווים'}
+
+	return {emailError, nameError, passwordError}
+}
 
 const dropDownOptions = [
 	{
@@ -47,13 +64,9 @@ const SignupForms = () => {
 
 	React.useEffect(() => {
 		const { email , name, password } = firstStepValues
-		const isValidEmail = onFocusInput.email  || Boolean(email)? true : !dirtyInputs.email
-		const isValidName = onFocusInput.name  || Boolean(name) ? true : !dirtyInputs.name
-		const isValidPassword = onFocusInput.password  || password.length >= 6 ? true : !dirtyInputs.password
-		const emailError = {isValid: isValidEmail, message: isValidEmail? '' : 'שדה חובה'}
-		const nameError = {isValid: isValidName, message: isValidName ? '' : 'שדה חובה'}
-		const passwordError = {isValid: isValidPassword, message: isValidPassword ? '' : 'לפחות ששה תווים'}
-		setFormErrors(f => ({...f, emailError, nameError, passwordError}))
+		const { isValidEmail, isValidName, isValidPassword } = formValidation({name ,email, password, onFocusInput, dirtyInputs})
+		const { emailError, nameError, passwordError } = getFormErrors({isValidEmail, isValidName, isValidPassword})
+		setFormErrors(fe => ({...fe, emailError, nameError, passwordError}))
 	}, [firstStepValues, onFocusInput, dirtyInputs])
 
 	const handleSecondFormSubmit = async () => {
@@ -70,10 +83,10 @@ const SignupForms = () => {
 		try {
 			const response = await registerUser(requestData)
 			if (response.status === 'OK') {
+				if(address.length) { registerUserAlert(address) }
 				setSecondStepSucess(true);
 			}
 		} catch (err) {
-			// error handling for signup request
 			console.log('err');
 		}
 	};
@@ -81,9 +94,8 @@ const SignupForms = () => {
 	const handleFirstFormSubmit = async () => {
 		const { email , name, password } = firstStepValues
 		if(!email || !name || !password) {
-			let emailError = {isValid: Boolean(email), message: email? 'שדה חובה' : ''}
-			let nameError = {isValid: Boolean(name), message: name? 'שדה חובה' : ''}
-			let passwordError = {isValid: password.length >= 6, message: password? 'לפחות ששה תווים' : ''}
+			const { isValidEmail, isValidName, isValidPassword } = formValidation({name ,email, password, onFocusInput, dirtyInputs})
+			const { emailError, nameError, passwordError } = getFormErrors({isValidEmail, isValidName, isValidPassword})
 			setFormErrors({...formErrors, emailError, nameError, passwordError})
 	
 			return
@@ -108,7 +120,7 @@ const SignupForms = () => {
 		}
 	};
 
-	return firstStepSuccess && secondStepSuccess ? <Redirect to="/email-sent" /> : firstStepSuccess
+	return firstStepSuccess && secondStepSuccess ? <Redirect to={EMAIL_SENT_PAGE} /> : firstStepSuccess
 		? (
 			<SecondStepSignup
 				errors={formErrors}
