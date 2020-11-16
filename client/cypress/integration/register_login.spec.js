@@ -29,7 +29,7 @@ context('Register and login', () => {
 
       cy.get('#register-firststep-button')
         .click()
-        
+
       cy.get('#register-email-input-helperText')
         .should('be.visible')
     });
@@ -59,7 +59,7 @@ context('Register and login', () => {
     });
   });
 
-  describe('Login flow', () => {
+  describe('LogIn flow', () => {
     it('alerts should not be visible from the get go', () => {
       cy.get('#register-signin-link')
         .click();
