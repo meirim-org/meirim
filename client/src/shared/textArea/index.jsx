@@ -30,7 +30,7 @@ const TextArea = ({
 	<>
 		{label && <Label text={label} required={required} />}
 		<FormControl>
-			<StyledTextArea id={id} value={value} onChange={onChange} aria-label="text-area" rowsMin={3} rowsMax={3} />
+			<StyledTextArea maxLength={120} id={id} value={value} onChange={onChange} aria-label="text-area" rowsMin={3} rowsMax={3} />
 			{
 				helperText && <HelperText text={helperText} />
 			}
