@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import { device } from '../../style';
+import {device} from '../../style';
 
 export const Titles = styled.div`
   padding: 0 1.5em 0;
-  display: grid;
   @media ${device.tablet} {
-     padding: 0 1.5em 0;
+     padding: 0 3.45em 0;
   }
 `;
 
@@ -14,7 +13,6 @@ export const Title = styled.h1`
   font-weight: 400;
   text-align: center;
   font-family: Assistant !important; 
-  font-weight: 600;
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
@@ -39,6 +37,9 @@ export const SubTitle = styled.h2`
   text-align: center;
   color: #000000;
   margin-bottom: 0;
+   >  span {
+     font-family: Assistant !important;
+   }
 `;
 
 export const SubTitleWrapper = styled.div`
@@ -46,6 +47,31 @@ export const SubTitleWrapper = styled.div`
     @media ${device.tablet} {
      padding-bottom: 2.5em;
     }
+`;
+
+
+export const TermsOfUse = styled.span`
+  font-family: Assistant !important;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 1.5;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 0;
+   >  span {
+     font-family: Assistant !important;
+   }
+`;
+
+export const TermsOfUseWrapper = styled.div`
+    text-align: center;
+    padding: 0 3.7em 2.45em;
+    background-color: #f1eef2;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
 `;
 
 export const InputsWrapper = styled.div`
@@ -60,11 +86,9 @@ export const MainWrapper = styled.div`
 `;
 
 export const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1.5em;
   .MuiFormControl-root {
-    max-width: 100%;
+    width: 100%;
   }
 `;
 
@@ -86,11 +110,18 @@ export const ButtonWrapper = styled.div`
   border-radius:0 0 12px 12px;
   background-color: #f1eef2;
   display: grid;
-  padding: 0 1.5em 2.45em;
+  padding-right: 1.5em;
+  padding-left: 1.5em;
+  padding-bottom: ${props => props.smallPadding ? '1em' : '2.45em'};
     @media ${device.tablet} {
      max-width: initial;
-     padding: 0 3.7em 2.45em;
+     padding-right: 3.7em;
+     padding-left: 3.7em;
   }
+`;
+
+export const ButtonWrapperVer2 = styled(ButtonWrapper)`
+  padding-bottom: 1em;
 `;
 
 export const Label = styled.div`

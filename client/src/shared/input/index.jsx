@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import HelperText from '../helperText';
 import Label from '../label';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 
 const StyledInput = styled(TextField)`
@@ -35,17 +35,34 @@ const StyledInput = styled(TextField)`
         font-size: 16px;
         border: 0;
     }
+    .label-row {
+ 
+    }
+    
+`;
+
+const ForgotPassword = styled.div`
+      text-align: left;
+        a {
+          margin-bottom: 0.5rem;
+          font-family: Assistant;
+          font-size: 14px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.29;
+          letter-spacing: normal;
+          color: #51465e;
+        }
 `;
 
 const TextInput = ({
 	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false, forgetPassword = false
-}) =>{
+}) => {
+
 	return (
 		<>
-			<Label id={`${id}-label`}required={required} text={label} />
-			{forgetPassword &&
-            <Link to='/forgot-password'>forgetPassword</Link>
-			}
+			<Label id={`${id}-label`} required={required} text={label}/>
 			<StyledInput
 				id={id}
 				value={value}
@@ -59,10 +76,16 @@ const TextInput = ({
 				error={error}
 			/>
 			{
-				helperText && <HelperText id={`${id}-helperText`} error={error} text={helperText} />
+				helperText && <HelperText id={`${id}-helperText`} error={error} text={helperText}/>
+			}
+			{
+				forgetPassword && <ForgotPassword>
+					<u><Link to='/forgot-password'>שכחתי סיסמה</Link></u>
+				</ForgotPassword>
 			}
 		</>
-	); }
+	);
+}
 
 TextInput.defaultProps = {
 	size: 'small',
@@ -71,8 +94,10 @@ TextInput.defaultProps = {
 	label: '',
 	variant: 'outlined',
 	error: false,
-	onFocus:() => {},
-	onBlur: () => {}
+	onFocus: () => {
+	},
+	onBlur: () => {
+	}
 };
 
 TextInput.propTypes = {
@@ -89,6 +114,7 @@ TextInput.propTypes = {
 	label: PropTypes.string,
 	variant: PropTypes.string,
 	error: PropTypes.bool,
+	forgetPassword: PropTypes.bool,
 };
 
 export default TextInput;
