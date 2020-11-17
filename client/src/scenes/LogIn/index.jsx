@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom'
 import {authenticateEmail} from './handlers';
 import {Button, Link, Modal, TextInput} from '../../shared';
+
 import * as SC from './style';
 
 const Login = () => {
@@ -108,10 +109,10 @@ const Login = () => {
 								value={loginValues.password}
 								onChange={({ target: { value } }) => setLoginValues({ email: loginValues.email , password: value })}
 								required />
-						</SC.InputWrapper>
+                        </SC.InputWrapper>
 					</SC.InputsWrapper>
 					<SC.ButtonWrapper>
-						<Button id="register-firststep-button" text="המשך" onClick={handleFormSubmit} />
+						<Button id="register-firststep-button" text="התחברות למעירים" onClick={handleFormSubmit} />
 					</SC.ButtonWrapper>
 				</SC.MainWrapper>
 			</Modal>

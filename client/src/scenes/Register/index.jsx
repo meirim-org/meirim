@@ -85,7 +85,7 @@ const SignupForms = () => {
 			let nameError = {isValid: Boolean(name), message: name? 'שדה חובה' : ''}
 			let passwordError = {isValid: password.length >= 6, message: password? 'לפחות ששה תווים' : ''}
 			setFormErrors({...formErrors, emailError, nameError, passwordError})
-	
+
 			return
 		}
 		try {

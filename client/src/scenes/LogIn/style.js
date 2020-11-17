@@ -3,9 +3,8 @@ import { device } from '../../style';
 
 export const Titles = styled.div`
   padding: 0 1.5em 0;
-  display: grid;
   @media ${device.tablet} {
-     padding: 0 1.5em 0;
+     padding: 0 3.45em 0;
   }
 `;
 
@@ -14,7 +13,6 @@ export const Title = styled.h1`
   font-weight: 400;
   text-align: center;
   font-family: Assistant !important; 
-  font-weight: 600;
   font-stretch: normal;
   font-style: normal;
   line-height: 1;
@@ -39,10 +37,15 @@ export const SubTitle = styled.h2`
   text-align: center;
   color: #000000;
   margin-bottom: 0;
+     >  span {
+     font-family: Assistant !important;
+   }
 `;
 
 export const SubTitleWrapper = styled.div`
     padding-bottom: 3em;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
     @media ${device.tablet} {
      padding-bottom: 2.5em;
     }
@@ -60,11 +63,9 @@ export const MainWrapper = styled.div`
 `;
 
 export const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1.5em;
   .MuiFormControl-root {
-    max-width: 100%;
+     width: 100%;
   }
 `;
 
@@ -89,7 +90,8 @@ export const ButtonWrapper = styled.div`
   padding: 0 1.5em 2.45em;
     @media ${device.tablet} {
      max-width: initial;
-     padding: 0 3.7em 2.45em;
+     padding-right: 3.7em;
+     padding-left: 3.7em;
   }
 `;
 
