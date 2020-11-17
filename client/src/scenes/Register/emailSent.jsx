@@ -153,31 +153,31 @@ const Link = styled.span`
 `;
 
 const EmailSent = ({fullPage = true}) => {
-    return (
-        <Wrapper fullPage={fullPage}>
-            <MainWrapper style>
-                <ContentCol>
-                    <Content>
-                        <PreTitle>כמעט סיימנו...</PreTitle>
-                        <Title>
+	return (
+		<Wrapper fullPage={fullPage}>
+			<MainWrapper style>
+				<ContentCol>
+					<Content>
+						<PreTitle>כמעט סיימנו...</PreTitle>
+						<Title>
                             נשאר רק לאשר את
-                            <br/>
+							<br/>
                             כתובת האימייל שלך
-                        </Title>
-                        <Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את
+						</Title>
+						<Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את
                             הרשמתך</Text>
-                        <SmallTextWrapper>
-                            <SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
-                            <Link>לחצו כאן</Link>
-                        </SmallTextWrapper>
-                    </Content>
-                </ContentCol>
-                <ImageCol>
-                    <Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image"/>
-                </ImageCol>
-            </MainWrapper>
-        </Wrapper>
-    )
+						<SmallTextWrapper>
+							<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
+							<Link>לחצו כאן</Link>
+						</SmallTextWrapper>
+					</Content>
+				</ContentCol>
+				<ImageCol>
+					<Image src="./images/tolu-olubode-PlBsJ5MybGc-unsplash-3.jpg" alt="construction image"/>
+				</ImageCol>
+			</MainWrapper>
+		</Wrapper>
+	)
 };
 
 export default EmailSent;
