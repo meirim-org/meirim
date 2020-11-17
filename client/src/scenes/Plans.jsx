@@ -27,7 +27,7 @@ class Plans extends Component {
         pageNumber: 1,
         planCounties: [],
         filterCounties: [],
-        plans: []
+        plans: [],
     };
 
     constructor(props) {
@@ -52,7 +52,7 @@ class Plans extends Component {
         });
 
         api.get(
-            "/plan?page=" +
+            "/plan/distance?point=32.0663523,34.8575235&page=" +
                 pageNumber +
                 "&PLAN_COUNTY_NAME=" +
                 filterCounties.join(",")
@@ -129,6 +129,7 @@ class Plans extends Component {
                                                 hideZoom={true}
                                                 disableInteractions={true}
                                                 title={plan.PLAN_COUNTY_NAME}
+                                                title2={` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת` }
                                             />
                                         </CardMedia>
                                         <CardContent className="card-content">
