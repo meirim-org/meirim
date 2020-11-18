@@ -12,14 +12,16 @@
     width: 32px;
 }
 
-nav {
+.navbar {
     z-index: 1;
+    height: 7rem;
+    max-height: none !important;
 }
 
 .navbar.navbar-expand.navbar-light {
-    padding-right: 4px
+    padding-right: 4px;
 }
 
 .navbar-nav.mr-auto, .navbar-nav {
-    padding-right: 0px
+    padding-right: 0;
 }
