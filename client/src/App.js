@@ -14,7 +14,7 @@ import Vocabulary from "./scenes/Vocabulary";
 import NotFound from "./scenes/NotFound";
 import EmailSent from "./scenes/Register/emailSent";
 import api from "./services/api";
-import './App.css' // this!:w
+import './App.css';
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -24,7 +24,7 @@ import {
     faPaperPlane,
     faChartArea
 } from "@fortawesome/free-solid-svg-icons";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons"; 
 import "./assets/bootstrap.css";
 
 library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);

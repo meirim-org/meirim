@@ -87,33 +87,3 @@ TextInput.propTypes = {
 };
 
 export default TextInput;
-
-// const [showPassword, setShowPassword] = useState(true)
-
-// InputProps={{
-// 	endAdornment:
-// 					<IconButton
-// 						aria-label="toggle password visibility"
-// 						onClick={handleClickShowPassword}
-// 						onMouseDown={handleMouseDownPassword}
-// 					>
-// 						{showPassword ? <Visibility /> : <VisibilityOff />}
-// 					</IconButton>,
-// 	classes: {
-// 		adornedEnd: classes.adornedEnd,
-// 		root: classes.input
-// 	}
-// }}
-
-// import IconButton from "@material-ui/core/IconButton"
-// import Visibility from "@material-ui/icons/Visibility"
-// import VisibilityOff from "@material-ui/icons/VisibilityOff"
-
-// const handleClickShowPassword = () => {
-// 	setShowPassword(!showPassword)
-// }
-
-// const handleMouseDownPassword = (event) => {
-// 	event.preventDefault()
-// }
-
