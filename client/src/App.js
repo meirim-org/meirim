@@ -1,3 +1,4 @@
+import 'react-toastify/dist/ReactToastify.css';
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./scenes/Home/Home";
@@ -15,7 +16,7 @@ import NotFound from "./scenes/NotFound";
 import EmailSent from "./scenes/Register/emailSent";
 import api from "./services/api";
 import './App.css';
-
+import { ToastContainer } from 'react-toastify';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     faSpinner,
@@ -47,6 +48,7 @@ class App extends Component {
             return <div>Loading...</div>;
         }
         return (
+            <React.Fragment>
             <Router>
                 <div>
                     <Switch>
@@ -113,6 +115,8 @@ class App extends Component {
                     </Switch>
                 </div>
             </Router>
+            <ToastContainer autoClose={false}/>
+        </React.Fragment>
         );
     }
 }
