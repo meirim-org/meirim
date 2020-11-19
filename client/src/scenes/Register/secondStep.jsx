@@ -4,21 +4,7 @@ import {
 	Modal, Dropdown, TextInput, TextArea, Button,
 } from '../../shared';
 import * as SC from './style';
-
-const dropDownOptions = [
-	{
-		value: '1',
-		text: ' תושב/ת שכאפת לו/ה',
-	},
-	{
-		value: '2',
-		text: 'אתה אתה אתה',
-	},
-	{
-		value: '3',
-		text: 'אני אני אני',
-	},
-];
+import { personTypes } from './constants'
 
 const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 	const { address, type, aboutme } = values;
@@ -44,8 +30,8 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 						<Dropdown 
 							id="register-type-input"
 							value={type} 
-							onChange={({ target: { value } }) => setValues({ type: value, aboutme, address })} 
-							options={dropDownOptions} 
+							onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) } 
+							options={personTypes} 
 							required={true} 
 							label="מי אני" />
 					</SC.InputWrapper>
