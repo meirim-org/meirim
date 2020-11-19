@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import { authenticateEmail, registerUser  } from './handlers';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
 import { EMAIL_SENT_PAGE } from '../../router/contants'
-import { formValidation, getFormErrors } from './validations'
+import { firstStepValidation, formValidation, getFormErrors } from './validations'
+import { personTypes } from './constants'
 
 const SignupForms = () => {
 	const [firstStepSuccess, setFirstStepSucess] = useState(false);
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
-	const [secondStepValues, setSecondStepValues] = useState({ type: dropDownOptions[0].value, aboutme: '', address: '' });
+	const [secondStepValues, setSecondStepValues] = useState({ type: personTypes[0].value, aboutme: '', address: '' });
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
 	const [formErrors, setFormErrors] = useState({
@@ -56,13 +58,19 @@ const SignupForms = () => {
 				setSecondStepSucess(true);
 			}
 		} catch (err) {
-			console.log('err');
+			toast.error('מצטערים, התהליך לא הצליח. נא לנסות שוב', {
+				position: 'bottom-center',
+				autoClose: false,
+				hideProgressBar: true,
+				closeOnClick: true,
+				draggable: true,
+			})
 		}
 	};
 
 	const handleFirstFormSubmit = async () => {
 		const { email , name, password } = firstStepValues
-		const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
+		const { isValidEmail, isValidName, isValidPassword } = firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
 		if(!isValidEmail || !isValidName || !isValidPassword){
 			const { emailError, nameError, passwordError } = getFormErrors({ isValidEmail, isValidName, isValidPassword })
 			setFormErrors({ ...formErrors, emailError, nameError, passwordError })
@@ -111,20 +119,5 @@ const SignupForms = () => {
 			/>
 		);
 };
-
-const dropDownOptions = [
-	{
-		value: '1',
-		text: ' תושב/ת שכאפת לו/ה',
-	},
-	{
-		value: '2',
-		text: 'אתה אתה אתה',
-	},
-	{
-		value: '3',
-		text: 'אני אני אני',
-	},
-];
 
 export default SignupForms;

@@ -1,3 +1,10 @@
+export const firstStepValidation = ({ name, email, password }) => {
+	const isValidEmail =  Boolean(email)
+	const isValidName =  Boolean(name)
+	const isValidPassword = password.length >= 6 
+
+	return { isValidEmail, isValidName, isValidPassword }
+}
 
 export const formValidation = ({ name, email, password, dirtyInputs, onFocusInput }) => {
 	const isValidEmail = onFocusInput.email  || Boolean(email)? true : !dirtyInputs.email
