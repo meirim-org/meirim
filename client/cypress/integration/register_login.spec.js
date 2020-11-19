@@ -2,7 +2,7 @@
 /// <reference types="cypress" />
 
 context('Register and login', () => {
-  const userEmail = `test.${Date.now()}@meirim.org`
+  const userEmail = `test@meirim.org`
   beforeEach(() => {
     cy.server();
     cy.route({method: 'POST', url: '/api/sign/up*'}).as('signup');
