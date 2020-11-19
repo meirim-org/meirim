@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/forbid-prop-types */
-import React, { useState } from 'react';
+import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
@@ -27,12 +27,7 @@ const StyledSelect = styled(Select)`
 	}
 `;
 
-const Dropdown = ({ id, options, label, required }) => {
-	const [value, setValue] = useState(options[0].value);
-
-	const handleChange = (event) => {
-		setValue(event.target.value);
-	};
+const Dropdown = ({ onChange, value, id, options, label, required }) => {
 
 	return (
 		<>
@@ -42,7 +37,7 @@ const Dropdown = ({ id, options, label, required }) => {
 				variant="outlined"
 				value={value}
 				id={id}
-				onChange={handleChange}
+				onChange={onChange}
 			>
 				{
 					options.map((optn) => <MenuItem key={optn.value} value={optn.value}>{optn.text}</MenuItem>)
@@ -60,7 +55,9 @@ Dropdown.propTypes = {
 	label: PropTypes.string,
 	required: PropTypes.bool,
 	options: PropTypes.array.isRequired,
+	onChange: PropTypes.func.isRequired,
 	id: PropTypes.string.isRequired,
+	value: PropTypes.string.isRequired,
 };
 
 export default Dropdown;
