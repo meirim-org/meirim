@@ -17,28 +17,46 @@ const columns = [
 class PlanController extends Controller {
 
 	browse (req) {
-		const cols = [...columns,
-			'goals_from_mavat',
-			'main_details_from_mavat',
-		];
 
 		const { query } = req;
-		const where = {};
-		let order = '-id'
+		let q = {
+			where:{},
+			order: '-id',
+			columns: [...columns,
+				'goals_from_mavat',
+				'main_details_from_mavat',
+			]
+		}
 
 		if (query.status) {
-			where.status = query.status.split(',');
+			q.where.status = query.status.split(',');
 		}
 
 		if (query.PLAN_COUNTY_NAME) {
-			where.PLAN_COUNTY_NAME = query.PLAN_COUNTY_NAME.split(',');
+			q.where.PLAN_COUNTY_NAME = query.PLAN_COUNTY_NAME.split(',');
 		}
 
-		return super.browse(req, {
-			cols,
-			where,
-			order
-		});
+		if(query.distancePoint){
+
+			let points = query.distancePoint.split(',').map(i => parseFloat(i))
+
+			const geojson = {
+				type: 'Point',
+				coordinates: points
+			};
+	
+			if(!GJV.valid(geojson)){
+				throw new Exception.BadRequest('point is invalid'); 
+			}
+			const polygon = wkt.convert(geojson);
+
+			q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`))
+
+			q.orderByRaw = ['distance']
+			delete q.order
+		}
+
+		return super.browse(req, q);
 	}
 
 	publicBrowse (req) {
@@ -88,37 +106,6 @@ class PlanController extends Controller {
 				}));
 				return response;
 			});
-	}
-
-	browseDistance (req) {
-		const { query } = req;
-
-		if (!query.point){
-			throw new Exception.BadRequest('Missing point params');
-		}
-
-		let points = query.point.split(',').map(i => parseFloat(i))
-
-		const geojson = {
-			type: 'Point',
-			coordinates: points
-		};
-
-		if(!GJV.valid(geojson)){
-			throw new Exception.BadRequest('point is invalid'); 
-		}
-		const polygon = wkt.convert(geojson);
-		
-		return super
-			.browse(req, {
-				columns:[...columns, 
-					'goals_from_mavat',
-					'main_details_from_mavat',
-					Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`)
-				],
-				orderByRaw:['distance'],
-				pageSize: 10
-			})
 	}
 
 	county () {
