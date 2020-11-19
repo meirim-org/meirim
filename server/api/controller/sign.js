@@ -1,4 +1,5 @@
 const Controller = require('./controller');
+const alertController = require('./alert');
 const Person = require('../model/person');
 const Exception = require('../model/exception');
 const Log = require('../lib/log');
@@ -43,12 +44,17 @@ class SignController extends Controller {
 				}
 
 				// if there is a user but active, this will return an error
-
 				return this.model
 					.forge(req.body)
 					.save()
-					.then((person) => {
+					.then(async (person) => {
 						Log.debug('Person create success id:', person.get('id'));
+						if(person.attributes.address) {
+							await alertController.create({ 
+								body: { address: person.attributes.address, radius: 5  }, 
+								session: { person } 
+							});
+						}
 						return Email.newSignUp(person);
 					})
 					.then(() => this.signin(req));
