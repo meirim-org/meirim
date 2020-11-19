@@ -5,5 +5,8 @@
     },
     "opengraph": {
         "locale": "he_IL"
+    }, 
+    "locationAutocomplete":{
+        "URL":"https://maps.googleapis.com/maps/api/place/autocomplete/"
     }
 }
