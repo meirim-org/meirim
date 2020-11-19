@@ -17,7 +17,7 @@ describe('Emails', function() {
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 		const fakeVerifyEmail = fakeEmailVerification; 
-		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
+		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake'  });
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 		await Email.init();
@@ -42,7 +42,7 @@ describe('Emails', function() {
 				password: '1234',
 				status: 0,
 				name: 'my name',
-				type: 'user_type'
+				type: '0'
 			},
 			session: {}
 		};
@@ -72,7 +72,7 @@ describe('Emails', function() {
 				password: '1234',
 				status: 0,
 				name: 'my name',
-				type: 'user_type'
+				type: '0'
 			},
 			session: {}
 		};
