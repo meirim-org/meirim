@@ -10,11 +10,13 @@ import CardMedia from "@material-ui/core/CardMedia";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import api from "../services/api";
+import locationAutocompleteApi from "../services/location-autocomplete";
 
 import Wrapper from "../components/Wrapper";
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
 import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
+import Autocomplete from "../components/AutoCompleteInput";
 
 import t from "../locale/he_IL";
 import "./Plans.css";
@@ -28,6 +30,9 @@ class Plans extends Component {
         planCounties: [],
         filterCounties: [],
         plans: [],
+        address:'',
+        addressLocation:[],
+        list:[{ label: "הרצל 69 קרית אונו"}, { label: "הרצל 68 קרית אונו"}]
     };
 
     constructor(props) {
@@ -38,13 +43,31 @@ class Plans extends Component {
         this.loadNextPage = this.loadNextPage.bind(this);
     }
 
-    handleCountyFilterChange(selectedCounties) {
+    handleAddressSubmit(address) {
         this.setState({
             plans: []
         });
 
-        this.loadPlans(1, selectedCounties);
+        this.loadPlans(1, address);
     }
+
+    handleInputChange(text) {
+
+        this.setState({
+            loadingAutocomplete:true
+        })
+        
+        locationAutocompleteApi.autocomplete(text)
+      
+        .then((res)=>{
+            this.setState({
+                loadingAutocomplete:false,
+                list:res.map(p=>{return {label:p}})
+            })
+        })
+        .catch(error => this.setState({ error }));
+    }
+
 
     loadPlans(pageNumber, filterCounties) {
         this.setState({
@@ -52,8 +75,9 @@ class Plans extends Component {
         });
 
         api.get(
-            "/plan/distance?point=32.0663523,34.8575235&page=" +
-                pageNumber +
+            "/plan/"+
+            "?page=" +
+            pageNumber +
                 "&PLAN_COUNTY_NAME=" +
                 filterCounties.join(",")
         )
@@ -92,20 +116,18 @@ class Plans extends Component {
     }
 
     render() {
-        const { plans, planCounties, error, noData, hasMore } = this.state;
+        const { plans, planCounties, error, noData, hasMore, list } = this.state;
         const { me } = this.props;
 
         return (
             <Wrapper me={me}>
                 <div className="container">
-                    <FilterAutoCompleteMultiple
-                        classes=""
+                    <Autocomplete  classes=""
                         placeholder="חדש! סינון לפי רשויות מקומיות- הזינו את הרשויות שברצונכם לראות"
-                        inputSuggestions={planCounties}
-                        onFilterChange={this.handleCountyFilterChange.bind(
-                            this
-                        )}
-                    />
+                        inputSuggestions={list}
+                        onFilterChange={this.handleAddressSubmit.bind(this)}
+                       onInputChange={this.handleInputChange.bind(this)}
+                        ></Autocomplete>
                     <br />
                     <GridList
                         cellHeight={500}
@@ -129,7 +151,7 @@ class Plans extends Component {
                                                 hideZoom={true}
                                                 disableInteractions={true}
                                                 title={plan.PLAN_COUNTY_NAME}
-                                                title2={` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת` }
+                                                title2={plan.distance?` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת`:'' }
                                             />
                                         </CardMedia>
                                         <CardContent className="card-content">
