@@ -15,14 +15,9 @@ class SignController extends Controller {
 
 	async	authenticateEmail (req) {
 		const { email } = req.body;
-		if(!email) return false;
-		try { 
-			const isValidEmail = await Person.verifyEmail(email);
-			const isUserRegistered = await Person.isUserExist(email);
-			return { validEmail: isValidEmail, isUserRegistered: isUserRegistered };
-		} catch (err) {
-			return { validEmail: false, isUserRegistered: false };
-		}
+		const isUserRegistered = await Person.isUserExist(email);
+
+		return { isUserRegistered: Boolean(isUserRegistered) };
 	}
 
 	signup (req) {
