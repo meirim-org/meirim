@@ -22,7 +22,7 @@ const StyledButton = styled(MUIButton)`
     }
 `;
 
-const Button = ({text, id, onClick, small = false}) => (
+const Button = ({ text, id, onClick, small }) => (
 	<StyledButton id={id} size="small" onClick={onClick} variant="contained" color="primary" small={small}>
 		{text}
 	</StyledButton>
