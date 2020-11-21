@@ -7,6 +7,7 @@ import logo from '../../assets/logo.png';
 import styled from 'styled-components';
 import { device } from '../../style';
 import PropTypes from 'prop-types';
+import { Button } from '../../shared';
 import { Grid, Container, List, ListItem, Box } from '@material-ui/core';
 
 
@@ -29,10 +30,10 @@ const StyledLink = styled(NavLink)`
 
 const StyledHeader = styled.header`
     position: fixed;
-   z-index: 999;
-   background-color: #ffffff;
-   padding: .75rem 0;
-   border-bottom: 1px solid #e4e4e4;   
+    z-index: 999;
+    background-color: #ffffff;
+    padding: .75rem 0;
+    border-bottom: 1px solid #e4e4e4;   
     top: 0;
     right: 0;
     left: 0;
@@ -62,9 +63,7 @@ const Navigation = ({ me }) => {
 	return (
 		<StyledHeader>
 			<StyledContainer>
-
 				<Grid container alignItems="center" justify="space-between">
-
 					<Grid item>
 						<StyledGridContainer container alignItems="center">
 							<Grid item>
@@ -72,7 +71,6 @@ const Navigation = ({ me }) => {
 									<Logo src={logo} alt={t.name}/>
 								</StyledLink>
 							</Grid>
-
 							<Grid item>
 								<nav>
 									<Box display="flex" alignItems="center">
@@ -82,7 +80,6 @@ const Navigation = ({ me }) => {
 											</StyledLink>
 										</Box>
 										<Box px={2}>
-
 											<StyledLink to="/alerts/" activeClassName="active">
 												{t.alerts}
 											</StyledLink>
@@ -92,15 +89,14 @@ const Navigation = ({ me }) => {
 												{t.about}
 											</StyledLink>
 										</Box>
-
+										<Box px={2}>
+											<Button text={t.supportUs} small/>
+										</Box>
 									</Box>
-
 								</nav>
-
 							</Grid>
 						</StyledGridContainer>
 					</Grid>
-
 					<Grid item>
 						<List container disablePadding>
 							<ListItem className="nav-item">
@@ -118,11 +114,8 @@ const Navigation = ({ me }) => {
 									</StyledLink>
 								)}
 							</ListItem>
-							<Box>ddd</Box>
 						</List>
-
 					</Grid>
-
 				</Grid>
 			</StyledContainer>
 		</StyledHeader>

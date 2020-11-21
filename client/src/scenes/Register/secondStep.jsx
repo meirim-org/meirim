@@ -17,35 +17,35 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 				</SC.Titles>
 				<SC.InputsWrapper>
 					<SC.InputWrapper>
-						<TextInput 
+						<TextInput
 							id="register-address-input"
-							name="adress" 
-							label="כתובת" 
-							type="text" 
-							value={address} 
-							onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })} 
+							name="adress"
+							label="כתובת"
+							type="text"
+							value={address}
+							onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })}
 							helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<Dropdown 
+						<Dropdown
 							id="register-type-input"
-							value={type} 
-							onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) } 
-							options={personTypes} 
-							required={true} 
+							value={type}
+							onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) }
+							options={personTypes}
+							required={true}
 							label="מי אני" />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<TextArea 
+						<TextArea
 							id="register-aboutme-input"
-							value={aboutme} 
-							onChange={({ target: { value } }) => setValues({ type, aboutme: value, address })} 
-							helperText="כדי ששאר חברי הקהילה יכירו אותך" 
+							value={aboutme}
+							onChange={({ target: { value } }) => setValues({ type, aboutme: value, address })}
+							helperText="כדי ששאר חברי הקהילה יכירו אותך"
 							label="קצת עליך" />
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
-					<Button id="register-send-form-button" text="הרשמה למעירים" onClick={handleSubmit} />
+					<Button id="register-send-form-button" text="הרשמה למעירים" onClick={handleSubmit} bold />
 				</SC.ButtonWrapper>
 			</SC.MainWrapper>
 		</Modal>

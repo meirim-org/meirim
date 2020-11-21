@@ -74,7 +74,7 @@ const SignupForms = () => {
 		if(!isValidEmail || !isValidName || !isValidPassword){
 			const { emailError, nameError, passwordError } = getFormErrors({ isValidEmail, isValidName, isValidPassword })
 			setFormErrors({ ...formErrors, emailError, nameError, passwordError })
-	
+
 			return
 		}
 		try {
