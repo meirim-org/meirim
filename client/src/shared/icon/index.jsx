@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
+import Label from '../label';
 
 const StyledIcon = styled(IconButton)`
    ${({ color }) => color  && `
@@ -11,21 +12,32 @@ const StyledIcon = styled(IconButton)`
             fill: ${color};
         }
     `}
+   
+    ${({ fontSize }) => fontSize  && `
+        svg { 
+            font-size: ${fontSize}px;
+        }
+    `}
 `;
 
-const Icon = ({ ariaLabel, color, children  }) => {
+const Component = ({ ariaLabel, color, children, fontSize  }) => {
 	return (
-		<StyledIcon aria-label={ariaLabel} color={color}>
+		<StyledIcon aria-label={ariaLabel} color={color} fontSize={fontSize}>
 			{children}
 		</StyledIcon>
 	);
 };
 
-Icon.propTypes = {
-	ariaLabel: PropTypes.string.isRequired,
-	children: PropTypes.object.isRequired,
-	color: PropTypes.string
+Component.defaultProps = {
+	fontSize: 30,
 };
 
-export default Icon;
+Component.propTypes = {
+	ariaLabel: PropTypes.string.isRequired,
+	children: PropTypes.object.isRequired,
+	color: PropTypes.string,
+	fontSize: PropTypes.number,
+};
+
+export default Component;
 
