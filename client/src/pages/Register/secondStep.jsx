@@ -49,7 +49,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 				</SC.ButtonWrapper>
 				<SC.TermsOfUseWrapper>
 					<SC.TermsOfUse>בלחיצה על ״הרשמה למעירים״ הנך מאשר/ת את </SC.TermsOfUse>
-					<Link text="תנאי השימוש" to="/sign/tom" bold={true} />
+					<Link text="תנאי השימוש" to="/sign/tom" bold={'700'} />
 				</SC.TermsOfUseWrapper>
 			</SC.MainWrapper>
 		</Modal>
