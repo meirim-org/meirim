@@ -1,4 +1,5 @@
 const Controller = require('./controller');
+const alertController = require('./alert');
 const Person = require('../model/person');
 const Exception = require('../model/exception');
 const Log = require('../lib/log');
@@ -14,14 +15,9 @@ class SignController extends Controller {
 
 	async	authenticateEmail (req) {
 		const { email } = req.body;
-		if(!email) return false;
-		try { 
-			const isValidEmail = await Person.verifyEmail(email);
-			const isUserRegistered = await Person.isUserExist(email);
-			return { validEmail: isValidEmail, isUserRegistered: isUserRegistered };
-		} catch (err) {
-			return { validEmail: false, isUserRegistered: false };
-		}
+		const isUserRegistered = await Person.isUserExist(email);
+
+		return { isUserRegistered: Boolean(isUserRegistered) };
 	}
 
 	signup (req) {
@@ -43,12 +39,17 @@ class SignController extends Controller {
 				}
 
 				// if there is a user but active, this will return an error
-
 				return this.model
 					.forge(req.body)
 					.save()
-					.then((person) => {
+					.then(async (person) => {
 						Log.debug('Person create success id:', person.get('id'));
+						if(person.attributes.address) {
+							await alertController.create({ 
+								body: { address: person.attributes.address, radius: 5  }, 
+								session: { person } 
+							});
+						}
 						return Email.newSignUp(person);
 					})
 					.then(() => this.signin(req));

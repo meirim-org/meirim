@@ -2,6 +2,7 @@
 /// <reference types="cypress" />
 
 context('Register and login', () => {
+  const userEmail = `test@meirim.org`
   beforeEach(() => {
     cy.server();
     cy.route({method: 'POST', url: '/api/sign/up*'}).as('signup');
@@ -37,7 +38,7 @@ context('Register and login', () => {
     it('register with an valid email should work', () => {
 
       cy.get('#register-email-input')
-        .type('test@meirim.org')
+        .type(userEmail)
         .get('#register-password-input')
         .type('123456')
         .get('#register-name-input')
@@ -97,7 +98,7 @@ context('Register and login', () => {
       cy.url().should('include', '/sign/in');
 
       cy.get('input#loginEmail')
-        .type('test@meirim.org')
+        .type(userEmail)
         .get('input#loginPassword')
         .type('123456');
 

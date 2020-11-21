@@ -37,6 +37,7 @@ module.exports = {
 		],
 		'newline-before-return': [
 			'error'
-		]
+		],
+		"object-curly-spacing": ["error", "always"]
 	}
 }
