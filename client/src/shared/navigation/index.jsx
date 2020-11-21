@@ -51,6 +51,14 @@ const StyledGridContainer = styled(Grid)`
     }
 `;
 
+const StyledGridContainerAlt = styled(Grid)`
+    width: calc(100% + 1.5rem) !important;
+    margin: 0 -0.75rem;
+    > div {
+        padding: 0 0.75rem;
+    }
+`;
+
 const Navigation = ({ me }) => {
 	const [signOutSuccess, setSignOutSuccess] = useState(false);
 
@@ -98,23 +106,23 @@ const Navigation = ({ me }) => {
 						</StyledGridContainer>
 					</Grid>
 					<Grid item>
-						<List container disablePadding>
-							<ListItem className="nav-item">
-								{me && (
-									<button
-										className="btn btn-outline-secondary"
-										onClick={signOut}
-									>
-										{t.signout}
-									</button>
-								)}
-								{!me && (
-									<StyledLink className="btn btn-outline-secondary" to="/sign/in">
-										{t.signin}
-									</StyledLink>
-								)}
-							</ListItem>
-						</List>
+						{me && (
+							<StyledGridContainer container alignItems="center">
+								<Grid item>
+									<span>dropdown</span>
+								</Grid>
+							</StyledGridContainer>
+						)}
+						{!me && (
+							<StyledGridContainerAlt container alignItems="center">
+								<Grid item>
+									<Button id="sing-in" text={t.signin} simple onClick={''}/>
+								</Grid>
+								<Grid item>
+									<Button id="sing-up" text={t.signup} small altColor onClick={''}/>
+								</Grid>
+							</StyledGridContainerAlt>
+						)}
 					</Grid>
 				</Grid>
 			</StyledContainer>

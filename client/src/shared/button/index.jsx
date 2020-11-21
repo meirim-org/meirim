@@ -14,6 +14,7 @@ const StyledButton = styled(MUIButton)`
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
+    border: 1px solid #652dd0 !important;
     
     .MuiButton-label  {
     	font-family: Assistant !important;
@@ -25,11 +26,28 @@ const StyledButton = styled(MUIButton)`
        outline: none;
     }
     
+    ${({ simple }) => simple && `
+        font-weight: 600 !important;
+        color: #652dd0 !important;
+        border: none !important;
+        background-color: #ffffff !important;
+        min-height: auto !important;
+        padding: 0 !important;
+        > span {
+            line-height: 1 !important;
+        }
+       &:hover {
+          color: #8f5de2 !important;
+          background-color: transparent !important;
+       }
+    `}
+
+    
     ${({ altColor }) => altColor && `
         color: #652dd0 !important;
         background-color: #ffffff !important;
        &:hover {
-          background-color: rgba 101 45 208, 0.04 !important;
+          background-color: rgba(101, 45, 208, 0.04) !important;
        }
     `}
        
@@ -40,19 +58,18 @@ const StyledButton = styled(MUIButton)`
         min-height: 1em;
     `}
 
-   
-
 `;
 
-const Button = ({ text, id, onClick, small, altColor }) => (
-	<StyledButton id={id} small={small} onClick={onClick} altColor={altColor}>
+const Button = ({ text, id, onClick, small, altColor, simple }) => (
+	<StyledButton id={id} small={small} onClick={onClick} altColor={altColor} simple={simple} disableRipple={simple}>
 		{text}
 	</StyledButton>
 );
 
 Button.defaultProps = {
 	small: false,
-	altColor: false
+	altColor: false,
+	simple: false
 }
 
 Button.propTypes = {
@@ -60,7 +77,8 @@ Button.propTypes = {
 	text: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
 	small: PropTypes.bool,
-	altColor: PropTypes.bool
+	altColor: PropTypes.bool,
+	simple: PropTypes.bool
 };
 
 export default Button;
