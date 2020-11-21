@@ -30,7 +30,7 @@ describe('Person model', function() {
 
 	it('has the right defaults', function() {
 		const defaults = instance.defaults;
-		expect(defaults).to.eql({status: 0, type: 'citizen'});
+		expect(defaults).to.eql({ status: 0 });
 	});
 
 	it('has timestamps', function() {

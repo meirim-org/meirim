@@ -8,7 +8,7 @@ const MainWrapper = styled.div`
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    height: ${props => props.navHeight ? `calc(100vh - ${props.navHeight}px);` : 'auto'};
+    height: calc(100vh - 7rem);
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
     }
@@ -164,7 +164,8 @@ const EmailSent = ({fullPage = true}) => {
 							<br/>
                             כתובת האימייל שלך
 						</Title>
-						<Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את הרשמתך</Text>
+						<Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את
+                            הרשמתך</Text>
 						<SmallTextWrapper>
 							<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
 							<Link>לחצו כאן</Link>

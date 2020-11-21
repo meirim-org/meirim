@@ -1,7 +1,5 @@
 import api from '../../services/api';
-
-const SIGN_UP = '/sign/up'
-const AUTHENTICATE_EMAIL = '/sign/auth/email'
+import { AUTHENTICATE_EMAIL, SIGN_UP } from '../../router/contants'
 
 export const registerUser = async (values) => {
 	const {
