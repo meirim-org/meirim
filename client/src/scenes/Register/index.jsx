@@ -37,7 +37,11 @@ const SignupForms = () => {
 	useEffect(() => {
 		const { email , name, password } = firstStepValues
 		const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
-		const { emailError, nameError, passwordError } = getFormErrors({ isValidEmail, isValidName, isValidPassword })
+		const { emailError, nameError, passwordError } = 
+			getFormErrors({ 
+				validations: { isValidEmail, isValidName, isValidPassword }, 
+				values: { password, email } 
+			})
 		setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
 	}, [firstStepValues, onFocusInput, dirtyInputs])
 
@@ -70,23 +74,24 @@ const SignupForms = () => {
 
 	const handleFirstFormSubmit = async () => {
 		const { email , name, password } = firstStepValues
-		const { isValidEmail, isValidName, isValidPassword } = firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
+		const { isValidEmail, isValidName, isValidPassword } = 
+			firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
 		if(!isValidEmail || !isValidName || !isValidPassword){
-			const { emailError, nameError, passwordError } = getFormErrors({ isValidEmail, isValidName, isValidPassword })
+			const { emailError, nameError, passwordError } = 
+				getFormErrors({ 
+					validations: { isValidEmail, isValidName, isValidPassword }, 
+					values: { email, name, password } 
+				})
 			setFormErrors({ ...formErrors, emailError, nameError, passwordError })
 	
 			return
 		}
 		try {
 			const response = await authenticateEmail(email);
-			const { status, data: { isUserRegistered, validEmail } } = response
-			const successResponse = status === 'OK' && validEmail && !isUserRegistered
-			const invalidEmail = !validEmail
+			const { status, data: { isUserRegistered } } = response
+			const successResponse = status === 'OK' && !isUserRegistered
 			if (successResponse) {
 				setFirstStepSucess(true);
-			} else if (invalidEmail) {
-				const emailError = { isValid: false, message: 'המייל לא תקין' }
-				setFormErrors({ ...formErrors, emailError })
 			} else if (isUserRegistered) {
 				const emailError = { isValid: false, message: 'המייל קיים במערכת' }
 				setFormErrors({ ...formErrors, emailError })
