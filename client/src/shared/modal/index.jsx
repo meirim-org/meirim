@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { device } from '../../style';
 
+
 const StyledModal = styled(MUIModal)`
 	display: flex;
 	align-items: center;

@@ -17,13 +17,17 @@ const StyledLink = styled(RouterLink)`
   cursor: pointer;
 `;
 
-const Link = ({ id, to, text, bold = false }) => (
+const Link = ({ id, to, text, bold }) => (
 	<StyledLink id={id} to={to} bold={bold}>{text}</StyledLink>
 );
 
+Link.defaultProps = {
+	bold: false,
+}
+
 Link.propTypes = {
 	to: PropTypes.string.isRequired,
-	text: PropTypes.string.isRequired,
+	text: PropTypes.string,
 	id: PropTypes.string.isRequired,
 	bold: PropTypes.bool,
 };
