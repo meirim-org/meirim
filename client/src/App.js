@@ -25,8 +25,9 @@ import {
     faPaperPlane,
     faChartArea
 } from "@fortawesome/free-solid-svg-icons";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons"; 
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import "./assets/bootstrap.css";
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
 
@@ -49,7 +50,8 @@ class App extends Component {
         }
         return (
             <React.Fragment>
-            <Router>
+                <CssBaseline />
+                <Router>
                 <div>
                     <Switch>
                         <Route
