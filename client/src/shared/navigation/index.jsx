@@ -5,15 +5,27 @@ import t from '../../locale/he_IL';
 import logo from '../../assets/logo.png';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Button, Row, Icon } from '../../shared';
-import { Grid, Container, Box, Hidden, IconButton } from '@material-ui/core';
+import { Button, Row, IconButton } from '../../shared';
+import { Grid, Container, Box, Hidden, Drawer, List, ListItem,ListItemText, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 import { colors } from '../../style/index'
 
 const Logo = styled.img`
     max-width: 53px;
     height: auto;
 `;
+
+const StyledList = styled(List)`
+    padding: 0 !important;
+`
+
+const StyledListItem = styled(ListItem)`
+    padding: 1.2rem 3.5rem !important;
+    span {
+      font-size: 18px;
+    }
+`
 
 const StyledLink = styled(NavLink)`
     font-family: Assistant !important;
@@ -42,8 +54,14 @@ const StyledContainer = styled(Container)`
     max-width: 1376px !important;
 `;
 
+
+const MobileNavWrapper = styled.div`
+    width: 250px;
+`;
+
 const Navigation = ({ me }) => {
 	const [signOutSuccess, setSignOutSuccess] = useState(false);
+	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
 
 	const signOut = () => {
 		api.post('/sign/out').then((signOutSuccess) => {
@@ -90,9 +108,47 @@ const Navigation = ({ me }) => {
 					</Box>
 					<Box>
 						<Hidden mdUp>
-							<Icon color="red" ariaLabel={'open mobile menu'}>
-								<MenuIcon />
-							</Icon>
+							<IconButton color={colors.purple} ariaLabel={'open mobile menu'}>
+								<MenuIcon onClick={() => setMobileNavIsOpened(true)} />
+							</IconButton>
+
+							<Drawer open={mobileNavIsOpened}>
+								<MobileNavWrapper
+									role="presentation"
+								>
+									<Box display="flex" justifyContent="flex-end" m={1.5}>
+
+										<IconButton
+											color={colors.black}
+											ariaLabel={'close mobile menu'}
+											fontSize={20.5}
+										>
+											<CloseIcon onClick={() => setMobileNavIsOpened(false)} />
+										</IconButton>
+									</Box>
+
+									<StyledList>
+										<StyledListItem button key={t.plans}>
+											<ListItemText primary={t.plans} />
+										</StyledListItem>
+									</StyledList>
+									<Divider />
+									<StyledList>
+										<StyledListItem button key={t.supportUs}>
+											<ListItemText primary={t.supportUs} />
+										</StyledListItem>
+									</StyledList>
+									<Divider />
+									<StyledList>
+										<StyledListItem button key={t.signin}>
+											<ListItemText primary={t.signin} />
+										</StyledListItem>
+										<StyledListItem button key={t.signup}>
+											<ListItemText primary={t.signup} />
+										</StyledListItem>
+									</StyledList>
+								</MobileNavWrapper>
+							</Drawer>
 						</Hidden>
 
 						<Hidden smDown>
