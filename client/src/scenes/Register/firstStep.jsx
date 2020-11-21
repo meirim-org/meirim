@@ -66,7 +66,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
-					<Button id="register-firststep-button" text="המשך" onClick={handleSubmit} bold />
+					<Button id="register-firststep-button" text="המשך" onClick={handleSubmit} />
 				</SC.ButtonWrapper>
 			</SC.MainWrapper>
 		</Modal>

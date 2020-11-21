@@ -4,41 +4,55 @@ import MUIButton from '@material-ui/core/Button';
 import styled from 'styled-components';
 
 const StyledButton = styled(MUIButton)`
-	border-radius: ${(props) => (props.type === 'primary' ? '12px !important' : '8px !important')};
 	font-size: 16px !important;
-    font-weight: ${(props) => (props.bold ? '700 !important' : '400 !important')};
 	font-stretch: normal;
 	line-height: 1.5;
 	letter-spacing: normal;
-	text-align: center;
-	color: #ffffff;
-	background-color: #652dd0 !important;
-    min-height: ${(props) => (props.type === 'primary' ? '3.7em' : '1em')};
+	text-align: center; 
     .MuiButton-label  {
     	font-family: Assistant !important;
     }
     &:focus {
        outline: none;
     }
+   
+    color: #ffffff !important;
+    background-color: #652dd0 !important;
+    min-height: 3.7em;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    
+    ${({ altColor }) => altColor && `
+        color: #652dd0 !important;
+        background-color: #ffffff !important;
+    `}
+       
+    ${({ small }) => small && `
+        font-weight: 400 !important;
+        padding: 0.03rem 0.6rem !important;
+        border-radius: 4px !important;
+        min-height: 1em;
+    `}
+
 `;
 
-const Button = ({ text, id, onClick, type, bold }) => (
-	<StyledButton id={id} type={type} onClick={onClick} variant="contained" color="primary" bold={bold}>
+const Button = ({ text, id, onClick, small, altColor }) => (
+	<StyledButton id={id} small={small} onClick={onClick} altColor={altColor}>
 		{text}
 	</StyledButton>
 );
 
 Button.defaultProps = {
-	type: 'primary',
-	bold: false
+	small: false,
+	altColor: false
 }
 
 Button.propTypes = {
 	id: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
-	type: PropTypes.oneOf(['primary', 'secondary']),
-	bold: PropTypes.bool,
+	small: PropTypes.bool,
+	altColor: PropTypes.bool
 };
 
 export default Button;

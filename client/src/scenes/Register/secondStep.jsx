@@ -45,7 +45,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
-					<Button id="register-send-form-button" text="הרשמה למעירים" onClick={handleSubmit} bold />
+					<Button id="register-send-form-button" text="הרשמה למעירים" onClick={handleSubmit} />
 				</SC.ButtonWrapper>
 			</SC.MainWrapper>
 		</Modal>
