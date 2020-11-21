@@ -9,22 +9,28 @@ const StyledButton = styled(MUIButton)`
 	line-height: 1.5;
 	letter-spacing: normal;
 	text-align: center; 
-    .MuiButton-label  {
-    	font-family: Assistant !important;
-    }
-    &:focus {
-       outline: none;
-    }
-   
     color: #ffffff !important;
     background-color: #652dd0 !important;
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
     
+    .MuiButton-label  {
+    	font-family: Assistant !important;
+    }
+    &:hover {
+      background-color: #4d20b2 !important;
+    }
+    &:focus {
+       outline: none;
+    }
+    
     ${({ altColor }) => altColor && `
         color: #652dd0 !important;
         background-color: #ffffff !important;
+       &:hover {
+          background-color: rgba 101 45 208, 0.04 !important;
+       }
     `}
        
     ${({ small }) => small && `
@@ -33,6 +39,8 @@ const StyledButton = styled(MUIButton)`
         border-radius: 4px !important;
         min-height: 1em;
     `}
+
+   
 
 `;
 
