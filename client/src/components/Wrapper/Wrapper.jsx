@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-import Navigation from '../Navigation';
+import { Navigation } from '../../shared';
 import Footer from '../Footer';
 
 export default function Wrapper(props) {
