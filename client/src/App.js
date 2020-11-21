@@ -50,8 +50,7 @@ class App extends Component {
         }
         return (
             <React.Fragment>
-                <CssBaseline />
-                <Router>
+            <Router>
                 <div>
                     <Switch>
                         <Route
