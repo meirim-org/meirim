@@ -90,7 +90,7 @@ const Navigation = ({ me }) => {
 											</StyledLink>
 										</Box>
 										<Box px={2}>
-											<Button text={t.supportUs} small/>
+											<Button id="support-us" text={t.supportUs} type={'primary'} onClick={''} small/>
 										</Box>
 									</Box>
 								</nav>
@@ -119,7 +119,7 @@ const Navigation = ({ me }) => {
 				</Grid>
 			</StyledContainer>
 		</StyledHeader>
-	)
+	);
 
 }
 
