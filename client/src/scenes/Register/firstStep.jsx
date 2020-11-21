@@ -8,7 +8,7 @@ import * as SC from './style';
 const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const { name, email, password } = values;
 	const { nameError, emailError, passwordError } = errors
-	
+
 	return (
 		<Modal id="register-firststep-modal">
 			<SC.MainWrapper>
@@ -27,46 +27,46 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<SC.InputWrapper>
 						<TextInput
 							id="register-name-input"
-							name="name" 
-							onFocus={inputFocus} 
-							onBlur={inputBlur} 
-							error={!nameError.isValid} 
-							label="שם מלא" 
-							type="text" 
-							value={name} 
-							onChange={({ target: { value } }) => setValues({ name: value, email, password })} 
+							name="name"
+							onFocus={inputFocus}
+							onBlur={inputBlur}
+							error={!nameError.isValid}
+							label="שם מלא"
+							type="text"
+							value={name}
+							onChange={({ target: { value } }) => setValues({ name: value, email, password })}
 							required />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<TextInput 
+						<TextInput
 							id="register-email-input"
-							name="email" 
-							helperText={!emailError.isValid && emailError.message ? emailError.message : ''} 
-							onFocus={inputFocus} 
-							onBlur={inputBlur} 
+							name="email"
+							helperText={!emailError.isValid && emailError.message ? emailError.message : ''}
+							onFocus={inputFocus}
+							onBlur={inputBlur}
 							error={!emailError.isValid}
-							label="אימייל" 
-							type="email" 
-							value={email} 
+							label="אימייל"
+							type="email"
+							value={email}
 							onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
 					</SC.InputWrapper>
 					<SC.InputWrapper>
-						<TextInput 
+						<TextInput
 							id="register-password-input"
-							name="password" 
-							helperText={!passwordError.isValid && passwordError.message ? passwordError.message : ''} 
-							onFocus={inputFocus} 
-							onBlur={inputBlur} 
+							name="password"
+							helperText={!passwordError.isValid && passwordError.message ? passwordError.message : ''}
+							onFocus={inputFocus}
+							onBlur={inputBlur}
 							error={!passwordError.isValid}
-							label="סיסמא" 
+							label="סיסמא"
 							type="password"
 							value={password}
-							onChange={({ target: { value } }) => setValues({ name, email, password: value })} 
+							onChange={({ target: { value } }) => setValues({ name, email, password: value })}
 							required />
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
-					<Button id="register-firststep-button" text="המשך" onClick={handleSubmit} />
+					<Button id="register-firststep-button" text="המשך" onClick={handleSubmit} bold />
 				</SC.ButtonWrapper>
 			</SC.MainWrapper>
 		</Modal>

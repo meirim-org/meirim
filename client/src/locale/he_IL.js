@@ -15,6 +15,7 @@ export default {
 	password: 'סיסמה',
 	signup: 'הרשמה',
 	signupNow: 'הרשמו עכשיו',
+    supportUs: 'תמכו בנו',
 	alreadyGotAccount: 'יש לכם כבר חשבון?',
 	km: 'ק"מ',
 	emailExists: 'כתובת דוא"ל כבר רשומה',
