@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const StyledLink = styled(RouterLink)`
   font-family: Assistant;
   font-size: 16px;
-  font-weight: ${(props) => (props.bold ? '700' : '400')} ;
+  font-weight: ${(props) => props.bold } ;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -17,15 +17,19 @@ const StyledLink = styled(RouterLink)`
   cursor: pointer;
 `;
 
-const Link = ({ id, to, text, bold = false }) => (
+const Link = ({ id, to, text, bold = '400' }) => (
 	<StyledLink id={id} to={to} bold={bold}>{text}</StyledLink>
 );
+
+Link.defaultProps = {
+	bold: '400'
+}
 
 Link.propTypes = {
 	to: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,
-	bold: PropTypes.bool,
+	bold: PropTypes.string,
 };
 
 export default Link;
