@@ -1,10 +1,9 @@
 import 'react-toastify/dist/ReactToastify.css';
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './scenes/Home/Home';
 import Plans from './scenes/Plans';
 import SinglePlan from './scenes/SinglePlan';
-import Login from './pages/Login';
 import Activate from './scenes/Activate';
 import Alerts from './scenes/Alerts';
 import AlertUnsubscribe from './scenes/AlertUnsubscribe';
@@ -36,10 +35,10 @@ const App = () => {
 
 	React.useEffect(() => {
 		api.get('/me')
-			.then(me => {
+			.then(() => {
 				setMe(true)
 			})
-			.catch((err) => {
+			.catch(() => {
 				setMe(false)
 			})
 	}, [])

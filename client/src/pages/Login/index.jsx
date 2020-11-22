@@ -1,13 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify'
 import { loginUser } from './controller'
-import Wrapper from '../../components/Wrapper'
 import { validateEmail } from '../../validations'
 import { Button, Link, Modal, TextInput } from '../../shared';
 import * as SC from './style';
 
 const Login = ({ ...props }) => {
-	console.log('Login -> props', props)
 	const { history, setMe } = props
 	const firstUpdate = useRef(true);
 	const [loginValues, setLoginValues] = useState({ email: '', password: '' });
@@ -96,7 +94,7 @@ const Login = ({ ...props }) => {
 						<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
 						<SC.SubTitle>
 							<span>עוד לא הצטרפתם? </span>
-							<Link id="login-signin-link" text="הרשמו עכשיו" to="/sign/in" bold={'700'} />
+							<Link id="login-signin-link" text="הרשמו עכשיו" to="/sign/up" bold={'700'} />
 						</SC.SubTitle>
 					</SC.SubTitleWrapper>
 				</SC.Titles>
