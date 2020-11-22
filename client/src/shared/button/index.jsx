@@ -4,7 +4,7 @@ import MUIButton from '@material-ui/core/Button';
 import styled from 'styled-components';
 
 const StyledButton = styled(MUIButton)`
-	border-radius: ${(props) => (props.small ? '8px !important' : '12px !important')};
+	border-radius: ${(props) => (props.borderradius)};
 	font-size: 16px;
 	font-weight: bold !important;
 	font-stretch: normal;
@@ -13,8 +13,8 @@ const StyledButton = styled(MUIButton)`
 	text-align: center;
 	color: #ffffff;
 	background-color: #652dd0 !important;
-    min-height: ${(props) => (props.small ? '1em' : '3.7em')};
-    .MuiButton-label  {
+  min-height: ${(props) => (props.minhegiht)};
+  .MuiButton-label  {
     	font-family: Assistant !important;
     }
     &:focus {
@@ -22,11 +22,15 @@ const StyledButton = styled(MUIButton)`
     }
 `;
 
-const Button = ({text, id, onClick, small = false}) => (
-	<StyledButton id={id} size="small" onClick={onClick} variant="contained" color="primary" small={small}>
-		{text}
-	</StyledButton>
-);
+const Button = ({ text, id, onClick, small = false }) => {
+	const minHegiht = small ? '1em' : '3.7em'
+	const borderRadius = small ? '8px !important' : '12px !imporatnt'
+	
+	return (
+		<StyledButton id={id} size="small" minhegiht={minHegiht} borderradius={borderRadius} onClick={onClick} variant="contained" color="primary">
+			{text}
+		</StyledButton>
+	)};
 
 Button.defaultProps = {
 	small: false

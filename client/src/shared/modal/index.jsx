@@ -9,6 +9,7 @@ const StyledModal = styled(MUIModal)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	overflow: scroll;
 `;
 
 const StyledIcon = styled(CloseIcon)`

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { authenticateEmail, registerUser  } from './handlers';
+import { authenticateEmail, registerUser  } from './controller';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
 import { EMAIL_SENT_PAGE } from '../../router/contants'

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./scenes/Home/Home";
 import Plans from "./scenes/Plans";
 import SinglePlan from "./scenes/SinglePlan";
-import SignIn from "./scenes/SignIn";
+import Login from "./pages/Login";
 import Activate from "./scenes/Activate";
 import Alerts from "./scenes/Alerts";
 import AlertUnsubscribe from "./scenes/AlertUnsubscribe";
@@ -13,7 +13,7 @@ import About from "./scenes/About";
 import Terms from "./scenes/Terms";
 import Vocabulary from "./scenes/Vocabulary";
 import NotFound from "./scenes/NotFound";
-import EmailSent from "./scenes/Register/emailSent";
+import EmailSent from "./pages/Register/emailSent";
 import api from "./services/api";
 import './App.css';
 import { ToastContainer } from 'react-toastify';
@@ -37,8 +37,7 @@ class App extends Component {
     componentWillMount() {
         api.get("/me")
             .then(me => this.setState({ me: true }))
-            .catch(error => {
-                console.log('error',error)
+            .catch(() => {
                 this.setState({ me: false }) });
     }
     render() {
@@ -79,7 +78,7 @@ class App extends Component {
                         />
                         <Route
                             path="/sign/in"
-                            render={props => <SignIn {...props} me={me} />}
+                            render={props => <Login {...props} me={me} />}
                         />
                         <Route
                             path="/activate"

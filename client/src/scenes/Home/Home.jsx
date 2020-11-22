@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Wrapper from '../../components/Wrapper';
-import Register from '../Register/index.jsx';
+import Register from '../../pages/Register/index.jsx';
 
 import t from '../../locale/he_IL';
 import traktor from '../../assets/traktor_op.png';
@@ -78,6 +78,7 @@ const whatSay = [
 
 export default function Home(props) {
 	const { me } = props;
+	
 	return (
 		<Wrapper me={me}>
 			<div

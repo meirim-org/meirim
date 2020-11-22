@@ -9,6 +9,7 @@ import Label from '../label';
 
 const StyledSelect = styled(Select)`
     font-family: Assistant !important;
+    width: 100%;
     font-size: 16px;
 	background-color: white;
 	border-radius: 12px !important;
