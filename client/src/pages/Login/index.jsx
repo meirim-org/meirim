@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify'
 import { loginUser } from './controller'
+import Wrapper from '../../components/Wrapper'
 import { validateEmail } from '../../validations'
 import { Button, Link, Modal, TextInput } from '../../shared';
 import * as SC from './style';
 
-const Login = () => {
+const Login = ({ ...props }) => {
+	console.log('Login -> props', props)
+	const { history, setMe } = props
 	const firstUpdate = useRef(true);
-	const [isUserLoggedIn , setIsUserLoggedIn] = useState(false)
-	const [loginValues, setLoginValues] = useState({ email: 'rabbit.v2@gmail.com', password: '123123' });
+	const [loginValues, setLoginValues] = useState({ email: '', password: '' });
 	const [onFocusInput, setOnFocusInput] = useState({ password: false, email: false })
 	const [formErrors, setFormErrors] = useState({
 		emailError: { isValid: true, message: '' },
@@ -53,8 +55,15 @@ const Login = () => {
 		setFormErrors(ps => ({ ...ps, emailError, passwordError }))
 		if(isEmailValid && isPasswordValid) {
 			const res = await loginUser({ values: loginValues }) 
-			if(res.response.status === 403){
-				toast.error('הסיסמה או שם המשתמש אינם נכונים.', {
+			if (res.status === 'OK') {
+				setMe(true)
+
+				return history.push({
+					pathname: '/alerts',
+				})
+			} else if(res.response.status === 403){
+				toast.error('הסיסמה או שם המשתמש אינם נכונים', {
+					toastId: '403message',
 					position: 'bottom-center',
 					autoClose: false,
 					hideProgressBar: true,
@@ -65,6 +74,7 @@ const Login = () => {
 				return
 			} else if (res.response.status === 504){
 				toast.error('מתנצלים, יש שגיאה בצד שלנו. נא לנסות שוב', {
+					toastId: '504message',
 					position: 'bottom-center',
 					autoClose: false,
 					hideProgressBar: true,
@@ -73,9 +83,7 @@ const Login = () => {
 				})
 					
 				return
-			} else if (res.response.status === 200) {
-				setIsUserLoggedIn(true)
-			}
+			} 
 		}
 	}
 	
@@ -88,7 +96,7 @@ const Login = () => {
 						<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
 						<SC.SubTitle>
 							<span>עוד לא הצטרפתם? </span>
-							<Link id="register-signin-link" text="הרשמו עכשיו" to="/sign/in" bold={'700'} />
+							<Link id="login-signin-link" text="הרשמו עכשיו" to="/sign/in" bold={'700'} />
 						</SC.SubTitle>
 					</SC.SubTitleWrapper>
 				</SC.Titles>
@@ -96,7 +104,7 @@ const Login = () => {
 					<SC.InputsTitle>כבר חברים בקהילה?</SC.InputsTitle>
 					<SC.InputWrapper>
 						<TextInput
-							id="register-email-input"
+							id="login-email-input"
 							name="email"
 							onFocus={onInputFocus}
 							onBlur={onInputBlur}
@@ -109,7 +117,7 @@ const Login = () => {
 					</SC.InputWrapper>
 					<SC.InputWrapper>
 						<TextInput
-							id="register-password-input"
+							id="login-password-input"
 							name="password"
 							onFocus={onInputFocus}
 							onBlur={onInputBlur}
@@ -124,7 +132,7 @@ const Login = () => {
 					</SC.InputWrapper>
 				</SC.InputsWrapper>
 				<SC.ButtonWrapper>
-					<Button id="register-firststep-button" text="התחברות למעירים" onClick={handleFormSubmit} />
+					<Button id="login-button" text="התחברות למעירים" onClick={handleFormSubmit} />
 				</SC.ButtonWrapper>
 			</SC.MainWrapper>
 		</Modal>

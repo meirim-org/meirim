@@ -2,8 +2,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Wrapper from '../../components/Wrapper';
-import Register from '../../pages/Register/index.jsx';
-
+import Register from '../../pages/Register';
+import Login from '../../pages/Login'
 import t from '../../locale/he_IL';
 import traktor from '../../assets/traktor_op.png';
 import logoSmall from '../../assets/logo_small.png';
@@ -76,8 +76,9 @@ const whatSay = [
 	},
 ];
 
-export default function Home(props) {
-	const { me } = props;
+const Home = (props) => {
+
+	const { me, showRegister, showSignin } = props;
 	
 	return (
 		<Wrapper me={me}>
@@ -118,7 +119,8 @@ export default function Home(props) {
 						<p>{t.howItWorks}</p>
 					</div>
 					<div className="col-lg-4">
-						<Register />
+					 {showRegister || !showSignin && !me ? <Register {...props}/> : null }
+					 {showSignin && <Login {...props}/>}
 					</div>
 				</div>
 			</div>
@@ -172,3 +174,5 @@ export default function Home(props) {
 		</Wrapper>
 	);
 }
+
+export default Home

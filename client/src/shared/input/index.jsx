@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import HelperText from '../helperText';
 import Label from '../label';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const StyledInput = styled(TextField)`
@@ -80,7 +80,7 @@ const TextInput = ({
 			}
 			{
 				forgetPassword && <ForgotPassword>
-					<u><Link to='/forgot-password'>שכחתי סיסמה</Link></u>
+					<u><Link to='/forgot/'>שכחתי סיסמה</Link></u>
 				</ForgotPassword>
 			}
 		</>
