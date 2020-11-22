@@ -2,7 +2,7 @@
 /// <reference types="cypress" />
 
 context('Register and login', () => {
-  const userEmail = `test@meirim.org`
+  const userEmail = `test${Date.now()}@meirim.org`
   beforeEach(() => {
     cy.server();
     cy.route({method: 'POST', url: '/api/sign/up*'}).as('signup');
@@ -21,7 +21,7 @@ context('Register and login', () => {
 
     it('register with an invalid email should not work', () => {
       cy.get('#register-email-input')
-        .type('invalid@email.invalid')
+        .type('invalidemail.invalid')
         .get('#register-password-input')
         .type('123456')
         .get('#register-name-input')
@@ -77,17 +77,16 @@ context('Register and login', () => {
 
       cy.url().should('include', '/sign/in');
 
-      cy.get('input#loginEmail')
+      cy.get('#login-email-input')
         .type('invalid@email.invalid')
-        .get('input#loginPassword')
-        .type('1234');
+        .get('#login-password-input')
+        .type('123456');
 
-      cy.get('form')
-        .submit();
+      cy.get('#login-button')
+        .click()
 
-      cy.wait('@signin');
 
-      cy.get('div.alert-danger')
+      cy.get('#403message')
         .should('be.visible');
     });
 
@@ -97,15 +96,13 @@ context('Register and login', () => {
 
       cy.url().should('include', '/sign/in');
 
-      cy.get('input#loginEmail')
+      cy.get('#login-email-input')
         .type(userEmail)
-        .get('input#loginPassword')
+        .get('#login-password-input')
         .type('123456');
 
-      cy.get('form')
-        .submit();
-
-      cy.wait('@signin');
+      cy.get('#login-button')
+        .click()
 
       cy.get('div.alert-danger')
         .should('not.be.visible');
