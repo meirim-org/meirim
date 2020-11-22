@@ -32,7 +32,7 @@ const Dropdown = ({ onChange, value, id, options, label, required }) => {
 
 	return (
 		<>
-			{label &&	<Label required={required} text={label} />}
+			{label &&	<Label required={required} text={label} id={`${id}-label`}/>}
 			<StyledSelect
 				required={required}
 				variant="outlined"

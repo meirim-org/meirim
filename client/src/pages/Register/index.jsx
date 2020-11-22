@@ -24,14 +24,14 @@ const SignupForms = () => {
 	const onInputFocus = (inputName) => {
 		const newState = {}
 		newState[inputName] = true
-		setDirtyInputs({ ...dirtyInputs, ...newState })
-		setOnFocusInput({ ...onFocusInput, ...newState })
+		setDirtyInputs(ps => ({ ...ps, ...newState }))
+		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
 	const onInputBlur = (inputName) => {
 		const newState = {}
 		newState[inputName] = false
-		setOnFocusInput({ ...onFocusInput, ...newState })
+		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
 	useEffect(() => {
