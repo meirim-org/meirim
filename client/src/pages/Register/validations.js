@@ -1,3 +1,5 @@
+import { validateEmail } from '../../validations' 
+
 export const firstStepValidation = ({ name, email, password }) => {
 	const isValidEmail =  email ? validateEmail(email) : false
 	const isValidName =  Boolean(name)
@@ -40,10 +42,5 @@ export const getFormErrors = ({
 	return { emailError, nameError, passwordError }
 }
 
-const validateEmail = (email) => {
-	const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	
-	return re.test(email);
-}
 
 
