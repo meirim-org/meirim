@@ -33,7 +33,7 @@ const Login = () => {
 	const formValidation = () => {
 		const isEmailInvalid = getIsEmailInvalid() 
 		const emailError = { isValid: !isEmailInvalid, message: !isEmailInvalid ? '' : 'מייל לא תקין' }
-		setFormErrors(previousState => ({ ...previousState, emailError }))
+		setFormErrors(ps => ({ ...ps, emailError }))
 	}
 
 	useEffect(() => {
@@ -50,7 +50,7 @@ const Login = () => {
 		const isPasswordValid = !getIsPasswordInvalid()
 		const emailError = { isValid: isEmailValid, message: isEmailValid ? '' : 'מייל לא תקין' }
 		const passwordError = { isValid: isPasswordValid, message: isPasswordValid ? '' : 'סיסמה לא תקינה' }
-		setFormErrors(previousState => ({ ...previousState, emailError, passwordError }))
+		setFormErrors(ps => ({ ...ps, emailError, passwordError }))
 		if(isEmailValid && isPasswordValid) {
 			const res = await loginUser({ values: loginValues }) 
 			if(res.response.status === 403){

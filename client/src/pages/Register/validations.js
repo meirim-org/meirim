@@ -10,7 +10,7 @@ export const firstStepValidation = ({ name, email, password }) => {
 
 export const formValidation = ({ name, email, password, dirtyInputs, onFocusInput }) => {
 	const isValidEmail = 
-		onFocusInput.email  || Boolean(email)? true : !dirtyInputs.email
+		onFocusInput.email  || validateEmail(email)? true : !dirtyInputs.email
 	const isValidName = 
 		onFocusInput.name  || Boolean(name) ? true : !dirtyInputs.name
 	const isValidPassword = 
