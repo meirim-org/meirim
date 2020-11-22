@@ -154,10 +154,10 @@ const Link = styled.span`
 `;
 
 const EmailSent = ({ fullPage = true , ...props }) => {
-	console.log('EmailSent -> props', props)
-    
-	const { email } = props.location.state
-	console.log('EmailSent -> email', email)
+	let email = ''
+	if(props && props.location && props.location.state){
+		email = props.location.state
+	}
 	
 	return (
 		<Wrapper fullPage={fullPage}>
