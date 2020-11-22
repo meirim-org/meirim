@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {device} from '../../style';
+import { resendActivationLinkToEmail } from './controller'
+import { device } from '../../style';
 import Wrapper from '../../components/Wrapper';
 
 const MainWrapper = styled.div`
@@ -152,7 +153,12 @@ const Link = styled.span`
   color: #652dd0;
 `;
 
-const EmailSent = ({fullPage = true}) => {
+const EmailSent = ({ fullPage = true , ...props }) => {
+	console.log('EmailSent -> props', props)
+    
+	const { email } = props.location.state
+	console.log('EmailSent -> email', email)
+	
 	return (
 		<Wrapper fullPage={fullPage}>
 			<MainWrapper style>
@@ -168,7 +174,7 @@ const EmailSent = ({fullPage = true}) => {
                             הרשמתך</Text>
 						<SmallTextWrapper>
 							<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
-							<Link>לחצו כאן</Link>
+							<Link onClick={()=> resendActivationLinkToEmail(email)}>לחצו כאן</Link>
 						</SmallTextWrapper>
 					</Content>
 				</ContentCol>

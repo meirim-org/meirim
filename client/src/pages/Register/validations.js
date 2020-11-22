@@ -22,21 +22,22 @@ export const formValidation = ({ name, email, password, dirtyInputs, onFocusInpu
 const inValidEmailMessage = 'מייל לא תקין'
 const emptyInputMessage = 'שדה חובה'
 const shortPasswordMessage = 'לפחות ששה תווים'
+const emptyString = ''
 
 export const getFormErrors = ({ 
 	validations: { isValidEmail, isValidName, isValidPassword }, 
 	values: { email, password } }) => {
 	const emailError = { 
 		isValid: isValidEmail,
-		message: isValidEmail ? '' : email ? inValidEmailMessage : emptyInputMessage
+		message: isValidEmail ? emptyString : email ? inValidEmailMessage : emptyInputMessage
 	}
 	const nameError = { 
 		isValid: isValidName, 
-		message: isValidName ? '' : 'שדה חובה' 
+		message: isValidName ? emptyString : emptyInputMessage
 	}
 	const passwordError = { 
 		isValid: isValidPassword, 
-		message: isValidPassword ? '' : password ? shortPasswordMessage : emptyInputMessage
+		message: isValidPassword ? emptyString : password ? shortPasswordMessage : emptyInputMessage
 	}
 
 	return { emailError, nameError, passwordError }

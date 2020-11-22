@@ -58,7 +58,8 @@ const SignupForms = () => {
 		};
 		try {
 			const response = await registerUser(requestData)
-			if (response.status === 'OK') {
+			const success = response.status === 'OK'
+			if (success) {
 				setSecondStepSucess(true);
 			}
 		} catch (err) {
@@ -104,25 +105,26 @@ const SignupForms = () => {
 		}
 	};
 
-	return firstStepSuccess && secondStepSuccess ? <Redirect to={EMAIL_SENT_PAGE} /> : firstStepSuccess
-		? (
-			<SecondStepSignup
-				errors={formErrors}
-				values={secondStepValues}
-				setValues={setSecondStepValues}
-				handleSubmit={handleSecondFormSubmit}
-			/>
-		)
-		: (
-			<FirstStepSignup
-				errors={formErrors}
-				inputFocus={onInputFocus}
-				inputBlur={onInputBlur}
-				values={firstStepValues}
-				setValues={setFirstStepValues}
-				handleSubmit={handleFirstFormSubmit}
-			/>
-		);
+	return firstStepSuccess && secondStepSuccess ? 
+		<Redirect to={{ pathname: EMAIL_SENT_PAGE, state: { email: firstStepValues.email } }} /> : firstStepSuccess
+			? (
+				<SecondStepSignup
+					errors={formErrors}
+					values={secondStepValues}
+					setValues={setSecondStepValues}
+					handleSubmit={handleSecondFormSubmit}
+				/>
+			)
+			: (
+				<FirstStepSignup
+					errors={formErrors}
+					inputFocus={onInputFocus}
+					inputBlur={onInputBlur}
+					values={firstStepValues}
+					setValues={setFirstStepValues}
+					handleSubmit={handleFirstFormSubmit}
+				/>
+			);
 };
 
 export default SignupForms;
