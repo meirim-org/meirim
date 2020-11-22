@@ -80,6 +80,13 @@ const Home = (props) => {
 
 	const { me, showRegister, showSignin } = props;
 	
+	const showRegisterModal = () => {
+		if(showRegister) return true
+		if(!showSignin && !me) return true
+		
+		return false
+	}
+
 	return (
 		<Wrapper me={me}>
 			<div
@@ -119,7 +126,7 @@ const Home = (props) => {
 						<p>{t.howItWorks}</p>
 					</div>
 					<div className="col-lg-4">
-					 {showRegister || !showSignin && !me ? <Register {...props}/> : null }
+					 { showRegisterModal() ? <Register {...props}/> : null }
 					 {showSignin && <Login {...props}/>}
 					</div>
 				</div>
