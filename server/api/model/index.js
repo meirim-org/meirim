@@ -4,7 +4,10 @@ const Plan = require('./plan');
 const Person = require('./person');
 const Alert = require('./alert');
 const Comment = require('./comment');
-
+const PlanChartOneEightRow = require('./plan_chart_one_eight_row');
+const PlanChartFourRow = require('./plan_chart_four_row');
+const PlanChartFiveRow = require('./plan_chart_five_row');
+const PlanChartSixRow = require('./plan_chart_six_row');
 
 module.exports = {
 	ArchiveNotification,
@@ -12,5 +15,9 @@ module.exports = {
 	Plan,
 	Person,
 	Alert,
-	Comment
+	Comment,
+	PlanChartOneEightRow,
+	PlanChartFourRow,
+	PlanChartFiveRow,
+	PlanChartSixRow
 };

@@ -1,101 +1,104 @@
 <!--
 
-  
+
 Like looking at code? Help us! https://github.com/meirim-org/meirim
 
 -->
 <!DOCTYPE html>
 <html lang="he">
-    <head>
-        <meta charset="utf-8" />
+<head>
+    <meta charset="utf-8"/>
 
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-        <meta property="og:type" content="website" />
-        <meta property="og:locale" content="{{ pageLocale }}" />
-        {{#if isMain }}
-        <title>מעירים - מידע תכנוני ואקטיביזם עירוני</title>
-        <meta
-            property="og:title"
-            content="מעירים - מידע תכנוני ואקטיביזם עירוני"
-        />
-        <meta
-            name="description"
-            content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
-        />
-        <meta
-            property="og:description"
-            content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
-        />
-        {{/if}}
-        {{#if isPlan }}
-        <title>{{ data.PL_NUMBER }} - {{ data.PL_NAME }}</title>
-        <meta
-            property="og:title"
-            content="{{ data.PL_NUMBER }} - {{ data.PL_NAME }}"
-        />
-        {{#if data.data.DEPOSITING_DATE }}
-        <meta
-            name="description"
-            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב{{
+    <meta property="og:type" content="website"/>
+    <meta property="og:locale" content="{{ pageLocale }}"/>
+    {{#if isMain }}
+    <title>מעירים - מידע תכנוני ואקטיביזם עירוני</title>
+    <meta
+        property="og:title"
+        content="מעירים - מידע תכנוני ואקטיביזם עירוני"
+    />
+    <meta
+        name="description"
+        content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
+    />
+    <meta
+        property="og:description"
+        content="שקיפות בתכנון עירוני, התנגדויות ושירות התראות על הגשת תבעות חדשות"
+    />
+    {{/if}}
+    {{#if isPlan }}
+    <title>{{ data.PL_NUMBER }} - {{ data.PL_NAME }}</title>
+    <meta
+        property="og:title"
+        content="{{ data.PL_NUMBER }} - {{ data.PL_NAME }}"
+    />
+    {{#if data.data.DEPOSITING_DATE }}
+    <meta
+        name="description"
+        content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב{{
                 formatDate data.data.DEPOSITING_DATE
             }}"
-        />
-        <meta
-            property="og:description"
-            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב{{
+    />
+    <meta
+        property="og:description"
+        content="תבע ב{{ data.data.PLAN_COUNTY_NAME }} אשר הופקדה ב{{
                 formatDate data.data.DEPOSITING_DATE
             }}"
-        />
-        {{ else }}
-        <meta
-            name="description"
-            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }}"
-        />
-        <meta
-            property="og:description"
-            content="תבע ב{{ data.data.PLAN_COUNTY_NAME }}"
-        />
-        {{/if}}
-        {{/if}}
+    />
+    {{ else }}
+    <meta
+        name="description"
+        content="תבע ב{{ data.data.PLAN_COUNTY_NAME }}"
+    />
+    <meta
+        property="og:description"
+        content="תבע ב{{ data.data.PLAN_COUNTY_NAME }}"
+    />
+    {{/if}}
+    {{/if}}
 
-        <meta property="og:image" content="{{ pageImage }}" />
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-        <link
-            href="https://fonts.googleapis.com/css?family=Heebo"
-            rel="stylesheet"
-        />
+    <meta property="og:image" content="{{ pageImage }}"/>
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
+    <link
+        href="https://fonts.googleapis.com/css?family=Heebo"
+        rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
 
-        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=UA-122025557-1"
-        ></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"/>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=UA-122025557-1"
+    ></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-            gtag("config", "UA-122025557-1");
-        </script>
-    </head>
-    <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root"></div>
-        <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+        function gtag() {
+            dataLayer.push(arguments);
+        }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+        gtag("js", new Date());
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    --></body>
+        gtag("config", "UA-122025557-1");
+    </script>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+<!--
+This HTML file is a template.
+If you open it directly in the browser, you will see an empty page.
+
+You can add webfonts, meta tags, or analytics to this file.
+The build step will place the bundled scripts into the <body> tag.
+
+To begin the development, run `npm start` or `yarn start`.
+To create a production bundle, use `npm run build` or `yarn build`.
+--></body>
 </html>
