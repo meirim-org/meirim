@@ -15,7 +15,9 @@ const PlanStruct = function(table) {
 	table.string('jurisdiction');
 	table.string('areaChanges');
 	table.text('explanation', 65535);
-	table.integer('rating');
+	table.float('rating').defaultTo(0);
+	table.integer('views').defaultTo(0);
+	table.integer('erosion_views').defaultTo(0);
 	table.timestamps();
 	return table;
 };

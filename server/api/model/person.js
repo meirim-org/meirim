@@ -7,21 +7,26 @@ const Log = require('../lib/log');
 const Alert = require('./alert');
 const BaseModel = require('./base_model');
 const Exception = require('./exception');
+const { personTypes } = require('../../api/constants');
 
 const seconds = 1000;
-
 class Person extends BaseModel {
 	get rules () {
 		return {
 			email: ['required', 'email'],
 			password: ['required', 'string'],
+			name: ['required', 'string'],
+			type: ['required', 'string'],
+			social_network_url: 'string',
+			about_me: 'string',
+			address: 'string',
 			status: ['required', 'integer'], 
 			admin: ['integer']
 		};
 	}
 
 	get defaults () {
-		return {status: 0};
+		return { status: 0 };
 	}
 
 	get hidden () {
@@ -48,6 +53,7 @@ class Person extends BaseModel {
 
 	assignValues (model) {
 		model.attributes.email = model.attributes.email.toLowerCase().trim();
+		model.attributes.type = personTypes[model.attributes.type];
 		return Person.verifyEmail(model.attributes.email);
 	}
 
@@ -162,7 +168,13 @@ class Person extends BaseModel {
 			.then(() => true);
 	}
 
-	/**
+	static isUserExist (email) {
+		return Person.forge({ email }).fetch().then(p => {
+			if(!p) return false;
+			else return true;
+		}); 
+	}
+	 /**
    * Verify and email returning a promise
    * @param {string} email
    */

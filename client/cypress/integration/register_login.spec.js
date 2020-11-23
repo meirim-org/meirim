@@ -1,6 +1,8 @@
+/* eslint-disable */
 /// <reference types="cypress" />
 
 context('Register and login', () => {
+  const userEmail = `test${Date.now()}@meirim.org`
   beforeEach(() => {
     cy.server();
     cy.route({method: 'POST', url: '/api/sign/up*'}).as('signup');
@@ -18,44 +20,49 @@ context('Register and login', () => {
     });
 
     it('register with an invalid email should not work', () => {
-      cy.get('input#loginEmail')
-        .type('invalid@email.invalid')
-        .get('input#loginPassword')
-        .type('1234');
+      cy.get('#register-email-input')
+        .type('invalidemail.invalid')
+        .get('#register-password-input')
+        .type('123456')
+        .get('#register-name-input')
+        .type('myname');
 
-      cy.get('form.hpForm')
-        .submit();
 
-      cy.wait('@signup');
+      cy.get('#register-firststep-button')
+        .click()
 
-      cy.get('div.alert-danger')
-        .should('be.visible');
-      cy.get('div.alert-success')
-        .should('not.be.visible');
+      cy.get('#register-email-input-helperText')
+        .should('be.visible')
     });
 
     it('register with an valid email should work', () => {
-      cy.get('input#loginEmail')
-        .type('test@meirim.org')
-        .get('input#loginPassword')
-        .type('1234');
 
-      cy.get('form.hpForm')
-        .submit();
+      cy.get('#register-email-input')
+        .type(userEmail)
+        .get('#register-password-input')
+        .type('123456')
+        .get('#register-name-input')
+        .type('myname');
 
-      cy.wait('@signup');
+      cy.get('#register-firststep-button')
+        .click()
 
-      cy.get('div.alert-danger')
-        .should('not.be.visible');
-      cy.get('div.alert-success')
-        .should('be.visible');
+      cy.get('#register-address-input')
+        .type('myaddres')
+        .get('#register-aboutme-input')
+        .type('aboutmeee');
+
+      cy.get('#register-send-form-button')
+        .click()
+
+      cy.get("#register-emailsent-sucess")
+        .should('be.visible')
     });
   });
 
-  describe('Login flow', () => {
+  describe('LogIn flow', () => {
     it('alerts should not be visible from the get go', () => {
-      cy.get('a[href*="/sign/in"]')
-        .first()
+      cy.get('#register-signin-link')
         .click();
 
       cy.url().should('include', '/sign/in');
@@ -65,42 +72,37 @@ context('Register and login', () => {
     });
 
     it('login with wrong credentials should not work', () => {
-      cy.get('a[href*="/sign/in"]')
-        .first()
+      cy.get('#register-signin-link')
         .click();
 
       cy.url().should('include', '/sign/in');
 
-      cy.get('input#loginEmail')
+      cy.get('#login-email-input')
         .type('invalid@email.invalid')
-        .get('input#loginPassword')
-        .type('1234');
+        .get('#login-password-input')
+        .type('123456');
 
-      cy.get('form')
-        .submit();
+      cy.get('#login-button')
+        .click()
 
-      cy.wait('@signin');
 
-      cy.get('div.alert-danger')
+      cy.get('#403message')
         .should('be.visible');
     });
 
     it('login with existing credentials should work', () => {
-      cy.get('a[href*="/sign/in"]')
-        .first()
+      cy.get('#register-signin-link')
         .click();
 
       cy.url().should('include', '/sign/in');
 
-      cy.get('input#loginEmail')
-        .type('test@meirim.org')
-        .get('input#loginPassword')
-        .type('1234');
+      cy.get('#login-email-input')
+        .type(userEmail)
+        .get('#login-password-input')
+        .type('123456');
 
-      cy.get('form')
-        .submit();
-
-      cy.wait('@signin');
+      cy.get('#login-button')
+        .click()
 
       cy.get('div.alert-danger')
         .should('not.be.visible');
