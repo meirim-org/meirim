@@ -1,1 +1,2 @@
-migrations/*.js
+node_modules
+public

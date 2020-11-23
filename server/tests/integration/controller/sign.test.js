@@ -10,6 +10,7 @@ const { fakeEmailVerification } = require('../../utils');
 const Email = require('../../../api/service/email');
 const	signController = require('../../../api/controller/sign');
 const	personModel = require('../../../api/model/person');
+const { personTypes } = require('../../../api/constants');
 // const	Exception = require('../../api/model/exception');
 // chai.use(chaiAsPromised);
 // const assert = chai.assert;
@@ -17,13 +18,13 @@ const	personModel = require('../../../api/model/person');
 describe('Sign Controller - Signup' ,function() {
 	this.timeout(10000);
 	let sinonSandbox;
-	const tables = ['person'];
+	const tables = ['person', 'alert'];
 	beforeEach(async function() {
 		sinonSandbox = sinon.createSandbox();
 		await mockDatabase.createTables(tables);
-		await Email.init;
+		await Email.init();
 		const fakeVerifyEmail = fakeEmailVerification;
-		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
+		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake' });
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 	});
@@ -40,15 +41,26 @@ describe('Sign Controller - Signup' ,function() {
 			body: {
 				email,
 				password,
-				status: 0
+				status: 0,
+				address: 'מטלון 18 תל אביב',
+				about_me: 'aboutme',
+				name: 'my name',
+				type: '0'
 			},
 			session: {}
 		};
 
+		const isValidEmail = await personModel.verifyEmail(email);
+		const isAlreadyExist = await personModel.isUserExist(email);
+		expect(isAlreadyExist).to.eql(false);
+		expect(isValidEmail).to.eql(true);
 		const person = await signController.signup(req);
-
 		expect(person.attributes.email).to.eql(req.body.email);
 		expect(person.attributes.status).to.eql(req.body.status);
+		expect(person.attributes.type).to.eql(personTypes[req.body.type]);
+		const createdAlert = await mockDatabase.selectData('alert');
+		expect(createdAlert[0].person_id).to.eql(person.attributes.id);
+		expect (await personModel.isUserExist(email)).to.eql(true);
 		const user = personModel.forge({
 			email
 		});
@@ -60,7 +72,7 @@ describe('Sign Controller - Signup' ,function() {
 			session: {}
 		};
 		const activationResponse = await signController.activate(activationReq);
-		const [personAfterActivation] = await mockDatabase.selectData('person', {email});
+		const [personAfterActivation] = await mockDatabase.selectData('person'); 
 
 		expect(activationResponse).to.eql(true);
 		expect(personAfterActivation.status).to.eql(1);
@@ -78,19 +90,22 @@ describe('Sign Controller - Signin' , function() {
 		const hashedPassword = await Bcrypt.hash(password, 10).then((hashedPassword) => {
 			return hashedPassword;
 		});
-		await mockDatabase.insertData(tables, {'person': 
+		await mockDatabase.insertData(tables, { 'person': 
 			[{ 
 				email,
 				password: hashedPassword,
+				address: 'מטלון 18 תל אביב',
 				status: 1,
 				admin: 0,
+				name: 'my name',
+				type: 'user_type',
 				created_at: new Date(Date.now()), 
 				updated_at: new Date(Date.now()), 
 			}]
 		});
 		await Email.init();
 		const fakeVerifyEmail = fakeEmailVerification;
-		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
+		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake' });
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 	});
@@ -114,8 +129,8 @@ describe('Sign Controller - Signin' , function() {
 		expect(attributes.email).to.eql(email);
 		expect(attributes.id).to.eql(1);
 		expect(attributes.status).to.eql(1);
-
 	});
+
 	it('sign in should work with uppercase email', async function() {
 		const req = {
 			body: {
@@ -145,7 +160,7 @@ describe('Sign Controller - Signout' , function() {
 			console.log('hashedPassword', hashedPassword);
 			return hashedPassword;
 		});
-		await mockDatabase.insertData(tables, {'person': 
+		await mockDatabase.insertData(tables, { 'person': 
 			[{ 
 				email,
 				password: hashedPassword,
@@ -157,7 +172,7 @@ describe('Sign Controller - Signout' , function() {
 		});
 		await Email.init();
 		const fakeVerifyEmail = fakeEmailVerification;
-		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
+		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake' });
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 	});
