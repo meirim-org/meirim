@@ -42,10 +42,11 @@ class SignController extends Controller {
 				return this.model
 					.forge(req.body)
 					.save()
-					.then(async (person) => {
+					.then((person) => {
 						Log.debug('Person create success id:', person.get('id'));
-						if(person.attributes.address) {
-							await alertController.create({ 
+						if (person.attributes.address) {
+							// TODO: handle alert creation promise failure
+							alertController.create({
 								body: { address: person.attributes.address, radius: 5  }, 
 								session: { person } 
 							});
