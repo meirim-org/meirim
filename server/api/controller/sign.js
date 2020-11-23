@@ -42,15 +42,20 @@ class SignController extends Controller {
 				return this.model
 					.forge(req.body)
 					.save()
-					.then((person) => {
+					.then(async (person) => {
 						Log.debug('Person create success id:', person.get('id'));
 						if (person.attributes.address) {
+							Log.debug('Creating alert for registration address of person id:', person.get('id'));
+
 							// TODO: handle alert creation promise failure
-							alertController.create({
-								body: { address: person.attributes.address, radius: 5  }, 
-								session: { person } 
-							});
+							try {
+								await alertController.create({
+									body: { address: person.attributes.address, radius: 5  },
+									session: { person }
+								});
+							} catch {};
 						}
+
 						return Email.newSignUp(person);
 					})
 					.then(() => this.signin(req));
