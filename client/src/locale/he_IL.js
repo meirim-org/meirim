@@ -26,8 +26,8 @@ export default {
 	whatToRegister: "רוצים השכמה?",
 	whyRegister: (
 		<div>
-            רוצים לדעת אם הגינה הציבורית שלכם עומדת{" "}
-			<strong>להפוך למגדל?</strong>
+            רוצים לדעת מה בונים לכם{" "}
+			<strong>ליד הבית?</strong>
 		</div>
 	),
 	howItWorks: `
