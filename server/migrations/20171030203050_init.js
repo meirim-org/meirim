@@ -57,7 +57,7 @@ const tables = [
     PL_NAME varchar(256) COLLATE utf8_bin NOT NULL,
     PLAN_CHARACTOR_NAME varchar(256) COLLATE utf8_bin NOT NULL,
     data text COLLATE utf8_bin NOT NULL,
-    geom geometry NOT NULL,
+    geom geometry NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`,
 
 	`CREATE TABLE post (
