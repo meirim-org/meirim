@@ -9,6 +9,7 @@ import Label from '../label';
 
 const StyledSelect = styled(Select)`
     font-family: Assistant !important;
+    width: 100%;
     font-size: 16px;
 	background-color: white;
 	border-radius: 12px !important;
@@ -31,7 +32,7 @@ const Dropdown = ({ onChange, value, id, options, label, required }) => {
 
 	return (
 		<>
-			{label &&	<Label required={required} text={label} />}
+			{label &&	<Label required={required} text={label} id={`${id}-label`}/>}
 			<StyledSelect
 				required={required}
 				variant="outlined"

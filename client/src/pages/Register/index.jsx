@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { authenticateEmail, registerUser  } from './handlers';
+import { authenticateEmail, registerUser  } from './controller';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
 import { EMAIL_SENT_PAGE } from '../../router/contants'
@@ -24,20 +24,24 @@ const SignupForms = () => {
 	const onInputFocus = (inputName) => {
 		const newState = {}
 		newState[inputName] = true
-		setDirtyInputs({ ...dirtyInputs, ...newState })
-		setOnFocusInput({ ...onFocusInput, ...newState })
+		setDirtyInputs(ps => ({ ...ps, ...newState }))
+		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
 	const onInputBlur = (inputName) => {
 		const newState = {}
 		newState[inputName] = false
-		setOnFocusInput({ ...onFocusInput, ...newState })
+		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
 	useEffect(() => {
 		const { email , name, password } = firstStepValues
 		const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
-		const { emailError, nameError, passwordError } = getFormErrors({ isValidEmail, isValidName, isValidPassword })
+		const { emailError, nameError, passwordError } = 
+			getFormErrors({ 
+				validations: { isValidEmail, isValidName, isValidPassword }, 
+				values: { password, email } 
+			})
 		setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
 	}, [firstStepValues, onFocusInput, dirtyInputs])
 
@@ -54,7 +58,8 @@ const SignupForms = () => {
 		};
 		try {
 			const response = await registerUser(requestData)
-			if (response.status === 'OK') {
+			const success = response.status === 'OK'
+			if (success) {
 				setSecondStepSucess(true);
 			}
 		} catch (err) {
@@ -70,23 +75,24 @@ const SignupForms = () => {
 
 	const handleFirstFormSubmit = async () => {
 		const { email , name, password } = firstStepValues
-		const { isValidEmail, isValidName, isValidPassword } = firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
+		const { isValidEmail, isValidName, isValidPassword } = 
+			firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
 		if(!isValidEmail || !isValidName || !isValidPassword){
-			const { emailError, nameError, passwordError } = getFormErrors({ isValidEmail, isValidName, isValidPassword })
+			const { emailError, nameError, passwordError } = 
+				getFormErrors({ 
+					validations: { isValidEmail, isValidName, isValidPassword }, 
+					values: { email, name, password } 
+				})
 			setFormErrors({ ...formErrors, emailError, nameError, passwordError })
 
 			return
 		}
 		try {
 			const response = await authenticateEmail(email);
-			const { status, data: { isUserRegistered, validEmail } } = response
-			const successResponse = status === 'OK' && validEmail && !isUserRegistered
-			const invalidEmail = !validEmail
+			const { status, data: { isUserRegistered } } = response
+			const successResponse = status === 'OK' && !isUserRegistered
 			if (successResponse) {
 				setFirstStepSucess(true);
-			} else if (invalidEmail) {
-				const emailError = { isValid: false, message: 'המייל לא תקין' }
-				setFormErrors({ ...formErrors, emailError })
 			} else if (isUserRegistered) {
 				const emailError = { isValid: false, message: 'המייל קיים במערכת' }
 				setFormErrors({ ...formErrors, emailError })
@@ -99,25 +105,26 @@ const SignupForms = () => {
 		}
 	};
 
-	return firstStepSuccess && secondStepSuccess ? <Redirect to={EMAIL_SENT_PAGE} /> : firstStepSuccess
-		? (
-			<SecondStepSignup
-				errors={formErrors}
-				values={secondStepValues}
-				setValues={setSecondStepValues}
-				handleSubmit={handleSecondFormSubmit}
-			/>
-		)
-		: (
-			<FirstStepSignup
-				errors={formErrors}
-				inputFocus={onInputFocus}
-				inputBlur={onInputBlur}
-				values={firstStepValues}
-				setValues={setFirstStepValues}
-				handleSubmit={handleFirstFormSubmit}
-			/>
-		);
+	return firstStepSuccess && secondStepSuccess ? 
+		<Redirect to={{ pathname: EMAIL_SENT_PAGE, state: { email: firstStepValues.email } }} /> : firstStepSuccess
+			? (
+				<SecondStepSignup
+					errors={formErrors}
+					values={secondStepValues}
+					setValues={setSecondStepValues}
+					handleSubmit={handleSecondFormSubmit}
+				/>
+			)
+			: (
+				<FirstStepSignup
+					errors={formErrors}
+					inputFocus={onInputFocus}
+					inputBlur={onInputBlur}
+					values={firstStepValues}
+					setValues={setFirstStepValues}
+					handleSubmit={handleFirstFormSubmit}
+				/>
+			);
 };
 
 export default SignupForms;

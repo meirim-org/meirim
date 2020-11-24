@@ -15,10 +15,10 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 				<SC.Titles>
 					<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
 					<SC.SubTitleWrapper>
-						<SC.SubTitle>כדי להשלים את הפעולה עלכים להיות מחוברים</SC.SubTitle>
+						<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
 						<SC.SubTitle>
 							<span>כבר רשומים? </span>
-							<Link id="register-signin-link" text="התחברות" to="/sign/in" bold={true} />
+							<Link id="register-signin-link" text="התחברות" to="/sign/in" bold={'700'} />
 						</SC.SubTitle>
 					</SC.SubTitleWrapper>
 				</SC.Titles>

@@ -9,18 +9,19 @@ const StyledHelperText = styled(FormHelperText)`
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
+  padding: 0 1rem;
 	line-height: 1.5;
 	text-align: right !important;
   letter-spacing: normal;
   color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
 `;
 
-const HelperText = ({ id, text }) => { 
+const HelperText = ({ id, text }) => {
 	return (
 		<>
 			<StyledHelperText id={id}>{text}</StyledHelperText>
 		</>
-	); 
+	);
 }
 
 HelperText.propTypes = {
