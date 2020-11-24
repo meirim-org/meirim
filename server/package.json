@@ -63,6 +63,7 @@
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
         "crawl": "node bin/iplan",
         "lint": "./node_modules/.bin/eslint . --fix",
+        "watch": "./node_modules/.bin/nodemon bin/api",
         "test": "NODE_ENV=test ./node_modules/.bin/mocha  ./tests/integration/* ./tests/unit/*  --exit --recursive --require ./tests/setup.js --timeout 20000 ",
         "test:integration": "NODE_ENV=test ./node_modules/.bin/mocha  ./tests/integration/*  --exit --recursive --require ./tests/setup.js --timeout 20000 --watch",
         "start": "node bin/api",
