@@ -15,14 +15,9 @@ class SignController extends Controller {
 
 	async	authenticateEmail (req) {
 		const { email } = req.body;
-		if(!email) return false;
-		try { 
-			const isValidEmail = await Person.verifyEmail(email);
-			const isUserRegistered = await Person.isUserExist(email);
-			return { validEmail: isValidEmail, isUserRegistered: isUserRegistered };
-		} catch (err) {
-			return { validEmail: false, isUserRegistered: false };
-		}
+		const isUserRegistered = await Person.isUserExist(email);
+
+		return { isUserRegistered: Boolean(isUserRegistered) };
 	}
 
 	signup (req) {
@@ -49,12 +44,18 @@ class SignController extends Controller {
 					.save()
 					.then(async (person) => {
 						Log.debug('Person create success id:', person.get('id'));
-						if(person.attributes.address) {
-							await alertController.create({ 
-								body: { address: person.attributes.address, radius: 5  }, 
-								session: { person } 
-							});
+						if (person.attributes.address) {
+							Log.debug('Creating alert for registration address of person id:', person.get('id'));
+
+							// TODO: handle alert creation promise failure
+							try {
+								await alertController.create({
+									body: { address: person.attributes.address, radius: 5  },
+									session: { person }
+								});
+							} catch {};
 						}
+
 						return Email.newSignUp(person);
 					})
 					.then(() => this.signin(req));
