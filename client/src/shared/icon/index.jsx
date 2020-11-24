@@ -4,9 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
-import Label from '../label';
 
 const StyledIcon = styled(IconButton)`
+  
    ${({ color }) => color  && `
         path { 
             fill: ${color};
@@ -18,9 +18,10 @@ const StyledIcon = styled(IconButton)`
             font-size: ${fontSize}px;
         }
     `}
+
 `;
 
-const Component = ({ ariaLabel, color, children, fontSize  }) => {
+const Component = ({ ariaLabel, color, children, fontSize }) => {
 	return (
 		<StyledIcon aria-label={ariaLabel} color={color} fontSize={fontSize}>
 			{children}

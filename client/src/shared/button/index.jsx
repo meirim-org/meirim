@@ -15,6 +15,7 @@ const StyledButton = styled(MUIButton)`
     border-radius: 12px !important;
     font-weight: 700 !important;
     border: 1px solid #652dd0 !important;
+    min-width: auto !important;
     
     .MuiButton-label  {
     	font-family: Assistant !important;
@@ -57,12 +58,59 @@ const StyledButton = styled(MUIButton)`
         border-radius: 4px !important;
         min-height: 1em;
     `}
+    
+    ${({ fontWeight }) => fontWeight && `
+        font-weight: ${fontWeight} !important;
+    `}
+    
+    ${({ textColor }) => textColor && `
+        color: ${textColor} !important;
+    `}    
+    
+    ${({ textColor }) => textColor && `
+        color: ${textColor} !important;
+    `}
+    
+    
+     ${({ textColor }) => textColor && `
+        color: ${textColor} !important;
+    `}
+    
+    ${({ iconBefore, iconAfter }) => (iconBefore || iconAfter) && `
+       .MuiSvgIcon-root {
+             margin: 0 .25rem;
+        }
+    `}
 
 `;
 
-const Button = ({ text, id, onClick, small, altColor, simple }) => (
-	<StyledButton id={id} small={small} onClick={onClick} altColor={altColor} simple={simple} disableRipple={simple}>
+const Button = ({
+	text,
+	id,
+	onClick,
+	small,
+	altColor,
+	simple,
+	fontWeight,
+	textColor,
+	iconBefore,
+	iconAfter
+}) => (
+	<StyledButton
+		id={id}
+		small={small}
+		onClick={onClick}
+		altColor={altColor}
+		simple={simple}
+		fontWeight={fontWeight}
+		disableRipple={simple}
+		textColor = {textColor}
+		iconBefore={iconBefore}
+		iconAfter={iconAfter}
+	>
+		{iconBefore}
 		{text}
+		{iconAfter}
 	</StyledButton>
 );
 
@@ -73,12 +121,16 @@ Button.defaultProps = {
 }
 
 Button.propTypes = {
-	id: PropTypes.string.isRequired,
-	text: PropTypes.string.isRequired,
+	id: PropTypes.string,
+	text: PropTypes.string,
 	onClick: PropTypes.func.isRequired,
 	small: PropTypes.bool,
 	altColor: PropTypes.bool,
-	simple: PropTypes.bool
+	simple: PropTypes.bool,
+	fontWeight: PropTypes.string,
+	textColor: PropTypes.string,
+	iconBefore: PropTypes.object,
+	iconAfter: PropTypes.object
 };
 
 export default Button;

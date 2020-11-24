@@ -37,10 +37,10 @@ const SignupForms = () => {
 	useEffect(() => {
 		const { email , name, password } = firstStepValues
 		const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
-		const { emailError, nameError, passwordError } = 
-			getFormErrors({ 
-				validations: { isValidEmail, isValidName, isValidPassword }, 
-				values: { password, email } 
+		const { emailError, nameError, passwordError } =
+			getFormErrors({
+				validations: { isValidEmail, isValidName, isValidPassword },
+				values: { password, email }
 			})
 		setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
 	}, [firstStepValues, onFocusInput, dirtyInputs])
@@ -75,13 +75,13 @@ const SignupForms = () => {
 
 	const handleFirstFormSubmit = async () => {
 		const { email , name, password } = firstStepValues
-		const { isValidEmail, isValidName, isValidPassword } = 
+		const { isValidEmail, isValidName, isValidPassword } =
 			firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
 		if(!isValidEmail || !isValidName || !isValidPassword){
-			const { emailError, nameError, passwordError } = 
-				getFormErrors({ 
-					validations: { isValidEmail, isValidName, isValidPassword }, 
-					values: { email, name, password } 
+			const { emailError, nameError, passwordError } =
+				getFormErrors({
+					validations: { isValidEmail, isValidName, isValidPassword },
+					values: { email, name, password }
 				})
 			setFormErrors({ ...formErrors, emailError, nameError, passwordError })
 
@@ -105,7 +105,7 @@ const SignupForms = () => {
 		}
 	};
 
-	return firstStepSuccess && secondStepSuccess ? 
+	return firstStepSuccess && secondStepSuccess ?
 		<Redirect to={{ pathname: EMAIL_SENT_PAGE, state: { email: firstStepValues.email } }} /> : firstStepSuccess
 			? (
 				<SecondStepSignup
