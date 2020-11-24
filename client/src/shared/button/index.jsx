@@ -33,6 +33,7 @@ const StyledButton = styled(MUIButton)`
         background-color: #ffffff !important;
         min-height: auto !important;
         padding: 0 !important;
+        transition: 0.3s !important;
         > span {
             line-height: 1 !important;
         }
@@ -41,7 +42,6 @@ const StyledButton = styled(MUIButton)`
           background-color: transparent !important;
        }
     `}
-
     
     ${({ altColor }) => altColor && `
         color: #652dd0 !important;
