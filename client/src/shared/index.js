@@ -7,7 +7,8 @@ import Link from './link';
 import Navigation from './navigation';
 import Row from './row';
 import { default as IconButton } from './icon';
+import Menu from './menu';
 
 export {
-	Button, Dropdown, TextArea, TextInput, Modal, Link, Navigation, Row, IconButton
+	Button, Dropdown, TextArea, TextInput, Modal, Link, Navigation, Row, IconButton, Menu
 };
