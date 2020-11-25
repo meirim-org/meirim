@@ -1,5 +1,6 @@
 const Log = require('../../log');
 const fs = require('fs');
+const path = require('path');
 const xlsx = require('xlsx');
 const fetch = require('node-fetch');
 const moment = require('moment');
@@ -8,56 +9,46 @@ const TreePermit = require('../../../model/tree_permit');
 const tpc = require('../../../model/tree_permit_constants');
 const database = require('../../../service/database');
 
-// Pending cutting are marked with class "ms-rteTableEvenCol-default"
-// and the files are named "Befor-<region>.xls" (typo in origin)
-
 // const REGIONAL_TREES_URL = 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
-const REGIONAL_TREES_URL_WESTERN_GALIL_UPPER_GALIL_GOLAN = 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS';
+const RAW_DATA_FOLDER =  require('os').homedir() + '/raw_trees';
+const REGIONAL_OFFICE_URL_BEFORE_DEADLINE = [
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS'
+];
 
-// const path = '/Users/galia/Downloads/trees/galil-golan-' + moment().format('YYYY-MM-DD-hh-mm-ss') + '.xls';
-const path = '/Users/galia/Downloads/trees/galil-golan-7.xls';
-console.log(path);
-async function DownloadTreesXLSFile(url, path) {
-
+async function getRegionalTreePermitsFromFile(url, pathname) {
 	try {
-
 		console.log('Fetching trees file... ' + `${url}`);
 
-		const res = await fetch(url);		
-		const dest = fs.createWriteStream(path);
-		dest.on('open', () => {
-			res.body.pipe(dest);
+		const res = await fetch(url);	
+		return new Promise((resolve) => {
+			const stream = fs.createWriteStream(pathname);
+			stream.on('open', () => {
+				res.body.pipe(stream);
+			});
+			stream.on('finish', async function () {
+				stream.close();
+			
+				console.log(`Sucessfully Downloaded trees file: ${url}
+				 File Could be found here: ${pathname}`);
+
+				const tree_permits = await parseTreesXLS(pathname);
+				resolve(tree_permits);
+			});
 		});
-		
-		console.log('Sucessfully Download trees file:' 
-		+ `${url}`
-		+'\nFile Could be found here: ' 
-		+ `${path}`);
 	}
 	catch (err) {
 		console.log(err);
 	}
-	console.log('Done!');
 }
 
-const getTreesApproved = () => {
-	// Pending cutting are marked with class "ms-rteTableOddCol-default"
-	// and the files are named "After-<region>.xls" 
-
-	//compare to existing tree list
-
-	console.log('hi!');
-};
-
-async function saveNewTreePermits(tree_permits) {
-	
+async function saveNewTreePermits(tree_permits) {	
 	// tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
 	// buffer should be enough for human to remove those lines from the excel sheet.
 	//We're reading a the rows as a bulk and match them at compute time for performance.
 
 	//compare to existing tree list in db by region
-	//save only the new ones
-
+	console.log('Save new tree permits...');
+	if (tree_permits.length == 0) return [];
 	// all tree permits in a chunk should be from the same regional office
 	const regional_office = tree_permits[0].attributes[tpc.REGIONAL_OFFICE];
 	// this is the only timestamp format knex correcrtly work with 
@@ -74,7 +65,7 @@ async function saveNewTreePermits(tree_permits) {
 					row[tpc.NUMBER_OF_TREES],
 					row[tpc.END_DATE]
 				].join('_');
-				existing_permits_compact.add(key_as_string	);
+				existing_permits_compact.add(key_as_string);
 			}
 		})
 		.catch(function(error) { console.error(error); });
@@ -93,65 +84,59 @@ async function saveNewTreePermits(tree_permits) {
 			console.log('Already has ' + compact_tp);
 		}
 		else {
-			console.log('A new one! queued for saving ' + compact_tp);
+			console.log(`A new one! queued for saving ${compact_tp}`);
 			return tp; //original one, not compact
 		}
 	}).filter(Boolean) ; // remove undefined values
-
 	//save only the new ones
 	try {
 		new_tree_permits.map(tp => {
-			console.log('saving ....');
+			console.log(`
+			saving new tree permit: ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
 			tp.save();
 		});
 	}
 	catch (err){
 		console.log(err);
 	}
-
 	return new_tree_permits;
 }
 
-const parseTreesXLS = (filename) => {
-	
+const parseTreesXLS = async (filename) => {
 	const workbook = xlsx.readFile(filename);
 	const sheet = workbook.Sheets['Data2ToExcel_BeforDate'];
 	const trees_csv = xlsx.utils.sheet_to_csv(sheet, {FS: '|'});
 
 	const rows = trees_csv.split('\n');
-	// slice 1 - ignore the header and the empty line at the end, caused by the conversion to csv
+	const headers = rows[0].split('|');
+	//slice - ignore the header and the empty line at the end, caused by the conversion to csv
 	const tree_permits =rows.slice(1,-1).map((row) => {
-//		console.log(row);
 		row= row.split('|');
-
 		return new TreePermit(
 			{
-				[tpc.REGIONAL_OFFICE]: row[0],
-				[tpc.PERMIT_NUMBER]: row[1],
-				[tpc.ACTION]: row[2], // cutting , copying
-				[tpc.PERMIT_ISSUE_DATE]: row[3],
-				[tpc.PERSON_REQUEST_NAME]: row[4],
-				[tpc.START_DATE]: row[12],
-				[tpc.END_DATE]: row[13],
-				[tpc.LAST_DATE_TO_OBJECTION]: row[14],
-				[tpc.APPROVER_NAME]: row[15],
-				[tpc.APPROVER_TITLE]: row[16],
-
+				[tpc.REGIONAL_OFFICE]: row[headers.indexOf('אזור')],
+				[tpc.PERMIT_NUMBER]: row[headers.indexOf('מספר רשיון')],
+				[tpc.ACTION]: row[headers.indexOf('פעולה')], // cutting , copying
+				[tpc.PERMIT_ISSUE_DATE]: row[headers.indexOf('תאריך הרשיון')],
+				[tpc.PERSON_REQUEST_NAME]: row[headers.indexOf('מבקש')],
+				[tpc.START_DATE]: row[headers.indexOf('מתאריך')],
+				[tpc.END_DATE]: row[headers.indexOf('עד תאריך')],
+				[tpc.LAST_DATE_TO_OBJECTION]: row[headers.indexOf('תאריך אחרון להגשת ערער')], // column might be missing from
+				[tpc.APPROVER_NAME]: row[headers.indexOf('שם מאשר')],
+				[tpc.APPROVER_TITLE]: row[headers.indexOf('תפיד מאשר')],
 				// Location
-				[tpc.PLACE]: row[7],
-				[tpc.STREET]: row[8],
-				[tpc.STREET_NUMBER]: row[9],
-				[tpc.GUSH]: row[10],
-				[tpc.HELKA]: row[11],
-				
+				[tpc.PLACE]: row[headers.indexOf('מקום הפעולה')],
+				[tpc.STREET]: row[headers.indexOf('רחוב')],
+				[tpc.STREET_NUMBER]: row[headers.indexOf('מספר')],
+				[tpc.GUSH]: row[headers.indexOf('גוש')],
+				[tpc.HELKA]: row[headers.indexOf('חלקה')],
 				// Trees details
-				[tpc.TREE_NAME]: row[18],
-				[tpc.TREE_KIND]: row[17],
-				[tpc.NUMBER_OF_TREES]: row[19],
-				[tpc.REASON_SHORT]: row[5],
-				[tpc.REASON_DETAILED]: row[6],
-				[tpc.COMMENTS_IN_DOC]: row[20]
-
+				[tpc.TREE_NAME]: row[headers.indexOf('שם העץ')],
+				[tpc.TREE_KIND]: row[headers.indexOf('סוג העץ')],
+				[tpc.NUMBER_OF_TREES]: row[headers.indexOf('מספר עצים')],
+				[tpc.REASON_SHORT]: row[headers.indexOf('סיבה')],
+				[tpc.REASON_DETAILED]: row[headers.indexOf('פרטי הסיבה')],
+				[tpc.COMMENTS_IN_DOC]: row[headers.indexOf('הערות לעצים')]
 			}			
 		);
 	});
@@ -159,13 +144,20 @@ const parseTreesXLS = (filename) => {
 };
 
 module.exports = {
-	getTreesPendingApproval: DownloadTreesXLSFile,
-	//getTreesApproved
+	crawlRegionalTreePermit: crawlRegionalTreePermit,
 };
 
-DownloadTreesXLSFile(REGIONAL_TREES_URL_WESTERN_GALIL_UPPER_GALIL_GOLAN, path);
-const tree_permits = parseTreesXLS(path);
-// extract fields
-const new_tree_permits = saveNewTreePermits(tree_permits);
-console.log('Done! extracted ' + new_tree_permits.length +' new permits from: ' + path );
+function generateFilenameByTime(url) {
+	const parsedFile = path.parse(url);
+	const basename = parsedFile.name.toLowerCase() + '-' + moment().format('YYYY-MM-DD-hh-mm-ss') + parsedFile.ext.toLowerCase();
+	const filename = path.resolve(RAW_DATA_FOLDER, basename);
+	return filename;
+}
 
+async function crawlRegionalTreePermit(url){ 
+	const filename = generateFilenameByTime(url);
+	const tree_permits = await getRegionalTreePermitsFromFile(url, filename);
+	const new_tree_permits = await saveNewTreePermits(tree_permits);
+	console.log('Extracted ' + new_tree_permits.length +' new permits from: ' + filename );
+}
+crawlRegionalTreePermit(REGIONAL_OFFICE_URL_BEFORE_DEADLINE[0]);
