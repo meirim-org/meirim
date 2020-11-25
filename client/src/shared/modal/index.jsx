@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import CloseIcon from '@material-ui/icons/Close';
 import MUIModal from '@material-ui/core/Modal';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { closeModal } from '../../redux/slices'
 import { device } from '../../style';
-
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -40,14 +41,17 @@ const IconWrapper = styled.div`
 `;
 
 const Modal = ({ id, children }) => {
-	const [isOpen, setIsOpen] = useState(true);
-
+	const dispatch = useDispatch()
+	const { open } = useSelector(
+		(state) => state.modal
+	)
+	
 	return (
-		<ModalWrapper>
-			<StyledModal id={id} open={isOpen}>
+		<ModalWrapper id={`wrapper-${id}`}>
+			<StyledModal id={id} open={open}>
 				<ModalContentWRapper>
 					<IconWrapper>
-						<StyledIcon onClick={() => setIsOpen(false)} />
+						<StyledIcon onClick={dispatch(closeModal()) } />
 					</IconWrapper>
 					{children}
 				</ModalContentWRapper>
