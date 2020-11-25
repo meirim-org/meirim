@@ -8,12 +8,33 @@ const moment = require('moment');
 const TreePermit = require('../../../model/tree_permit');
 const tpc = require('../../../model/tree_permit_constants');
 const database = require('../../../service/database');
+const { resolve } = require('bluebird');
 
-// const REGIONAL_TREES_URL = 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
+// Regional tree permits were taken from here: 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
 const RAW_DATA_FOLDER =  require('os').homedir() + '/raw_trees';
-const REGIONAL_OFFICE_URL_BEFORE_DEADLINE = [
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS'
+const regionalTreePermitUrls = [
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
+	
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_amakim_galil_gilboa.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_amakim_galil_gilboa.XLS',
+
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/befor_merkaz-sharon.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz-sharon.XLS',
+
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_merkaz_shfela.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz_shfela.XLS',
+
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_jerusalem.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_jerusalem.XLS',
+
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
+	//'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS', - no after darom
+
 ];
+
+const SHEET_BEFORE = 'Data2ToExcel_BeforDate';
+const SHEET_AFTER = 'Data2ToExcel_ToDate';
 
 async function getRegionalTreePermitsFromFile(url, pathname) {
 	try {
@@ -81,7 +102,7 @@ async function saveNewTreePermits(tree_permits) {
 		].join('_');
 
 		if (existing_permits_compact.has(compact_tp)) {
-			console.log('Already has ' + compact_tp);
+			//console.debug(`Already has ${compact_tp}`);
 		}
 		else {
 			console.log(`A new one! queued for saving ${compact_tp}`);
@@ -91,8 +112,7 @@ async function saveNewTreePermits(tree_permits) {
 	//save only the new ones
 	try {
 		new_tree_permits.map(tp => {
-			console.log(`
-			saving new tree permit: ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
+			console.log(`saving new tree permit: ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
 			tp.save();
 		});
 	}
@@ -103,40 +123,37 @@ async function saveNewTreePermits(tree_permits) {
 }
 
 const parseTreesXLS = async (filename) => {
+	// hack
+	const sheetname  = path.parse(filename).name.toLowerCase().includes('after') ? SHEET_AFTER : SHEET_BEFORE;
 	const workbook = xlsx.readFile(filename);
-	const sheet = workbook.Sheets['Data2ToExcel_BeforDate'];
-	const trees_csv = xlsx.utils.sheet_to_csv(sheet, {FS: '|'});
-
-	const rows = trees_csv.split('\n');
-	const headers = rows[0].split('|');
-	//slice - ignore the header and the empty line at the end, caused by the conversion to csv
-	const tree_permits =rows.slice(1,-1).map((row) => {
-		row= row.split('|');
+	const sheet = workbook.Sheets[sheetname];
+	const sheet_json = xlsx.utils.sheet_to_json(sheet, {raw:false});	
+	const tree_permits = sheet_json.map(row => {
 		return new TreePermit(
 			{
-				[tpc.REGIONAL_OFFICE]: row[headers.indexOf('אזור')],
-				[tpc.PERMIT_NUMBER]: row[headers.indexOf('מספר רשיון')],
-				[tpc.ACTION]: row[headers.indexOf('פעולה')], // cutting , copying
-				[tpc.PERMIT_ISSUE_DATE]: row[headers.indexOf('תאריך הרשיון')],
-				[tpc.PERSON_REQUEST_NAME]: row[headers.indexOf('מבקש')],
-				[tpc.START_DATE]: row[headers.indexOf('מתאריך')],
-				[tpc.END_DATE]: row[headers.indexOf('עד תאריך')],
-				[tpc.LAST_DATE_TO_OBJECTION]: row[headers.indexOf('תאריך אחרון להגשת ערער')], // column might be missing from
-				[tpc.APPROVER_NAME]: row[headers.indexOf('שם מאשר')],
-				[tpc.APPROVER_TITLE]: row[headers.indexOf('תפיד מאשר')],
+				[tpc.REGIONAL_OFFICE]: row['אזור'],
+				[tpc.PERMIT_NUMBER]: row['מספר רשיון'],
+				[tpc.ACTION]: row['פעולה'], // cutting , copying
+				[tpc.PERMIT_ISSUE_DATE]: row['תאריך הרשיון'],
+				[tpc.PERSON_REQUEST_NAME]: row['מבקש'],
+				[tpc.START_DATE]: row['מתאריך'],
+				[tpc.END_DATE]: row['עד תאריך'],
+				[tpc.LAST_DATE_TO_OBJECTION]: row['תאריך אחרון להגשת ערער'], // column might be missing from
+				[tpc.APPROVER_NAME]: row['שם מאשר'],
+				[tpc.APPROVER_TITLE]: row['תפיד מאשר'],
 				// Location
-				[tpc.PLACE]: row[headers.indexOf('מקום הפעולה')],
-				[tpc.STREET]: row[headers.indexOf('רחוב')],
-				[tpc.STREET_NUMBER]: row[headers.indexOf('מספר')],
-				[tpc.GUSH]: row[headers.indexOf('גוש')],
-				[tpc.HELKA]: row[headers.indexOf('חלקה')],
+				[tpc.PLACE]: row['מקום הפעולה'],
+				[tpc.STREET]: row['רחוב'],
+				[tpc.STREET_NUMBER]: row['מספר'],
+				[tpc.GUSH]: row['גוש'],
+				[tpc.HELKA]: row['חלקה'],
 				// Trees details
-				[tpc.TREE_NAME]: row[headers.indexOf('שם העץ')],
-				[tpc.TREE_KIND]: row[headers.indexOf('סוג העץ')],
-				[tpc.NUMBER_OF_TREES]: row[headers.indexOf('מספר עצים')],
-				[tpc.REASON_SHORT]: row[headers.indexOf('סיבה')],
-				[tpc.REASON_DETAILED]: row[headers.indexOf('פרטי הסיבה')],
-				[tpc.COMMENTS_IN_DOC]: row[headers.indexOf('הערות לעצים')]
+				[tpc.TREE_NAME]: row['שם העץ'],
+				[tpc.TREE_KIND]: row['סוג העץ'],
+				[tpc.NUMBER_OF_TREES]: row['מספר עצים'],
+				[tpc.REASON_SHORT]: row['סיבה'],
+				[tpc.REASON_DETAILED]: row['פרטי הסיבה'],
+				[tpc.COMMENTS_IN_DOC]: row['הערות לעצים']
 			}			
 		);
 	});
@@ -155,9 +172,28 @@ function generateFilenameByTime(url) {
 }
 
 async function crawlRegionalTreePermit(url){ 
-	const filename = generateFilenameByTime(url);
-	const tree_permits = await getRegionalTreePermitsFromFile(url, filename);
-	const new_tree_permits = await saveNewTreePermits(tree_permits);
-	console.log('Extracted ' + new_tree_permits.length +' new permits from: ' + filename );
+	try{
+		const filename = generateFilenameByTime(url);
+		const tree_permits = await getRegionalTreePermitsFromFile(url, filename);
+		const new_tree_permits = await saveNewTreePermits(tree_permits);
+		console.log('Extracted ' + new_tree_permits.length +' new permits from: ' + filename );
+		//return true;
+	} catch(err) {
+		console.log(err);
+		//return false;
+	}
 }
-crawlRegionalTreePermit(REGIONAL_OFFICE_URL_BEFORE_DEADLINE[0]);
+//console.log('Done!');
+// function crawlPromise(url){
+// 	return new Promise((resolve, reject) => {
+// 		crawlRegionalTreePermit(url)
+// 			.then(function(res){
+// 				if (res) {resolve(console.log('Great!'));}
+// 				else {reject('Bad');}
+// 			});
+// 	});
+// }
+// Promise.all([crawlPromise(REGIONAL_OFFICE_URL_BEFORE_DEADLINE[0])]).then(console.log('wwoooo'));
+
+//
+regionalTreePermitUrls.forEach(url => {crawlRegionalTreePermit(url);} );
