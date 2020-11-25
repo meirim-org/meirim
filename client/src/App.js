@@ -45,7 +45,6 @@ const theme = createMuiTheme({
 
 const App = () => {
 	const [me, setMe] = React.useState(null)
-
 	React.useEffect(() => {
 		api.get('/me')
 			.then(() => {
@@ -90,14 +89,6 @@ const App = () => {
 							<Route
 								path="/plans"
 								render={props => <Plans {...props} me={me} />}
-							/>
-							<Route
-								path="/sign/up"
-								render={props => <Home {...props} showRegister={true} me={me} />}
-							/>
-							<Route
-								path="/sign/in"
-								render={props => <Home {...props} setMe={setMe} showSignin={true} me={me} />}
 							/>
 							<Route
 								path="/activate"
