@@ -44,7 +44,7 @@ const StyledButton = styled(MUIButton)`
        }
     `}
     
-    ${({ altColor }) => altColor && `
+    ${({ altcolor }) => altcolor && `
         color: #652dd0 !important;
         background-color: #ffffff !important;
        &:hover {
@@ -63,20 +63,20 @@ const StyledButton = styled(MUIButton)`
         font-weight: ${fontWeight} !important;
     `}
     
-    ${({ textColor }) => textColor && `
-        color: ${textColor} !important;
+    ${({ textcolor }) => textcolor && `
+        color: ${textcolor} !important;
     `}    
     
-    ${({ textColor }) => textColor && `
-        color: ${textColor} !important;
+    ${({ textcolor }) => textcolor && `
+        color: ${textcolor} !important;
     `}
     
     
-     ${({ textColor }) => textColor && `
-        color: ${textColor} !important;
+     ${({ textcolor }) => textcolor && `
+        color: ${textcolor} !important;
     `}
     
-    ${({ iconBefore, iconAfter }) => (iconBefore || iconAfter) && `
+    ${({ iconbefore, iconafter }) => (iconbefore || iconafter) && `
        .MuiSvgIcon-root {
              margin: 0 .25rem;
         }
@@ -98,15 +98,15 @@ const Button = ({
 }) => (
 	<StyledButton
 		id={id}
-		small={small}
+		small={small ? '1' : ''}
 		onClick={onClick}
-		altColor={altColor}
-		simple={simple}
+		altcolor={altColor ? '1' : ''}
+		simple={simple ? '1' : ''}
 		fontWeight={fontWeight}
 		disableRipple={simple}
-		textColor = {textColor}
-		iconBefore={iconBefore}
-		iconAfter={iconAfter}
+		textcolor = {textColor ? '1' : ''}
+		iconbefore={iconBefore ? '1' : ''}
+		iconafter={iconAfter}
 	>
 		{iconBefore}
 		{text}
