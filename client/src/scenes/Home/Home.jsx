@@ -1,4 +1,5 @@
-import React from 'react';
+import PropTypes from 'prop-types'
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Wrapper from '../../components/Wrapper';
 import t from '../../locale/he_IL';
@@ -7,12 +8,19 @@ import logoSmall from '../../assets/logo_small.png';
 import '../../assets/bootstrap.css';
 import './Home.css';
 import { howItWorks, whatSay } from './constants'
+import { useDispatch } from 'react-redux';
+import { openModal } from 'redux/modal/slice';
 
 const Home = (props) => {
-	const { me }  = props;
-	
+	const dispatch = useDispatch()
+	const { state } = props.location
+
+	useEffect(() => {
+		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }))
+	}, [state])
+
 	return (
-		<Wrapper me={me}>
+		<Wrapper>
 			<div
 				className="d-none d-md-block"
 				style={{
@@ -100,6 +108,10 @@ const Home = (props) => {
 			</div>
 		</Wrapper>
 	);
+}
+
+Home.propTypes = {
+	location: PropTypes.object.isRequired
 }
 
 export default Home
