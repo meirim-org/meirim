@@ -4,7 +4,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Menu as MUmenu, MenuItem } from '@material-ui/core';
 import { Button } from '../index';
 
-
 const Menu = ({
 	ariaControls,
 	openHandler,
@@ -36,8 +35,8 @@ const Menu = ({
 			onClose={closeHandler}
 		>
 			{
-				menuItems.map((val, index) => (
-					<MenuItem key={index} component={RouterLink} to={val.to}>{val.text}</MenuItem>
+				menuItems.map((item, index) => (
+					<MenuItem key={index} onClick={item.onClick}>{item.text}</MenuItem>
 				))
 			}
 		</MUmenu>

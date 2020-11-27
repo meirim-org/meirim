@@ -5,7 +5,7 @@ export const loginUser = async ({ values }) => {
 		const response = await api.post('/sign/in', values)
 		
 		return response
-	} catch(err) {
+	} catch (err) {
 		return err
 	}
 }

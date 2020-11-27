@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import { EMAIL_SENT_PAGE } from 'router/contants'
+import { closeModal } from 'redux/modal/slice'
 import { authenticateEmail, registerUser  } from './controller';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
-import { EMAIL_SENT_PAGE } from '../../router/contants'
 import { firstStepValidation, formValidation, getFormErrors } from './validations'
 import { personTypes } from './constants'
+import { useDispatch } from 'react-redux';
 
 const SignupForms = () => {
+	const dispatch = useDispatch()
 	const [firstStepSuccess, setFirstStepSucess] = useState(false);
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
@@ -36,7 +39,8 @@ const SignupForms = () => {
 
 	useEffect(() => {
 		const { email , name, password } = firstStepValues
-		const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
+		const { isValidEmail, isValidName, isValidPassword } = 
+			formValidation({ name ,email, password, onFocusInput, dirtyInputs })
 		const { emailError, nameError, passwordError } =
 			getFormErrors({
 				validations: { isValidEmail, isValidName, isValidPassword },
@@ -61,6 +65,7 @@ const SignupForms = () => {
 			const success = response.status === 'OK'
 			if (success) {
 				setSecondStepSucess(true);
+				dispatch(closeModal())
 			}
 		} catch (err) {
 			toast.error('מצטערים, התהליך לא הצליח. נא לנסות שוב', {
@@ -77,7 +82,7 @@ const SignupForms = () => {
 		const { email , name, password } = firstStepValues
 		const { isValidEmail, isValidName, isValidPassword } =
 			firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
-		if(!isValidEmail || !isValidName || !isValidPassword){
+		if (!isValidEmail || !isValidName || !isValidPassword){
 			const { emailError, nameError, passwordError } =
 				getFormErrors({
 					validations: { isValidEmail, isValidName, isValidPassword },
@@ -98,7 +103,7 @@ const SignupForms = () => {
 				setFormErrors({ ...formErrors, emailError })
 			}
 		} catch (err) {
-			if(err.message === 'Error: Request failed with status code 400'){
+			if (err.message === 'Error: Request failed with status code 400'){
 				const emailError = { isValid: false, message: 'המייל לא תקין' }
 				setFormErrors({ ...formErrors, emailError })
 			}

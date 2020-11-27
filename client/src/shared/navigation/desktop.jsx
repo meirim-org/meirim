@@ -1,34 +1,36 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import t from '../../locale/he_IL';
-import logo from '../../assets/logo.png';
-import PropTypes from 'prop-types';
-import { Button, Row, IconButton, Menu, Link } from '../../shared';
-import {
-	Grid,
-	Box,
-	Hidden,
-	ListItemText,
-} from '@material-ui/core';
+import React, { useEffect, useCallback } from 'react';
+import { Grid, Box, Hidden, ListItemText } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import StarIcon from '@material-ui/icons/Star';
+import { Link as RouterLink } from 'react-router-dom';
+import t from 'locale/he_IL';
+import logo from 'assets/logo.png';
+import { Button, Row, IconButton, Menu, Link } from 'shared';
+import { colors } from 'style/index'
+import { UserSelectors } from 'redux/selectors'
+import { logout } from 'services/user'
 import * as SC from './style'
-import { colors } from '../../style/index'
-import { userLoggedInMenuItems } from './constants'
+import { useDispatch } from 'react-redux';
+import { notAuthenticated } from 'redux/user/slice';
+import { openModal } from 'redux/modal/slice';
 
-const DesktopNavBar = ({ me }) => {
+const DesktopNavBar = () => {
+	const dispatch = useDispatch()
 	const [dropDownEl, setDropDownEl] = React.useState(null);
-
+	const { isAuthenticated, user } = UserSelectors()
 	const handleDropDownClick = (event) => {
 		setDropDownEl(event.currentTarget);
 	};
-
 	const handleDropDownClose = () => {
 		setDropDownEl(null);
 	};
-
+	const logoutHandler = async () => {
+		const response = await logout()
+		if (response.status === 'OK') dispatch(notAuthenticated())
+	}
+	
 	return (
 		<SC.StyledHeader>
 			<SC.StyledContainer>
@@ -42,13 +44,11 @@ const DesktopNavBar = ({ me }) => {
 							</Box>
 							<Box component="nav">
 								<Box display="flex" alignItems="center">
-									{!me && (
-										<Box px={2}>
-											<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
-												{t.plans}
-											</SC.StyledLink>
-										</Box>
-									)}
+									<Box px={2}>
+										<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
+											{t.plans}
+										</SC.StyledLink>
+									</Box>
 									<Hidden smDown>
 										<Box px={2}>
 											<SC.StyledLink id="nav-bar-alerts" to="/alerts/" activeClassName="active">
@@ -71,10 +71,10 @@ const DesktopNavBar = ({ me }) => {
 					</Box>
 					<Box>
 						<Hidden smDown>
-							{me && (
+							{isAuthenticated && (
 								<Row>
 									<Grid item>
-										<RouterLink id="mobile-nav-bar-close-menu" to="/">
+										<RouterLink id="mobile-nav-bar-close-menu">
 											<IconButton
 												color={colors.purple}
 												ariaLabel={'close mobile menu'}
@@ -93,27 +93,33 @@ const DesktopNavBar = ({ me }) => {
 											iconBefore={<AccountCircleIcon color="primary"/>}
 											iconAfter={<ExpandMoreIcon color="secondary"/>}
 											dropDownEl={dropDownEl}
-											menuItems={userLoggedInMenuItems}
-											text="ישראל ישראלי"
+											menuItems={[
+												{
+													'text': 'התנתק',
+													'onClick': logoutHandler
+
+												},
+											]}
+											text={user && user.name}
 										/>
 									</Grid>
 								</Row>
 							)}
-							{!me && (
+							{!isAuthenticated && (
 								<Row gutter={0.75}>
-									<Grid item>
+									{/* <Grid item>
 										<Link id="registered-nav-bar-starred" to="/" withIcon={true}>
 											<SC.StyledStarIcon>
 												<StarIcon/>
 											</SC.StyledStarIcon>
 											<ListItemText primary={t.myPlans}/>
 										</Link>
+									</Grid> */}
+									<Grid item>
+										<Button id="sing-in" text={t.signin} fontWeight="400" simple onClick={() => dispatch(openModal({ modalType: 'login' }))}/>
 									</Grid>
 									<Grid item>
-										<Button id="sing-in" text={t.signin} fontWeight="400" simple onClick={()=>{}}/>
-									</Grid>
-									<Grid item>
-										<Button id="sing-up" text={t.signup} small altColor onClick={()=>{}}/>
+										<Button id="sing-up" text={t.signup} small altColor onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
 									</Grid>
 								</Row>
 							)}
@@ -124,10 +130,5 @@ const DesktopNavBar = ({ me }) => {
 		</SC.StyledHeader>
 	);
 }
-
-DesktopNavBar.propTypes = {
-	me: PropTypes.bool,
-};
-
 
 export default DesktopNavBar;

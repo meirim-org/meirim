@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal, Button, Link } from '../../shared';
+import { Button, Link } from '../../shared';
 import SucessIcon from '../../assets/svg/successIcon';
 import { device } from '../../style';
 
@@ -74,23 +74,21 @@ const FooterTitle = styled.div`
 `;
 
 const SuccessMessage = () => (
-	<Modal>
-		<MainWrapper>
-			<IconWrapper><SucessIcon /></IconWrapper>
-			<Title>ברכות על הצטרפותך למעירים!</Title>
-			<SubTitlesWrapper>
-				<SubTitle>כולם מחכים לשמוע מה יש לך לומר</SubTitle>
-				<SubTitle>על התכנון והבניה באזורך</SubTitle>
-			</SubTitlesWrapper>
-			<Footer>
-				<FooterTitle>רוצה לגדיר התראות נוספות לפי אזורים ותחומי עניין?</FooterTitle>
-				<ButtonWrapper>
-					<Button text="להגדרות שלי" small/>
-				</ButtonWrapper>
-				<Link text="סגירה" />
-			</Footer>
-		</MainWrapper>
-	</Modal>
+	<MainWrapper>
+		<IconWrapper><SucessIcon /></IconWrapper>
+		<Title>ברכות על הצטרפותך למעירים!</Title>
+		<SubTitlesWrapper>
+			<SubTitle>כולם מחכים לשמוע מה יש לך לומר</SubTitle>
+			<SubTitle>על התכנון והבניה באזורך</SubTitle>
+		</SubTitlesWrapper>
+		<Footer>
+			<FooterTitle>רוצה לגדיר התראות נוספות לפי אזורים ותחומי עניין?</FooterTitle>
+			<ButtonWrapper>
+				<Button text="להגדרות שלי" small/>
+			</ButtonWrapper>
+			<Link text="סגירה" />
+		</Footer>
+	</MainWrapper>
 );
 
 export default SuccessMessage;
