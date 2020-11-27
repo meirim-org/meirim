@@ -1,15 +1,11 @@
+import api from 'services/api'
 
 export const userLoggedInMenuItems = [
 	{
-		'text': 'item 1',
-		'to': '/'
+		'text': 'התנתק',
+		'onClick': async () => {
+			const response = await api.post('/sign/out')
+			console.log('🚀 ~ file: constants.js ~ line 8 ~ \'onClick\': ~ response', response)
+		}
 	},
-	{
-		'text': 'item 2',
-		'to': '/'
-	},
-	{
-		'text': 'item 3',
-		'to': '/'
-	}
 ]

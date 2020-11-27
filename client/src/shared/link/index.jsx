@@ -39,8 +39,8 @@ const StyledLink = styled(RouterLink)`
     `}
 `;
 
-const Link = ({ id, to, text, bold, children, withIcon }) => (
-	<StyledLink id={id} to={to} bold={bold ? '1' : ''} withicon={withIcon ? '1' : ''}>{text}{children}</StyledLink>
+const Link = ({ id, to, text, bold, children, withIcon, onClick }) => (
+	<StyledLink id={id} to={to} bold={bold ? '1' : ''} onClick={onClick} withicon={withIcon ? '1' : ''}>{text}{children}</StyledLink>
 );
 
 Link.defaultProps = {
@@ -49,7 +49,8 @@ Link.defaultProps = {
 }
 
 Link.propTypes = {
-	to: PropTypes.string.isRequired,
+	onClick: PropTypes.func,
+	to: PropTypes.string,
 	text: PropTypes.string,
 	id: PropTypes.string.isRequired,
 	bold: PropTypes.bool,

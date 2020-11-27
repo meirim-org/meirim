@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import t from '../../locale/he_IL';
-import logo from '../../assets/logo.png';
 import PropTypes from 'prop-types';
-import {  Row, IconButton, Menu } from '../../shared';
-import {
-	Box,
-	Hidden,
-	Drawer,
-	ListItemText,
-	Divider
-} from '@material-ui/core';
+import { Box, Hidden, Drawer, ListItemText, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -18,12 +9,14 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import StarIcon from '@material-ui/icons/Star';
-import { colors } from '../../style/index'
+import t from 'locale/he_IL';
+import {  Row, IconButton, Menu } from 'shared';
+import logo from 'assets/logo.png';
+import { colors } from 'style/index'
 import { userLoggedInMenuItems } from './constants'
 import * as SC from './style'
 
 const Navigation = ({ me }) => {
-	// const [signOutSuccess, setSignOutSuccess] = useState(false);
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 
