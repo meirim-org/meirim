@@ -152,21 +152,20 @@ class Alerts extends Component {
 
     render() {
         const { alerts, form, error, bounds, added, deleted } = this.state;
-        const { me } = this.props;
 
         // unauthenticatd
         if (error && error.response && error.response.status === 403) {
             return (
-                <Redirect
-                    to={{
-                        pathname: "/sign/in",
-                        state: { redirectTo: window.location.pathname }
+                <Redirect to={{
+                        pathname: "/",
+                        state: 'openRegister'
                     }}
                 />
             );
         }
         return (
-            <Wrapper me={me}>
+            <Wrapper>
+
                 <div className="container alerts-container widedialog">
                     <form className="rectangle" onSubmit={this.handleSubmit}>
                         <h5 className="container-title">{t.newAlert}</h5>

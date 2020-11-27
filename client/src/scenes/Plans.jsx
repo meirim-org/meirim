@@ -93,10 +93,9 @@ class Plans extends Component {
 
     render() {
         const { plans, planCounties, error, noData, hasMore } = this.state;
-        const { me } = this.props;
 
         return (
-            <Wrapper me={me}>
+            <Wrapper>
                 <div className="container">
                     <FilterAutoCompleteMultiple
                         classes=""
