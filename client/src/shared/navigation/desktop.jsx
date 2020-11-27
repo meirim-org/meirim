@@ -1,13 +1,12 @@
-import React, { useEffect, useCallback } from 'react';
-import { Grid, Box, Hidden, ListItemText } from '@material-ui/core';
+import React from 'react';
+import { Grid, Box, Hidden } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import StarIcon from '@material-ui/icons/Star';
 import { Link as RouterLink } from 'react-router-dom';
 import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
-import { Button, Row, IconButton, Menu, Link } from 'shared';
+import { Button, Row, IconButton, Menu } from 'shared';
 import { colors } from 'style/index'
 import { UserSelectors } from 'redux/selectors'
 import { logout } from 'services/user'
