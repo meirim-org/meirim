@@ -13,6 +13,7 @@ import Terms from './scenes/Terms';
 import Vocabulary from './scenes/Vocabulary';
 import NotFound from './scenes/NotFound';
 import EmailSent from './pages/Register/emailSent';
+import Plan from './pages/Plan';
 import api from './services/api';
 import './App.css';
 import { ToastContainer } from 'react-toastify';
@@ -71,7 +72,7 @@ const App = () => {
 						/>
 						<Route
 							path="/plan/:id"
-							render={props => <SinglePlan {...props} me={me} />}
+							render={props => <Plan {...props} me={me} />}
 						/>
 						<Route
 							path="/plans"
