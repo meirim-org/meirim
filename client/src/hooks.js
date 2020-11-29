@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { UserSelectors } from 'redux/selectors'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { authenticated } from 'redux/user/slice' 
 import { closeModal } from 'redux/modal/slice' 
-import { ALERTS } from 'router/contants'
+import { HOME, ALERTS } from 'router/contants'
 import api from 'services/api';
 
 export const ValidUserHook = (user) => {
@@ -39,4 +40,14 @@ export const CookieHook = () => {
 	}, [])
 	
 	return { success, response , error, loading }
+}
+
+export const CheckIfUserCanAccessPage = () => {
+	const { isAuthenticated } = UserSelectors()
+	const history = useHistory()
+	useEffect(() => {
+		if (!isAuthenticated) {
+			history.push(HOME, 'openRegister')
+		}
+	}, [isAuthenticated])
 }
