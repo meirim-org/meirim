@@ -1,65 +1,56 @@
 import styled from 'styled-components';
 import { device } from '../../style';
+import { Tabs } from '@material-ui/core';
 
-export const Titles = styled.div`
-  padding: 0 1.5em 0;
-  @media ${device.tablet} {
-     padding: 0 3.45em 0;
-  }
+
+export const MainWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 60% 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 9px;
+    height: 100vh;
 `;
 
-export const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 400;
-  text-align: center;
-  font-family: Assistant !important; 
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  margin-bottom: 1.3em;
-  letter-spacing: normal;
-  color: #29244a;
-  @media ${device.tablet} {
-    font-size: 2em;
-    font-weight: 600;
-    margin-bottom: 1em;
-  }
+export const Content = styled.div`
+    display: grid;
+    grid-template-rows: 1fr 78%;
 `;
 
-export const SubTitle = styled.h2`
-  font-family: Assistant !important;
-  font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  line-height: 1.5;
-  text-align: center;
-  color: #000000;
-  margin-bottom: 0;
-     >  span {
-     font-family: Assistant !important;
-   }
+export const Header = styled.div`
+    display: grid;
+    grid-template-columns: 55% 1fr;
+`;
+
+export const CustomTabs = styled(Tabs)`
+    
+`;
+
+// overrides: {
+//     MuiTab: {
+//         textColorInherit: {
+//             backgroundColor: '#ffffff',
+//                 borderColor: '#652dd0',
+//                 color: '#000000',
+//         },
+//         wrapper: {
+//             backgroundColor: 'red',
+//         },
+//     },
+// },
+export const TitlesAndTabs = styled.div`
+
+`;
+
+export const Buttons = styled.div`
+
 `;
 
 export const SubTitleWrapper = styled.div`
-    padding-bottom: 3em;
-    border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-    @media ${device.tablet} {
-     padding-bottom: 2.5em;
-    }
+    margin-bottom: 1rem;
 `;
 
-export const InputsWrapper = styled.div`
-  background-color: #f1eef2;
-  padding: 1.5em 1.5em 0.5em;
-  @media ${device.tablet} {
-     padding: 1.5em 3.7em 1em;
-  }
-`;
-
-export const MainWrapper = styled.div`
+export const TitleWrapper = styled.div`
+    margin-bottom: 3rem;
 `;
 
 export const InputWrapper = styled.div`
@@ -67,20 +58,6 @@ export const InputWrapper = styled.div`
   .MuiFormControl-root {
      width: 100%;
   }
-`;
-
-export const InputsTitle = styled.div`
-  font-family: Assistant !important;
-  font-size: 20px;
-  font-weight: normal;
-  padding-bottom: 0;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.5;
-  letter-spacing: normal;
-  text-align: center;
-  color: #3e385c;
-  margin-bottom: 1.2em;
 `;
 
 export const ButtonWrapper = styled.div`
