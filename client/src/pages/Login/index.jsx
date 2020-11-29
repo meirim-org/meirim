@@ -23,13 +23,21 @@ const Login = () => {
 
 	ValidUserHook(user)
 
+	const getIsEmailInvalid = React.useCallback(() => 
+		onFocusInput.email ? false : !validateEmail(loginValues.email), [loginValues.email, onFocusInput.email])
+	const formValidation = React.useCallback(() => {
+		const isEmailInvalid = getIsEmailInvalid() 
+		const emailError = { isValid: !isEmailInvalid, message: !isEmailInvalid ? '' : 'מייל לא תקין' }
+		setFormErrors(ps => ({ ...ps, emailError }))
+	}, [getIsEmailInvalid])
+	
 	useEffect(() => {
 		if (firstUpdate.current) {
 			firstUpdate.current = false
 		} else {
 			formValidation()
 		}
-	},[loginValues, onFocusInput])
+	},[loginValues, onFocusInput, formValidation])
 
 	const onInputFocus = (inputName) => {
 		const newState = {}
@@ -43,15 +51,8 @@ const Login = () => {
 		setOnFocusInput(ps => ({ ...ps, ...newState }) )
 	}
 
-	const getIsEmailInvalid = () => onFocusInput.email ? false : !validateEmail(loginValues.email)
 	const getIsPasswordInvalid = () => onFocusInput.password ? false : loginValues.password.length < 6
 
-	const formValidation = () => {
-		const isEmailInvalid = getIsEmailInvalid() 
-		const emailError = { isValid: !isEmailInvalid, message: !isEmailInvalid ? '' : 'מייל לא תקין' }
-		setFormErrors(ps => ({ ...ps, emailError }))
-	}
-	
 	const validateBeforeFormSubmittion = (e) => {
 		e.preventDefault()
 		const isEmailValid = !getIsEmailInvalid()

@@ -6,6 +6,6 @@ export const logout = async () => {
 		
 		return response
 	} catch (err){
-		throw new err
+		throw new err()
 	}
 }

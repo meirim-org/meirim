@@ -34,11 +34,7 @@ const Rate = (props) => {
 		}, {})
 	})
 
-	React.useEffect(() => {
-		loadRatings()
-	}, [])
-
-	const loadRatings = () => {
+	const loadRatings = React.useCallback(() => {
 		const { planId } = props;
 
 		return api
@@ -71,7 +67,11 @@ const Rate = (props) => {
 					ratings }))
 			})
 			.catch(error => setState(pv => ({ ...pv, error })));
-	}
+	}, [props])
+	
+	React.useEffect(() => {
+		loadRatings()
+	}, [loadRatings])
 
 	const setRate = score => {
 		const { planId } = props;
