@@ -25,10 +25,31 @@ import {
 	faPaperPlane,
 	faChartArea
 } from '@fortawesome/free-solid-svg-icons';
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'; 
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import './assets/bootstrap.css';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 
 library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
+
+const theme = createMuiTheme({
+	typography: {
+		fontFamily: [
+			'Assistant',
+		].join(','),
+		subtitle1:{
+			fontSize: '18px',
+			fontWeight: 'bold'
+		},
+		h2: {
+			fontSize: '24px',
+			fontWeight: '600'
+		}
+	},
+	palette: {
+		primary: { 'main': '#652dd0' },
+	},
+})
+
 
 
 const App = () => {
@@ -47,81 +68,81 @@ const App = () => {
 	if (me === null) {
 		return <div>Loading...</div>;
 	}
-	
+
 	return (
-		<React.Fragment>
+		<ThemeProvider theme={theme}>
 			<Router>
 				<div>
 					<Switch>
 						<Route
 							exact
 							path="/"
-							render={props => <Home {...props} me={me} />}
+							render={props => <Home {...props} me={me}/>}
 						/>
 						<Route
 							path="/alerts/unsubscribe/:token"
-							render={props => <AlertUnsubscribe {...props} me={me} />}
+							render={props => <AlertUnsubscribe {...props} me={me}/>}
 						/>
 						<Route
 							path="/alerts"
-							render={props => <Alerts {...props} me={me} />}
+							render={props => <Alerts {...props} me={me}/>}
 						/>
 						<Route
 							path="/plan/:id/:title"
-							render={props => <SinglePlan {...props} me={me} />}
+							render={props => <SinglePlan {...props} me={me}/>}
 						/>
 						<Route
 							path="/plan/:id"
-							render={props => <Plan {...props} me={me} />}
+							render={props => <Plan {...props} me={me}/>}
 						/>
 						<Route
 							path="/plans"
-							render={props => <Plans {...props} me={me} />}
+							render={props => <Plans {...props} me={me}/>}
 						/>
 						<Route
 							path="/sign/up"
-							render={props => <Home {...props} showRegister={true} me={me} />}
+							render={props => <Home {...props} showRegister={true} me={me}/>}
 						/>
 						<Route
 							path="/sign/in"
-							render={props => <Home {...props} setMe={setMe} showSignin={true} me={me} />}
+							render={props => <Home {...props} setMe={setMe} showSignin={true} me={me}/>}
 						/>
 						<Route
 							path="/activate"
-							render={props => <Activate {...props} me={me} />}
+							render={props => <Activate {...props} me={me}/>}
 						/>
 						<Route
 							path="/forgot"
 							render={props => (
-								<ForgotPassword {...props} me={me} />
+								<ForgotPassword {...props} me={me}/>
 							)}
 						/>
 						<Route
 							path="/vocabulary"
-							render={props => <Vocabulary {...props} me={me} />}
+							render={props => <Vocabulary {...props} me={me}/>}
 						/>
 						<Route
 							path="/about"
-							render={props => <About {...props} me={me} />}
+							render={props => <About {...props} me={me}/>}
 						/>
 						<Route
 							path="/terms"
-							render={props => <Terms {...props} me={me} />}
+							render={props => <Terms {...props} me={me}/>}
 						/>
 						<Route
 							path="/404"
-							render={props => <NotFound {...props} me={me} />}
+							render={props => <NotFound {...props} me={me}/>}
 						/>
 						<Route
 							path="/email-sent"
-							render={props => <EmailSent {...props} me={me} />}
+							render={props => <EmailSent {...props} me={me}/>}
 						/>
-						<Route component={NotFound} />
+						<Route component={NotFound}/>
 					</Switch>
 				</div>
 			</Router>
 			<ToastContainer autoClose={false}/>
-		</React.Fragment>
+		</ThemeProvider>
 	);
 }
 
