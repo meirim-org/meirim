@@ -31,7 +31,7 @@ Row.defaultProps = {
 
 Row.propTypes = {
 	alignItems: PropTypes.string,
-	children: PropTypes.object.isRequired,
+	children: PropTypes.array.isRequired,
 	gutter: PropTypes.number,
 	justify: PropTypes.string
 };

@@ -23,7 +23,7 @@ const Wrapper = (props) => {
 }
 
 Wrapper.propTypes = {
-	children: PropTypes.object
+	children: PropTypes.array
 }
 
 export default Wrapper
