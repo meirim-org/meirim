@@ -68,8 +68,8 @@ const Modal = ({ id }) => {
 };
 
 Modal.propTypes = {
-	children: PropTypes.object.isRequired,
-	id: PropTypes.string.isRequired,
+	children: PropTypes.object,
+	id: PropTypes.string,
 };
 
 export default Modal;
