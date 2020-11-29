@@ -1,17 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import DesktopNavBar from './desktop'
+import { Hidden } from '@material-ui/core';
+import { UserSelectors } from 'redux/selectors'
+import MobileNavBar from './mobile'
+import DesktopNavBar from './desktop';
 
-const Navigation = ({ me }) => {
+const Navigation = () => {
+	const { isAuthenticated, user } = UserSelectors()
 	
 	return (
-		<DesktopNavBar me={me}/>
+		<React.Fragment>
+			<Hidden mdUp> <MobileNavBar user={user} isAuthenticated={isAuthenticated}/></Hidden>
+			<Hidden mdDown> <DesktopNavBar user={user} isAuthenticated={isAuthenticated}/></Hidden>
+		</React.Fragment>
 	);
 }
-
-Navigation.propTypes = {
-	me: PropTypes.bool,
-};
-
 
 export default Navigation;
