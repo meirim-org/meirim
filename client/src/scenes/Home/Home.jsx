@@ -17,7 +17,7 @@ const Home = (props) => {
 
 	useEffect(() => {
 		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }))
-	}, [state])
+	}, [state, dispatch])
 
 	return (
 		<Wrapper>

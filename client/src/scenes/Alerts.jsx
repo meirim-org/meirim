@@ -39,7 +39,7 @@ const Alerts = () => {
 		setState(pv => ({ ...pv, sliderText }))
 		getAlerts();
 		document.getElementById('homeAddress').focus();
-	}, [])
+	}, [state.slider.max])
 
 	const getAlerts = () => {
 

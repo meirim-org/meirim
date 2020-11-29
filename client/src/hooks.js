@@ -16,7 +16,7 @@ export const ValidUserHook = (user) => {
 			history.push(ALERTS)
 			dispatch(closeModal())
 		}
-	},[user])
+	},[user, dispatch, history])
 }
 
 export const CookieHook = () => {
@@ -37,7 +37,7 @@ export const CookieHook = () => {
 			setSuccess(false)
 		})
 
-	}, [])
+	}, [dispatch])
 	
 	return { success, response , error, loading }
 }
@@ -49,5 +49,5 @@ export const CheckIfUserCanAccessPage = () => {
 		if (!isAuthenticated) {
 			history.push(HOME, 'openRegister')
 		}
-	}, [isAuthenticated])
+	}, [isAuthenticated, history])
 }
