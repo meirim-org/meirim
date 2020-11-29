@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Grid, Box, Hidden } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
@@ -8,17 +9,15 @@ import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
 import { Button, Row, IconButton, Menu } from 'shared';
 import { colors } from 'style/index'
-import { UserSelectors } from 'redux/selectors'
 import { logout } from 'services/user'
 import * as SC from './style'
 import { useDispatch } from 'react-redux';
 import { notAuthenticated } from 'redux/user/slice';
 import { openModal } from 'redux/modal/slice';
 
-const DesktopNavBar = () => {
+const DesktopNavBar = ({ user, isAuthenticated }) => {
 	const dispatch = useDispatch()
 	const [dropDownEl, setDropDownEl] = React.useState(null);
-	const { isAuthenticated, user } = UserSelectors()
 	const handleDropDownClick = (event) => {
 		setDropDownEl(event.currentTarget);
 	};
@@ -29,6 +28,7 @@ const DesktopNavBar = () => {
 		const response = await logout()
 		if (response.status === 'OK') dispatch(notAuthenticated())
 	}
+	const dropdownItems = [{ 'text': 'התנתק', 'onClick': logoutHandler }]
 	
 	return (
 		<SC.StyledHeader>
@@ -92,13 +92,7 @@ const DesktopNavBar = () => {
 											iconBefore={<AccountCircleIcon color="primary"/>}
 											iconAfter={<ExpandMoreIcon color="secondary"/>}
 											dropDownEl={dropDownEl}
-											menuItems={[
-												{
-													'text': 'התנתק',
-													'onClick': logoutHandler
-
-												},
-											]}
+											menuItems={dropdownItems}
 											text={user && user.name}
 										/>
 									</Grid>
@@ -106,19 +100,15 @@ const DesktopNavBar = () => {
 							)}
 							{!isAuthenticated && (
 								<Row gutter={0.75}>
-									{/* <Grid item>
-										<Link id="registered-nav-bar-starred" to="/" withIcon={true}>
-											<SC.StyledStarIcon>
-												<StarIcon/>
-											</SC.StyledStarIcon>
-											<ListItemText primary={t.myPlans}/>
-										</Link>
-									</Grid> */}
 									<Grid item>
-										<Button id="sing-in" text={t.signin} fontWeight="400" simple onClick={() => dispatch(openModal({ modalType: 'login' }))}/>
+										<Button id="sing-in" text={t.signin} 
+											fontWeight="400" simple 
+											onClick={() => dispatch(openModal({ modalType: 'login' }))}/>
 									</Grid>
 									<Grid item>
-										<Button id="sing-up" text={t.signup} small altColor onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
+										<Button id="sing-up" text={t.signup} 
+											small altColor 
+											onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
 									</Grid>
 								</Row>
 							)}
@@ -130,4 +120,18 @@ const DesktopNavBar = () => {
 	);
 }
 
+DesktopNavBar.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired,
+	user: PropTypes.object,
+};
+
 export default DesktopNavBar;
+
+// /* <Grid item>
+// 	<Link id="registered-nav-bar-starred" to="/" withIcon={true}>
+// 		<SC.StyledStarIcon>
+// 			<StarIcon/>
+// 		</SC.StyledStarIcon>
+// 		<ListItemText primary={t.myPlans}/>
+// 	</Link>
+// </Grid> */
