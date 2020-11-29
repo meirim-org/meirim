@@ -9,13 +9,11 @@ import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
 import { Button, Row, IconButton, Menu } from 'shared';
 import { colors } from 'style/index'
-import { logout } from 'services/user'
 import * as SC from './style'
 import { useDispatch } from 'react-redux';
-import { notAuthenticated } from 'redux/user/slice';
 import { openModal } from 'redux/modal/slice';
 
-const DesktopNavBar = ({ user, isAuthenticated }) => {
+const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const dispatch = useDispatch()
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
@@ -24,10 +22,6 @@ const DesktopNavBar = ({ user, isAuthenticated }) => {
 	const handleDropDownClose = () => {
 		setDropDownEl(null);
 	};
-	const logoutHandler = async () => {
-		const response = await logout()
-		if (response.status === 'OK') dispatch(notAuthenticated())
-	}
 	const dropdownItems = [{ 'text': 'התנתק', 'onClick': logoutHandler }]
 	
 	return (
@@ -122,6 +116,7 @@ const DesktopNavBar = ({ user, isAuthenticated }) => {
 
 DesktopNavBar.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,
+	logoutHandler: PropTypes.func.isRequired,
 	user: PropTypes.object,
 };
 
