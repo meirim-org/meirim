@@ -1,112 +1,100 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import { NavLink as Link } from "react-router-dom";
-import _ from "lodash";
-import Comment from "./Comment";
-import AddComment from "./AddComment";
-import api from "../../services/api";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux'
+import _ from 'lodash';
+import Comment from './Comment';
+import AddComment from './AddComment';
+import api from 'services/api';
+import 'assets/bootstrap.css';
+import { openModal } from 'redux/modal/slice'
+import './Comments.css';
 
-import "../../assets/bootstrap.css";
-import "./Comments.css";
+const Comments = props => {
+	const dispatch = useDispatch();
+	const [ state, setState ] = React.useState({
+		comments: [],
+		isLoading: true,
+		me: {},
+		error: false
+	})
 
-const signInURL = {
-    pathname: "/sign/in",
-    state: {
-        redirectTo: window.location.pathname
-    }
-};
+	React.useEffect(() => {
+		const { planId } = props;
+		api.get('/comment/' + planId)
+			.then(comments => {
+				setState(pv => ({
+					...pv,
+					comments: comments.data,
+					isLoading: false,
+					me: comments.me
+				}));
+			})
+			.catch(error => setState(pv => ({ ...pv, error })));
+	}, [])
 
-class Comments extends Component {
-    state = {
-        comments: [],
-        isLoading: true,
-        me: this.props.me || {},
-        error: false
-    };
+	const handleCommentPublished = (data) => {
+		var newComment = _.merge(data, {
+			person: {
+				alias: state.me.name,
+				id: state.me.id
+			}
+		});
+		const newMe = state.me;
+		newMe.alias = newMe.alias || data.person.alias;
+		setState(pv => ({
+			...pv,
+			comments: state.comments.concat([newComment]),
+			content: '',
+			me: newMe
+		}));
 
-    componentDidMount() {
-        const { planId } = this.props;
+		document.getElementByName('newCommentform').reset();
+	}
 
-        return api
-            .get("/comment/" + planId)
-            .then(comments => {
-                this.setState({
-                    comments: comments.data,
-                    isLoading: false,
-                    me: comments.me
-                });
-            })
-            .catch(error => this.setState({ error }));
-    }
+	const handleSubmit = data => {
+		const { planId } = props;
+		const { me } = state;
+		const { content, alias } = data;
 
-    handleCommentPublished(data) {
-        var newComment = _.merge(data, {
-            person: {
-                alias: this.state.me.alias,
-                id: this.state.me.id
-            }
-        });
+		let aliasush = me.name || alias;
 
-        // if there hasnt been an alias for current user
-        const newMe = this.state.me;
-        newMe.alias = newMe.alias || data.person.alias;
-        this.setState({
-            comments: this.state.comments.concat([newComment]),
-            content: "",
-            me: newMe
-        });
+		return api.post('/comment/' + planId, {
+			content,
+			alias: aliasush,
+			person_id: me.id,
+			plan_id: planId,
+			parent_id: 0
+		})
+			.then(res => {
+				setState(pv => ({ ...pv, done: true }));
+				handleCommentPublished(res.data);
+			})
+			.catch(error => setState(pv => ({ ...pv, error })));
+	};
 
-        document.getElementByName("newCommentform").reset();
-    }
-
-    handleSubmit = data => {
-        const { planId } = this.props;
-        const { me } = this.state;
-        const { content, alias } = data;
-
-        let aliasush = me.alias || alias;
-
-        return api.post("/comment/" + planId, {
-            content,
-            alias: aliasush,
-            person_id: me.id,
-            plan_id: planId,
-            parent_id: 0
-        })
-            .then(res => {
-                this.setState({ done: true });
-                this.handleCommentPublished(res.data);
-            })
-            .catch(error => this.setState({ error }));
-    };
-
-    render() {
-        const { comments, me } = this.state;
-        return (
-            <Fragment>
-                {!me.id && (
-                    <div className="text-center container">
-                        <small>יש להתחבר לפני שניתן להגיב</small>
-                        <br />
-                        <Link to={signInURL}>
-                            <button className="btn btn-primary">התחברות</button>
-                        </Link>
-                    </div>
-                )}
-                {me.id && <AddComment me={me} submit={this.handleSubmit} />}
-                <ul id="comments-list" className="comments-list ">
-                    {comments.map((comment, idx) => (
-                        <Comment id={idx} comment={comment} />
-                    ))}
-                </ul>
-            </Fragment>
-        );
-    }
+	const { comments, me } = state;
+	
+	return (
+		<Fragment>
+			{!me.id && (
+				<div className="text-center container">
+					<small>יש להתחבר לפני שניתן להגיב</small>
+					<br />
+					<button className="btn btn-primary" onClick={() => dispatch(openModal({ modalType: 'login' }))}>התחברות</button>
+				</div>
+			)}
+			{me.id && <AddComment submit={handleSubmit} />}
+			<ul id="comments-list" className="comments-list ">
+				{comments.map((comment, idx) => (
+					<Comment key={idx} id={idx} comment={comment} />
+				))}
+			</ul>
+		</Fragment>
+	);
 }
 
 Comments.propTypes = {
-    planId: PropTypes.number,
-    me: PropTypes.object
+	planId: PropTypes.number,
 };
 
 export default Comments;
