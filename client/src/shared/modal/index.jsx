@@ -9,6 +9,7 @@ import EmailVerified from 'pages/Register/emailVerified'
 import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
+import SharePlan from '../sharePlan'
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -47,6 +48,7 @@ const modalComponents = {
 	login: Login,
 	register: Register,
 	emailVerified: EmailVerified,
+	sharePlan: SharePlan
 }
 
 const Modal = ({ id }) => {

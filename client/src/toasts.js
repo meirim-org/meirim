@@ -19,3 +19,12 @@ export const serverErrorToast = () =>
 		closeOnClick: true,
 		draggable: true,
 	})
+
+
+export const copiedToClipboard = () =>
+	toast.success('הועתק בהצלחה!', {
+		toastId: '504message',
+		position: 'bottom-center',
+		closeOnClick: true,
+		draggable: true,
+	})
