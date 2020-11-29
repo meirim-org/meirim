@@ -23,7 +23,7 @@ export const serverErrorToast = () =>
 
 export const copiedToClipboard = () =>
 	toast.success('הועתק בהצלחה!', {
-		toastId: '504message',
+		toastId: 'copiedToClipboardMessage',
 		position: 'bottom-center',
 		closeOnClick: true,
 		draggable: true,
