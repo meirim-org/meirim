@@ -16,7 +16,7 @@ export const addComment = async ({ content, plan_id, person_id, name }) => {
 	try {	
 		const data = {
 			content,
-			alias: name,
+			name,
 			person_id,
 			plan_id,
 			parent_id: 0 
