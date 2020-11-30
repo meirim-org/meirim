@@ -12,7 +12,7 @@ export const subscribeUserToPlan = async (planId) => {
 	}
 }
 
-export const addComent = async ({ content, plan_id, person_id, name }) => {
+export const addComment = async ({ content, plan_id, person_id, name }) => {
 	try {	
 		const data = {
 			content,
