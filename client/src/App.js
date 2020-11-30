@@ -46,7 +46,16 @@ const theme = createMuiTheme({
 		}
 	},
 	palette: {
-		primary: { 'main': '#652dd0' },
+		primary: {
+		    'main': '#652dd0',
+			'200' : 'rgba(250, 250, 250, 0.85)',
+			'300': 'rgba(240, 227, 253, 0.4)',
+			'400': '#4d20b2',
+		},
+		orange: '#e7731e',
+		white: '#ffffff',
+		black: { '100': '#342e3e' },
+		gray: { '100': '#e4e4e4' }
 	},
 })
 
