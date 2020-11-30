@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useState } from 'react';
-import { Button, Tabs, Tab, Typography, Badge } from '@material-ui/core';
+import React from 'react';
+import { Button, Tabs, Tab, Badge } from '@material-ui/core';
 import t from '../../locale/he_IL';
 import * as SC from './style';
 import ShareIcon from '@material-ui/icons/Share';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
-import { TabPanel } from '../../shared'
+import { TabPanel, Typography } from '../../shared'
+import { useTheme } from '@material-ui/styles';
 
 function a11yProps(index) {
 	return {
@@ -17,7 +18,8 @@ function a11yProps(index) {
 }
 
 const Plan = () => {
-	const [value, setValue] = React.useState(0);
+    const theme = useTheme();
+    const [value, setValue] = React.useState(0);
 
 
 	const handleChange = (event, newValue) => {
@@ -30,12 +32,12 @@ const Plan = () => {
 				<SC.Header>
 					<SC.TitlesAndTabs>
 						<SC.SubTitleWrapper>
-							<Typography variant="subtitle1" component="span" color="primary">
+							<Typography variant="planDetailTitle" mobileVariant="smallTitle" component="span" color={theme.palette.primary.main}>
                                 ירושלים
 							</Typography>
 						</SC.SubTitleWrapper>
 						<SC.TitleWrapper>
-							<Typography variant="h2" component="h1">
+							<Typography variant="paragraphText" mobileVariant="paragraphText" component="h1" color="red">
                                 איחוד וחלוקה לחלקות 18,17,16,9 ברחוב התעשייה, שכונת תלפיות, ירושלים
 							</Typography>
 						</SC.TitleWrapper>

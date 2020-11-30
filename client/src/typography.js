@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import styled from 'styled-components';
 
 export const muiTheme = createMuiTheme({
 	palette: {
