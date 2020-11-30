@@ -8,8 +8,11 @@ class Comment extends Model {
 		return {
 			person_id: ['required', 'integer'],
 			content: ['required', 'string'],
+			type: ['required', 'string'],
+			likes: 'integer',
 			plan_id: ['required', 'integer'],
-			parent_id: ['required', 'integer']
+			parent_id: 'integer',
+
 		};
 	}
 
