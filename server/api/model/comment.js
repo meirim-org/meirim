@@ -13,6 +13,10 @@ class Comment extends Model {
 		};
 	}
 
+	get hasTimestamps() {
+		return true;
+	}
+
 	get tableName () {
 		return 'comment';
 	}
