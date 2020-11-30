@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+const controller = require('../api/controller/cron');
+const Log = require('../api/lib/log');
+
+controller
+	.fetch_tree_permit()
+	.then(() => Log.info('Running fetch_tree_permit'))
+	.catch(e => Log.error(e))
+	.finally(() => process.exit());
