@@ -5,7 +5,7 @@ module.exports = {
 		const me = {};
 		if (session && session.person) {
 			me.id = session.person.id;
-			me.alias = session.person.alias;
+			me.alias = session.person.name;
 		}
 		// format collection with pagination
 
