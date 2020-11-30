@@ -37,7 +37,7 @@ const Plan = () => {
 							</Typography>
 						</SC.SubTitleWrapper>
 						<SC.TitleWrapper>
-							<Typography variant="paragraphText" mobileVariant="paragraphText" component="h1" color="red">
+							<Typography variant="planTitle" mobileVariant="paragraphText" component="h1" color={theme.palette.black}>
                                 איחוד וחלוקה לחלקות 18,17,16,9 ברחוב התעשייה, שכונת תלפיות, ירושלים
 							</Typography>
 						</SC.TitleWrapper>
