@@ -39,10 +39,9 @@ class AlertUnsubscribe extends Component {
     }
 
     render() {
-        const { me } = this.props;
 
         return (
-            <Wrapper me={me}>
+            <Wrapper>
                 <div className="container">
                     <Typography variant="h6">
                         {this.renderUnsubscribeStatus()}
