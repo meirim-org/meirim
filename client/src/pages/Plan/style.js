@@ -20,11 +20,11 @@ export const Header = withTheme(styled.div`
     display: grid;
     grid-template-columns: 49% 1fr;
     padding: 1rem 4.8rem 0 1.2rem;
-    border-bottom: 1px solid  ${props => props.theme.palette.gray['100']};
+    border-bottom: 1px solid  ${props => props.theme.palette.gray['300']};
 `);
 
 export const Main = withTheme(styled.main`
-    background-color:  ${props => props.theme.palette.primary['200']};
+    background-color:  ${props => props.theme.palette.gray['bg']};
     padding: 2.5rem 4.8rem;
     min-height: 140vh;
 `);
@@ -51,8 +51,8 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         position: relative;
         margin-right: .25rem;
         transform: none;
-        color: ${props => props.theme.palette.primary['400']} !important;
-        background-color: ${props => props.theme.palette.primary['300']} !important;
+        color: ${props => props.theme.palette.primary['600']} !important;
+        background-color: ${props => props.theme.palette.primary['bg']} !important;
     }
 `);
 
@@ -95,9 +95,10 @@ export const Buttons = withTheme(styled.div`
     .MuiButton-label > span {
         font-size: 14px;
         padding: 0 .25rem;
+        color: ${props => props.theme.palette.gray['800']} !important;
     }
     .MuiButton-startIcon svg{
-        fill: ${props => props.theme.palette.orange} !important;
+        fill: ${props => props.theme.palette.secondary.contrastForGraphics} !important;
     }
 `);
 
