@@ -11,7 +11,8 @@ import { faSpinner, faTimes, faBuilding,
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import * as Scenes from 'scenes'
+import * as Scenes from 'scenes';
+import Plan from 'pages/Plan';
 import EmailSent from 'pages/Register/emailSent';
 import Modal from 'shared/modal'
 import 'App.css';
@@ -38,7 +39,7 @@ const App = () => {
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
 						<Route path="/plan/:id/:title" render={props => <Scenes.SinglePlan {...props} />} />
-						<Route path="/plan/:id" render={props => <Scenes.SinglePlan {...props} />} />
+						<Route path="/plan/:id" render={props => <Plan {...props} />} />
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
