@@ -29,9 +29,9 @@ Router.get('/plan/:id', wrap(Plan.read, Plan));
 Router.get('/plan_county', wrap(Plan.county, Plan));
 Router.get('/plan_status', wrap(Plan.statuses, Plan));
 
-Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
+Router.post('/plan/:plan_id/subscribe', wrap(Subscription.subscribe, Subscription));
 Router.delete(
-	'/plan/:id/subscribe',
+	'/plan/:plan_id/subscribe',
 	wrap(Subscription.unsubscribe, Subscription)
 );
 
