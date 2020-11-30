@@ -9,7 +9,7 @@ import EmailVerified from 'pages/Register/emailVerified'
 import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
-import SharePlan from '../sharePlan'
+import SharePlan from 'pages/Plan/sharePlan'
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
