@@ -12,7 +12,6 @@ class Comment extends Model {
 			likes: 'integer',
 			plan_id: ['required', 'integer'],
 			parent_id: 'integer',
-
 		};
 	}
 
