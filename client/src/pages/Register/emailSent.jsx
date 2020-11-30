@@ -34,7 +34,6 @@ const ImageCol = styled.div`
         position: absolute;
         top: 0;
         right: 0;
-        background: #f8f8f8;
         height: 110%;
         transform: translateX(100%) rotate(3.5deg);
         transform-origin: top left;
