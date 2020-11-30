@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const { mockDatabase } = require('../../mock');
 const { CommentController } = require('../../../api/controller');
 
-describe.only('comment controller', function() {
+describe('comment controller', function() {
 	const tables = ['comment', 'person'];
 	const person = {
 		name: 'myname',
@@ -35,6 +35,7 @@ describe.only('comment controller', function() {
 				person_id: 1,
 				plan_id: 123,
 				type: 'type',
+				likes: 0
 			}
 		};
 		const { attributes } = await CommentController.create(req);
@@ -42,5 +43,6 @@ describe.only('comment controller', function() {
 		expect(attributes.plan_id).to.eql(req.body.plan_id);
 		expect(attributes.type).to.eql(req.body.type);
 		expect(attributes.content).to.eql(req.body.content);
+		expect(attributes.likes).to.eql(req.body.likes);
 	});
 });
