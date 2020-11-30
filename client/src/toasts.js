@@ -27,4 +27,25 @@ export const copiedToClipboard = () =>
 		position: 'bottom-center',
 		closeOnClick: true,
 		draggable: true,
+	}) 
+
+export const FailSubscribeUserToPlan = () =>
+	toast.error('מתנצלים, יש שגיאה בצד שלנו. נא לנסות שוב', {
+		toastId: 'failToSubscribeUserToPlan',
+		position: 'bottom-center',
+		autoClose: false,
+		hideProgressBar: true,
+		closeOnClick: true,
+		draggable: true,
 	})
+
+export const SuccessSubscribeUserToPlan = () =>
+	toast.success('התוכנית נשמרה בהצלחה!', {
+		toastId: 'SuccessSubscribeUserToPlan',
+		position: 'bottom-center',
+		closeOnClick: true,
+		draggable: true,
+	}) 
+		
+ 
+ 
