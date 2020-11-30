@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import MUIModal from '@material-ui/core/Modal';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { device } from '../../style';
+import Login from 'pages/Login'
+import Register from 'pages/Register/'
+import EmailVerified from 'pages/Register/emailVerified'
+import { ModalActions } from 'redux/actions'
+import { ModalSelectors } from 'redux/selectors'
+import { device } from 'style';
+import SharePlan from 'pages/Plan/sharePlan'
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -38,17 +44,25 @@ const IconWrapper = styled.div`
 	padding-right: 0.5em;
 `;
 
-const Modal = ({ id, children }) => {
-	const [isOpen, setIsOpen] = useState(true);
+const modalComponents = {
+	login: Login,
+	register: Register,
+	emailVerified: EmailVerified,
+	sharePlan: SharePlan
+}
+
+const Modal = ({ id }) => {
+	const { open, modalType } = ModalSelectors()
+	const ModalChildren = modalComponents[modalType]
 
 	return (
-		<ModalWrapper>
-			<StyledModal id={id} open={isOpen}>
+		<ModalWrapper id={`wrapper-${id}`}>
+			<StyledModal id={id} open={open}>
 				<ModalContentWRapper>
 					<IconWrapper>
-						<StyledIcon onClick={() => setIsOpen(false)} />
+						<StyledIcon onClick={ModalActions().close} />
 					</IconWrapper>
-					{children}
+					{modalType && <ModalChildren/>}
 				</ModalContentWRapper>
 			</StyledModal>
 		</ModalWrapper>
@@ -56,8 +70,8 @@ const Modal = ({ id, children }) => {
 };
 
 Modal.propTypes = {
-	children: PropTypes.object.isRequired,
-	id: PropTypes.string.isRequired,
+	children: PropTypes.object,
+	id: PropTypes.string,
 };
 
 export default Modal;
