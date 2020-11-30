@@ -10,8 +10,6 @@ const Wrapper = styled.div`
 `
 const Title = styled.h1``
 
-const SubTitle = styled.h4``
-
 const SharePlan = () => {
 	return (
 		<Wrapper>
