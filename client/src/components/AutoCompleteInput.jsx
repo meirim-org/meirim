@@ -101,29 +101,18 @@ class FilterAutoCompleteMultiple extends Component {
     let { selectedItem } = this.state;
 
     if (selectedItem.indexOf(item) === -1) {
-      //selectedItem = [item];
+      selectedItem = [item];
     }
 
-    this.setState({
-      selectedItem,
-    });
-
-    //onFilterChange(selectedItem);
-
-    // here invoking the onchange event, performing the search
-  };
-
-  handleDelete = (item) => () => {
-    const { onFilterChange } = this.props;
-    let { selectedItem } = this.state;
-
-    selectedItem.splice(selectedItem.indexOf(item), 1);
+    // this.setState({
+    //   selectedItem,
+    // });
 
     this.setState({
-      selectedItem,
-    });
+      inputValue:selectedItem[0]
+    })
 
-    onFilterChange(selectedItem);
+    onFilterChange(selectedItem[0]);
   };
 
   getSuggestions(value) {
