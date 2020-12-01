@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
@@ -32,23 +33,35 @@ class Plans extends Component {
         plans: [],
         address:'',
         addressLocation:[],
-        list:[{ label: "הרצל 69 קרית אונו"}, { label: "הרצל 68 קרית אונו"}]
+        list:[]
     };
 
     constructor(props) {
         super(props);
 
         this.loadPlans = this.loadPlans.bind(this);
-
         this.loadNextPage = this.loadNextPage.bind(this);
     }
 
     handleAddressSubmit(address) {
         this.setState({
-            plans: []
+            plans: [],
+            pageNumber:1,
+            searchPoint:{}
         });
 
-        this.loadPlans(1, address);
+        // finding the address from the list 
+        let placeId = this.findPlaceIdFromSuggestion(address);
+        locationAutocompleteApi.getPlaceData(placeId)
+        .then(data=>{
+            this.setState({searchPoint:data.result.geometry.location})
+            this.loadPlans(1, [],data.result.geometry.location);
+        }).catch(error => this.setState({ error }));
+    }
+
+    findPlaceIdFromSuggestion(string){
+        let {list} = this.state;
+        return _.find(list,i=> i.label===string).id
     }
 
     handleInputChange(text) {
@@ -56,30 +69,27 @@ class Plans extends Component {
         this.setState({
             loadingAutocomplete:true
         })
-        
+
         locationAutocompleteApi.autocomplete(text)
-      
         .then((res)=>{
             this.setState({
                 loadingAutocomplete:false,
-                list:res.map(p=>{return {label:p}})
+                list:res
             })
         })
         .catch(error => this.setState({ error }));
     }
 
-
-    loadPlans(pageNumber, filterCounties) {
+    loadPlans(pageNumber, filterCounties, point) {
         this.setState({
             noData: false
         });
 
         api.get(
-            "/plan/"+
-            "?page=" +
-            pageNumber +
-                "&PLAN_COUNTY_NAME=" +
-                filterCounties.join(",")
+            `/plan/?page=${pageNumber}`+
+            (filterCounties.length >1 ?`&PLAN_COUNTY_NAME=${filterCounties.join(",")}`:"")+
+            (point?`&distancePoint=${point.lat},${point.lng}`:"")
+            
         )
             .then(result => {
                 this.setState({
@@ -94,9 +104,10 @@ class Plans extends Component {
             .catch(error => this.setState({ error }));
     }
 
+
     loadNextPage() {
-        const { pageNumber, filterCounties } = this.state;
-        this.loadPlans(pageNumber + 1, filterCounties);
+        const { pageNumber, filterCounties, searchPoint } = this.state;
+        this.loadPlans(pageNumber + 1, filterCounties, searchPoint);
     }
 
     componentDidMount() {
@@ -123,7 +134,7 @@ class Plans extends Component {
             <Wrapper me={me}>
                 <div className="container">
                     <Autocomplete  classes=""
-                        placeholder="חדש! סינון לפי רשויות מקומיות- הזינו את הרשויות שברצונכם לראות"
+                        placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
                        onInputChange={this.handleInputChange.bind(this)}
