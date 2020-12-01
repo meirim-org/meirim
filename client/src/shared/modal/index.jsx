@@ -23,6 +23,9 @@ const StyledIcon = styled(CloseIcon)`
 	cursor: pointer;
 `;
 
+const ModalWrapper = styled.div`
+`;
+
 const ModalContentWRapper = styled.div`
 	display:flex;
 	flex-direction: column;
