@@ -8,7 +8,7 @@ export const StyledList = styled(List)`
 `
 
 export const StyledListItem = styled(ListItem)`
-    padding: 1.2rem 3.5rem !important;
+    padding: 1.2rem 3.5rem !important;  
     color: ${props => props.color}!important;
     .MuiListItemText-root {
       flex: none;

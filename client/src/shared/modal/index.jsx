@@ -24,8 +24,6 @@ const StyledIcon = styled(CloseIcon)`
 `;
 
 const ModalWrapper = styled.div`
-	padding-top: 0.5em;
-	padding-right: 0.5em;
 `;
 
 const ModalContentWRapper = styled.div`

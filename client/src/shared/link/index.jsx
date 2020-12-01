@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const StyledLink = styled(RouterLink)`
   font-family: Assistant !important;
   font-size: 16px;
-  font-weight: ${(props) => (props.bold ? '700' : '400')} ;
+  font-weight: ${(props) => props.fontWeight} ;
   font-stretch: normal;
   font-style: normal;
   line-height: normal;
@@ -19,43 +19,21 @@ const StyledLink = styled(RouterLink)`
   .MuiTypography-body1 {
       font-family: Assistant !important;
   }
-  
-    ${({ withicon }) => withicon  && `
-    .MuiListItemIcon-root {
-        margin: 0 .25rem;
-        min-width: auto;
-    }
-    &:hover {
-     color: #652dd0 !important;
-    }
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: #1a2d66;
-        &:focus, &:hover, &:visited, &:link, &:active {
-         text-decoration: none;
-         color: none !important;
-        }
-    `}
 `;
 
-const Link = ({ id, to, text, bold, children, withIcon, onClick }) => (
-	<StyledLink id={id} to={to} bold={bold ? '1' : ''} onClick={onClick} withicon={withIcon ? '1' : ''}>{text}{children}</StyledLink>
+const Link = ({ id, text, fontWeight, onClick }) => (
+	<StyledLink id={id} to={''} fontWeight={fontWeight} onClick={onClick}>{text}</StyledLink>
 );
 
 Link.defaultProps = {
-	bold: false,
-	withIcon: false,
+	fontWeight: '400'
 }
 
 Link.propTypes = {
-	onClick: PropTypes.func,
-	to: PropTypes.string,
+	onClick: PropTypes.func.isRequired,
 	text: PropTypes.string,
 	id: PropTypes.string.isRequired,
-	bold: PropTypes.bool,
-	children: PropTypes.object.isRequired,
-	withIcon: PropTypes.bool,
+	fontWeight: PropTypes.string
 };
 
 export default Link;

@@ -54,7 +54,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											</SC.StyledLink>
 										</Box>
 										<Box px={2}>
-											<Button id="support-us" text={t.supportUs} type={'primary'} onClick={() => {}}
+                                                <Button id="support-us" text={t.supportUs} type={'primary'} onClick={() => {}}
 												small/>
 										</Box>
 									</Hidden>
