@@ -29,15 +29,16 @@ Router.get('/plan/:id', wrap(Plan.read, Plan));
 Router.get('/plan_county', wrap(Plan.county, Plan));
 Router.get('/plan_status', wrap(Plan.statuses, Plan));
 
-Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
+Router.post('/plan/:plan_id/subscribe', wrap(Subscription.subscribe, Subscription));
 Router.delete(
-	'/plan/:id/subscribe',
+	'/plan/:plan_id/subscribe',
 	wrap(Subscription.unsubscribe, Subscription)
 );
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
 Router.post('/comment/:plan_id', wrap(Comment.create, Comment));
+Router.post('/comment/addLike', wrap(Comment.addLike, Comment));
 
 // Rate
 Router.get('/rate/:plan_id', wrap(Rate.byPlan, Rate));
