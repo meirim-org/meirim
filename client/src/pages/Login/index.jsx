@@ -6,6 +6,7 @@ import { wrongLoginCredsToast, serverErrorToast } from 'toasts'
 import { ValidUserHook } from 'hooks';
 import { openModal, closeModal } from 'redux/modal/slice'
 import { loginUser } from './controller'
+import t from 'locale/he_IL';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
 
@@ -81,7 +82,7 @@ const Login = () => {
 					<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
 					<SC.SubTitle>
 						<span>עוד לא הצטרפתם? </span>
-						<Link id="login-signin-link" text="הרשמו עכשיו" onClick={() => dispatch(openModal({ modalType: 'register' }))} bold={'700'} />
+						<Link id="login-signin-link" text="הרשמו עכשיו" onClick={() => dispatch(openModal({ modalType: 'register' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>
@@ -115,11 +116,11 @@ const Login = () => {
 						onChange={({ target: { value } }) => setLoginValues({ email: loginValues.email , password: value })}
 						required />
 					<SC.ForgotPassword>
-						<u><Link onClick={() => {
+						<u><Link id="forgot-password" onClick={() => {
 							dispatch(closeModal())
 							
 							return history.push('/forgot')
-						}}>שכחתי סיסמה</Link></u>
+						}} text={t.forgotMyPassword} /></u>
 					</SC.ForgotPassword>
 				</SC.InputWrapper>
 			</SC.InputsWrapper>

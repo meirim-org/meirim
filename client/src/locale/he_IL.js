@@ -20,6 +20,7 @@ export default {
 	emailExists: 'כתובת דוא"ל כבר רשומה',
 	error: 'שגיאה',
 	forgotPassword: 'שכחתם את הסיסמה?',
+	forgotMyPassword: 'שכחתי סיסמה',
 	loading: 'טוען',
 	seenAllPlans: 'זה הכל!',
 	callToAction: 'הצטרפו למעירים',
