@@ -40,7 +40,8 @@ export default {
 	planningInformation: 'מידע תכנוני',
 	sharing: 'שיתוף',
 	saving: 'שמירה',
-	addAnOpinion: 'הוספת חוות דעת'
+	addAnOpinion: 'הוספת חוות דעת',
+    supportUs: 'תמכו בנו'
 }
 
 
