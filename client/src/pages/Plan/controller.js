@@ -28,3 +28,13 @@ export const addComment = async ({ content, plan_id, person_id, name }) => {
 		FailAddComment()
 	}
 }
+
+export const addLike = async ({ commentId }) => {
+	try {
+		const response = await api.post('/comment/addLike', { commentId })
+		
+		return response
+	} catch (err) {
+		console.log('err',err)
+	}
+}
