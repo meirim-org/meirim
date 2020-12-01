@@ -63,21 +63,27 @@ const Plan = () => {
 								color="primary"
 								startIcon={<ShareIcon />}
 							>
-								<span>{t.sharing}</span>
+								<Typography variant="chipsAndIconButtons" mobileVariant="chipsAndIconButtons" component="span" color={theme.palette.gray['800']}>
+									{t.sharing}
+								</Typography>
 							</Button>
 							<Button
 								variant="contained"
 								color="primary"
 								startIcon={<StarBorderIcon />}
 							>
-								<span>{t.saving}</span>
+								<Typography variant="chipsAndIconButtons" mobileVariant="chipsAndIconButtons" component="span" color={theme.palette.gray['800']}>
+									{t.saving}
+								</Typography>
 							</Button>
 							<Button
 								variant="contained"
 								color="primary"
 								startIcon={<ChatBubbleOutlineIcon />}
 							>
-								<span>{t.addAnOpinion}</span>
+								<Typography variant="chipsAndIconButtons" mobileVariant="chipsAndIconButtons" component="span" color={theme.palette.gray['800']}>
+									{t.addAnOpinion}
+								</Typography>
 							</Button>
 						</SC.Buttons>
 					</SC.Header>
