@@ -8,7 +8,11 @@ class Comment extends Model {
 		return {
 			person_id: ['required', 'integer'],
 			content: ['required', 'string'],
-			type: ['required', 'string'],
+			type: ['string', function(val) {
+				const validTypes = ['improvement', 'review', 'general'];
+				if(validTypes.indexOf(val) < 0) return false;
+				return true;
+			}],
 			likes: 'integer',
 			plan_id: ['required', 'integer'],
 			parent_id: 'integer',

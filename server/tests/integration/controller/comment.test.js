@@ -34,7 +34,7 @@ describe('comment controller', function() {
 				content: 'this is a brand new comment',
 				person_id: 1,
 				plan_id: 123,
-				type: 'type',
+				type: 'review',
 				likes: 0
 			}
 		};
