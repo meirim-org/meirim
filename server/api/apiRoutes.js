@@ -38,6 +38,7 @@ Router.delete(
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
 Router.post('/comment/:plan_id', wrap(Comment.create, Comment));
+Router.post('/comment/addLike', wrap(Comment.addLike, Comment));
 
 // Rate
 Router.get('/rate/:plan_id', wrap(Rate.byPlan, Rate));
