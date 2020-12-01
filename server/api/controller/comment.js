@@ -35,6 +35,16 @@ class CommentController extends Controller {
 		);
 	}
 
+	async addLike (req) {
+		if(!req.session.person) {
+			throw new Exception.BadRequest('Must be logged in');
+		}
+		const { commentId } = req.body;
+		const comment = await Comment.where({ id: commentId }).fetch();
+		const { attributes: { likes } } = comment;
+		return comment.save({ likes: likes + 1 });
+	}
+
 	/**
    * Return person's alerts. Must be logged in.
    * @param {IncomingRequest} req

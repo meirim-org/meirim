@@ -44,5 +44,15 @@ describe('comment controller', function() {
 		expect(attributes.type).to.eql(req.body.type);
 		expect(attributes.content).to.eql(req.body.content);
 		expect(attributes.likes).to.eql(req.body.likes);
+		const addLikeRequest = {
+			session: {
+				person: { 
+					id: 1 
+				} 
+			},
+			body: { commentId: attributes.id }
+		};
+		const comment = await CommentController.addLike(addLikeRequest);
+		expect(comment.attributes.likes).to.eql(1);
 	});
 });
