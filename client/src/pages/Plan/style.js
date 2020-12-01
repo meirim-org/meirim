@@ -23,7 +23,7 @@ export const Header = withTheme(styled.div`
     display: grid;
     grid-template-columns: 49% 1fr;
     padding: 1rem 4.8rem 0 1.2rem;
-    border-bottom: 1px solid  ${props => props.theme.palette.gray['300']};
+    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
 `);
 
 export const Main = withTheme(styled.main`

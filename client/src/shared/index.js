@@ -10,7 +10,8 @@ import { default as IconButton } from './icon';
 import Menu from './menu';
 import TabPanel from './tabPanel';
 import Typography from './typography';
+import TabBox from './tabBox';
 
 export {
-	Button, Dropdown, TextArea, TextInput, Modal, Link, Navigation, Row, IconButton, Menu, TabPanel, Typography
+	Button, Dropdown, TextArea, TextInput, Modal, Link, Navigation, Row, IconButton, Menu, TabPanel, Typography, TabBox
 };
