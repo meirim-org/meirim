@@ -7,8 +7,11 @@ export const MainWrapper = styled.div`
     display: grid;
     grid-template-columns: 60% 1fr;
     grid-template-rows: 1fr;
-    height: 100vh;
+    height: calc(100vh - 79px);
     overflow: hidden;
+    @media ${device.tablet} {
+       height: calc(100vh - 72px);
+    }
 `;
 
 export const Content = styled.div`
