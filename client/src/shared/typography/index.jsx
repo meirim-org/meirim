@@ -32,7 +32,6 @@ const handleVariant = variant => {
 	case 'planTitle':
 		return template('24px', '600', '1.17');
 	case 'planDetailTitle':
-        console.log(template('18px', '600', '1.5'))
 		return template('18px', '600', '1.5');
 	case 'menuTitle':
 		return template('16px', '400', '1.33');
@@ -46,7 +45,9 @@ const handleVariant = variant => {
 		return template('14px', '400', '1.29');
 	case 'label':
 		return template('12px', '400', '1.5');
-	}
+	default:
+		return template('16px', '700', '1.5');
+	}	    
 };
 
 const handleMobileVariant = mobileVariant => {
@@ -73,6 +74,8 @@ const handleMobileVariant = mobileVariant => {
 		return mobileTemplate('14px', '400', '1.29');
 	case 'label':
 		return mobileTemplate('12px', '400', '1.5');
+	default:
+		return mobileTemplate('16px', '400', '1.5');
 	}
 };
 

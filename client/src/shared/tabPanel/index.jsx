@@ -1,27 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
 
 const TabPanel = ({
 	children, value, index, ...other
 }) => (
-	<>
-		<div
-			role="tabpanel"
-			hidden={value !== index}
-			id={`simple-tabpanel-${index}`}
-			aria-labelledby={`simple-tab-${index}`}
-			{...other}
-		>
-			{value === index && (
-				<Typography>{children}</Typography>
-			)}
-		</div>
-	</>
+	<div
+		role="tabpanel"
+		hidden={value !== index}
+		id={`simple-tabpanel-${index}`}
+		aria-labelledby={`simple-tab-${index}`}
+		{...other}
+	>
+		{value === index && (
+			children
+		)}
+	</div>
 );
 
 TabPanel.propTypes = {
-	children: PropTypes.node,
+	children: PropTypes.any,
 	index: PropTypes.any.isRequired,
 	value: PropTypes.any.isRequired,
 };
