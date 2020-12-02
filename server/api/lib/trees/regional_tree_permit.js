@@ -193,16 +193,22 @@ async function crawlRegionalTreePermit(url) {
 	}
 }
 const regionalTreePermit = () => {
-	Promise.allSettled(regionalTreePermitUrls.map(url => crawlRegionalTreePermit(url)))
-		.then((results) => {
-			let sumNewPermits = 0;
-			results.forEach(element => {
-				sumNewPermits = sumNewPermits + element.value;
-			});
-			console.log(`Done! Total ${sumNewPermits} new permits`);
-		})
-		.catch(err => console.log(err))
-		.finally(() => process.exit());
+	return new Promise((resolve, reject) => {
+		Promise.allSettled(regionalTreePermitUrls.map(url => crawlRegionalTreePermit(url)))
+			.then((results) => {
+				let sumNewPermits = 0;
+				results.forEach(element => {
+					sumNewPermits = sumNewPermits + element.value;
+				});
+				console.log(`Done! Total ${sumNewPermits} new permits`);
+				resolve(sumNewPermits);
+			})
+			.catch(err => {
+				console.log(err);
+				reject(err);
+			})
+			.finally(() => process.exit());
+	});
 };
 
 module.exports = {
