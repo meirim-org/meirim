@@ -38,3 +38,14 @@ export const addLike = async ({ commentId }) => {
 		console.log('err',err)
 	}
 }
+
+export const getPlanData = async (planId) => {
+	try {
+		await api.post(`/impression/${planId}`)
+		const response = await api.get(`/plan/${planId}`)
+		
+		return response
+	} catch (err) {
+		console.log('err',err)
+	}
+}

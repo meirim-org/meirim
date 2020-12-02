@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import React from 'react';
+import { useTheme } from '@material-ui/styles';
 import { Button, Tabs, Tab, Badge } from '@material-ui/core';
 import t from 'locale/he_IL';
 import * as SC from './style';
@@ -8,24 +7,30 @@ import ShareIcon from '@material-ui/icons/Share';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { TabPanel, TabBox, Typography } from 'shared'
-import { useTheme } from '@material-ui/styles';
 import Wrapper from 'components/Wrapper';
-
-function a11yProps(index) {
-	return {
-		id: `simple-tab-${index}`,
-		'aria-controls': `simple-tabpanel-${index}`,
-	};
-}
+import { a11yProps } from './a11y' 
+import { getPlanData } from './controller'
 
 const Plan = () => {
 	const theme = useTheme();
+	const [planData, setPlanData] = React.useState({ countyName: '', planName: '', status: '' })
 	const [value, setValue] = React.useState(0);
-
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+
+	React.useEffect (() => {
+		async function fetchData() {
+			const response = await getPlanData(2)
+			const { PLAN_COUNTY_NAME, PL_NAME, status } = response.data
+			console.log('🚀 ~ file: index.jsx ~ line 32 ~ fetchData ~ PL_COUNTY_NAME', PLAN_COUNTY_NAME)
+			console.log('🚀 ~ file: index.jsx ~ line 33 ~ fetchData ~  response.data',  response.data)
+			setPlanData(pv => ({ ...pv, countyName: PLAN_COUNTY_NAME, planName: PL_NAME, status }))
+		}
+		fetchData()
+
+	} , [])
 
 	return (
 	    <Wrapper>
@@ -35,12 +40,12 @@ const Plan = () => {
 						<SC.TitlesAndTabs>
 							<SC.SubTitleWrapper>
 								<Typography variant="planDetailTitle" mobileVariant="smallTitle" component="span" color={theme.palette.primary.main}>
-                                ירושלים
+									{planData.countyName}
 								</Typography>
 							</SC.SubTitleWrapper>
 							<SC.TitleWrapper>
 								<Typography variant="planTitle" mobileVariant="paragraphText" component="h1" color={theme.palette.black}>
-                                איחוד וחלוקה לחלקות 18,17,16,9 ברחוב התעשייה, שכונת תלפיות, ירושלים
+									{planData.planName}
 								</Typography>
 							</SC.TitleWrapper>
 							<SC.AppBar position="static">
@@ -89,20 +94,7 @@ const Plan = () => {
 					</SC.Header>
 					<SC.Main>
 						<TabPanel value={value} index={0}>
-							<TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-							<TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-							<TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-						</TabPanel>
-						<TabPanel value={value} index={1}>
-                            <TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-                            <TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-						</TabPanel>
-						<TabPanel value={value} index={2}>
-                            <TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-                            <TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-                            <TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-                            <TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
-                            <TabBox>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TabBox>
+							<TabBox>{`סטטוס: ${planData.status}`}</TabBox>
 						</TabPanel>
 					</SC.Main>
 				</SC.Content>
