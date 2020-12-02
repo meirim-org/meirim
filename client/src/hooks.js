@@ -27,8 +27,9 @@ export const CookieHook = () => {
 	const [ error, setError ] = useState({})
 	useEffect(() => {
 		api.get('/me').then((response) => {
+			const { name } = response.me
 			setSuccess(true)
-			dispatch(authenticated({ user: { name: 'me' } }))
+			dispatch(authenticated({ user: { name } }))
 			setLoading(false)
 			setResponse(response)
 		}).catch((err) => {
