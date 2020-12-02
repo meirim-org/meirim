@@ -14,8 +14,8 @@ const successConfiguration = {
 	draggable: true,
 }
 
-const ServerFailToast =	toast.error('מתנצלים, יש שגיאה בצד שלנו. נא לנסות שוב', {
-	toastId: '504message',
+const ServerFailToast =	(id) => toast.error('מתנצלים, יש שגיאה בצד שלנו. נא לנסות שוב', {
+	toastId: id,
 	...failConfiguration
 }) 
 
@@ -25,7 +25,7 @@ export const wrongLoginCredsToast = () =>
 		...failConfiguration
 	})
 
-export const serverErrorToast = () => ServerFailToast
+export const serverErrorToast = () => ServerFailToast('serverErrorToast')
 
 export const copiedToClipboard = () =>
 	toast.success('הועתק בהצלחה!', {
@@ -33,7 +33,7 @@ export const copiedToClipboard = () =>
 		...successConfiguration
 	}) 
 
-export const FailSubscribeUserToPlan = () => ServerFailToast
+export const FailSubscribeUserToPlan = () => ServerFailToast('faileSubscribeUsertoPlan')
 
 export const SuccessSubscribeUserToPlan = () =>
 	toast.success('התוכנית נשמרה בהצלחה!', {
@@ -47,4 +47,4 @@ export const SuccessAddComment = () =>
 		...successConfiguration
 	}) 
  
-export const FailAddComment = () => ServerFailToast
+export const FailAddComment = () => ServerFailToast('faileAddComment')
