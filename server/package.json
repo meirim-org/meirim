@@ -58,9 +58,8 @@
         "staticmaps": "^1.4.1",
         "terraformer-wkt-parser": "^1.2.1",
         "turf": "^3.0.14",
-        "typescript": "^4.0.5",
-        "webpack": "^5.4.0",
-        "winston": "^3.3.3"
+        "winston": "^3.3.3",
+        "xlsx": "^0.16.9"
     },
     "scripts": {
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
