@@ -16,6 +16,7 @@
     "dependencies": {
         "@florpor/pdf-table-extractor": "^1.0.6",
         "@mapbox/geojson-area": "^0.2.2",
+        "abort-controller": "^3.0.0",
         "bcrypt": "^5.0.0",
         "bluebird": "^3.7.2",
         "body-parser": "^1.19.0",
