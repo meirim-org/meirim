@@ -11,7 +11,8 @@ import Menu from './menu';
 import TabPanel from './tabPanel';
 import Typography from './typography';
 import TabBox from './tabBox';
+import CircularProgress from './circularProgress'
 
 export {
-	Button, Dropdown, TextArea, TextInput, Modal, Link, Navigation, Row, IconButton, Menu, TabPanel, Typography, TabBox
+	Button, CircularProgress, Dropdown, TextArea, TextInput, Modal, Link, Navigation, Row, IconButton, Menu, TabPanel, Typography, TabBox
 };
