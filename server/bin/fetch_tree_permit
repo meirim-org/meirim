@@ -4,7 +4,7 @@ const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
 
 controller
-	.fetch_tree_permit()
+	.fetchTreePermit()
 	.then((res) => Log.info(`Found ${res} new permits`))
 	.catch(e => Log.error(e))
 	.finally(() => process.exit());

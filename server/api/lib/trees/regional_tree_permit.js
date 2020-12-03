@@ -1,10 +1,9 @@
-//const Log = require('../../log');
+const Log = require('../log');
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
 const fetch = require('node-fetch');
 const moment = require('moment');
-//const wtf = require('wtfnode');
 const AbortController = require('abort-controller');
 
 const TreePermit = require('../../model/tree_permit');
@@ -45,7 +44,7 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 			() => { controller.abort(); },
 			TIMEOUT_MS,
 		);
-		console.log('Fetching trees file... ' + `${url}`);
+		Log.info('Fetching trees file... ' + `${url}`);
 		return new Promise((resolve, reject) => {
 			(async () => {
 				try {
@@ -56,7 +55,7 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 					});
 					stream.on('finish', async function () {
 						stream.close();
-						console.log(`Sucessfully Downloaded trees file: ${url}
+						Log.info(`Sucessfully Downloaded trees file: ${url}
 				 File Could be found here: ${pathname}`);
 
 						const treePermits = await parseTreesXLS(pathname);
@@ -64,7 +63,7 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 					});
 				}
 				catch (err) {
-					console.log(`Error fetching file ${url} :  ${err}`);
+					Log.error(`Error fetching file ${url} :  ${err}`);
 					reject(err);
 				}
 				finally {
@@ -75,7 +74,7 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 
 	}
 	catch (err) {
-		console.log(err);
+		Log.error(err);
 		return Promise.resolve(); // TODO reject
 	}
 }
@@ -87,12 +86,12 @@ async function saveNewTreePermits(treePermits) {
 
 	if (treePermits.length == 0) return [];
 	// all tree permits in a chunk should be from the same regional office
-	const regional_office = treePermits[0].attributes[tpc.REGIONAL_OFFICE];
+	const regionalOffice = treePermits[0].attributes[tpc.REGIONAL_OFFICE];
 	// this is the only timestamp format knex correcrtly work with 
 	const time_ago = moment().subtract(1, 'year').format('YYYY-MM-DDTHH:mm:ssZ');
-	const existing_permits_compact = new Set();
+	const existingPermitsCompact = new Set();
 	await database.Knex(tpc.TREE_PERMIT_TABLE).where('updated_at', '>', time_ago.toString())
-		.andWhere(tpc.REGIONAL_OFFICE, regional_office)
+		.andWhere(tpc.REGIONAL_OFFICE, regionalOffice)
 		.then(rows => {
 			for (let row of rows) {
 				const key_as_string =
@@ -102,10 +101,10 @@ async function saveNewTreePermits(treePermits) {
 						row[tpc.NUMBER_OF_TREES],
 						row[tpc.END_DATE]
 					].join('_');
-				existing_permits_compact.add(key_as_string);
+				existingPermitsCompact.add(key_as_string);
 			}
 		})
-		.catch(function (error) { console.error(error); });
+		.catch(function (error) { Log.error(error); });
 
 	const new_tree_permits = treePermits.map(tp => {
 		//if tp is not in the hash map of the existing one - add to the new ones
@@ -117,20 +116,20 @@ async function saveNewTreePermits(treePermits) {
 				tp.attributes[tpc.END_DATE]
 			].join('_');
 
-		if (tp.attributes[tpc.REGIONAL_OFFICE] == regional_office && !existing_permits_compact.has(compact_tp)) {
-			console.log(`A new one! queued for saving ${compact_tp}`);
+		if (tp.attributes[tpc.REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
+			Log.debug(`A new one! queued for saving ${compact_tp}`);
 			return tp; //original one, not compact
 		}
 	}).filter(Boolean); // remove undefined values
 	//save only the new ones
 	try { //TODO promise all or knex save bulk
 		new_tree_permits.map(async tp => {
-			console.log(`saving new tree permit: ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
+			Log.info(`saving new tree permit: ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
 			await tp.save();
 		});
 	}
 	catch (err) {
-		console.log(err);
+		Log.error(err);
 	}
 	return new_tree_permits;
 }
@@ -185,10 +184,10 @@ async function crawlRegionalTreePermit(url) {
 		const filename = generateFilenameByTime(url);
 		const treePermits = await getRegionalTreePermitsFromFile(url, filename);
 		const newTreePermits = await saveNewTreePermits(treePermits);
-		console.log('Extracted ' + newTreePermits.length + ' new permits from: ' + filename);
+		Log.info('Extracted ' + newTreePermits.length + ' new permits from: ' + filename);
 		return newTreePermits.length;
 	} catch (err) {
-		console.log(err);
+		Log.error(err);
 		return false;
 	}
 }
@@ -200,14 +199,13 @@ const regionalTreePermit = () => {
 				results.forEach(element => {
 					sumNewPermits = sumNewPermits + element.value;
 				});
-				console.log(`Done! Total ${sumNewPermits} new permits`);
+				Log.info(`Done! Total ${sumNewPermits} new permits`);
 				resolve(sumNewPermits);
 			})
 			.catch(err => {
-				console.log(err);
+				Log.error(err);
 				reject(err);
-			})
-			.finally(() => process.exit());
+			});
 	});
 };
 

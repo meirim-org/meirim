@@ -1,10 +1,8 @@
-const Checkit = require('checkit');
 const Model = require('./base_model');
 const tpc = require('./tree_permit_constants');
 class TreePermit extends Model {
 
 	get rules() {
-
 		return {
 
 			[tpc.REGIONAL_OFFICE]: 'string',
@@ -32,17 +30,11 @@ class TreePermit extends Model {
 			[tpc.REASON_SHORT]: 'string',
 			[tpc.REASON_DETAILED]: 'string',
 			[tpc.COMMENTS_IN_DOC]: 'string'
-
 		};
-
 	}
 
 	get tableName () {
 		return 'tree_permit';
-	}
-
-	_saving (model) {		
-		return new Checkit(model.rules).run(model.attributes);	
 	}
 }
 
