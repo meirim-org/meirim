@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-
-import deburr from 'lodash/deburr';
 
 import Downshift from 'downshift';
 
@@ -63,7 +60,7 @@ renderSuggestion.propTypes = {
   suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
 };
 
-class FilterAutoCompleteMultiple extends Component {
+class AutocompleteInput extends Component {
   state = {
     inputValue: '',
     selectedItem: [],
@@ -78,7 +75,6 @@ class FilterAutoCompleteMultiple extends Component {
       !inputValue.length &&
       event.key === 'Backspace'
     ) {
-      // remove last filter item
       selectedItem.splice(selectedItem.length - 1, 1);
 
       this.setState({
@@ -103,10 +99,6 @@ class FilterAutoCompleteMultiple extends Component {
     if (selectedItem.indexOf(item) === -1) {
       selectedItem = [item];
     }
-
-    // this.setState({
-    //   selectedItem,
-    // });
 
     this.setState({
       inputValue:selectedItem[0]
@@ -173,4 +165,4 @@ class FilterAutoCompleteMultiple extends Component {
   }
 }
 
-export default FilterAutoCompleteMultiple;
+export default AutocompleteInput;

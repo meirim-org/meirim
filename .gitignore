@@ -9,5 +9,6 @@ client/public/upload/
 client/cypress/videos/
 client/cypress/screenshots/
 server/config/local.json
+client/src/
 server/api/lib/mavat/tmp/tmpPDF.pdf
 build
