@@ -51,7 +51,6 @@ class PlanController extends Controller {
 			const polygon = wkt.convert(geojson);
 
 			q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`))
-			// q.columns.push(Knex.raw(`ST_Distance(geom, ${polygon}) as distance`))
 
 			q.orderByRaw = ['distance']
 			delete q.order

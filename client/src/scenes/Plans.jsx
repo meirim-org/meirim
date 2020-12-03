@@ -16,7 +16,6 @@ import locationAutocompleteApi from "../services/location-autocomplete";
 import Wrapper from "../components/Wrapper";
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
-import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
 import Autocomplete from "../components/AutoCompleteInput";
 
 import t from "../locale/he_IL";
@@ -77,7 +76,10 @@ class Plans extends Component {
                 list:res
             })
         })
-        .catch(error => this.setState({ error }));
+        .catch(error => {
+            this.setState({ error })
+            window.alert(error)
+        });
     }
 
     loadPlans(pageNumber, filterCounties, point) {
