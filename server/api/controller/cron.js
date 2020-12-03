@@ -199,7 +199,7 @@ const buildPlan = (iPlan, oldPlan) => {
 	);
 };
 
-const fetch_tree_permit = () =>{
+const fetchTreePermit = () =>{
 	return regionalTreePermit();
 };
 
@@ -210,5 +210,5 @@ module.exports = {
 	complete_jurisdiction_from_mavat,
 	fix_geodata,
 	fetchIplan,
-	fetch_tree_permit
+	fetchTreePermit
 };
