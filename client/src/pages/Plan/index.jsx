@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTheme } from '@material-ui/styles';
+import { Chart } from 'react-charts';
 import { Button, Tabs, Tab, Badge } from '@material-ui/core';
 import t from 'locale/he_IL';
+import geojsonArea from '@mapbox/geojson-area';
 import * as SC from './style';
 import ShareIcon from '@material-ui/icons/Share';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
@@ -11,9 +13,64 @@ import Wrapper from 'components/Wrapper';
 import { a11yProps } from './a11y' 
 import { getPlanData } from './controller'
 
+const axes = [
+	{ primary: true, type: 'ordinal', position: 'bottom' },
+	{ position: 'left', type: 'linear', stacked: true }
+];
+
+const renderMultiplier = areaObj =>
+	Math.round(((areaObj.new + areaObj.exist) / areaObj.exist) * 100) / 100;
+const renderPercent = number => Math.round(number * 100);
+const parseNumber = string => {
+	string = string.replace(',', '');
+	if (parseInt(string)) {
+		return parseInt(string.replace(',', ''));
+	}
+	if (string.charAt(0) === '-') {
+		return -parseInt(string.slice(1));
+	}
+	
+	return 0;
+};
+
 const Plan = () => {
 	const theme = useTheme();
-	const [planData, setPlanData] = React.useState({ countyName: '', planName: '', status: '' })
+	const [planData, setPlanData] = React.useState({ 
+		countyName: '',
+	 	planName: '', 
+	 	status: '', 
+	 	type:'', 
+		goalsFromMavat: '',
+		planUrl: '',
+		areaChanges: ''
+	})
+	const [textArea, setTextArea] = React.useState({
+		exist: 0,
+		new: 0,
+		area:0
+	})
+
+	const [ dataArea, setDataArea ] = React.useState([
+		{
+			label: 'זכויות קיימות',
+			data: []
+		},
+		{
+			label: 'זכויות מבוקשות',
+			data: []
+		}	
+	]) 
+	const [ dataUnits, setDataUnits ] = React.useState([
+		{
+			label: 'יחידות קיימות',
+			data: []
+		},
+		{
+			label: 'יחידות מבוקשות',
+			data: []
+		}
+
+	])
 	const [value, setValue] = React.useState(0);
 
 	const handleChange = (event, newValue) => {
@@ -23,14 +80,64 @@ const Plan = () => {
 	React.useEffect (() => {
 		async function fetchData() {
 			const response = await getPlanData(2)
-			const { PLAN_COUNTY_NAME, PL_NAME, status } = response.data
-			console.log('🚀 ~ file: index.jsx ~ line 32 ~ fetchData ~ PL_COUNTY_NAME', PLAN_COUNTY_NAME)
-			console.log('🚀 ~ file: index.jsx ~ line 33 ~ fetchData ~  response.data',  response.data)
-			setPlanData(pv => ({ ...pv, countyName: PLAN_COUNTY_NAME, planName: PL_NAME, status }))
-		}
+			const { PLAN_COUNTY_NAME, PL_NAME, status, goals_from_mavat, plan_url, areaChanges, geom } = response.data
+			const { ENTITY_SUBTYPE_DESC: type } = response.data.data
+
+			console.log('🚀 ~ file: index.jsx ~ line 138 ~ fetchData ~ geom', geom)
+			const newTextArea = {
+				...textArea,
+				area: geom ? Math.round(geojsonArea.geometry(geom)) : 0
+			}
+			const newDataArea = [
+				...dataArea
+			]
+	     const newDataUnits = [
+				 ...dataUnits
+			];
+			const changes = areaChanges ? JSON.parse(areaChanges) : null
+			changes && changes[0].forEach(change => {
+            	if (!change[3]) return;
+            	if (change[3].includes('מ"ר')) {
+            		newDataArea[0].data.push({
+            			x: change[3],
+            			y: parseNumber(change[5])
+            		});
+            		newDataArea[1].data.push({
+            			x: change[3],
+            			y: parseNumber(change[6])
+            		});
+
+            		newTextArea.exist += parseNumber(change[5]);
+            		newTextArea.new += parseNumber(change[6]);
+            	} else {
+            		newDataUnits[0].data.push({
+            			x: change[3],
+            			y: parseNumber(change[5])
+            		});
+            		newDataUnits[1].data.push({
+            			x: change[3],
+            			y: parseNumber(change[6])
+            		});
+            	}
+			});
+			setDataArea(newDataArea)
+			setTextArea(newTextArea)
+			setDataUnits(newDataUnits)
+
+			setPlanData(pv => ({ ...pv, 
+				countyName: PLAN_COUNTY_NAME,
+				planName: PL_NAME, 
+				status, type, goalsFromMavat: goals_from_mavat,  
+				planUrl: plan_url,
+				areaChanges,
+				geom,
+			 }))
+		}		
 		fetchData()
 
 	} , [])
+
+	const series = { type: 'bar' };
 
 	return (
 	    <Wrapper>
@@ -94,7 +201,55 @@ const Plan = () => {
 					</SC.Header>
 					<SC.Main>
 						<TabPanel value={value} index={0}>
-							<TabBox>{`סטטוס: ${planData.status}`}</TabBox>
+							<TabBox>{`סטטוס: ${planData.status}  סוג תוכנית: ${planData.type} מסמכי התוכנית באתר הממשלה: ${planData.planUrl}`}</TabBox>
+						</TabPanel>
+						<TabPanel value={value} index={0}>
+							<TabBox>{planData.goalsFromMavat}</TabBox>
+						</TabPanel>
+						<TabPanel value={value} index={0}>
+							<TabBox>
+								{!!dataArea && !!dataArea[0].data.length && (
+									<div className="rectangle">
+										<h4>שינוי שטח</h4>
+										{textArea.exist !== 0 &&
+														<p>
+																תוכנית זו מגדילה את השטח הבנוי
+																פי {renderMultiplier(textArea)}{' '}
+																(תוספת {textArea.new} מ"ר)
+														</p>
+										}
+										{textArea.exist === 0 &&
+														<p>
+																תוכנית זו מוסיפה
+															{' '}
+															{textArea.new} מ"ר
+																שטח בנוי
+														</p>
+										}
+										<p>
+											{renderPercent(
+												(textArea.new +
+																		textArea.exist) /
+																		textArea.area
+											)}
+														% בניה (במקום{' '}
+											{renderPercent(
+												textArea.exist /
+																		textArea.area
+											)}
+														% )
+										</p>
+										<div style={{ height: 200 }}>
+											<Chart
+												series={series}
+												data={dataArea}
+												axes={axes}
+												tooltip={true}
+											/>
+										</div>
+									</div>
+								)}
+							</TabBox>
 						</TabPanel>
 					</SC.Main>
 				</SC.Content>
