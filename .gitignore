@@ -10,3 +10,4 @@ client/cypress/videos/
 client/cypress/screenshots/
 server/config/local.json
 server/api/lib/mavat/tmp/tmpPDF.pdf
+build
