@@ -5,7 +5,7 @@ import * as SC from './style';
 
 const Comments = () => (
         <Button
-            id="sing-up"
+            id="add-comment"
             text={t.addNewComment}
             iconBefore={<SC.CommentIcon />}
             small
