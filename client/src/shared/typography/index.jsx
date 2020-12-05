@@ -36,13 +36,15 @@ const handleVariant = variant => {
 	case 'menuTitle':
 		return template('16px', '400', '1.33');
 	case 'paragraphText':
-		return template('16px', '700', '1.5');
+		return template('16px', '400', '1.5');
 	case 'highlightedText':
 		return template('16px', '600', '1.33');
 	case 'smallTitle':
 		return template('14px', '600', '1.29');
 	case 'chipsAndIconButtons':
 		return template('14px', '400', '1.29');
+    case 'light':
+        return template('14px', '300', '1.3');
 	case 'label':
 		return template('12px', '400', '1.5');
 	default:
@@ -72,6 +74,8 @@ const handleMobileVariant = mobileVariant => {
 		return mobileTemplate('14px', '600', '1.29');
 	case 'chipsAndIconButtons':
 		return mobileTemplate('14px', '400', '1.29');
+    case 'light':
+        return template('14px', '300', '1.3');
 	case 'label':
 		return mobileTemplate('12px', '400', '1.5');
 	default:
@@ -106,6 +110,7 @@ Typography.propTypes = {
 		'highlightedText',
 		'smallTitle',
 		'chipsAndIconButtons',
+		'light',
 		'label',
 	]).isRequired,
 	mobileVariant: PropTypes.oneOf([
@@ -119,6 +124,7 @@ Typography.propTypes = {
 		'paragraphText',
 		'smallTitle',
 		'chipsAndIconButtons',
+		'light',
 		'label',
 	]).isRequired,
 };
