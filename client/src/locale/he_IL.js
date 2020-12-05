@@ -42,7 +42,8 @@ export default {
 	sharing: 'שיתוף',
 	saving: 'שמירה',
 	addAnOpinion: 'הוספת חוות דעת',
-    supportUs: 'תמכו בנו'
+    supportUs: 'תמכו בנו',
+    addNewComment: 'הוספת חוות דעת',
 }
 
 
