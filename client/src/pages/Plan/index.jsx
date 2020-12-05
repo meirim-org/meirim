@@ -10,8 +10,10 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { TabPanel, TabBox, Typography } from 'shared'
 import Wrapper from 'components/Wrapper';
-import { a11yProps } from './a11y' 
+import { a11yProps } from './a11y'
+import Comments from './Comments'
 import { getPlanData } from './controller'
+import {openModal} from "../../redux/modal/slice";
 
 const axes = [
 	{ primary: true, type: 'ordinal', position: 'bottom' },
@@ -35,7 +37,7 @@ const parseNumber = string => {
 
 const Plan = () => {
 	const theme = useTheme();
-	const [planData, setPlanData] = React.useState({ 
+	const [planData, setPlanData] = React.useState({
 		countyName: '',
 	 	planName: '', 
 	 	status: '', 
@@ -77,65 +79,65 @@ const Plan = () => {
 		setValue(newValue);
 	};
 
-	React.useEffect (() => {
-		async function fetchData() {
-			const response = await getPlanData(2)
-			const { PLAN_COUNTY_NAME, PL_NAME, status, goals_from_mavat, plan_url, areaChanges, geom } = response.data
-			const { ENTITY_SUBTYPE_DESC: type } = response.data.data
-
-			console.log('🚀 ~ file: index.jsx ~ line 138 ~ fetchData ~ geom', geom)
-			const newTextArea = {
-				...textArea,
-				area: geom ? Math.round(geojsonArea.geometry(geom)) : 0
-			}
-			const newDataArea = [
-				...dataArea
-			]
-	     const newDataUnits = [
-				 ...dataUnits
-			];
-			const changes = areaChanges ? JSON.parse(areaChanges) : null
-			changes && changes[0].forEach(change => {
-            	if (!change[3]) return;
-            	if (change[3].includes('מ"ר')) {
-            		newDataArea[0].data.push({
-            			x: change[3],
-            			y: parseNumber(change[5])
-            		});
-            		newDataArea[1].data.push({
-            			x: change[3],
-            			y: parseNumber(change[6])
-            		});
-
-            		newTextArea.exist += parseNumber(change[5]);
-            		newTextArea.new += parseNumber(change[6]);
-            	} else {
-            		newDataUnits[0].data.push({
-            			x: change[3],
-            			y: parseNumber(change[5])
-            		});
-            		newDataUnits[1].data.push({
-            			x: change[3],
-            			y: parseNumber(change[6])
-            		});
-            	}
-			});
-			setDataArea(newDataArea)
-			setTextArea(newTextArea)
-			setDataUnits(newDataUnits)
-
-			setPlanData(pv => ({ ...pv, 
-				countyName: PLAN_COUNTY_NAME,
-				planName: PL_NAME, 
-				status, type, goalsFromMavat: goals_from_mavat,  
-				planUrl: plan_url,
-				areaChanges,
-				geom,
-			 }))
-		}		
-		fetchData()
-
-	} , [])
+	// React.useEffect (() => {
+	// 	async function fetchData() {
+	// 		const response = await getPlanData(2)
+	// 		const { PLAN_COUNTY_NAME, PL_NAME, status, goals_from_mavat, plan_url, areaChanges, geom } = response.data
+	// 		const { ENTITY_SUBTYPE_DESC: type } = response.data.data
+    //
+	// 		console.log('🚀 ~ file: index.jsx ~ line 138 ~ fetchData ~ geom', geom)
+	// 		const newTextArea = {
+	// 			...textArea,
+	// 			area: geom ? Math.round(geojsonArea.geometry(geom)) : 0
+	// 		}
+	// 		const newDataArea = [
+	// 			...dataArea
+	// 		]
+	//      const newDataUnits = [
+	// 			 ...dataUnits
+	// 		];
+	// 		const changes = areaChanges ? JSON.parse(areaChanges) : null
+	// 		changes && changes[0].forEach(change => {
+    //         	if (!change[3]) return;
+    //         	if (change[3].includes('מ"ר')) {
+    //         		newDataArea[0].data.push({
+    //         			x: change[3],
+    //         			y: parseNumber(change[5])
+    //         		});
+    //         		newDataArea[1].data.push({
+    //         			x: change[3],
+    //         			y: parseNumber(change[6])
+    //         		});
+    //
+    //         		newTextArea.exist += parseNumber(change[5]);
+    //         		newTextArea.new += parseNumber(change[6]);
+    //         	} else {
+    //         		newDataUnits[0].data.push({
+    //         			x: change[3],
+    //         			y: parseNumber(change[5])
+    //         		});
+    //         		newDataUnits[1].data.push({
+    //         			x: change[3],
+    //         			y: parseNumber(change[6])
+    //         		});
+    //         	}
+	// 		});
+	// 		setDataArea(newDataArea)
+	// 		setTextArea(newTextArea)
+	// 		setDataUnits(newDataUnits)
+    //
+	// 		setPlanData(pv => ({ ...pv,
+	// 			countyName: PLAN_COUNTY_NAME,
+	// 			planName: PL_NAME,
+	// 			status, type, goalsFromMavat: goals_from_mavat,
+	// 			planUrl: plan_url,
+	// 			areaChanges,
+	// 			geom,
+	// 		 }))
+	// 	}
+	// 	fetchData()
+    //
+	// } , [])
 
 	const series = { type: 'bar' };
 
@@ -202,54 +204,55 @@ const Plan = () => {
 					<SC.Main>
 						<TabPanel value={value} index={0}>
 							<TabBox>{`סטטוס: ${planData.status}  סוג תוכנית: ${planData.type} מסמכי התוכנית באתר הממשלה: ${planData.planUrl}`}</TabBox>
-						</TabPanel>
-						<TabPanel value={value} index={0}>
 							<TabBox>{planData.goalsFromMavat}</TabBox>
+                            <TabBox>
+                                {!!dataArea && !!dataArea[0].data.length && (
+                                    <div className="rectangle">
+                                        <h4>שינוי שטח</h4>
+                                        {textArea.exist !== 0 &&
+                                        <p>
+                                            תוכנית זו מגדילה את השטח הבנוי
+                                            פי {renderMultiplier(textArea)}{' '}
+                                            (תוספת {textArea.new} מ"ר)
+                                        </p>
+                                        }
+                                        {textArea.exist === 0 &&
+                                        <p>
+                                            תוכנית זו מוסיפה
+                                            {' '}
+                                            {textArea.new} מ"ר
+                                            שטח בנוי
+                                        </p>
+                                        }
+                                        <p>
+                                            {renderPercent(
+                                                (textArea.new +
+                                                    textArea.exist) /
+                                                textArea.area
+                                            )}
+                                            % בניה (במקום{' '}
+                                            {renderPercent(
+                                                textArea.exist /
+                                                textArea.area
+                                            )}
+                                            % )
+                                        </p>
+                                        <div style={{ height: 200 }}>
+                                            <Chart
+                                                series={series}
+                                                data={dataArea}
+                                                axes={axes}
+                                                tooltip={true}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </TabBox>
+                        </TabPanel>
+						<TabPanel value={value} index={1}>
+                            <Comments />
 						</TabPanel>
-						<TabPanel value={value} index={0}>
-							<TabBox>
-								{!!dataArea && !!dataArea[0].data.length && (
-									<div className="rectangle">
-										<h4>שינוי שטח</h4>
-										{textArea.exist !== 0 &&
-														<p>
-																תוכנית זו מגדילה את השטח הבנוי
-																פי {renderMultiplier(textArea)}{' '}
-																(תוספת {textArea.new} מ"ר)
-														</p>
-										}
-										{textArea.exist === 0 &&
-														<p>
-																תוכנית זו מוסיפה
-															{' '}
-															{textArea.new} מ"ר
-																שטח בנוי
-														</p>
-										}
-										<p>
-											{renderPercent(
-												(textArea.new +
-																		textArea.exist) /
-																		textArea.area
-											)}
-														% בניה (במקום{' '}
-											{renderPercent(
-												textArea.exist /
-																		textArea.area
-											)}
-														% )
-										</p>
-										<div style={{ height: 200 }}>
-											<Chart
-												series={series}
-												data={dataArea}
-												axes={axes}
-												tooltip={true}
-											/>
-										</div>
-									</div>
-								)}
-							</TabBox>
+						<TabPanel value={value} index={2}>
 						</TabPanel>
 					</SC.Main>
 				</SC.Content>
