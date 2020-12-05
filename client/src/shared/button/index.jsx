@@ -67,21 +67,12 @@ const StyledButton = styled(MUIButton)`
         color: ${textcolor} !important;
     `}    
     
-    ${({ textcolor }) => textcolor && `
-        color: ${textcolor} !important;
-    `}
-    
-    
-     ${({ textcolor }) => textcolor && `
-        color: ${textcolor} !important;
-    `}
-    
     ${({ iconbefore, iconafter }) => (iconbefore || iconafter) && `
        .MuiSvgIcon-root {
              margin: 0 .25rem;
         }
     `}
-
+    
 `;
 
 const Button = ({
@@ -94,7 +85,7 @@ const Button = ({
 	fontWeight,
 	textColor,
 	iconBefore,
-	iconAfter
+	iconAfter,
 }) => (
 	<StyledButton
 		id={id}
@@ -104,8 +95,8 @@ const Button = ({
 		simple={simple ? '1' : ''}
 		fontWeight={fontWeight}
 		disableRipple={simple}
-		textcolor = {textColor ? '1' : ''}
-		iconbefore={iconBefore ? '1' : ''}
+		textcolor = {textColor}
+		iconbefore={iconBefore}
 		iconafter={iconAfter}
 	>
 		{iconBefore}
@@ -117,7 +108,7 @@ const Button = ({
 Button.defaultProps = {
 	small: false,
 	altColor: false,
-	simple: false
+	simple: false,
 }
 
 Button.propTypes = {
@@ -130,7 +121,7 @@ Button.propTypes = {
 	fontWeight: PropTypes.string,
 	textColor: PropTypes.string,
 	iconBefore: PropTypes.object,
-	iconAfter: PropTypes.object
+	iconAfter: PropTypes.object,
 };
 
 export default Button;

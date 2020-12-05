@@ -9,6 +9,7 @@ export const muiTheme = createMuiTheme({
 		white: '#ffffff',
 		gray: {
 		    '100': '#FBFBFB',
+		    '200': '#f4f4f4',
 		    '300': '#E4E4E4',
 		    'main': '#999999',
 		    '600': '#666666',
@@ -39,6 +40,7 @@ export const muiTheme = createMuiTheme({
 		},
 		green: {
 			'text' : '#00453B',
+            'text2': '#007e6c',
 			'bg' : '#DEFFEA',
 		},
 	},
