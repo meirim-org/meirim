@@ -98,7 +98,7 @@ const Comments = () => {
                             simple
                             small
                             textColor={theme.palette.black}
-                            onClick={() => ''}
+                            onClick={() => setNewComment(false)}
                         />
                         <Button
                             id="send-new-comment"
@@ -115,7 +115,7 @@ const Comments = () => {
                 null
             }
 
-            <TabBox isComment={true}>
+            <TabBox isComment={true} disabled={newComment}>
                 <SC.Header>
                     <SC.FirstSide>
                         <Typography
@@ -184,7 +184,7 @@ const Comments = () => {
                     />
                 </SC.AddComment>
             </TabBox>
-            <TabBox isComment={true}>
+            <TabBox isComment={true} disabled={newComment}>
                 <SC.Header>
                     <SC.FirstSide>
                         <Typography

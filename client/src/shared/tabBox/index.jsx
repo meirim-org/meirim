@@ -17,21 +17,40 @@ const StyledTabBox = withTheme(styled.div`
             'header header'
             'text text'
             'like add-comment';
+    `}  
+      
+    ${({ disabled }) => disabled && `
+        pointer-events: none;
+        user-select: none;
+        position: relative;
+        &:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            opacity: 0.7;
+            z-index: 1;
+            top: 0;
+            left: 0;
+        } 
     `}
     
 `);
 
 const TabBox = ({
     isComment,
+    disabled,
 	children
 }) => (
-	<StyledTabBox isComment={isComment}>
+	<StyledTabBox isComment={isComment} disabled={disabled}>
 		{children}
 	</StyledTabBox>
 );
 
 TabBox.defaultProps = {
     isComment: false,
+    disabled: false
 };
 
 
