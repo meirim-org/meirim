@@ -5,13 +5,7 @@ import * as SC from './style';
 import {Badge} from '@material-ui/core';
 import {useTheme} from "@material-ui/styles";
 import PropTypes from "prop-types";
-
-const daysPassed = (date) => {
-    const oneDay = 24 * 60 * 60 * 1000;
-    const today = Date.now();
-
-    return ` ${Math.round(Math.abs((today - date) / oneDay))} `;
-}
+import {daysPassed} from 'helpers';
 
 const Comment = ({
     comment,
