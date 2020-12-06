@@ -47,6 +47,8 @@ export default {
     review: 'ביקורת',
     iLike: 'אהבתי',
     addAResponse: 'הוספת תגובה',
+    improvementProposal: 'הצעה לשיפור',
+    generalOpinion: 'חוות דעת כללית',
 }
 
 

@@ -27,7 +27,7 @@ const StyledButton = styled(MUIButton)`
        outline: none;
     }
     
-    ${({ simple }) => simple && `
+    ${({simple}) => simple && `
         font-weight: 600 !important;
         color: #652dd0 !important;
         border: none !important;
@@ -44,7 +44,7 @@ const StyledButton = styled(MUIButton)`
        }
     `}
     
-    ${({ altcolor }) => altcolor && `
+    ${({altcolor}) => altcolor && `
         color: #652dd0 !important;
         background-color: #ffffff !important;
        &:hover {
@@ -52,76 +52,82 @@ const StyledButton = styled(MUIButton)`
        }
     `}
        
-    ${({ small }) => small && `
+    ${({small}) => small && `
         font-weight: 400 !important;
         padding: 0.03rem 0.6rem !important;
         border-radius: 4px !important;
         min-height: 1em;
     `}
     
-    ${({ fontWeight }) => fontWeight && `
+    ${({fontWeight}) => fontWeight && `
         font-weight: ${fontWeight} !important;
     `}
+
     
-    ${({ textcolor }) => textcolor && `
-        color: ${textcolor} !important;
-    `}    
-    
-    ${({ iconbefore, iconafter }) => (iconbefore || iconafter) && `
+    ${({iconbefore, iconafter}) => (iconbefore || iconafter) && `
        .MuiSvgIcon-root {
              margin: 0 .25rem;
         }
-    `}
+    `}    
+    
+    
+    ${({active}) => active && `
+        background-color: rgba(101,45,208,0.04) !important;
+    `}    
     
 `;
 
 const Button = ({
-	text,
-	id,
-	onClick,
-	small,
-	altColor,
-	simple,
-	fontWeight,
-	textColor,
-	iconBefore,
-	iconAfter,
-}) => (
-	<StyledButton
-		id={id}
-		small={small ? '1' : ''}
-		onClick={onClick}
-		altcolor={altColor ? '1' : ''}
-		simple={simple ? '1' : ''}
-		fontWeight={fontWeight}
-		disableRipple={simple}
-		textcolor = {textColor}
-		iconbefore={iconBefore}
-		iconafter={iconAfter}
-	>
-		{iconBefore}
-		{text}
-		{iconAfter}
-	</StyledButton>
+                    text,
+                    id,
+                    onClick,
+                    small,
+                    altColor,
+                    simple,
+                    fontWeight,
+                    textColor,
+                    iconBefore,
+                    iconAfter,
+                    active,
+                }) => (
+    <StyledButton
+        id={id}
+        small={small ? '1' : ''}
+        onClick={onClick}
+        altcolor={altColor ? '1' : ''}
+        simple={simple ? '1' : ''}
+        fontWeight={fontWeight}
+        disableRipple={simple}
+        textcolor={textColor}
+        iconbefore={iconBefore}
+        iconafter={iconAfter}
+        active={active}
+>
+        {iconBefore}
+        {text}
+        {iconAfter}
+    </StyledButton>
 );
 
 Button.defaultProps = {
-	small: false,
-	altColor: false,
-	simple: false,
+    small: false,
+    altColor: false,
+    simple: false,
+    active: false,
 }
 
 Button.propTypes = {
-	id: PropTypes.string,
-	text: PropTypes.string,
-	onClick: PropTypes.func.isRequired,
-	small: PropTypes.bool,
-	altColor: PropTypes.bool,
-	simple: PropTypes.bool,
-	fontWeight: PropTypes.string,
-	textColor: PropTypes.string,
-	iconBefore: PropTypes.object,
-	iconAfter: PropTypes.object,
+    id: PropTypes.string,
+    text: PropTypes.string,
+    onClick: PropTypes.func.isRequired,
+    small: PropTypes.bool,
+    altColor: PropTypes.bool,
+    simple: PropTypes.bool,
+    fontWeight: PropTypes.string,
+    textColor: PropTypes.string,
+    iconBefore: PropTypes.object,
+    iconAfter: PropTypes.object,
+    active: PropTypes.bool,
 };
 
 export default Button;
