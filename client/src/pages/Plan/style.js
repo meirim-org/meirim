@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { device } from '../../style';
 import { AppBar as MuiAppBar } from '@material-ui/core';
-import { withTheme } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/core/styles';
 
 export const MainWrapper = styled.div`
     display: grid;
