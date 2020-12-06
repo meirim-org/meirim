@@ -3,9 +3,8 @@ import {Button, TabBox, Typography} from 'shared'
 import t from "locale/he_IL";
 import * as SC from './style';
 import {Chart} from "react-charts";
-import {Badge, Radio, RadioGroup, FormControlLabel} from '@material-ui/core';
+import {Badge, Radio, TextareaAutosize} from '@material-ui/core';
 import {useTheme} from "@material-ui/styles";
-import Comment from "../../../components/Comments/Comment";
 
 const Comments = () => {
     const theme = useTheme();
@@ -45,21 +44,44 @@ const Comments = () => {
             </SC.ButtonWrapper>
             {newComment
                 ?
-                <SC.FormControl component="fieldset">
-                    <SC.RadioGroup aria-label="comment-type" name="comment-type" value={value} onChange={handleChange} row>
-                        {radioButtons.map((radioButton, idx) => (
-                            <SC.FormControlLabelWrapper>
-                                <SC.FormControlLabel
-                                    key={idx}
-                                    className={value === radioButton.value ? 'active' : null}
-                                    value={radioButton.value}
-                                    control={<Radio />}
-                                    label={radioButton.text}
-                                />
-                            </SC.FormControlLabelWrapper>
-                        ))}
-                    </SC.RadioGroup>
-                </SC.FormControl>
+                <>
+                    <SC.FormControl component="fieldset">
+                        <SC.RadioGroup aria-label="comment-type" name="comment-type" value={value} onChange={handleChange} row>
+                            {radioButtons.map((radioButton, idx) => (
+                                <SC.FormControlLabelWrapper>
+                                    <SC.FormControlLabel
+                                        key={idx}
+                                        className={value === radioButton.value ? 'active' : null}
+                                        value={radioButton.value}
+                                        control={<Radio />}
+                                        label={radioButton.text}
+                                    />
+                                </SC.FormControlLabelWrapper>
+                            ))}
+                        </SC.RadioGroup>
+                    </SC.FormControl>
+                    <SC.FormControl fullWidth={true}>
+                        <TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
+                    </SC.FormControl>
+                    <SC.addCommentButtonWrapper>
+                        <Button
+                            id="close-new-comment"
+                            text={t.close}
+                            simple
+                            small
+                            altColor
+                            onClick={() => ''}
+                        />
+                        <Button
+                            id="send-new-comment"
+                            text={t.send}
+                            small
+                            simple
+                            altColor
+                            onClick={() => ''}
+                        />
+                    </SC.addCommentButtonWrapper>
+                </>
                 :
                 null
             }
