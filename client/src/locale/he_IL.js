@@ -52,6 +52,8 @@ export default {
     emptyTextarea: 'שדה טקסט ריק',
     close: 'סגירה',
     send: 'שליחה',
+    chooseType: 'בחרו סוג'
+
 }
 
 

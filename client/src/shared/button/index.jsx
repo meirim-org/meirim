@@ -76,8 +76,8 @@ const StyledButton = withTheme(styled(MUIButton)`
         background-color: ${theme.palette.primary['custom']} !important;
     `}    
     
-    ${({disabled}) => disabled && `
-        color: red !important;
+    ${({disabled, theme}) => disabled && `
+        color: ${theme.palette.gray.main} !important;
     `}    
     
     ${({textColor}) => textColor && `

@@ -3,13 +3,14 @@ import {Button, TabBox, Typography} from 'shared'
 import t from "locale/he_IL";
 import * as SC from './style';
 import {Chart} from "react-charts";
-import {Badge, Radio, TextareaAutosize} from '@material-ui/core';
+import {Badge, Radio} from '@material-ui/core';
 import {useTheme} from "@material-ui/styles";
 
 const Comments = () => {
     const theme = useTheme();
     const [newComment, setNewComment] = useState(false)
-    const [value, setValue] = useState('improvement-proposal')
+    const [value, setValue] = useState(null)
+    const [error, setError] = useState(false);
     const radioButtons = [
         {
             value: 'improvement-proposal',
@@ -28,6 +29,20 @@ const Comments = () => {
     const handleChange = (event) => {
         setValue(event.target.value);
     };
+
+    const printRadioClass = (selectedValue, radioValue) => {
+        let classes = [];
+
+        if (selectedValue === radioValue) {
+            classes.push('active');
+        }
+
+        if (error) {
+            classes.push('error');
+        }
+
+        return classes.join();
+    }
 
     return (
         <>
@@ -50,7 +65,7 @@ const Comments = () => {
                             {radioButtons.map((radioButton, idx) => (
                                 <SC.FormControlLabelWrapper key={idx}>
                                     <SC.FormControlLabel
-                                        className={value === radioButton.value ? 'active' : null}
+                                        className={printRadioClass(value,radioButton.value)}
                                         value={radioButton.value}
                                         control={<Radio />}
                                         label={radioButton.text}
@@ -58,9 +73,23 @@ const Comments = () => {
                                 </SC.FormControlLabelWrapper>
                             ))}
                         </SC.RadioGroup>
+                        {error
+                            ?
+                            <SC.ErrorWrapper>
+                                <Typography
+                                    variant="chipsAndIconButtons"
+                                    mobileVariant="chipsAndIconButtons"
+                                    component="span"
+                                    color={theme.palette.red}
+                                >
+                                 {t.chooseType}
+                                </Typography>
+                            </SC.ErrorWrapper> :
+                            null
+                        }
                     </SC.FormControl>
                     <SC.FormControl fullWidth={true}>
-                        <TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
+                        <SC.TextareaAutosize disabled={error} aria-label={t.emptyTextarea} rowsMin={5}/>
                     </SC.FormControl>
                     <SC.addCommentButtonWrapper>
                         <Button
@@ -68,7 +97,7 @@ const Comments = () => {
                             text={t.close}
                             simple
                             small
-                            textColor="#000000"
+                            textColor={theme.palette.black}
                             onClick={() => ''}
                         />
                         <Button
@@ -78,6 +107,7 @@ const Comments = () => {
                             small
                             simple
                             onClick={() => ''}
+                            disabled={error}
                         />
                     </SC.addCommentButtonWrapper>
                 </>

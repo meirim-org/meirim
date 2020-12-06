@@ -6,6 +6,7 @@ import {
     FormControl as MuiFormControl,
     FormControlLabel as MuiFormControlLabel,
     RadioGroup as MuiRadioGroup,
+    TextareaAutosize as MuiTextareaAutosize,
 } from '@material-ui/core';
 
 export const CommentIcon = styled(ChatBubbleOutlineIcon)`
@@ -56,6 +57,14 @@ export const SecondSide = styled.div`
     > * {
         padding: 0 1rem;
     }
+`;
+
+export const ErrorWrapper = styled.div`
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, calc(-50% - .5rem));
+    padding: 0 1rem;
 `;
 
 export const Text = withTheme(styled.div`
@@ -145,23 +154,35 @@ export const FormControl = withTheme(styled(MuiFormControl)`
 
 export const FormControlLabel = withTheme(styled(MuiFormControlLabel)`
     border-radius: 4px;
+    border: 1px solid transparent;
     margin: 0 0 1rem !important;
     padding: 0 .35rem 0 1rem;
     transition: .3s;
     &.active, &:hover {
         background-color: ${props => props.theme.palette.gray['radio']} !important;
     }  
+    &.error {
+        border-color: ${props => props.theme.palette.red} !important;;
+    }
 `);
 
 export const RadioGroup = withTheme(styled(MuiRadioGroup)`
-    margin: 0 -1rem;
+    margin: 0 -.5rem;
 `);
 
 export const FormControlLabelWrapper = withTheme(styled.div`
-    padding: 0 1rem;
+    padding: 0 .5rem;
     
     .MuiButtonBase-root {
         background-color: transparent !important;
+        padding: 0.187rem 0.375rem;
+    }
+`);
+
+export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
+    &[disabled] {
+        border-color: ${props => props.theme.palette.gray['300']} !important;
+        background-color: ${props => props.theme.palette.white} !important;
     }
 `);
 
