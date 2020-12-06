@@ -2,6 +2,11 @@ import styled from 'styled-components';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { withTheme } from '@material-ui/core/styles'
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import {
+    FormControl as MuiFormControl,
+    FormControlLabel as MuiFormControlLabel,
+    RadioGroup as MuiRadioGroup,
+} from '@material-ui/core';
 
 export const CommentIcon = styled(ChatBubbleOutlineIcon)`
     font-size: 1rem !important;
@@ -110,6 +115,46 @@ export const AddComment = withTheme(styled.div`
        font-size: 14px;
     }
 `);
+
+export const FormControl = withTheme(styled(MuiFormControl)`
+    .MuiTypography-root {
+        font-family:  ${props => props.theme.fontFamily} !important;;
+        font-size: 0.875rem;
+        color: ${props => props.theme.palette.black} !important;
+    }
+    .MuiRadio-colorSecondary {
+        color: ${props => props.theme.palette.gray['main']} !important;
+        &.Mui-checked {
+            color: ${props => props.theme.palette.primary['700']} !important;
+        }
+    }
+`);
+
+export const FormControlLabel = withTheme(styled(MuiFormControlLabel)`
+    border-radius: 4px;
+    margin: 0 0 1rem !important;
+    padding: 0 .35rem 0 1rem;
+    transition: .3s;
+    &.active, &:hover {
+        background-color: ${props => props.theme.palette.gray['radio']} !important;
+    }  
+`);
+
+export const RadioGroup = withTheme(styled(MuiRadioGroup)`
+    margin: 0 -1rem;
+`);
+
+export const FormControlLabelWrapper = withTheme(styled.div`
+    padding: 0 1rem;
+    
+    .MuiButtonBase-root {
+        background-color: transparent !important;
+    }
+`);
+
+
+
+
 
 
 

@@ -14,7 +14,8 @@ export const muiTheme = createMuiTheme({
 		    'main': '#999999',
 		    '600': '#666666',
 		    '800': '#333333',
-			'bg': '#fafafabf'
+			'bg': '#fafafabf',
+            'radio': '#f1eef2'
 		},
 		primary: {
 			'100' : '#F0E3FD',
