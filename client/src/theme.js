@@ -26,7 +26,8 @@ export const muiTheme = createMuiTheme({
 			'600': '#4D20B2',
 			'700': '#391695',
 			'800': '#270E78',
-			'bg': '#f0e3fd66'
+			'bg': '#f0e3fd66',
+            'custom': '#652dd00a'
 		},
 		secondary: {
 			'100' : '#FEF2DA',

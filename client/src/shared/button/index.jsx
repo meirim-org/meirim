@@ -2,36 +2,38 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MUIButton from '@material-ui/core/Button';
 import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/core/styles';
 
-const StyledButton = styled(MUIButton)`
+const StyledButton = withTheme(styled(MUIButton)`
 	font-size: 16px !important;
 	font-stretch: normal;
 	line-height: 1.5;
 	letter-spacing: normal;
 	text-align: center; 
-    color: #ffffff !important;
-    background-color: #652dd0 !important;
+    color: ${props => props.theme.palette.white} !important;
+    background-color: ${props => props.theme.palette.primary.main} !important;
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
-    border: 1px solid #652dd0 !important;
+    border: 1px solid ${props => props.theme.palette.primary.main} !important;
     min-width: auto !important;
     
     .MuiButton-label  {
     	font-family: Assistant !important;
     }
     &:hover {
-      background-color: #4d20b2 !important;
+      background-color: ${props => props.theme.palette.primary['600']} !important;
     }
     &:focus {
        outline: none;
     }
     
-    ${({simple}) => simple && `
+    ${({simple, theme}) => simple && `
         font-weight: 600 !important;
-        color: #652dd0 !important;
+        color: ${theme.palette.primary.main} !important;
         border: none !important;
-        background-color: #ffffff !important;
+        background-color: transparent !important;
         min-height: auto !important;
         padding: 0 !important;
         transition: 0.3s !important;
@@ -39,16 +41,16 @@ const StyledButton = styled(MUIButton)`
             line-height: 1 !important;
         }
        &:hover {
-          color: #8f5de2 !important;
+          color: ${theme.palette.primary['400']} !important;
           background-color: transparent !important;
        }
     `}
-    
-    ${({altcolor}) => altcolor && `
-        color: #652dd0 !important;
-        background-color: #ffffff !important;
+
+    ${({altcolor, theme}) => altcolor && `
+        color: ${theme.palette.primary.main} !important;
+        background-color: ${theme.palette.white} !important;
        &:hover {
-          background-color: rgba(101, 45, 208, 0.04) !important;
+          background-color: ${theme.palette.primary['custom']} !important;
        }
     `}
        
@@ -70,12 +72,19 @@ const StyledButton = styled(MUIButton)`
         }
     `}    
     
-    
-    ${({active}) => active && `
-        background-color: rgba(101,45,208,0.04) !important;
+    ${({active, theme}) => active && `
+        background-color: ${theme.palette.primary['custom']} !important;
     `}    
     
-`;
+    ${({disabled}) => disabled && `
+        color: red !important;
+    `}    
+    
+    ${({textColor}) => textColor && `
+        color: ${textColor} !important;
+    `}   
+    
+`);
 
 const Button = ({
                     text,
@@ -89,7 +98,11 @@ const Button = ({
                     iconBefore,
                     iconAfter,
                     active,
-                }) => (
+                    disabled,
+                }) => {
+    const theme = useTheme();
+
+    return (
     <StyledButton
         id={id}
         small={small ? '1' : ''}
@@ -98,22 +111,26 @@ const Button = ({
         simple={simple ? '1' : ''}
         fontWeight={fontWeight}
         disableRipple={simple}
-        textcolor={textColor}
+        textColor={textColor}
         iconbefore={iconBefore}
         iconafter={iconAfter}
         active={active}
+        disabled={disabled}
+        theme={theme}
 >
         {iconBefore}
         {text}
         {iconAfter}
     </StyledButton>
-);
+    )
+};
 
 Button.defaultProps = {
     small: false,
     altColor: false,
     simple: false,
     active: false,
+    disabled: false
 }
 
 Button.propTypes = {
@@ -128,6 +145,7 @@ Button.propTypes = {
     iconBefore: PropTypes.object,
     iconAfter: PropTypes.object,
     active: PropTypes.bool,
+    disabled: PropTypes.bool,
 };
 
 export default Button;
