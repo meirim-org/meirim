@@ -21,6 +21,12 @@ export const ButtonWrapper = styled.div`
     margin-bottom: 2rem;
 `;
 
+export const addCommentButtonWrapper = styled.div`
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-end;
+`;
+
 export const Header = styled.span`
     grid-area: header; 
     padding: 2rem 2rem 0;
@@ -127,6 +133,13 @@ export const FormControl = withTheme(styled(MuiFormControl)`
         &.Mui-checked {
             color: ${props => props.theme.palette.primary['700']} !important;
         }
+    }
+    
+    textarea {
+        border-color: ${props => props.theme.palette.primary.main} !important;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
     }
 `);
 

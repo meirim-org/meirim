@@ -49,6 +49,9 @@ export default {
     addAResponse: 'הוספת תגובה',
     improvementProposal: 'הצעה לשיפור',
     generalOpinion: 'חוות דעת כללית',
+    emptyTextarea: 'שדה טקסט ריק',
+    close: 'סגירה',
+    send: 'שליחה',
 }
 
 
