@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Hidden, Drawer, ListItemText, Divider } from '@material-ui/core';
+import { Box, Drawer, ListItemText, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -56,127 +56,125 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 						</Row>
 					</Box>
 					<Box>
-						<Hidden mdUp>
-							<Row gutter={0.15}>
-								{isAuthenticated && (
-									<>
-										<Box display="flex">
-											<RouterLink id="nav-bar-favorites" to="#">
-												<IconButton
-													color={colors.purple}
-													ariaLabel={'Favorites'}
-													fontSize={24}
-													paddingg={0}
-												>
-													<BookmarkBorderIcon/>
-												</IconButton>
-											</RouterLink>
-										</Box>
-										<Box display="flex">
-											<RouterLink id="nav-bar-notifications" to="#">
-												<IconButton
-													color={colors.purple}
-													ariaLabel={'Notifications'}
-													fontSize={24}
-													paddingg={0}
-												>
-													<NotificationsNoneIcon/>
-												</IconButton>
-											</RouterLink>
+						<Row gutter={0.15}>
+							{isAuthenticated && (
+								<>
+									<Box display="flex">
+										<RouterLink id="nav-bar-favorites" to="#">
+											<IconButton
+												color={colors.purple}
+												ariaLabel={'Favorites'}
+												fontSize={24}
+												paddingg={0}
+											>
+												<BookmarkBorderIcon/>
+											</IconButton>
+										</RouterLink>
+									</Box>
+									<Box display="flex">
+										<RouterLink id="nav-bar-notifications" to="#">
+											<IconButton
+												color={colors.purple}
+												ariaLabel={'Notifications'}
+												fontSize={24}
+												paddingg={0}
+											>
+												<NotificationsNoneIcon/>
+											</IconButton>
+										</RouterLink>
+									</Box>
+
+									<Box>
+										<Menu
+											ariaControls="user-menu"
+											openHandler={handleDropDownClick}
+											closeHandler={handleDropDownClose}
+											textColor="#1a2d66"
+											iconBefore={<AccountCircleIcon color="primary"/>}
+											dropDownEl={dropDownEl}
+											menuItems={[]}
+										/>
+									</Box>
+								</>
+							)}
+
+							<Box>
+								<IconButton color={colors.purple} ariaLabel={'open mobile menu'}>
+									<MenuIcon onClick={() => setMobileNavIsOpened(true)}/>
+								</IconButton>
+								<Drawer open={mobileNavIsOpened}>
+									<SC.MobileNavWrapper
+										role="presentation"
+									>
+										<Box display="flex" justifyContent="flex-end" m={1.5}>
+											<IconButton
+												color={colors.black}
+												ariaLabel={'close mobile menu'}
+												fontSize={20.5}
+											>
+												<CloseIcon onClick={() => setMobileNavIsOpened(false)}/>
+											</IconButton>
 										</Box>
 
-										<Box>
-											<Menu
-												ariaControls="user-menu"
-												openHandler={handleDropDownClick}
-												closeHandler={handleDropDownClose}
-												textColor="#1a2d66"
-												iconBefore={<AccountCircleIcon color="primary"/>}
-												dropDownEl={dropDownEl}
-												menuItems={[]}
-											/>
-										</Box>
-									</>
-								)}
-
-								<Box>
-									<IconButton color={colors.purple} ariaLabel={'open mobile menu'}>
-										<MenuIcon onClick={() => setMobileNavIsOpened(true)}/>
-									</IconButton>
-									<Drawer open={mobileNavIsOpened}>
-										<SC.MobileNavWrapper
-											role="presentation"
-										>
-											<Box display="flex" justifyContent="flex-end" m={1.5}>
-												<IconButton
-													color={colors.black}
-													ariaLabel={'close mobile menu'}
-													fontSize={20.5}
-												>
-													<CloseIcon onClick={() => setMobileNavIsOpened(false)}/>
-												</IconButton>
-											</Box>
-
-											<SC.StyledList>
-												{isAuthenticated && (
-													<SC.StyledListItem component={RouterLink} button key={t.myPlans}
-														color="#652dd0">
-														<ListItemText primary={t.myPlans}/>
-														<SC.StyledStarIcon>
-															<StarIcon/>
-														</SC.StyledStarIcon>
+										<SC.StyledList>
+											{isAuthenticated && (
+												<SC.StyledListItem component={RouterLink} button key={t.myPlans}
+													color="#652dd0">
+													<ListItemText primary={t.myPlans}/>
+													<SC.StyledStarIcon>
+														<StarIcon/>
+													</SC.StyledStarIcon>
+												</SC.StyledListItem>
+											)}
+											<SC.StyledListItem component={RouterLink} to={PLANS} button key={t.plans}>
+												<ListItemText primary={t.plans}/>
+											</SC.StyledListItem>
+										</SC.StyledList>
+										<Divider/>
+										<SC.StyledList>
+											<SC.StyledListItem component={RouterLink} button key={t.supportUs}>
+												<ListItemText primary={t.supportUs}/>
+											</SC.StyledListItem>
+										</SC.StyledList>
+										<Divider/>
+										<SC.StyledList>
+											{!isAuthenticated && (
+												<>
+													<SC.StyledListItem component={SC.StyledLink} to="#" button 
+														onClick={() => dispatch(openModal({ modalType: 'login' }))}
+														key={t.signin}>
+														<ListItemText primary={t.signin}/>
 													</SC.StyledListItem>
-												)}
-												<SC.StyledListItem component={RouterLink} to={PLANS} button key={t.plans}>
-													<ListItemText primary={t.plans}/>
-												</SC.StyledListItem>
-											</SC.StyledList>
-											<Divider/>
-											<SC.StyledList>
-												<SC.StyledListItem component={RouterLink} button key={t.supportUs}>
-													<ListItemText primary={t.supportUs}/>
-												</SC.StyledListItem>
-											</SC.StyledList>
-											<Divider/>
-											<SC.StyledList>
-												{!isAuthenticated && (
-													<>
-														<SC.StyledListItem component={SC.StyledLink} to="#" button 
-															onClick={() => dispatch(openModal({ modalType: 'login' }))}
-															key={t.signin}>
-															<ListItemText primary={t.signin}/>
-														</SC.StyledListItem>
-														<SC.StyledListItem component={RouterLink} to="#" button
-															onClick={() => dispatch(openModal({ modalType: 'register' }))}
-															key={t.signup}
-															color="#652dd0">
-															<ListItemText primary={t.signup}/>
-														</SC.StyledListItem>
-													</>
-												)}
-												{isAuthenticated && (
-													<>
-														<SC.StyledListItem component={RouterLink} button
-															key={t.alerts}>
-															<ListItemText primary={t.alerts}/>
-														</SC.StyledListItem>
-														<SC.StyledListItem component={RouterLink}  button
-															onClick={logoutHandler}
-															key={t.signout}
-															color="#b71f29">
-															<ListItemText primary={t.signout}/>
-															<SC.LogOutIcon>
-																<InboxIcon/>
-															</SC.LogOutIcon>
-														</SC.StyledListItem>
-													</>
-												)}
-											</SC.StyledList>
-										</SC.MobileNavWrapper>
-									</Drawer>
-								</Box>
-							</Row>
-						</Hidden>
+													<SC.StyledListItem component={RouterLink} to="#" button
+														onClick={() => dispatch(openModal({ modalType: 'register' }))}
+														key={t.signup}
+														color="#652dd0">
+														<ListItemText primary={t.signup}/>
+													</SC.StyledListItem>
+												</>
+											)}
+											{isAuthenticated && (
+												<>
+													<SC.StyledListItem component={RouterLink} button
+														key={t.alerts}>
+														<ListItemText primary={t.alerts}/>
+													</SC.StyledListItem>
+													<SC.StyledListItem component={RouterLink}  button
+														onClick={logoutHandler}
+														key={t.signout}
+														color="#b71f29">
+														<ListItemText primary={t.signout}/>
+														<SC.LogOutIcon>
+															<InboxIcon/>
+														</SC.LogOutIcon>
+													</SC.StyledListItem>
+												</>
+											)}
+										</SC.StyledList>
+									</SC.MobileNavWrapper>
+								</Drawer>
+							</Box>
+						</Row>
 					</Box>
 				</Row>
 			</SC.StyledContainer>
