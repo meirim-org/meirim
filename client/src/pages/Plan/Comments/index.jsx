@@ -5,6 +5,7 @@ import * as SC from './style';
 import {Chart} from "react-charts";
 import {Badge, Radio} from '@material-ui/core';
 import {useTheme} from "@material-ui/styles";
+import Opinion from "./Opinion";
 
 const Comments = () => {
     const theme = useTheme();
@@ -62,14 +63,6 @@ const Comments = () => {
 
         return classes.join();
     }
-
-    const daysPassed = (date) => {
-        const oneDay = 24 * 60 * 60 * 1000;
-        const today = Date.now();
-
-        return ` ${Math.round(Math.abs((today - date) / oneDay))} `;
-    }
-
 
     return (
         <>
@@ -144,73 +137,7 @@ const Comments = () => {
             }
 
             {opinions.map((opinion, idx) => (
-                <TabBox isOpinion={true} disabled={newOpinion} key={idx}>
-                    <SC.Header>
-                        <SC.FirstSide>
-                            <Typography
-                                variant="menuTitle"
-                                mobileVariant="menuTitle"
-                                component="span"
-                                color={theme.palette.green['text2']}
-                            >
-                                {opinion.type}
-                            </Typography>
-                            <Typography
-                                variant="highlightedText"
-                                mobileVariant="highlightedText"
-                                component="span"
-                                color={theme.palette.black}
-                            >
-                                {opinion.name}
-                            </Typography>
-                        </SC.FirstSide>
-                        <SC.SecondSide>
-                            <Typography
-                                variant="light"
-                                mobileVariant="light"
-                                component="span"
-                                color={theme.palette.gray['main']}
-                            >
-                                לפני
-                                {daysPassed(opinion.timeStamp)}
-                                ימים
-                            </Typography>
-                        </SC.SecondSide>
-                    </SC.Header>
-                    <SC.Text>
-                        <Typography
-                            variant="paragraphText"
-                            mobileVariant="paragraphText"
-                            component="p"
-                            color={theme.palette.black}
-                        >
-                            {opinion.text}
-                        </Typography>
-                    </SC.Text>
-                    <SC.Like>
-                        <Button
-                            id={"like-" + idx}
-                            textColor={theme.palette.black}
-                            text={t.iLike}
-                            onClick={() => ''}
-                            simple
-                            iconBefore={<SC.LikeIcon/>}
-                        />
-                        <Badge
-                            badgeContent={opinion.likes.toString()}
-                        />
-                    </SC.Like>
-                    <SC.AddComment>
-                        <Button
-                            id={"add-response-" + idx}
-                            textColor={theme.palette.black}
-                            text={t.addAResponse}
-                            onClick={() => ''}
-                            simple
-                            iconBefore={<SC.CommentIcon/>}
-                        />
-                    </SC.AddComment>
-                </TabBox>
+                <Opinion opinion={opinion} disabled={newOpinion} key={idx} />
             ))}
 
         </>
