@@ -85,7 +85,6 @@ export const AddComment = withTheme(styled.div`
     grid-area: add-comment;
     padding: 1rem; 
     text-align: center;
-    
     .MuiSvgIcon-root {
         font-size: 1.125rem !important;
         fill: ${props => props.theme.palette.primary['600']} !important;  
@@ -93,9 +92,16 @@ export const AddComment = withTheme(styled.div`
     }
     
     .MuiButton-label {
-       font-weight: 300;
-       font-size: 14px;
+        font-weight: 300;
+        font-size: 14px;
+        padding: .4rem 0 .4rem .75rem;
+        border-radius: 200px;
     }
+    
+   &.active .MuiButton-label{
+        background-color: ${props => props.theme.palette.gray['bg']} !important; 
+    }
+    
 `);
 
 export const LikeIcon = withTheme(styled(ThumbUpAltOutlinedIcon)`

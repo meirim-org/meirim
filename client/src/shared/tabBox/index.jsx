@@ -13,6 +13,7 @@ const StyledTabBox = withTheme(styled.div`
     ${({ isOpinion }) => isOpinion && `
         display: grid;
         padding: 0;
+        border-radius: 4px;
         grid-template-areas:
             'header header'
             'text text'
