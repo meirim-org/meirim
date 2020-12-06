@@ -92,12 +92,12 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						{!isAuthenticated && (
 							<Row gutter={0.75}>
 								<Grid item>
-									<Button id="sing-in" text={t.signin} 
+									<Button id="sign-in" text={t.signin} 
 										fontWeight="400" simple 
 										onClick={() => dispatch(openModal({ modalType: 'login' }))}/>
 								</Grid>
 								<Grid item>
-									<Button id="sing-up" text={t.signup} 
+									<Button id="sign-up" text={t.signup} 
 										small altColor 
 										onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
 								</Grid>
