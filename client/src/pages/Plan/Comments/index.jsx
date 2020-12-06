@@ -48,9 +48,8 @@ const Comments = () => {
                     <SC.FormControl component="fieldset">
                         <SC.RadioGroup aria-label="comment-type" name="comment-type" value={value} onChange={handleChange} row>
                             {radioButtons.map((radioButton, idx) => (
-                                <SC.FormControlLabelWrapper>
+                                <SC.FormControlLabelWrapper key={idx}>
                                     <SC.FormControlLabel
-                                        key={idx}
                                         className={value === radioButton.value ? 'active' : null}
                                         value={radioButton.value}
                                         control={<Radio />}
@@ -69,15 +68,15 @@ const Comments = () => {
                             text={t.close}
                             simple
                             small
-                            altColor
+                            textColor="#000000"
                             onClick={() => ''}
                         />
                         <Button
                             id="send-new-comment"
                             text={t.send}
+                            fontWeight={600}
                             small
                             simple
-                            altColor
                             onClick={() => ''}
                         />
                     </SC.addCommentButtonWrapper>
