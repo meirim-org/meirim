@@ -20,6 +20,8 @@ context('Register and login', () => {
     });
 
     it('register with an invalid email should not work', () => {
+      cy.get('#sign-up')
+        .click()
       cy.get('#register-email-input')
         .type('invalidemail.invalid')
         .get('#register-password-input')
@@ -36,7 +38,8 @@ context('Register and login', () => {
     });
 
     it('register with an valid email should work', () => {
-
+      cy.get('#sign-up')
+        .click()
       cy.get('#register-email-input')
         .type(userEmail)
         .get('#register-password-input')
@@ -62,20 +65,18 @@ context('Register and login', () => {
 
   describe('LogIn flow', () => {
     it('alerts should not be visible from the get go', () => {
-      cy.get('#register-signin-link')
+      cy.get('#sign-in')
         .click();
 
-      cy.url().should('include', '/sign/in');
 
       cy.get('div.alert-danger')
         .should('not.be.visible');
     });
 
     it('login with wrong credentials should not work', () => {
-      cy.get('#register-signin-link')
+      cy.get('#sign-in')
         .click();
 
-      cy.url().should('include', '/sign/in');
 
       cy.get('#login-email-input')
         .type('invalid@email.invalid')
@@ -91,10 +92,9 @@ context('Register and login', () => {
     });
 
     it('login with existing credentials should work', () => {
-      cy.get('#register-signin-link')
+      cy.get('#sign-in')
         .click();
 
-      cy.url().should('include', '/sign/in');
 
       cy.get('#login-email-input')
         .type(userEmail)
