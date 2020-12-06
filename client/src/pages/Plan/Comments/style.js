@@ -22,7 +22,7 @@ export const ButtonWrapper = styled.div`
     margin-bottom: 2rem;
 `;
 
-export const addCommentButtonWrapper = styled.div`
+export const addOpinionButtonWrapper = styled.div`
     margin-bottom: 2rem;
     display: flex;
     justify-content: flex-end;
