@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import { notAuthenticated } from 'redux/user/slice';
 import { logout } from 'services/user'
 import { UserSelectors } from 'redux/selectors'
@@ -9,7 +10,6 @@ import { useDispatch } from 'react-redux';
 
 const Navigation = (props) => {
 	const dispatch = useDispatch()
-	console.log('🚀 ~ file: index.jsx ~ line 28 ~ Navigation ~ props', props)
 	const { isAuthenticated, user } = UserSelectors()
 	
 	const logoutHandler = async () => {
@@ -27,4 +27,7 @@ const Navigation = (props) => {
 	);
 }
 
+Navigation.propTypes = {
+	isMobile: PropTypes.func.isRequired
+}
 export default withGetScreen(Navigation);
