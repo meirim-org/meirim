@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Navigation } from 'shared';
 import Footer from '../Footer';
+import * as SC from './style';
+
 
 const Wrapper = (props) => {
 	const { children } = props;
@@ -15,7 +17,9 @@ const Wrapper = (props) => {
 					<CircularProgress />
 				</div>
 			) : (
-				props.children
+                <SC.ChildrenWrapper>
+                    {props.children}
+                </SC.ChildrenWrapper>
 			)}
 			<Footer />
 		</Fragment>
