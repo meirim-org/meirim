@@ -11,7 +11,7 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { TabPanel, TabBox, Typography } from 'shared'
 import Wrapper from 'components/Wrapper';
 import { a11yProps } from './a11y'
-import Comments from './Comments'
+import Opinions from './Opinions'
 import { getPlanData } from './controller'
 import {openModal} from "../../redux/modal/slice";
 
@@ -250,7 +250,7 @@ const Plan = () => {
                             </TabBox>
                         </TabPanel>
 						<TabPanel value={value} index={1}>
-                            <Comments />
+                            <Opinions />
 						</TabPanel>
 						<TabPanel value={value} index={2}>
 						</TabPanel>

@@ -50,7 +50,7 @@ export const FormControl = withTheme(styled(MuiFormControl)`
         border-radius: 12px;
         padding: 1rem;
         margin-bottom: 1rem;
-    }
+    }   
 `);
 
 export const FormControlLabel = withTheme(styled(MuiFormControlLabel)`

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Button, TabBox, Typography} from 'shared'
+import {Button, Typography} from 'shared'
 import t from "locale/he_IL";
 import * as SC from './style';
 import {Chart} from "react-charts";
-import {Badge, Radio} from '@material-ui/core';
+import {Radio} from '@material-ui/core';
 import {useTheme} from "@material-ui/styles";
 import Opinion from "./Opinion";
 
