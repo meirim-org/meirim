@@ -43,7 +43,6 @@ export default {
 	saving: 'שמירה',
 	addAnOpinion: 'הוספת חוות דעת',
     supportUs: 'תמכו בנו',
-    addNewComment: 'הוספת חוות דעת',
     review: 'ביקורת',
     iLike: 'אהבתי',
     addAResponse: 'הוספת תגובה',

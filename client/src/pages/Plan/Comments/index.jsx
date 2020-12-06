@@ -8,13 +8,13 @@ import {useTheme} from "@material-ui/styles";
 
 const Comments = () => {
     const theme = useTheme();
-    const [newComment, setNewComment] = useState(false)
+    const [newOpinion, setNewOpinion] = useState(false)
     const [value, setValue] = useState(null)
     const [error, setError] = useState(false);
     const radioButtons = [
         {
             value: 'improvement-proposal',
-            text:  t.improvementProposal
+            text: t.improvementProposal
         },
         {
             value: 'review',
@@ -26,6 +26,13 @@ const Comments = () => {
         },
 
     ]
+    const opinions = [
+        {
+            name: 'מיקי זוהר',
+            timeStamp: 1606860321000
+        }
+    ]
+
     const handleChange = (event) => {
         setValue(event.target.value);
     };
@@ -44,30 +51,39 @@ const Comments = () => {
         return classes.join();
     }
 
+    const daysPassed = (date) => {
+        const oneDay = 24 * 60 * 60 * 1000;
+        const today = Date.now();
+
+        return ` ${Math.round(Math.abs((today - date) / oneDay))} `;
+    }
+
+
     return (
         <>
             <SC.ButtonWrapper>
-                    <Button
-                        id="add-comment"
-                        text={t.addNewComment}
-                        iconBefore={<SC.CommentIcon/>}
-                        small
-                        altColor
-                        active={newComment}
-                        onClick={() => setNewComment(!newComment)}
-                    />
+                <Button
+                    id="add-opinion"
+                    text={t.addAnOpinion}
+                    iconBefore={<SC.CommentIcon/>}
+                    small
+                    altColor
+                    active={newOpinion}
+                    onClick={() => setNewOpinion(!newOpinion)}
+                />
             </SC.ButtonWrapper>
-            {newComment
+            {newOpinion
                 ?
                 <>
                     <SC.FormControl component="fieldset">
-                        <SC.RadioGroup aria-label="comment-type" name="comment-type" value={value} onChange={handleChange} row>
+                        <SC.RadioGroup aria-label="comment-type" name="comment-type" value={value}
+                                       onChange={handleChange} row>
                             {radioButtons.map((radioButton, idx) => (
                                 <SC.FormControlLabelWrapper key={idx}>
                                     <SC.FormControlLabel
-                                        className={printRadioClass(value,radioButton.value)}
+                                        className={printRadioClass(value, radioButton.value)}
                                         value={radioButton.value}
-                                        control={<Radio />}
+                                        control={<Radio/>}
                                         label={radioButton.text}
                                     />
                                 </SC.FormControlLabelWrapper>
@@ -82,7 +98,7 @@ const Comments = () => {
                                     component="span"
                                     color={theme.palette.red}
                                 >
-                                 {t.chooseType}
+                                    {t.chooseType}
                                 </Typography>
                             </SC.ErrorWrapper> :
                             null
@@ -91,17 +107,17 @@ const Comments = () => {
                     <SC.FormControl fullWidth={true}>
                         <SC.TextareaAutosize disabled={error} aria-label={t.emptyTextarea} rowsMin={5}/>
                     </SC.FormControl>
-                    <SC.addCommentButtonWrapper>
+                    <SC.addOpinionButtonWrapper>
                         <Button
-                            id="close-new-comment"
+                            id="close-new-opinion"
                             text={t.close}
                             simple
                             small
                             textColor={theme.palette.black}
-                            onClick={() => setNewComment(false)}
+                            onClick={() => setNewOpinion(false)}
                         />
                         <Button
-                            id="send-new-comment"
+                            id="send-new-opinion"
                             text={t.send}
                             fontWeight={600}
                             small
@@ -109,150 +125,86 @@ const Comments = () => {
                             onClick={() => ''}
                             disabled={error}
                         />
-                    </SC.addCommentButtonWrapper>
+                    </SC.addOpinionButtonWrapper>
                 </>
                 :
                 null
             }
 
-            <TabBox isComment={true} disabled={newComment}>
-                <SC.Header>
-                    <SC.FirstSide>
+            {opinions.map((opinion, idx) => (
+                <TabBox isOpinion={true} disabled={newOpinion} key={idx}>
+                    <SC.Header>
+                        <SC.FirstSide>
+                            <Typography
+                                variant="menuTitle"
+                                mobileVariant="menuTitle"
+                                component="span"
+                                color={theme.palette.green['text2']}
+                            >
+                                {t.review}
+                            </Typography>
+                            <Typography
+                                variant="highlightedText"
+                                mobileVariant="highlightedText"
+                                component="span"
+                                color={theme.palette.black}
+                            >
+                                {opinion.name}
+                            </Typography>
+                        </SC.FirstSide>
+                        <SC.SecondSide>
+                            <Typography
+                                variant="light"
+                                mobileVariant="light"
+                                component="span"
+                                color={theme.palette.gray['main']}
+                            >
+                                לפני
+                                {daysPassed(opinion.timeStamp)}
+                                ימים
+                            </Typography>
+                        </SC.SecondSide>
+                    </SC.Header>
+                    <SC.Text>
                         <Typography
-                            variant="menuTitle"
-                            mobileVariant="menuTitle"
-                            component="span"
-                            color={theme.palette.green['text2']}
-                        >
-                            {t.review}
-                        </Typography>
-                        <Typography
-                            variant="highlightedText"
-                            mobileVariant="highlightedText"
-                            component="span"
+                            variant="paragraphText"
+                            mobileVariant="paragraphText"
+                            component="p"
                             color={theme.palette.black}
                         >
-                            אביגיל נחשון
+                            לורם איפסום דולור סיט אמט,
+                            קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט
+                            דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק.
+                            נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן ליבם סולגק. בראיט ולחת צורק מונחף, בגורמי מגמש.
+                            תרבנך וסתעד לכנו סתשם השמה - לתכי מורגם בורק? לתיג ישבעס.
                         </Typography>
-                    </SC.FirstSide>
-                    <SC.SecondSide>
-                        <Typography
-                            variant="light"
-                            mobileVariant="light"
-                            component="span"
-                            color={theme.palette.gray['main']}
-                        >
-                            לפני 2 ימים
-                        </Typography>
-                    </SC.SecondSide>
-                </SC.Header>
-                <SC.Text>
-                    <Typography
-                        variant="paragraphText"
-                        mobileVariant="paragraphText"
-                        component="p"
-                        color={theme.palette.black}
-                    >
-                        לורם איפסום דולור סיט אמט,
-                        קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט
-                        דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק.
-                        נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן ליבם סולגק. בראיט ולחת צורק מונחף, בגורמי מגמש.
-                        תרבנך וסתעד לכנו סתשם השמה - לתכי מורגם בורק? לתיג ישבעס.
-                    </Typography>
-                </SC.Text>
-                <SC.Like>
-                    <Button
-                        id="like"
-                        textColor={theme.palette.black}
-                        text={t.iLike}
-                        onClick={() => ''}
-                        simple
-                        iconBefore={<SC.LikeIcon/>}
-                    />
-                    <Badge
-                        badgeContent={'3'}
-                    />
-                </SC.Like>
-                <SC.AddComment>
-                    <Button
-                        id="add-response"
-                        textColor={theme.palette.black}
-                        text={t.addAResponse}
-                        onClick={() => ''}
-                        simple
-                        iconBefore={<SC.CommentIcon/>}
-                    />
-                </SC.AddComment>
-            </TabBox>
-            <TabBox isComment={true} disabled={newComment}>
-                <SC.Header>
-                    <SC.FirstSide>
-                        <Typography
-                            variant="menuTitle"
-                            mobileVariant="menuTitle"
-                            component="span"
-                            color={theme.palette.green['text2']}
-                        >
-                            {t.review}
-                        </Typography>
-                        <Typography
-                            variant="highlightedText"
-                            mobileVariant="highlightedText"
-                            component="span"
-                            color={theme.palette.black}
-                        >
-                            אביגיל נחשון
-                        </Typography>
-                    </SC.FirstSide>
-                    <SC.SecondSide>
-                        <Typography
-                            variant="light"
-                            mobileVariant="light"
-                            component="span"
-                            color={theme.palette.gray['main']}
-                        >
-                            לפני 2 ימים
-                        </Typography>
-                    </SC.SecondSide>
-                </SC.Header>
-                <SC.Text>
-                    <Typography
-                        variant="paragraphText"
-                        mobileVariant="paragraphText"
-                        component="p"
-                        color={theme.palette.black}
-                    >
-                        לורם איפסום דולור סיט אמט,
-                        קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט
-                        דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק.
-                        נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן ליבם סולגק. בראיט ולחת צורק מונחף, בגורמי מגמש.
-                        תרבנך וסתעד לכנו סתשם השמה - לתכי מורגם בורק? לתיג ישבעס.
-                    </Typography>
-                </SC.Text>
-                <SC.Like>
-                    <Button
-                        id="like"
-                        textColor={theme.palette.black}
-                        text={t.iLike}
-                        onClick={() => ''}
-                        simple
-                        iconBefore={<SC.LikeIcon/>}
-                    />
-                    <Badge
-                        badgeContent={'3'}
-                    />
-                </SC.Like>
-                <SC.AddComment>
-                    <Button
-                        id="add-response"
-                        textColor={theme.palette.black}
-                        text={t.addAResponse}
-                        onClick={() => ''}
-                        simple
-                        iconBefore={<SC.CommentIcon/>}
-                    />
-                </SC.AddComment>
-            </TabBox>
+                    </SC.Text>
+                    <SC.Like>
+                        <Button
+                            id="like"
+                            textColor={theme.palette.black}
+                            text={t.iLike}
+                            onClick={() => ''}
+                            simple
+                            iconBefore={<SC.LikeIcon/>}
+                        />
+                        <Badge
+                            badgeContent={'3'}
+                        />
+                    </SC.Like>
+                    <SC.AddComment>
+                        <Button
+                            id="add-response"
+                            textColor={theme.palette.black}
+                            text={t.addAResponse}
+                            onClick={() => ''}
+                            simple
+                            iconBefore={<SC.CommentIcon/>}
+                        />
+                    </SC.AddComment>
+                </TabBox>
+            ))}
+
         </>
     )
 };
