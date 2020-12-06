@@ -26,10 +26,12 @@ const CircularWrapper = styled.div`
 	padding-top: 40%;
 `
 const App = () => {
-	const { loading } = CookieHook()
+	const { loading, success } = CookieHook()
 	if (loading) {
 		return <CircularWrapper> <CircularProgress /></CircularWrapper>
 	}
+
+	const openRegister = !success
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
@@ -37,7 +39,7 @@ const App = () => {
 				<div>
 					<Modal />
 					<Switch>
-						<Route exact path="/" render={props => <Scenes.Home {...props} />}	/>
+						<Route exact path="/" render={props => <Scenes.Home {...props} openRegister={openRegister} />}	/>
 						<Route path="/alerts/unsubscribe/:token" 
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />

@@ -39,6 +39,7 @@
         "react-bootstrap": "^1.3.0",
         "react-charts": "^2.0.0-beta.7",
         "react-dom": "^16.13.1",
+        "react-getscreen": "^1.1.3",
         "react-infinite-scroll-component": "^5.0.5",
         "react-leaflet": "^2.7.0",
         "react-moment": "^0.9.7",

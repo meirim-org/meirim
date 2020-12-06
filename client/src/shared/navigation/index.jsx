@@ -1,14 +1,15 @@
 import React from 'react';
 import { notAuthenticated } from 'redux/user/slice';
 import { logout } from 'services/user'
-import { Hidden } from '@material-ui/core';
 import { UserSelectors } from 'redux/selectors'
 import MobileNavBar from './mobile'
 import DesktopNavBar from './desktop';
+import { withGetScreen } from 'react-getscreen'
 import { useDispatch } from 'react-redux';
 
-const Navigation = () => {
+const Navigation = (props) => {
 	const dispatch = useDispatch()
+	console.log('🚀 ~ file: index.jsx ~ line 28 ~ Navigation ~ props', props)
 	const { isAuthenticated, user } = UserSelectors()
 	
 	const logoutHandler = async () => {
@@ -18,10 +19,12 @@ const Navigation = () => {
 	
 	return (
 		<React.Fragment>
-			<Hidden mdUp> <MobileNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/></Hidden>
-			<Hidden mdDown> <DesktopNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/></Hidden>
+			{props.isMobile() ? 
+				<MobileNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/> :  
+				<DesktopNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/>
+			}
 		</React.Fragment>
 	);
 }
 
-export default Navigation;
+export default withGetScreen(Navigation);
