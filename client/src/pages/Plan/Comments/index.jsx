@@ -11,6 +11,7 @@ const Comments = () => {
     const [newOpinion, setNewOpinion] = useState(false)
     const [value, setValue] = useState(null)
     const [error, setError] = useState(false);
+
     const radioButtons = [
         {
             value: 'improvement-proposal',
@@ -26,10 +27,21 @@ const Comments = () => {
         },
 
     ]
+
     const opinions = [
         {
             name: 'מיקי זוהר',
-            timeStamp: 1606860321000
+            type: 'ביקורת',
+            timeStamp: 1606860321000,
+            likes: 3,
+            text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
+        },
+        {
+            name: 'מירי רגב',
+            type: 'חוות דעת כללית',
+            timeStamp: 1606860321000,
+            likes: 5,
+            text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
         }
     ]
 
@@ -141,7 +153,7 @@ const Comments = () => {
                                 component="span"
                                 color={theme.palette.green['text2']}
                             >
-                                {t.review}
+                                {opinion.type}
                             </Typography>
                             <Typography
                                 variant="highlightedText"
@@ -172,16 +184,12 @@ const Comments = () => {
                             component="p"
                             color={theme.palette.black}
                         >
-                            לורם איפסום דולור סיט אמט,
-                            קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט
-                            דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק.
-                            נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן ליבם סולגק. בראיט ולחת צורק מונחף, בגורמי מגמש.
-                            תרבנך וסתעד לכנו סתשם השמה - לתכי מורגם בורק? לתיג ישבעס.
+                            {opinion.text}
                         </Typography>
                     </SC.Text>
                     <SC.Like>
                         <Button
-                            id="like"
+                            id={"like-" + idx}
                             textColor={theme.palette.black}
                             text={t.iLike}
                             onClick={() => ''}
@@ -189,12 +197,12 @@ const Comments = () => {
                             iconBefore={<SC.LikeIcon/>}
                         />
                         <Badge
-                            badgeContent={'3'}
+                            badgeContent={opinion.likes.toString()}
                         />
                     </SC.Like>
                     <SC.AddComment>
                         <Button
-                            id="add-response"
+                            id={"add-response-" + idx}
                             textColor={theme.palette.black}
                             text={t.addAResponse}
                             onClick={() => ''}
