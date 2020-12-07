@@ -30,17 +30,17 @@ const Comments = props => {
 				}));
 			})
 			.catch(error => setState(pv => ({ ...pv, error })));
-	}, [props])
+	}, [props.planId])
 
 	const handleCommentPublished = (data) => {
-		var newComment = _.merge(data, {
+		const newComment = _.merge(data, {
 			person: {
 				alias: state.me.name,
 				id: state.me.id
 			}
 		});
 		const newMe = state.me;
-		newMe.alias = newMe.alias || data.person.alias;
+		newMe.name = newMe.name || data.person.name;
 		setState(pv => ({
 			...pv,
 			comments: state.comments.concat([newComment]),
@@ -54,13 +54,11 @@ const Comments = props => {
 	const handleSubmit = data => {
 		const { planId } = props;
 		const { me } = state;
-		const { content, alias } = data;
-
-		let aliasush = me.name || alias;
+		const { content, name } = data;
 
 		return api.post('/comment/' + planId, {
 			content,
-			alias: aliasush,
+			alias:  me.name || name,
 			person_id: me.id,
 			plan_id: planId,
 			parent_id: 0
