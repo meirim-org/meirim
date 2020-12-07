@@ -13,6 +13,7 @@ import Terms from './scenes/Terms';
 import Vocabulary from './scenes/Vocabulary';
 import NotFound from './scenes/NotFound';
 import EmailSent from './pages/Register/emailSent';
+import Funding from './pages/Funding'
 import api from './services/api';
 import './App.css';
 import { ToastContainer } from 'react-toastify';
@@ -94,6 +95,10 @@ const App = () => {
 							render={props => (
 								<ForgotPassword {...props} me={me} />
 							)}
+						/>
+						<Route
+							path="/funding"
+							render={props => <Funding {...props} me={me} />}
 						/>
 						<Route
 							path="/vocabulary"
