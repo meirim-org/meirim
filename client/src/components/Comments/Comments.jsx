@@ -30,7 +30,7 @@ const Comments = props => {
 				}));
 			})
 			.catch(error => setState(pv => ({ ...pv, error })));
-	}, [props.planId])
+	}, [props])
 
 	const handleCommentPublished = (data) => {
 		const newComment = _.merge(data, {
