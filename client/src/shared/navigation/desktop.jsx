@@ -22,7 +22,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const handleDropDownClose = () => {
 		setDropDownEl(null);
 	};
-	const dropdownItems = [{ 'text': 'התנתק', 'onClick': logoutHandler }]
+	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }]
 	
 	return (
 		<SC.StyledHeader>
