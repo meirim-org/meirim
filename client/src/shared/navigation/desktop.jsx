@@ -117,12 +117,3 @@ DesktopNavBar.propTypes = {
 };
 
 export default DesktopNavBar;
-
-// /* <Grid item>
-// 	<Link id="registered-nav-bar-starred" to="/" withIcon={true}>
-// 		<SC.StyledStarIcon>
-// 			<StarIcon/>
-// 		</SC.StyledStarIcon>
-// 		<ListItemText primary={t.myPlans}/>
-// 	</Link>
-// </Grid> */
