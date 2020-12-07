@@ -17,7 +17,9 @@ const StyledTabBox = withTheme(styled.div`
         grid-template-areas:
             'header header'
             'text text'
-            'like add-comment';
+            'like add-comment'
+            'comments comments'
+            ;
     `}  
       
     ${({ disabled }) => disabled && `
