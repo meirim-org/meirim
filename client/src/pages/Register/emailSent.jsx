@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from 'style';
+import Wrapper from 'components/Wrapper';
 import { resendActivationLinkToEmail } from './controller'
-import { device } from '../../style';
-import Wrapper from '../../components/Wrapper';
 
 const MainWrapper = styled.div`
     width: 100%;
@@ -155,7 +155,7 @@ const Link = styled.span`
 
 const EmailSent = ({ fullPage = true , ...props }) => {
 	let email = ''
-	if(props && props.location && props.location.state){
+	if (props && props.location && props.location.state){
 		email = props.location.state
 	}
 	
