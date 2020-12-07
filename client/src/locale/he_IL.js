@@ -16,6 +16,7 @@ export default {
 	signup: "הרשמה",
 	signupNow: "הרשמו עכשיו",
 	alreadyGotAccount: "יש לכם כבר חשבון?",
+	funding: "תמכו בנו",
 	km: "ק\"מ",
 	emailExists: "כתובת דוא\"ל כבר רשומה",
 	error: "שגיאה",
