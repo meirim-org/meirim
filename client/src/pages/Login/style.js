@@ -110,3 +110,18 @@ export const Label = styled.div`
 export const Star = styled.span`
   color:red;
 `;
+
+export const ForgotPassword = styled.div`
+      text-align: left;
+        a {
+          margin-bottom: 0.5rem;
+          font-family: Assistant;
+          font-size: 14px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.29;
+          letter-spacing: normal;
+          color: #51465e;
+        }
+`;
