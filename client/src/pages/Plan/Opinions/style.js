@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { withTheme } from '@material-ui/core/styles'
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import {
     FormControl as MuiFormControl,
     FormControlLabel as MuiFormControlLabel,
@@ -15,6 +14,10 @@ export const CommentIcon = styled(ChatBubbleOutlineIcon)`
 
 export const ButtonWrapper = styled.div`
     margin-bottom: 2rem;
+    
+    &.no-opinions {
+        margin-bottom: 7.8rem;
+    }
 `;
 
 export const addOpinionButtonWrapper = styled.div`
@@ -85,6 +88,11 @@ export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
         border-color: ${props => props.theme.palette.gray['300']} !important;
         background-color: ${props => props.theme.palette.white} !important;
     }
+`);
+
+
+export const NoOpinionsWrapper = withTheme(styled.div`
+    text-align: center;
 `);
 
 

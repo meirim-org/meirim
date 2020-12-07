@@ -29,36 +29,7 @@ const Comments = () => {
 
     ]
 
-    const opinions = [
-        {
-            name: 'מיקי זוהר',
-            type: 'ביקורת',
-            timeStamp: 1606860321000,
-            likes: 3,
-            comments: [
-                {
-                    name: 'אורן חזן',
-                    timeStamp: 1606860321000,
-                    text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
-                },
-                {
-                    name: 'דוד ביטן',
-                    timeStamp: 1606860321000,
-                    text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
-                }
-            ],
-            text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
-        },
-        {
-            name: 'מירי רגב',
-            type: 'חוות דעת כללית',
-            timeStamp: 1606860321000,
-            likes: 5,
-            comments: [
-            ],
-            text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
-        }
-    ]
+    const opinions = []
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -80,7 +51,7 @@ const Comments = () => {
 
     return (
         <>
-            <SC.ButtonWrapper>
+            <SC.ButtonWrapper className={!opinions.length ? 'no-opinions' : ''}>
                 <Button
                     id="add-opinion"
                     text={t.addAnOpinion}
@@ -150,9 +121,32 @@ const Comments = () => {
                 null
             }
 
-            {opinions.map((opinion, idx) => (
-                <Opinion opinion={opinion} disabled={newOpinion} key={idx} />
-            ))}
+            {opinions.length
+                ?
+                opinions.map((opinion, idx) => (
+                    <Opinion opinion={opinion} disabled={newOpinion} key={idx} />
+                ))
+                :
+                <SC.NoOpinionsWrapper>
+                    <Typography
+                        variant="planDetailTitle"
+                        mobileVariant="cardTitle"
+                        component="span"
+                        color={theme.palette.black}
+                    >
+                        {t.startDiscussion}
+                    </Typography>
+                    <br />
+                    <Typography
+                        variant="paragraphText"
+                        mobileVariant="paragraphText"
+                        component="span"
+                        color={theme.palette.black}
+                    >
+                        {t.shareThought}
+                    </Typography>
+                </SC.NoOpinionsWrapper>
+            }
 
         </>
     )

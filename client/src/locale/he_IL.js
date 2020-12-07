@@ -51,7 +51,9 @@ export default {
     emptyTextarea: 'שדה טקסט ריק',
     close: 'סגירה',
     send: 'שליחה',
-    chooseType: 'בחרו סוג'
+    chooseType: 'בחרו סוג',
+    startDiscussion: 'היו הראשונים להתחיל דיון על התוכנית!',
+    shareThought: 'שתפו את הקהילה בדעתכם'
 
 }
 
