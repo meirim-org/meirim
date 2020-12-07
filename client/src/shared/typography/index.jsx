@@ -37,6 +37,8 @@ const handleVariant = variant => {
 		return template('16px', '400', '1.33');
 	case 'paragraphText':
 		return template('16px', '400', '1.5');
+    case 'paragraphTextLight':
+        return template('16px', '300', '1.3');
 	case 'highlightedText':
 		return template('16px', '600', '1.33');
 	case 'smallTitle':
@@ -70,6 +72,8 @@ const handleMobileVariant = mobileVariant => {
 		return mobileTemplate('16px', '400', '1.33');
 	case 'paragraphText':
 		return mobileTemplate('16px', '400', '1.5');
+    case 'paragraphTextLight':
+            return template('16px', '300', '1.3');
 	case 'smallTitle':
 		return mobileTemplate('14px', '600', '1.29');
 	case 'chipsAndIconButtons':
@@ -107,6 +111,7 @@ Typography.propTypes = {
 		'planDetailTitle',
 		'menuTitle',
 		'paragraphText',
+        'paragraphTextLight',
 		'highlightedText',
 		'smallTitle',
 		'chipsAndIconButtons',
@@ -122,7 +127,8 @@ Typography.propTypes = {
 		'highlightedText',
 		'menuTitle',
 		'paragraphText',
-		'smallTitle',
+        'paragraphTextLight',
+        'smallTitle',
 		'chipsAndIconButtons',
 		'light',
 		'label',

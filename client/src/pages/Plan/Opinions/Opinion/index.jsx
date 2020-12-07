@@ -2,31 +2,21 @@ import React, {useState} from 'react';
 import {Button, TabBox, Typography} from 'shared'
 import t from "locale/he_IL";
 import * as SC from './style';
-import {Badge, Radio} from '@material-ui/core';
+import {Badge, TextareaAutosize} from '@material-ui/core';
 import {useTheme} from "@material-ui/styles";
 import PropTypes from "prop-types";
 import {daysPassed} from 'helpers';
+import Comment from "./Comment";
 
 const Opinion = ({
-    opinion,
-    disabled,
-    key
-}) => {
+                     opinion,
+                     disabled,
+                     key
+                 }) => {
     const [newComment, setNewComment] = useState(false)
     const theme = useTheme();
 
-    const comments = [
-        {
-            name: 'אורן חזן',
-            timeStamp: 1606860321000,
-            text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
-        },
-        {
-            name: 'דוד ביטן',
-            timeStamp: 1606860321000,
-            text: 'לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.'
-        }
-    ]
+    const comments = opinion.comments;
 
     return (
         <>
@@ -96,24 +86,49 @@ const Opinion = ({
                         iconBefore={<SC.CommentIcon/>}
                     />
                 </SC.AddComment>
+                <SC.CommentsWrapper>
 
-                {comments.length
-                    ?
-                    comments.map((comment, idx) => (
-                         <Comment comment={comment} key={idx} />
-                     ))
-                    :
-                    null
-                }
+                    {newComment
+                        ?
+                        <SC.addCommentWrapper>
+                            <SC.FormControl fullWidth={true}>
+                                <TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
+                            </SC.FormControl>
+                            <SC.addCommentButtonWrapper>
+                                <Button
+                                    id="close-new-opinion"
+                                    text={t.close}
+                                    simple
+                                    small
+                                    textColor={theme.palette.black}
+                                    onClick={() => setNewComment(false)}
+                                />
+                                <Button
+                                    id="send-new-opinion"
+                                    text={t.send}
+                                    fontWeight={600}
+                                    small
+                                    simple
+                                    onClick={() => ''}
+                                />
+                            </SC.addCommentButtonWrapper>
+
+                        </SC.addCommentWrapper>
+                        :
+                        null
+                    }
+
+                    {comments.length
+                        ?
+                        comments.map((comment, idx) => (
+                            <Comment comment={comment} key={idx}/>
+                        ))
+                        :
+                        null
+                    }
+                </SC.CommentsWrapper>
 
             </TabBox>
-
-            {newComment
-                ?
-                <div>is</div>
-                :
-                null
-            }
 
         </>
     )
