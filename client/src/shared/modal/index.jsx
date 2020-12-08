@@ -49,7 +49,7 @@ const modalComponents = {
 }
 
 const Modal = ({ id }) => {
-	const { open, modalType } = ModalSelectors()
+	const { open, modalType, modalProps } = ModalSelectors()
 	const ModalChildren = modalComponents[modalType]
 
 	return (
@@ -59,7 +59,7 @@ const Modal = ({ id }) => {
 					<IconWrapper>
 						<StyledIcon onClick={ModalActions().close} />
 					</IconWrapper>
-					{modalType && <ModalChildren/>}
+					{modalType && <ModalChildren {...modalProps}/>}
 				</ModalContentWRapper>
 			</StyledModal>
 		</ModalWrapper>
