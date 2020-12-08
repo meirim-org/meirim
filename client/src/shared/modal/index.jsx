@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Login from 'pages/Login'
 import Register from 'pages/Register/'
 import EmailVerified from 'pages/Register/emailVerified'
+import Payment from 'pages/Funding/payment'
 import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
@@ -44,6 +45,7 @@ const modalComponents = {
 	login: Login,
 	register: Register,
 	emailVerified: EmailVerified,
+	payment: Payment
 }
 
 const Modal = ({ id }) => {
