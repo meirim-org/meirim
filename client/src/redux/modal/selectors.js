@@ -7,8 +7,12 @@ const Selectors = () => {
 	const open = useSelector(
 		(state) => state.modal.open
 	)
+	const modalProps = useSelector(
+		(state) => state.modal.modalProps
+	)
 
 	return {
+		modalProps,
 		modalType,
 		open
 	}
