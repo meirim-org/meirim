@@ -25,6 +25,8 @@ module.exports = {
         "tmp":11,
         "Info":"תרומה חודשית לעמותת מעירים",
         "Pritim":"True",
+        "OnlyOnApprove":"True",
+        "HK":"True",
        "heshDesc":["", "תרומה%20חודשית%20לעמותת%20מעירים", "1", `${options.amount}`].join('~'),
     } }, options).then(res=>`${config.baseURL}/?action=pay&${res.data}`)}
 };

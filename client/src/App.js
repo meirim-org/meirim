@@ -13,6 +13,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as Scenes from 'scenes'
 import EmailSent from 'pages/Register/emailSent';
+import Funding from 'pages/Funding';
 import Modal from 'shared/modal'
 import 'App.css';
 import { muiTheme } from 'theme'
@@ -39,74 +40,6 @@ const App = () => {
 				<div>
 					<Modal />
 					<Switch>
-						<Route
-							exact
-							path="/"
-							render={props => <Home {...props} me={me} />}
-						/>
-						<Route
-							path="/alerts/unsubscribe/:token"
-							render={props => <AlertUnsubscribe {...props} me={me} />}
-						/>
-						<Route
-							path="/alerts"
-							render={props => <Alerts {...props} me={me} />}
-						/>
-						<Route
-							path="/plan/:id/:title"
-							render={props => <SinglePlan {...props} me={me} />}
-						/>
-						<Route
-							path="/plan/:id"
-							render={props => <SinglePlan {...props} me={me} />}
-						/>
-						<Route
-							path="/plans"
-							render={props => <Plans {...props} me={me} />}
-						/>
-						<Route
-							path="/sign/up"
-							render={props => <Home {...props} showRegister={true} me={me} />}
-						/>
-						<Route
-							path="/sign/in"
-							render={props => <Home {...props} setMe={setMe} showSignin={true} me={me} />}
-						/>
-						<Route
-							path="/activate"
-							render={props => <Activate {...props} me={me} />}
-						/>
-						<Route
-							path="/forgot"
-							render={props => (
-								<ForgotPassword {...props} me={me} />
-							)}
-						/>
-						<Route
-							path="/funding"
-							render={props => <Funding {...props} me={me} />}
-						/>
-						<Route
-							path="/vocabulary"
-							render={props => <Vocabulary {...props} me={me} />}
-						/>
-						<Route
-							path="/about"
-							render={props => <About {...props} me={me} />}
-						/>
-						<Route
-							path="/terms"
-							render={props => <Terms {...props} me={me} />}
-						/>
-						<Route
-							path="/404"
-							render={props => <NotFound {...props} me={me} />}
-						/>
-						<Route
-							path="/email-sent"
-							render={props => <EmailSent {...props} me={me} />}
-						/>
-						<Route component={NotFound} />
 						<Route exact path="/" render={props => <Scenes.Home {...props} openRegister={openRegister} />}	/>
 						<Route path="/alerts/unsubscribe/:token" 
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
@@ -116,6 +49,7 @@ const App = () => {
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
+						<Route path="/funding" 	render={props => (<Funding {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route	path="/about" render={props => <Scenes.About {...props} />} />
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />
