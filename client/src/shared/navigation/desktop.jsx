@@ -22,7 +22,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const handleDropDownClose = () => {
 		setDropDownEl(null);
 	};
-	const dropdownItems = [{ 'text': 'התנתק', 'onClick': logoutHandler }]
+	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }]
 	
 	return (
 		<SC.StyledHeader>
@@ -122,12 +122,3 @@ DesktopNavBar.propTypes = {
 };
 
 export default DesktopNavBar;
-
-// /* <Grid item>
-// 	<Link id="registered-nav-bar-starred" to="/" withIcon={true}>
-// 		<SC.StyledStarIcon>
-// 			<StarIcon/>
-// 		</SC.StyledStarIcon>
-// 		<ListItemText primary={t.myPlans}/>
-// 	</Link>
-// </Grid> */
