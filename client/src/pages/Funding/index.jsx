@@ -127,7 +127,7 @@ const FundingPage = () => {
 			console.log(paymentpageUrl)
 			setPaymentUrl(paymentpageUrl)
 			// setPaymentRequestReady(true)
-			dispatch(openModal({ modalType: 'payment' }))
+			dispatch(openModal({ modalType: 'payment', modalProps:{url:paymentpageUrl} }))
 			// const { status, data: { isUserRegistered } } = response
 			// const successResponse = status === 'OK' && !isUserRegistered
 			// if (successResponse) {
