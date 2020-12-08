@@ -23,9 +23,10 @@ export const MediaContent = styled.span`
       width:50%;
     }
     position:center;
+    padding:1em;
 `;
 
-export const PaymentOptions = styled.div`
+export const PaymentWrapper = styled.div`
   float:left; 
   width:100%; 
   padding: 6em 1.5em;
@@ -37,7 +38,7 @@ export const PaymentOptions = styled.div`
 export const RoadmapDetails = styled.div`
     float:right; 
     width:100%; 
-    padding: 6em 1.5em;
+    padding: 1.5em 1.5em;
     @media ${device.laptop} {
       width:60%;
     }
@@ -63,7 +64,7 @@ export const Title = styled.h1`
 
 export const SubTitle = styled.h2`
   font-family: Assistant !important;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -77,13 +78,13 @@ export const SubTitle = styled.h2`
    }
 `;
 
-export const ThirdTitle = styled.h3`
+export const ThirdTitle = styled.h1`
   font-family: Assistant !important;
-  font-size: 18px;
-  font-weight: bolder;
+  font-weight: normal;
   font-stretch: normal;
   font-style: normal;
   letter-spacing: normal;
+  font-size:48px;
   line-height: 1.5;
   color: #270E78;
   margin-bottom: 0;
@@ -116,11 +117,7 @@ export const TermsOfUse = styled.span`
 `;
 
 export const InputsWrapper = styled.div`
-  background-color: #FBFBFB;
-  padding: 1.5em 1.5em 0.5em;
-  @media ${device.tablet} {
-     padding: 1.5em 3.7em 1em;
-  }
+  width:100%
 `;
 
 export const MainWrapper = styled.div`
@@ -134,15 +131,17 @@ export const InputWrapper = styled.div`
   }
 `;
 
-export const PaymentOptionsWrapper= styled.div`
+export const PaymentOptions= styled.div`
   padding: 1.5em;
   background: #CFABFA;
   box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 12px;
+  width:342px;
+  height:465px;
 `;
 
 export const PaymentOption= styled.span`
-  background: #FFFFFF;
+  background:${props => !props.selected ? '#FFFFFF' : '#391695'};
   box-shadow: 0px 31.371px 155.529px rgba(0, 0, 0, 0.0503198), 0px 16.7724px 83.1534px rgba(0, 0, 0, 0.0417275), 0px 9.40248px 46.6151px rgba(0, 0, 0, 0.035), 0px 4.99359px 24.7569px rgba(0, 0, 0, 0.0282725);
   border-radius: 12px;
   font-family: Assistant;
@@ -155,7 +154,75 @@ export const PaymentOption= styled.span`
   padding:10px;
   margin:10px;
   display: inline-block;
+  height:120px;
+  width:120px;
+  float:right;
+  padding-top: 30px;
+  text-align: -webkit-center;
+  &:hover, &.active {
+    background-color:#FBFBFB;
+  };
+  overflow-y:auto;
 `;
+
+export const Amount =styled.span`
+  font-size:26px;
+  font-weight: bold;
+  line-height: 28px;
+`;
+
+export const Monthly =styled.span`
+  font-weight: normal;
+`;
+
+export const RoadMapTitle= styled.span`
+  font-family: Assistant;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 48px;
+  text-align: right;
+  color: #270E78;
+`;
+
+export const RoadmapItemTitle= styled.div`
+  font-family: Assistant SemiBold;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0px;
+  text-align: right;
+  color:#270E78;
+`;
+
+export const RoadmapItemDescription= styled.div`
+  font-family: Assistant;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: right;
+`;
+
+export const RoadmapItemIcon= styled.div`
+  border: 1px solid #E4E4E4;
+  box-sizing: border-box;
+  border-radius: 12px;
+  float:right;
+  height:130px;
+  margin:0 1em;
+`;
+
+export const RoadmapItemWrapper= styled.div`
+ height:136px;
+ width: ${device.tablet}px;
+ @media ${device.tablet}{
+   width:767px;
+ }
+`;
+
 export const TermsOfUseWrapper= styled.div`
   padding: 1em;
   margin: 1em 0;
