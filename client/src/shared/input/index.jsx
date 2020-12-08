@@ -8,7 +8,7 @@ import Label from '../label';
 const StyledInput = styled(TextField)`
 	background-color: white;
 	height: 2.75em;
-	width: 24em;
+	width: ${(props) => (props.width || '24em' )} ;
 	border-radius: 12px !important;
 	& > div {
         border-radius: 12px !important;
@@ -40,7 +40,7 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false, forgetPassword = false
+	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, width, required = false, size = 'small', error = false, forgetPassword = false
 }) => {
 
 	return (
@@ -57,6 +57,7 @@ const TextInput = ({
 				type={type}
 				size={size}
 				error={error}
+				width={width}
 			/>
 			{
 				helperText && <HelperText id={`${id}-helperText`} error={error} text={helperText}/>
@@ -86,6 +87,7 @@ TextInput.propTypes = {
 	onFocus: PropTypes.func.isRequired,
 	onBlur: PropTypes.func.isRequired,
 	size: PropTypes.string,
+	width: PropTypes.string,
 	onChange: PropTypes.func.isRequired,
 	required: PropTypes.bool,
 	helperText: PropTypes.string,
