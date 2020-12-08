@@ -53,6 +53,11 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
+										<SC.StyledLink id="nav-bar-about" to="/funding/" activeClassName="active">
+											תמכו בנו 2
+										</SC.StyledLink>
+									</Box>
+									<Box px={2}>
 										<Button id="support-us" text={t.supportUs} type={'primary'} onClick={() => {}}
 											small/>
 									</Box>
