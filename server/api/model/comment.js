@@ -63,7 +63,7 @@ class Comment extends Model {
 				withRelated: [
 					{
 						person (qb) {
-							qb.column('id', 'alias');
+							qb.column('id', 'name');
 						}
 					}
 				]

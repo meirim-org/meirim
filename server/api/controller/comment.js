@@ -14,7 +14,7 @@ class CommentController extends Controller {
 		let alias = Promise.resolve();
 		if (!req.session.person.name) {
 			if (!req.body.name) {
-				throw new Exception.BadRequest('Please provide an alias');
+				throw new Exception.BadRequest('Please provide person name');
 			}
 			const aliasString = req.body.name;
 			alias = Person.forge({

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Navigation } from 'shared';
 import Footer from '../Footer';
@@ -24,10 +24,10 @@ const Wrapper = (props) => {
 			<Footer/>
 		</Fragment>
 	);
-}
+};
 
 Wrapper.propTypes = {
 	children: PropTypes.any
-}
+};
 
-export default Wrapper
+export default Wrapper;
