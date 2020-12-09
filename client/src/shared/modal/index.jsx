@@ -3,13 +3,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import MUIModal from '@material-ui/core/Modal';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Login from 'pages/Login'
-import Register from 'pages/Register/'
-import EmailVerified from 'pages/Register/emailVerified'
-import { ModalActions } from 'redux/actions'
-import { ModalSelectors } from 'redux/selectors'
+import Login from 'pages/Login';
+import Register from 'pages/Register/';
+import EmailVerified from 'pages/Register/emailVerified';
+import { ModalActions } from 'redux/actions';
+import { ModalSelectors } from 'redux/selectors';
 import { device } from 'style';
-import SharePlan from 'pages/Plan/sharePlan'
+import SharePlan from 'pages/Plan/sharePlan';
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -23,8 +23,7 @@ const StyledIcon = styled(CloseIcon)`
 	cursor: pointer;
 `;
 
-const ModalWrapper = styled.div`
-`;
+const ModalWrapper = styled.div``;
 
 const ModalContentWRapper = styled.div`
 	display:flex;
@@ -47,11 +46,11 @@ const modalComponents = {
 	register: Register,
 	emailVerified: EmailVerified,
 	sharePlan: SharePlan
-}
+};
 
 const Modal = ({ id }) => {
-	const { open, modalType } = ModalSelectors()
-	const ModalChildren = modalComponents[modalType]
+	const { open, modalType, modalProps } = ModalSelectors();
+	const ModalChildren = modalComponents[modalType];
 
 	return (
 		<ModalWrapper id={`wrapper-${id}`}>
@@ -60,7 +59,7 @@ const Modal = ({ id }) => {
 					<IconWrapper>
 						<StyledIcon onClick={ModalActions().close} />
 					</IconWrapper>
-					{modalType && <ModalChildren/>}
+					{modalType && <ModalChildren {...modalProps}/>}
 				</ModalContentWRapper>
 			</StyledModal>
 		</ModalWrapper>

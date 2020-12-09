@@ -14,6 +14,7 @@ describe('comment controller', function() {
 	};
 
 	beforeEach(async function() {
+		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		await mockDatabase.insertData(['person'], { 'person': [person] });
 	});
@@ -53,6 +54,35 @@ describe('comment controller', function() {
 			body: { commentId: attributes.id }
 		};
 		const comment = await CommentController.addLike(addLikeRequest);
+		const req1 = {
+			session: {
+				person: { 
+					id: 1 
+				} 
+			},
+			params: {
+				plan_id: 123,
+			}
+		};
+		const reqForNestedComment = {
+			session: {
+				person: { 
+					id: 1 
+				} 
+			},
+			body: {
+				name: 'myname',
+				content: 'this is nested comment',
+				person_id: 1,
+				parent_id: attributes.id,
+				plan_id: 123,
+				type: 'review',
+				likes: 0
+			}
+		};
+		await CommentController.create(reqForNestedComment);
+		const comments = await CommentController.byPlan(req1); 
+		expect(comments.length).to.eql(2);
 		expect(comment.attributes.likes).to.eql(1);
 	});
 });

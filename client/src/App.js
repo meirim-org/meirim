@@ -12,18 +12,20 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as Scenes from 'scenes';
 import Plan from 'pages/Plan';
 import EmailSent from 'pages/Register/emailSent';
-import { Modal, CircularProgress } from 'shared'
+import { Modal, CircularProgress } from 'shared';
 import 'App.css';
-import { muiTheme } from 'theme'
-import { CookieHook } from 'hooks'
+import { muiTheme } from 'theme';
+import { CookieHook } from 'hooks';
 
 library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
 
 const App = () => {
-	const { loading } = CookieHook()
+	const { loading, success } = CookieHook();
 	if (loading) {
-		return  <CircularProgress /> 
+		return  <CircularProgress />; 
 	}
+
+	const openRegister = !success;
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
@@ -31,8 +33,8 @@ const App = () => {
 				<div>
 					<Modal />
 					<Switch>
-						<Route exact path="/" render={props => <Scenes.Home {...props} />}	/>
-						<Route path="/alerts/unsubscribe/:token"
+						<Route exact path="/" render={props => <Scenes.Home {...props} openRegister={openRegister} />}	/>
+						<Route path="/alerts/unsubscribe/:token" 
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
 						<Route path="/plan/:id/:title" render={props => <Scenes.SinglePlan {...props} />} />
@@ -52,6 +54,6 @@ const App = () => {
 			<ToastContainer autoClose={false}/>
 		</MuiThemeProvider>
 	);
-}
+};
 
 export default App;

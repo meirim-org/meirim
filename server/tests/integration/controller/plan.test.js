@@ -13,7 +13,7 @@ describe('Plan controller', function() {
 	});
 
 	it('creates row in db successfuly', async function() {
-		const {PlanController} = require('../../../api/controller');
+		const { PlanController } = require('../../../api/controller');
 		const req = {
 			session: {
 				person: { 
@@ -33,7 +33,7 @@ describe('Plan controller', function() {
 				rating: 2,
 			}
 		};
-		const {attributes} = await PlanController.create(req);
+		const { attributes } = await PlanController.create(req);
 		expect(attributes.OBJECTID).to.eql(req.body.OBJECTID);
 		expect(attributes.PLAN_COUNTY_NAME).to.eql(req.body.PLAN_COUNTY_NAME);
 		expect(attributes.PL_NUMBER).to.eql(req.body.PL_NUMBER);

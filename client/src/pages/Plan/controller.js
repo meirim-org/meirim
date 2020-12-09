@@ -1,16 +1,16 @@
-import api from 'services/api'
+import api from 'services/api';
 import { SuccessAddComment, FailAddComment, 
-	SuccessSubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts'
+	SuccessSubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts';
 
 export const subscribeUserToPlan = async (planId) => {
 	try {
-		const response = await api.post(`/plan/${planId}/subscribe`)
-		const success = response.status === 'OK'
-		if (success) SuccessSubscribeUserToPlan()
+		const response = await api.post(`/plan/${planId}/subscribe`);
+		const success = response.status === 'OK';
+		if (success) SuccessSubscribeUserToPlan();
 	} catch (err){ 
-		FailSubscribeUserToPlan()
+		FailSubscribeUserToPlan();
 	}
-}
+};
 
 export const addComment = async ({ content, plan_id, person_id, name }) => {
 	try {	
@@ -20,32 +20,42 @@ export const addComment = async ({ content, plan_id, person_id, name }) => {
 			person_id,
 			plan_id,
 			parent_id: 0 
-		}
-		const response = await api.post(`/comment/${plan_id}`, { ...data })
-		const success = response.status === 'OK'
-		if (success) SuccessAddComment()
+		};
+		const response = await api.post(`/comment/${plan_id}`, { ...data });
+		const success = response.status === 'OK';
+		if (success) SuccessAddComment();
 	} catch (err){ 
-		FailAddComment()
+		FailAddComment();
 	}
-}
+};
 
 export const addLike = async ({ commentId }) => {
 	try {
-		const response = await api.post('/comment/addLike', { commentId })
+		const response = await api.post('/comment/addLike', { commentId });
 		
-		return response
+		return response;
 	} catch (err) {
-		console.log('err',err)
+		console.log('err',err);
 	}
-}
+};
 
 export const getPlanData = async (planId) => {
 	try {
-		await api.post(`/impression/${planId}`)
-		const response = await api.get(`/plan/${planId}`)
+		await api.post(`/impression/${planId}`);
+		const response = await api.get(`/plan/${planId}`);
 		
-		return response
+		return response;
 	} catch (err) {
-		console.log('err',err)
+		console.log('err',err);
 	}
-}
+};
+
+export const getCommentsByPlanId = async (planId) => {
+	try {	
+		const response = await api.get(`/comment/${planId}`);
+		
+		return response;
+	} catch (err){ 
+		console.log('err',err);
+	}
+};
