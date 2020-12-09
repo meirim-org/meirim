@@ -4,7 +4,7 @@ import { UserSelectors } from 'redux/selectors';
 
 const AddComment = ({ submit }) => {
 	const { user } = UserSelectors()
-	const [ state, setState ] = React.useState({ content: '', alias: '' })
+	const [ state, setState ] = React.useState({ content: '', name: '' })
 
 	const handleChange = event => {
 		const { name, value } = event.target;
@@ -13,7 +13,7 @@ const AddComment = ({ submit }) => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		submit(this.state).then(()=> setState(pv => ({ ...pv, content:'' })));
+		submit(state).then(()=> setState(pv => ({ ...pv, content:'' })));
 	};
 
 	const { content, alias } = state;
@@ -45,7 +45,7 @@ const AddComment = ({ submit }) => {
 						type="text"
 						className="form-control"
 						required
-						name="alias"
+						name="name"
 						placeholder="כינוי"
 						value={alias}
 						onChange={handleChange}
