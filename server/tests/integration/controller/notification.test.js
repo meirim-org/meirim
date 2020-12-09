@@ -32,7 +32,7 @@ describe('notification controller', function() {
 				type: 'type',
 			}
 		};
-		const {attributes} = await NotificationController.create(req);
+		const { attributes } = await NotificationController.create(req);
 		expect(attributes.person_id).to.eql(req.body.person_id);
 		expect(attributes.plan_id).to.eql(req.body.plan_id);
 		expect(attributes.type).to.eql(req.body.type);
@@ -89,12 +89,12 @@ describe('Notification model integration with different models', function() {
 
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
-		await mockDatabase.insertData(['person'], {'person': [person]});
+		await mockDatabase.insertData(['person'], { 'person': [person] });
 		await Email.init();
 		const fakeVerifyEmail = sinon.fake(function(email, options, cb) {
-			cb(null, {success: true, code: 1, banner: 'string'});
+			cb(null, { success: true, code: 1, banner: 'string' });
 		});
-		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
+		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake' });
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 	});
@@ -105,8 +105,6 @@ describe('Notification model integration with different models', function() {
 	});
 
 	it('creates notification for a user based on subscribed area ', async function() {
- 
-
 		const req = {
 			body: {
 				address: 'מטלון 18 תל אביב',
@@ -163,7 +161,7 @@ describe('Notification model integration with different models', function() {
 			geometry: geom
 		};
 		await Plan.buildFromIPlan(iPlan);
-		const plan = await Plan.forge({PL_NUMBER: iPlan.properties.PL_NUMBER}).fetch();
+		const plan = await Plan.forge({ PL_NUMBER: iPlan.properties.PL_NUMBER }).fetch();
 
 		const noti1 = await mockDatabase.selectData('notification', {	plan_id: 1	});
 		expect(noti1.length).to.eql(1);

@@ -157,7 +157,6 @@ describe('Sign Controller - Signout' , function() {
 		sinonSandbox = sinon.createSandbox();
 		await mockDatabase.createTables(tables);
 		const hashedPassword = await Bcrypt.hash(password, 10).then((hashedPassword) => {
-			console.log('hashedPassword', hashedPassword);
 			return hashedPassword;
 		});
 		await mockDatabase.insertData(tables, { 'person': 
