@@ -13,9 +13,7 @@ const Comment = ({ comment }) => {
 			<div className="comment-box">
 				<div className="comment-head">
 					<h6 className="comment-name">
-						<a href={'/profile/' + person.id}>
-							{person.alias || 'אנונימי'}{' '}
-						</a>
+						{person.alias || 'אנונימי'}{' '}
 					</h6>
 				</div>
 				<div className="comment-content"> {content} </div>
