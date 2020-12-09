@@ -5,10 +5,12 @@ const xlsx = require('xlsx');
 const fetch = require('node-fetch');
 const moment = require('moment');
 const AbortController = require('abort-controller');
+const aws = require('aws-sdk');
 
 const TreePermit = require('../../model/tree_permit');
 const tpc = require('../../model/tree_permit_constants');
 const database = require('../../service/database');
+const Config = require('../../lib/config');
 
 // Regional tree permits were taken from here: 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
 const RAW_DATA_FOLDER = require('os').homedir() + '/raw_trees';
@@ -36,6 +38,9 @@ const regionalTreePermitUrls = [
 const SHEET_BEFORE = 'Data2ToExcel_BeforDate';
 const SHEET_AFTER = 'Data2ToExcel_ToDate';
 const TIMEOUT_MS = 5000;
+
+const bucketName = Config.get('aws.treeBucketName');
+const useS3 = Config.get('aws.useS3ForTreeFiles');
 
 async function getRegionalTreePermitsFromFile(url, pathname) {
 	try {
@@ -71,7 +76,6 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 				}
 			})();
 		});
-
 	}
 	catch (err) {
 		Log.error(err);
@@ -80,7 +84,7 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 }
 
 async function saveNewTreePermits(treePermits) {
-	// tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
+	// Tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
 	// buffer should be enough for human to remove those lines from the excel sheet.
 	//We're reading a the rows as a bulk and match them at compute time for performance.
 
@@ -174,17 +178,21 @@ const parseTreesXLS = async (filename) => {
 
 function generateFilenameByTime(url) {
 	const parsedFile = path.parse(url);
-	const basename = parsedFile.name.toLowerCase() + '-' + moment().format('YYYY-MM-DD-hh-mm-ss') + parsedFile.ext.toLowerCase();
-	const filename = path.resolve(RAW_DATA_FOLDER, basename);
-	return filename;
+	const filenameNoDate = parsedFile.base;
+	const filenameWithDate = parsedFile.name.toLowerCase() + '-' + moment().format('YYYY-MM-DD-hh-mm-ss') + parsedFile.ext.toLowerCase();
+	const localFilename = path.resolve(RAW_DATA_FOLDER, filenameNoDate);
+	return {s3filename: filenameWithDate, localFilename: localFilename};
 }
 
 async function crawlRegionalTreePermit(url) {
 	try {
-		const filename = generateFilenameByTime(url);
-		const treePermits = await getRegionalTreePermitsFromFile(url, filename);
+		const {s3filename, localFilename} = generateFilenameByTime(url);
+		const treePermits = await getRegionalTreePermitsFromFile(url, localFilename);
 		const newTreePermits = await saveNewTreePermits(treePermits);
-		Log.info('Extracted ' + newTreePermits.length + ' new permits from: ' + filename);
+		Log.info('Extracted ' + newTreePermits.length + ' new permits from: ' + s3filename);
+		if (useS3){
+			await uploadToS3(s3filename, localFilename);	
+		}
 		return newTreePermits.length;
 	} catch (err) {
 		Log.error(err);
@@ -208,6 +216,17 @@ const regionalTreePermit = () => {
 			});
 	});
 };
+
+async function uploadToS3(filename, fullFileName) {
+	const fileStream = fs.createReadStream(fullFileName);
+	fileStream.on('error', function (err) {
+		Log.error('File Error', err);
+	});
+	const keyName = 'regional/' + filename;
+	const objectParams = { Bucket: bucketName, Key: keyName, Body: fileStream };
+	const res = await new aws.S3({ apiVersion: '2006-03-01' }).putObject(objectParams).promise();
+	Log.info(`Successfully Uploaded to ${bucketName}/${keyName}. Status code: ${res.$response.statusCode}`);
+}
 
 module.exports = {
 	regionalTreePermit
