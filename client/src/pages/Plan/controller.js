@@ -49,3 +49,13 @@ export const getPlanData = async (planId) => {
 		console.log('err',err);
 	}
 };
+
+export const getCommentsByPlanId = async (planId) => {
+	try {	
+		const response = await api.get(`/comment/${planId}`);
+		
+		return response;
+	} catch (err){ 
+		console.log('err',err);
+	}
+};
