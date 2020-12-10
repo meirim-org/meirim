@@ -1,46 +1,27 @@
-import { validateEmail } from '../../validations' 
+export const paymentRequestValidation = ({ amount, termsAccepted }) => {
+	const isValidAmount = Number.isInteger(amount);
+	const isValidAcceptedTerms =  termsAccepted || false;
 
-export const firstStepValidation = ({ name, email, password }) => {
-	const isValidEmail =  email ? validateEmail(email) : false
-	const isValidName =  Boolean(name)
-	const isValidPassword = password.length >= 6 
-
-	return { isValidEmail, isValidName, isValidPassword }
+	return { isValidAmount, isValidAcceptedTerms}
 }
 
-export const formValidation = ({ name, email, password, dirtyInputs, onFocusInput }) => {
-	const isValidEmail = 
-		onFocusInput.email  || validateEmail(email)? true : !dirtyInputs.email
-	const isValidName = 
-		onFocusInput.name  || Boolean(name) ? true : !dirtyInputs.name
-	const isValidPassword = 
-		onFocusInput.password  || password.length >= 6 ? true : !dirtyInputs.password
-
-	return { isValidEmail, isValidName, isValidPassword }
-}
-
-const inValidEmailMessage = 'מייל לא תקין'
-const emptyInputMessage = 'שדה חובה'
-const shortPasswordMessage = 'לפחות ששה תווים'
+const termsNotAccepted = 'נא לאשר את תנאי התמיכה'
+const invalidAmountMessage = 'נא לבחור סכום לתמיכה'
 const emptyString = ''
 
 export const getFormErrors = ({ 
-	validations: { isValidEmail, isValidName, isValidPassword }, 
-	values: { email, password } }) => {
-	const emailError = { 
-		isValid: isValidEmail,
-		message: isValidEmail ? emptyString : email ? inValidEmailMessage : emptyInputMessage
+	validations: { isValidAmount, isValidAcceptedTerms }})=>{
+	
+	const amountError = { 
+		isValid: isValidAmount,
+		message: isValidAmount ? emptyString : invalidAmountMessage
 	}
-	const nameError = { 
-		isValid: isValidName, 
-		message: isValidName ? emptyString : emptyInputMessage
+	const termsAcceptedError = { 
+		isValid: isValidAcceptedTerms, 
+		message: isValidAcceptedTerms ? emptyString : termsNotAccepted
 	}
-	const passwordError = { 
-		isValid: isValidPassword, 
-		message: isValidPassword ? emptyString : password ? shortPasswordMessage : emptyInputMessage
-	}
-
-	return { emailError, nameError, passwordError }
+	
+	return { amountError, termsAcceptedError }
 }
 
 

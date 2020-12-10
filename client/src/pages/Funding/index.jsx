@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import YoutubeVideo from 'react-youtube'
-import { Button, Checkbox, TextInput, Divider } from '../../shared';
+import { Button, Checkbox, TextInput, Divider, HelperText } from '../../shared';
 import { openModal, closeModal } from 'redux/modal/slice'
 import { useDispatch } from 'react-redux'
 import { createPaymentLink, registerUser } from './controller';
 import Payment from './payment';
 import SecondStepSignup from './secondStep';
 import { EMAIL_SENT_PAGE } from '../../router/contants'
-import { firstStepValidation, formValidation, getFormErrors } from './validations'
+import { paymentRequestValidation, getFormErrors, formValidation } from './validations'
 import { titles, paymentAmountOptions,  roadmap } from './constants'
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import Icon from '../../assets/svg/successIcon'
+import { faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 
 const FundingPage = () => {
 
@@ -24,16 +25,14 @@ const FundingPage = () => {
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
 	const [paymentOption, setPaymentOption] = useState({ amount: '' });
+	const [termsAccepted, setTermsAccepted] = useState(false);
 	const [paymentUrl, setPaymentUrl] = useState();
-	const [secondStepValues, setSecondStepValues] = useState({ type: 1, aboutme: '', address: '' });
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
 	const [loginValues, setLoginValues] = useState({ email: '', password: '' });
-
 	const [formErrors, setFormErrors] = useState({
-		emailError:{ isValid: true, message:'' },
-		nameError:{ isValid: true, message:'' },
-		passwordError:{ isValid: true, message:'' }
+		amountError:{ isValid: true, message:'' },
+		termsAcceptedError:{ isValid: true, message:'' },
 	})
 
 	const onInputFocus = (inputName) => {
@@ -49,85 +48,35 @@ const FundingPage = () => {
 		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
-	useEffect(() => {
-		const { email , name, password } = firstStepValues
-		const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
-		const { emailError, nameError, passwordError } =
-			getFormErrors({
-				validations: { isValidEmail, isValidName, isValidPassword },
-				values: { password, email }
-			})
-		setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
-	}, [firstStepValues, onFocusInput, dirtyInputs])
+	// useEffect(() => {
+	// 	const { email , name, password } = firstStepValues
+	// //	const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
+	// 	const { emailError, nameError, passwordError } =
+	// 		getFormErrors({
+	// 			validations: { isValidEmail, isValidName, isValidPassword },
+	// 			values: { password, email }
+	// 		})
+	// 	setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
+	// }, [firstStepValues, onFocusInput, dirtyInputs])
 
-	const handleSecondFormSubmit = async () => {
-		const { aboutme, type, address } = secondStepValues;
-		const { name, password, email } = firstStepValues;
-		const requestData = {
-			name,
-			password,
-			email,
-			about_me: aboutme,
-			type,
-			address,
-		};
-		try {
-			const response = await registerUser(requestData)
-			const success = response.status === 'OK'
-			if (success) {
-				setSecondStepSucess(true);
-			}
-		} catch (err) {
-			toast.error('מצטערים, התהליך לא הצליח. נא לנסות שוב', {
-				position: 'bottom-center',
-				autoClose: false,
-				hideProgressBar: true,
-				closeOnClick: true,
-				draggable: true,
-			})
-		}
-	};
-
-	const handleFirstFormSubmit = async () => {
-		const { email , name, password } = firstStepValues
-		const { isValidEmail, isValidName, isValidPassword } =
-			firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs })
-		if(!isValidEmail || !isValidName || !isValidPassword){
-			const { emailError, nameError, passwordError } =
+	const handlePaymentRequest = async () => {
+		const {isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount: paymentOption.amount, termsAccepted })
+		if(!isValidAmount || !isValidAcceptedTerms){
+			const { amountError, termsAcceptedError } =
 				getFormErrors({
-					validations: { isValidEmail, isValidName, isValidPassword },
-					values: { email, name, password }
+					validations: { isValidAmount, isValidAcceptedTerms },
+					values: { amount: paymentOption, termsAccepted }
 				})
-			setFormErrors({ ...formErrors, emailError, nameError, passwordError })
+			setFormErrors({ ...formErrors, amountError, termsAcceptedError })
 
 			return
 		}
-		try {
-			const response = await createPaymentLink();
-			const { status, data: { isUserRegistered } } = response
-			const successResponse = status === 'OK' && !isUserRegistered
-			if (successResponse) {
-				setPaymentRequestReady(true);
-			} else if (isUserRegistered) {
-				const emailError = { isValid: false, message: 'המייל קיים במערכת' }
-				setFormErrors({ ...formErrors, emailError })
-			}
-		} catch (err) {
-			if(err.message === 'Error: Request failed with status code 400'){
-				const emailError = { isValid: false, message: 'המייל לא תקין' }
-				setFormErrors({ ...formErrors, emailError })
-			}
-		}
-	};
-
-	const handlePaymentRequest = async () => {
 
 		try {
-			const paymentpageUrl= await createPaymentLink(paymentOption)
-			console.log(paymentpageUrl)
+			const paymentpageUrl = await createPaymentLink(paymentOption)
 			setPaymentUrl(paymentpageUrl)
-			// setPaymentRequestReady(true)
-			dispatch(openModal({ modalType: 'payment', modalProps:{url:paymentpageUrl} }))
+			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }))
+
 			// const { status, data: { isUserRegistered } } = response
 			// const successResponse = status === 'OK' && !isUserRegistered
 			// if (successResponse) {
@@ -137,9 +86,10 @@ const FundingPage = () => {
 			// 	setFormErrors({ ...formErrors, emailError })
 			// }
 		} catch (err) {
+			// all the errors from the payment 
 			if(err.message === 'Error: Request failed with status code 400'){
 				const emailError = { isValid: false, message: 'המייל לא תקין' }
-				setFormErrors({ ...formErrors, emailError })
+				// setFormErrors({ ...formErrors, emailError })
 			}
 		}
 	};
@@ -197,8 +147,11 @@ const FundingPage = () => {
 										/> <br/>
 									</SC.PaymentOption>
 								</div>
+								<HelperText error={formErrors.amountError.message} />
 							</SC.PaymentOptions>
-							<SC.TermsOfUseWrapper><Checkbox> </Checkbox>אני מאשר/ת את תנאי התמיכה</SC.TermsOfUseWrapper>
+							<SC.TermsOfUseWrapper>
+							אני מאשר/ת את תנאי התמיכה
+								<Checkbox error={formErrors.termsAcceptedError.message} onClick={()=>{setTermsAccepted(!termsAccepted)}}>  </Checkbox></SC.TermsOfUseWrapper>
 							<Button id="payment-button" text="תמכו במעירים" onClick={handlePaymentRequest} />
 					</SC.PaymentWrapper>
 					</SC.InputsWrapper>
