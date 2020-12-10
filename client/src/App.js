@@ -14,11 +14,11 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as Scenes from 'scenes'
 import EmailSent from 'pages/Register/emailSent';
 import Funding from 'pages/Funding';
+import FundingSuccess from 'pages/Funding/success';
 import Modal from 'shared/modal'
 import 'App.css';
 import { muiTheme } from 'theme'
 import { CookieHook } from 'hooks'
-
 library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
 
 const CircularWrapper = styled.div`
@@ -49,6 +49,7 @@ const App = () => {
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
+						<Route path="/funding/success" 	render={props => (<FundingSuccess {...props} />	)} />
 						<Route path="/funding" 	render={props => (<Funding {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route	path="/about" render={props => <Scenes.About {...props} />} />
