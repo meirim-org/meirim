@@ -1,22 +1,33 @@
-import React, { Fragment } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Navigation } from 'shared';
+import Footer from '../Footer';
+import * as SC from './style';
 
-import Navigation from "../Navigation";
-import Footer from "../Footer";
 
-export default function Wrapper(props) {
-    const { me, children } = props;
-    return (
-        <Fragment>
-            <Navigation me={me} />
-            {!children ? (
-                <div style={{ textAlign: "center" }}>
-                    <CircularProgress />
-                </div>
-            ) : (
-                props.children
-            )}
-            <Footer />
-        </Fragment>
-    );
+const Wrapper = (props) => {
+	const { children } = props;
+
+	return (
+		<Fragment>
+			<Navigation />
+			{!children ? (
+				<div style={{ textAlign: 'center' }}>
+					<CircularProgress />
+				</div>
+			) : (
+                <SC.ChildrenWrapper>
+                    {props.children}
+                </SC.ChildrenWrapper>
+			)}
+			<Footer />
+		</Fragment>
+	);
 }
+
+Wrapper.propTypes = {
+	children: PropTypes.array
+}
+
+export default Wrapper

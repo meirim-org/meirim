@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types'
 
-class UnsafeRender extends Component {
-  state = {
-    html: this.props.html,
-  };
+const UnsafeRender = ({ html }) => {
+	const createMarkup= (h) => {
+		return { __html: h };
+	}
+	
+	return <div dangerouslySetInnerHTML={createMarkup(html)} />;
+}
 
-  render() {
-    return <div dangerouslySetInnerHTML={this.createMarkup(this.state.html)} />;
-  }
-  createMarkup(html) {
-    return { __html: html };
-  }
+UnsafeRender.propTypes ={ 
+	html: PropTypes.object
 }
 
 export default UnsafeRender;

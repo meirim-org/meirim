@@ -64,7 +64,7 @@ class SinglePlan extends Component {
 
     render() {
         const { plan, error } = this.state;
-        const { me, match } = this.props;
+        const { match } = this.props;
         const { id } = match.params;
 
         if (error && error.status === 404) {
@@ -133,12 +133,12 @@ class SinglePlan extends Component {
             });
 
         return (
-            <Wrapper me={me}>
+            <Wrapper>
                 {plan.PL_NAME && (
                     <div className="container">
                         <div className="container">
                             <h1>{plan.PL_NAME}</h1>
-                            {!me && (
+                            {!true && (
                                 <div className="row">
                                     <div className="col">
                                         <h5>רוצים לקבל הודעה כשהתוכנית מתקדמת?</h5>
@@ -164,11 +164,11 @@ class SinglePlan extends Component {
                                     </div>
                                     <div className="rectangle">
                                         <h4>דעת הציבור</h4>
-                                        <Rate planId={id} me={me} />
+                                        <Rate planId={id} />
                                     </div>
                                     <div className="rectangle">
                                         <h4>דבר הציבור</h4>
-                                        <Comments planId={id} me={me} />
+                                        <Comments planId={id} />
                                     </div>
                                 </div>
                                 <div className="col">
@@ -212,7 +212,7 @@ class SinglePlan extends Component {
                                                 )}
                                                 % )
                                             </p>
-                                            <div style={{ height: 200 }}>
+                                            <div style={{ height: 200, 'max-width':'450px' }}>
                                                 <Chart
                                                     series={series}
                                                     data={dataArea}
@@ -225,7 +225,7 @@ class SinglePlan extends Component {
                                     {!!dataUnits && !!dataUnits[0].data.length && (
                                         <div className="rectangle">
                                             <h4>שינוי יחידות דיור</h4>
-                                            <div style={{ height: 200 }}>
+                                            <div style={{ height: 200, 'max-width':'450px' }}>
                                                 <Chart
                                                     series={series}
                                                     data={dataUnits}

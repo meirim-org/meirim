@@ -12,23 +12,23 @@ class CommentController extends Controller {
 
 		// add fname
 		let alias = Promise.resolve();
-		if (!req.session.person.alias) {
-			if (!req.body.alias) {
-				throw new Exception.BadRequest('Please provide an alias');
+		if (!req.session.person.name) {
+			if (!req.body.name) {
+				throw new Exception.BadRequest('Please provide person name');
 			}
-			const aliasString = req.body.alias;
+			const aliasString = req.body.name;
 			alias = Person.forge({
 				id: req.session.person.id
 			})
 				.fetch()
-				.then(person => person.save({ alias: aliasString }, { patch: true }))
+				.then(person => person.save({ name: aliasString }, { patch: true }))
 				.then((person) => {
 					req.session.person = person;
 					return false;
 				});
 		}
 		// this will throw an error when creating a comment
-		delete req.body.alias;
+		delete req.body.name;
 
 		return Promise.all([alias, super.create(req, res, next)]).then(
 			result => result[1]

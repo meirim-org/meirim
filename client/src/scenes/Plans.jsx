@@ -129,11 +129,10 @@ class Plans extends Component {
     }
 
     render() {
-        const { plans, planCounties, error, noData, hasMore, list } = this.state;
-        const { me } = this.props;
+        const { plans, planCounties, error, noData, hasMore } = this.state;
 
         return (
-            <Wrapper me={me}>
+            <Wrapper>
                 <div className="container">
                     <Autocomplete  classes=""
                         placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
