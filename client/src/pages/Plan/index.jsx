@@ -6,14 +6,14 @@ import PlanMobile from './mobile';
 import { useDataHandler } from './hooks';
 
 const Plan = ({ isMobile }) => {
-    const [tabValue, setValue] = React.useState(0);
-    const handleTabChange = (_, newValue) => setValue(newValue);
-    const { id: planId } = useParams();
-    const { planData, dataArea, textArea } = useDataHandler(planId);
+	const [tabValue, setValue] = React.useState(0);
+	const handleTabChange = (_, newValue) => setValue(newValue);
+	const { id: planId } = useParams();
+	const { planData, dataArea, textArea } = useDataHandler(planId);
 
-    if (!isMobile) return <PlanDesktop tabValue={tabValue} handleTabChange={handleTabChange}
-                                       planData={planData} dataArea={dataArea} textArea={textArea}/>;
-    else return <PlanMobile/>;
+	if (isMobile) return <PlanDesktop tabValue={tabValue} handleTabChange={handleTabChange}
+		planData={planData} dataArea={dataArea} textArea={textArea}/>;
+	else return <PlanMobile/>;
 };
 
 export default withGetScreen(Plan);
