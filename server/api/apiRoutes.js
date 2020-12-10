@@ -19,6 +19,9 @@ Router.post('/sign/activate', wrap(SignUp.activate, SignUp));
 Router.post('/sign/in', wrap(SignUp.signin, SignUp));
 Router.post('/sign/out', wrap(SignUp.signout, SignUp));
 
+// Person
+Router.post('/sign/auth/email', wrap(SignUp.authenticateEmail));
+
 // Plan
 Router.get('/plan/', wrap(Plan.browse, Plan));
 Router.get('/plan/:id', wrap(Plan.read, Plan));

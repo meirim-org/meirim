@@ -1,0 +1,27 @@
+# spins up a mysql service with "meirim" and "test_meirim" databases,
+# a GUI for it and an email testing tool
+
+version: '3.6'
+
+services:
+    db:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: meirim
+        volumes:
+            - ./init:/docker-entrypoint-initdb.d
+        ports:
+            - "3306:3306"
+    fake-smtp:
+        image: mailhog/mailhog
+        ports:
+            - 587:1025
+            - 8025:8025
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080

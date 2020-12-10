@@ -33,7 +33,7 @@ class Alert extends Model {
 	}
 
 	initialize () {
-		this.on('saving', this._saving, this);
+		this.on('saving', this.geocodeAddress, this);
 		super.initialize();
 	}
 
@@ -41,7 +41,7 @@ class Alert extends Model {
 		return this.belongsTo(Person);
 	}
 
-	_saving (model) {
+	geocodeAddress (model) {
 		// partial validation
 		const partialRules = Object.assign(model.rules, {});
 		delete partialRules.geom;
