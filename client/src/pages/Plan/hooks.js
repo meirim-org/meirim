@@ -2,17 +2,19 @@ import { useState, useEffect } from 'react';
 import geojsonArea from '@mapbox/geojson-area';
 import { parseNumber } from 'utils';
 import * as utils from './utils';
-import { getPlanData } from './controller';
+import { getPlanData, getCommentsByPlanId } from './controller';
 
 export const useDataHandler = (planId) => {
 	const [ planData, setPlanData ] = useState(utils.initialPlanData);
+	const [ commentsData, setCommentsData ] = useState([]);
 	const [ textArea, setTextArea ] = useState(utils.initialTextArea);
 	const [ dataArea, setDataArea ] = useState(utils.initialDataArea); 
-	const [ dataUnits, setDataUnits ] = useState(utils.initialDataUnits);
+	const [ dataUnits, setDataUnits ] = useState([utils.initialDataUnits]);
 
 	useEffect (() => {
 		const fetchData = async () => {
 			const response = await getPlanData(planId);
+			
 			const { 
 				PLAN_COUNTY_NAME: countyName, PL_NAME: name, 
 				status, goals_from_mavat: goalsFromMavat, plan_url: url, 
@@ -46,9 +48,16 @@ export const useDataHandler = (planId) => {
 			setPlanData(pv => ({ ...pv, countyName, name, status, type, 
 				goalsFromMavat: goalsFromMavat, url, areaChanges, geom }));
 		};	
-	
+
+		const fetchComments = async () => {
+			const response = await getCommentsByPlanId(planId);
+			const comments = response.data;
+			setCommentsData(comments);
+		};
+		
 		fetchData();
+		fetchComments();
 	} , []);
 
-	return { textArea, dataArea, planData, dataUnits }; 
+	return { textArea, dataArea, planData, dataUnits, commentsData }; 
 };

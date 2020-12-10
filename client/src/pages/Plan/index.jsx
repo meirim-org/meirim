@@ -9,10 +9,10 @@ const Plan = ({ isMobile }) => {
 	const [tabValue, setValue] = React.useState(0);
 	const handleTabChange = (_, newValue) => setValue(newValue);
 	const { id: planId } = useParams();
-	const { planData, dataArea, textArea } = useDataHandler(planId);
+	const { planData, dataArea, textArea, commentsData } = useDataHandler(planId);
 
 	if (isMobile) return <PlanDesktop tabValue={tabValue} handleTabChange={handleTabChange}
-		planData={planData} dataArea={dataArea} textArea={textArea}/>;
+		planData={planData} dataArea={dataArea} textArea={textArea} commentsData={commentsData}/>;
 	else return <PlanMobile/>;
 };
 
