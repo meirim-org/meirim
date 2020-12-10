@@ -38,6 +38,7 @@ export const PaymentWrapper = styled.div`
 export const RoadmapDetails = styled.div`
     float:right; 
     width:100%; 
+    display: grid;
     padding: 1.5em 1.5em;
     @media ${device.laptop} {
       width:60%;
@@ -228,7 +229,11 @@ export const TermsOfUseWrapper= styled.div`
   margin: 1em 0;
   border-radius: 12px;
   font-family: Assistant !important;
-  width:100%;
+  width:340px%;
+  padding-bottom: ${props => props.smallPadding ? '1em' : '2.45em'};
+  @media ${device.tablet} {
+   max-width: initial;
+}
 `;
 
 export const InputsTitle = styled.div`
@@ -247,15 +252,11 @@ export const InputsTitle = styled.div`
 
 export const ButtonWrapper = styled.div`
   border-radius:0 0 12px 12px;
-  background-color: #f1eef2;
-  display: grid;
-  padding-right: 1.5em;
-  padding-left: 1.5em;
+  max-width:300px;
+  display:grid;
   padding-bottom: ${props => props.smallPadding ? '1em' : '2.45em'};
     @media ${device.tablet} {
-     max-width: initial;
-     padding-right: 3.7em;
-     padding-left: 3.7em;
+     max-width: 340px;
   }
 `;
 
