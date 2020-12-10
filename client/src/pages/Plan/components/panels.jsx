@@ -1,9 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Chart } from 'react-charts';
-import { TabPanel, TabBox } from 'shared';
+import { TabPanel, TabBox, Typography, Button } from 'shared';
 import { renderMultiplier, renderPercent } from 'utils';
 import { series, axes } from '../utils';
+import * as SC from './style';
+import t from 'locale/he_IL';
+import { useTheme } from '@material-ui/styles';
+import { Badge } from '@material-ui/core';
+
+
+
 
 export const GoalsPanel = ({ goalsFromMavat, tabValue }) => 
 	<TabPanel value={tabValue} index={0}>
@@ -85,3 +92,133 @@ StatsPanel.propTypes = {
 	url: PropTypes.string.isRequired,
 	tabValue: PropTypes.string.isRequired,
 };
+
+export const CommentPanel = ({ key, tabValue, commentData }) => {
+	const theme = useTheme();
+	// const { id, content, parent_id, created_at } = commentData;
+	const { id, content, parent_id } = commentData;
+	const { name } = commentData.person;
+	
+	return (
+		<TabPanel value={tabValue} index={1}>
+			<TabBox isOpinion={true} disabled={false} key={key}>
+				<SC.Header>
+					<SC.FirstSide>
+						<Typography
+							variant="menuTitle"
+							mobileVariant="menuTitle"
+							component="span"
+							color={theme.palette.green['text2']}
+						>
+							ביקורת
+						</Typography>
+						<Typography
+							variant="highlightedText"
+							mobileVariant="highlightedText"
+							component="span"
+							color={theme.palette.black}
+						>
+							{name}
+						</Typography>
+					</SC.FirstSide>
+					<SC.SecondSide>
+						<Typography
+							variant="light"
+							mobileVariant="light"
+							component="span"
+							color={theme.palette.gray['main']}
+						>
+                            לפני
+							4
+							{/* {daysPassed(opinion.timeStamp)} */}
+                            ימים
+						</Typography>
+					</SC.SecondSide>
+				</SC.Header>
+				<SC.Text>
+					<Typography
+						variant="paragraphText"
+						mobileVariant="paragraphText"
+						component="p"
+						color={theme.palette.black}
+					>
+						{content}
+					</Typography>
+				</SC.Text>
+				<SC.Like>
+					<Button
+						id={'like-' + key}
+						textColor={theme.palette.black}
+						text={t.iLike}
+						onClick={() => ''}
+						simple
+						iconBefore={<SC.LikeIcon/>}
+					/>
+					<Badge
+						badgeContent="4"
+					/>
+				</SC.Like>
+				<SC.AddComment className={newComment ? 'active' : ''}>
+					<Button
+						id={'add-response-' + key}
+						textColor={theme.palette.black}
+						text={t.addAResponse}
+						onClick={() => setNewComment(true)}
+						simple
+						iconBefore={<SC.CommentIcon/>}
+					/>
+				</SC.AddComment>
+				<SC.CommentsWrapper>
+
+					{newComment
+						?
+						<SC.addCommentWrapper>
+							<SC.FormControl fullWidth={true}>
+								<TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
+							</SC.FormControl>
+							<SC.addCommentButtonWrapper>
+								<Button
+									id="close-new-opinion"
+									text={t.close}
+									simple
+									small
+									textColor={theme.palette.black}
+									onClick={() => setNewComment(false)}
+								/>
+								<Button
+									id="send-new-opinion"
+									text={t.send}
+									fontWeight={600}
+									small
+									simple
+									onClick={() => ''}
+								/>
+							</SC.addCommentButtonWrapper>
+
+						</SC.addCommentWrapper>
+						:
+						null
+					}
+
+					{/* {comments.length
+						?
+						comments.map((comment, idx) => (
+							<Comment comment={comment} key={idx}/>
+						))
+						:
+						null
+					} */}
+				</SC.CommentsWrapper>
+
+			</TabBox>
+		</TabPanel>
+	);
+};
+
+CommentPanel.propTypes = {
+	key: PropTypes.number.isRequired,
+	commentData: PropTypes.object.isRequired,
+	tabValue: PropTypes.string.isRequired,
+};
+
+
