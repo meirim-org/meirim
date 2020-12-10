@@ -25,7 +25,7 @@ const FundingPage = () => {
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
 	const [paymentOption, setPaymentOption] = useState({ amount: '' });
-	const [termsAccepted, setTermsAccepted] = useState(false);
+	const [termsAccepted, setTermsAccepted] = useState(false );
 	const [paymentUrl, setPaymentUrl] = useState();
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
@@ -127,7 +127,7 @@ const FundingPage = () => {
 								</SC.RoadmapItemDescription>
 							</SC.RoadmapItemWrapper>))}
 					</SC.RoadmapDetails>
-					<Divider></Divider>
+					<Divider/>
 					<SC.PaymentWrapper>
 							<SC.PaymentOptions>
 							{paymentAmountOptions.map(o => (
@@ -151,8 +151,11 @@ const FundingPage = () => {
 							</SC.PaymentOptions>
 							<SC.TermsOfUseWrapper>
 							אני מאשר/ת את תנאי התמיכה
-								<Checkbox error={formErrors.termsAcceptedError.message} onClick={()=>{setTermsAccepted(!termsAccepted)}}>  </Checkbox></SC.TermsOfUseWrapper>
-							<Button id="payment-button" text="תמכו במעירים" onClick={handlePaymentRequest} />
+								<Checkbox error={formErrors.termsAcceptedError.message} onClick={()=>{setTermsAccepted(!termsAccepted)}}>  </Checkbox>
+							</SC.TermsOfUseWrapper>
+							<SC.ButtonWrapper>
+								<Button id="payment-button" text="תמכו במעירים" onClick={handlePaymentRequest} style={'width:'}/>
+							</SC.ButtonWrapper>
 					</SC.PaymentWrapper>
 					</SC.InputsWrapper>
 			</SC.MainWrapper>
