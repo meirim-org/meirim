@@ -10,7 +10,8 @@ import Row from './row';
 import Divider from './divider';
 import { default as IconButton } from './icon';
 import Menu from './menu';
+import HelperText from './helperText'
 
 export {
-	Button, Dropdown, TextArea, TextInput, Modal, Link, Checkbox, Navigation, Row, IconButton, Menu, Divider
+	Button, Dropdown, TextArea, TextInput, Modal, Link, Checkbox, Navigation, Row, IconButton, Menu, Divider, HelperText
 };
