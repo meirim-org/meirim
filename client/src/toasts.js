@@ -19,3 +19,13 @@ export const serverErrorToast = () =>
 		closeOnClick: true,
 		draggable: true,
 	})
+
+export const externalPaymentErrorToast = () =>
+	toast.error('מתנצלים, יש תקלה בשירות התשלומים. נשמח אם תנסו שוב במועד מאוחר', {
+		toastId: '500message',
+		position: 'bottom-center',
+		autoClose: false,
+		hideProgressBar: true,
+		closeOnClick: true,
+		draggable: true,
+	})

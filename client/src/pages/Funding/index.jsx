@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom'
-import { toast } from 'react-toastify';
+import { externalPaymentErrorToast } from 'toasts'
 import YoutubeVideo from 'react-youtube'
 import { Button, Checkbox, TextInput, Divider, HelperText } from '../../shared';
 import { openModal, closeModal } from 'redux/modal/slice'
@@ -86,7 +86,8 @@ const FundingPage = () => {
 			// 	setFormErrors({ ...formErrors, emailError })
 			// }
 		} catch (err) {
-			// all the errors from the payment 
+			// error from the paymnet service, or other errors, need to check
+			externalPaymentErrorToast()
 			if(err.message === 'Error: Request failed with status code 400'){
 				const emailError = { isValid: false, message: 'המייל לא תקין' }
 				// setFormErrors({ ...formErrors, emailError })
