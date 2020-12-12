@@ -61,3 +61,17 @@ const handleMetersChange = (change) => {
 const handleNotMeterChange = (change) => {
 	return [{ x:change[3], y:parseNumber(change[5]) }, { x:change[3], y:parseNumber(change[6]) }];
 };
+
+export const printRadioClass = (selectedValue, radioValue, validationRrror) => {
+	let classes = [];
+
+	if (selectedValue === radioValue) {
+		classes.push('active');
+	}
+
+	if (validationRrror) {
+		classes.push('error');
+	}
+
+	return classes.join();
+};

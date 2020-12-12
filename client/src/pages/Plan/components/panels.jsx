@@ -7,9 +7,7 @@ import { series, axes } from '../utils';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { Badge } from '@material-ui/core';
-
-
+import { Badge, TextareaAutosize } from '@material-ui/core';
 
 
 export const GoalsPanel = ({ goalsFromMavat, tabValue }) => 
@@ -93,7 +91,8 @@ StatsPanel.propTypes = {
 	tabValue: PropTypes.string.isRequired,
 };
 
-export const CommentPanel = ({ key, tabValue, commentData }) => {
+export const CommentPanel = ({ key, tabValue, commentData, newComment,
+	handleNewComment }) => {
 	const theme = useTheme();
 	// const { id, content, parent_id, created_at } = commentData;
 	const { id, content, parent_id } = commentData;
@@ -128,10 +127,10 @@ export const CommentPanel = ({ key, tabValue, commentData }) => {
 							component="span"
 							color={theme.palette.gray['main']}
 						>
-                            לפני
+	                    לפני
 							4
 							{/* {daysPassed(opinion.timeStamp)} */}
-                            ימים
+	                    ימים
 						</Typography>
 					</SC.SecondSide>
 				</SC.Header>
@@ -163,7 +162,7 @@ export const CommentPanel = ({ key, tabValue, commentData }) => {
 						id={'add-response-' + key}
 						textColor={theme.palette.black}
 						text={t.addAResponse}
-						onClick={() => setNewComment(true)}
+						onClick={() => handleNewComment(true)}
 						simple
 						iconBefore={<SC.CommentIcon/>}
 					/>
@@ -183,7 +182,7 @@ export const CommentPanel = ({ key, tabValue, commentData }) => {
 									simple
 									small
 									textColor={theme.palette.black}
-									onClick={() => setNewComment(false)}
+									onClick={() => handleNewComment(false)}
 								/>
 								<Button
 									id="send-new-opinion"
@@ -201,13 +200,13 @@ export const CommentPanel = ({ key, tabValue, commentData }) => {
 					}
 
 					{/* {comments.length
-						?
-						comments.map((comment, idx) => (
-							<Comment comment={comment} key={idx}/>
-						))
-						:
-						null
-					} */}
+					?
+					comments.map((comment, idx) => (
+						<Comment comment={comment} key={idx}/>
+					))
+					:
+					null
+				} */}
 				</SC.CommentsWrapper>
 
 			</TabBox>
@@ -215,9 +214,15 @@ export const CommentPanel = ({ key, tabValue, commentData }) => {
 	);
 };
 
+CommentPanel.defaultProps = {
+	newComment: false
+};
+
 CommentPanel.propTypes = {
 	key: PropTypes.number.isRequired,
 	commentData: PropTypes.object.isRequired,
+	newComment: PropTypes.bool.isRequired,
+	handleNewComment: PropTypes.func.isRequired,
 	tabValue: PropTypes.string.isRequired,
 };
 
