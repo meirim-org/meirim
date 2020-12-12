@@ -100,7 +100,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment,
 	
 	return (
 		<TabPanel value={tabValue} index={1}>
-			<TabBox isOpinion={true} disabled={false} key={key}>
+			<TabBox isOpinion={true} disabled={newComment} key={key}>
 				<SC.Header>
 					<SC.FirstSide>
 						<Typography
@@ -198,17 +198,8 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment,
 						:
 						null
 					}
-
-					{/* {comments.length
-					?
-					comments.map((comment, idx) => (
-						<Comment comment={comment} key={idx}/>
-					))
-					:
-					null
-				} */}
 				</SC.CommentsWrapper>
-
+				
 			</TabBox>
 		</TabPanel>
 	);
@@ -225,5 +216,3 @@ CommentPanel.propTypes = {
 	handleNewComment: PropTypes.func.isRequired,
 	tabValue: PropTypes.string.isRequired,
 };
-
-

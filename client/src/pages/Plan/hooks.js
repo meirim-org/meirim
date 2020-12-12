@@ -51,7 +51,21 @@ export const useDataHandler = (planId) => {
 
 		const fetchComments = async () => {
 			const response = await getCommentsByPlanId(planId);
-			const comments = response.data;
+			let comments = response.data;
+			let forDeletion = [];
+			comments.map((comment) => {
+				let parentId = comment.parent_id;
+
+				if (parentId !== null ) {
+					let parent = comments.find(comment => comment.id === parentId);
+					if (parent.subComments === undefined) {
+						parent.subComments = [];
+					} 
+					parent.subComments.push(comment);
+					forDeletion.push(comment.id);
+				}
+			});
+			comments = comments.filter(item => !forDeletion.includes(item.id));
 			setCommentsData(comments);
 		};
 		
