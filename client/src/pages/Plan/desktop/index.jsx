@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Wrapper from 'components/Wrapper';
-import { Header, GoalsPanel, StatusTypeUrlPanel, StatsPanel, CommentPanel, NewCommentForm } from '../components';
+import { Header, GoalsPanel, StatusTypeUrlPanel, StatsPanel, CommentPanel, SubComment, NewCommentForm } from '../components';
 import * as SC from '../style';
+
 
 const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, commentsData,
 	 newComment, handleNewComment, newCommentType, handleNewCommentType, commentTypes, newCommentTypeError }) => {
@@ -13,12 +14,12 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header 
-						tablValue={tabValue} handleTabChange={handleTabChange} 
-						name={name} countyName={countyName} />
+						tablValue={tabValue}
+						handleTabChange={handleTabChange} 
+						name={name}
+						countyName={countyName} />
 					<SC.Main>
-						<StatusTypeUrlPanel 
-							tabValue={tabValue} type={type} 
-							status={status} url={url} />
+						<StatusTypeUrlPanel tabValue={tabValue} type={type} status={status} url={url} />
 						<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
 						<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
 						<NewCommentForm 
@@ -32,13 +33,20 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 						    newCommentTypeError={newCommentTypeError} />
 
 						{commentsData.map((comment, index) => (
-							<CommentPanel 
-								key={index} 
-								tabValue={tabValue}
-								commentData={comment}
-								newComment={newComment}
-								handleNewComment={handleNewComment}
-							/> 
+							<>
+								<CommentPanel 
+									key={index} 
+									tabValue={tabValue}
+									commentData={comment}
+									newComment={newComment}
+									handleNewComment={handleNewComment}
+								/> 
+								{comment.subComments &&
+									comment.subComments.map((subComment, index) => (
+										<SubComment key={index} subCommentData={subComment} />
+									))
+								}
+							</>
 						))}
 
 					</SC.Main>

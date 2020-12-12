@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
 import { 
 	FormControl as MuiFormControl,
 	FormControlLabel as MuiFormControlLabel,
@@ -231,3 +232,26 @@ export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
 // export const NoOpinionsWrapper = withTheme(styled.div`
 //     text-align: center;
 // `);
+
+export const SubCommentBox = withTheme(styled.div`
+    background-color: ${props => props.theme.palette.white} !important;  
+    padding: 2rem 3.75rem 1rem 2rem;
+`);
+
+export const SubCommentHeader = styled.div`
+    position: relative;
+    display: flex;
+    margin: 0 -.5rem .5rem;
+    > *:not(svg) {
+        padding: 0 .5rem;
+    }
+`;
+
+export const ArrowIcon = withTheme(styled(SubdirectoryArrowLeftRoundedIcon)`
+    position: absolute;
+    font-size: 1rem !important;
+    right: 0;
+    transform: translate(100%, -50%);
+    top: 50%;
+    fill: ${props => props.theme.palette.secondary['600']} !important;  
+`);

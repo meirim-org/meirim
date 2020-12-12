@@ -20,6 +20,7 @@ const StyledTabBox = withTheme(styled.div`
             'like add-comment'
             'comments comments'
             ;
+        margin-bottom: 0;
     `}  
       
     ${({ disabled }) => disabled && `
