@@ -42,7 +42,7 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         min-width: auto !important;
         padding: .4rem 1.5rem;
     }
-    .PrivateTabIndicator-colorSecondary-3 {
+    .MuiTabs-indicator {
         background-color:  ${props => props.theme.palette.primary.main} !important;
     }
     .Mui-selected {

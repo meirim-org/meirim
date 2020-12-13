@@ -75,7 +75,7 @@ export const NewCommentForm = ({ comments, newComment, handleNewComment, newComm
 						<Button
 							id="send-new-opinion"
 							text={t.send}
-							fontWeight={600}
+							fontWeight={'600'}
 							small
 							simple
 							onClick={() => handleNewCommentSubmit(newCommentType, handleNewCommentTypeError)}
@@ -101,14 +101,14 @@ NewCommentForm.propTypes = {
 	handleNewCommentText: PropTypes.func.isRequired,
 	newCommentTypeError: PropTypes.bool.isRequired,
 	handleNewCommentTypeError: PropTypes.func.isRequired,
-	tabValue: PropTypes.number.isRequired,
+	tabValue: PropTypes.any.isRequired,
 };
 
 export const NewSubCommentForm = ({ newSubComment, handleNewSubComment }) => {
 	const theme = useTheme();
 
 	return (
-		<SC.addCommentWrapper>
+		<SC.addSubCommentWrapper>
 			<SC.FormControl fullWidth={true}>
 				<TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
 			</SC.FormControl>
@@ -124,14 +124,14 @@ export const NewSubCommentForm = ({ newSubComment, handleNewSubComment }) => {
 				<Button
 					id="send-new-opinion"
 					text={t.send}
-					fontWeight={600}
+					fontWeight={'600'}
 					small
 					simple
 					onClick={() => ''}
 				/>
 			</SC.addCommentButtonWrapper>
 
-		</SC.addCommentWrapper>
+		</SC.addSubCommentWrapper>
 	);
 };
 

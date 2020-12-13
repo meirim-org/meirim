@@ -16,9 +16,10 @@ export const GoalsPanel = ({ goalsFromMavat, tabValue }) =>
 		<TabBox>{goalsFromMavat}</TabBox>
 	</TabPanel>;
 
+
 GoalsPanel.propTypes = {
 	goalsFromMavat: PropTypes.string.isRequired,
-	tabValue: PropTypes.number.isRequired,
+	tabValue: PropTypes.any.isRequired,
 };
 
 /*mynameisuh*/
@@ -31,7 +32,7 @@ StatusTypeUrlPanel.propTypes = {
 	type: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
 	url: PropTypes.string,
-	tabValue: PropTypes.number.isRequired,
+	tabValue: PropTypes.any.isRequired,
 };
 
 export const StatsPanel = ({ tabValue, dataArea, textArea, }) => {
@@ -89,10 +90,10 @@ StatsPanel.propTypes = {
 	dataArea: PropTypes.array.isRequired,
 	textArea: PropTypes.object.isRequired,
 	url: PropTypes.string,
-	tabValue: PropTypes.number.isRequired,
+	tabValue: PropTypes.any.isRequired,
 };
 
-export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
+export const CommentPanel = ({ id, tabValue, commentData, newComment }) => {
 	const theme = useTheme();
 	const [newSubComment, setNewSubComment] = React.useState(false);
 	const handleNewSubComment = (newValue) => setNewSubComment(newValue);
@@ -100,8 +101,8 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 	const { name } = commentData.person;
 	
 	return (
-		<TabPanel value={tabValue} index={1}>
-			<TabBox isOpinion={true} disabled={newComment} key={key}>
+		<TabPanel value={tabValue} index={1} >
+			<TabBox isOpinion={true} disabled={newComment}>
 				<SC.Header>
 					<SC.FirstSide>
 						<Typography
@@ -146,7 +147,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 				</SC.Text>
 				<SC.Like>
 					<Button
-						id={'like-' + key}
+						id={'like-' + id}
 						textcolor={theme.palette.black}
 						text={t.iLike}
 						onClick={() => ''}
@@ -159,7 +160,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 				</SC.Like>
 				<SC.AddSubComment className={newSubComment ? 'active' : ''}>
 					<Button
-						id={'add-response-' + key}
+						id={'add-response-' + id}
 						textcolor={theme.palette.black}
 						text={t.addAResponse}
 						onClick={() => setNewSubComment(true)}
@@ -176,7 +177,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 				{commentData.subComments &&
 					<div>
 						{commentData.subComments.map((subComment, index) => (
-							<SubComment key={index} subCommentData={subComment} />
+							<SubComment key={index} id={index} subCommentData={subComment} />
 						))}
 					</div>
 				}
@@ -190,9 +191,9 @@ CommentPanel.defaultProps = {
 };
 
 CommentPanel.propTypes = {
-	key: PropTypes.number.isRequired,
+	id: PropTypes.number.isRequired,
 	commentData: PropTypes.object.isRequired,
 	newComment: PropTypes.bool.isRequired,
 	handleNewComment: PropTypes.func.isRequired,
-	tabValue: PropTypes.number.isRequired,
+	tabValue: PropTypes.any.isRequired,
 };

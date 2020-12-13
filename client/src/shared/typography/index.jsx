@@ -103,7 +103,7 @@ const Typography = ({ component, variant, mobileVariant, color, children }) => (
 Typography.propTypes = {
 	component: PropTypes.string.isRequired,
 	color: PropTypes.string.isRequired,
-	children: PropTypes.string,
+	children: PropTypes.any,
 	variant: PropTypes.oneOf([
 		'megaHeadTitle',
 		'title',

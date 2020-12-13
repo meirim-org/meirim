@@ -64,7 +64,7 @@ const Header = ({ countyName, name, tabValue, handleTabChange, comments }) => {
 Header.propTypes = {
 	name: PropTypes.string,
 	countyName: PropTypes.string.isRequired,
-	tabValue: PropTypes.number.isRequired,
+	tabValue: PropTypes.any.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	comments: PropTypes.string.isRequired,
 };

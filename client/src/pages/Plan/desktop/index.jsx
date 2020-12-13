@@ -17,7 +17,7 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header 
-						tablValue={tabValue}
+						tabValue={tabValue}
 						handleTabChange={handleTabChange} 
 						name={name}
 						countyName={countyName}
@@ -44,7 +44,8 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 							<>
 								{commentsData.map((comment, index) => (
 									<CommentPanel 
-										key={index} 
+										key={index}
+										id={index} 
 										tabValue={tabValue}
 										commentData={comment}
 										newComment={newComment}
@@ -72,7 +73,7 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 
 PlanDesktop.propTypes = {
 	planData: PropTypes.object.isRequired,
-	tabValue: PropTypes.number.isRequired,
+	tabValue: PropTypes.any.isRequired,
 	dataArea: PropTypes.array.isRequired,
 	commentTypes: PropTypes.array.isRequired,
 	commentsData: PropTypes.array.isRequired,

@@ -114,7 +114,7 @@ const Button = ({
 			textcolor={textcolor}
 			iconbefore={iconBefore}
 			iconafter={iconAfter}
-			active={active}
+			active={active ? 1 : ''}
 			disabled={disabled}
 			theme={theme}
 		>
@@ -129,7 +129,8 @@ Button.defaultProps = {
 	small: false,
 	altColor: false,
 	simple: false,
-	disabled: false
+	disabled: false,
+	active: false,
 };
 
 Button.propTypes = {

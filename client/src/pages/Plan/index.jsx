@@ -11,7 +11,7 @@ const Plan = ({ isMobile }) => {
 	const [newComment, setNewComment] = React.useState(false);
 	const [newCommentType, setNewCommentType] = React.useState('');;
 	const [newCommentTypeError, setNewCommentTypeError] = React.useState(false);
-	const [newCommentText, setNewCommentText] = React.useState(null);;
+	const [newCommentText, setNewCommentText] = React.useState('');;
 	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleNewComment = (newValue) => setNewComment(newValue);
 	const handleNewCommentType = (_, newValue) => {
