@@ -36,6 +36,10 @@ class TreePermit extends Model {
 	get tableName () {
 		return 'tree_permit';
 	}
+
+	canRead () {
+		return Promise.resolve(this);
+	}
 }
 
 module.exports = TreePermit;
