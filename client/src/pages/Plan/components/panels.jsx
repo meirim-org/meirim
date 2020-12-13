@@ -7,8 +7,8 @@ import { series, axes, daysPassed } from '../utils';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { Badge, TextareaAutosize } from '@material-ui/core';
-import { SubComment } from './';
+import { Badge } from '@material-ui/core';
+import { SubComment, NewSubCommentForm } from './';
 
 
 export const GoalsPanel = ({ goalsFromMavat, tabValue }) => 
@@ -18,7 +18,7 @@ export const GoalsPanel = ({ goalsFromMavat, tabValue }) =>
 
 GoalsPanel.propTypes = {
 	goalsFromMavat: PropTypes.string.isRequired,
-	tabValue: PropTypes.string.isRequired,
+	tabValue: PropTypes.number.isRequired,
 };
 
 /*mynameisuh*/
@@ -30,8 +30,8 @@ export const StatusTypeUrlPanel = ({ status, tabValue, type, url }) =>
 StatusTypeUrlPanel.propTypes = {
 	type: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
-	url: PropTypes.string.isRequired,
-	tabValue: PropTypes.string.isRequired,
+	url: PropTypes.string,
+	tabValue: PropTypes.number.isRequired,
 };
 
 export const StatsPanel = ({ tabValue, dataArea, textArea, }) => {
@@ -88,13 +88,14 @@ export const StatsPanel = ({ tabValue, dataArea, textArea, }) => {
 StatsPanel.propTypes = {
 	dataArea: PropTypes.array.isRequired,
 	textArea: PropTypes.object.isRequired,
-	url: PropTypes.string.isRequired,
-	tabValue: PropTypes.string.isRequired,
+	url: PropTypes.string,
+	tabValue: PropTypes.number.isRequired,
 };
 
 export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 	const theme = useTheme();
 	const [newSubComment, setNewSubComment] = React.useState(false);
+	const handleNewSubComment = (newValue) => setNewSubComment(newValue);
 	const { content, created_at } = commentData;
 	const { name } = commentData.person;
 	
@@ -146,7 +147,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 				<SC.Like>
 					<Button
 						id={'like-' + key}
-						textColor={theme.palette.black}
+						textcolor={theme.palette.black}
 						text={t.iLike}
 						onClick={() => ''}
 						simple
@@ -159,7 +160,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 				<SC.AddSubComment className={newSubComment ? 'active' : ''}>
 					<Button
 						id={'add-response-' + key}
-						textColor={theme.palette.black}
+						textcolor={theme.palette.black}
 						text={t.addAResponse}
 						onClick={() => setNewSubComment(true)}
 						simple
@@ -167,32 +168,8 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 					/>
 				</SC.AddSubComment>
 				<SC.CommentsWrapper>
-
 					{newSubComment &&
-						<SC.addCommentWrapper>
-							<SC.FormControl fullWidth={true}>
-								<TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
-							</SC.FormControl>
-							<SC.addCommentButtonWrapper>
-								<Button
-									id="close-new-opinion"
-									text={t.close}
-									simple
-									small
-									textColor={theme.palette.black}
-									onClick={() => setNewSubComment(false)}
-								/>
-								<Button
-									id="send-new-opinion"
-									text={t.send}
-									fontWeight={600}
-									small
-									simple
-									onClick={() => ''}
-								/>
-							</SC.addCommentButtonWrapper>
-
-						</SC.addCommentWrapper>
+						<NewSubCommentForm newSubComment={newSubComment} handleNewSubComment={handleNewSubComment}  />
 					}
 				</SC.CommentsWrapper>
 				
@@ -217,5 +194,5 @@ CommentPanel.propTypes = {
 	commentData: PropTypes.object.isRequired,
 	newComment: PropTypes.bool.isRequired,
 	handleNewComment: PropTypes.func.isRequired,
-	tabValue: PropTypes.string.isRequired,
+	tabValue: PropTypes.number.isRequired,
 };

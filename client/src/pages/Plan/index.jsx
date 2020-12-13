@@ -9,12 +9,17 @@ import t from 'locale/he_IL';
 const Plan = ({ isMobile }) => {
 	const [tabValue, setValue] = React.useState(0);
 	const [newComment, setNewComment] = React.useState(false);
-	const [newCommentType, setNewCommentType] = React.useState(null);;
+	const [newCommentType, setNewCommentType] = React.useState('');;
 	const [newCommentTypeError, setNewCommentTypeError] = React.useState(false);
+	const [newCommentText, setNewCommentText] = React.useState(null);;
 	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleNewComment = (newValue) => setNewComment(newValue);
-	const handleNewCommentType = (_, newValue) => setNewCommentType(newValue);
+	const handleNewCommentType = (_, newValue) => {
+		setNewCommentType(newValue);
+		setNewCommentTypeError(false);
+	};
 	const handleNewCommentTypeError = () => setNewCommentTypeError(true);
+	const handleNewCommentText = (newValue) => setNewCommentText(newValue);
 	const { id: planId } = useParams();
 	const { planData, dataArea, textArea, commentsData } = useDataHandler(planId);
 	const commentTypes = [
@@ -46,6 +51,8 @@ const Plan = ({ isMobile }) => {
 		 handleNewCommentType={handleNewCommentType}
 		 newCommentTypeError={newCommentTypeError}
 		 handleNewCommentTypeError={handleNewCommentTypeError} 
+		 newCommentText={newCommentText}
+		 handleNewCommentText={handleNewCommentText}
 		 commentTypes={commentTypes}/>;
 	else return <PlanMobile/>;
 };

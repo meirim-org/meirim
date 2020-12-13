@@ -1,6 +1,6 @@
 import Header from './header';
 import { GoalsPanel, StatusTypeUrlPanel, StatsPanel, CommentPanel } from './panels';
-import { NewCommentForm } from './forms';
+import { NewCommentForm, NewSubCommentForm } from './forms';
 import { SubComment } from './subComment';
 
 export {
@@ -10,5 +10,6 @@ export {
 	Header,
 	CommentPanel,
 	SubComment,
-	NewCommentForm
+	NewCommentForm,
+	NewSubCommentForm
 };

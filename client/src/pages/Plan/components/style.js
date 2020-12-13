@@ -10,6 +10,8 @@ import {
 	TextareaAutosize as MuiTextareaAutosize,
 
 } from '@material-ui/core';
+import { TabPanel } from 'shared';
+
 
 export const Header = styled.span`
     grid-area: header; 
@@ -153,16 +155,16 @@ export const addCommentWrapper = styled.div`
 
 export const ButtonWrapper = styled.div`
     margin-bottom: 2rem;
-    
-    &.no-opinions {
-        margin-bottom: 7.8rem;
-    }
 `;
 
 export const addCommentButtonWrapper = styled.div`
     margin-bottom: 2rem;
     display: flex;
     justify-content: flex-end;
+    
+    &.active {
+        margin-bottom: 0;
+    }
 `;
 
 export const ErrorWrapper = styled.div`
@@ -193,6 +195,12 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
         padding: 1rem;
         margin-bottom: 1rem;
     }   
+`);
+
+export const NewCommentTabPanel = withTheme(styled(TabPanel)`
+    &.no-comments {
+        margin-bottom: 5.8rem;
+    }
 `);
 
 export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
@@ -228,10 +236,6 @@ export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
         background-color: ${props => props.theme.palette.white} !important;
     }
 `);
-
-// export const NoOpinionsWrapper = withTheme(styled.div`
-//     text-align: center;
-// `);
 
 export const SubCommentBox = withTheme(styled.div`
     background-color: ${props => props.theme.palette.white} !important;  
