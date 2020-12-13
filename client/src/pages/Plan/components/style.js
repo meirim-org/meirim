@@ -149,7 +149,7 @@ export const addSubCommentButtonWrapper = styled.div`
     justify-content: flex-end;
 `;
 
-export const addCommentWrapper = styled.div`
+export const addSubCommentWrapper = styled.div`
     padding: 2rem 3.5rem;
 `;
 

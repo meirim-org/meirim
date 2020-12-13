@@ -5,14 +5,14 @@ import * as SC from './style';
 import { useTheme } from '@material-ui/styles';
 import { daysPassed } from '../utils';
 
-export const SubComment = ({ key, subCommentData }) => {
+export const SubComment = ({ subCommentData }) => {
 	const theme = useTheme();
 	const { content, created_at } = subCommentData;
 	const { name } = subCommentData.person;
 	
 	return (
 		<>
-			<SC.SubCommentBox key={key}>
+			<SC.SubCommentBox>
 				<SC.SubCommentHeader>
 					<SC.ArrowIcon />
 					<Typography
@@ -50,5 +50,4 @@ export const SubComment = ({ key, subCommentData }) => {
 
 SubComment.propTypes = {
 	subCommentData: PropTypes.object.isRequired,
-	key: PropTypes.string.isRequired,
 };
