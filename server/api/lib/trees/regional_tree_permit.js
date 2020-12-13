@@ -79,7 +79,7 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 	}
 	catch (err) {
 		Log.error(err);
-		return Promise.resolve(); // TODO reject
+		return Promise.reject();
 	}
 }
 
@@ -128,7 +128,7 @@ async function saveNewTreePermits(treePermits) {
 	//save only the new ones
 	try { //TODO promise all or knex save bulk
 		new_tree_permits.map(async tp => {
-			Log.info(`saving new tree permit: ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
+			Log.info(`Saving new tree permit: ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
 			await tp.save();
 		});
 	}
