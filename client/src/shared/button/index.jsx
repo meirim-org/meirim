@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MUIButton from '@material-ui/core/Button';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 
 const StyledButton = withTheme(styled(MUIButton)`
@@ -29,7 +29,7 @@ const StyledButton = withTheme(styled(MUIButton)`
        outline: none;
     }
     
-    ${({simple, theme}) => simple && `
+    ${({ simple, theme }) => simple && `
         font-weight: 600 !important;
         color: ${theme.palette.primary.main} !important;
         border: none !important;
@@ -46,7 +46,7 @@ const StyledButton = withTheme(styled(MUIButton)`
        }
     `}
 
-    ${({altcolor, theme}) => altcolor && `
+    ${({ altcolor, theme }) => altcolor && `
         color: ${theme.palette.primary.main} !important;
         background-color: ${theme.palette.white} !important;
        &:hover {
@@ -54,98 +54,97 @@ const StyledButton = withTheme(styled(MUIButton)`
        }
     `}
        
-    ${({small}) => small && `
+    ${({ small }) => small && `
         font-weight: 400 !important;
         padding: 0.03rem 0.6rem !important;
         border-radius: 4px !important;
         min-height: 1em;
     `}
     
-    ${({fontWeight}) => fontWeight && `
+    ${({ fontWeight }) => fontWeight && `
         font-weight: ${fontWeight} !important;
     `}
 
     
-    ${({iconbefore, iconafter}) => (iconbefore || iconafter) && `
+    ${({ iconbefore, iconafter }) => (iconbefore || iconafter) && `
        .MuiSvgIcon-root {
              margin: 0 .25rem;
         }
     `}    
     
-    ${({active, theme}) => active && `
+    ${({ active, theme }) => active && `
         background-color: ${theme.palette.primary['custom']} !important;
     `}    
     
-    ${({disabled, theme}) => disabled && `
+    ${({ disabled, theme }) => disabled && `
         color: ${theme.palette.gray.main} !important;
     `}    
     
-    ${({textColor}) => textColor && `
-        color: ${textColor} !important;
+    ${({ textcolor }) => textcolor && `
+        color: ${textcolor} !important;
     `}   
     
 `);
 
 const Button = ({
-                    text,
-                    id,
-                    onClick,
-                    small,
-                    altColor,
-                    simple,
-                    fontWeight,
-                    textColor,
-                    iconBefore,
-                    iconAfter,
-                    active,
-                    disabled,
-                }) => {
-    const theme = useTheme();
+	text,
+	id,
+	onClick,
+	small,
+	altColor,
+	simple,
+	fontWeight,
+	textcolor,
+	iconBefore,
+	iconAfter,
+	active,
+	disabled,
+}) => {
+	const theme = useTheme();
 
-    return (
-    <StyledButton
-        id={id}
-        small={small ? '1' : ''}
-        onClick={onClick}
-        altcolor={altColor ? '1' : ''}
-        simple={simple ? '1' : ''}
-        fontWeight={fontWeight}
-        disableRipple={simple}
-        textColor={textColor}
-        iconbefore={iconBefore}
-        iconafter={iconAfter}
-        active={active}
-        disabled={disabled}
-        theme={theme}
->
-        {iconBefore}
-        {text}
-        {iconAfter}
-    </StyledButton>
-    )
+	return (
+		<StyledButton
+			id={id}
+			small={small ? '1' : ''}
+			onClick={onClick}
+			altcolor={altColor ? '1' : ''}
+			simple={simple ? '1' : ''}
+			fontWeight={fontWeight}
+			disableRipple={simple}
+			textcolor={textcolor}
+			iconbefore={iconBefore}
+			iconafter={iconAfter}
+			active={active}
+			disabled={disabled}
+			theme={theme}
+		>
+			{iconBefore}
+			{text}
+			{iconAfter}
+		</StyledButton>
+	);
 };
 
 Button.defaultProps = {
-    small: false,
-    altColor: false,
-    simple: false,
-    active: false,
-    disabled: false
-}
+	small: false,
+	altColor: false,
+	simple: false,
+	disabled: false
+};
 
 Button.propTypes = {
-    id: PropTypes.string,
-    text: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
-    small: PropTypes.bool,
-    altColor: PropTypes.bool,
-    simple: PropTypes.bool,
-    fontWeight: PropTypes.string,
-    textColor: PropTypes.string,
-    iconBefore: PropTypes.object,
-    iconAfter: PropTypes.object,
-    active: PropTypes.bool,
-    disabled: PropTypes.bool,
+	id: PropTypes.string,
+	text: PropTypes.string,
+	onClick: PropTypes.func.isRequired,
+	small: PropTypes.bool,
+	altColor: PropTypes.bool,
+	simple: PropTypes.bool,
+	fontWeight: PropTypes.string,
+	textcolor: PropTypes.string,
+	iconBefore: PropTypes.object,
+	iconAfter: PropTypes.object,
+	active: PropTypes.bool,
+	disabled: PropTypes.bool,
 };
 
 export default Button;

@@ -83,3 +83,8 @@ export const daysPassed = (date) => {
 
 	return ` ${Math.round(Math.abs((today - timestamp) / oneDay))} `;
 };
+
+export const handleNewCommentSubmit = (type, setTypeError) => {
+	if (!type ) { setTypeError(true); };
+};
+

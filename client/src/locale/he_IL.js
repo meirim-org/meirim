@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default {
 	alerts: 'התראות',
@@ -42,19 +42,18 @@ export default {
 	sharing: 'שיתוף',
 	saving: 'שמירה',
 	addAnOpinion: 'הוספת חוות דעת',
-    supportUs: 'תמכו בנו',
-    review: 'ביקורת',
-    iLike: 'אהבתי',
-    addAResponse: 'הוספת תגובה',
-    improvementProposal: 'הצעה לשיפור',
-    generalOpinion: 'חוות דעת כללית',
-    emptyTextarea: 'שדה טקסט ריק',
-    close: 'סגירה',
-    send: 'שליחה',
-    chooseType: 'בחרו סוג',
-    startDiscussion: 'היו הראשונים להתחיל דיון על התוכנית!',
-    shareThought: 'שתפו את הקהילה בדעתכם'
-
-}
+	supportUs: 'תמכו בנו',
+	review: 'ביקורת',
+	iLike: 'אהבתי',
+	addAResponse: 'הוספת תגובה',
+	improvementProposal: 'הצעה לשיפור',
+	generalOpinion: 'חוות דעת כללית',
+	emptyTextarea: 'שדה טקסט ריק',
+	close: 'סגירה',
+	send: 'שליחה',
+	chooseType: 'בחרו סוג',
+	startDiscussion: 'היו הראשונים להתחיל דיון על התוכנית!',
+	shareThought: 'שתפו את הקהילה בדעתכם'
+};
 
 

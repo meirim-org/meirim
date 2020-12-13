@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import Wrapper from 'components/Wrapper';
 import { Header, GoalsPanel, StatusTypeUrlPanel, StatsPanel, CommentPanel, NewCommentForm } from '../components';
 import * as SC from '../style';
+import t from 'locale/he_IL';
+
 
 
 const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, commentsData,
-	 newComment, handleNewComment, newCommentType, handleNewCommentType, commentTypes, newCommentTypeError }) => {
+	 newComment, handleNewComment, newCommentType, handleNewCommentType, commentTypes, newCommentTypeError,
+	 handleNewCommentTypeError, newCommentText, handleNewCommentText }) => {
 	const { name, countyName, type, status, url, goalsFromMavat } = planData;
 	
 	return (
@@ -17,8 +20,10 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 						tablValue={tabValue}
 						handleTabChange={handleTabChange} 
 						name={name}
-						countyName={countyName} />
-					<SC.Main>
+						countyName={countyName}
+						comments={commentsData.length.toString()}
+					/>
+					<SC.Main className={commentsData.length === 0 ? 'no-comments' : ''}>
 						<StatusTypeUrlPanel tabValue={tabValue} type={type} status={status} url={url} />
 						<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
 						<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
@@ -28,23 +33,35 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 							newComment={newComment}
 							handleNewComment={handleNewComment}
 							newCommentType={newCommentType}
-							handleNewCommentType={handleNewCommentType}
+							handleNewCommentType={handleNewCommentType}	
+							newCommentText={newCommentText}
+							handleNewCommentText={handleNewCommentText}
 							commentTypes={commentTypes}
-						    newCommentTypeError={newCommentTypeError} />
+						    newCommentTypeError={newCommentTypeError}
+							handleNewCommentTypeError={handleNewCommentTypeError} />
 
-						{commentsData.map((comment, index) => (
+						{commentsData.length > 0 && 
 							<>
-								<CommentPanel 
-									key={index} 
-									tabValue={tabValue}
-									commentData={comment}
-									newComment={newComment}
-									handleNewComment={handleNewComment}
-								/> 
-							
+								{commentsData.map((comment, index) => (
+									<CommentPanel 
+										key={index} 
+										tabValue={tabValue}
+										commentData={comment}
+										newComment={newComment}
+										handleNewComment={handleNewComment}
+									/> 
+								))}
 							</>
-						))}
+						}
 
+						{commentsData.length === 0 && !newComment &&
+							<SC.NoComments>
+								<SC.NoCommentsBold>{t.startDiscussion}</SC.NoCommentsBold>
+								<br/>
+								<SC.NoCommentsRegular>{t.shareThought}</SC.NoCommentsRegular>
+							</SC.NoComments>
+	 					}
+						
 					</SC.Main>
 				</SC.Content>
 				<div>map</div>
@@ -55,7 +72,7 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 
 PlanDesktop.propTypes = {
 	planData: PropTypes.object.isRequired,
-	tabValue: PropTypes.string.isRequired,
+	tabValue: PropTypes.number.isRequired,
 	dataArea: PropTypes.array.isRequired,
 	commentTypes: PropTypes.array.isRequired,
 	commentsData: PropTypes.array.isRequired,
@@ -65,6 +82,8 @@ PlanDesktop.propTypes = {
 	handleNewComment: PropTypes.func.isRequired,
 	newCommentType: PropTypes.string.isRequired,
 	handleNewCommentType: PropTypes.func.isRequired,
+	newCommentText: PropTypes.string,
+	handleNewCommentText: PropTypes.func.isRequired,
 	newCommentTypeError: PropTypes.bool.isRequired,
 	handleNewCommentTypeError: PropTypes.func.isRequired,
 };

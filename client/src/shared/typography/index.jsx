@@ -12,8 +12,8 @@ const mobileTemplate = (mobileFontSize, mobileFontWeight, mobileLineHeight) => {
         font-weight: ${mobileFontWeight} !important;
         line-height: ${mobileLineHeight} !important; 
         }
-`
-}
+`;
+};
 
 const template = (fontSize, fontWeight, lineHeight) => {
 	return `
@@ -22,8 +22,8 @@ const template = (fontSize, fontWeight, lineHeight) => {
             font-weight: ${fontWeight} !important;
             line-height: ${lineHeight} !important; 
          }
-    `
-}
+    `;
+};
 
 const handleVariant = variant => {
 	switch (variant) {
@@ -37,16 +37,16 @@ const handleVariant = variant => {
 		return template('16px', '400', '1.33');
 	case 'paragraphText':
 		return template('16px', '400', '1.5');
-    case 'paragraphTextLight':
-        return template('16px', '300', '1.3');
+	case 'paragraphTextLight':
+		return template('16px', '300', '1.3');
 	case 'highlightedText':
 		return template('16px', '600', '1.33');
 	case 'smallTitle':
 		return template('14px', '600', '1.29');
 	case 'chipsAndIconButtons':
 		return template('14px', '400', '1.29');
-    case 'light':
-        return template('14px', '300', '1.3');
+	case 'light':
+		return template('14px', '300', '1.3');
 	case 'label':
 		return template('12px', '400', '1.5');
 	default:
@@ -72,14 +72,14 @@ const handleMobileVariant = mobileVariant => {
 		return mobileTemplate('16px', '400', '1.33');
 	case 'paragraphText':
 		return mobileTemplate('16px', '400', '1.5');
-    case 'paragraphTextLight':
-            return template('16px', '300', '1.3');
+	case 'paragraphTextLight':
+		return template('16px', '300', '1.3');
 	case 'smallTitle':
 		return mobileTemplate('14px', '600', '1.29');
 	case 'chipsAndIconButtons':
 		return mobileTemplate('14px', '400', '1.29');
-    case 'light':
-        return template('14px', '300', '1.3');
+	case 'light':
+		return template('14px', '300', '1.3');
 	case 'label':
 		return mobileTemplate('12px', '400', '1.5');
 	default:
@@ -103,7 +103,7 @@ const Typography = ({ component, variant, mobileVariant, color, children }) => (
 Typography.propTypes = {
 	component: PropTypes.string.isRequired,
 	color: PropTypes.string.isRequired,
-	children: PropTypes.string.isRequired,
+	children: PropTypes.string,
 	variant: PropTypes.oneOf([
 		'megaHeadTitle',
 		'title',
@@ -111,7 +111,7 @@ Typography.propTypes = {
 		'planDetailTitle',
 		'menuTitle',
 		'paragraphText',
-        'paragraphTextLight',
+		'paragraphTextLight',
 		'highlightedText',
 		'smallTitle',
 		'chipsAndIconButtons',
@@ -127,8 +127,8 @@ Typography.propTypes = {
 		'highlightedText',
 		'menuTitle',
 		'paragraphText',
-        'paragraphTextLight',
-        'smallTitle',
+		'paragraphTextLight',
+		'smallTitle',
 		'chipsAndIconButtons',
 		'light',
 		'label',

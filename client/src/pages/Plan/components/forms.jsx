@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TabPanel,Button, Typography } from 'shared';
+import { Button, Typography } from 'shared';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { Radio } from '@material-ui/core';
-import { printRadioClass } from '../utils';
+import { Radio, TextareaAutosize } from '@material-ui/core';
+import { printRadioClass, handleNewCommentSubmit } from '../utils';
 
 export const NewCommentForm = ({ comments, newComment, handleNewComment, newCommentType, 
-	handleNewCommentType, commentTypes, newCommentTypeError, tabValue }) => {
+	handleNewCommentType, commentTypes, newCommentTypeError, handleNewCommentTypeError, tabValue,
+	newCommentText,	handleNewCommentText }) => {
 	const theme = useTheme();
 
 	return (
-		<TabPanel value={tabValue} index={1}>
-			<SC.ButtonWrapper className={!comments ? 'no-opinions' : ''}>
+		<SC.NewCommentTabPanel value={tabValue} index={1} className={!comments ? 'no-comments' : ''}>
+			<SC.ButtonWrapper>
 				<Button
 					id="add-opinion"
 					text={t.addAnOpinion}
@@ -41,8 +42,7 @@ export const NewCommentForm = ({ comments, newComment, handleNewComment, newComm
 								</SC.NewCommentLabelWrapper>
 							))}
 						</SC.RadioGroup>
-						{newCommentTypeError
-							?
+						{newCommentTypeError && 
 							<SC.ErrorWrapper>
 								<Typography
 									variant="chipsAndIconButtons"
@@ -52,12 +52,16 @@ export const NewCommentForm = ({ comments, newComment, handleNewComment, newComm
 								>
 									{t.chooseType}
 								</Typography>
-							</SC.ErrorWrapper> :
-							null
+							</SC.ErrorWrapper>
 						}
 					</SC.NewCommentControl>
 					<SC.NewCommentControl fullWidth={true}>
-						<SC.TextareaAutosize disabled={newCommentTypeError} aria-label={t.emptyTextarea} rowsMin={5}/>
+						<SC.TextareaAutosize
+						 value={newCommentText}
+						 onChange={(e) => handleNewCommentText(e.target.value)}
+						 disabled={newCommentTypeError}
+						 aria-label={t.emptyTextarea}
+						 rowsMin={5}/>
 					</SC.NewCommentControl>
 					<SC.addCommentButtonWrapper>
 						<Button
@@ -65,7 +69,7 @@ export const NewCommentForm = ({ comments, newComment, handleNewComment, newComm
 							text={t.close}
 							simple
 							small
-							textColor={theme.palette.black}
+							textcolor={theme.palette.black}
 							onClick={() => handleNewComment(false)}
 						/>
 						<Button
@@ -74,7 +78,7 @@ export const NewCommentForm = ({ comments, newComment, handleNewComment, newComm
 							fontWeight={600}
 							small
 							simple
-							onClick={() => ''}
+							onClick={() => handleNewCommentSubmit(newCommentType, handleNewCommentTypeError)}
 							disabled={newCommentTypeError}
 						/>
 					</SC.addCommentButtonWrapper>
@@ -82,23 +86,57 @@ export const NewCommentForm = ({ comments, newComment, handleNewComment, newComm
 				:
 				null
 			}
-		</TabPanel>
+		</SC.NewCommentTabPanel>
 	);
 };
 
-NewCommentForm.defaultProps = {
-	// NewCommentForm: false
-};
-
 NewCommentForm.propTypes = {
-	comments: PropTypes.bool.isRequired,
+	comments: PropTypes.number.isRequired,
 	newComment: PropTypes.bool.isRequired,
 	handleNewComment: PropTypes.func.isRequired,
 	newCommentType: PropTypes.string.isRequired,
 	commentTypes: PropTypes.array.isRequired,
 	handleNewCommentType: PropTypes.func.isRequired,
+	newCommentText: PropTypes.string,
+	handleNewCommentText: PropTypes.func.isRequired,
 	newCommentTypeError: PropTypes.bool.isRequired,
 	handleNewCommentTypeError: PropTypes.func.isRequired,
-	// commentData: PropTypes.object.isRequired,
-	tabValue: PropTypes.string.isRequired,
+	tabValue: PropTypes.number.isRequired,
 };
+
+export const NewSubCommentForm = ({ newSubComment, handleNewSubComment }) => {
+	const theme = useTheme();
+
+	return (
+		<SC.addCommentWrapper>
+			<SC.FormControl fullWidth={true}>
+				<TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
+			</SC.FormControl>
+			<SC.addCommentButtonWrapper className={newSubComment ? 'active' : ''} >
+				<Button
+					id="close-new-opinion"
+					text={t.close}
+					simple
+					small
+					textcolor={theme.palette.black}
+					onClick={() => handleNewSubComment(false)}
+				/>
+				<Button
+					id="send-new-opinion"
+					text={t.send}
+					fontWeight={600}
+					small
+					simple
+					onClick={() => ''}
+				/>
+			</SC.addCommentButtonWrapper>
+
+		</SC.addCommentWrapper>
+	);
+};
+
+NewSubCommentForm.propTypes = {
+	newSubComment: PropTypes.bool.isRequired,
+	handleNewSubComment: PropTypes.func.isRequired,
+};
+

@@ -10,7 +10,7 @@ import t from 'locale/he_IL';
 import { a11yProps } from '../a11y'; 
 import * as SC from '../style';
 
-const Header = ({ countyName, name, tabValue, handleTabChange }) => {
+const Header = ({ countyName, name, tabValue, handleTabChange, comments }) => {
 	const theme = useTheme();
 	
 	return (
@@ -27,9 +27,9 @@ const Header = ({ countyName, name, tabValue, handleTabChange }) => {
 					</Typography>
 				</SC.TitleWrapper>
 				<SC.AppBar position="static">
-					<Tabs value={tabValue} onChange={handleTabChange} aria-label="simple tabs example">
+					<Tabs value={tabValue} onChange={handleTabChange} aria-label="טאבים של התוכנית">
 						<Tab label={t.summary} {...a11yProps(0)} />
-						<Tab label={<Badge badgeContent={'12'}> {t.opinion} </Badge>} {...a11yProps(1)} />
+						<Tab label={<Badge badgeContent={comments}> {t.opinion} </Badge>} {...a11yProps(1)} />
 						<Tab label={t.planningInformation} {...a11yProps(2)} />
 					</Tabs>
 				</SC.AppBar>
@@ -59,11 +59,14 @@ const Header = ({ countyName, name, tabValue, handleTabChange }) => {
 	);
 };
 
+
+
 Header.propTypes = {
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	countyName: PropTypes.string.isRequired,
-	tabValue: PropTypes.string.isRequired,
+	tabValue: PropTypes.number.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
+	comments: PropTypes.string.isRequired,
 };
 
 export default Header;
