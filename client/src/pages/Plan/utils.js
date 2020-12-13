@@ -75,3 +75,11 @@ export const printRadioClass = (selectedValue, radioValue, validationRrror) => {
 
 	return classes.join();
 };
+
+export const daysPassed = (date) => {
+	const timestamp = new Date(date.replace(' ', 'T')).getTime();
+	const oneDay = 24 * 60 * 60 * 1000;
+	const today = Date.now();
+
+	return ` ${Math.round(Math.abs((today - timestamp) / oneDay))} `;
+};

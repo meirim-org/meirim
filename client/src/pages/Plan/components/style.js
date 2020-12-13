@@ -94,7 +94,7 @@ export const Like = withTheme(styled.div`
 
 `);
 
-export const AddComment = withTheme(styled.div`
+export const AddSubComment = withTheme(styled.div`
     grid-area: add-comment;
     padding: 1rem; 
     text-align: center;

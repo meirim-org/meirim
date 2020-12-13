@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Wrapper from 'components/Wrapper';
-import { Header, GoalsPanel, StatusTypeUrlPanel, StatsPanel, CommentPanel, SubComment, NewCommentForm } from '../components';
+import { Header, GoalsPanel, StatusTypeUrlPanel, StatsPanel, CommentPanel, NewCommentForm } from '../components';
 import * as SC from '../style';
 
 
@@ -41,11 +41,7 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 									newComment={newComment}
 									handleNewComment={handleNewComment}
 								/> 
-								{comment.subComments &&
-									comment.subComments.map((subComment, index) => (
-										<SubComment key={index} subCommentData={subComment} />
-									))
-								}
+							
 							</>
 						))}
 

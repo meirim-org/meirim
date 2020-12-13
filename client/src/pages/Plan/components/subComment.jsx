@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { Typography } from 'shared';
 import * as SC from './style';
 import { useTheme } from '@material-ui/styles';
+import { daysPassed } from '../utils';
 
 export const SubComment = ({ key, subCommentData }) => {
 	const theme = useTheme();
-	const { content } = subCommentData;
+	const { content, created_at } = subCommentData;
 	const { name } = subCommentData.person;
 	
 	return (
@@ -29,7 +30,7 @@ export const SubComment = ({ key, subCommentData }) => {
 						color={theme.palette.gray['main']}
 					>
                         לפני
-						{/* {daysPassed(comment.timeStamp)} */}
+						{daysPassed(created_at)}
                         ימים
 					</Typography>
 				</SC.SubCommentHeader>
