@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { Chart } from 'react-charts';
 import { TabPanel, TabBox, Typography, Button } from 'shared';
 import { renderMultiplier, renderPercent } from 'utils';
-import { series, axes } from '../utils';
+import { series, axes, daysPassed } from '../utils';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { Badge, TextareaAutosize } from '@material-ui/core';
+import { SubComment } from './';
 
 
 export const GoalsPanel = ({ goalsFromMavat, tabValue }) => 
@@ -91,11 +92,10 @@ StatsPanel.propTypes = {
 	tabValue: PropTypes.string.isRequired,
 };
 
-export const CommentPanel = ({ key, tabValue, commentData, newComment,
-	handleNewComment }) => {
+export const CommentPanel = ({ key, tabValue, commentData, newComment }) => {
 	const theme = useTheme();
-	// const { id, content, parent_id, created_at } = commentData;
-	const { id, content, parent_id } = commentData;
+	const [newSubComment, setNewSubComment] = React.useState(false);
+	const { content, created_at } = commentData;
 	const { name } = commentData.person;
 	
 	return (
@@ -128,8 +128,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment,
 							color={theme.palette.gray['main']}
 						>
 	                    לפני
-							4
-							{/* {daysPassed(opinion.timeStamp)} */}
+							{daysPassed(created_at)}
 	                    ימים
 						</Typography>
 					</SC.SecondSide>
@@ -157,20 +156,19 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment,
 						badgeContent="4"
 					/>
 				</SC.Like>
-				<SC.AddComment className={newComment ? 'active' : ''}>
+				<SC.AddSubComment className={newSubComment ? 'active' : ''}>
 					<Button
 						id={'add-response-' + key}
 						textColor={theme.palette.black}
 						text={t.addAResponse}
-						onClick={() => handleNewComment(true)}
+						onClick={() => setNewSubComment(true)}
 						simple
 						iconBefore={<SC.CommentIcon/>}
 					/>
-				</SC.AddComment>
+				</SC.AddSubComment>
 				<SC.CommentsWrapper>
 
-					{newComment
-						?
+					{newSubComment &&
 						<SC.addCommentWrapper>
 							<SC.FormControl fullWidth={true}>
 								<TextareaAutosize aria-label={t.emptyTextarea} rowsMin={5}/>
@@ -182,7 +180,7 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment,
 									simple
 									small
 									textColor={theme.palette.black}
-									onClick={() => handleNewComment(false)}
+									onClick={() => setNewSubComment(false)}
 								/>
 								<Button
 									id="send-new-opinion"
@@ -195,11 +193,16 @@ export const CommentPanel = ({ key, tabValue, commentData, newComment,
 							</SC.addCommentButtonWrapper>
 
 						</SC.addCommentWrapper>
-						:
-						null
 					}
 				</SC.CommentsWrapper>
 				
+				{commentData.subComments &&
+					<div>
+						{commentData.subComments.map((subComment, index) => (
+							<SubComment key={index} subCommentData={subComment} />
+						))}
+					</div>
+				}
 			</TabBox>
 		</TabPanel>
 	);
