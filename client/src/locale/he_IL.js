@@ -53,7 +53,10 @@ export default {
 	send: 'שליחה',
 	chooseType: 'בחרו סוג',
 	startDiscussion: 'היו הראשונים להתחיל דיון על התוכנית!',
-	shareThought: 'שתפו את הקהילה בדעתכם'
+	shareThought: 'שתפו את הקהילה בדעתכם',
+	planDetails: 'פרטי התכנית',
+	status: 'סטטוס',
+	planType: 'סוג תכנית',
 };
 
 
