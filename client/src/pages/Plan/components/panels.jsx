@@ -7,7 +7,7 @@ import { series, axes, daysPassed } from '../utils';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { Badge } from '@material-ui/core';
+import { Badge, Chip } from '@material-ui/core';
 import { SubComment, NewSubCommentForm } from './';
 
 
@@ -23,14 +23,78 @@ GoalsPanel.propTypes = {
 };
 
 /*mynameisuh*/
-export const StatusTypeUrlPanel = ({ status, tabValue, type, url }) => 
-	<TabPanel value={tabValue} index={0}>
-		<TabBox>{`סטטוס: ${status}  סוג תוכנית: ${type}  מסמכי התוכנית באתר הממשלה: ${url}`}</TabBox>
-	</TabPanel>;
+export const PlanDetaillPanel = ({ status, terms, tabValue, type, url }) => {
+	const theme = useTheme();
+	
+	return (
+		<TabPanel value={tabValue} index={0}>
+			<TabBox>
+				<SC.PlanDeatilsTitlwWrapper>
+					<Typography
+						variant="planDetailTitle"
+						mobileVariant="planDetailTitle"
+						component="h2"
+						color={theme.palette.black}
+					>
+						{t.planDetails}
+					</Typography>
+				</SC.PlanDeatilsTitlwWrapper>
+				
+				{terms.length > 0 &&
+					<SC.PlanTermsWrapper>
+						{terms.map((term, index) => (
+							<SC.PlanTermWrapper key={index}>
+								<Chip label={term} />
+							</SC.PlanTermWrapper>
+						))}
+					</SC.PlanTermsWrapper>
+				}
 
-StatusTypeUrlPanel.propTypes = {
+				<SC.StatusAndTypeWrapper>
+					<SC.StatusWrapper>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.gray['main']}>
+							{`${t.status}: `}
+						</Typography>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.black}>
+							{status}
+						</Typography>
+					</SC.StatusWrapper>
+					<SC.TypeWrapper>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.gray['main']}>
+							{`${t.planType}: `}
+						</Typography>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.black}>
+							{type}
+						</Typography>
+					</SC.TypeWrapper>
+				
+				</SC.StatusAndTypeWrapper>
+			</TabBox>
+		</TabPanel>
+	);
+};
+
+
+PlanDetaillPanel.propTypes = {
 	type: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
+	terms: PropTypes.array,
 	url: PropTypes.string,
 	tabValue: PropTypes.any.isRequired,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Wrapper from 'components/Wrapper';
-import { Header, GoalsPanel, StatusTypeUrlPanel, StatsPanel, CommentPanel, NewCommentForm } from '../components';
+import { Header, GoalsPanel, PlanDetaillPanel, StatsPanel, CommentPanel, NewCommentForm } from '../components';
 import * as SC from '../style';
 import t from 'locale/he_IL';
 
@@ -12,6 +12,9 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 	 handleNewCommentTypeError, newCommentText, handleNewCommentText }) => {
 	const { name, countyName, type, status, url, goalsFromMavat } = planData;
 	
+	//Temporary
+	const planTerms = ['פינוי בינוי', 'חלוקת מגרשים', 'שיקום עירוני'];
+
 	return (
 	    <Wrapper>
 			<SC.MainWrapper>
@@ -24,7 +27,7 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 						comments={commentsData.length.toString()}
 					/>
 					<SC.Main className={commentsData.length === 0 ? 'no-comments' : ''}>
-						<StatusTypeUrlPanel tabValue={tabValue} type={type} status={status} url={url} />
+						<PlanDetaillPanel tabValue={tabValue} type={type} status={status} url={url} terms={planTerms} />
 						<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
 						<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
 						<NewCommentForm 

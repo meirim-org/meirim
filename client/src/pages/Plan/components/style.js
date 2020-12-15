@@ -259,3 +259,41 @@ export const ArrowIcon = withTheme(styled(SubdirectoryArrowLeftRoundedIcon)`
     top: 50%;
     fill: ${props => props.theme.palette.secondary['600']} !important;  
 `);
+
+
+export const PlanDeatilsTitlwWrapper = styled.div`
+    margin-bottom: .75rem;
+`;
+
+export const PlanTermsWrapper = styled.div`
+    display: flex;
+    justifyContent: center;
+    flexWrap: wrap;
+    margin: 0 -.25rem .75rem;
+`;
+
+export const PlanTermWrapper = withTheme(styled.div`
+    padding: .25rem;
+    > .MuiChip-root {
+        height: auto;
+        min-height: 1.875rem;
+        color: ${props => props.theme.palette.green['text']} !important;  
+        background-color: ${props => props.theme.palette.green['bg']} !important;  
+    }
+`);
+
+export const StatusAndTypeWrapper = styled.div`
+    display: flex;
+    flexWrap: wrap;
+    margin: 0 -.5rem;
+`;
+
+export const StatusWrapper = styled.div`
+    padding: 0 0.5rem
+`;
+
+export const TypeWrapper = styled.div`
+    padding: 0 0.5rem
+`;
+
+
