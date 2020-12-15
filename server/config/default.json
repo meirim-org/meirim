@@ -32,6 +32,10 @@
 		"error": "logs/error.log",
 		"debug": "logs/debug.log"
 	},
+	"aws": {
+		"useS3ForTreeFiles": false,
+		"treeBucketName": "treeBucketName"
+	},
 	"test": {
 		"database": {
 			"client": "mysql",
