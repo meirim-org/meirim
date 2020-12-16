@@ -61,6 +61,11 @@ export default {
 	planType: 'סוג תכנית',
 	planDeatailOnGovSite: 'מסמכי התוכנית באתר הממשלה',
 	meter: 'מ״ר',
+	thisPlanIncreases: 'תוכנית זו מגדילה את השטח הבנוי פי',
+	thisPlanAdds: 'תוכנית זו מוסיפה',
+	extension: 'תוספת',
+	buildingLand: 'שטח בנוי'
+	
 };
 
 
