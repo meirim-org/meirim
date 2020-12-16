@@ -10,7 +10,7 @@ import Payment from './payment';
 import SecondStepSignup from './secondStep';
 import { EMAIL_SENT_PAGE } from '../../router/contants'
 import { paymentRequestValidation, getFormErrors, formValidation } from './validations'
-import { titles, paymentAmountOptions,  roadmap } from './constants'
+import { titles, paymentAmountOptions, roadmap } from './constants'
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import Icon from '../../assets/svg/successIcon'
@@ -48,16 +48,16 @@ const FundingPage = () => {
 		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
-	// useEffect(() => {
-	// 	const { email , name, password } = firstStepValues
-	// //	const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
-	// 	const { emailError, nameError, passwordError } =
-	// 		getFormErrors({
-	// 			validations: { isValidEmail, isValidName, isValidPassword },
-	// 			values: { password, email }
-	// 		})
-	// 	setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
-	// }, [firstStepValues, onFocusInput, dirtyInputs])
+	useEffect(() => {
+		const { email , name, password } = firstStepValues
+	//	const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
+		const { emailError, nameError, passwordError } =
+			getFormErrors({
+				validations: { isValidEmail, isValidName, isValidPassword },
+				values: { password, email }
+			})
+		setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
+	}, [firstStepValues, onFocusInput, dirtyInputs])
 
 	const handlePaymentRequest = async () => {
 		const {isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount: paymentOption.amount, termsAccepted })
