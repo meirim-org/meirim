@@ -179,7 +179,7 @@ export const ErrorWrapper = styled.div`
 
 export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiTypography-root {
-        font-family:  ${props => props.theme.fontFamily} !important;;
+        font-family:  ${props => props.theme.fontFamily} !important;
         font-size: 0.875rem;
         color: ${props => props.theme.palette.black} !important;
     }
@@ -262,7 +262,7 @@ export const ArrowIcon = withTheme(styled(SubdirectoryArrowLeftRoundedIcon)`
 `);
 
 
-export const PlanDeatilsTitlwWrapper = styled.div`
+export const PlanSummaryTitleWrapper = styled.div`
     margin-bottom: .75rem;
 `;
 
@@ -303,3 +303,11 @@ export const CustomLinkIcon = withTheme(styled(LinkIcon)`
     vertical-align: middle;
     margin-right: .5rem;
 `);
+
+export const EntryContent = withTheme(styled.div`
+    font-family:  ${props => props.theme.fontFamily} !important;
+    font-size: 16px;
+    line-height: 1.5;
+    color: ${props => props.theme.palette.black} !important;  
+`);
+

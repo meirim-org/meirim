@@ -56,9 +56,11 @@ export default {
 	shareThought: 'שתפו את הקהילה בדעתכם',
 	planDetails: 'פרטי התכנית',
 	planGoals: 'מטרות התכנית',
+	meanings: 'משמעויות',
 	status: 'סטטוס',
 	planType: 'סוג תכנית',
 	planDeatailOnGovSite: 'מסמכי התוכנית באתר הממשלה',
+	meter: 'מ״ר',
 };
 
 
