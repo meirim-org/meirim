@@ -9,12 +9,36 @@ import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { Badge, Chip } from '@material-ui/core';
 import { SubComment, NewSubCommentForm } from './';
+import parse from 'html-react-parser';
 
+// var stringToHTML = function (str) {
+// 	var parser = new DOMParser();
+// 	var doc = parser.parseFromString(str, 'text/html');
+// 	return doc.body;
+// };
 
-export const GoalsPanel = ({ goalsFromMavat, tabValue }) => 
-	<TabPanel value={tabValue} index={0}>
-		<TabBox>{goalsFromMavat}</TabBox>
-	</TabPanel>;
+export const GoalsPanel = ({ goalsFromMavat, tabValue }) => {
+	const theme = useTheme();
+	if (!goalsFromMavat) return null;
+	
+	return (
+		<TabPanel value={tabValue} index={0}>
+			<TabBox>
+				<SC.PlanDeatilsTitlwWrapper>
+					<Typography
+						variant="planDetailTitle"
+						mobileVariant="planDetailTitle"
+						component="h2"
+						color={theme.palette.black}
+					>
+						{t.planGoals}
+					</Typography>
+				</SC.PlanDeatilsTitlwWrapper>
+				{parse(goalsFromMavat)}
+			</TabBox>
+		</TabPanel>
+	);
+};
 
 
 GoalsPanel.propTypes = {

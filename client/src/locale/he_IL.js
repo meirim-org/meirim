@@ -55,6 +55,7 @@ export default {
 	startDiscussion: 'היו הראשונים להתחיל דיון על התוכנית!',
 	shareThought: 'שתפו את הקהילה בדעתכם',
 	planDetails: 'פרטי התכנית',
+	planGoals: 'מטרות התכנית',
 	status: 'סטטוס',
 	planType: 'סוג תכנית',
 	planDeatailOnGovSite: 'מסמכי התוכנית באתר הממשלה',
