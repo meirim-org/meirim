@@ -148,20 +148,71 @@ export const StatsPanel = ({ tabValue, dataArea, textArea, }) => {
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 
-				{textArea.exist !== 0 &&
-							<p>
-									תוכנית זו מגדילה את השטח הבנוי
-									פי {renderMultiplier(textArea)}{' '}
-									(תוספת {textArea.new} {t.meter})
-							</p>
+				{textArea.exist !== 0 
+					?
+					<>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.black}
+						>
+							{t.thisPlanIncreases}&nbsp;
+						</Typography>
+						<Typography
+							variant="highlightedText"
+							mobileVariant="highlightedText"
+							component="span"
+							color={theme.palette.primary.main}
+						>
+							{renderMultiplier(textArea)}{' '}
+						</Typography>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.gray['alt']}
+						>
+							({t.extension}<SC.SemiBold>{textArea.new} {t.meter}</SC.SemiBold>)
+						</Typography>
+					</>
+					:
+					<>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.black}
+						>
+							{`${t.thisPlanAdds} ${t.buildingLand}`}
+						</Typography>
+						<Typography
+							variant="paragraphText"
+							mobileVariant="paragraphText"
+							component="span"
+							color={theme.palette.gray['alt']}
+						>
+							<SC.SemiBold>{textArea.new} {t.meter}</SC.SemiBold>
+						</Typography>
+					</>
 				}
-				{textArea.exist === 0 &&
-							<p>
-									תוכנית זו מוסיפה
-								{textArea.new} {t.meter} 
-									שטח בנוי
-							</p>
-				}
+				<br/>
+				<Typography
+					variant="highlightedText"
+					mobileVariant="highlightedText"
+					component="span"
+					color={theme.palette.primary.main}
+				>
+					{`${renderPercent( (textArea.new + textArea.exist) / textArea.area )}%`}
+				</Typography>
+				<Typography
+					variant="paragraphText"
+					mobileVariant="paragraphText"
+					component="span"
+					color={theme.palette.black}
+				>
+					{`${t.thisPlanAdds} ${t.buildingLand}`}
+				</Typography>
 				<p>
 					{renderPercent(
 						(textArea.new + textArea.exist) / textArea.area

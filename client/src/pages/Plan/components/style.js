@@ -311,3 +311,7 @@ export const EntryContent = withTheme(styled.div`
     color: ${props => props.theme.palette.black} !important;  
 `);
 
+export const SemiBold = styled.span`
+    font-weight: 600;
+`;
+
