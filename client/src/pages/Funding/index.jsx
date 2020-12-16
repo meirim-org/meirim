@@ -48,16 +48,6 @@ const FundingPage = () => {
 		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
-	useEffect(() => {
-		const { email , name, password } = firstStepValues
-	//	const { isValidEmail, isValidName, isValidPassword } = formValidation({ name ,email, password, onFocusInput, dirtyInputs })
-		const { emailError, nameError, passwordError } =
-			getFormErrors({
-				validations: { isValidEmail, isValidName, isValidPassword },
-				values: { password, email }
-			})
-		setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }))
-	}, [firstStepValues, onFocusInput, dirtyInputs])
 
 	const handlePaymentRequest = async () => {
 		const {isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount: paymentOption.amount, termsAccepted })
