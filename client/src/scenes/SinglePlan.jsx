@@ -212,7 +212,7 @@ class SinglePlan extends Component {
                                                 )}
                                                 % )
                                             </p>
-                                            <div style={{ height: 200, 'max-width':'450px'  }}>
+                                            <div style={{ height: 200, 'max-width':'450px' }}>
                                                 <Chart
                                                     series={series}
                                                     data={dataArea}
