@@ -129,7 +129,7 @@ class Plans extends Component {
     }
 
     render() {
-        const { plans, planCounties, error, noData, hasMore } = this.state;
+        const { plans, planCounties, error, noData, hasMore, list } = this.state;
 
         return (
             <Wrapper>
