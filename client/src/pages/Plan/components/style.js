@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import LinkIcon from '@material-ui/icons/Link';
 import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
 import { 
 	FormControl as MuiFormControl,
@@ -267,7 +268,6 @@ export const PlanDeatilsTitlwWrapper = styled.div`
 
 export const PlanTermsWrapper = styled.div`
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
     margin: 0 -.25rem .75rem;
 `;
@@ -285,7 +285,7 @@ export const PlanTermWrapper = withTheme(styled.div`
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -.5rem;
+    margin: 0 -.5rem 1rem;
 `;
 
 export const StatusWrapper = styled.div`
@@ -298,4 +298,8 @@ export const TypeWrapper = styled.div`
 
 export const UrlWrapper = styled.div``;
 
-
+export const CustomLinkIcon = withTheme(styled(LinkIcon)`
+    fill: ${props => props.theme.palette.secondary.main} !important;  
+    vertical-align: middle;
+    margin-right: .5rem;
+`);

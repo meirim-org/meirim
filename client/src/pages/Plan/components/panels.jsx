@@ -87,7 +87,8 @@ export const PlanDetaillPanel = ({ status, terms, tabValue, type, url }) => {
 				</SC.StatusAndTypeWrapper>
 
 				<SC.UrlWrapper>
-					<Link underline={false} url={url} text={t.planDeatailOnGovSite}/>
+					<Link textDecoration="none" url={url} text={t.planDeatailOnGovSite}/>
+					<SC.CustomLinkIcon></SC.CustomLinkIcon>
 				</SC.UrlWrapper>
 			</TabBox>
 		</TabPanel>
