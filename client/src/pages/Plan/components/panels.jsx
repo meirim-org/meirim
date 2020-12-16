@@ -11,20 +11,16 @@ import { Badge, Chip } from '@material-ui/core';
 import { SubComment, NewSubCommentForm } from './';
 import parse from 'html-react-parser';
 
-// var stringToHTML = function (str) {
-// 	var parser = new DOMParser();
-// 	var doc = parser.parseFromString(str, 'text/html');
-// 	return doc.body;
-// };
 
 export const GoalsPanel = ({ goalsFromMavat, tabValue }) => {
 	const theme = useTheme();
+	
 	if (!goalsFromMavat) return null;
 	
 	return (
 		<TabPanel value={tabValue} index={0}>
 			<TabBox>
-				<SC.PlanDeatilsTitlwWrapper>
+				<SC.PlanSummaryTitleWrapper>
 					<Typography
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
@@ -33,8 +29,12 @@ export const GoalsPanel = ({ goalsFromMavat, tabValue }) => {
 					>
 						{t.planGoals}
 					</Typography>
-				</SC.PlanDeatilsTitlwWrapper>
-				{parse(goalsFromMavat)}
+				</SC.PlanSummaryTitleWrapper>
+
+				<SC.EntryContent>
+					{parse(goalsFromMavat)}
+				</SC.EntryContent>
+
 			</TabBox>
 		</TabPanel>
 	);
@@ -42,7 +42,7 @@ export const GoalsPanel = ({ goalsFromMavat, tabValue }) => {
 
 
 GoalsPanel.propTypes = {
-	goalsFromMavat: PropTypes.string.isRequired,
+	goalsFromMavat: PropTypes.string,
 	tabValue: PropTypes.any.isRequired,
 };
 
@@ -53,7 +53,7 @@ export const PlanDetaillPanel = ({ status, terms, tabValue, type, url }) => {
 	return (
 		<TabPanel value={tabValue} index={0}>
 			<TabBox>
-				<SC.PlanDeatilsTitlwWrapper>
+				<SC.PlanSummaryTitleWrapper>
 					<Typography
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
@@ -62,7 +62,7 @@ export const PlanDetaillPanel = ({ status, terms, tabValue, type, url }) => {
 					>
 						{t.planDetails}
 					</Typography>
-				</SC.PlanDeatilsTitlwWrapper>
+				</SC.PlanSummaryTitleWrapper>
 				
 				{terms.length > 0 &&
 					<SC.PlanTermsWrapper>
@@ -129,51 +129,57 @@ PlanDetaillPanel.propTypes = {
 };
 
 export const StatsPanel = ({ tabValue, dataArea, textArea, }) => {
-	const meter = 'מ"ר';
+	const theme = useTheme();
+
+	if ( !dataArea || !dataArea[0].data.length) return null;
 	
+
 	return (
 		<TabPanel value={tabValue} index={0}>
 			<TabBox>
-				{!!dataArea && !!dataArea[0].data.length && (
-					<div className="rectangle">
-						<h4>שינוי שטח</h4>
-						{textArea.exist !== 0 &&
-														<p>
-																תוכנית זו מגדילה את השטח הבנוי
-																פי {renderMultiplier(textArea)}{' '}
-																(תוספת {textArea.new} {meter})
-														</p>
-						}
-						{textArea.exist === 0 &&
-														<p>
-																תוכנית זו מוסיפה
-															{textArea.new} {meter} 
-																שטח בנוי
-														</p>
-						}
-						<p>
-							{renderPercent(
-								(textArea.new +
-																		textArea.exist) /
-																		textArea.area
-							)}
+				<SC.PlanSummaryTitleWrapper>
+					<Typography
+						variant="planDetailTitle"
+						mobileVariant="planDetailTitle"
+						component="h2"
+						color={theme.palette.black}
+					>
+						{t.meanings}
+					</Typography>
+				</SC.PlanSummaryTitleWrapper>
+
+				{textArea.exist !== 0 &&
+							<p>
+									תוכנית זו מגדילה את השטח הבנוי
+									פי {renderMultiplier(textArea)}{' '}
+									(תוספת {textArea.new} {t.meter})
+							</p>
+				}
+				{textArea.exist === 0 &&
+							<p>
+									תוכנית זו מוסיפה
+								{textArea.new} {t.meter} 
+									שטח בנוי
+							</p>
+				}
+				<p>
+					{renderPercent(
+						(textArea.new + textArea.exist) / textArea.area
+					)}
 														% בניה (במקום{' '}
-							{renderPercent(
-								textArea.exist /
-																		textArea.area
-							)}
-														% )
-						</p>
-						<div style={{ height: 200 }}>
-							<Chart
-								series={series}
-								data={dataArea}
-								axes={axes}
-								tooltip={true}
-							/>
-						</div>
-					</div>
-				)}
+					{renderPercent(
+						textArea.exist / textArea.area
+					)}
+							% )
+				</p>
+				<div style={{ height: 200 }}>
+					<Chart
+						series={series}
+						data={dataArea}
+						axes={axes}
+						tooltip={true}
+					/>
+				</div>
 			</TabBox>
 		</TabPanel>
 	);
