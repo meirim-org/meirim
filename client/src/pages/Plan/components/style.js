@@ -315,3 +315,9 @@ export const SemiBold = styled.span`
     font-weight: 600;
 `;
 
+
+export const ChartWrapper = styled.div`
+    height: 200px;
+    margin-top: 1rem;
+`;
+

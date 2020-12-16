@@ -64,7 +64,9 @@ export default {
 	thisPlanIncreases: 'תוכנית זו מגדילה את השטח הבנוי פי',
 	thisPlanAdds: 'תוכנית זו מוסיפה',
 	extension: 'תוספת',
-	buildingLand: 'שטח בנוי'
+	buildingLand: 'שטח בנוי',
+	building: 'בניה',
+	insteadOf: 'במקום',
 	
 };
 

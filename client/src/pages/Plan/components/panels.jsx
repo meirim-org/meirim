@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Chart } from 'react-charts';
-import { TabPanel, TabBox, Typography, Button, Link } from 'shared';
+import { TabPanel, TabBox, Typography, Text, Button, Link } from 'shared';
 import { renderMultiplier, renderPercent } from 'utils';
 import { series, axes, daysPassed } from '../utils';
 import * as SC from './style';
@@ -151,86 +151,35 @@ export const StatsPanel = ({ tabValue, dataArea, textArea, }) => {
 				{textArea.exist !== 0 
 					?
 					<>
-						<Typography
-							variant="paragraphText"
-							mobileVariant="paragraphText"
-							component="span"
-							color={theme.palette.black}
-						>
-							{t.thisPlanIncreases}&nbsp;
-						</Typography>
-						<Typography
-							variant="highlightedText"
-							mobileVariant="highlightedText"
-							component="span"
-							color={theme.palette.primary.main}
-						>
-							{renderMultiplier(textArea)}{' '}
-						</Typography>
-						<Typography
-							variant="paragraphText"
-							mobileVariant="paragraphText"
-							component="span"
-							color={theme.palette.gray['alt']}
-						>
-							({t.extension}<SC.SemiBold>{textArea.new} {t.meter}</SC.SemiBold>)
-						</Typography>
+						<Text text={`${t.thisPlanIncreases} `} color={theme.palette.black}/>
+						<Text text={`${renderMultiplier(textArea)} `} color={theme.palette.primary.main} weight="600" />
+						<Text text={`(${t.extension} `} color={theme.palette.gray['alt']} />
+						<Text text={`${textArea.new} ${t.meter}`} color={theme.palette.gray['alt']} weight="600" />
+						<Text text=")" color={theme.palette.gray['alt']} />
 					</>
 					:
 					<>
-						<Typography
-							variant="paragraphText"
-							mobileVariant="paragraphText"
-							component="span"
-							color={theme.palette.black}
-						>
-							{`${t.thisPlanAdds} ${t.buildingLand}`}
-						</Typography>
-						<Typography
-							variant="paragraphText"
-							mobileVariant="paragraphText"
-							component="span"
-							color={theme.palette.gray['alt']}
-						>
-							<SC.SemiBold>{textArea.new} {t.meter}</SC.SemiBold>
-						</Typography>
+						<Text text={`${t.thisPlanAdds} ${t.buildingLand}`} color={theme.palette.black} />
+						<Text text={`${textArea.new} ${t.meter}`} color={theme.palette.gray['alt']} weight="600"/>
 					</>
 				}
+
 				<br/>
-				<Typography
-					variant="highlightedText"
-					mobileVariant="highlightedText"
-					component="span"
-					color={theme.palette.primary.main}
-				>
-					{`${renderPercent( (textArea.new + textArea.exist) / textArea.area )}%`}
-				</Typography>
-				<Typography
-					variant="paragraphText"
-					mobileVariant="paragraphText"
-					component="span"
-					color={theme.palette.black}
-				>
-					{`${t.thisPlanAdds} ${t.buildingLand}`}
-				</Typography>
-				<p>
-					{renderPercent(
-						(textArea.new + textArea.exist) / textArea.area
-					)}
-														% בניה (במקום{' '}
-					{renderPercent(
-						textArea.exist / textArea.area
-					)}
-							% )
-				</p>
-				<div style={{ height: 200 }}>
+				
+				<Text text={`${renderPercent( (textArea.new + textArea.exist) / textArea.area )}% `} color={theme.palette.primary.main} weight="600"/>
+				<Text text={`${t.building} `} color={theme.palette.black} />
+				<Text text={`${t.insteadOf} `} color={theme.palette.gray['alt']} />
+				<Text text={`${renderPercent( textArea.exist / textArea.area )}%`} color={theme.palette.gray['alt']} weight="600"/>
+			
+				<SC.ChartWrapper>
 					<Chart
 						series={series}
 						data={dataArea}
 						axes={axes}
 						tooltip={true}
 					/>
-				</div>
+				</SC.ChartWrapper>
+
 			</TabBox>
 		</TabPanel>
 	);
