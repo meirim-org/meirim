@@ -267,8 +267,8 @@ export const PlanDeatilsTitlwWrapper = styled.div`
 
 export const PlanTermsWrapper = styled.div`
     display: flex;
-    justifyContent: center;
-    flexWrap: wrap;
+    justify-content: center;
+    flex-wrap: wrap;
     margin: 0 -.25rem .75rem;
 `;
 
@@ -284,7 +284,7 @@ export const PlanTermWrapper = withTheme(styled.div`
 
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
-    flexWrap: wrap;
+    flex-wrap: wrap;
     margin: 0 -.5rem;
 `;
 
@@ -295,5 +295,7 @@ export const StatusWrapper = styled.div`
 export const TypeWrapper = styled.div`
     padding: 0 0.5rem
 `;
+
+export const UrlWrapper = styled.div``;
 
 

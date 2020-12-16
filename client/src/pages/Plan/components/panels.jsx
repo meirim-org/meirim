@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Chart } from 'react-charts';
-import { TabPanel, TabBox, Typography, Button } from 'shared';
+import { TabPanel, TabBox, Typography, Button, Link } from 'shared';
 import { renderMultiplier, renderPercent } from 'utils';
 import { series, axes, daysPassed } from '../utils';
 import * as SC from './style';
@@ -85,6 +85,10 @@ export const PlanDetaillPanel = ({ status, terms, tabValue, type, url }) => {
 					</SC.TypeWrapper>
 				
 				</SC.StatusAndTypeWrapper>
+
+				<SC.UrlWrapper>
+					<Link underline={false} url={url} text={t.planDeatailOnGovSite}/>
+				</SC.UrlWrapper>
 			</TabBox>
 		</TabPanel>
 	);

@@ -57,6 +57,7 @@ export default {
 	planDetails: 'פרטי התכנית',
 	status: 'סטטוס',
 	planType: 'סוג תכנית',
+	planDeatailOnGovSite: 'מסמכי התוכנית באתר הממשלה',
 };
 
 
