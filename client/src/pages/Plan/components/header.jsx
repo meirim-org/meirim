@@ -10,7 +10,7 @@ import t from 'locale/he_IL';
 import { a11yProps } from '../a11y'; 
 import * as SC from '../style';
 
-const Header = ({ countyName, name, tabValue, handleTabChange, comments }) => {
+const Header = ({ countyName, name, tabValue, handleTabChange, handleNewComment, comments }) => {
 	const theme = useTheme();
 	
 	return (
@@ -40,6 +40,10 @@ const Header = ({ countyName, name, tabValue, handleTabChange, comments }) => {
 				<Button
 					variant="contained"
 					color="primary"
+					onClick={()=> {
+						handleTabChange(null,1); 
+						handleNewComment(true);
+					}}
 					startIcon={<ChatBubbleOutlineIcon />}
 				>
 					<Text size="14px" text={t.addAnOpinion} component="span" color={theme.palette.gray['800']}/>
@@ -56,6 +60,7 @@ Header.propTypes = {
 	countyName: PropTypes.string.isRequired,
 	tabValue: PropTypes.any.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
+	handleNewComment: PropTypes.func.isRequired,
 	comments: PropTypes.string.isRequired,
 };
 

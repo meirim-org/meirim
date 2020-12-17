@@ -22,6 +22,7 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 					<Header 
 						tabValue={tabValue}
 						handleTabChange={handleTabChange} 
+						handleNewComment={handleNewComment} 
 						name={name}
 						countyName={countyName}
 						comments={commentsData.length.toString()}
