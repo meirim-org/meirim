@@ -3,6 +3,7 @@ import { withTheme } from '@material-ui/core/styles';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import LinkIcon from '@material-ui/icons/Link';
+import CloseIcon from '@material-ui/icons/Close';
 import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
 import { 
 	FormControl as MuiFormControl,
@@ -320,4 +321,47 @@ export const ChartWrapper = styled.div`
     height: 200px;
     margin-top: 1rem;
 `;
+
+export const SubscribeIconWrapper = withTheme(styled.div`
+    background-color: ${props => props.theme.palette.white};
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    padding: 8px;
+    margin: 0 auto .75rem;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08);
+    svg {
+        position: absolute;
+        fill: ${props => props.theme.palette.primary.main} !important;  
+    }
+`);
+
+export const SubscribeTextWrapper = styled.div`
+    text-align: center;
+    margin-bottom: 1.25rem;
+`;
+
+export const SubscribeButtonsWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 -.75rem;
+`;
+
+export const SubscribeButtonWrapper = styled.div`
+    padding: 0 .75rem;
+`;
+
+export const CloseSubscribeIcon = withTheme(styled(CloseIcon)`
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    cursor: pointer;
+    font-size: 1.3rem !important;
+    fill: ${props => props.theme.palette.black} !important;  
+    opacity: .8;
+`);
+
 

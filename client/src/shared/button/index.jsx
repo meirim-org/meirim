@@ -61,6 +61,17 @@ const StyledButton = withTheme(styled(MUIButton)`
         min-height: 1em;
     `}
     
+    ${({ extrasmall }) => extrasmall && `
+        font-weight: 400 !important;
+        font-size: 14px !important;
+        min-height: 1.374rem;
+        padding: 0.03rem 0.45rem !important;
+        border-radius: 4px !important;
+        > span {
+            line-height: 1;
+        }
+`}
+
     ${({ fontWeight }) => fontWeight && `
         font-weight: ${fontWeight} !important;
     `}
@@ -83,6 +94,14 @@ const StyledButton = withTheme(styled(MUIButton)`
     ${({ textcolor }) => textcolor && `
         color: ${textcolor} !important;
     `}   
+
+    ${({ fontSize }) => fontSize && `
+        font-size: ${fontSize} !important;
+    `}   
+
+    ${({ textDecoration }) => textDecoration && `
+        text-decoration: ${textDecoration} !important;
+    `}   
     
 `);
 
@@ -91,10 +110,13 @@ const Button = ({
 	id,
 	onClick,
 	small,
+	extrasmall,
 	altColor,
 	simple,
 	fontWeight,
 	textcolor,
+	textDecoration,
+	fontSize,
 	iconBefore,
 	iconAfter,
 	active,
@@ -106,12 +128,15 @@ const Button = ({
 		<StyledButton
 			id={id}
 			small={small ? '1' : ''}
+			extrasmall={extrasmall ? '1' : ''}
 			onClick={onClick}
 			altcolor={altColor ? '1' : ''}
 			simple={simple ? '1' : ''}
 			fontWeight={fontWeight}
 			disableRipple={simple}
 			textcolor={textcolor}
+			fontSize={fontSize}
+			textDecoration={textDecoration}
 			iconbefore={iconBefore}
 			iconafter={iconAfter}
 			active={active ? 1 : ''}
@@ -129,6 +154,7 @@ Button.defaultProps = {
 	small: false,
 	altColor: false,
 	simple: false,
+	extrasmall: false,
 	disabled: false,
 	active: false,
 };
@@ -138,10 +164,13 @@ Button.propTypes = {
 	text: PropTypes.string,
 	onClick: PropTypes.func.isRequired,
 	small: PropTypes.bool,
+	extrasmall: PropTypes.bool,
 	altColor: PropTypes.bool,
 	simple: PropTypes.bool,
 	fontWeight: PropTypes.string,
 	textcolor: PropTypes.string,
+	fontSize: PropTypes.string,
+	textDecoration: PropTypes.string,
 	iconBefore: PropTypes.object,
 	iconAfter: PropTypes.object,
 	active: PropTypes.bool,

@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Wrapper from 'components/Wrapper';
-import { Header, GoalsPanel, PlanDetaillPanel, StatsPanel, CommentPanel, NewCommentForm } from '../components';
+import { Header, GoalsPanel, PlanDetaillPanel, StatsPanel, SubscribePanel, CommentPanel, NewCommentForm } from '../components';
 import * as SC from '../style';
 import t from 'locale/he_IL';
 
 
 
 const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, commentsData,
-	 newComment, handleNewComment, newCommentType, handleNewCommentType, commentTypes, newCommentTypeError,
+	 newComment, handleNewComment, subscribePanel, handleSubscribePanel, newCommentType, handleNewCommentType, commentTypes, newCommentTypeError,
 	 handleNewCommentTypeError, newCommentText, handleNewCommentText }) => {
 	const { name, countyName, type, status, url, goalsFromMavat } = planData;
 	
@@ -29,6 +29,10 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 					<SC.Main className={commentsData.length === 0 ? 'no-comments' : ''}>
 						<PlanDetaillPanel tabValue={tabValue} type={type} status={status} url={url} terms={planTerms} />
 						<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
+						<SubscribePanel 
+							tabValue={tabValue}
+						 	subscribePanel={subscribePanel}
+							handleSubscribePanel={handleSubscribePanel}/>
 						<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
 						<NewCommentForm 
 							tabValue={tabValue}
@@ -82,6 +86,8 @@ PlanDesktop.propTypes = {
 	commentsData: PropTypes.array.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	textArea: PropTypes.object.isRequired,
+	subscribePanel: PropTypes.bool.isRequired,
+	handleSubscribePanel: PropTypes.func.isRequired,
 	newComment: PropTypes.bool.isRequired,
 	handleNewComment: PropTypes.func.isRequired,
 	newCommentType: PropTypes.string.isRequired,
