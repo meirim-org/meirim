@@ -69,7 +69,10 @@ export default {
 	insteadOf: 'במקום',
 	subscribeTitle: 'רוצים לקבל התראה כשהתכנית מתקדמת?',
 	subscribeText: 'הירשמו למערכת ההתראות שלנו',
-	noThanks: 'לא תודה'
+	noThanks: 'לא תודה',
+	sharePlan: 'שיתוף תכנית',
+	whatsappShare: 'שיתוף ב-Whatsapp',
+	copyUrl: 'או העתיקו את הקישור'
 };
 
 
