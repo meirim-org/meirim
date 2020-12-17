@@ -52,9 +52,9 @@ class Plans extends Component {
         // finding the address from the list 
         let placeId = this.findPlaceIdFromSuggestion(address);
         locationAutocompleteApi.getPlaceData(placeId)
-        .then(data=>{
-            this.setState({searchPoint:data.result.geometry.location})
-            this.loadPlans(1, [],data.result.geometry.location);
+        .then(location=>{
+            this.setState({searchPoint:location})
+            this.loadPlans(1, [],location);
         }).catch(error => this.setState({ error }));
     }
 

@@ -1,30 +1,74 @@
-const http = require('axios');
 const {baseURL} = require('../config.json').locationServices;
-const _ = require('lodash')
 
+const loadScript = (url, callback) => {
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
 
-module.exports.autocomplete = function (text){
-    return http.get(`${baseURL}autocomplete/json?input=${text}&components=country:il&language=iw&key=AIzaSyCzVtoN2pkRhbNz3AZYOFZTSVLcbzCQIr0`, 
-     {
-          headers:{
-        'Access-Control-Allow-Origin': '*'
-    }}).then(res=>{
-        return res.data.predictions.map(p=>{
-            return {
-                label:_.map(p.terms.splice(0,p.terms.length-1), 'value').join(', '),
-                id: p.place_id
-            }
-        })
-    })
+    if (script.readyState) {
+      script.onreadystatechange = function() {
+        if (script.readyState === 'loaded' || script.readyState === 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else {
+      script.onload = () => callback();
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
 };
 
-module.exports.getPlaceData = function (placeId){
-    return http.get(`${baseURL}details/json?place_id=${placeId}&key=AIzaSyCzVtoN2pkRhbNz3AZYOFZTSVLcbzCQIr0`, 
-     {
-          headers:{
-        'Access-Control-Allow-Origin': '*'
-    }}).then(res=>{
-        return res.data
-    })
+const getGoogleObj = () => {
+    return new Promise((resolve, reject) => {
+        if (window.google) {
+            resolve(window.google);
+        } else {
+            loadScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_KEY}&language=iw&libraries=places`, () => {
+                if (window.google) {
+                    resolve(window.google);
+                } else {
+                    reject('failed to load google library');
+                }
+            });
+        }
+    });
+};
+
+module.exports.autocomplete = function (text) {
+    return getGoogleObj().then((google) => {
+        const autocompleteService = new google.maps.places.AutocompleteService()
+
+        return new Promise((resolve, reject) => {
+            autocompleteService.getPlacePredictions({input: text, componentRestrictions: {country: 'il'}}, (results, status) => {
+                if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                    reject(status);
+                } else {
+                    resolve(results.map((r) => {
+                        return {
+                            label: r.description,
+                            id: r.place_id
+                        };
+                    }));
+                }
+            });
+        });
+    });
+};
+
+module.exports.getPlaceData = function (placeId) {
+    return getGoogleObj().then((google) => {
+        const geocoder = new google.maps.Geocoder();
+
+        return new Promise((resolve, reject) => {
+            geocoder.geocode({placeId}, (results, status) => {
+                if (status !== google.maps.GeocoderStatus.OK) {
+                    reject(status);
+                } else {
+                    resolve(results[0].geometry.location);
+                }
+            })
+        })
+    });
 };
 
