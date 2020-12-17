@@ -51,7 +51,7 @@ class Plans extends Component {
 
         // finding the address from the list 
         let placeId = this.findPlaceIdFromSuggestion(address);
-        locationAutocompleteApi.getPlaceData(placeId)
+        locationAutocompleteApi.getPlaceLocation(placeId)
         .then(location=>{
             this.setState({searchPoint:location})
             this.loadPlans(1, [],location);
@@ -64,22 +64,26 @@ class Plans extends Component {
     }
 
     handleInputChange(text) {
-
-        this.setState({
-            loadingAutocomplete:true
-        })
-
-        locationAutocompleteApi.autocomplete(text)
-        .then((res)=>{
+        if (text) {
             this.setState({
-                loadingAutocomplete:false,
-                list:res
+                loadingAutocomplete: true
+            });
+
+            locationAutocompleteApi.autocomplete(text)
+            .then((res)=>{
+                this.setState({
+                    loadingAutocomplete: false,
+                    list: res
+                });
             })
-        })
-        .catch(error => {
-            this.setState({ error })
-            window.alert(error)
-        });
+            .catch(error => {
+                this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
+            });
+        } else {
+            this.setState({
+                list: []
+            });
+        }
     }
 
     loadPlans(pageNumber, filterCounties, point) {
@@ -115,6 +119,9 @@ class Plans extends Component {
     componentDidMount() {
         const { pageNumber, filterCounties } = this.state;
 
+        // init location service
+        locationAutocompleteApi.init();
+
         api.get("/plan_county")
             .then(result => {
                 this.setState({
@@ -138,8 +145,8 @@ class Plans extends Component {
                         placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
-                       onInputChange={this.handleInputChange.bind(this)}
-                        ></Autocomplete>
+                        onInputChange={this.handleInputChange.bind(this)}
+                    />
                     <br />
                     <GridList
                         cellHeight={500}
