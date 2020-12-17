@@ -24,6 +24,9 @@
 	"cypher": {
 		"secret": "hvw3fKxl94GLbR7k74zz3B"
 	},
+	"opengraph": {
+		"locale": "he_IL"
+	},
 	"debug": {
 		"database": false
 	},

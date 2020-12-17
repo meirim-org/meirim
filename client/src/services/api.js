@@ -1,7 +1,6 @@
 import axios from 'axios'
-import config from '../config.json'
 
-const instance = axios.create(config.axios)
+const instance = axios.create(process.env.CONFIG.axios)
 
 export default {
 	get: (path, data, options) => instance.get(path, { params: data }, options)
