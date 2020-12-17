@@ -8,11 +8,13 @@ import t from 'locale/he_IL';
 
 const Plan = ({ isMobile }) => {
 	const [tabValue, setValue] = React.useState(0);
+	const [subscribePanel, setSubscribePanel] = React.useState(true);
 	const [newComment, setNewComment] = React.useState(false);
 	const [newCommentType, setNewCommentType] = React.useState('');;
 	const [newCommentTypeError, setNewCommentTypeError] = React.useState(false);
 	const [newCommentText, setNewCommentText] = React.useState('');;
 	const handleTabChange = (_, newValue) => setValue(newValue);
+	const handleSubscribePanel = (newValue) => setSubscribePanel(newValue);
 	const handleNewComment = (newValue) => setNewComment(newValue);
 	const handleNewCommentType = (_, newValue) => {
 		setNewCommentType(newValue);
@@ -45,6 +47,8 @@ const Plan = ({ isMobile }) => {
 		 dataArea={dataArea}
 		 textArea={textArea}
 		 commentsData={commentsData}
+		 subscribePanel={subscribePanel} 
+		 handleSubscribePanel={handleSubscribePanel} 
 		 newComment={newComment} 
 		 handleNewComment={handleNewComment} 
 		 newCommentType={newCommentType}

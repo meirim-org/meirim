@@ -10,6 +10,8 @@ import { useTheme } from '@material-ui/styles';
 import { Badge, Chip } from '@material-ui/core';
 import { SubComment, NewSubCommentForm } from './';
 import parse from 'html-react-parser';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+
 
 
 export const GoalsPanel = ({ goalsFromMavat, tabValue }) => {
@@ -190,6 +192,50 @@ StatsPanel.propTypes = {
 	textArea: PropTypes.object.isRequired,
 	url: PropTypes.string,
 	tabValue: PropTypes.any.isRequired,
+};
+
+export const SubscribePanel = ({ tabValue, subscribePanel, handleSubscribePanel }) => {
+	const theme = useTheme();
+
+	//add user connection condition 
+	if ( !subscribePanel ) return null;
+
+	return (
+		<TabPanel value={tabValue} index={0}>
+			<TabBox position="relative" bgColor={theme.palette.primary['100']} borderColor={theme.palette.primary['200']}>
+				<SC.SubscribeIconWrapper>
+					<NotificationsNoneIcon />
+				</SC.SubscribeIconWrapper>
+				<SC.SubscribeTextWrapper>
+					<Text text={t.subscribeTitle} color={theme.palette.primary['800']} weight="600" />
+					<br/>
+					<Text text={t.subscribeText} color={theme.palette.primary['800']} />
+				</SC.SubscribeTextWrapper>
+				<SC.SubscribeButtonsWrapper>
+					<SC.SubscribeButtonWrapper>
+						<Button onClick={() => alert('הרשמה')} extrasmall={true} text={t.signup}/>
+					</SC.SubscribeButtonWrapper>
+					<SC.SubscribeButtonWrapper>
+						<Button 
+							fontSize="14px"
+							textDecoration="underline"
+							simple={true} 
+							fontWeight="400" 
+							onClick={() => handleSubscribePanel(false)}
+							text={t.noThanks}
+					 />
+					</SC.SubscribeButtonWrapper>
+				</SC.SubscribeButtonsWrapper>
+				<SC.CloseSubscribeIcon onClick={() => handleSubscribePanel(false)} />
+			</TabBox>
+		</TabPanel>
+	);
+};
+
+SubscribePanel.propTypes = {
+	tabValue: PropTypes.any.isRequired,
+	subscribePanel: PropTypes.bool.isRequired,
+	handleSubscribePanel: PropTypes.func.isRequired,
 };
 
 export const CommentPanel = ({ id, tabValue, commentData, newComment }) => {

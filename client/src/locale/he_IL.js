@@ -67,7 +67,9 @@ export default {
 	buildingLand: 'שטח בנוי',
 	building: 'בניה',
 	insteadOf: 'במקום',
-	
+	subscribeTitle: 'רוצים לקבל התראה כשהתכנית מתקדמת?',
+	subscribeText: 'הירשמו למערכת ההתראות שלנו',
+	noThanks: 'לא תודה'
 };
 
 
