@@ -27,8 +27,6 @@ class Plans extends Component {
         hasMore: true,
         noData: false,
         pageNumber: 1,
-        planCounties: [],
-        filterCounties: [],
         plans: [],
         address:'',
         addressLocation:[],
@@ -86,15 +84,14 @@ class Plans extends Component {
         }
     }
 
-    loadPlans(pageNumber, filterCounties, point) {
+    loadPlans(pageNumber, point) {
         this.setState({
             noData: false
         });
 
         api.get(
             `/plan/?page=${pageNumber}`+
-            (filterCounties.length >1 ?`&PLAN_COUNTY_NAME=${filterCounties.join(",")}`:"")+
-            (point?`&distancePoint=${point.lat},${point.lng}`:"")
+            (point ? `&distancePoint=${point.lat},${point.lng}` : "")
             
         )
             .then(result => {
@@ -103,7 +100,6 @@ class Plans extends Component {
                         result.pagination.page < result.pagination.pageCount,
                     noData: this.state.plans.length + result.data.length === 0,
                     pageNumber,
-                    filterCounties,
                     plans: [...this.state.plans, ...result.data]
                 });
             })
@@ -112,31 +108,18 @@ class Plans extends Component {
 
 
     loadNextPage() {
-        const { pageNumber, filterCounties, searchPoint } = this.state;
-        this.loadPlans(pageNumber + 1, filterCounties, searchPoint);
+        this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
     }
 
     componentDidMount() {
-        const { pageNumber, filterCounties } = this.state;
-
         // init location service
         locationAutocompleteApi.init();
 
-        api.get("/plan_county")
-            .then(result => {
-                this.setState({
-                    planCounties: result.data.map(county => {
-                        return { label: county.PLAN_COUNTY_NAME };
-                    })
-                });
-            })
-            .catch(error => this.setState({ error }));
-
-        this.loadPlans(pageNumber, filterCounties);
+        this.loadPlans(this.state.pageNumber);
     }
 
     render() {
-        const { plans, planCounties, error, noData, hasMore, list } = this.state;
+        const { plans, error, noData, hasMore, list } = this.state;
 
         return (
             <Wrapper>
