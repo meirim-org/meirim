@@ -67,7 +67,10 @@ module.exports.getPlaceLocation = (placeId) => {
                 if (status !== window.google.maps.GeocoderStatus.OK) {
                     reject(status);
                 } else {
-                    resolve(results[0].geometry.location);
+                    resolve({
+                        lat: results[0].geometry.location.lat(),
+                        lng: results[0].geometry.location.lng()
+                    });
                 }
             });
         });
