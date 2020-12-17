@@ -45,6 +45,7 @@ export const muiTheme = createMuiTheme({
 		green: {
 			'text' : '#00453B',
 			'text2': '#007e6c',
+			'whatsapp': '#25D366',
 			'bg' : '#DEFFEA',
 		},
 	},

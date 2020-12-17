@@ -9,7 +9,7 @@ import { Text } from 'shared';
 import t from 'locale/he_IL';
 import { a11yProps } from '../a11y'; 
 import * as SC from '../style';
-import { openModal, closeModal } from 'redux/modal/slice';
+import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 
 const Header = ({ countyName, name, tabValue, handleTabChange, handleNewComment, comments }) => {
@@ -37,7 +37,7 @@ const Header = ({ countyName, name, tabValue, handleTabChange, handleNewComment,
 				<Button
 					variant="contained"
 					color="primary"
-					onClick={() => dispatch(openModal({ modalType: 'register' }))}
+					onClick={() => dispatch(openModal({ modalType: 'share' }))}
 					startIcon={<ShareIcon />}
 				>
 					<Text size="14px" text={t.sharing} component="span" color={theme.palette.gray['800']}/>

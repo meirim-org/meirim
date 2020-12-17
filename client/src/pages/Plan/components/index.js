@@ -12,5 +12,5 @@ export {
 	CommentPanel,
 	SubComment,
 	NewCommentForm,
-	NewSubCommentForm
+	NewSubCommentForm,
 };
