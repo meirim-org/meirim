@@ -52,7 +52,7 @@ class Plans extends Component {
         locationAutocompleteApi.getPlaceLocation(placeId)
         .then(location=>{
             this.setState({searchPoint:location})
-            this.loadPlans(1, [],location);
+            this.loadPlans(1, location);
         }).catch(error => this.setState({ error }));
     }
 
@@ -67,14 +67,12 @@ class Plans extends Component {
                 loadingAutocomplete: true
             });
 
-            locationAutocompleteApi.autocomplete(text)
-            .then((res)=>{
+            locationAutocompleteApi.autocomplete(text).then((res) => {
                 this.setState({
                     loadingAutocomplete: false,
                     list: res
                 });
-            })
-            .catch(error => {
+            }).catch(error => {
                 this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
             });
         } else {
