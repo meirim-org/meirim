@@ -2,5 +2,6 @@
     "axios": {
         "baseURL": "/api",
         "withCredentials": true
-    }
+    },
+    "mapsApiKey": ""
 }
