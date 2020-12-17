@@ -32,7 +32,8 @@ Text.defaultProps = {
 	size: '16px',
 	weight: '400',
 	lineHeight: '1.3',
-	color: '#000000'
+	color: '#000000',
+	text: ''
 };
 
 
