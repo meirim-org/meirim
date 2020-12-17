@@ -48,6 +48,17 @@ const FundingPage = () => {
 		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
+	useEffect(() => {
+		const { amount } = paymentOption
+		const {isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
+		const { amountError, termsAcceptedError } =
+		getFormErrors({
+			validations: { isValidAmount, isValidAcceptedTerms },
+			values: { amount: paymentOption, termsAccepted }
+		})
+	setFormErrors({ ...formErrors, amountError, termsAcceptedError })
+	}, [paymentOption, termsAccepted ])
+
 
 	const handlePaymentRequest = async () => {
 		const {isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount: paymentOption.amount, termsAccepted })
