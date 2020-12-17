@@ -1,0 +1,6 @@
+{
+    "axios": {
+        "baseURL": "/api",
+        "withCredentials": true
+    }
+}
