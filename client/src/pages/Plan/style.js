@@ -127,7 +127,10 @@ export const ShareTitleWrapper =  withTheme(styled.div`
 export const ShareActionWrapper =  withTheme(styled.div`
     padding: 2rem 3.75rem;
     text-align: center;
+`);
 
+export const ShareButtonWrapper = withTheme(styled.div`
+    margin-bottom: 1rem;
     .MuiButton-root {
         width: 100%;
         border: transparent!important;
@@ -143,12 +146,29 @@ export const ShareActionWrapper =  withTheme(styled.div`
     }
 `);
 
-export const ShareButtonWrapper = styled.div`
-    margin-bottom: 1rem;
-`;
-
 export const ShareTextWrapper = styled.div`
     margin-bottom: 1rem;
     text-align: center;
 `;
+
+
+export const CopyUrlArea = withTheme(styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: ${props => props.theme.palette.gray['bg']} !important;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 12px;
+    border: solid 1px ${props => props.theme.palette.gray['400']} !important;
+
+    > span {
+        direction: ltr;
+        white-space: nowrap;
+        overflow-x: scroll;
+        max-width: 17rem; 
+    }
+`);
+
+
 

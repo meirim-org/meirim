@@ -72,7 +72,8 @@ export default {
 	noThanks: 'לא תודה',
 	sharePlan: 'שיתוף תכנית',
 	whatsappShare: 'שיתוף ב-Whatsapp',
-	copyUrl: 'או העתיקו את הקישור'
+	copyUrl: 'או העתיקו את הקישור',
+	copy: 'העתק'
 };
 
 
