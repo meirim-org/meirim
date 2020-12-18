@@ -37,7 +37,7 @@ module.exports.autocomplete = (input) => {
     if (!window.google) {
         return Promise.reject('location service not initialized');
     } else {
-        const autocompleteService = new window.google.maps.places.AutocompleteService()
+        const autocompleteService = new window.google.maps.places.AutocompleteService();
 
         return new Promise((resolve, reject) => {
             autocompleteService.getPlacePredictions({input, componentRestrictions: {country: 'il'}}, (results, status) => {
