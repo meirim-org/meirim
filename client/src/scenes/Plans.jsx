@@ -53,7 +53,7 @@ class Plans extends Component {
         .then(location=>{
             this.setState({searchPoint:location})
             this.loadPlans(1, location);
-        }).catch(error => this.setState({ error }));
+        }).catch(error => this.setState({ error: "שגיאה בחיפוש לפי כתובת" }));
     }
 
     findPlaceIdFromSuggestion(string){
@@ -67,20 +67,27 @@ class Plans extends Component {
                 loadingAutocomplete: true
             });
 
-            locationAutocompleteApi.autocomplete(text).then((res) => {
-                this.setState({
-                    loadingAutocomplete: false,
-                    list: res
-                });
-            }).catch(error => {
-                this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
-            });
+            this.getAutocompleteSuggestions(text);
         } else {
+            // cancel previously-called debounced autocomplete
+            this.getAutocompleteSuggestions.cancel();
+
             this.setState({
                 list: []
             });
         }
     }
+
+    getAutocompleteSuggestions = _.debounce((input) => {
+        locationAutocompleteApi.autocomplete(input).then((res) => {
+            this.setState({
+                loadingAutocomplete: false,
+                list: res
+            });
+        }).catch(error => {
+            this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
+        });
+    }, 1000);
 
     loadPlans(pageNumber, point) {
         this.setState({
@@ -101,9 +108,8 @@ class Plans extends Component {
                     plans: [...this.state.plans, ...result.data]
                 });
             })
-            .catch(error => this.setState({ error }));
+            .catch(error => this.setState({ error: "שגיאה בשליפת תוכניות" }));
     }
-
 
     loadNextPage() {
         this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
