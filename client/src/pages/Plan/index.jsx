@@ -6,7 +6,7 @@ import PlanMobile from './mobile';
 import { useDataHandler } from './hooks';
 import t from 'locale/he_IL';
 
-const Plan = ({ isMobile }) => {
+const Plan = (props) => {
 	const [tabValue, setValue] = React.useState(0);
 	const [subscribePanel, setSubscribePanel] = React.useState(true);
 	const [newComment, setNewComment] = React.useState(false);
@@ -40,7 +40,7 @@ const Plan = ({ isMobile }) => {
 
 	];
 
-	if (isMobile) return <PlanDesktop
+	if (!props.isMobile()) return <PlanDesktop
 	     tabValue={tabValue}
 		 handleTabChange={handleTabChange}
 	     planData={planData}
