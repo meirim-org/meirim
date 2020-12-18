@@ -108,6 +108,10 @@ const StyledButton = withTheme(styled(MUIButton)`
 const Button = ({
 	text,
 	id,
+	to,
+	component,
+	href,
+	target,
 	onClick,
 	small,
 	extrasmall,
@@ -127,6 +131,10 @@ const Button = ({
 	return (
 		<StyledButton
 			id={id}
+			to={to}
+			component={component}
+			href={href}
+			target={target}
 			small={small ? '1' : ''}
 			extrasmall={extrasmall ? '1' : ''}
 			onClick={onClick}
@@ -162,7 +170,11 @@ Button.defaultProps = {
 Button.propTypes = {
 	id: PropTypes.string,
 	text: PropTypes.string,
-	onClick: PropTypes.func.isRequired,
+	to: PropTypes.string,
+	component: PropTypes.any,
+	href: PropTypes.string,
+	target: PropTypes.string,
+	onClick: PropTypes.func,
 	small: PropTypes.bool,
 	extrasmall: PropTypes.bool,
 	altColor: PropTypes.bool,
