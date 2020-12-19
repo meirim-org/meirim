@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { Header, GoalsPanel, PlanDetaillPanel, StatsPanel, SubscribePanel, CommentPanel, NewCommentForm } from '../components';
 import * as SC from '../style';
@@ -10,7 +11,7 @@ import t from 'locale/he_IL';
 const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, commentsData,
 	 newComment, handleNewComment, subscribePanel, handleSubscribePanel, newCommentType, handleNewCommentType, commentTypes, newCommentTypeError,
 	 handleNewCommentTypeError, newCommentText, handleNewCommentText }) => {
-	const { name, countyName, type, status, url, goalsFromMavat } = planData;
+	const { name, countyName, type, status, url, goalsFromMavat, geom } = planData;
 	
 	//Temporary
 	const planTerms = ['פינוי בינוי', 'חלוקת מגרשים', 'שיקום עירוני'];
@@ -73,6 +74,12 @@ const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, 
 						
 					</SC.Main>
 				</SC.Content>
+				  {geom && <Mapa
+					geom={geom}
+					hideZoom={true}
+					disableInteractions={true}
+					title={countyName}
+				/>}
 				<div>map</div>
 			</SC.MainWrapper>
 		</Wrapper>
