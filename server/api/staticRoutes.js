@@ -1,10 +1,10 @@
 const Router = require('express').Router();
 
+const Config = require('./lib/config');
 const Log = require('./lib/log');
 const Plan = require('./model/plan');
-const config = require('../../client/src/config.json');
 
-const pageLocale = config.opengraph.locale;
+const pageLocale = Config.get('opengraph.locale');
 
 // all plan pages should render opengraph tags
 Router.get(['/plan/:planId', '/plan/:planId/*'], (req, res) => {
