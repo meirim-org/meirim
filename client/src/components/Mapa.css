@@ -1,8 +1,14 @@
 .map-title {
-  position: absolute;
+  position: relative;
   z-index: 9999;
   font-size: large;
   padding: 5px;
+}
+
+.map-title-left {
+  position: absolute;
+  left: 10px;
+  cursor: pointer
 }
 
 .map-title button {
