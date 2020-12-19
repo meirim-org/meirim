@@ -79,7 +79,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										ariaControls="user-menu"
 										openHandler={handleDropDownClick}
 										closeHandler={handleDropDownClose}
-										textColor="#1a2d66"
+										textcolor="#1a2d66"
 										iconBefore={<AccountCircleIcon color="primary"/>}
 										iconAfter={<ExpandMoreIcon color="secondary"/>}
 										dropDownEl={dropDownEl}
