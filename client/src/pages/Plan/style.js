@@ -29,6 +29,9 @@ export const Header = withTheme(styled.div`
 export const Main = withTheme(styled.main`
     background-color:  ${props => props.theme.palette.gray['bg']};
     padding: 2.5rem 4.8rem;
+    &.no-comments {
+        height: 100vh;
+    }
 `);
 
 export const AppBar = withTheme(styled(MuiAppBar)`
@@ -39,7 +42,7 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         min-width: auto !important;
         padding: .4rem 1.5rem;
     }
-    .PrivateTabIndicator-colorSecondary-3 {
+    .MuiTabs-indicator {
         background-color:  ${props => props.theme.palette.primary.main} !important;
     }
     .Mui-selected {
@@ -95,4 +98,17 @@ export const SubTitleWrapper = styled.div`
 
 export const TitleWrapper = styled.div`
     margin-bottom: 3rem;
+`;
+
+export const NoComments = styled.div`
+    text-align: center;
+`;
+
+export const NoCommentsBold = styled.span`
+    font-size: 1.125rem;
+    font-weight: 600;
+`;
+
+export const NoCommentsRegular = styled.span`
+    font-size: 1rem;
 `;

@@ -1,78 +1,78 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
-import { validateEmail } from 'validations'
+import { useHistory } from 'react-router-dom';
+import { validateEmail } from 'validations';
 import { Button, TextInput, Link } from 'shared';
-import { wrongLoginCredsToast, serverErrorToast } from 'toasts'
+import { wrongLoginCredsToast, serverErrorToast } from 'toasts';
 import { ValidUserHook } from 'hooks';
-import { openModal, closeModal } from 'redux/modal/slice'
-import { loginUser } from './controller'
+import { openModal, closeModal } from 'redux/modal/slice';
+import { loginUser } from './controller';
 import t from 'locale/he_IL';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
 
 const Login = () => {
-	const history = useHistory()
-	const dispatch = useDispatch()
+	const history = useHistory();
+	const dispatch = useDispatch();
 	const firstUpdate = useRef(true);
-	const [user, setUser] = useState(null) 
+	const [user, setUser] = useState(null); 
 	const [loginValues, setLoginValues] = useState({ email: '', password: '' });
-	const [onFocusInput, setOnFocusInput] = useState({ password: false, email: false })
+	const [onFocusInput, setOnFocusInput] = useState({ password: false, email: false });
 	const [formErrors, setFormErrors] = useState({
 		emailError: { isValid: true, message: '' },
 		passwordError: { isValid: true, message: '' }
-	})
+	});
 
-	ValidUserHook(user)
+	ValidUserHook(user);
 
 	const getIsEmailInvalid = React.useCallback(() => 
-		onFocusInput.email ? false : !validateEmail(loginValues.email), [loginValues.email, onFocusInput.email])
+		onFocusInput.email ? false : !validateEmail(loginValues.email), [loginValues.email, onFocusInput.email]);
 	const formValidation = React.useCallback(() => {
-		const isEmailInvalid = getIsEmailInvalid() 
-		const emailError = { isValid: !isEmailInvalid, message: !isEmailInvalid ? '' : 'מייל לא תקין' }
-		setFormErrors(ps => ({ ...ps, emailError }))
-	}, [getIsEmailInvalid])
+		const isEmailInvalid = getIsEmailInvalid(); 
+		const emailError = { isValid: !isEmailInvalid, message: !isEmailInvalid ? '' : 'מייל לא תקין' };
+		setFormErrors(ps => ({ ...ps, emailError }));
+	}, [getIsEmailInvalid]);
 	
 	useEffect(() => {
 		if (firstUpdate.current) {
-			firstUpdate.current = false
+			firstUpdate.current = false;
 		} else {
-			formValidation()
+			formValidation();
 		}
-	},[loginValues, onFocusInput, formValidation])
+	},[loginValues, onFocusInput, formValidation]);
 
 	const onInputFocus = (inputName) => {
-		const newState = {}
-		newState[inputName] = true
-		setOnFocusInput(ps => ({ ...ps, ...newState }))
-	}
+		const newState = {};
+		newState[inputName] = true;
+		setOnFocusInput(ps => ({ ...ps, ...newState }));
+	};
 
 	const onInputBlur = (inputName) => {
-		const newState = {}
-		newState[inputName] = false
-		setOnFocusInput(ps => ({ ...ps, ...newState }) )
-	}
+		const newState = {};
+		newState[inputName] = false;
+		setOnFocusInput(ps => ({ ...ps, ...newState }) );
+	};
 
-	const getIsPasswordInvalid = () => onFocusInput.password ? false : loginValues.password.length < 6
+	const getIsPasswordInvalid = () => onFocusInput.password ? false : loginValues.password.length < 6;
 
 	const validateBeforeFormSubmittion = (e) => {
-		e.preventDefault()
-		const isEmailValid = !getIsEmailInvalid()
-		const isPasswordValid = !getIsPasswordInvalid()
-		const emailError = { isValid: isEmailValid, message: isEmailValid ? '' : 'מייל לא תקין' }
-		const passwordError = { isValid: isPasswordValid, message: isPasswordValid ? '' : 'סיסמה לא תקינה' }
-		setFormErrors(ps => ({ ...ps, emailError, passwordError }))
-		if (isEmailValid && isPasswordValid) submitLoginForm()
-	}
+		e.preventDefault();
+		const isEmailValid = !getIsEmailInvalid();
+		const isPasswordValid = !getIsPasswordInvalid();
+		const emailError = { isValid: isEmailValid, message: isEmailValid ? '' : 'מייל לא תקין' };
+		const passwordError = { isValid: isPasswordValid, message: isPasswordValid ? '' : 'סיסמה לא תקינה' };
+		setFormErrors(ps => ({ ...ps, emailError, passwordError }));
+		if (isEmailValid && isPasswordValid) submitLoginForm();
+	};
 
 	const submitLoginForm = async () => {
-		const res = await loginUser({ values: loginValues }) 
-		const successResponse = res.status === 'OK'
-		const wrongCredintials = res && res.response && res.response.status === 403
-		const serverError = res && res.response && res.response.status === 504
-		if (successResponse) setUser(res.data)
-		else if (wrongCredintials) wrongLoginCredsToast()
-		else if (serverError) serverErrorToast()
-	}
+		const res = await loginUser({ values: loginValues }); 
+		const successResponse = res.status === 'OK';
+		const wrongCredintials = res && res.response && res.response.status === 403;
+		const serverError = res && res.response && res.response.status === 504;
+		if (successResponse) setUser(res.data);
+		else if (wrongCredintials) wrongLoginCredsToast();
+		else if (serverError) serverErrorToast();
+	};
 	
 	return (
 		<SC.MainWrapper>
@@ -117,9 +117,9 @@ const Login = () => {
 						required />
 					<SC.ForgotPassword>
 						<u><Link id="forgot-password" onClick={() => {
-							dispatch(closeModal())
+							dispatch(closeModal());
 							
-							return history.push('/forgot')
+							return history.push('/forgot');
 						}} text={t.forgotMyPassword} /></u>
 					</SC.ForgotPassword>
 				</SC.InputWrapper>

@@ -7,13 +7,16 @@ export const muiTheme = createMuiTheme({
 	palette: {
 		black: '#000000',
 		white: '#ffffff',
+		red: '#ff3a68',
 		gray: {
 		    '100': '#FBFBFB',
+		    '200': '#f4f4f4',
 		    '300': '#E4E4E4',
 		    'main': '#999999',
 		    '600': '#666666',
 		    '800': '#333333',
-			'bg': '#fafafabf'
+			'bg': '#fafafabf',
+            'radio': '#f1eef2'
 		},
 		primary: {
 			'100' : '#F0E3FD',
@@ -24,7 +27,8 @@ export const muiTheme = createMuiTheme({
 			'600': '#4D20B2',
 			'700': '#391695',
 			'800': '#270E78',
-			'bg': '#f0e3fd66'
+			'bg': '#f0e3fd66',
+            'custom': '#652dd00a'
 		},
 		secondary: {
 			'100' : '#FEF2DA',
@@ -39,6 +43,7 @@ export const muiTheme = createMuiTheme({
 		},
 		green: {
 			'text' : '#00453B',
+            'text2': '#007e6c',
 			'bg' : '#DEFFEA',
 		},
 	},
