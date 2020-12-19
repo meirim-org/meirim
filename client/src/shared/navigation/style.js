@@ -59,13 +59,13 @@ export const LogOutIcon = styled(ListItemIcon)`
   path {
     color: #d1ccd5;
   }
-`
+`;
 
 export const StyledStarIcon = styled(ListItemIcon)`
   path {
     color: #652dd0;
   }
-`
+`;
 
 export const Logo = styled.img`
     max-width: 53px;

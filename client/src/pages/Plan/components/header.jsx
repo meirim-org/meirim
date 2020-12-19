@@ -5,26 +5,25 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { useTheme } from '@material-ui/styles';
 import { Button, Tabs, Tab, Badge } from '@material-ui/core';
-import { Typography } from 'shared';
+import { Text } from 'shared';
 import t from 'locale/he_IL';
 import { a11yProps } from '../a11y'; 
 import * as SC from '../style';
+import { openModal } from 'redux/modal/slice';
+import { useDispatch } from 'react-redux';
 
-const Header = ({ countyName, name, tabValue, handleTabChange, comments }) => {
+const Header = ({ countyName, name, tabValue, handleTabChange, handleNewComment, comments }) => {
 	const theme = useTheme();
-	
+	const dispatch = useDispatch();
+
 	return (
 		<SC.Header>
 			<SC.TitlesAndTabs>
 				<SC.SubTitleWrapper>
-					<Typography variant="planDetailTitle" mobileVariant="smallTitle" component="span" color={theme.palette.primary.main}>
-						{countyName}
-					</Typography>
+					<Text size="18px" weight="600" text={countyName} component="span" color={theme.palette.primary.main}/>
 				</SC.SubTitleWrapper>
 				<SC.TitleWrapper>
-					<Typography variant="planTitle" mobileVariant="paragraphText" component="h1" color={theme.palette.black}>
-						{name}
-					</Typography>
+					<Text size="24px" lineHeight="1.17" weight="600" text={name} component="h1" color={theme.palette.black}/>
 				</SC.TitleWrapper>
 				<SC.AppBar position="static">
 					<Tabs value={tabValue} onChange={handleTabChange} aria-label="טאבים של התוכנית">
@@ -35,24 +34,27 @@ const Header = ({ countyName, name, tabValue, handleTabChange, comments }) => {
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
 			<SC.Buttons>
-				<Button variant="contained" color="primary" startIcon={<ShareIcon />}>
-					<Typography variant="chipsAndIconButtons" mobileVariant="chipsAndIconButtons" component="span" color={theme.palette.gray['800']}>
-						{t.sharing}
-					</Typography>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={() => dispatch(openModal({ modalType: 'share' }))}
+					startIcon={<ShareIcon />}
+				>
+					<Text size="14px" text={t.sharing} component="span" color={theme.palette.gray['800']}/>
 				</Button>
 				<Button variant="contained" color="primary" startIcon={<StarBorderIcon />}>
-					<Typography variant="chipsAndIconButtons" mobileVariant="chipsAndIconButtons" component="span" color={theme.palette.gray['800']}>
-						{t.saving}
-					</Typography>
+					<Text size="14px" text={t.saving} component="span" color={theme.palette.gray['800']}/>
 				</Button>
 				<Button
 					variant="contained"
 					color="primary"
+					onClick={()=> {
+						handleTabChange(null,1); 
+						handleNewComment(true);
+					}}
 					startIcon={<ChatBubbleOutlineIcon />}
 				>
-					<Typography variant="chipsAndIconButtons" mobileVariant="chipsAndIconButtons" component="span" color={theme.palette.gray['800']}>
-						{t.addAnOpinion}
-					</Typography>
+					<Text size="14px" text={t.addAnOpinion} component="span" color={theme.palette.gray['800']}/>
 				</Button>
 			</SC.Buttons>
 		</SC.Header>
@@ -66,6 +68,7 @@ Header.propTypes = {
 	countyName: PropTypes.string.isRequired,
 	tabValue: PropTypes.any.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
+	handleNewComment: PropTypes.func.isRequired,
 	comments: PropTypes.string.isRequired,
 };
 

@@ -40,7 +40,7 @@ const handleVariant = variant => {
 	case 'paragraphTextLight':
 		return template('16px', '300', '1.3');
 	case 'highlightedText':
-		return template('16px', '600', '1.33');
+		return template('16px', '600', '1.3');
 	case 'smallTitle':
 		return template('14px', '600', '1.29');
 	case 'chipsAndIconButtons':

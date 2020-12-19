@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/core/styles';
 
 const StyledTabBox = withTheme(styled.div`
-    background: ${props => props.theme.palette.white};
+    position: ${props => props.position};
+    background-color: ${props => props.bgColor};
     border-radius: 12px;
-    border: solid 1px ${props => props.theme.palette.gray['300']};
+    border: solid 1px ${props => props.borderColor};
     padding: 1.5rem;
     margin-bottom: 1.3rem;
     
@@ -31,35 +32,50 @@ const StyledTabBox = withTheme(styled.div`
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #ffffff;
+            background-color: ${props => props.theme.palette.white};
             opacity: 0.7;
             z-index: 1;
             top: 0;
             left: 0;
         } 
     `}
-    
+
 `);
 
 const TabBox = ({
-    isOpinion,
-    disabled,
+	isOpinion,
+	disabled,
+	bgColor,
+	position,
+	borderColor,
 	children
 }) => (
-	<StyledTabBox isOpinion={isOpinion} disabled={disabled}>
+	<StyledTabBox 
+		isOpinion={isOpinion}
+		disabled={disabled}
+		bgColor={bgColor}
+		borderColor={borderColor} 
+		position={position}>
 		{children}
 	</StyledTabBox>
 );
 
 TabBox.defaultProps = {
-    isOpinion: false,
-    disabled: false
+	isOpinion: false,
+	disabled: false,
+	bgColor: '#ffffff',
+	borderColor: '#E4E4E4',
+	position: 'static'
 };
 
 
 TabBox.propTypes = {
-    isOpinion: PropTypes.bool,
-    children: PropTypes.any,
+	isOpinion: PropTypes.bool,
+	children: PropTypes.any,
+	bgColor: PropTypes.string,
+	borderColor: PropTypes.string,
+	disabled: PropTypes.bool,
+	position: PropTypes.string
 };
 
 export default TabBox;
