@@ -3,5 +3,8 @@
         "baseURL": "/api",
         "withCredentials": true
     },
-    "mapsApiKey": ""
+    "geocode": {
+        "mapsApiKey": "",
+        "autocompleteDelay": 2000
+    }
 }
