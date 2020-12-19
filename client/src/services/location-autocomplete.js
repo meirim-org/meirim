@@ -22,7 +22,7 @@ module.exports.init = () => {
         if (window.google) {
             resolve(window.google);
         } else {
-            loadScript(`https://maps.googleapis.com/maps/api/js?language=iw&libraries=places&key=${process.env.CONFIG.mapsApiKey}`, () => {
+            loadScript(`https://maps.googleapis.com/maps/api/js?language=iw&libraries=places&key=${process.env.CONFIG.geocode.mapsApiKey}`, () => {
                 if (window.google) {
                     resolve(window.google);
                 } else {

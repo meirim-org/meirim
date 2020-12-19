@@ -87,7 +87,7 @@ class Plans extends Component {
         }).catch(error => {
             this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
         });
-    }, 1000);
+    }, process.env.CONFIG.geocode.autocompleteDelay);
 
     loadPlans(pageNumber, point) {
         this.setState({
