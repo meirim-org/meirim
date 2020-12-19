@@ -53,7 +53,27 @@ export default {
 	send: 'שליחה',
 	chooseType: 'בחרו סוג',
 	startDiscussion: 'היו הראשונים להתחיל דיון על התוכנית!',
-	shareThought: 'שתפו את הקהילה בדעתכם'
+	shareThought: 'שתפו את הקהילה בדעתכם',
+	planDetails: 'פרטי התכנית',
+	planGoals: 'מטרות התכנית',
+	meanings: 'משמעויות',
+	status: 'סטטוס',
+	planType: 'סוג תכנית',
+	planDeatailOnGovSite: 'מסמכי התוכנית באתר הממשלה',
+	meter: 'מ״ר',
+	thisPlanIncreases: 'תוכנית זו מגדילה את השטח הבנוי פי',
+	thisPlanAdds: 'תוכנית זו מוסיפה',
+	extension: 'תוספת',
+	buildingLand: 'שטח בנוי',
+	building: 'בניה',
+	insteadOf: 'במקום',
+	subscribeTitle: 'רוצים לקבל התראה כשהתכנית מתקדמת?',
+	subscribeText: 'הירשמו למערכת ההתראות שלנו',
+	noThanks: 'לא תודה',
+	sharePlan: 'שיתוף תכנית',
+	whatsappShare: 'שיתוף ב-Whatsapp',
+	copyUrl: 'או העתיקו את הקישור',
+	copy: 'העתק'
 };
 
 

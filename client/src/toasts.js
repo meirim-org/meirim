@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
 
 const failConfiguration = {
 	position: 'bottom-center',
@@ -6,45 +6,45 @@ const failConfiguration = {
 	hideProgressBar: true,
 	closeOnClick: true,
 	draggable: true,
-}
+};
 
 const successConfiguration = {
 	position: 'bottom-center',
 	closeOnClick: true,
 	draggable: true,
-}
+};
 
 const ServerFailToast =	(id) => toast.error('מתנצלים, יש שגיאה בצד שלנו. נא לנסות שוב', {
 	toastId: id,
 	...failConfiguration
-}) 
+}); 
 
 export const wrongLoginCredsToast = () => 
 	toast.error('הסיסמה או שם המשתמש אינם נכונים', {
 		toastId: '403message',
 		...failConfiguration
-	})
+	});
 
-export const serverErrorToast = () => ServerFailToast('serverErrorToast')
+export const serverErrorToast = () => ServerFailToast('serverErrorToast');
 
 export const copiedToClipboard = () =>
 	toast.success('הועתק בהצלחה!', {
 		toastId: 'copiedToClipboardMessage',
 		...successConfiguration
-	}) 
+	}); 
 
-export const FailSubscribeUserToPlan = () => ServerFailToast('faileSubscribeUsertoPlan')
+export const FailSubscribeUserToPlan = () => ServerFailToast('faileSubscribeUsertoPlan');
 
 export const SuccessSubscribeUserToPlan = () =>
 	toast.success('התוכנית נשמרה בהצלחה!', {
 		toastId: 'SuccessSubscribeUserToPlan',
 		...successConfiguration
-	}) 
+	}); 
  
 export const SuccessAddComment = () =>
 	toast.success('התגובה נוספה בהצלחה!', {
 		toastId: 'SuccessSubscribeUserToPlan',
 		...successConfiguration
-	}) 
+	}); 
  
-export const FailAddComment = () => ServerFailToast('faileAddComment')
+export const FailAddComment = () => ServerFailToast('faileAddComment');

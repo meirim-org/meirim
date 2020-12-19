@@ -1,30 +1,56 @@
 import React from 'react';
-import { Button } from 'shared';
-import styled from 'styled-components';
+import { Text, Button } from 'shared';
+import t from 'locale/he_IL';
 import { copiedToClipboard } from 'toasts';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { CopyToClipboard } from  'react-copy-to-clipboard';
+import { useTheme } from '@material-ui/styles';
+import * as SC from './style';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 
-const Wrapper = styled.div`
-	display: grid;
-	padding: 1em 6em 0 6em;
-`;
-const Title = styled.h1``;
+const url = 'https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A' + encodeURI(window.location.toString());
 
 const SharePlan = () => {
+	const theme = useTheme();
 
 	return (
-		<Wrapper>
-			<Title>שיתוף תוכנית</Title>
-			  <a
-				className="share-link"
-				target="_blank"
-				rel="noopener noreferrer"
-				href={'https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A' + encodeURI(window.location.toString())}>
-				<Button onClick={() => {console.log('clicked share');}} text="שתיוף ב- Whatsapp"/></a>
-			<CopyToClipboard text={encodeURI(window.location.toString())} onCopy={() => copiedToClipboard()}>
-				<button>Copy to clipboard with button</button>
-			</CopyToClipboard>
-		</Wrapper>
+		<SC.ShareWrapper>
+			<SC.ShareTitleWrapper>
+				<Text text={t.sharePlan} weight="600" size="32px" color={theme.palette.primary['800']}/>
+			</SC.ShareTitleWrapper>
+
+			<SC.ShareActionWrapper>
+
+				<SC.ShareButtonWrapper>
+					<Button
+					 component="a"
+					 href={url}
+					 target="_blank"
+					 text={t.whatsappShare} 
+					 fontWeight="600" 
+					 fontSize="14px" 
+					 textcolor={theme.palette.white}
+					 iconBefore={<WhatsAppIcon/>} />
+				</SC.ShareButtonWrapper>
+
+				<SC.ShareTextWrapper>
+					<Text text={t.copyUrl} size="14px" color={theme.palette.black}/>
+				</SC.ShareTextWrapper>
+
+				<SC.CopyUrlArea>
+					<Text text={url} size="14px" color={theme.palette.black}/>
+					<CopyToClipboard text={url} onCopy={() => copiedToClipboard()}>
+						<Button
+						 text={t.copy} 
+						 fontSize="14px" 
+						 fontWeight="400" 
+						 textcolor={theme.palette.primary.main}
+						 simple={true}
+						 />
+					</CopyToClipboard>
+				</SC.CopyUrlArea>
+
+			</SC.ShareActionWrapper>
+		</SC.ShareWrapper>
 	);
 };
 
