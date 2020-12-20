@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GoalsPanel, PlanDetailsPanel, StatsPanel, SubscribePanel } from 'pages/Plan/common';
+import { GoalsPanel, PlanDetailsPanel, StatsPanel, SubscribePanel, MapPanel } from 'pages/Plan/common';
 
 const SummaryTab = ({ 
 	tabValue, planData, dataArea, textArea,
@@ -13,12 +13,14 @@ const SummaryTab = ({
 	return (
 		<>
 			<PlanDetailsPanel tabValue={tabValue} type={type} status={status} url={url} terms={planTerms} />
-			<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
-			<SubscribePanel 
+			<SubscribePanel
 				tabValue={tabValue}
 						 	subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>
+
+			<MapPanel tabValue={tabValue} />
 			<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
+			<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
 		</>
 	);
 };

@@ -10,10 +10,10 @@ const Title = ({ countyName, planName }) => {
 	return (
 		<>
 			<SC.SubTitleWrapper>
-				<Text size="18px" weight="600" text={countyName} component="span" color={theme.palette.primary.main}/>
+				<Text size="18px" weight="700" text={countyName} component="span" color={theme.palette.primary.main}/>
 			</SC.SubTitleWrapper>
 			<SC.TitleWrapper>
-				<Text size="24px" lineHeight="1.17" weight="600" text={planName} component="h1" color={theme.palette.black}/>
+				<Text size="18px" lineHeight="1.4" weight="600" text={planName} component="h1" color={theme.palette.black}/>
 			</SC.TitleWrapper>
 		</>
 	);

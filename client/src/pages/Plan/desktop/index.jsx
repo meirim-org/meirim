@@ -4,7 +4,7 @@ import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, SummaryTab, CommentsTab } from './containers';
-import * as SC from '../style';
+import * as SC from './style';
 
 const PlanDesktop = ({ 
 	tabValue, handleTabChange, 

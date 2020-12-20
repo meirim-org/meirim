@@ -2,10 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
 import PlanDesktop from './desktop';
-// import PlanMobile from './mobile';
 import { useDataHandler, useCommentsDataHandler } from './hooks';
 import t from 'locale/he_IL';
-import PlanMobile from "./mobile";
+import PlanMobile from './mobile';
 
 const Plan = (props) => {
 	const [tabValue, setValue] = React.useState(0);

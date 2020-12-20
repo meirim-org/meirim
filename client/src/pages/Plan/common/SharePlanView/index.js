@@ -9,7 +9,7 @@ import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 
 const url = 'https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A' + encodeURI(window.location.toString());
 
-const SharePlan = () => {
+const SharePlanView = () => {
 	const theme = useTheme();
 
 	return (
@@ -54,4 +54,4 @@ const SharePlan = () => {
 	);
 };
 
-export default SharePlan;
+export default SharePlanView;
