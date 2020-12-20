@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Typography } from 'shared';
 import * as SC from './style';
 import { useTheme } from '@material-ui/styles';
-import { daysPassed } from '../utils';
+import { daysPassed } from 'pages/Plan/utils';
 
-export const SubComment = ({ subCommentData }) => {
+export const SubCommentView = ({ subCommentData }) => {
 	const theme = useTheme();
 	const { content, created_at } = subCommentData;
 	const { name } = subCommentData.person;
@@ -48,6 +48,8 @@ export const SubComment = ({ subCommentData }) => {
 	);
 };
 
-SubComment.propTypes = {
+SubCommentView.propTypes = {
 	subCommentData: PropTypes.object.isRequired,
 };
+
+export default SubCommentView;
