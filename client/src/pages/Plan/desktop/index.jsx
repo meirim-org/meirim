@@ -5,11 +5,10 @@ import { Header, GoalsPanel, PlanDetaillPanel, StatsPanel, SubscribePanel, Comme
 import * as SC from '../style';
 import t from 'locale/he_IL';
 
-
-
 const PlanDesktop = ({ tabValue, handleTabChange, planData, dataArea, textArea, commentsData,
 	 newComment, handleNewComment, subscribePanel, handleSubscribePanel, newCommentType, handleNewCommentType, commentTypes, newCommentTypeError,
 	 handleNewCommentTypeError, newCommentText, handleNewCommentText }) => {
+		 
 	const { name, countyName, type, status, url, goalsFromMavat } = planData;
 	
 	//Temporary
