@@ -1,5 +1,3 @@
-import Comments from "./Comments";
-// import * as AddComment from "./AddComment";
-// import * as Comment from "./Comment";
+import Comments from './Comments';
 
 export default Comments;

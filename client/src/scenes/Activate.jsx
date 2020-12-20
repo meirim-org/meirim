@@ -27,10 +27,9 @@ class Activate extends Component {
     }
     render() {
         const { step, error } = this.state;
-        const { me } = this.props;
 
         return (
-            <Wrapper me={me}>
+            <Wrapper>
                 <div className="container">
                     <div className="row">
                         <div className="col">

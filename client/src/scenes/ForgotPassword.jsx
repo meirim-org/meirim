@@ -49,13 +49,12 @@ class ForgotPassword extends Component {
     };
     render() {
         const { stage, error } = this.state;
-        const { me } = this.props;
 
         if (stage === "changed") {
             return <Redirect to="/sign/in/" />;
         }
         return (
-            <Wrapper me={me}>
+            <Wrapper>
                 <div className="container dialog">
                     <div className="row">
                         <div className="col">

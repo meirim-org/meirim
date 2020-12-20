@@ -1,94 +1,26 @@
-import React from 'react';
+import PropTypes from 'prop-types'
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import Wrapper from '../../components/Wrapper';
-import Register from '../../pages/Register';
-import Login from '../../pages/Login'
 import t from '../../locale/he_IL';
 import traktor from '../../assets/traktor_op.png';
 import logoSmall from '../../assets/logo_small.png';
 import '../../assets/bootstrap.css';
 import './Home.css';
-
-const howItWorks = [
-	{
-		icon: 'building',
-		text: (
-			<>
-				<strong>יזמי נזל"ן</strong>
-				{' '}
-				מגישים תוכנית חדשה לוועדת התכנון
-				באמצעות מערכת "תכנון זמין"
-			</>
-		),
-	},
-	{
-		icon: 'paper-plane',
-		text: (
-			<>
-				<strong>מעירים</strong>
-				{' '}
-				מזהה שהוגשה תוכנית חדשה ושולחת לכל
-				הנרשמים באיזור הרלוונטי התראה בדואר אלקטרוני
-			</>
-		),
-	},
-	{
-		icon: 'chart-area',
-		text: (
-			<>
-				<strong>אתם</strong>
-				{' '}
-				מקבלים התראה רלוונטית עם לינק לתוכנית המלאה
-				ומידע מונגש שעוזר להבין את מהות התוכנית
-			</>
-		),
-	},
-];
-
-const whatSay = [
-	{
-		text: 'מעירים זו מהפכה והיא חשובה לתקשורת עם האזרח, אקדם את הטמעת המערכת בקריית אונו',
-		name: 'עו"ד נירית בלייר',
-		title: 'חברת מועצת העיר קריית אונו',
-	},
-
-	{
-		text: 'מעירים נותן לנו כלים יעילים להתמודד עם תהליכי תכנון שלעתים רבות סמויים מן העין אבל משפיעים ישירות על החיים שלנו',
-		name: 'ערן בן ימיני',
-		title: 'מנכ"ל ארגון חיים וסביבה',
-	},
-
-	{
-		text: 'קיבלתי מידע חשוב על תכנית פיתוח משמעותית הצמודה לביתי. זה איפשר לי להיערך עם השכנים, להגיש התנגדות ואף להביא לשיפור המצב התכנוני שאושר בעבורנו.',
-		name: 'יהונתן הימן',
-		title: 'מתכנן קהילתי, ירושלים',
-	},
-	{
-		text: 'מעירים הוא כלי עבודה נהדר, בייחוד במעכב אחרי תכניות בסמכות מקומית',
-		name: 'מנהל התכנון',
-		title: '',
-	},
-	{
-		text: 'מעירים הוא כלי שמחזיר לי מעט כוח במערכת היחסים המורכבת והלא מאוזנת מול הרשות העירונית ונבכי הבירוקרטיה שלה.',
-		name: 'יואב שפרנק',
-		title: 'פעיל חברתי, דרום תל אביב',
-	},
-];
+import { howItWorks, whatSay } from './constants'
+import { useDispatch } from 'react-redux';
+import { openModal } from 'redux/modal/slice';
 
 const Home = (props) => {
+	const dispatch = useDispatch()
+	const { state } = props.location
 
-	const { me, showRegister, showSignin } = props;
-	
-	const showRegisterModal = () => {
-		if(showRegister) return true
-		if(!showSignin && !me) return true
-		
-		return false
-	}
+	useEffect(() => {
+		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }))
+	}, [state, dispatch])
 
 	return (
-		<Wrapper me={me}>
+		<Wrapper>
 			<div
 				className="d-none d-md-block"
 				style={{
@@ -124,10 +56,6 @@ const Home = (props) => {
 				<div className="row">
 					<div className="col-lg-4">
 						<p>{t.howItWorks}</p>
-					</div>
-					<div className="col-lg-4">
-					 { showRegisterModal() ? <Register {...props}/> : null }
-					 {showSignin && <Login {...props}/>}
 					</div>
 				</div>
 			</div>
@@ -180,6 +108,10 @@ const Home = (props) => {
 			</div>
 		</Wrapper>
 	);
+}
+
+Home.propTypes = {
+	location: PropTypes.object.isRequired
 }
 
 export default Home
