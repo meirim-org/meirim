@@ -3,27 +3,24 @@ import { useParams } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
 import PlanDesktop from './desktop';
 import PlanMobile from './mobile';
-import { useDataHandler } from './hooks';
+import { useDataHandler, useCommentsDataHandler } from './hooks';
 import t from 'locale/he_IL';
 
 const Plan = (props) => {
 	const [tabValue, setValue] = React.useState(0);
 	const [subscribePanel, setSubscribePanel] = React.useState(true);
-	const [newComment, setNewComment] = React.useState(false);
-	const [newCommentType, setNewCommentType] = React.useState('');;
-	const [newCommentTypeError, setNewCommentTypeError] = React.useState(false);
+	const [isNewCommentOpen, setIsNewCommentOpen] = React.useState(false);
 	const [newCommentText, setNewCommentText] = React.useState('');;
+
+	const openNewCommentView = () => setIsNewCommentOpen(true);
+	const closeNewCommentView = () => setIsNewCommentOpen(false);
+
 	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleSubscribePanel = (newValue) => setSubscribePanel(newValue);
-	const handleNewComment = (newValue) => setNewComment(newValue);
-	const handleNewCommentType = (_, newValue) => {
-		setNewCommentType(newValue);
-		setNewCommentTypeError(false);
-	};
-	const handleNewCommentTypeError = () => setNewCommentTypeError(true);
 	const handleNewCommentText = (newValue) => setNewCommentText(newValue);
 	const { id: planId } = useParams();
-	const { planData, dataArea, textArea, commentsData } = useDataHandler(planId);
+	useDataHandler(planId);
+	useCommentsDataHandler(planId);
 	const commentTypes = [
 		{
 			value: 'improvement-proposal',
@@ -41,41 +38,29 @@ const Plan = (props) => {
 	];
 
 	if (!props.isMobile()) return <PlanDesktop
-	     tabValue={tabValue}
-		 handleTabChange={handleTabChange}
-	     planData={planData}
-		 dataArea={dataArea}
-		 textArea={textArea}
-		 commentsData={commentsData}
-		 subscribePanel={subscribePanel} 
-		 handleSubscribePanel={handleSubscribePanel} 
-		 newComment={newComment} 
-		 handleNewComment={handleNewComment} 
-		 newCommentType={newCommentType}
-		 handleNewCommentType={handleNewCommentType}
-		 newCommentTypeError={newCommentTypeError}
-		 handleNewCommentTypeError={handleNewCommentTypeError} 
-		 newCommentText={newCommentText}
-		 handleNewCommentText={handleNewCommentText}
-		 commentTypes={commentTypes}/>;
-	else return <PlanMobile
-		tabValue={tabValue}
-		handleTabChange={handleTabChange}
-		planData={planData}
-		dataArea={dataArea}
-		textArea={textArea}
-		commentsData={commentsData}
-		subscribePanel={subscribePanel} 
-		handleSubscribePanel={handleSubscribePanel} 
-		newComment={newComment} 
-		handleNewComment={handleNewComment} 
-		newCommentType={newCommentType}
-		handleNewCommentType={handleNewCommentType}
-		newCommentTypeError={newCommentTypeError}
-		handleNewCommentTypeError={handleNewCommentTypeError} 
-		newCommentText={newCommentText}
-		handleNewCommentText={handleNewCommentText}
-		commentTypes={commentTypes}/>;
+        tabValue={tabValue}
+        handleTabChange={handleTabChange}
+        subscribePanel={subscribePanel}
+        handleSubscribePanel={handleSubscribePanel}
+        isNewCommentOpen={isNewCommentOpen}
+        newCommentViewHandler={() => setIsNewCommentOpen(!isNewCommentOpen)}
+        openNewCommentView={openNewCommentView}
+        closeNewCommentView={closeNewCommentView}
+        newCommentText={newCommentText}
+        handleNewCommentText={handleNewCommentText}
+        commentTypes={commentTypes}/>;
+	else return <PlanDesktop
+        tabValue={tabValue}
+        handleTabChange={handleTabChange}
+        subscribePanel={subscribePanel}
+        handleSubscribePanel={handleSubscribePanel}
+        isNewCommentOpen={isNewCommentOpen}
+        newCommentViewHandler={() => setIsNewCommentOpen(!isNewCommentOpen)}
+        openNewCommentView={openNewCommentView}
+        closeNewCommentView={closeNewCommentView}
+        newCommentText={newCommentText}
+        handleNewCommentText={handleNewCommentText}
+        commentTypes={commentTypes}/>;
 };
 
 export default withGetScreen(Plan);

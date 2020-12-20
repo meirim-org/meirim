@@ -34,7 +34,8 @@ export const initialPlanData = {
 	type:'', 
 	goalsFromMavat: '',
 	planUrl: '',
-	areaChanges: ''
+	areaChanges: '',
+	geom: ''
 };
 
 export const initialTextArea ={

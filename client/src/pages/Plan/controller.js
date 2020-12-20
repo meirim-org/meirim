@@ -12,16 +12,16 @@ export const subscribeUserToPlan = async (planId) => {
 	}
 };
 
-export const addComment = async ({ content, plan_id, person_id, name }) => {
+export const addComment = async ({ content, planId, userId,  username, parentId }) => {
 	try {	
 		const data = {
 			content,
-			name,
-			person_id,
-			plan_id,
-			parent_id: 0 
+			name: username,
+			person_id: userId,
+			plan_id: planId,
+			parent_id:  parentId
 		};
-		const response = await api.post(`/comment/${plan_id}`, { ...data });
+		const response = await api.post(`/comment/${planId}`, { ...data });
 		const success = response.status === 'OK';
 		if (success) SuccessAddComment();
 	} catch (err){ 

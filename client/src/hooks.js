@@ -27,9 +27,10 @@ export const CookieHook = () => {
 	const [ error, setError ] = useState({});
 	useEffect(() => {
 		api.get('/me').then((response) => {
-			const { name } = response.me;
+			console.log('🚀 ~ file: hooks.js ~ line 42 ~ api.get ~ response', response);
+			const { name, id } = response.me;
 			setSuccess(true);
-			dispatch(authenticated({ user: { name } }));
+			dispatch(authenticated({ user: { name, id } }));
 			setLoading(false);
 			setResponse(response);
 		}).catch((err) => {
