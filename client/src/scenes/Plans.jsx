@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
@@ -10,11 +11,12 @@ import CardMedia from "@material-ui/core/CardMedia";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import api from "../services/api";
+import locationAutocompleteApi from "../services/location-autocomplete";
 
 import Wrapper from "../components/Wrapper";
 import Mapa from "../components/Mapa";
 import UnsafeRender from "../components/UnsafeRender";
-import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
+import Autocomplete from "../components/AutoCompleteInput";
 
 import t from "../locale/he_IL";
 import "./Plans.css";
@@ -25,37 +27,77 @@ class Plans extends Component {
         hasMore: true,
         noData: false,
         pageNumber: 1,
-        planCounties: [],
-        filterCounties: [],
-        plans: []
+        plans: [],
+        address:'',
+        addressLocation:[],
+        list:[]
     };
 
     constructor(props) {
         super(props);
 
         this.loadPlans = this.loadPlans.bind(this);
-
         this.loadNextPage = this.loadNextPage.bind(this);
     }
 
-    handleCountyFilterChange(selectedCounties) {
+    handleAddressSubmit(address) {
         this.setState({
-            plans: []
+            plans: [],
+            pageNumber:1,
+            searchPoint:{}
         });
 
-        this.loadPlans(1, selectedCounties);
+        // finding the address from the list 
+        let placeId = this.findPlaceIdFromSuggestion(address);
+        locationAutocompleteApi.getPlaceLocation(placeId)
+        .then(location=>{
+            this.setState({searchPoint:location})
+            this.loadPlans(1, location);
+        }).catch(error => this.setState({ error: "שגיאה בחיפוש לפי כתובת" }));
     }
 
-    loadPlans(pageNumber, filterCounties) {
+    findPlaceIdFromSuggestion(string){
+        let {list} = this.state;
+        return _.find(list,i=> i.label===string).id
+    }
+
+    handleInputChange(text) {
+        if (text) {
+            this.setState({
+                loadingAutocomplete: true
+            });
+
+            this.getAutocompleteSuggestions(text);
+        } else {
+            // cancel previously-called debounced autocomplete
+            this.getAutocompleteSuggestions.cancel();
+
+            this.setState({
+                list: []
+            });
+        }
+    }
+
+    getAutocompleteSuggestions = _.debounce((input) => {
+        locationAutocompleteApi.autocomplete(input).then((res) => {
+            this.setState({
+                loadingAutocomplete: false,
+                list: res
+            });
+        }).catch(error => {
+            this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
+        });
+    }, process.env.CONFIG.geocode.autocompleteDelay);
+
+    loadPlans(pageNumber, point) {
         this.setState({
             noData: false
         });
 
         api.get(
-            "/plan?page=" +
-                pageNumber +
-                "&PLAN_COUNTY_NAME=" +
-                filterCounties.join(",")
+            `/plan/?page=${pageNumber}`+
+            (point ? `&distancePoint=${point.lat},${point.lng}` : "")
+            
         )
             .then(result => {
                 this.setState({
@@ -63,48 +105,34 @@ class Plans extends Component {
                         result.pagination.page < result.pagination.pageCount,
                     noData: this.state.plans.length + result.data.length === 0,
                     pageNumber,
-                    filterCounties,
                     plans: [...this.state.plans, ...result.data]
                 });
             })
-            .catch(error => this.setState({ error }));
+            .catch(error => this.setState({ error: "שגיאה בשליפת תוכניות" }));
     }
 
     loadNextPage() {
-        const { pageNumber, filterCounties } = this.state;
-        this.loadPlans(pageNumber + 1, filterCounties);
+        this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
     }
 
     componentDidMount() {
-        const { pageNumber, filterCounties } = this.state;
+        // init location service
+        locationAutocompleteApi.init();
 
-        api.get("/plan_county")
-            .then(result => {
-                this.setState({
-                    planCounties: result.data.map(county => {
-                        return { label: county.PLAN_COUNTY_NAME };
-                    })
-                });
-            })
-            .catch(error => this.setState({ error }));
-
-        this.loadPlans(pageNumber, filterCounties);
+        this.loadPlans(this.state.pageNumber);
     }
 
     render() {
-        const { plans, planCounties, error, noData, hasMore } = this.state;
-        const { me } = this.props;
+        const { plans, error, noData, hasMore, list } = this.state;
 
         return (
-            <Wrapper me={me}>
+            <Wrapper>
                 <div className="container">
-                    <FilterAutoCompleteMultiple
-                        classes=""
-                        placeholder="חדש! סינון לפי רשויות מקומיות- הזינו את הרשויות שברצונכם לראות"
-                        inputSuggestions={planCounties}
-                        onFilterChange={this.handleCountyFilterChange.bind(
-                            this
-                        )}
+                    <Autocomplete  classes=""
+                        placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
+                        inputSuggestions={list}
+                        onFilterChange={this.handleAddressSubmit.bind(this)}
+                        onInputChange={this.handleInputChange.bind(this)}
                     />
                     <br />
                     <GridList
@@ -129,6 +157,7 @@ class Plans extends Component {
                                                 hideZoom={true}
                                                 disableInteractions={true}
                                                 title={plan.PLAN_COUNTY_NAME}
+                                                title2={plan.distance?` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת`:'' }
                                             />
                                         </CardMedia>
                                         <CardContent className="card-content">
