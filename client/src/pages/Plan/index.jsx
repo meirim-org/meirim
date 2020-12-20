@@ -58,7 +58,24 @@ const Plan = (props) => {
 		 newCommentText={newCommentText}
 		 handleNewCommentText={handleNewCommentText}
 		 commentTypes={commentTypes}/>;
-	else return <PlanMobile/>;
+	else return <PlanMobile
+		tabValue={tabValue}
+		handleTabChange={handleTabChange}
+		planData={planData}
+		dataArea={dataArea}
+		textArea={textArea}
+		commentsData={commentsData}
+		subscribePanel={subscribePanel} 
+		handleSubscribePanel={handleSubscribePanel} 
+		newComment={newComment} 
+		handleNewComment={handleNewComment} 
+		newCommentType={newCommentType}
+		handleNewCommentType={handleNewCommentType}
+		newCommentTypeError={newCommentTypeError}
+		handleNewCommentTypeError={handleNewCommentTypeError} 
+		newCommentText={newCommentText}
+		handleNewCommentText={handleNewCommentText}
+		commentTypes={commentTypes}/>;
 };
 
 export default withGetScreen(Plan);
