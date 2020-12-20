@@ -19,17 +19,13 @@ import { faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 const FundingPage = () => {
 
 	const dispatch = useDispatch();
-	const [firstStepSuccess, setFirstStepSucess] = useState(false);
 	const [paymentRequestReady, setPaymentRequestReady] = useState(false);
 	const [otherAmount, setOtherAmount] = useState(0);
-	const [secondStepSuccess, setSecondStepSucess] = useState(false);
-	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
-	const [paymentOption, setPaymentOption] = useState({ amount: '' });
+	const [amount, setAmount] = useState();
 	const [termsAccepted, setTermsAccepted] = useState(false );
 	const [paymentUrl, setPaymentUrl] = useState();
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
-	const [loginValues, setLoginValues] = useState({ email: '', password: '' });
 	const [formErrors, setFormErrors] = useState({
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
@@ -48,44 +44,31 @@ const FundingPage = () => {
 		setOnFocusInput(ps => ({ ...ps, ...newState }))
 	}
 
-	useEffect(() => {
-		const { amount } = paymentOption
-		const {isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
+	const validateFormInput = () => {
+		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
 		const { amountError, termsAcceptedError } =
-		getFormErrors({
-			validations: { isValidAmount, isValidAcceptedTerms },
-			values: { amount: paymentOption, termsAccepted }
-		})
-	setFormErrors({ ...formErrors, amountError, termsAcceptedError })
-	}, [paymentOption, termsAccepted ])
+			getFormErrors({
+				validations: { isValidAmount, isValidAcceptedTerms },
+				values: { amount, termsAccepted }
+			})
+		setFormErrors({ ...formErrors, amountError, termsAcceptedError })
 
+		return { isValidAmount, isValidAcceptedTerms}
+	}
+
+	useEffect(() => {
+		validateFormInput()
+	}, [ amount, termsAccepted ])
 
 	const handlePaymentRequest = async () => {
-		const {isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount: paymentOption.amount, termsAccepted })
-		if(!isValidAmount || !isValidAcceptedTerms){
-			const { amountError, termsAcceptedError } =
-				getFormErrors({
-					validations: { isValidAmount, isValidAcceptedTerms },
-					values: { amount: paymentOption, termsAccepted }
-				})
-			setFormErrors({ ...formErrors, amountError, termsAcceptedError })
-
-			return
-		}
+		const {isValidAmount, isValidAcceptedTerms} = validateFormInput()
+		if(!isValidAmount || !isValidAcceptedTerms) return
 
 		try {
-			const paymentpageUrl = await createPaymentLink(paymentOption)
+			const paymentpageUrl = await createPaymentLink({amount})
 			setPaymentUrl(paymentpageUrl)
 			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }))
 
-			// const { status, data: { isUserRegistered } } = response
-			// const successResponse = status === 'OK' && !isUserRegistered
-			// if (successResponse) {
-			// 	setFirstStepSucess(true);
-			// } else if (isUserRegistered) {
-			// 	const emailError = { isValid: false, message: 'המייל קיים במערכת' }
-			// 	setFormErrors({ ...formErrors, emailError })
-			// }
 		} catch (err) {
 			// error from the paymnet service, or other errors, need to check
 			externalPaymentErrorToast()
@@ -134,7 +117,7 @@ const FundingPage = () => {
 							<SC.PaymentOptions>
 							{paymentAmountOptions.map(o => (
 								<div>
-									<SC.PaymentOption onClick={()=>{setPaymentOption({amount:o})}}>
+									<SC.PaymentOption onClick={ () => { setAmount(o) } }>
 									<SC.Amount>{o} ₪</SC.Amount>
 									 <br/>
 									 <SC.Monthly>בחודש</SC.Monthly>
@@ -142,10 +125,10 @@ const FundingPage = () => {
 								</div>
 							))}
 								<div>
-									<SC.PaymentOption onClick={()=>{setPaymentOption({ amount: otherAmount})}}> סכום אחר
+									<SC.PaymentOption onClick={() => { setAmount(otherAmount)}}> סכום אחר
 										<TextInput type="number" width="3.5em" onChange={({ target: { value } }) => {
 											setOtherAmount(Number.parseInt(value));
-											setPaymentOption({ amount: value})}}
+											setAmount(value)}}
 										/> <br/>
 									</SC.PaymentOption>
 								</div>
