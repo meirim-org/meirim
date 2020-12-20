@@ -3,21 +3,21 @@ import { AppBar as MuiAppBar } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 export const SubTitleWrapper = styled.div`
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
 `;
 
 export const TitleWrapper = styled.div`
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 `;
 
 export const Header = styled.span`
     grid-area: header; 
-    padding: 2rem 2rem 0;
+    padding: 2rem 3.825rem 0 2.3rem;
     margin-bottom: 0.8rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: 0 -1rem .8rem;
+    margin: 0 -1rem;
 `;
 
 export const TitlesAndTabs = styled.div`
@@ -57,7 +57,7 @@ export const AppBar = withTheme(styled(MuiAppBar)`
     box-shadow: none !important;
     .MuiTab-root {
         min-width: auto !important;
-        padding: .4rem 1.5rem;
+        padding: .4rem 1.2rem;
     }
     .MuiTabs-indicator {
         background-color:  ${props => props.theme.palette.primary.main} !important;

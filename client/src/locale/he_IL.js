@@ -73,7 +73,8 @@ export default {
 	sharePlan: 'שיתוף תכנית',
 	whatsappShare: 'שיתוף ב-Whatsapp',
 	copyUrl: 'או העתיקו את הקישור',
-	copy: 'העתק'
+	copy: 'העתק',
+	location: 'מיקום'
 };
 
 

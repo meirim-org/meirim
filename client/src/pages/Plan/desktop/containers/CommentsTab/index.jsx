@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CommentView, CommentForm } from 'pages/Plan/common';
 import t from 'locale/he_IL';
 import { CommentSelectors } from 'redux/selectors';
-import * as SC from '../../../style';
+import * as SC from '../../style';
 
 const CommentsTab = ({ 
 	tabValue,
