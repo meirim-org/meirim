@@ -36,7 +36,7 @@ const PlanDesktop = ({
 							dataArea={dataArea} textArea={textArea}
 						 	tabValue={tabValue} subscribePanel={subscribePanel} 
 						 	planData={planData} />
-						<CommentsTab 	
+						<CommentsTab
 							tabValue={tabValue}
 							isNewCommentOpen={isNewCommentOpen}
 							newCommentViewHandler={newCommentViewHandler}
