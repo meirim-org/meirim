@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import {device} from '../../style';
+import { device } from '../../style';
+import { style } from '@material-ui/system';
 
 export const HeaderWrapper = styled.div`
   background-color:white;
@@ -63,6 +64,23 @@ export const Title = styled.h1`
   }
 `;
 
+export const CentredTitle = styled.h1`
+  font-weight: 400;
+  text-align: center;
+  font-family: Assistant !important; 
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  margin-bottom: 1.3em;
+  letter-spacing: normal;
+  color: #29244A;
+  @media ${device.tablet} {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 1em;
+  }
+`;
+
 export const SubTitle = styled.h2`
   font-family: Assistant !important;
   font-size: 20px;
@@ -77,6 +95,26 @@ export const SubTitle = styled.h2`
    >  span {
      font-family: Assistant !important;
    }
+`;
+
+export const CentredSubTitle = styled.h2`
+  font-family: Assistant !important;
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 1.5;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 0;
+   >  span {
+     font-family: Assistant !important;
+   }
+`;
+
+export const CentredWrapper = styled.div`
+   padding:100px;
 `;
 
 export const ThirdTitle = styled.h1`
