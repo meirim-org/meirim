@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom'
 import { externalPaymentErrorToast } from 'toasts'
 import YoutubeVideo from 'react-youtube'
 import { Button, Checkbox, TextInput, Divider, HelperText, Link } from '../../shared';
 import { openModal, closeModal } from 'redux/modal/slice'
 import { useDispatch } from 'react-redux'
-import { createPaymentLink, registerUser } from './controller';
-import { paymentRequestValidation, getFormErrors, formValidation } from './validations'
+import { createPaymentLink } from './controller';
+import { paymentRequestValidation, getFormErrors } from './validations'
 import { titles, paymentAmountOptions, roadmap } from './constants'
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
@@ -26,19 +25,6 @@ const FundingPage = () => {
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
 	})
-
-	const onInputFocus = (inputName) => {
-		const newState = {}
-		newState[inputName] = true
-		setDirtyInputs(ps => ({ ...ps, ...newState }))
-		setOnFocusInput(ps => ({ ...ps, ...newState }))
-	}
-
-	const onInputBlur = (inputName) => {
-		const newState = {}
-		newState[inputName] = false
-		setOnFocusInput(ps => ({ ...ps, ...newState }))
-	}
 
 	const validateFormInput = () => {
 		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
