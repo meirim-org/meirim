@@ -4,8 +4,10 @@ import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
+import Mapa from 'components/Mapa';
 
-export const MapPanel = ({ tabValue }) => {
+export const MapPanel = (props) => {
+	const { tabValue, geom } = props;
 	const theme = useTheme();
 
 	return (
@@ -21,9 +23,13 @@ export const MapPanel = ({ tabValue }) => {
 						{t.location}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
-				<SC.EntryContent>
-                    map
-				</SC.EntryContent>
+				<SC.MapWrapper>
+					{geom && <Mapa
+						geom={geom}
+						hideZoom={false}
+						disableInteractions={true}
+					/>}
+				</SC.MapWrapper>
 			</TabBox>
 		</TabPanel>
 	);
@@ -32,6 +38,8 @@ export const MapPanel = ({ tabValue }) => {
 MapPanel.propTypes = {
 	goalsFromMavat: PropTypes.string,
 	tabValue: PropTypes.any.isRequired,
+	geom: PropTypes.object,
+	countyName: PropTypes.string,
 };
 
 export default MapPanel;
