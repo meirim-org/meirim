@@ -155,6 +155,23 @@ export const TermsOfUse = styled.span`
    }
 `;
 
+export const TermsOfPaymentText = styled.span`
+  font-family: Assistant !important;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 1.5;
+  text-align: center;
+  color: #000000;
+  margin: 50px;
+   >  span {
+     font-family: Assistant !important;
+   }
+`;
+
+
 export const InputsWrapper = styled.div`
   width:100%
 `;
@@ -271,7 +288,10 @@ export const TermsOfUseWrapper= styled.div`
   padding-bottom: ${props => props.smallPadding ? '1em' : '2.45em'};
   @media ${device.tablet} {
    max-width: initial;
-}
+  }
+  >  span {
+    font-family: Assistant !important;
+  }
 `;
 
 export const InputsTitle = styled.div`
