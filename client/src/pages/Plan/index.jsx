@@ -37,7 +37,7 @@ const Plan = (props) => {
 
 	];
 
-	if (!props.isMobile()) return <PlanDesktop
+	if (props.isMobile() || props.isTablet()) return <PlanMobile
 		tabValue={tabValue}
 		handleTabChange={handleTabChange}
 		subscribePanel={subscribePanel}
@@ -49,7 +49,7 @@ const Plan = (props) => {
 		newCommentText={newCommentText}
 		handleNewCommentText={handleNewCommentText}
 		commentTypes={commentTypes}/>;
-	else return <PlanMobile
+	else return     <PlanDesktop
 		tabValue={tabValue}
 		handleTabChange={handleTabChange}
 		subscribePanel={subscribePanel}
@@ -63,5 +63,5 @@ const Plan = (props) => {
 		commentTypes={commentTypes}/>;
 };
 
-export default withGetScreen(Plan);
+export default withGetScreen(Plan, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
 
