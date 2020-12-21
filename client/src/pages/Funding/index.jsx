@@ -75,6 +75,18 @@ const FundingPage = () => {
 		}
 	};
 
+	useEffect(() => {
+		const handler = event => {
+		  const data = JSON.parse(event.data)
+
+		  // closing the modal, as the success page alerted user pressed close
+		  dispatch(closeModal())
+
+		}
+	
+		window.addEventListener("message", handler)
+	})
+
 	return (
 		<Wrapper>
 		<SC.MainWrapper>
