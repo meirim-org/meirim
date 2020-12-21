@@ -40,7 +40,7 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, width, required = false, size = 'small', error = false, forgetPassword = false
+	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, width, min, max, required = false, size = 'small', error = false, forgetPassword = false
 }) => {
 
 	return (
@@ -58,6 +58,8 @@ const TextInput = ({
 				size={size}
 				error={error}
 				width={width}
+				min={min}
+				max={max}
 			/>
 			{
 				helperText && <HelperText id={`${id}-helperText`} error={error} text={helperText}/>
@@ -95,6 +97,8 @@ TextInput.propTypes = {
 	variant: PropTypes.string,
 	error: PropTypes.bool,
 	forgetPassword: PropTypes.bool,
+	min: PropTypes.number,
+	max: PropTypes.number
 };
 
 export default TextInput;
