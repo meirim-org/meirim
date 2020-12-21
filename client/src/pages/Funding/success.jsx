@@ -16,9 +16,9 @@ const SuccessPayment = ({ ...props }) => {
     
 	return (
         <>
-            <SC.RoadmapItemIcon><Icon/></SC.RoadmapItemIcon>
             <SC.HeaderWrapper>
                 <SC.CentredWrapper>
+                    <Icon/>
                     <SC.CentredTitle>תמיכתך התקבלה בהצלחה, תודה רבה!</SC.CentredTitle>
                     <SC.CentredSubTitle>בעזרתך נמשיך להגביר את השקיפות התכנונית ולהרחיב את המעורבות האזרחית במערכת התכנון</SC.CentredSubTitle>
                     <Link onClick={()=>{notifyClosePage()}} text="סגור"/>
