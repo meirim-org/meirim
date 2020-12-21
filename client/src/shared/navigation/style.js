@@ -1,11 +1,11 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { colors } from '../../style/index'
-import { Container, List, ListItem, ListItemIcon } from '@material-ui/core';
+import { colors } from '../../style/index';
+import { Container, List, Drawer as MUIDrawer, ListItem, ListItemIcon } from '@material-ui/core';
 
 export const StyledList = styled(List)`
     padding: 0 !important;
-`
+`;
 
 export const StyledListItem = styled(ListItem)`
     padding: 1.2rem 3.5rem !important;  
@@ -70,5 +70,9 @@ export const StyledStarIcon = styled(ListItemIcon)`
 export const Logo = styled.img`
     max-width: 53px;
     height: auto;
+`;
+
+export const Drawer = styled(MUIDrawer)`
+    z-index: 9999 !important;
 `;
 
