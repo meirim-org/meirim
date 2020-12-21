@@ -6,15 +6,11 @@ import { Button, Checkbox, TextInput, Divider, HelperText } from '../../shared';
 import { openModal, closeModal } from 'redux/modal/slice'
 import { useDispatch } from 'react-redux'
 import { createPaymentLink, registerUser } from './controller';
-import Payment from './payment';
-import SecondStepSignup from './secondStep';
-import { EMAIL_SENT_PAGE } from '../../router/contants'
 import { paymentRequestValidation, getFormErrors, formValidation } from './validations'
 import { titles, paymentAmountOptions, roadmap } from './constants'
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import Icon from '../../assets/svg/successIcon'
-import { faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 
 const FundingPage = () => {
 
@@ -61,8 +57,8 @@ const FundingPage = () => {
 	}, [ amount, termsAccepted ])
 
 	const handlePaymentRequest = async () => {
-		const {isValidAmount, isValidAcceptedTerms} = validateFormInput()
-		if(!isValidAmount || !isValidAcceptedTerms) return
+		const { isValidAmount, isValidAcceptedTerms } = validateFormInput()
+		if (!isValidAmount || !isValidAcceptedTerms) return;
 
 		try {
 			const paymentpageUrl = await createPaymentLink({amount})
@@ -88,10 +84,6 @@ const FundingPage = () => {
 							<SC.SubTitle>{titles.subTitle}</SC.SubTitle>
 							<SC.ThirdTitle>{titles.third}</SC.ThirdTitle>
 							<SC.SubTitle>{titles.fourth} </SC.SubTitle>
-							{/* <SC.SubTitle>
-								<span>עוד לא הצטרפתם? </span>
-								<Link id="login-signin-link" text="הרשמו עכשיו" to="/sign/up" bold={'700'} />
-							</SC.SubTitle> */}
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
@@ -104,12 +96,8 @@ const FundingPage = () => {
 						{roadmap.map(i => (
 							<SC.RoadmapItemWrapper>
 								<SC.RoadmapItemIcon><Icon/></SC.RoadmapItemIcon>
-								<SC.RoadmapItemTitle>
-									{i.title}
-								</SC.RoadmapItemTitle>
-								<SC.RoadmapItemDescription>
-									{i.desciption}
-								</SC.RoadmapItemDescription>
+								<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
+								<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
 							</SC.RoadmapItemWrapper>))}
 					</SC.RoadmapDetails>
 					<Divider/>
@@ -118,15 +106,15 @@ const FundingPage = () => {
 							{paymentAmountOptions.map(o => (
 								<div>
 									<SC.PaymentOption onClick={ () => { setAmount(o) } }>
-									<SC.Amount>{o} ₪</SC.Amount>
-									 <br/>
-									 <SC.Monthly>בחודש</SC.Monthly>
+										<SC.Amount>{o} ₪</SC.Amount>
+										<br/>
+										<SC.Monthly>בחודש</SC.Monthly>
 									 </SC.PaymentOption>
 								</div>
 							))}
 								<div>
-									<SC.PaymentOption onClick={() => { setAmount(otherAmount)}}> סכום אחר
-										<TextInput type="number" width="3.5em" onChange={({ target: { value } }) => {
+									<SC.PaymentOption onClick={ () => { setAmount(otherAmount) } } > סכום אחר
+										<TextInput type="number" width="3.5em" min="1" max="20000" onChange={ ({ target: { value } }) => {
 											setOtherAmount(Number.parseInt(value));
 											setAmount(value)}}
 										/> <br/>
@@ -136,10 +124,10 @@ const FundingPage = () => {
 							</SC.PaymentOptions>
 							<SC.TermsOfUseWrapper>
 							אני מאשר/ת את תנאי התמיכה
-								<Checkbox error={formErrors.termsAcceptedError.message} onClick={()=>{setTermsAccepted(!termsAccepted)}}>  </Checkbox>
+								<Checkbox error={formErrors.termsAcceptedError.message} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
 							</SC.TermsOfUseWrapper>
 							<SC.ButtonWrapper>
-								<Button id="payment-button" text="תמכו במעירים" onClick={handlePaymentRequest} style={'width:'}/>
+								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest } style={'width:'}/>
 							</SC.ButtonWrapper>
 					</SC.PaymentWrapper>
 					</SC.InputsWrapper>

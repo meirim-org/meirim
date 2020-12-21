@@ -6,15 +6,15 @@ export const paymentRequestValidation = ({ amount, termsAccepted }) => {
 }
 
 const termsNotAccepted = 'נא לאשר את תנאי התמיכה'
-const invalidAmountMessage = 'נא לבחור סכום לתמיכה'
+const undefinedAmountMessage = 'נא לבחור סכום לתמיכה'
 const emptyString = ''
 
 export const getFormErrors = ({ 
-	validations: { isValidAmount, isValidAcceptedTerms }})=>{
+	validations: { isValidAmount, isValidAcceptedTerms }}) => {
 	
 	const amountError = { 
 		isValid: isValidAmount,
-		message: isValidAmount ? emptyString : invalidAmountMessage
+		message: isValidAmount ? emptyString : undefinedAmountMessage
 	}
 	const termsAcceptedError = { 
 		isValid: isValidAcceptedTerms, 
