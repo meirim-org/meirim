@@ -16,7 +16,7 @@ const PlanMobile = ({
 	newCommentText, handleNewCommentText }) => {
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { comments } = CommentSelectors();
-	const { name, countyName, geom } = planData;
+	const { name, countyName } = planData;
 	const isPlanHaveComments = comments.length === 0;
 
 	return (

@@ -62,7 +62,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 									<Box display="flex">
 										<RouterLink id="nav-bar-favorites" to="#">
 											<IconButton
-												color={colors.purple}
+												textcolor={colors.purple}
 												ariaLabel={'Favorites'}
 												fontSize={24}
 												paddingg={0}
@@ -74,7 +74,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 									<Box display="flex">
 										<RouterLink id="nav-bar-notifications" to="#">
 											<IconButton
-												color={colors.purple}
+												textcolor={colors.purple}
 												ariaLabel={'Notifications'}
 												fontSize={24}
 												paddingg={0}
@@ -99,8 +99,8 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 							)}
 
 							<Box>
-								<IconButton color={colors.purple} ariaLabel={'open mobile menu'}>
-									<MenuIcon onClick={() => setMobileNavIsOpened(true)}/>
+								<IconButton onClick={() => setMobileNavIsOpened(true)}  textcolor={colors.purple} ariaLabel={'open mobile menu'}>
+									<MenuIcon/>
 								</IconButton>
 								<Drawer open={mobileNavIsOpened}>
 									<SC.MobileNavWrapper
@@ -108,11 +108,12 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 									>
 										<Box display="flex" justifyContent="flex-end" m={1.5}>
 											<IconButton
-												color={colors.black}
+												textcolor={colors.black}
 												ariaLabel={'close mobile menu'}
 												fontSize={20.5}
+												onClick={() => setMobileNavIsOpened(false)}
 											>
-												<CloseIcon onClick={() => setMobileNavIsOpened(false)}/>
+												<CloseIcon />
 											</IconButton>
 										</Box>
 

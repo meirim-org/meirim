@@ -6,7 +6,7 @@ const SummaryTab = ({
 	tabValue, planData, dataArea, textArea,
 	subscribePanel, handleSubscribePanel, 
 	  }) => {
-	const { type, status, url, goalsFromMavat } = planData;
+	const { type, status, url, goalsFromMavat, geom } = planData;
 	//Temporary
 	const planTerms = ['פינוי בינוי', 'חלוקת מגרשים', 'שיקום עירוני'];
 
@@ -18,7 +18,7 @@ const SummaryTab = ({
 						 	subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>
 
-			<MapPanel tabValue={tabValue} />
+			<MapPanel tabValue={tabValue} geom={geom}   />
 			<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
 			<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
 		</>
