@@ -17,7 +17,7 @@ const PlanDesktop = ({
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { comments } = CommentSelectors();
 	const { name, countyName, geom } = planData;
-	const isPlanHaveComments = comments.length === 0;
+	const isPlanHaveComments = comments.length > 0;
 
 	return (
 	    <Wrapper>

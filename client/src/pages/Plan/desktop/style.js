@@ -26,7 +26,8 @@ export const Main = withTheme(styled.main`
     background-color:  ${props => props.theme.palette.gray['bg']};
     padding: 2.5rem 4.8rem;
     &.no-comments {
-        height: 100vh;
+        height: 100%;
+        min-height: 100vh;
     }
 `);
 

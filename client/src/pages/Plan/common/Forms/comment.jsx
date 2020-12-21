@@ -31,7 +31,7 @@ const CommentForm = ({
 			<SC.ButtonWrapper>
 				<Button
 					id="add-opinion"
-					text={t.addAnOpinion}
+					text={t.addNewComment}
 					iconBefore={<SC.CommentIcon/>}
 					small
 					altColor

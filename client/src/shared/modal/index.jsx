@@ -12,6 +12,7 @@ import { device } from 'style';
 import SharePlan  from 'pages/Plan/common/SharePlanView';
 
 const StyledModal = styled(MUIModal)`
+    z-index: 9999 !important; 
 	display: flex;
 	align-items: center;
 	justify-content: center;

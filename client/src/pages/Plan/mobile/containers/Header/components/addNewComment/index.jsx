@@ -19,7 +19,7 @@ const AddNewComment = ({ handleTabChange, openNewCommentView }) => {
 			}}
 			startIcon={<ChatBubbleOutlineIcon />}
 		>
-			<Text size="14px" text={t.addAnOpinion} component="span" color={theme.palette.gray['800']}/>
+			<Text size="14px" text={t.addNewComment} component="span" color={theme.palette.gray['800']}/>
 		</Button>	
 	);
 };

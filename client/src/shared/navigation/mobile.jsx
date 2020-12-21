@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Drawer, ListItemText, Divider } from '@material-ui/core';
+import { Box, ListItemText, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -102,7 +102,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 								<IconButton onClick={() => setMobileNavIsOpened(true)}  textcolor={colors.purple} ariaLabel={'open mobile menu'}>
 									<MenuIcon/>
 								</IconButton>
-								<Drawer open={mobileNavIsOpened}>
+								<SC.Drawer open={mobileNavIsOpened}>
 									<SC.MobileNavWrapper
 										role="presentation"
 									>
@@ -173,7 +173,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											)}
 										</SC.StyledList>
 									</SC.MobileNavWrapper>
-								</Drawer>
+								</SC.Drawer>
 							</Box>
 						</Row>
 					</Box>

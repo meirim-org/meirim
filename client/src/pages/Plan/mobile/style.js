@@ -9,6 +9,7 @@ export const MobileMainWrapper = styled.div`
 export const Content = styled.div`
     box-shadow: -3px 0 24px 0 rgba(0, 0, 0, 0.08);
     overflow-y: auto;
+    padding-bottom: 3.75rem;
 `;
 
 export const Header = withTheme(styled.div`
@@ -22,6 +23,7 @@ export const Main = withTheme(styled.main`
     background-color:  ${props => props.theme.palette.gray['bg']};
     padding: 2rem 1rem;
     &.no-comments {
+        height: 100%;
         height: 100vh;
     }
 `);
