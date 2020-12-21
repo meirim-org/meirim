@@ -6,10 +6,14 @@
     "opengraph": {
         "locale": "he_IL"
     },
+    "geocode": {
+        "mapsApiKey": "",
+        "autocompleteDelay": 2000
+    },
     "paymentServices":{
         "baseURL":"https://icom.yaad.net/p3",
-        "masofId":"0010157216",
-        "apiKey":"b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
-        "PassP":"yaad"
+        "masofId":"",
+        "apiKey":"",
+        "PassP":""
     }
 }
