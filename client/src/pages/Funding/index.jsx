@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom'
 import { externalPaymentErrorToast } from 'toasts'
 import YoutubeVideo from 'react-youtube'
-import { Button, Checkbox, TextInput, Divider, HelperText } from '../../shared';
+import { Button, Checkbox, TextInput, Divider, HelperText, Link } from '../../shared';
 import { openModal, closeModal } from 'redux/modal/slice'
 import { useDispatch } from 'react-redux'
 import { createPaymentLink, registerUser } from './controller';
@@ -123,7 +123,8 @@ const FundingPage = () => {
 								<HelperText error={formErrors.amountError.message} />
 							</SC.PaymentOptions>
 							<SC.TermsOfUseWrapper>
-							אני מאשר/ת את תנאי התמיכה
+							<span>אני מאשר/ת את </span>  
+								 <Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={()=>{dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
 								<Checkbox error={formErrors.termsAcceptedError.message} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
 							</SC.TermsOfUseWrapper>
 							<SC.ButtonWrapper>
