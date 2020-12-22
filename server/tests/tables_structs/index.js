@@ -8,3 +8,4 @@ exports.table_4_area_designation_and_usage = require('./chart_4_struct');
 exports.table_5_building_rights = require('./chart_5_struct');
 exports.table_6_additional_instructions = require('./chart_6_struct');
 exports.comment = require('./comment');
+exports.comment_person = require('./comment_person');
