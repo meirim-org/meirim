@@ -42,7 +42,7 @@ class FundingController extends Controller {
 
 		else {
 			params.Info = "תרומה חד פעמית לעמותת מעירים",
-			params.heshDesc = ["", "תרומה%חד פעמית%20לעמותת%20מעירים", "1", `${params.Amount}`].join('~')
+			params.heshDesc = ["", "תרומה%חד%20פעמית%20לעמותת%20מעירים", "1", `${params.Amount}`].join('~')
 		}
 		
 		return instance.get(`/`, {
