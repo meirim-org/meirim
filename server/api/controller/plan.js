@@ -50,7 +50,15 @@ class PlanController extends Controller {
 			}
 			const polygon = wkt.convert(geojson);
 
-			q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`))
+			// some databases (mysql 8) already support returning ST_Distance in meters
+			// if the geometries are in the same system of reference, and others
+			// (mysql 5.7, mariadb) return the distance in degrees and need to be
+			// multiplied to get an approximate meters value
+			if (Config.database.dbDistanceInMeters) {
+				q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`))
+			} else {
+				q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*111195 as distance`))
+			}
 
 			q.orderByRaw = ['distance']
 			delete q.order
