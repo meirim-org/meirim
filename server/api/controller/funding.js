@@ -1,6 +1,10 @@
 const Controller = require('./controller');
-const Config = require('../lib/config');
-const Http = require('http')
+const Config = require('../lib/config').paymentServices;
+const axios = require('axios')
+
+let instance = axios.create({
+	baseURL:Config.baseURL
+})
 
 const paymentDefaultConfig = {
         "action":"APISign",
@@ -35,14 +39,15 @@ class FundingController extends Controller {
 			params.Info = "תרומה חודשית לעמותת מעירים",
 			params.heshDesc = ["", "תרומה%20חודשית%20לעמותת%20מעירים", "1", `${params.Amount}`].join('~')
 		}
-		else{
+
+		else {
 			params.Info = "תרומה חד פעמית לעמותת מעירים",
 			params.heshDesc = ["", "תרומה%חד פעמית%20לעמותת%20מעירים", "1", `${params.Amount}`].join('~')
 		}
 		
-		return Http.get(`${Config.baseURL}/`, {
+		return instance.get(`/`, {
 			params
-		}).then(res=>`${config.baseURL}/?action=pay&${res.data}`)
+		}).then(res=>{return `${Config.baseURL}/?action=pay&${res.data}`})
 	} 
 }
 
