@@ -96,7 +96,7 @@ class Plans extends Component {
 
         api.get(
             `/plan/?page=${pageNumber}`+
-            (point ? `&distancePoint=${point.lat},${point.lng}` : "")
+            (point ? `&distancePoint=${point.lng},${point.lat}` : "")
             
         )
             .then(result => {
