@@ -1,8 +1,14 @@
 const axios = require('axios');
-const config = require('../config.json').paymentServices;
+const config = process.env.CONFIG.paymentServices;
 
 const instance = axios.create({
-    baseURL: config.baseURL
+    baseURL: config.baseURL,
+    headers: {
+      get: {        // can be common or any other method
+        "Access-Control-Allow-Origin": 'http://stg.meirim.org/',
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS"
+      }
+    }
   });
 
 module.exports = {

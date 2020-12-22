@@ -54,10 +54,10 @@ const FundingPage = () => {
 		} catch (err) {
 			// error from the paymnet service, or other errors, need to check
 			externalPaymentErrorToast()
-			if(err.message === 'Error: Request failed with status code 400'){
-				const emailError = { isValid: false, message: 'המייל לא תקין' }
-				// setFormErrors({ ...formErrors, emailError })
-			}
+			// if(err.message === 'Error: Request failed with status code 400'){
+			// 	const emailError = { isValid: false, message: 'המייל לא תקין' }
+			// 	// setFormErrors({ ...formErrors, emailError })
+			// }
 		}
 	};
 
@@ -67,9 +67,7 @@ const FundingPage = () => {
 
 		  // closing the modal, as the success page alerted user pressed close
 		  dispatch(closeModal())
-
 		}
-	
 		window.addEventListener("message", handler)
 	})
 
@@ -79,8 +77,8 @@ const FundingPage = () => {
 				<SC.HeaderWrapper>
 					<SC.Titles>
 						<SC.SubTitleWrapper>
-							<SC.SubTitle>{titles.subTitle}</SC.SubTitle>
 							<SC.ThirdTitle>{titles.third}</SC.ThirdTitle>
+							<SC.SubTitle>{titles.subTitle}</SC.SubTitle>
 							<SC.SubTitle>{titles.fourth} </SC.SubTitle>
 						</SC.SubTitleWrapper>
 					</SC.Titles>
@@ -122,7 +120,7 @@ const FundingPage = () => {
 							</SC.PaymentOptions>
 							<SC.TermsOfUseWrapper>
 							<span>אני מאשר/ת את </span>  
-								 <Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={()=>{dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
+								 <Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
 								<Checkbox error={formErrors.termsAcceptedError.message} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
 							</SC.TermsOfUseWrapper>
 							<SC.ButtonWrapper>
