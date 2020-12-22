@@ -57,7 +57,7 @@ Router.delete('/alert/:id', wrap(Alert.delete, Alert));
 Router.delete('/alert/_token/:token', wrap(Alert.unsubscribe, Alert));
 
 // Funding
-Router.get('/funding/paymentLink', wrap(Funding.paymentLink));
+Router.get('/funding/paymentLink', wrap(Funding.paymentLink, Funding));
 
 // me
 Router.get('/me/', wrap(Alert.browse, Alert));
