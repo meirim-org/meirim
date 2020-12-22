@@ -41,7 +41,7 @@ export default {
 	planningInformation: 'מידע תכנוני',
 	sharing: 'שיתוף',
 	saving: 'שמירה',
-	addAnOpinion: 'הוספת חוות דעת',
+	addNewComment: 'הוספת חוות דעת',
 	supportUs: 'תמכו בנו',
 	review: 'ביקורת',
 	iLike: 'אהבתי',
@@ -73,7 +73,8 @@ export default {
 	sharePlan: 'שיתוף תכנית',
 	whatsappShare: 'שיתוף ב-Whatsapp',
 	copyUrl: 'או העתיקו את הקישור',
-	copy: 'העתק'
+	copy: 'העתק',
+	location: 'מיקום'
 };
 
 

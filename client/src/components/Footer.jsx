@@ -14,6 +14,6 @@ const Footer = () => {
 			<Link to="/terms/">תנאי שימוש</Link> | כל הזכויות שמורות
 		</footer>
 	);
-}
+};
 
 export default Footer;

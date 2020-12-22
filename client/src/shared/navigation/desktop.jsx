@@ -66,7 +66,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 									<RouterLink id="mobile-nav-bar-close-menu">
 										<IconButton
-											color={colors.purple}
+                                            textcolor={colors.purple}
 											ariaLabel={'close mobile menu'}
 											fontSize={20.5}
 										>

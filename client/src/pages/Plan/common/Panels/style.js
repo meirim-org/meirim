@@ -364,4 +364,14 @@ export const CloseSubscribeIcon = withTheme(styled(CloseIcon)`
     opacity: .8;
 `);
 
+export const MapWrapper = withTheme(styled.div`
+    height: 8.875rem;
+    border-radius: 4px;
+    border: solid 1px ${props => props.theme.palette.gray['450']};
+    
+    > div {
+        border-radius: 4px;
+    }
+`);
+
 

@@ -9,13 +9,13 @@ import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 
 const url = 'https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A' + encodeURI(window.location.toString());
 
-const SharePlan = () => {
+const SharePlanView = () => {
 	const theme = useTheme();
 
 	return (
 		<SC.ShareWrapper>
 			<SC.ShareTitleWrapper>
-				<Text text={t.sharePlan} weight="600" size="32px" color={theme.palette.primary['800']}/>
+				<Text text={t.sharePlan} color={theme.palette.primary['800']}/>
 			</SC.ShareTitleWrapper>
 
 			<SC.ShareActionWrapper>
@@ -27,13 +27,12 @@ const SharePlan = () => {
 					 target="_blank"
 					 text={t.whatsappShare} 
 					 fontWeight="600" 
-					 fontSize="14px" 
 					 textcolor={theme.palette.white}
 					 iconBefore={<WhatsAppIcon/>} />
 				</SC.ShareButtonWrapper>
 
 				<SC.ShareTextWrapper>
-					<Text text={t.copyUrl} size="14px" color={theme.palette.black}/>
+					<Text text={t.copyUrl} color={theme.palette.black}/>
 				</SC.ShareTextWrapper>
 
 				<SC.CopyUrlArea>
@@ -54,4 +53,4 @@ const SharePlan = () => {
 	);
 };
 
-export default SharePlan;
+export default SharePlanView;
