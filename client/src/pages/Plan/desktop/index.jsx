@@ -4,7 +4,7 @@ import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, SummaryTab, CommentsTab } from './containers';
-import * as SC from '../style';
+import * as SC from './style';
 
 const PlanDesktop = ({ 
 	tabValue, handleTabChange, 
@@ -17,7 +17,7 @@ const PlanDesktop = ({
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { comments } = CommentSelectors();
 	const { name, countyName, geom } = planData;
-	const isPlanHaveComments = comments.length === 0;
+	const isPlanHaveComments = comments.length > 0;
 
 	return (
 	    <Wrapper>
@@ -36,7 +36,7 @@ const PlanDesktop = ({
 							dataArea={dataArea} textArea={textArea}
 						 	tabValue={tabValue} subscribePanel={subscribePanel} 
 						 	planData={planData} />
-						<CommentsTab 	
+						<CommentsTab
 							tabValue={tabValue}
 							isNewCommentOpen={isNewCommentOpen}
 							newCommentViewHandler={newCommentViewHandler}

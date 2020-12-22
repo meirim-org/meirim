@@ -86,6 +86,5 @@ export const daysPassed = (date) => {
 };
 
 export const handleNewCommentSubmit = (type, setTypeError) => {
-	if (!type ) { setTypeError(true); };
+	if (!type ) { setTypeError(true); }
 };
-
