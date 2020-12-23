@@ -133,7 +133,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
-											<SC.StyledListItem component={RouterLink} button key={t.supportUs}>
+											<SC.StyledListItem component={RouterLink} to="#" button key={t.supportUs}>
 												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
@@ -141,13 +141,19 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										<SC.StyledList>
 											{!isAuthenticated && (
 												<>
-													<SC.StyledListItem component={SC.StyledLink} to="#" button 
-														onClick={() => dispatch(openModal({ modalType: 'login' }))}
+													<SC.StyledListItem component={SC.StyledLink} to="#" button
+														onClick={() => {
+															setMobileNavIsOpened(false);
+															dispatch(openModal({ modalType: 'login' }));
+														}}
 														key={t.signin}>
 														<ListItemText primary={t.signin}/>
 													</SC.StyledListItem>
 													<SC.StyledListItem component={RouterLink} to="#" button
-														onClick={() => dispatch(openModal({ modalType: 'register' }))}
+														onClick={() => {
+														    dispatch(openModal({ modalType: 'register' }));
+															setMobileNavIsOpened(false);
+														}}
 														key={t.signup}
 														color="#652dd0">
 														<ListItemText primary={t.signup}/>
@@ -156,11 +162,11 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											)}
 											{isAuthenticated && (
 												<>
-													<SC.StyledListItem component={RouterLink} button
+													<SC.StyledListItem component={RouterLink} to="#" button
 														key={t.alerts}>
 														<ListItemText primary={t.alerts}/>
 													</SC.StyledListItem>
-													<SC.StyledListItem component={RouterLink}  button
+													<SC.StyledListItem component={RouterLink} to="#" button
 														onClick={logoutHandler}
 														key={t.signout}
 														color="#b71f29">

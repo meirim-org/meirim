@@ -11,10 +11,11 @@ const StyledTabBox = withTheme(styled.div`
     padding: 1.5rem;
     margin-bottom: 1.3rem;
     
-    ${({ isOpinion }) => isOpinion && `
+    ${({ isComment }) => isComment && `
         display: grid;
         padding: 0;
         border-radius: 4px;
+        grid-template-columns: repeat(2, 1fr);
         grid-template-areas:
             'header header'
             'text text'
@@ -43,7 +44,7 @@ const StyledTabBox = withTheme(styled.div`
 `);
 
 const TabBox = ({
-	isOpinion,
+	isComment,
 	disabled,
 	bgColor,
 	position,
@@ -51,7 +52,7 @@ const TabBox = ({
 	children
 }) => (
 	<StyledTabBox 
-		isOpinion={isOpinion}
+		isComment={isComment}
 		disabled={disabled}
 		bgColor={bgColor}
 		borderColor={borderColor} 
@@ -61,7 +62,7 @@ const TabBox = ({
 );
 
 TabBox.defaultProps = {
-	isOpinion: false,
+	isComment: false,
 	disabled: false,
 	bgColor: '#ffffff',
 	borderColor: '#E4E4E4',
@@ -70,7 +71,7 @@ TabBox.defaultProps = {
 
 
 TabBox.propTypes = {
-	isOpinion: PropTypes.bool,
+	isComment: PropTypes.bool,
 	children: PropTypes.any,
 	bgColor: PropTypes.string,
 	borderColor: PropTypes.string,

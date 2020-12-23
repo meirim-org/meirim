@@ -17,7 +17,7 @@ export const CommentView = ({ id, tabValue, commentData, isNewCommentOpen }) => 
 
 	return (
 		<TabPanel value={tabValue} index={1} >
-			<TabBox isOpinion={true} disabled={isNewCommentOpen}>
+			<TabBox isComment={true} disabled={isNewCommentOpen}>
 				<SC.Header>
 					<SC.FirstSide>
 						<Typography
@@ -90,15 +90,15 @@ export const CommentView = ({ id, tabValue, commentData, isNewCommentOpen }) => 
 							newSubComment={newSubComment} 
 							closeNewSubCommentView={closeNewSubCommentView}  />
 					}
-				</SC.CommentsWrapper>
-				
-				{commentData.subComments &&
-					<div>
+					{commentData.subComments &&
+					<>
 						{commentData.subComments.map((subComment, index) => (
 							<SubCommentView key={index} id={index} subCommentData={subComment} />
 						))}
-					</div>
-				}
+					</>
+					}
+				</SC.CommentsWrapper>
+
 			</TabBox>
 		</TabPanel>
 	);
@@ -112,7 +112,6 @@ CommentView.propTypes = {
 	id: PropTypes.number.isRequired,
 	commentData: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
-	closeNewCommentView: PropTypes.func.isRequired,
 	tabValue: PropTypes.any.isRequired,
 };
 

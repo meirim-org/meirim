@@ -12,7 +12,10 @@ const Plan = (props) => {
 	const [isNewCommentOpen, setIsNewCommentOpen] = React.useState(false);
 	const [newCommentText, setNewCommentText] = React.useState('');
 
-	const openNewCommentView = () => setIsNewCommentOpen(true);
+	const openNewCommentView = () => {
+	    setIsNewCommentOpen(true);
+		window.scrollTo(0, 0);
+	};
 	const closeNewCommentView = () => setIsNewCommentOpen(false);
 
 	const handleTabChange = (_, newValue) => setValue(newValue);
