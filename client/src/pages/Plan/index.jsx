@@ -53,6 +53,7 @@ const Plan = (props) => {
 		commentTypes={commentTypes}/>;
 	else return     <PlanDesktop
 		tabValue={tabValue}
+		setRefetchComments={setRefetchComments}
 		handleTabChange={handleTabChange}
 		subscribePanel={subscribePanel}
 		handleSubscribePanel={handleSubscribePanel}
