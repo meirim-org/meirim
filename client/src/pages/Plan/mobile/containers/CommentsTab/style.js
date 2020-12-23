@@ -83,6 +83,9 @@ export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
         border-color: ${props => props.theme.palette.gray['300']} !important;
         background-color: ${props => props.theme.palette.white} !important;
     }
+    &:focus {
+        outline: 0;
+    }
 `);
 
 export const addCommentButtonWrapper = styled.div`
