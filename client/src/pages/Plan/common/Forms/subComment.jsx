@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { setData } from 'redux/comments/slice';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button } from 'shared';
 import * as SC from './style';
-import { extractComments } from 'pages/Plan/hooks';
 import { useParams } from 'react-router-dom';
 import { UserSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { TextareaAutosize } from '@material-ui/core';
-import { addComment, getCommentsByPlanId } from 'pages/Plan/controller';
+import { addComment } from 'pages/Plan/controller';
 
-export const SubCommentForm = ({ parentComment, newSubComment, closeNewSubCommentView }) => {
-	const dispatch = useDispatch();
+export const SubCommentForm = ({ setRefetchComments, parentComment, newSubComment, closeNewSubCommentView }) => {
 	const theme = useTheme();
 	const { id: planId } = useParams();
 	const { user } = UserSelectors();
@@ -50,9 +46,7 @@ export const SubCommentForm = ({ parentComment, newSubComment, closeNewSubCommen
 							parentId: parentComment.id 
 						});	
 						closeNewSubCommentView();
-						const response = await getCommentsByPlanId(planId);
-						const comments = extractComments(response.data);
-						dispatch(setData({ data: comments }));
+						setRefetchComments(true);
 					}} 
 				/>
 			</SC.addCommentButtonWrapper>
@@ -65,6 +59,7 @@ SubCommentForm.propTypes = {
 	newSubComment: PropTypes.bool.isRequired,
 	parentComment: PropTypes.object.isRequired,
 	closeNewSubCommentView: PropTypes.func.isRequired,
+	setRefetchComments: PropTypes.func.isRequired,
 };
 
 export default SubCommentForm;

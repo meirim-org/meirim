@@ -7,6 +7,7 @@ import * as SC from '../../style';
 
 const CommentsTab = ({ 
 	tabValue,
+	setRefetchComments,
 	isNewCommentOpen,
 	newCommentViewHandler,
 	closeNewCommentView, 
@@ -16,6 +17,7 @@ const CommentsTab = ({
 	return (
 		<>
 			<CommentForm 
+				setRefetchComments={setRefetchComments}
 				tabValue={tabValue}
 				comments={comments.length}
 				isNewCommentOpen={isNewCommentOpen}
@@ -28,6 +30,7 @@ const CommentsTab = ({
 							<>
 								{comments.map((comment, index) => (
 									<CommentView 
+										setRefetchComments={setRefetchComments}
 										key={index}
 										id={index} 
 										tabValue={tabValue}

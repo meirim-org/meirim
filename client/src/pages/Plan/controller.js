@@ -31,7 +31,7 @@ export const addComment = async ({ content, planId, userId,  username, parentId 
 
 export const addLike = async ({ commentId }) => {
 	try {
-		const response = await api.post('/comment/addLike', { commentId });
+		const response = await api.post('/comment/like/add', { commentId });
 		
 		return response;
 	} catch (err) {

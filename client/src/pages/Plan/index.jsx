@@ -11,6 +11,7 @@ const Plan = (props) => {
 	const [subscribePanel, setSubscribePanel] = React.useState(true);
 	const [isNewCommentOpen, setIsNewCommentOpen] = React.useState(false);
 	const [newCommentText, setNewCommentText] = React.useState('');
+	const [refetchComments, setRefetchComments] = React.useState(false);
 
 	const openNewCommentView = () => {
 	    setIsNewCommentOpen(true);
@@ -23,7 +24,7 @@ const Plan = (props) => {
 	const handleNewCommentText = (newValue) => setNewCommentText(newValue);
 	const { id: planId } = useParams();
 	useDataHandler(planId);
-	useCommentsDataHandler(planId);
+	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
 	const commentTypes = [
 		{
 			value: 'improvement-proposal',
@@ -42,6 +43,7 @@ const Plan = (props) => {
 
 	if (props.isMobile() || props.isTablet()) return <PlanMobile
 		tabValue={tabValue}
+		setRefetchComments={setRefetchComments}
 		handleTabChange={handleTabChange}
 		subscribePanel={subscribePanel}
 		handleSubscribePanel={handleSubscribePanel}
@@ -54,6 +56,7 @@ const Plan = (props) => {
 		commentTypes={commentTypes}/>;
 	else return     <PlanDesktop
 		tabValue={tabValue}
+		setRefetchComments={setRefetchComments}
 		handleTabChange={handleTabChange}
 		subscribePanel={subscribePanel}
 		handleSubscribePanel={handleSubscribePanel}

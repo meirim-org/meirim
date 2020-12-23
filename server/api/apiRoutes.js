@@ -4,6 +4,7 @@ const Password = require('./controller/password');
 const Alert = require('./controller/alert');
 const Plan = require('./controller/plan');
 const Comment = require('./controller/comment');
+const CommentPerson = require('./controller/comment_person');
 const Rate = require('./controller/rate');
 const Impression = require('./controller/impression');
 
@@ -38,7 +39,7 @@ Router.delete(
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
 Router.post('/comment/:plan_id', wrap(Comment.create, Comment));
-Router.post('/comment/addLike', wrap(Comment.addLike, Comment));
+Router.post('/comment/like/add', wrap(CommentPerson.addLike, Comment));
 
 // Rate
 Router.get('/rate/:plan_id', wrap(Rate.byPlan, Rate));

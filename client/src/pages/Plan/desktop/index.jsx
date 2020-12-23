@@ -7,6 +7,7 @@ import { Header, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
 
 const PlanDesktop = ({ 
+	setRefetchComments,
 	tabValue, handleTabChange, 
 	isNewCommentOpen,
 	newCommentViewHandler,
@@ -37,6 +38,7 @@ const PlanDesktop = ({
 						 	tabValue={tabValue} subscribePanel={subscribePanel} 
 						 	planData={planData} />
 						<CommentsTab
+							setRefetchComments={setRefetchComments}
 							tabValue={tabValue}
 							isNewCommentOpen={isNewCommentOpen}
 							newCommentViewHandler={newCommentViewHandler}
