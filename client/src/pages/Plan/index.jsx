@@ -11,6 +11,7 @@ const Plan = (props) => {
 	const [subscribePanel, setSubscribePanel] = React.useState(true);
 	const [isNewCommentOpen, setIsNewCommentOpen] = React.useState(false);
 	const [newCommentText, setNewCommentText] = React.useState('');
+	const [newCommentType, setNewCommentType] = React.useState('review');
 	const [refetchComments, setRefetchComments] = React.useState(false);
 
 	const openNewCommentView = () => {
@@ -22,17 +23,18 @@ const Plan = (props) => {
 	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleSubscribePanel = (newValue) => setSubscribePanel(newValue);
 	const handleNewCommentText = (newValue) => setNewCommentText(newValue);
+	const handleNewCommentType = (newValue) => setNewCommentType(newValue);
 	const { id: planId } = useParams();
 	useDataHandler(planId);
 	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
 	const commentTypes = [
 		{
-			value: 'improvement-proposal',
-			text: t.improvementProposal
-		},
-		{
 			value: 'review',
 			text: t.review
+		},
+		{
+			value: 'improvement-proposal',
+			text: t.improvementProposal
 		},
 		{
 			value: 'general-opinion',
@@ -53,8 +55,10 @@ const Plan = (props) => {
 		closeNewCommentView={closeNewCommentView}
 		newCommentText={newCommentText}
 		handleNewCommentText={handleNewCommentText}
+		newCommentType={newCommentType}
+		handleNewCommentType={handleNewCommentType}
 		commentTypes={commentTypes}/>;
-	else return     <PlanDesktop
+	else return <PlanDesktop
 		tabValue={tabValue}
 		setRefetchComments={setRefetchComments}
 		handleTabChange={handleTabChange}
@@ -66,6 +70,8 @@ const Plan = (props) => {
 		closeNewCommentView={closeNewCommentView}
 		newCommentText={newCommentText}
 		handleNewCommentText={handleNewCommentText}
+		newCommentType={newCommentType}
+		handleNewCommentType={handleNewCommentType}
 		commentTypes={commentTypes}/>;
 };
 

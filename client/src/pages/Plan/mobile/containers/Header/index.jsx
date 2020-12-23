@@ -11,20 +11,25 @@ const Header = ({ countyName, name, tabValue, handleTabChange, isNewCommentOpen 
 	
 	return (
 		<SC.Header className={isNewCommentOpen ? 'low' : ''}>
-			{!isNewCommentOpen
-				?
-				<SC.TitlesAndTabs>
-					<Title title={countyName} subTitle={name}/>
-					<SC.AppBar position="static">
-						<Tabs tabValue={tabValue} handleTabChange={handleTabChange} numberOfComments={numberOfComments} />
-					</SC.AppBar>
-				</SC.TitlesAndTabs>
-				:
-				<SC.NewCommentTitle>
-					<BackButton />
-					<Title subTitle={t.addNewComment} />
-				</SC.NewCommentTitle>
-			}
+			<SC.HeaderContent>
+				{!isNewCommentOpen
+					?
+					<>
+						<SC.TitlesButtonWrapper>
+							<BackButton label={t.backToComments} classname="back-button"/>
+					    	<Title title={countyName} subTitle={name}/>
+						</SC.TitlesButtonWrapper>
+						<SC.AppBar position="static">
+							<Tabs tabValue={tabValue} handleTabChange={handleTabChange} numberOfComments={numberOfComments} />
+						</SC.AppBar>
+					</>
+					:
+					<SC.TitlesButtonWrapper>
+						<BackButton label={t.backToComments} classname="back-button"/>
+						<Title subTitle={t.addNewComment}/>
+					</SC.TitlesButtonWrapper>
+				}
+			</SC.HeaderContent>
 		</SC.Header>
 	);
 };

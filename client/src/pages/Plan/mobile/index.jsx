@@ -13,7 +13,9 @@ const PlanMobile = ({
 	openNewCommentView,
 	closeNewCommentView,
 	subscribePanel, handleSubscribePanel,
-	newCommentText, handleNewCommentText }) => {
+	commentTypes,    
+	newCommentText, handleNewCommentText,
+	newCommentType, handleNewCommentType }) => {
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { comments } = CommentSelectors();
 	const { name, countyName } = planData;
@@ -43,7 +45,9 @@ const PlanMobile = ({
 							isNewCommentOpen={isNewCommentOpen}
 							newCommentViewHandler={newCommentViewHandler}
 							closeNewCommentView={closeNewCommentView}
-							newCommentText={newCommentText} handleNewCommentText={handleNewCommentText} />
+							commentTypes={commentTypes}
+							newCommentText={newCommentText} handleNewCommentText={handleNewCommentText}
+							newCommentType={newCommentType} handleNewCommentType={handleNewCommentType}/>
 					</SC.Main>
 					<Navigation
 						handleTabChange={handleTabChange}
@@ -60,13 +64,15 @@ PlanMobile.propTypes = {
 	newCommentViewHandler: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
 	closeNewCommentView: PropTypes.func.isRequired,
-	commentTypes: PropTypes.array.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	subscribePanel: PropTypes.bool.isRequired,
 	handleSubscribePanel: PropTypes.func.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
+	commentTypes: PropTypes.array.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
+	newCommentType: PropTypes.string,
+	handleNewCommentType: PropTypes.func.isRequired,
 	setRefetchComments: PropTypes.func.isRequired
 };
 
