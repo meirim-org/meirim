@@ -7,7 +7,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
 import { 
 	FormControl as MuiFormControl,
-	FormControlLabel as MuiFormControlLabel,
 	RadioGroup as MuiRadioGroup,
 	TextareaAutosize as MuiTextareaAutosize,
 
