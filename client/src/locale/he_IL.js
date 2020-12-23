@@ -77,6 +77,7 @@ export default {
 	copy: 'העתק',
 	location: 'מיקום',
 	backToComments: 'חזרה לעמוד חוות הדעת',
+	publishComment: 'פרסום חוות דעת',
 };
 
 

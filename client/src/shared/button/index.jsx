@@ -103,6 +103,10 @@ const StyledButton = withTheme(styled(MUIButton)`
         text-decoration: ${textDecoration} !important;
     `}   
     
+    ${({ width }) => width && `
+        width: ${width} !important;
+    `}   
+    
 `);
 
 const Button = ({
@@ -125,6 +129,7 @@ const Button = ({
 	iconAfter,
 	active,
 	disabled,
+	width
 }) => {
 	const theme = useTheme();
 
@@ -150,6 +155,7 @@ const Button = ({
 			active={active ? 1 : ''}
 			disabled={disabled}
 			theme={theme}
+			width={width}
 		>
 			{iconBefore}
 			{text}
@@ -187,6 +193,7 @@ Button.propTypes = {
 	iconAfter: PropTypes.object,
 	active: PropTypes.bool,
 	disabled: PropTypes.bool,
+	width: PropTypes.string,
 };
 
 export default Button;

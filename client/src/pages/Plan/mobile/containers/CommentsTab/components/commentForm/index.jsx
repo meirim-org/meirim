@@ -81,19 +81,10 @@ const CommentForm = ({
 					</SC.NewCommentControl>
 					<SC.addCommentButtonWrapper>
 						<Button
-							id="close-new-opinion"
-							text={t.close}
-							simple
-							small
-							textcolor={theme.palette.black}
-							onClick={closeNewCommentView}
-						/>
-						<Button
 							id="send-new-opinion"
-							text={t.send}
-							fontWeight={'600'}
-							small
-							simple
+							text={t.publishComment}
+							fontWeight={'700'}
+							width="100%"
 							onClick={async () => {
 								await addComment({ content: newCommentText, planId, userId: user.id,userName: user.name });
 								closeNewCommentView();
