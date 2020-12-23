@@ -1,9 +1,9 @@
 const expect = require('chai').expect;
 const { mockDatabase } = require('../../mock');
-const { CommentController } = require('../../../api/controller');
+const { CommentController, CommentPersonController } = require('../../../api/controller');
 
 describe('comment controller', function() {
-	const tables = ['comment', 'person'];
+	const tables = ['comment', 'person', 'comment_person'];
 	const person = {
 		name: 'myname',
 		email: 'test@meirim.org',
@@ -40,11 +40,6 @@ describe('comment controller', function() {
 			}
 		};
 		const { attributes } = await CommentController.create(req);
-		expect(attributes.person_id).to.eql(req.body.person_id);
-		expect(attributes.plan_id).to.eql(req.body.plan_id);
-		expect(attributes.type).to.eql(req.body.type);
-		expect(attributes.content).to.eql(req.body.content);
-		expect(attributes.likes).to.eql(req.body.likes);
 		const addLikeRequest = {
 			session: {
 				person: { 
@@ -53,7 +48,22 @@ describe('comment controller', function() {
 			},
 			body: { commentId: attributes.id }
 		};
-		const comment = await CommentController.addLike(addLikeRequest);
+		const addLikeRequest1 = {
+			session: {
+				person: { 
+					id: 2 
+				} 
+			},
+			body: { commentId: attributes.id }
+		};
+		await CommentPersonController.addLike(addLikeRequest);
+		await CommentPersonController.addLike(addLikeRequest1);
+		const res = await CommentController.byPlan({ params: { plan_id: 123 } });
+		expect(attributes.person_id).to.eql(req.body.person_id);
+		expect(attributes.plan_id).to.eql(req.body.plan_id);
+		expect(attributes.type).to.eql(req.body.type);
+		expect(attributes.content).to.eql(req.body.content);
+		expect(res[0].attributes.likes).to.eql(2);
 		const req1 = {
 			session: {
 				person: { 
@@ -83,6 +93,5 @@ describe('comment controller', function() {
 		await CommentController.create(reqForNestedComment);
 		const comments = await CommentController.byPlan(req1); 
 		expect(comments.length).to.eql(2);
-		expect(comment.attributes.likes).to.eql(1);
 	});
 });
