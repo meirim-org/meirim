@@ -7,6 +7,7 @@ import * as SC from './style';
 
 const PlanMobile = ({
 	tabValue, handleTabChange,
+	setRefetchComments,
 	isNewCommentOpen,
 	newCommentViewHandler,
 	openNewCommentView,
@@ -36,6 +37,7 @@ const PlanMobile = ({
 							tabValue={tabValue} subscribePanel={subscribePanel}
 							planData={planData} />
 						<CommentsTab
+							setRefetchComments={setRefetchComments}
 							tabValue={tabValue}
 							isNewCommentOpen={isNewCommentOpen}
 							newCommentViewHandler={newCommentViewHandler}
