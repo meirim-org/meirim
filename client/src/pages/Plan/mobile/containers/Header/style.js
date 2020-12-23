@@ -11,18 +11,33 @@ export const TitleWrapper = styled.div`
 `;
 
 export const Header = styled.header`
-    padding: 2rem 3.825rem 0 2.3rem;
+    padding: 2rem 4.425rem 0 2.3rem;
     margin-bottom: 0.8rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 0 -1rem;
+    
+    &.low {
+        padding: 1rem 3.825rem 1rem 2.3rem;            
+        * {
+            margin-bottom: 0;
+        }
+        .MuiButtonBase-root {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(100%,-50%);
+        }
+    }
+
 `;
 
 export const TitlesAndTabs = styled.div`
 `;
 
 export const NewCommentTitle = styled.div`
+    position: relative;
 `;
 
 export const Buttons = withTheme(styled.div`

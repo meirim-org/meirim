@@ -27,7 +27,7 @@ const PlanMobile = ({
 						tabValue={tabValue}
 						handleTabChange={handleTabChange}
 						openNewCommentView={openNewCommentView}
-                        isNewCommentOpen={isNewCommentOpen}
+						isNewCommentOpen={isNewCommentOpen}
 						name={name}
 						countyName={countyName}
 					/>

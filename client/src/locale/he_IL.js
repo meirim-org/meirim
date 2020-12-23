@@ -75,7 +75,8 @@ export default {
 	whatsappShare: 'שיתוף ב-Whatsapp',
 	copyUrl: 'או העתיקו את הקישור',
 	copy: 'העתק',
-	location: 'מיקום'
+	location: 'מיקום',
+	backToComments: 'חזרה לעמוד חוות הדעת',
 };
 
 
