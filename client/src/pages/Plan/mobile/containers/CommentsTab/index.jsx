@@ -11,8 +11,10 @@ const CommentsTab = ({
 	setRefetchComments,
 	isNewCommentOpen,
 	newCommentViewHandler,
-	closeNewCommentView, 
-	newCommentText, handleNewCommentText }) => {
+	closeNewCommentView,
+	commentTypes,
+	newCommentText, handleNewCommentText,
+	newCommentType,handleNewCommentType }) => {
 	const { comments } = CommentSelectors();
 
 	return (
@@ -24,8 +26,11 @@ const CommentsTab = ({
 				isNewCommentOpen={isNewCommentOpen}
 				closeNewCommentView={closeNewCommentView}
 				newCommentViewHandler={newCommentViewHandler}
+				commentTypes={commentTypes}
 				newCommentText={newCommentText}
 				handleNewCommentText={handleNewCommentText}
+				newCommentType={newCommentType}
+				handleNewCommentType={handleNewCommentType}
 			/>
 			{comments.length > 0 && !isNewCommentOpen &&
 							<>
@@ -57,10 +62,12 @@ CommentsTab.propTypes = {
 	newCommentViewHandler: PropTypes.func.isRequired,
 	closeNewCommentView: PropTypes.func.isRequired, 
 	isNewCommentOpen: PropTypes.bool.isRequired,
+	commentTypes: PropTypes.array.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
+	newCommentType: PropTypes.string,
+	handleNewCommentType: PropTypes.func.isRequired,
 	setRefetchComments: PropTypes.func.isRequired
-
 };
 
 export default CommentsTab;

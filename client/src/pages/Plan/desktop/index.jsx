@@ -5,6 +5,7 @@ import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
+import { CommentForm } from './containers/CommentsTab/components';
 
 const PlanDesktop = ({ 
 	setRefetchComments,
@@ -13,8 +14,10 @@ const PlanDesktop = ({
 	newCommentViewHandler,
 	openNewCommentView,
 	closeNewCommentView, 
-	subscribePanel, handleSubscribePanel, 
-	newCommentText, handleNewCommentText }) => {
+	subscribePanel, handleSubscribePanel,
+	commentTypes,
+	newCommentText, handleNewCommentText,
+	newCommentType, handleNewCommentType }) => {
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { comments } = CommentSelectors();
 	const { name, countyName, geom } = planData;
@@ -24,7 +27,7 @@ const PlanDesktop = ({
 	    <Wrapper>
 			<SC.MainWrapper>
 				<SC.Content>
-					<Header 
+					<Header
 						tabValue={tabValue}
 						handleTabChange={handleTabChange} 
 						openNewCommentView={openNewCommentView} 
@@ -43,7 +46,9 @@ const PlanDesktop = ({
 							isNewCommentOpen={isNewCommentOpen}
 							newCommentViewHandler={newCommentViewHandler}
 							closeNewCommentView={closeNewCommentView}
-							newCommentText={newCommentText} handleNewCommentText={handleNewCommentText} />
+							commentTypes={commentTypes}
+							newCommentText={newCommentText} handleNewCommentText={handleNewCommentText}
+							newCommentType={newCommentType} handleNewCommentType={handleNewCommentType} />
 					</SC.Main>
 				</SC.Content>
 				  {geom && <Mapa
@@ -69,6 +74,9 @@ PlanDesktop.propTypes = {
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
+	newCommentType: PropTypes.string,
+	handleNewCommentType: PropTypes.func.isRequired,
+	setRefetchComments: PropTypes.func.isRequired,
 };
 
 export default PlanDesktop;

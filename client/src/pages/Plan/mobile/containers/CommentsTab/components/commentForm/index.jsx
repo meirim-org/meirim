@@ -14,26 +14,13 @@ const CommentForm = ({
 	setRefetchComments,
 	isNewCommentOpen, newCommentViewHandler,closeNewCommentView,
 	tabValue,
-	newCommentText,	handleNewCommentText }) => {
+	commentTypes,
+	newCommentText,	handleNewCommentText,
+	newCommentType, handleNewCommentType }) => {
 	const theme = useTheme();
 	const { id: planId } = useParams();
 	const { user } = UserSelectors();
 	const { comments } = CommentSelectors();
-	const newCommentType = '';
-	const commentTypes = [
-	    // {
-	    //     value: 'improvementProposal',
-		// 	text: t.improvementProposal,
-		// },
-		// {
-		// 	value: 'review',
-		// 	text: t.review,
-		// },
-		// {
-		// 	value: 'generalOpinion',
-		// 	text: t.generalOpinion,
-		// },
-	];
 	const newCommentTypeError = false;
 
 	return (
@@ -54,7 +41,12 @@ const CommentForm = ({
 				:
 				<>
 					<SC.NewCommentControl component="fieldset">
-						<SC.RadioGroup aria-label="comment-type" name="comment-type" row> {/*this is comment type*/}
+						<SC.RadioGroup
+							aria-label="comment-type"
+							name="comment-type"
+							row
+							value={newCommentType}
+							onChange={(e) => handleNewCommentType(e.target.value)}>
 							{commentTypes.map((commentType, idx) => (
 								<SC.NewCommentLabelWrapper key={idx}>
 									<SC.NewCommentLabel
@@ -120,8 +112,11 @@ CommentForm.propTypes = {
 	comments: PropTypes.number.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	newCommentViewHandler: PropTypes.func.isRequired,
+	commentTypes: PropTypes.array.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
+	newCommentType: PropTypes.string,
+	handleNewCommentType: PropTypes.func.isRequired,
 	closeNewCommentView: PropTypes.func.isRequired,
 	setRefetchComments: PropTypes.func.isRequired,
 	tabValue: PropTypes.any.isRequired,

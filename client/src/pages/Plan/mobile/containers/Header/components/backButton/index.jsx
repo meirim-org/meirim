@@ -1,15 +1,19 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import t from 'locale/he_IL';
+import PropTypes from 'prop-types';
 
-const BackButton = () => {
-
+const BackButton = ({ classname, label }) => {
 	return (
-		<IconButton aria-label={t.backToComments}>
+		<IconButton className={classname} aria-label={label}>
 			<ArrowForwardIcon />
 		</IconButton>
 	);
+};
+
+BackButton.propTypes = {
+	classname: PropTypes.string,
+	label: PropTypes.string.isRequired,
 };
 
 
