@@ -5,6 +5,7 @@ import { CommentForm } from './components';
 import t from 'locale/he_IL';
 import { CommentSelectors } from 'redux/selectors';
 import * as SC from './style';
+import { TabBox, TabPanel } from '../../../../../shared';
 
 const CommentsTab = ({
 	setRefetchComments,
@@ -33,26 +34,28 @@ const CommentsTab = ({
 				handleNewCommentType={handleNewCommentType}
 			/>
 			{comments.length > 0 &&
-							<>
-								{comments.map((comment, index) => (
-									<CommentView
-										setRefetchComments={setRefetchComments}
-										key={index}
-										id={index}
-										tabValue={tabValue}
-										commentData={comment}
-										isNewCommentOpen={isNewCommentOpen}
-									/>
-								))}
-							</>
+                <>
+                	{comments.map((comment, index) => (
+                		<CommentView
+                			setRefetchComments={setRefetchComments}
+                			key={index}
+                			id={index}
+                			tabValue={tabValue}
+                			commentData={comment}
+                			isNewCommentOpen={isNewCommentOpen}
+                		/>
+                	))}
+                </>
 			}
 			{comments.length === 0 && !isNewCommentOpen &&
-							<SC.NoComments>
-								<SC.NoCommentsBold>{t.startDiscussion}</SC.NoCommentsBold>
-								<br/>
-								<SC.NoCommentsRegular>{t.shareThought}</SC.NoCommentsRegular>
-							</SC.NoComments>
-	 					}
+            <TabPanel value={tabValue} index={1} >
+            		<SC.NoComments>
+            		<SC.NoCommentsBold>{t.startDiscussion}</SC.NoCommentsBold>
+            		<br/>
+            		<SC.NoCommentsRegular>{t.shareThought}</SC.NoCommentsRegular>
+            		</SC.NoComments>
+            </TabPanel>
+			}
 		</>
 	);
 };
