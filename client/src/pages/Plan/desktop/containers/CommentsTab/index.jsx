@@ -6,6 +6,7 @@ import { CommentSelectors } from 'redux/selectors';
 import * as SC from '../../style';
 
 const CommentsTab = ({ 
+	setRefetchComments,
 	tabValue,
 	isNewCommentOpen,
 	newCommentViewHandler,
@@ -16,6 +17,7 @@ const CommentsTab = ({
 	return (
 		<>
 			<CommentForm 
+				setRefetchComments={setRefetchComments}
 				tabValue={tabValue}
 				comments={comments.length}
 				isNewCommentOpen={isNewCommentOpen}
@@ -28,6 +30,7 @@ const CommentsTab = ({
 							<>
 								{comments.map((comment, index) => (
 									<CommentView 
+										setRefetchComments={setRefetchComments}
 										key={index}
 										id={index} 
 										tabValue={tabValue}
@@ -55,6 +58,7 @@ CommentsTab.propTypes = {
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
+	setRefetchComments: PropTypes.func.isRequired,
 };
 
 export default CommentsTab;

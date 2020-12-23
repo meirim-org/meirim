@@ -89,3 +89,22 @@ export const handleNewCommentSubmit = (type, setTypeError) => {
 	if (!type ) { setTypeError(true); };
 };
 
+
+export const extractComments = (comments) => {
+	let forDeletion = [];
+	comments.map((comment) => {
+		let parentId = comment.parent_id;
+
+		if (parentId !== null ) {
+			let parent = comments.find(comment => comment.id === parentId);
+			if (parent && parent.subComments === undefined) {
+				parent.subComments = [];
+			} 
+			parent.subComments.push(comment);
+			forDeletion.push(comment.id);
+		}
+	});
+	comments = comments.filter(item => !forDeletion.includes(item.id));
+
+	return comments;
+};

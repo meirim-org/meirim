@@ -1,23 +1,20 @@
 import React from 'react';
-import { setData } from 'redux/comments/slice';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Typography } from 'shared';
 import * as SC from './style';
-import { extractComments } from 'pages/Plan/hooks';
 import { useParams } from 'react-router-dom';
 import { UserSelectors, CommentSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { Radio } from '@material-ui/core';
-import { getCommentsByPlanId, addComment } from 'pages/Plan/controller';
+import {  addComment } from 'pages/Plan/controller';
 import { printRadioClass } from 'pages/Plan/utils';
 
 const CommentForm = ({ 
+	setRefetchComments,
 	isNewCommentOpen, newCommentViewHandler,closeNewCommentView, 
 	tabValue,
 	newCommentText,	handleNewCommentText }) => {
-	const dispatch = useDispatch();
 	const theme = useTheme();
 	const { id: planId } = useParams();
 	const { user } = UserSelectors();
@@ -94,10 +91,7 @@ const CommentForm = ({
 							onClick={async () => {
 								await addComment({ content: newCommentText, planId, userId: user.id,userName: user.name });
 								closeNewCommentView();
-								const response = await getCommentsByPlanId(planId);
-								const comments = extractComments(response.data);
-								handleNewCommentText('');
-								dispatch(setData({ data: comments }));
+								setRefetchComments(true);
 							}}
 							disabled={newCommentTypeError}
 						/>
@@ -117,6 +111,7 @@ CommentForm.propTypes = {
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
 	closeNewCommentView: PropTypes.func.isRequired,
+	setRefetchComments: PropTypes.func.isRequired,
 	tabValue: PropTypes.any.isRequired,
 };
 
