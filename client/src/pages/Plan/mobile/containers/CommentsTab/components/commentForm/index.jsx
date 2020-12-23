@@ -77,7 +77,7 @@ const CommentForm = ({
 							onChange={(e) => handleNewCommentText(e.target.value)}
 							disabled={newCommentTypeError}
 							aria-label={t.emptyTextarea}
-							rowsMin={5}/>
+							rowsMin={10}/>
 					</SC.NewCommentControl>
 					<SC.addCommentButtonWrapper>
 						<Button

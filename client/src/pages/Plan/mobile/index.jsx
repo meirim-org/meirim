@@ -4,6 +4,7 @@ import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, Navigation, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
+import classnames from 'classnames';
 
 const PlanMobile = ({
 	tabValue, handleTabChange,
@@ -21,6 +22,11 @@ const PlanMobile = ({
 	const { name, countyName } = planData;
 	const isPlanHaveComments = comments.length > 0;
 
+	const mainClasses = classnames({
+		'no-comments': !isPlanHaveComments,
+		'new-comment': isNewCommentOpen
+	});
+
 	return (
 		<Wrapper>
 			<SC.MobileMainWrapper>
@@ -33,7 +39,8 @@ const PlanMobile = ({
 						name={name}
 						countyName={countyName}
 					/>
-					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
+
+					<SC.Main className={mainClasses}>
 						<SummaryTab
 							handleSubscribePanel={handleSubscribePanel}
 							dataArea={dataArea} textArea={textArea}
