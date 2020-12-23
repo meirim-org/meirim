@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CommentSelectors } from 'redux/selectors';
-import { Tabs, Title } from './components';
+import { Tabs, Title, BackButton } from './components';
 import * as SC from './style';
 import t from 'locale/he_IL';
 
@@ -10,7 +10,7 @@ const Header = ({ countyName, name, tabValue, handleTabChange, isNewCommentOpen 
 	const	numberOfComments = comments.length.toString();
 	
 	return (
-		<SC.Header>
+		<SC.Header className={isNewCommentOpen ? 'low' : ''}>
 			{!isNewCommentOpen
 				?
 				<SC.TitlesAndTabs>
@@ -21,7 +21,8 @@ const Header = ({ countyName, name, tabValue, handleTabChange, isNewCommentOpen 
 				</SC.TitlesAndTabs>
 				:
 				<SC.NewCommentTitle>
-					<Title subTitle={t.addNewComment}/>
+					<BackButton />
+					<Title subTitle={t.addNewComment} />
 				</SC.NewCommentTitle>
 			}
 		</SC.Header>
