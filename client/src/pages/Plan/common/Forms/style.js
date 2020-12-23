@@ -153,7 +153,10 @@ export const addSubCommentButtonWrapper = styled.div`
 `;
 
 export const addSubCommentWrapper = styled.div`
-    padding: 2rem 3.5rem;
+    padding: 2rem;
+    @media ${device.laptop} {
+        padding: 2rem 3.5rem;
+    }
 `;
 
 export const ButtonWrapper = styled.div`

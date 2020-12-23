@@ -13,8 +13,8 @@ import { Radio } from '@material-ui/core';
 import { getCommentsByPlanId, addComment } from 'pages/Plan/controller';
 import { printRadioClass } from 'pages/Plan/utils';
 
-const CommentForm = ({ 
-	isNewCommentOpen, newCommentViewHandler,closeNewCommentView, 
+const CommentForm = ({
+	isNewCommentOpen, newCommentViewHandler,closeNewCommentView,
 	tabValue,
 	newCommentText,	handleNewCommentText }) => {
 	const dispatch = useDispatch();
@@ -24,21 +24,21 @@ const CommentForm = ({
 	const { comments } = CommentSelectors();
 	const newCommentType = '';
 	const commentTypes = [
-	    {
-	        value: 'improvementProposal',
-			text: t.improvementProposal,
-		},
-		{
-			value: 'review',
-			text: t.review,
-		},
-		{
-			value: 'generalOpinion',
-			text: t.generalOpinion,
-		},
+	    // {
+	    //     value: 'improvementProposal',
+		// 	text: t.improvementProposal,
+		// },
+		// {
+		// 	value: 'review',
+		// 	text: t.review,
+		// },
+		// {
+		// 	value: 'generalOpinion',
+		// 	text: t.generalOpinion,
+		// },
 	];
 	const newCommentTypeError = false;
-    
+
 	return (
 		<SC.NewCommentTabPanel value={tabValue} index={1} className={!comments ? 'no-comments' : ''}>
 			<SC.ButtonWrapper>
@@ -68,7 +68,7 @@ const CommentForm = ({
 								</SC.NewCommentLabelWrapper>
 							))}
 						</SC.RadioGroup>
-						{newCommentTypeError && 
+						{newCommentTypeError &&
 							<SC.ErrorWrapper>
 								<Typography
 									variant="chipsAndIconButtons"
@@ -105,7 +105,6 @@ const CommentForm = ({
 							small
 							simple
 							onClick={async () => {
-
 								await addComment({ content: newCommentText, planId, userId: user.id,userName: user.name });
 								closeNewCommentView();
 								const response = await getCommentsByPlanId(planId);
