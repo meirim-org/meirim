@@ -96,16 +96,3 @@ export const SubTitleWrapper = styled.div`
 export const TitleWrapper = styled.div`
     margin-bottom: 3rem;
 `;
-
-export const NoComments = styled.div`
-    text-align: center;
-`;
-
-export const NoCommentsBold = styled.span`
-    font-size: 1.125rem;
-    font-weight: 600;
-`;
-
-export const NoCommentsRegular = styled.span`
-    font-size: 1rem;
-`;

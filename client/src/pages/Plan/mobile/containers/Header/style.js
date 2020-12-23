@@ -22,6 +22,9 @@ export const Header = styled.header`
 export const TitlesAndTabs = styled.div`
 `;
 
+export const NewCommentTitle = styled.div`
+`;
+
 export const Buttons = withTheme(styled.div`
     text-align: left;
     margin: 0 -.25rem;

@@ -118,7 +118,6 @@ CommentView.propTypes = {
 	id: PropTypes.number.isRequired,
 	commentData: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
-	closeNewCommentView: PropTypes.func.isRequired,
 	setRefetchComments: PropTypes.func.isRequired,
 	tabValue: PropTypes.any.isRequired,
 };

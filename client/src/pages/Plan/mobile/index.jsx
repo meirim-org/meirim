@@ -27,6 +27,7 @@ const PlanMobile = ({
 						tabValue={tabValue}
 						handleTabChange={handleTabChange}
 						openNewCommentView={openNewCommentView}
+                        isNewCommentOpen={isNewCommentOpen}
 						name={name}
 						countyName={countyName}
 					/>
@@ -66,6 +67,7 @@ PlanMobile.propTypes = {
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
+	setRefetchComments: PropTypes.func.isRequired
 };
 
 export default PlanMobile;

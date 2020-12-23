@@ -1,22 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CommentView, CommentForm } from 'pages/Plan/common';
+import { CommentView } from 'pages/Plan/common';
+import { CommentForm } from './components';
 import t from 'locale/he_IL';
 import { CommentSelectors } from 'redux/selectors';
-import * as SC from '../../style';
+import * as SC from './style';
 
-const CommentsTab = ({ 
+const CommentsTab = ({
 	setRefetchComments,
 	tabValue,
 	isNewCommentOpen,
 	newCommentViewHandler,
-	closeNewCommentView, 
+	closeNewCommentView,
 	newCommentText, handleNewCommentText }) => {
 	const { comments } = CommentSelectors();
 
 	return (
 		<>
-			<CommentForm 
+			<CommentForm
 				setRefetchComments={setRefetchComments}
 				tabValue={tabValue}
 				comments={comments.length}
@@ -26,17 +27,17 @@ const CommentsTab = ({
 				newCommentText={newCommentText}
 				handleNewCommentText={handleNewCommentText}
 			/>
-			{comments.length > 0 && 
+			{comments.length > 0 &&
 							<>
 								{comments.map((comment, index) => (
-									<CommentView 
+									<CommentView
 										setRefetchComments={setRefetchComments}
 										key={index}
-										id={index} 
+										id={index}
 										tabValue={tabValue}
 										commentData={comment}
 										isNewCommentOpen={isNewCommentOpen}
-									/> 
+									/>
 								))}
 							</>
 			}
@@ -54,7 +55,7 @@ const CommentsTab = ({
 CommentsTab.propTypes = {
 	tabValue: PropTypes.any.isRequired,
 	newCommentViewHandler: PropTypes.func.isRequired,
-	closeNewCommentView: PropTypes.func.isRequired, 
+	closeNewCommentView: PropTypes.func.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,

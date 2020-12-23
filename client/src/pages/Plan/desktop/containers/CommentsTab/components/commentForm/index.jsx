@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Typography } from 'shared';
-import * as SC from './style';
+import * as SC from '../../style';
 import { useParams } from 'react-router-dom';
 import { UserSelectors, CommentSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
@@ -10,7 +10,7 @@ import { Radio } from '@material-ui/core';
 import {  addComment } from 'pages/Plan/controller';
 import { printRadioClass } from 'pages/Plan/utils';
 
-const CommentForm = ({ 
+const CommentForm = ({
 	setRefetchComments,
 	isNewCommentOpen, newCommentViewHandler,closeNewCommentView,
 	tabValue,
@@ -65,7 +65,7 @@ const CommentForm = ({
 								</SC.NewCommentLabelWrapper>
 							))}
 						</SC.RadioGroup>
-						{newCommentTypeError && 
+						{newCommentTypeError &&
 							<SC.ErrorWrapper>
 								<Typography
 									variant="chipsAndIconButtons"
