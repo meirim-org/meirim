@@ -10,6 +10,7 @@ const AddNewComment = ({ handleTabChange, openNewCommentView }) => {
 			onClick={()=> {
 				handleTabChange(null,1);
 				openNewCommentView();
+
 			}}
 			label={t.addNewComment}
 			icon={<ChatBubbleOutlineIcon

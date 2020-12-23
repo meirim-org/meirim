@@ -11,7 +11,7 @@ const SavePlan = () => {
 	
 	return (
 		<BottomNavigationAction
-			onClick={() => dispatch(openModal({ modalType: 'share' }))}
+			onClick={() => alert('This feature will be developed')}
 			label={t.saving}
 			icon={<StarBorderIcon fontSize={'small'}/>} />
 	);

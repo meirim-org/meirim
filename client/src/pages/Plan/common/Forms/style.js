@@ -13,6 +13,7 @@ import {
 
 } from '@material-ui/core';
 import { TabPanel } from 'shared';
+import { device } from 'style';
 
 
 export const Header = styled.span`
@@ -209,7 +210,20 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
     border-radius: 4px;
     border: 1px solid transparent;
     margin: 0 0 1rem !important;
-    padding: 0 .35rem 0 1rem;
+    padding-left: .23rem;
+    @media ${device.tablet} {
+        padding-right: .35rem;
+        padding-left: 1rem;
+    }
+    .MuiSvgIcon-root {
+      width: 0.7em;
+      height: 0.7em;
+      @media ${device.tablet} {
+        padding-right: .35rem;
+        padding-left: 1rem;
+      }
+    }
+
     transition: .3s;
     &.active, &:hover {
         background-color: ${props => props.theme.palette.gray['radio']} !important;

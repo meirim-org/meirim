@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { colors } from '../../style/index';
 import { Container, List, Drawer as MUIDrawer, ListItem, ListItemIcon } from '@material-ui/core';
 
@@ -31,7 +31,6 @@ export const StyledLink = styled(NavLink)`
 
     &:hover, &.active {
         text-decoration: none;
-        color: ${colors.purple};
     }
 `;
 

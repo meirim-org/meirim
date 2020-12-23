@@ -23,9 +23,22 @@ const CommentForm = ({
 	const { user } = UserSelectors();
 	const { comments } = CommentSelectors();
 	const newCommentType = '';
-	const commentTypes = [];
+	const commentTypes = [
+	    {
+	        value: 'improvementProposal',
+			text: t.improvementProposal,
+		},
+		{
+			value: 'review',
+			text: t.review,
+		},
+		{
+			value: 'generalOpinion',
+			text: t.generalOpinion,
+		},
+	];
 	const newCommentTypeError = false;
-
+    
 	return (
 		<SC.NewCommentTabPanel value={tabValue} index={1} className={!comments ? 'no-comments' : ''}>
 			<SC.ButtonWrapper>
@@ -92,6 +105,7 @@ const CommentForm = ({
 							small
 							simple
 							onClick={async () => {
+
 								await addComment({ content: newCommentText, planId, userId: user.id,userName: user.name });
 								closeNewCommentView();
 								const response = await getCommentsByPlanId(planId);
