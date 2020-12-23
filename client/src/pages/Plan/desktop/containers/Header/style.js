@@ -10,14 +10,10 @@ export const TitleWrapper = styled.div`
     margin-bottom: 3rem;
 `;
 
-export const Header = styled.span`
-    grid-area: header; 
-    padding: 2rem 2rem 0;
-    margin-bottom: 0.8rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 0 -1rem .8rem;
+export const Header = styled.header`
+    padding: 2rem 4.8rem 0 2rem;
+    display: grid;
+    grid-template-columns: 56% 1fr;
 `;
 
 export const TitlesAndTabs = styled.div`
@@ -37,7 +33,7 @@ export const Buttons = withTheme(styled.div`
     }
     .MuiButton-root {
         padding: .4rem .35rem;
-        margin: 0 .25rem;
+        margin: 0 .25rem .5rem;
         &:hover, &:focus {
             box-shadow: none;
             outline: 0 !important;

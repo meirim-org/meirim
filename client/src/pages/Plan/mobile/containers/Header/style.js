@@ -10,8 +10,7 @@ export const TitleWrapper = styled.div`
     margin-bottom: 2rem;
 `;
 
-export const Header = styled.span`
-    grid-area: header; 
+export const Header = styled.header`
     padding: 2rem 3.825rem 0 2.3rem;
     margin-bottom: 0.8rem;
     display: flex;
