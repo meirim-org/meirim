@@ -205,20 +205,6 @@ export const NewCommentTabPanel = withTheme(styled(TabPanel)`
     }
 `);
 
-export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
-    border-radius: 4px;
-    border: 1px solid transparent;
-    margin: 0 0 1rem !important;
-    padding: 0 .35rem 0 1rem;
-    transition: .3s;
-    &.active, &:hover {
-        background-color: ${props => props.theme.palette.gray['radio']} !important;
-    }  
-    &.error {
-        border-color: ${props => props.theme.palette.red} !important;;
-    }
-`);
-
 export const RadioGroup = withTheme(styled(MuiRadioGroup)`
     margin: 0 -.5rem;
 `);

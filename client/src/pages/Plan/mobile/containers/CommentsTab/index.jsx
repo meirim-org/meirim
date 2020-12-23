@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CommentView, CommentForm } from 'pages/Plan/common';
+import { CommentView } from 'pages/Plan/common';
+import { CommentForm } from './components';
 import t from 'locale/he_IL';
 import { CommentSelectors } from 'redux/selectors';
 import * as SC from '../../style';
@@ -26,7 +27,7 @@ const CommentsTab = ({
 				newCommentText={newCommentText}
 				handleNewCommentText={handleNewCommentText}
 			/>
-			{comments.length > 0 && 
+			{comments.length > 0 && !isNewCommentOpen &&
 							<>
 								{comments.map((comment, index) => (
 									<CommentView 
@@ -58,6 +59,8 @@ CommentsTab.propTypes = {
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
+	setRefetchComments: PropTypes.func.isRequired
+
 };
 
 export default CommentsTab;
