@@ -85,22 +85,6 @@ export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
     }
 `);
 
-
-export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
-    border-radius: 4px;
-    border: 1px solid transparent;
-    margin: 0 0 1rem !important;
-    padding: 0 .35rem 0 1rem;
-    transition: .3s;
-    &.active, &:hover {
-        background-color: ${props => props.theme.palette.gray['radio']} !important;
-    }  
-    &.error {
-        border-color: ${props => props.theme.palette.red} !important;;
-    }
-`);
-
-
 export const addCommentButtonWrapper = styled.div`
     margin-bottom: 2rem;
     display: flex;
@@ -111,3 +95,21 @@ export const addCommentButtonWrapper = styled.div`
     }
 `;
 
+
+export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
+    border-radius: 4px;
+    border: 1px solid transparent;
+    margin: 0 0 1rem !important;
+    padding-left: .23rem;
+    .MuiSvgIcon-root {
+        width: 0.7em;
+        height: 0.7em;    
+    }
+    transition: .3s;
+    &.active, &:hover {
+        background-color: ${props => props.theme.palette.gray['radio']} !important;
+    }  
+    &.error {
+        border-color: ${props => props.theme.palette.red} !important;;
+    }
+`);

@@ -57,6 +57,16 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
     }   
 `);
 
+export const addCommentButtonWrapper = styled.div`
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    
+    &.active {
+        margin-bottom: 0;
+    }
+`;
+
 export const RadioGroup = withTheme(styled(MuiRadioGroup)`
     margin: 0 -.5rem;
 `);
@@ -90,6 +100,10 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
     border: 1px solid transparent;
     margin: 0 0 1rem !important;
     padding: 0 .35rem 0 1rem;
+    .MuiSvgIcon-root {
+        width: 0.7em;
+        height: 0.7em;
+    }
     transition: .3s;
     &.active, &:hover {
         background-color: ${props => props.theme.palette.gray['radio']} !important;
@@ -98,15 +112,3 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
         border-color: ${props => props.theme.palette.red} !important;;
     }
 `);
-
-
-export const addCommentButtonWrapper = styled.div`
-    margin-bottom: 2rem;
-    display: flex;
-    justify-content: flex-end;
-    
-    &.active {
-        margin-bottom: 0;
-    }
-`;
-

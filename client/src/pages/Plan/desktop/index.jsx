@@ -5,7 +5,6 @@ import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
-import { CommentForm } from './containers/CommentsTab/components';
 
 const PlanDesktop = ({ 
 	setRefetchComments,
