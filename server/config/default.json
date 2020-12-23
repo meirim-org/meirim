@@ -39,6 +39,9 @@
 		"useS3ForTreeFiles": false,
 		"treeBucketName": "treeBucketName"
 	},
+	"trees": {
+		"rawDataDir": "/tmp/raw_trees"
+	},
 	"test": {
 		"database": {
 			"client": "mysql",
