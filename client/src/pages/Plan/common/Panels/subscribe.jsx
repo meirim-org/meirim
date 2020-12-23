@@ -13,7 +13,7 @@ export const SubscribePanel = ({ tabValue, subscribePanel, handleSubscribePanel 
 	if ( !subscribePanel ) return null;
 
 	return (
-		<TabPanel value={tabValue} index={0}>
+        <TabPanel value={tabValue} index={0}>
 			<TabBox position="relative" bgColor={theme.palette.primary['100']} borderColor={theme.palette.primary['200']}>
 				<SC.SubscribeIconWrapper>
 					<NotificationsNoneIcon />
