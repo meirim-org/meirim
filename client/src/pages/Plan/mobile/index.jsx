@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import { Header, SummaryTab, CommentsTab } from './containers';
+import { Header, Navigation, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
 
 const PlanMobile = ({
@@ -16,8 +15,8 @@ const PlanMobile = ({
 	newCommentText, handleNewCommentText }) => {
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { comments } = CommentSelectors();
-	const { name, countyName, geom } = planData;
-	const isPlanHaveComments = comments.length === 0;
+	const { name, countyName } = planData;
+	const isPlanHaveComments = comments.length > 0;
 
 	return (
 		<Wrapper>
@@ -43,6 +42,10 @@ const PlanMobile = ({
 							closeNewCommentView={closeNewCommentView}
 							newCommentText={newCommentText} handleNewCommentText={handleNewCommentText} />
 					</SC.Main>
+					<Navigation
+						handleTabChange={handleTabChange}
+						openNewCommentView={openNewCommentView}
+					/>
 				</SC.Content>
 			</SC.MobileMainWrapper>
 		</Wrapper>
