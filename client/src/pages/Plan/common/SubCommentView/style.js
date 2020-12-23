@@ -5,7 +5,7 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import LinkIcon from '@material-ui/icons/Link';
 import CloseIcon from '@material-ui/icons/Close';
 import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
-import { 
+import {
 	FormControl as MuiFormControl,
 	FormControlLabel as MuiFormControlLabel,
 	RadioGroup as MuiRadioGroup,
@@ -13,7 +13,6 @@ import {
 
 } from '@material-ui/core';
 import { TabPanel } from 'shared';
-
 
 export const Header = styled.span`
     grid-area: header; 

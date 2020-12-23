@@ -159,25 +159,6 @@ export const ButtonWrapper = styled.div`
     margin-bottom: 2rem;
 `;
 
-export const addCommentButtonWrapper = styled.div`
-    margin-bottom: 2rem;
-    display: flex;
-    justify-content: flex-end;
-    
-    &.active {
-        margin-bottom: 0;
-    }
-`;
-
-export const ErrorWrapper = styled.div`
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translate(-100%, calc(-50% - .5rem));
-    padding: 0 1rem;
-`;
-
-
 export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiTypography-root {
         font-family:  ${props => props.theme.fontFamily} !important;
