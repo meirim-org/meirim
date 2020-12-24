@@ -26,7 +26,7 @@ const PlanMobile = ({
 	const { comments } = CommentSelectors();
 	const { name, countyName } = planData;
 	const isPlanHaveComments = comments.length > 0;
-	let tabsPanelTop = tabsPanelRef ? tabsPanelRef.current.getBoundingClientRect().top - tabsPanelRef.current.getBoundingClientRect().height : null;
+	let tabsPanelTop = tabsPanelRef ? tabsPanelRef.current.getBoundingClientRect().top : null;
 
 	const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
 	const handleFixedHeader = (newValue) => setFixedHeader(newValue);
@@ -38,7 +38,7 @@ const PlanMobile = ({
 
 	// eslint-disable-next-line no-unused-vars
 	useScrollPosition(({ prevPos, currPos }) => {
-	    if (currPos.y < - tabsPanelTop) return  handleFixedHeader(true);
+	    if (currPos.y < -Math.abs(tabsPanelTop)) return  handleFixedHeader(true);
 		
 		return  handleFixedHeader(false);
 	},[tabsPanelRef]);
