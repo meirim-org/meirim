@@ -4,11 +4,12 @@ import { CommentSelectors } from 'redux/selectors';
 import { Tabs, Title, BackButton } from './components';
 import * as SC from './style';
 import t from 'locale/he_IL';
+import { goBack } from 'pages/Plan/utils';
 
 const Header = ({ countyName, name, tabValue, handleTabChange, isNewCommentOpen }) => {
 	const { comments } = CommentSelectors();
 	const	numberOfComments = comments.length.toString();
-	
+
 	return (
 		<SC.Header className={isNewCommentOpen ? 'low' : ''}>
 			<SC.HeaderContent>
@@ -16,7 +17,7 @@ const Header = ({ countyName, name, tabValue, handleTabChange, isNewCommentOpen 
 					?
 					<>
 						<SC.TitlesButtonWrapper>
-							<BackButton label={t.backToComments} classname="back-button"/>
+							<BackButton onclick={goBack} label={t.backToComments} classname="back-button"/>
 					    	<Title title={countyName} subTitle={name}/>
 						</SC.TitlesButtonWrapper>
 						<SC.AppBar position="static">
