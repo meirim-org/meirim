@@ -14,14 +14,15 @@ export const TitleWrapper = styled.div`
     margin-bottom: 2rem;
 `;
 
-export const Header = styled.header`
-    padding: 1rem 4.425rem 0 2.3rem;    
+export const Header = withTheme(styled.div`
+    background: ${props => props.theme.palette.gray['100']} !important;
+    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+    padding: 1rem 3.425rem 0 2.3rem;    
     margin-bottom: 0.8rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: 0 -1rem;
-    
+
     &.low {
         padding-bottom: 1rem;
         * {
@@ -37,7 +38,16 @@ export const Header = styled.header`
             outline: none;
         }
     }
-`;
+    .fixed {
+        position: fixed;
+        top: 79px;
+        background: ${props => props.theme.palette.gray['100']} !important;
+        left: 0;
+        padding-right: 3.425rem;
+        padding-left: 2.3rem;
+        border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+    }
+`);
 
 export const HeaderContent = styled.div`
     position: relative;

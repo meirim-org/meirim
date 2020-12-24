@@ -19,6 +19,7 @@ const Plan = (props) => {
 	const [newCommentType, setNewCommentType] = React.useState('review');
 	const [refetchComments, setRefetchComments] = React.useState(false);
 
+    
 	const openNewCommentView = () => {
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
 		else {

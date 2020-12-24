@@ -5,6 +5,8 @@ import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, Navigation, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
 import classnames from 'classnames';
+import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+
 
 const PlanMobile = ({
 	tabValue, handleTabChange,
@@ -17,21 +19,37 @@ const PlanMobile = ({
 	commentTypes,    
 	newCommentText, handleNewCommentText,
 	newCommentType, handleNewCommentType }) => {
+	const [tabsPanelRef, setTabsPanelRef] = React.useState(null);
+	const [fixedHeader, setFixedHeader] = React.useState(false);
+
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { comments } = CommentSelectors();
 	const { name, countyName } = planData;
 	const isPlanHaveComments = comments.length > 0;
+	let tabsPanelTop = tabsPanelRef ? tabsPanelRef.current.getBoundingClientRect().top : null;
+
+	const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
+	const handleFixedHeader = (newValue) => setFixedHeader(newValue);
 
 	const mainClasses = classnames({
 		'no-comments': !isPlanHaveComments,
 		'new-comment': isNewCommentOpen
 	});
 
+	// eslint-disable-next-line no-unused-vars
+	useScrollPosition(({ prevPos, currPos }) => {
+	    if (currPos.y < - tabsPanelTop) return  handleFixedHeader(true);
+		
+		return  handleFixedHeader(false);
+	},[tabsPanelRef]);
+
 	return (
 		<Wrapper>
 			<SC.MobileMainWrapper>
 				<SC.Content>
 					<Header
+						handleTabsPanelRef={handleTabsPanelRef}
+						fixedHeader={fixedHeader}
 						tabValue={tabValue}
 						handleTabChange={handleTabChange}
 						openNewCommentView={openNewCommentView}
@@ -39,7 +57,6 @@ const PlanMobile = ({
 						name={name}
 						countyName={countyName}
 					/>
-
 					<SC.Main className={mainClasses}>
 						<SummaryTab
 							handleSubscribePanel={handleSubscribePanel}
@@ -80,7 +97,7 @@ PlanMobile.propTypes = {
 	handleNewCommentText: PropTypes.func.isRequired,
 	newCommentType: PropTypes.string,
 	handleNewCommentType: PropTypes.func.isRequired,
-	setRefetchComments: PropTypes.func.isRequired
+	setRefetchComments: PropTypes.func.isRequired,
 };
 
 export default PlanMobile;
