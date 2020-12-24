@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CommentSelectors } from 'redux/selectors';
 import { Tabs, Title, BackButton } from './components';
@@ -6,9 +6,15 @@ import * as SC from './style';
 import t from 'locale/he_IL';
 import { goBack } from 'pages/Plan/utils';
 
-const Header = ({ countyName, name, tabValue, handleTabChange, isNewCommentOpen }) => {
+
+const Header = ({ handleTabsPanelRef, fixedHeader, countyName, name, tabValue, handleTabChange, isNewCommentOpen }) => {
 	const { comments } = CommentSelectors();
 	const	numberOfComments = comments.length.toString();
+
+	const tabsPanelRef = useRef(null);
+	useEffect(() => {
+		handleTabsPanelRef(tabsPanelRef);
+	});
 
 	return (
 		<SC.Header className={isNewCommentOpen ? 'low' : ''}>
@@ -20,7 +26,7 @@ const Header = ({ countyName, name, tabValue, handleTabChange, isNewCommentOpen 
 							<BackButton onclick={goBack} label={t.backToComments} classname="back-button"/>
 					    	<Title title={countyName} subTitle={name}/>
 						</SC.TitlesButtonWrapper>
-						<SC.AppBar position="static">
+						<SC.AppBar ref={tabsPanelRef} position="static" className={fixedHeader ? 'fixed' : ''}>
 							<Tabs tabValue={tabValue} handleTabChange={handleTabChange} numberOfComments={numberOfComments} />
 						</SC.AppBar>
 					</>
@@ -42,6 +48,8 @@ Header.propTypes = {
 	handleTabChange: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
+	fixedHeader: PropTypes.bool.isRequired,
+	handleTabsPanelRef: PropTypes.func.isRequired
 };
 
 export default Header;
