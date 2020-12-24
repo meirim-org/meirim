@@ -5,8 +5,10 @@ local.json
 .idea
 .DS_Store
 client/build/
+client/config/local.json
 client/public/upload/
 client/cypress/videos/
 client/cypress/screenshots/
 server/config/local.json
 server/api/lib/mavat/tmp/tmpPDF.pdf
+build
