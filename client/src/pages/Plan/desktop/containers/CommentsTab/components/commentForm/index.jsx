@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Typography } from 'shared';
-import * as SC from '../../style';
 import { useParams } from 'react-router-dom';
 import { UserSelectors, CommentSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { Radio } from '@material-ui/core';
-import {  addComment } from 'pages/Plan/controller';
+import { addComment } from 'pages/Plan/controller';
+import { AddComment } from 'pages/Plan/common';
 import { printRadioClass } from 'pages/Plan/utils';
+import * as SC from '../../style';
 
 const CommentForm = ({
 	setRefetchComments,
@@ -26,15 +27,7 @@ const CommentForm = ({
 	return (
 		<SC.NewCommentTabPanel value={tabValue} index={1} className={!comments ? 'no-comments' : ''}>
 			<SC.ButtonWrapper>
-				<Button
-					id="add-opinion"
-					text={t.addNewComment}
-					iconBefore={<SC.CommentIcon/>}
-					small
-					altColor
-					active={isNewCommentOpen}
-					onClick={() => newCommentViewHandler()}
-				/>
+				<AddComment isNewCommentOpen={isNewCommentOpen} newCommentViewHandler={newCommentViewHandler}/>
 			</SC.ButtonWrapper>
 			{isNewCommentOpen
 				?
