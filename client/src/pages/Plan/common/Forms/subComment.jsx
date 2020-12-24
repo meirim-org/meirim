@@ -45,6 +45,7 @@ export const SubCommentForm = ({ setRefetchComments, parentComment, newSubCommen
 							username:user.name, 
 							parentId: parentComment.id 
 						});	
+						setInputValue('');
 						closeNewSubCommentView();
 						setRefetchComments(true);
 					}} 
