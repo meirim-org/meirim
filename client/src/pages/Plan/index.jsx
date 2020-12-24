@@ -4,10 +4,15 @@ import { withGetScreen } from 'react-getscreen';
 import PlanDesktop from './desktop';
 import { useDataHandler, useCommentsDataHandler } from './hooks';
 import t from 'locale/he_IL';
+import { openModal } from 'redux/modal/slice';
 import PlanMobile from './mobile';
+import { useDispatch } from 'react-redux';
+import { UserSelectors } from 'redux/selectors';
 
 const Plan = (props) => {
 	const [tabValue, setValue] = React.useState(0);
+	const { isAuthenticated } = UserSelectors();
+	const dispatch = useDispatch();
 	const [subscribePanel, setSubscribePanel] = React.useState(true);
 	const [isNewCommentOpen, setIsNewCommentOpen] = React.useState(false);
 	const [newCommentText, setNewCommentText] = React.useState('');
@@ -15,10 +20,18 @@ const Plan = (props) => {
 	const [refetchComments, setRefetchComments] = React.useState(false);
 
 	const openNewCommentView = () => {
-	    setIsNewCommentOpen(true);
-		window.scrollTo(0, 0);
+		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
+		else {
+	  	setIsNewCommentOpen(true);
+			window.scrollTo(0, 0);
+		}
 	};
+
 	const closeNewCommentView = () => setIsNewCommentOpen(false);
+	const newCommentViewHandler = () => {  
+		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
+		setIsNewCommentOpen(!isNewCommentOpen);
+	};
 
 	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleSubscribePanel = (newValue) => setSubscribePanel(newValue);
@@ -50,7 +63,7 @@ const Plan = (props) => {
 		subscribePanel={subscribePanel}
 		handleSubscribePanel={handleSubscribePanel}
 		isNewCommentOpen={isNewCommentOpen}
-		newCommentViewHandler={() => setIsNewCommentOpen(!isNewCommentOpen)}
+		newCommentViewHandler={newCommentViewHandler}
 		openNewCommentView={openNewCommentView}
 		closeNewCommentView={closeNewCommentView}
 		newCommentText={newCommentText}
@@ -65,7 +78,7 @@ const Plan = (props) => {
 		subscribePanel={subscribePanel}
 		handleSubscribePanel={handleSubscribePanel}
 		isNewCommentOpen={isNewCommentOpen}
-		newCommentViewHandler={() => setIsNewCommentOpen(!isNewCommentOpen)}
+		newCommentViewHandler={newCommentViewHandler}
 		openNewCommentView={openNewCommentView}
 		closeNewCommentView={closeNewCommentView}
 		newCommentText={newCommentText}
