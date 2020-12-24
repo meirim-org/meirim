@@ -68,6 +68,11 @@ class Controller {
 		if (options.order) {
 			bsQuery = bsQuery.orderBy(options.order);
 		}
+		if (options.orderByRaw) {
+			bsQuery = bsQuery.query((qb) =>
+				options.orderByRaw.map((w) => qb.orderBy(w))
+			);
+		}
 		return bsQuery
 			.fetchPage({
 				columns,
