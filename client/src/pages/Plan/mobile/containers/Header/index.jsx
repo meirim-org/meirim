@@ -12,9 +12,7 @@ const Header = ({ handleTabsPanelRef, fixedHeader, countyName, name, tabValue, h
 	const	numberOfComments = comments.length.toString();
 
 	const tabsPanelRef = useRef(null);
-	useEffect(() => {
-		handleTabsPanelRef(tabsPanelRef);
-	});
+	useEffect(() => handleTabsPanelRef(tabsPanelRef));
 
 	return (
 		<SC.Header className={isNewCommentOpen ? 'low' : ''}>
