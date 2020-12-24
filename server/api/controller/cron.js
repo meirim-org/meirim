@@ -7,6 +7,7 @@ const Email = require('../service/email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
+const { regionalTreePermit } = require('../lib/trees/regional_tree_permit');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -155,18 +156,18 @@ const fetchIplan = iPlan =>
 
 			if (
 				oldPlan &&
-                oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE
+				oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE
 			) {
 				return Bluebird.resolve(oldPlan);
 			}
 
 			return buildPlan(iPlan, oldPlan)
-			// check if there is an update in the status of the plan and mark it for email update
+				// check if there is an update in the status of the plan and mark it for email update
 				.then(plan => {
 					if (
 						!oldPlan ||
-                        oldPlan.get('data').STATION !==
-                        iPlan.properties.STATION
+						oldPlan.get('data').STATION !==
+						iPlan.properties.STATION
 					) {
 						// TODO: check why plan is undefined here
 						if (plan !== undefined) {
@@ -198,11 +199,16 @@ const buildPlan = (iPlan, oldPlan) => {
 	);
 };
 
+const fetchTreePermit = () =>{
+	return regionalTreePermit();
+};
+
 module.exports = {
 	iplan,
 	complete_mavat_data,
 	sendPlanningAlerts,
 	complete_jurisdiction_from_mavat,
 	fix_geodata,
-	fetchIplan
+	fetchIplan,
+	fetchTreePermit
 };

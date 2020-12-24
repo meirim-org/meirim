@@ -7,7 +7,7 @@ import './Mapa.css';
 
 class Mapa extends Component {
 	render() {
-		const { geom, hideZoom, disableInteractions, title } = this.props;
+		const { geom, hideZoom, disableInteractions, title, title2 } = this.props;
 		const bounds = leaflet.geoJSON(geom).getBounds();
 
 		return (
@@ -35,6 +35,7 @@ class Mapa extends Component {
 				<GeoJSON data={geom} />
 				<div className="map-title">
 					{title && <button className="btn btn-light disabled">{title}</button>}
+					{title2 && <button variant="info" className="btn btn-light map-title-left">{title2}</button>}
 				</div>
 			</Map>
 		);

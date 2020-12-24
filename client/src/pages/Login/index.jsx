@@ -107,8 +107,6 @@ const Login = () => {
 						name="password"
 						onFocus={onInputFocus}
 						onBlur={onInputBlur}
-						helperText={!formErrors.passwordError.isValid && formErrors.passwordError.message ? formErrors.passwordError.message : ''}
-						error={!formErrors.passwordError.isValid}
 						label="סיסמא"
 						type="password"
 						forgetPassword = {true}
