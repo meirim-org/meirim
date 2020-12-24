@@ -80,6 +80,7 @@ const CommentForm = ({
 							width="100%"
 							onClick={async () => {
 								await addComment({ content: newCommentText, planId, userId: user.id,userName: user.name });
+								handleNewCommentText('');
 								closeNewCommentView();
 								setRefetchComments(true);
 							}}
