@@ -5,6 +5,7 @@ import * as SC from '../../style';
 import { useParams } from 'react-router-dom';
 import { UserSelectors, CommentSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
+import { AddComment } from 'pages/Plan/common';
 import { useTheme } from '@material-ui/styles';
 import { Radio } from '@material-ui/core';
 import {  addComment } from 'pages/Plan/controller';
@@ -28,15 +29,7 @@ const CommentForm = ({
 			{!isNewCommentOpen
 				?
 				<SC.ButtonWrapper>
-					<Button
-						id="add-opinion"
-						text={t.addNewComment}
-						iconBefore={<SC.CommentIcon/>}
-						small
-						altColor
-						active={isNewCommentOpen}
-						onClick={() => newCommentViewHandler()}
-					/>
+					<AddComment isNewCommentOpen={isNewCommentOpen} newCommentViewHandler={newCommentViewHandler}/>
 				</SC.ButtonWrapper>
 				:
 				<>
