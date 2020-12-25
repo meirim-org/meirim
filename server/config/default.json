@@ -10,7 +10,8 @@
 	},
 	"general": {
 		"userAgent": "Meirim.org (info@meirim.org)",
-		"domain": "https://meirim.org/"
+		"domain": "https://meirim.org/",
+		"trustProxy": null
 	},
 	"services": {
 		"schedule": {
@@ -19,7 +20,11 @@
 		}
 	},
 	"session": {
-		"secret": "secret"
+		"secret": "secret",
+		"cookie": {
+			"secure": false,
+			"maxAge": 86400000
+		}
 	},
 	"cypher": {
 		"secret": "hvw3fKxl94GLbR7k74zz3B"
