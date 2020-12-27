@@ -6,14 +6,14 @@ import { useTheme } from '@material-ui/styles';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import * as SC from './style';
 
-export const SubscribePanel = ({ tabValue, subscribePanel, handleSubscribePanel }) => {
+export const SubscribePanel = ({ subscribePanel, handleSubscribePanel }) => {
 	const theme = useTheme();
 
 	//add user connection condition 
 	if ( !subscribePanel ) return null;
 
 	return (
-        <TabPanel value={tabValue} index={0}>
+		<TabPanel>
 			<TabBox position="relative" bgColor={theme.palette.primary['100']} borderColor={theme.palette.primary['200']}>
 				<SC.SubscribeIconWrapper>
 					<NotificationsNoneIcon />
@@ -45,7 +45,6 @@ export const SubscribePanel = ({ tabValue, subscribePanel, handleSubscribePanel 
 };
 
 SubscribePanel.propTypes = {
-	tabValue: PropTypes.any.isRequired,
 	subscribePanel: PropTypes.bool.isRequired,
 	handleSubscribePanel: PropTypes.func.isRequired,
 };

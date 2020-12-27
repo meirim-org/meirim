@@ -7,75 +7,74 @@ import { Header, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
 
 const PlanDesktop = ({ 
-	setRefetchComments,
-	tabValue, handleTabChange, 
-	isNewCommentOpen,
-	newCommentViewHandler,
-	openNewCommentView,
-	closeNewCommentView, 
-	subscribePanel, handleSubscribePanel,
-	commentTypes,
-	newCommentText, handleNewCommentText,
-	newCommentType, handleNewCommentType }) => {
-	const { planData, dataArea, textArea } = PlanSelectors();
+	addNewComment,
+	commentState,
+	subCommentState,
+	setSubCommentState,
+	setCommentState,
+	addSubComment,
+	addLikeToComment,
+	tabValue, 
+	handleTabChange, 
+	subscribePanel, 
+	handleSubscribePanel,
+}) => {
 	const { comments } = CommentSelectors();
-	const { name, countyName, geom } = planData;
+	const { planData: { geom, countyName } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
-
+	
 	return (
 	    <Wrapper>
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
-						tabValue={tabValue}
 						handleTabChange={handleTabChange} 
-						openNewCommentView={openNewCommentView} 
-						name={name}
-						countyName={countyName}
+						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
 					/>
 					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
-						<SummaryTab 
-							handleSubscribePanel={handleSubscribePanel}
-							dataArea={dataArea} textArea={textArea}
-						 	tabValue={tabValue} subscribePanel={subscribePanel} 
-						 	planData={planData} />
-						<CommentsTab
-							setRefetchComments={setRefetchComments}
-							tabValue={tabValue}
-							isNewCommentOpen={isNewCommentOpen}
-							newCommentViewHandler={newCommentViewHandler}
-							closeNewCommentView={closeNewCommentView}
-							commentTypes={commentTypes}
-							newCommentText={newCommentText} handleNewCommentText={handleNewCommentText}
-							newCommentType={newCommentType} handleNewCommentType={handleNewCommentType} />
+						{ 
+							tabValue === 0 && 
+							<SummaryTab 
+								handleSubscribePanel={handleSubscribePanel}
+						 		subscribePanel={subscribePanel} 
+						 	/>
+						}
+						{ 
+							tabValue === 1 && <CommentsTab
+								commentState={commentState}
+								subCommentState={subCommentState}
+								setCommentState={setCommentState}
+								setSubCommentState={setSubCommentState}
+								addSubComment={addSubComment}
+								addNewComment={addNewComment}
+								addLikeToComment={addLikeToComment}
+							/>
+						}
 					</SC.Main>
 				</SC.Content>
-				  {geom && <Mapa
+				  <Mapa
 					geom={geom}
+					countyName={countyName}
 					hideZoom={true}
 					disableInteractions={true}
-					title={countyName}
-				/>}
+				/>
 			</SC.MainWrapper>
 		</Wrapper>
 	);
 };
 
 PlanDesktop.propTypes = {
-	tabValue: PropTypes.any.isRequired,
-	newCommentViewHandler: PropTypes.func.isRequired,
-	openNewCommentView: PropTypes.func.isRequired,
-	closeNewCommentView: PropTypes.func.isRequired, 
-	commentTypes: PropTypes.array.isRequired,
+	setCommentState: PropTypes.func.isRequired,
+	setSubCommentState: PropTypes.func.isRequired,
+	commentState: PropTypes.object.isRequired,
+	subCommentState: PropTypes.number.isRequired,
+	tabValue: PropTypes.number.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	subscribePanel: PropTypes.bool.isRequired,
 	handleSubscribePanel: PropTypes.func.isRequired,
-	isNewCommentOpen: PropTypes.bool.isRequired,
-	newCommentText: PropTypes.string,
-	handleNewCommentText: PropTypes.func.isRequired,
-	newCommentType: PropTypes.string,
-	handleNewCommentType: PropTypes.func.isRequired,
-	setRefetchComments: PropTypes.func.isRequired,
+	addNewComment: PropTypes.func.isRequired,
+	addLikeToComment: PropTypes.func.isRequired,
+	addSubComment: PropTypes.func.isRequired,
 };
 
 export default PlanDesktop;

@@ -7,8 +7,7 @@ import { daysPassed } from 'pages/Plan/utils';
 
 export const SubCommentView = ({ subCommentData }) => {
 	const theme = useTheme();
-	const { content, created_at } = subCommentData;
-	const { name } = subCommentData.person;
+	const { content, created_at, person: { name } } = subCommentData;
 	
 	return (
 		<>

@@ -1,35 +1,30 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'shared';
 import * as SC from './style';
-import { useParams } from 'react-router-dom';
-import { UserSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { TextareaAutosize } from '@material-ui/core';
-import { addComment } from 'pages/Plan/controller';
 
-export const SubCommentForm = ({ setRefetchComments, parentComment, newSubComment, closeNewSubCommentView }) => {
+export const SubCommentForm = ({ addSubComment, parentComment, subCommentState, setSubCommentState }) => {
+	const { inputValue, isOpen } = subCommentState;
 	const theme = useTheme();
-	const { id: planId } = useParams();
-	const { user } = UserSelectors();
-	const [inputValue, setInputValue] = useState('');
 
 	return (
 		<SC.addSubCommentWrapper>
 			<SC.FormControl fullWidth={true}>
 				<TextareaAutosize  
-					onChange={e=> setInputValue(e.target.value)}
+					onChange={(e) => setSubCommentState(pv => ({ ...pv, inputValue: e.target.value }))}
 					value={inputValue} aria-label={t.emptyTextarea} rowsMin={5}/>
 			</SC.FormControl>
-			<SC.addCommentButtonWrapper className={newSubComment ? 'active' : ''} >
+			<SC.addCommentButtonWrapper className={isOpen ? 'active' : ''} >
 				<Button
 					id="close-new-opinion"
 					text={t.close}
 					simple
 					small
 					textcolor={theme.palette.black}
-					onClick={closeNewSubCommentView}
+					onClick={() => setSubCommentState(pv => ({ ...pv, isOpen: false }))}
 				/>
 				<Button
 					id="send-new-sub-opinion"
@@ -37,21 +32,9 @@ export const SubCommentForm = ({ setRefetchComments, parentComment, newSubCommen
 					fontWeight={'600'}
 					small
 					simple
-					onClick={async () => {
-						await addComment({ 
-							content: inputValue, 
-							planId, 
-							userId: user.id, 
-							username:user.name, 
-							parentId: parentComment.id 
-						});	
-						setInputValue('');
-						closeNewSubCommentView();
-						setRefetchComments(true);
-					}} 
+					onClick={ () => addSubComment({ parentId: parentComment.id })}
 				/>
 			</SC.addCommentButtonWrapper>
-
 		</SC.addSubCommentWrapper>
 	);
 };
@@ -59,8 +42,9 @@ export const SubCommentForm = ({ setRefetchComments, parentComment, newSubCommen
 SubCommentForm.propTypes = {
 	newSubComment: PropTypes.bool.isRequired,
 	parentComment: PropTypes.object.isRequired,
-	closeNewSubCommentView: PropTypes.func.isRequired,
-	setRefetchComments: PropTypes.func.isRequired,
+	setSubCommentState: PropTypes.func.isRequired,
+	addSubComment: PropTypes.func.isRequired,
+	subCommentState: PropTypes.object.isRequired,
 };
 
 export default SubCommentForm;

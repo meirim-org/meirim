@@ -1,92 +1,106 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
-import PlanDesktop from './desktop';
 import { useDataHandler, useCommentsDataHandler } from './hooks';
-import t from 'locale/he_IL';
 import { openModal } from 'redux/modal/slice';
-import PlanMobile from './mobile';
 import { useDispatch } from 'react-redux';
-import { UserSelectors } from 'redux/selectors';
+import { UserSelectors, CommentSelectors } from 'redux/selectors';
+import PlanMobile from './mobile';
+import PlanDesktop from './desktop';
+import { addComment, addLike } from './controller';
 
-const Plan = (props) => {
-	const [tabValue, setValue] = React.useState(0);
-	const { isAuthenticated } = UserSelectors();
+const Plan = ({ isMobile, isTablet }) => {
+	const { id: planId } = useParams();
+	const [refetchComments, setRefetchComments] = useState(false);
+	useDataHandler(planId);
+	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
 	const dispatch = useDispatch();
-	const [subscribePanel, setSubscribePanel] = React.useState(true);
-	const [isNewCommentOpen, setIsNewCommentOpen] = React.useState(false);
-	const [newCommentText, setNewCommentText] = React.useState('');
-	const [newCommentType, setNewCommentType] = React.useState('review');
-	const [refetchComments, setRefetchComments] = React.useState(false);
-
+	const [tabValue, setValue] =useState(0);
+	const { isAuthenticated, user } = UserSelectors();
+	const { comments } = CommentSelectors();
+	const [ subCommentState, setSubCommentState ] = useState({
+		isOpen:false,
+		inputValue: ''
+	});
+	const [ commentState, setCommentState ] = useState({
+		isOpen: false,
+		inputValue: '',
+		type: 'review'
+	});
+	const [ subscribePanel, setSubscribePanel ] = useState(true);
     
+	const showComments = comments.length > 0; 
+	const showStartDiscussionPanel = comments.length === 0 &&  !commentState.isOpen;
+
 	const openNewCommentView = () => {
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
 		else {
-	  	setIsNewCommentOpen(true);
+	  	setCommentState(pv => ({ ...pv, isOpen: true }));
 			window.scrollTo(0, 0);
 		}
 	};
 
-	const closeNewCommentView = () => setIsNewCommentOpen(false);
+	const addLikeToComment = async ({ commentId }) => {
+		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
+		await addLike({ commentId });
+		setRefetchComments();
+	};
+
+	const addNewComment = async () => {
+		await addComment({ 
+			content: commentState.inputValue, 
+			planId, 
+			userId: user.id, 
+			username: user.name, 
+			type: commentState.type
+		});	
+		setCommentState(pv => ({ ...pv, isOpen: false, inputValue: '' }));
+		setRefetchComments(true);
+	};
+
+	const addSubComment = async ({ parentId }) => {
+		await addComment({ 
+			content: subCommentState.inputValue, 
+			planId, 
+			userId: user.id, 
+			username: user.name, 
+			parentId 
+		});	
+		setSubCommentState(pv => ({ ...pv, inputValue: '', isOpen: false }));
+		setRefetchComments(true);
+	};
+	const closeNewCommentView = () => setCommentState(pv => ({ ...pv, isOpen: false }));
 	const newCommentViewHandler = () => {  
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
-		setIsNewCommentOpen(!isNewCommentOpen);
+		setCommentState(pv => ({ ...pv, isOpen: !commentState.isOpen }));
 	};
 
 	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleSubscribePanel = (newValue) => setSubscribePanel(newValue);
-	const handleNewCommentText = (newValue) => setNewCommentText(newValue);
-	const handleNewCommentType = (newValue) => setNewCommentType(newValue);
-	const { id: planId } = useParams();
-	useDataHandler(planId);
-	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
-	const commentTypes = [
-		{
-			value: 'review',
-			text: t.review
-		},
-		{
-			value: 'improvement-proposal',
-			text: t.improvementProposal
-		},
-		{
-			value: 'general-opinion',
-			text: t.generalOpinion
-		},
 
-	];
+	
+	const planProps = {
+		commentState,
+		setCommentState,
+		subCommentState,
+		setSubCommentState,
+		addSubComment,
+		addLikeToComment,
+		tabValue,
+		addNewComment,
+		setRefetchComments,
+		handleTabChange,
+		subscribePanel,
+		handleSubscribePanel,
+		showComments,
+		showStartDiscussionPanel,
+		newCommentViewHandler,
+		openNewCommentView,
+		closeNewCommentView,
+	};
 
-	if (props.isMobile() || props.isTablet()) return <PlanMobile
-		tabValue={tabValue}
-		setRefetchComments={setRefetchComments}
-		handleTabChange={handleTabChange}
-		subscribePanel={subscribePanel}
-		handleSubscribePanel={handleSubscribePanel}
-		isNewCommentOpen={isNewCommentOpen}
-		newCommentViewHandler={newCommentViewHandler}
-		openNewCommentView={openNewCommentView}
-		closeNewCommentView={closeNewCommentView}
-		newCommentText={newCommentText}
-		handleNewCommentText={handleNewCommentText}
-		newCommentType={newCommentType}
-		handleNewCommentType={handleNewCommentType}
-		commentTypes={commentTypes}/>;
-	else return <PlanDesktop
-		tabValue={tabValue}
-		setRefetchComments={setRefetchComments}
-		handleTabChange={handleTabChange}
-		subscribePanel={subscribePanel}
-		handleSubscribePanel={handleSubscribePanel}
-		isNewCommentOpen={isNewCommentOpen}
-		newCommentViewHandler={newCommentViewHandler}
-		openNewCommentView={openNewCommentView}
-		closeNewCommentView={closeNewCommentView}
-		newCommentText={newCommentText}
-		handleNewCommentText={handleNewCommentText}
-		newCommentType={newCommentType}
-		handleNewCommentType={handleNewCommentType}
-		commentTypes={commentTypes}/>;
+	if (isMobile() || isTablet()) return <PlanMobile {...planProps}/>;
+	else return <PlanDesktop {...planProps}/>;
 };
 
 export default withGetScreen(Plan, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });

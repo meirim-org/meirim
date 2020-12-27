@@ -9,13 +9,12 @@ import { AddComment } from 'pages/Plan/common';
 import { useTheme } from '@material-ui/styles';
 import { Radio } from '@material-ui/core';
 import {  addComment } from 'pages/Plan/controller';
-import { printRadioClass } from 'pages/Plan/utils';
+import { printRadioClass, commentTypes } from 'pages/Plan/utils';
 
 const CommentForm = ({
 	setRefetchComments,
 	isNewCommentOpen, newCommentViewHandler,closeNewCommentView,
 	tabValue,
-	commentTypes,
 	newCommentText,	handleNewCommentText,
 	newCommentType, handleNewCommentType }) => {
 	const theme = useTheme();
@@ -97,7 +96,6 @@ CommentForm.propTypes = {
 	comments: PropTypes.number.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	newCommentViewHandler: PropTypes.func.isRequired,
-	commentTypes: PropTypes.array.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
 	newCommentType: PropTypes.string,

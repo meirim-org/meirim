@@ -6,12 +6,12 @@ import { useTheme } from '@material-ui/styles';
 import parse from 'html-react-parser';
 import * as SC from './style';
 
-export const GoalsPanel = ({ goalsFromMavat, tabValue }) => {
+export const GoalsPanel = ({ goalsFromMavat }) => {
 	const theme = useTheme();
 	if (!goalsFromMavat) return null;
 	
 	return (
-		<TabPanel value={tabValue} index={0}>
+		<TabPanel>
 			<TabBox>
 				<SC.PlanSummaryTitleWrapper>
 					<Typography
@@ -33,7 +33,6 @@ export const GoalsPanel = ({ goalsFromMavat, tabValue }) => {
 
 GoalsPanel.propTypes = {
 	goalsFromMavat: PropTypes.string,
-	tabValue: PropTypes.any.isRequired,
 };
 
 export default GoalsPanel;

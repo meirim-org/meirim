@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography, Link } from 'shared';
+import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import {  Chip } from '@material-ui/core';
+import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
 
-/*mynameisuh*/
-const PlanDetailsPanel = ({ status, terms, tabValue, type, url }) => {
+const PlanDetailsPanel = ({ status, type, url }) => {
 	const theme = useTheme();
 	
 	return (
-		<TabPanel value={tabValue} index={0}>
+		<TabPanel>
 			<TabBox>
 				<SC.PlanSummaryTitleWrapper>
 					<Typography
@@ -24,9 +24,9 @@ const PlanDetailsPanel = ({ status, terms, tabValue, type, url }) => {
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 				
-				{terms.length > 0 &&
+				{planTerms.length > 0 &&
 					<SC.PlanTermsWrapper>
-						{terms.map((term, index) => (
+						{planTerms.map((term, index) => (
 							<SC.PlanTermWrapper key={index}>
 								<Chip label={term} />
 							</SC.PlanTermWrapper>
@@ -69,9 +69,8 @@ const PlanDetailsPanel = ({ status, terms, tabValue, type, url }) => {
 					</SC.TypeWrapper>
 				
 				</SC.StatusAndTypeWrapper>
-
 				<SC.UrlWrapper>
-					<Link textDecoration="none" url={url} text={t.planDeatailOnGovSite}/>
+					<a target="_blank" rel="noreferrer" href={url}>{t.planDeatailOnGovSite}</a>
 					<SC.CustomLinkIcon></SC.CustomLinkIcon>
 				</SC.UrlWrapper>
 			</TabBox>
@@ -83,9 +82,7 @@ const PlanDetailsPanel = ({ status, terms, tabValue, type, url }) => {
 PlanDetailsPanel.propTypes = {
 	type: PropTypes.string,
 	status: PropTypes.string,
-	terms: PropTypes.array,
 	url: PropTypes.string,
-	tabValue: PropTypes.any.isRequired,
 };
 
 export default PlanDetailsPanel;
