@@ -5,12 +5,14 @@ export default {
 	signin: 'התחברות',
 	signout: 'התנתקות',
 	name: 'מעירים',
-	plans: 'תוכניות',
 	myPlans: 'התוכניות שלי',
+	plans: 'תכניות',
+	treePermits: 'עצים',
 	vocabulary: 'מילון',
 	whoWeAre: 'מי אנחנו',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
-	newAlert: 'התראה חדשה',
+	newAlert: 'תכניות בניה',
+	newAlertTree: 'רשיונות כריתה של עצים', 
 	emailAddress: 'כתובת דוא"ל',
 	fullName: 'שם מלא',
 	password: 'סיסמה',
@@ -103,6 +105,13 @@ export default {
 	fundingSuccessPlans: 'לעמוד התוכניות',
 	fundingSuccessHome: 'לדף הבית',
 	fundingSuccessClose: 'סגירה'
+	lastDateToObjectTrees: 'תאריך אחרון להגשת ערר',
+	permitNumber: 'מספר רשיון:',
+	treePermitOnGovSite: 'קישור לרשיון באתר הציבורי:',
+	treeAppealTitle: 'כריתת עצים - הנוהל',
+	treeAppealExplained: 
+`לפי החוק כריתה או העתקה של עץ בוגר בישראל נדרשת לאישור מפקיד היערות.	נוהל של משרד החקלאות מאפשר לציבור להגיש ערר על ההחלטה לכרות או להעתיק עץ בוגר, תוך 14 ימים מפרסום ההחלטה.
+ערר ניתן להגיש מטעמים שונים, בין היתר, בשל פגיעה אקולוגית, ערך היסטורי, חברתי או עירוני הקשור בעץ.`
 };
 
 

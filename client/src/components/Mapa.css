@@ -5,6 +5,19 @@
   padding: 5px;
 }
 
+.map-title-placeholder {
+	position: relative;
+	z-index: 9999;
+	font-size: large;
+	padding: 5px;
+	background-image: url("/images/treeCuttingBackground.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: white;
+  }
+  
+
+
 .map-title-left {
   position: absolute;
   left: 10px;
