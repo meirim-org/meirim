@@ -129,9 +129,18 @@ class Email {
 		return this.sendWithTemplate(this.templates.alert, data);
 	}
 
+	newAlertTemplateByType(type){
+		let alertTemplate = this.templates.newAlert;
+		if (type === 'tree'){
+			alertTemplate = this.templates.newTreeAlert;
+		}
+		return alertTemplate;
+	}
+
 	newAlert (person, alert) {
 		const templateProperties = Object.assign({}, person, alert.toJSON());
-		return this.sendWithTemplate(this.templates.newAlert, templateProperties);
+		const alertTemplate = this.newAlertTemplateByType(alert.attributes.type);
+		return this.sendWithTemplate(alertTemplate, templateProperties);
 	}
 
 	resetPasswordToken (person) {
