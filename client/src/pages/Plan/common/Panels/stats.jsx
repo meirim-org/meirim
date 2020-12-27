@@ -8,14 +8,12 @@ import { useTheme } from '@material-ui/styles';
 import { series, axes } from '../../utils';
 import * as SC from './style';
 
-export const StatsPanel = ({ tabValue, dataArea, textArea, }) => {
+export const StatsPanel = ({ dataArea, textArea, }) => {
 	const theme = useTheme();
-
-	if ( !dataArea[0] || !dataArea[0].data.length) return null;
-	
+	if ( !dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
 
 	return (
-		<TabPanel value={tabValue} index={0}>
+		<TabPanel>
 			<TabBox>
 				<SC.PlanSummaryTitleWrapper>
 					<Typography
@@ -69,7 +67,6 @@ StatsPanel.propTypes = {
 	dataArea: PropTypes.array.isRequired,
 	textArea: PropTypes.object.isRequired,
 	url: PropTypes.string,
-	tabValue: PropTypes.any.isRequired,
 };
 
 export default StatsPanel;

@@ -16,7 +16,6 @@ const PlanMobile = ({
 	openNewCommentView,
 	closeNewCommentView,
 	subscribePanel, handleSubscribePanel,
-	commentTypes,    
 	newCommentText, handleNewCommentText,
 	newCommentType, handleNewCommentType }) => {
 	const [tabsPanelRef, setTabsPanelRef] = React.useState(null);
@@ -69,7 +68,6 @@ const PlanMobile = ({
 							isNewCommentOpen={isNewCommentOpen}
 							newCommentViewHandler={newCommentViewHandler}
 							closeNewCommentView={closeNewCommentView}
-							commentTypes={commentTypes}
 							newCommentText={newCommentText} handleNewCommentText={handleNewCommentText}
 							newCommentType={newCommentType} handleNewCommentType={handleNewCommentType}/>
 					</SC.Main>
@@ -92,7 +90,6 @@ PlanMobile.propTypes = {
 	subscribePanel: PropTypes.bool.isRequired,
 	handleSubscribePanel: PropTypes.func.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
-	commentTypes: PropTypes.array.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
 	newCommentType: PropTypes.string,

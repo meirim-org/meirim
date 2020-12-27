@@ -4,25 +4,15 @@ import { TabPanel, TabBox, Typography,  Button } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { Badge } from '@material-ui/core';
-import { openModal } from 'redux/modal/slice';
-import { addLike } from 'pages/Plan/controller';
-import { SubCommentForm, SubCommentView } from 'pages/Plan/common';
-import { daysPassed } from '../../utils';
+import { daysPassed } from 'pages/Plan/utils';
 import * as SC from './style';
-import { UserSelectors } from 'redux/selectors';
-import { useDispatch } from 'react-redux';
 
-export const CommentView = ({ setRefetchComments, tabValue, commentData, isNewCommentOpen }) => {
+export const CommentView = ({ addLikeToComment, commentData, isNewCommentOpen }) => {
 	const theme = useTheme();
-	const { isAuthenticated } = UserSelectors();
-	const dispatch = useDispatch();
-	const [newSubComment, setNewSubComment] = React.useState(false);
 	const { content, created_at, person: { name }, id: commentId, likes } = commentData;
-	
-	const closeNewSubCommentView = () => setNewSubComment(false);
 
 	return (
-		<TabPanel value={tabValue} index={1} >
+		<TabPanel>
 			<TabBox isComment={true} disabled={isNewCommentOpen}>
 				<SC.Header>
 					<SC.FirstSide>
@@ -71,11 +61,7 @@ export const CommentView = ({ setRefetchComments, tabValue, commentData, isNewCo
 						id={'like-' + commentId}
 						textcolor={theme.palette.black}
 						text={t.iLike}
-						onClick={async () => {
-							if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
-							await addLike({ commentId });
-							setRefetchComments();
-						}}
+						onClick={() => addLikeToComment({ commentId })}
 						simple
 						iconBefore={<SC.LikeIcon/>}
 					/>
@@ -83,35 +69,6 @@ export const CommentView = ({ setRefetchComments, tabValue, commentData, isNewCo
 						badgeContent={!likes ? 0 : likes}
 					/>
 				</SC.Like>
-				<SC.AddSubComment className={newSubComment ? 'active' : ''}>
-					<Button
-						id={'add-response-' + commentId}
-						textcolor={theme.palette.black}
-						text={t.addAResponse}
-						onClick={() =>{  
-							if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
-							setNewSubComment(!newSubComment); }}
-						simple
-						iconBefore={<SC.CommentIcon/>}
-					/>
-				</SC.AddSubComment>
-				<SC.CommentsWrapper>
-					{newSubComment &&
-						<SubCommentForm 
-							setRefetchComments={setRefetchComments}
-							parentComment={commentData}
-							newSubComment={newSubComment} 
-							closeNewSubCommentView={closeNewSubCommentView}  />
-					}
-					{commentData.subComments &&
-					<>
-						{commentData.subComments.map((subComment, index) => (
-							<SubCommentView key={index} id={index} subCommentData={subComment} />
-						))}
-					</>
-					}
-				</SC.CommentsWrapper>
-
 			</TabBox>
 		</TabPanel>
 	);
@@ -125,8 +82,7 @@ CommentView.propTypes = {
 	id: PropTypes.number.isRequired,
 	commentData: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
-	setRefetchComments: PropTypes.func.isRequired,
-	tabValue: PropTypes.any.isRequired,
+	addLikeToComment: PropTypes.func.isRequired,
 };
 
 export default CommentView;

@@ -1,19 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CommentSelectors } from 'redux/selectors';
+import { PlanSelectors, CommentSelectors } from 'redux/selectors';
 import { SavePlan, SharePlan, Tabs, Title, AddNewComment } from './components';
 import * as SC from './style';
 
-const Header = ({ countyName, name, tabValue, handleTabChange, openNewCommentView }) => {
+const Header = ({ handleTabChange, openNewCommentView }) => {
+	const { planData } = PlanSelectors();
 	const { comments } = CommentSelectors();
 	const	numberOfComments = comments.length.toString();
+	const { name, countyName } = planData;
 	
 	return (
 		<SC.Header>
 			<SC.TitlesAndTabs>
 				<Title countyName={countyName} planName={name}/>
 				<SC.AppBar position="static">
-					<Tabs tabValue={tabValue} handleTabChange={handleTabChange} numberOfComments={numberOfComments} />
+					<Tabs handleTabChange={handleTabChange} numberOfComments={numberOfComments} />
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
 			<SC.Buttons>
@@ -26,9 +28,6 @@ const Header = ({ countyName, name, tabValue, handleTabChange, openNewCommentVie
 };
 
 Header.propTypes = {
-	name: PropTypes.string,
-	countyName: PropTypes.string,
-	tabValue: PropTypes.any.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
 };

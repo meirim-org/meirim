@@ -13,7 +13,6 @@ const CommentsTab = ({
 	isNewCommentOpen,
 	newCommentViewHandler,
 	closeNewCommentView,
-	commentTypes,
 	newCommentText, handleNewCommentText,
 	newCommentType,handleNewCommentType }) => {
 	const { comments } = CommentSelectors();
@@ -27,7 +26,6 @@ const CommentsTab = ({
 				isNewCommentOpen={isNewCommentOpen}
 				closeNewCommentView={closeNewCommentView}
 				newCommentViewHandler={newCommentViewHandler}
-				commentTypes={commentTypes}
 				newCommentText={newCommentText}
 				handleNewCommentText={handleNewCommentText}
 				newCommentType={newCommentType}
@@ -65,7 +63,6 @@ CommentsTab.propTypes = {
 	newCommentViewHandler: PropTypes.func.isRequired,
 	closeNewCommentView: PropTypes.func.isRequired, 
 	isNewCommentOpen: PropTypes.bool.isRequired,
-	commentTypes: PropTypes.array.isRequired,
 	newCommentText: PropTypes.string,
 	handleNewCommentText: PropTypes.func.isRequired,
 	newCommentType: PropTypes.string,

@@ -1,4 +1,5 @@
 import { parseNumber } from 'utils';
+import t from 'locale/he_IL';
 
 export const axes = [
 	{ primary: true, type: 'ordinal', position: 'bottom' },
@@ -91,7 +92,8 @@ export const handleNewCommentSubmit = (type, setTypeError) => {
 
 
 export const extractComments = (comments) => {
-	let forDeletion = [];
+	const forDeletion = [];
+	console.log("🚀 ~ file: utils.js ~ line 112 ~ extractComments ~ comments", comments)
 	comments.map((comment) => {
 		let parentId = comment.parent_id;
 
@@ -110,3 +112,21 @@ export const extractComments = (comments) => {
 };
 
 export const goBack = () => window.history.go(-1);
+
+export const commentTypes = [
+	{
+		value: 'review',
+		text: t.review
+	},
+	{
+		value: 'improvement',
+		text: t.improvementProposal
+	},
+	{
+		value: 'general',
+		text: t.generalOpinion
+	},
+
+];
+
+export const planTerms = ['פינוי בינוי', 'חלוקת מגרשים', 'שיקום עירוני'];
