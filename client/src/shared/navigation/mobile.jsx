@@ -95,6 +95,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											<SC.StyledListItem component={RouterLink} to={PLANS} button key={t.plans}>
 												<ListItemText primary={t.plans}/>
 											</SC.StyledListItem>
+											<SC.StyledListItem component={RouterLink} to={TREE_PERMITS} button key={t.treePermits}>
+												<ListItemText primary={t.treePermits}/>
+											</SC.StyledListItem>
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>

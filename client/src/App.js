@@ -42,7 +42,8 @@ const App = () => {
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
-						<Route	path="/about" render={props => <Scenes.About {...props} />} />
+						<Route path="/about" render={props => <Scenes.About {...props} />} />
+						<Route path="/trees" render={props => <Scenes.TreePermits {...props} />}/>
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />
 						<Route path="/email-sent" render={props => <EmailSent {...props} />} />
