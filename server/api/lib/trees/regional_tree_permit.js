@@ -97,7 +97,7 @@ async function saveNewTreePermits(treePermits) {
 		.andWhere(tpc.REGIONAL_OFFICE, regionalOffice)
 		.then(rows => {
 			rows.map(row => {
-				const key_as_string = `${row[tpc.REGIONAL_OFFICE]}_${row[tpc.PERMIT_NUMBER]}_${row[tpc.TREE_NAME]}_${row[tpc.NUMBER_OF_TREES]}_${formatDate(row[tpc.START_DATE], MORNING)}`;
+				const key_as_string = `${row[tpc.REGIONAL_OFFICE]}_${row[tpc.PERMIT_NUMBER]}_${formatDate(row[tpc.START_DATE], MORNING)}`;
 				existingPermitsCompact.add(key_as_string);
 			});
 		})
@@ -105,7 +105,7 @@ async function saveNewTreePermits(treePermits) {
 
 	const new_tree_permits = treePermits.map(tp => {
 		//if tp is not in the hash map of the existing one - add to the new ones
-		const compact_tp = `${tp.attributes[tpc.REGIONAL_OFFICE]}_${tp.attributes[tpc.PERMIT_NUMBER]}_${tp.attributes[tpc.TREE_NAME]}_${tp.attributes[tpc.NUMBER_OF_TREES]}_${formatDate(tp.attributes[tpc.START_DATE], MORNING)}`;
+		const compact_tp = `${tp.attributes[tpc.REGIONAL_OFFICE]}_${tp.attributes[tpc.PERMIT_NUMBER]}_${formatDate(tp.attributes[tpc.START_DATE], MORNING)}`;
 		if (tp.attributes[tpc.REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
 			Log.debug(`A new tree liecence! queued for saving ${compact_tp}`);
 			return tp; //original one, not compact
@@ -114,7 +114,7 @@ async function saveNewTreePermits(treePermits) {
 	//save only the new ones
 	try { //TODO promise all or knex save bulk
 		new_tree_permits.map(async tp => {
-			Log.info(`Saving new tree permit: ${tp.attributes[tpc.REGIONAL_OFFICE]} ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.NUMBER_OF_TREES]} ${tp.attributes[tpc.TREE_NAME]} trees.`);
+			Log.info(`Saving new tree permit: ${tp.attributes[tpc.REGIONAL_OFFICE]} ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.TOTAL_TREES]} trees.`);
 			await tp.save();
 		});
 	}
@@ -130,10 +130,11 @@ const parseTreesXLS = async (filename) => {
 	const workbook = xlsx.readFile(filename);
 	const sheet = workbook.Sheets[sheetname];
 	const sheet_json = xlsx.utils.sheet_to_json(sheet, { raw: false });
-	const treePermits = sheet_json.map(row => {
+	const rawTreePermits = sheet_json.map(row => {
+
 		try {
-			return new TreePermit(
-				{
+			return {
+				'core': {
 					[tpc.REGIONAL_OFFICE]: row['אזור'],
 					[tpc.PERMIT_NUMBER]: row['מספר רשיון'],
 					[tpc.ACTION]: row['פעולה'], // cutting , copying
@@ -141,7 +142,7 @@ const parseTreesXLS = async (filename) => {
 					[tpc.PERSON_REQUEST_NAME]: row['מבקש'],
 					[tpc.START_DATE]: formatDate(row['מתאריך'], MORNING),
 					[tpc.END_DATE]: formatDate(row['עד תאריך'], EVENING),
-					[tpc.LAST_DATE_TO_OBJECTION]: row['תאריך אחרון להגשת ערער']? formatDate(row['תאריך אחרון להגשת ערער'], MORNING) : undefined, // column might be missing from
+					[tpc.LAST_DATE_TO_OBJECTION]: row['תאריך אחרון להגשת ערער'] ? formatDate(row['תאריך אחרון להגשת ערער'], MORNING) : undefined, // column might be missing from
 					[tpc.APPROVER_NAME]: row['שם מאשר'],
 					[tpc.APPROVER_TITLE]: row['תפיד מאשר'],
 					// Location
@@ -150,26 +151,43 @@ const parseTreesXLS = async (filename) => {
 					[tpc.STREET_NUMBER]: row['מספר'],
 					[tpc.GUSH]: row['גוש'],
 					[tpc.HELKA]: row['חלקה'],
-					// Trees details
-					[tpc.TREE_NAME]: row['שם העץ'],
-					[tpc.TREE_KIND]: row['סוג העץ'],
-					[tpc.NUMBER_OF_TREES]: row['מספר עצים'],
+
 					[tpc.REASON_SHORT]: row['סיבה'],
 					[tpc.REASON_DETAILED]: row['פרטי הסיבה'],
-					[tpc.COMMENTS_IN_DOC]: row['הערות לעצים']
+					[tpc.COMMENTS_IN_DOC]: row['הערות לעצים']	
+				},
+				'extra': {
+					[tpc.TREE_NAME]: row['שם העץ'],
+					[tpc.NUMBER_OF_TREES]: row['מספר עצים'],
 				}
-			);
+			};
 		}
 		catch (err) {
 			Log.error(`Error reading line ${row['מספר רשיון']}-${row['שם העץ']} from file ${filename}`);
 			Log.error(err);
-
 		}
-
 	});
-	return treePermits;
-
+	return processPermits(rawTreePermits);
 };
+
+function processPermits(rawTreePermits) {
+	// Migrate all rows of each tree permit into one line: address, dates etc.
+	// Add sum of all trees in the permit
+	// Keep the details per tree kind / number of trees into a tree table
+	const treePermits = {};
+	rawTreePermits.map(rtp => {
+		const key = `${rtp.core[tpc.REGIONAL_OFFICE]}_${rtp.core[tpc.PERMIT_NUMBER]}_${rtp.core[tpc.START_DATE]}}`;
+		if (treePermits[key] && treePermits[key].attributes[tpc.TOTAL_TREES]) { //exist
+			treePermits[key].attributes[tpc.TOTAL_TREES] = treePermits[key].attributes[tpc.TOTAL_TREES] + Number(rtp.extra[tpc.NUMBER_OF_TREES]);
+			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { ...treePermits[key].attributes[tpc.TREES_PER_PERMIT], [rtp.extra[tpc.TREE_NAME]]: rtp.extra[tpc.NUMBER_OF_TREES] };
+		}
+		else { // a new one
+			treePermits[key] = new TreePermit({ ...rtp.core, [tpc.TOTAL_TREES]: Number(rtp.extra[tpc.NUMBER_OF_TREES]) });
+			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { [rtp.extra[tpc.TREE_NAME]]: rtp.extra[tpc.NUMBER_OF_TREES] };
+		}
+	});
+	return Object.values(treePermits);
+}
 
 function formatDate(strDate, hour) {
 	const isoDate = new Date(strDate).toISOString().split('T')[0]; //Date

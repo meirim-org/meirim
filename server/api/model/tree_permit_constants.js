@@ -25,3 +25,10 @@ exports.NUMBER_OF_TREES = 'number_of_trees';
 exports.REASON_SHORT = 'reason_short';
 exports.REASON_DETAILED = 'reason_detailed';
 exports.COMMENTS_IN_DOC = 'comments_in_doc';
+
+//Enriched data
+exports.TOTAL_TREES = 'total_trees';
+exports.TREES_PER_PERMIT = 'trees_per_permit';
+exports.SENT = 'sent';
+exports.GEOM = 'geom';
+exports.URL = 'url';
