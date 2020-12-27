@@ -12,6 +12,7 @@ const Subscription = require('./controller/subscription');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
 const { wrap, publicWrapper } = require('./controller/controller');
+const TreePermit = require('./controller/tree_permit');
 
 // Sign up
 Router.post('/sign/up', wrap(SignUp.signup, SignUp));
@@ -32,6 +33,13 @@ Router.get('/plan_status', wrap(Plan.statuses, Plan));
 Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
 Router.delete('/plan/:id/subscribe', wrap(Subscription.unsubscribe, Subscription)
 );
+
+// Tree
+Router.get('/tree/', wrap(TreePermit.browse, TreePermit));
+Router.get('/tree/:id', wrap(TreePermit.read, TreePermit));
+
+Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
+
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
