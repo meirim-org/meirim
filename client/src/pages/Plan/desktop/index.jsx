@@ -55,8 +55,8 @@ const PlanDesktop = ({
 				  <Mapa
 					geom={geom}
 					countyName={countyName}
-					hideZoom={true}
-					disableInteractions={true}
+					hideZoom={false}
+					disableInteractions={false}
 				/>
 			</SC.MainWrapper>
 		</Wrapper>
@@ -67,7 +67,7 @@ PlanDesktop.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
 	setSubCommentState: PropTypes.func.isRequired,
 	commentState: PropTypes.object.isRequired,
-	subCommentState: PropTypes.number.isRequired,
+	subCommentState: PropTypes.object.isRequired,
 	tabValue: PropTypes.number.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	subscribePanel: PropTypes.bool.isRequired,

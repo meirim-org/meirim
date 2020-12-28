@@ -18,7 +18,7 @@ export const useCommentsDataHandler = (planId, refetchComments, setRefetchCommen
 		};
 		fetchComments();
 		setRefetchComments(false);
-	} , [planId, refetchComments]);
+	} , [planId, refetchComments, dispatch, setRefetchComments]);
 };
 
 export const useDataHandler = (planId) => {
@@ -50,7 +50,7 @@ export const useDataHandler = (planId) => {
 			}];
 			const changes = areaChanges ? JSON.parse(areaChanges) : null;
 			if (changes) {
-				changes[0].map(change => {
+				changes[0].map(function(change) {
 					const isRelevantChange = change[3];
 					if (!isRelevantChange) return;
 					const areaChangeType = utils.getAreaChangeType(change);
@@ -77,5 +77,5 @@ export const useDataHandler = (planId) => {
 		};	
 
 		fetchData();
-	} , [planId]);
+	} , [planId, dispatch]);
 };

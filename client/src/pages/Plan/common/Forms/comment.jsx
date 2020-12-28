@@ -55,9 +55,14 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 				<SC.NewCommentControl fullWidth={true}>
 					<SC.TextareaAutosize
 						 value={inputValue}
-						 onChange={(e) => handleNewCommentText(e.target.value)}
+						 onChange={(e) => {
+								const length = e.target.value.length
+								if(length === 1200) return
+								handleNewCommentText(e.target.value)}
+							}
 						 disabled={newCommentTypeError}
 						 aria-label={t.emptyTextarea}
+						     inputProps={{ maxLength: 2 }}
 						 rowsMin={5}/>
 				</SC.NewCommentControl>
 				<SC.addCommentButtonWrapper>
