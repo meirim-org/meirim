@@ -19,8 +19,8 @@ const SummaryTab = ({
 				handleSubscribePanel={handleSubscribePanel}/>
 
 			<MapPanel tabValue={tabValue} geom={geom}   />
-			<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
 			<GoalsPanel goalsFromMavat={goalsFromMavat} tabValue={tabValue} />
+			<StatsPanel tabValue={tabValue} dataArea={dataArea} textArea={textArea} />
 		</>
 	);
 };
