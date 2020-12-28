@@ -14,7 +14,11 @@ export const SubCommentForm = ({ addSubComment, parentComment, subCommentState, 
 		<SC.addSubCommentWrapper>
 			<SC.FormControl fullWidth={true}>
 				<TextareaAutosize  
-					onChange={(e) => setSubCommentState(pv => ({ ...pv, inputValue: e.target.value }))}
+					onChange={(e) => {
+						const length = e.target.value.length
+						if(length === 1200) return
+						setSubCommentState(pv => ({ ...pv, inputValue: e.target.value }))}
+					}
 					value={inputValue} aria-label={t.emptyTextarea} rowsMin={5}/>
 			</SC.FormControl>
 			<SC.addCommentButtonWrapper className={isOpen ? 'active' : ''} >

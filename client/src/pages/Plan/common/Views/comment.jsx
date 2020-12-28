@@ -9,7 +9,7 @@ import * as SC from './style';
 
 export const CommentView = ({ addLikeToComment, commentData, isNewCommentOpen }) => {
 	const theme = useTheme();
-	const { content, created_at, person: { name }, id: commentId, likes } = commentData;
+	const { content, created_at, person: { name }, id: commentId, likes, type } = commentData;
 
 	return (
 		<TabPanel>
@@ -22,7 +22,7 @@ export const CommentView = ({ addLikeToComment, commentData, isNewCommentOpen })
 							component="span"
 							color={theme.palette.green['text2']}
 						>
-							ביקורת
+							{t[type]}
 						</Typography>
 						<Typography
 							variant="highlightedText"

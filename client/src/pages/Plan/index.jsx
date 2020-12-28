@@ -25,7 +25,7 @@ const Plan = ({ isMobile, isTablet }) => {
 	const [ commentState, setCommentState ] = useState({
 		isOpen: false,
 		inputValue: '',
-		type: 'review'
+		type: 'improvement'
 	});
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
     

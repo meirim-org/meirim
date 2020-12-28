@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Text, Button } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import * as SC from './style';
+import { UserSelectors } from 'redux/selectors';
+import { openModal } from 'redux/modal/slice';
+import { useDispatch } from 'react-redux';
 
 export const SubscribePanel = ({ subscribePanel, handleSubscribePanel }) => {
+	const dispatch = useDispatch()
 	const theme = useTheme();
+	const [ isOpen, setIsOpen ] = useState(true)
+	const { isAuthenticated } = UserSelectors()
 
-	//add user connection condition 
-	if ( !subscribePanel ) return null;
+	if ( isAuthenticated || !isOpen ) return null;
 
 	return (
 		<TabPanel>
@@ -25,7 +30,7 @@ export const SubscribePanel = ({ subscribePanel, handleSubscribePanel }) => {
 				</SC.SubscribeTextWrapper>
 				<SC.SubscribeButtonsWrapper>
 					<SC.SubscribeButtonWrapper>
-						<Button onClick={() => alert('הרשמה')} extrasmall={true} text={t.signup}/>
+						<Button onClick={() => dispatch(openModal({ modalType: 'register' }))} extrasmall={true} text={t.signup}/>
 					</SC.SubscribeButtonWrapper>
 					<SC.SubscribeButtonWrapper>
 						<Button 
@@ -33,12 +38,12 @@ export const SubscribePanel = ({ subscribePanel, handleSubscribePanel }) => {
 							textDecoration="underline"
 							simple={true} 
 							fontWeight="400" 
-							onClick={() => handleSubscribePanel(false)}
+							onClick={() => setIsOpen(false)}
 							text={t.noThanks}
 					 />
 					</SC.SubscribeButtonWrapper>
 				</SC.SubscribeButtonsWrapper>
-				<SC.CloseSubscribeIcon onClick={() => handleSubscribePanel(false)} />
+				<SC.CloseSubscribeIcon onClick={() => setIsOpen(false)} />
 			</TabBox>
 		</TabPanel>
 	);

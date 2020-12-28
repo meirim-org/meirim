@@ -14,7 +14,7 @@ const SummaryTab = ({ subscribePanel, handleSubscribePanel }) => {
 			<SubscribePanel 
 				subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>
-			<StatsPanel ataArea={dataArea} textArea={textArea} />
+			<StatsPanel dataArea={dataArea} textArea={textArea} />
 		</>
 	);
 };

@@ -115,18 +115,17 @@ export const goBack = () => window.history.go(-1);
 
 export const commentTypes = [
 	{
-		value: 'review',
-		text: t.review
-	},
-	{
 		value: 'improvement',
 		text: t.improvementProposal
+	},
+	{
+		value: 'review',
+		text: t.review
 	},
 	{
 		value: 'general',
 		text: t.generalOpinion
 	},
-
 ];
 
 export const planTerms = ['פינוי בינוי', 'חלוקת מגרשים', 'שיקום עירוני'];

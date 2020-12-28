@@ -70,7 +70,7 @@ const PlanDetailsPanel = ({ status, type, url }) => {
 				
 				</SC.StatusAndTypeWrapper>
 				<SC.UrlWrapper>
-					<a target="_blank" rel="noreferrer" href={url}>{t.planDeatailOnGovSite}</a>
+					<a target="_blank" rel="noopener noreferrer" href={url}>{t.planDeatailOnGovSite}</a>
 					<SC.CustomLinkIcon></SC.CustomLinkIcon>
 				</SC.UrlWrapper>
 			</TabBox>
