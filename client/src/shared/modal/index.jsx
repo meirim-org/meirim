@@ -9,7 +9,7 @@ import EmailVerified from 'pages/Register/emailVerified';
 import { ModalActions } from 'redux/actions';
 import { ModalSelectors } from 'redux/selectors';
 import { device } from 'style';
-import SharePlan  from 'pages/Plan/common/SharePlanView';
+// import { SharePlanView }  from 'pages/Plan/common/';
 
 const StyledModal = styled(MUIModal)`
     z-index: 9999 !important; 
@@ -46,7 +46,7 @@ const modalComponents = {
 	login: Login,
 	register: Register,
 	emailVerified: EmailVerified,
-	share: SharePlan
+	// share: SharePlanView
 };
 
 const Modal = ({ id }) => {
