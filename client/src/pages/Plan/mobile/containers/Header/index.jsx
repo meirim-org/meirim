@@ -1,14 +1,16 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { CommentSelectors } from 'redux/selectors';
+import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Tabs, Title, BackButton } from './components';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { goBack } from 'pages/Plan/utils';
 
 
-const Header = ({ handleTabsPanelRef, fixedHeader, countyName, name, tabValue, handleTabChange, isNewCommentOpen }) => {
+const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, isNewCommentOpen }) => {
 	const { comments } = CommentSelectors();
+	const { planData } = PlanSelectors();
+	const { name, countyName } = planData;
 	const	numberOfComments = comments.length.toString();
 
 	const tabsPanelRef = useRef(null);
