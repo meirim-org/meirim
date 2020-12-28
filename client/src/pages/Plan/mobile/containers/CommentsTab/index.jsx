@@ -1,52 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CommentView } from 'pages/Plan/common';
-import { CommentForm } from './components';
+import { CommentForm, CommentView,  SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
 import t from 'locale/he_IL';
 import { CommentSelectors } from 'redux/selectors';
-import * as SC from '../../style';
-import { TabPanel } from '../../../../../shared';
+import * as SC from 'pages/Plan/mobile/style';
+import { TabPanel, Button } from 'shared';
+import { useTheme } from '@material-ui/core';
 
-const CommentsTab = ({ 
-	tabValue,
-	setRefetchComments,
-	isNewCommentOpen,
-	newCommentViewHandler,
-	closeNewCommentView,
-	newCommentText, handleNewCommentText,
-	newCommentType,handleNewCommentType }) => {
+const CommentsTab = ({ addNewComment, addSubComment, addLikeToComment, commentState, subCommentState, setCommentState, setSubCommentState }) => {
+	const theme = useTheme()
 	const { comments } = CommentSelectors();
-
+	const isNewCommentOpen = commentState.isOpen
+	const { isOpen: isCommentOpen } = commentState;
+	const { isOpen: isSubCommentOpen } = subCommentState;
 	return (
 		<>
-			<CommentForm 
-				setRefetchComments={setRefetchComments}
-				tabValue={tabValue}
+			{isCommentOpen && <CommentForm
+				addNewComment={addNewComment}
 				comments={comments.length}
-				isNewCommentOpen={isNewCommentOpen}
-				closeNewCommentView={closeNewCommentView}
-				newCommentViewHandler={newCommentViewHandler}
-				newCommentText={newCommentText}
-				handleNewCommentText={handleNewCommentText}
-				newCommentType={newCommentType}
-				handleNewCommentType={handleNewCommentType}
-			/>
+				commentState={commentState}
+				setCommentState={setCommentState}
+			/>}
 			{comments.length > 0 && !isNewCommentOpen &&
                 <>
                 	{comments.map((comment, index) => (
-                		<CommentView 
-                			setRefetchComments={setRefetchComments}
-                			key={index}
-                			id={index} 
-                			tabValue={tabValue}
-                			commentData={comment}
-                			isNewCommentOpen={isNewCommentOpen}
-                		/> 
+										<>
+											<CommentView 
+											addLikeToComment={addLikeToComment} 
+											commentData={comment} 
+											isNewCommentOpen={commentState.isOpen}
+											/> 
+											<SC.AddSubComment className={isSubCommentOpen ? 'active' : ''}>
+												<Button
+													id={'add-response-' + comment.id}
+													textcolor={theme.palette.black}
+													text={t.addAResponse}
+													onClick={() => setSubCommentState(pv => ({...pv, isOpen: !subCommentState.isOpen}))}
+													simple
+													iconBefore={<SC.CommentIcon/>}
+												/>
+											</SC.AddSubComment>
+											<SC.CommentsWrapper>
+												{isSubCommentOpen &&
+													<SubCommentForm 
+														addSubComment={addSubComment}
+														parentComment={comment}
+														subCommentState={subCommentState}
+														setSubCommentState={setSubCommentState}
+														/>
+												}
+												{comment.subComments &&
+														comment.subComments.map((subComment, index) => (
+															<SubCommentView key={index} id={index} subCommentData={subComment} />
+														))}
+											</SC.CommentsWrapper>
+										</>
                 	))}
                 </>
 			}
 			{comments.length === 0 && !isNewCommentOpen &&
-            <TabPanel value={tabValue} index={1} >
+            <TabPanel>
             	<SC.NoComments>
             		<SC.NoCommentsBold>{t.startDiscussion}</SC.NoCommentsBold>
             		<br/>
@@ -59,15 +72,13 @@ const CommentsTab = ({
 };
 
 CommentsTab.propTypes = {
-	tabValue: PropTypes.any.isRequired,
-	newCommentViewHandler: PropTypes.func.isRequired,
-	closeNewCommentView: PropTypes.func.isRequired, 
-	isNewCommentOpen: PropTypes.bool.isRequired,
-	newCommentText: PropTypes.string,
-	handleNewCommentText: PropTypes.func.isRequired,
-	newCommentType: PropTypes.string,
-	handleNewCommentType: PropTypes.func.isRequired,
-	setRefetchComments: PropTypes.func.isRequired
+	commentState: PropTypes.object.isRequired,
+	subCommentState: PropTypes.object.isRequired,
+	setSubCommentState: PropTypes.func.isRequired,
+	setCommentState: PropTypes.func.isRequired,
+	addLikeToComment: PropTypes.func.isRequired,
+	addComment: PropTypes.func.isRequired,
+	addSubComment: PropTypes.func.isRequired,
 };
 
 export default CommentsTab;
