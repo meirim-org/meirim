@@ -89,6 +89,7 @@ const handleMobileVariant = mobileVariant => {
 
 
 const StyledTypography = styled(Box)`
+   white-space: pre-wrap; 
    ${({ mobileVariant }) => mobileVariant && handleMobileVariant(mobileVariant) }
    ${({ variant }) => variant && handleVariant(variant) }
     color: ${props => props.color} !important;
