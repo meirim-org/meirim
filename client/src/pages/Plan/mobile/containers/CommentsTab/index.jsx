@@ -26,6 +26,7 @@ const CommentsTab = ({ addNewComment, addSubComment, addLikeToComment, commentSt
                 <>
                 	{comments.map((comment) => {
                 		const { id: commentId, likes } = comment;
+                		
                 		return (
                 			<>
                 				<CommentView

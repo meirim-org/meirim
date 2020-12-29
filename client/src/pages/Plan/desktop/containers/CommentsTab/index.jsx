@@ -6,6 +6,7 @@ import {  TabPanel, Button } from 'shared';
 import { CommentForm, CommentView,  SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
 import { CommentSelectors } from 'redux/selectors';
 import * as SC from './style';
+import { Badge } from '@material-ui/core';
 
 const CommentsTab = ({
 	commentState,
@@ -36,7 +37,9 @@ const CommentsTab = ({
 				commentState={commentState}
 				setCommentState={setCommentState}
 			/>}
-			{showComments && comments.map((comment, index) => { 
+			{showComments && comments.map((comment, index) => {
+				const { id: commentId, likes } = comment;
+
 				return ( 
 					<>
 						<CommentView
@@ -44,31 +47,45 @@ const CommentsTab = ({
 							addLikeToComment={addLikeToComment}
 							commentData={comment}
 							isNewCommentOpen={isCommentOpen}
-						/>
-						<SC.AddSubComment className={isSubCommentOpen ? 'active' : ''}>
-							<Button
-								id={'add-response-' + comment.id}
-								textcolor={theme.palette.black}
-								text={t.addAResponse}
-								onClick={setIsSubCommentOpen}
-								simple
-								iconBefore={<SC.CommentIcon/>}
-							/>
-						</SC.AddSubComment>
-						<SC.CommentsWrapper>
-							{isSubCommentOpen &&
-								<SubCommentForm 
-									addSubComment={addSubComment}
-									parentComment={comment}
-									subCommentState={subCommentState}
-									setSubCommentState={setSubCommentState}
-									 />
-							}
-							{comment.subComments &&
-									comment.subComments.map((subComment, index) => (
-										<SubCommentView key={index} id={index} subCommentData={subComment} />
-									))}
-						</SC.CommentsWrapper>
+						>
+							<SC.Like>
+								<Button
+									id={'like-' + commentId}
+									textcolor={theme.palette.black}
+									text={t.iLike}
+									onClick={() => addLikeToComment(commentId)}
+									simple
+									iconBefore={<SC.LikeIcon/>}
+								/>
+								<Badge
+									badgeContent={!likes ? 0 : likes}
+								/>
+							</SC.Like>
+							<SC.AddSubComment className={isSubCommentOpen ? 'active' : ''}>
+								<Button
+									id={'add-response-' + comment.id}
+									textcolor={theme.palette.black}
+									text={t.addAResponse}
+									onClick={() => setSubCommentState(pv => ({ ...pv, isOpen: !subCommentState.isOpen }))}
+									simple
+									iconBefore={<SC.CommentIcon/>}
+								/>
+							</SC.AddSubComment>
+							<SC.CommentsWrapper>
+								{isSubCommentOpen &&
+                                <SubCommentForm
+                                	addSubComment={addSubComment}
+                                	parentComment={comment}
+                                	subCommentState={subCommentState}
+                                	setSubCommentState={setSubCommentState}
+                                />
+								}
+								{comment.subComments &&
+                                comment.subComments.map((subComment, index) => (
+                                	<SubCommentView key={index} id={index} subCommentData={subComment}/>
+                                ))}
+							</SC.CommentsWrapper>
+						</CommentView>
 					</>
 				);
 			})
