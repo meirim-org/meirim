@@ -135,10 +135,11 @@ export const FormControl = withTheme(styled(MuiFormControl)`
         width: 100%;
         padding: 1rem;
         border-radius: 4px;
-        border-color: ${props => props.theme.palette.gray['600']} !important;  
+        border-color: ${props => props.theme.palette.gray['400']} !important;  
         
         &:focus {
-            outline-color: ${props => props.theme.palette.primary['600']} !important;
+             outline: none;
+             border-color: ${props => props.theme.palette.primary['600']} !important;
         }
     }   
 `);
@@ -190,11 +191,17 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
     }
     
     textarea {
-        border-color: ${props => props.theme.palette.primary.main} !important;
+        border-color: ${props => props.theme.palette.gray['400']} !important;  
         border-radius: 12px;
         padding: 1rem;
         margin-bottom: 1rem;
+        
+        &:focus {
+            outline: none;
+            border-color: ${props => props.theme.palette.primary['600']} !important;
+        }
     }   
+
 `);
 
 export const NewCommentTabPanel = withTheme(styled(TabPanel)`
