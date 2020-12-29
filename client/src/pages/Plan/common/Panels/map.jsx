@@ -7,11 +7,11 @@ import * as SC from './style';
 import Mapa from 'components/Mapa';
 
 export const MapPanel = (props) => {
-	const { tabValue, geom } = props;
+	const { geom } = props;
 	const theme = useTheme();
 
 	return (
-		<TabPanel value={tabValue} index={0}>
+		<TabPanel>
 			<TabBox>
 				<SC.PlanSummaryTitleWrapper>
 					<Typography
@@ -37,7 +37,6 @@ export const MapPanel = (props) => {
 
 MapPanel.propTypes = {
 	goalsFromMavat: PropTypes.string,
-	tabValue: PropTypes.any.isRequired,
 	geom: PropTypes.object,
 	countyName: PropTypes.string,
 };
