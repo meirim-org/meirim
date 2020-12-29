@@ -7,11 +7,9 @@ import t from 'locale/he_IL';
 import { goBack } from 'pages/Plan/utils';
 import { BackButton } from 'pages/Plan/common';
 
-const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, isNewCommentOpen }) => {
-	const { comments } = CommentSelectors();
+const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, isNewCommentOpen, commentsCount }) => {
 	const { planData } = PlanSelectors();
 	const { name, countyName } = planData;
-	const	numberOfComments = comments.length.toString();
 
 	const tabsPanelRef = useRef(null);
 	useEffect(() => handleTabsPanelRef(tabsPanelRef));
@@ -27,7 +25,7 @@ const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, is
 					    	<Title title={countyName} subTitle={name}/>
 						</SC.TitlesButtonWrapper>
 						<SC.AppBar ref={tabsPanelRef} position="static" className={fixedHeader ? 'fixed' : ''}>
-							<Tabs tabValue={tabValue} handleTabChange={handleTabChange} numberOfComments={numberOfComments} />
+							<Tabs tabValue={tabValue} handleTabChange={handleTabChange} commentsCount={commentsCount} />
 						</SC.AppBar>
 					</>
 					:
@@ -49,7 +47,8 @@ Header.propTypes = {
 	openNewCommentView: PropTypes.func.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	fixedHeader: PropTypes.bool.isRequired,
-	handleTabsPanelRef: PropTypes.func.isRequired
+	handleTabsPanelRef: PropTypes.func.isRequired,
+    commentsCount: PropTypes.string.isRequired,
 };
 
 export default Header;
