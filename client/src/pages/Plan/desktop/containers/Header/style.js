@@ -3,7 +3,17 @@ import { AppBar as MuiAppBar } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 export const SubTitleWrapper = styled.div`
+    position: relative;
     margin-bottom: 1rem;
+    .back-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform: translate(112%, -23%);
+        svg {
+            font-size: 1.35rem;
+        }
+    }
 `;
 
 export const TitleWrapper = styled.div`
