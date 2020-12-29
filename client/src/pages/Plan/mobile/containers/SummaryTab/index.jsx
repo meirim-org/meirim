@@ -15,7 +15,7 @@ const SummaryTab = ({ subscribePanel, handleSubscribePanel }) => {
 			 	subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>
 
-			<MapPanel geom={geom}   />
+			<MapPanel geom={geom} />
 			<GoalsPanel goalsFromMavat={goalsFromMavat} />
 			<StatsPanel dataArea={dataArea} textArea={textArea} />
 		</>
