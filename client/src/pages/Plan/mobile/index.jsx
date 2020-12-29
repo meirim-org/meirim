@@ -50,31 +50,31 @@ const PlanMobile = ({
 						handleTabsPanelRef={handleTabsPanelRef}
 						fixedHeader={fixedHeader}
 						handleTabChange={handleTabChange}
-						openNewCommentView={()=> setCommentState(pv => ({...pv, isOpen :true}))}
+						openNewCommentView={()=> setCommentState(pv => ({ ...pv, isOpen :true }))}
 						isNewCommentOpen={commentState.isOpen}
 					/>
 					<SC.Main className={mainClasses}>
 						{ 
-						tabValue === 0 && <SummaryTab
-							handleSubscribePanel={handleSubscribePanel}
-							subscribePanel={subscribePanel}
+							tabValue === 0 && <SummaryTab
+								handleSubscribePanel={handleSubscribePanel}
+								subscribePanel={subscribePanel}
 							/>
 				 		}
 						{ 
 						 tabValue === 1 && <CommentsTab
-							addLikeToComment={addLikeToComment}
-							commentState={commentState}
-							addSubComment={addSubComment}
-							addNewComment={addNewComment}
-							subCommentState={subCommentState}
-							setSubCommentState={setSubCommentState}
-							setCommentState={setCommentState}
+								addLikeToComment={addLikeToComment}
+								commentState={commentState}
+								addSubComment={addSubComment}
+								addNewComment={addNewComment}
+								subCommentState={subCommentState}
+								setSubCommentState={setSubCommentState}
+								setCommentState={setCommentState}
 							/>
  						}
 					</SC.Main>
 					<Navigation
 						handleTabChange={handleTabChange}
-						openNewCommentView={() => setCommentState(pv => ({...pv, isOpen: true}))}
+						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))}
 					/>
 				</SC.Content>
 			</SC.MobileMainWrapper>
