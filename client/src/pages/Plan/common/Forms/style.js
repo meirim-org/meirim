@@ -230,11 +230,6 @@ export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
     }
 `);
 
-export const SubCommentBox = withTheme(styled.div`
-    background-color: ${props => props.theme.palette.white} !important;  
-    padding: 2rem 3.75rem 1rem 2rem;
-`);
-
 export const SubCommentHeader = styled.div`
     position: relative;
     display: flex;

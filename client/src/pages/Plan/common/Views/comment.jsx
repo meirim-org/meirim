@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography,  Button } from 'shared';
+import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { Badge } from '@material-ui/core';
 import { daysPassed } from 'pages/Plan/utils';
 import * as SC from './style';
 
