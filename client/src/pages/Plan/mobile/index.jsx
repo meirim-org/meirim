@@ -25,7 +25,7 @@ const PlanMobile = ({
 
 	const { comments } = CommentSelectors();
 	const isPlanHaveComments = comments.length > 0;
-	let tabsPanelTop = tabsPanelRef ? tabsPanelRef.current.getBoundingClientRect().top : null;
+	let tabsPanelTop = tabsPanelRef && tabsPanelRef.current ? tabsPanelRef.current.getBoundingClientRect().top : null;
 
 	const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
 	const handleFixedHeader = (newValue) => setFixedHeader(newValue);
