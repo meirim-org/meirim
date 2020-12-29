@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import { Tabs, Title, BackButton } from './components';
+import { Tabs, Title } from './components';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { goBack } from 'pages/Plan/utils';
-
+import { BackButton } from 'pages/Plan/common';
 
 const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, isNewCommentOpen }) => {
 	const { comments } = CommentSelectors();

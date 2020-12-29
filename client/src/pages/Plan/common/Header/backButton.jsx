@@ -1,6 +1,5 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import PropTypes from 'prop-types';
 import * as SC from './style';
 
