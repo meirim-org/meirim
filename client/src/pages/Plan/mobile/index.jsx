@@ -50,31 +50,31 @@ const PlanMobile = ({
 						handleTabsPanelRef={handleTabsPanelRef}
 						fixedHeader={fixedHeader}
 						handleTabChange={handleTabChange}
-						openNewCommentView={()=> setCommentState(pv => ({...pv, isOpen :true}))}
+						openNewCommentView={()=> setCommentState(pv => ({ ...pv, isOpen :true }))}
 						isNewCommentOpen={commentState.isOpen}
 					/>
 					<SC.Main className={mainClasses}>
 						{ 
-						tabValue === 0 && <SummaryTab
-							handleSubscribePanel={handleSubscribePanel}
-							subscribePanel={subscribePanel}
+							tabValue === 0 && <SummaryTab
+								handleSubscribePanel={handleSubscribePanel}
+								subscribePanel={subscribePanel}
 							/>
 				 		}
 						{ 
 						 tabValue === 1 && <CommentsTab
-							addLikeToComment={addLikeToComment}
-							commentState={commentState}
-							addSubComment={addSubComment}
-							addNewComment={addNewComment}
-							subCommentState={subCommentState}
-							setSubCommentState={setSubCommentState}
-							setCommentState={setCommentState}
+								addLikeToComment={addLikeToComment}
+								commentState={commentState}
+								addSubComment={addSubComment}
+								addNewComment={addNewComment}
+								subCommentState={subCommentState}
+								setSubCommentState={setSubCommentState}
+								setCommentState={setCommentState}
 							/>
  						}
 					</SC.Main>
 					<Navigation
 						handleTabChange={handleTabChange}
-						openNewCommentView={() => setCommentState(pv => ({...pv, isOpen: true}))}
+						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))}
 					/>
 				</SC.Content>
 			</SC.MobileMainWrapper>
@@ -88,11 +88,12 @@ PlanMobile.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
 	commentState: PropTypes.object.isRequired,
 	subCommentState: PropTypes.object.isRequired,
-	closeNewCommentView: PropTypes.func.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	subscribePanel: PropTypes.bool.isRequired,
 	handleSubscribePanel: PropTypes.func.isRequired,
-	setRefetchComments: PropTypes.func.isRequired,
+	addNewComment: PropTypes.func.isRequired,
+	addSubComment: PropTypes.func.isRequired,
+	addLikeToComment: PropTypes.func.isRequired,
 };
 
 export default PlanMobile;
