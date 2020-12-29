@@ -73,4 +73,7 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         color: ${props => props.theme.palette.primary['600']} !important;
         background-color: ${props => props.theme.palette.primary['bg']} !important;
     }
+    .MuiTab-wrapper {
+        font-size: 1rem !important;
+    }
 `);
