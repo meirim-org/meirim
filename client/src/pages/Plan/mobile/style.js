@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { AppBar as MuiAppBar } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+
 export const MobileMainWrapper = styled.div`
     height: calc(100vh - 79px);
 `;
@@ -29,16 +31,30 @@ export const AddSubComment = withTheme(styled.div`
         border-radius: 200px;
     }
     
-   &.active .MuiButton-label{
-        background-color: ${props => props.theme.palette.gray['bg']} !important; 
-    }
+   &.active {
+       .MuiButton-label{
+            background-color: ${props => props.theme.palette.gray['bg']} !important; 
+        }
+        + div > div:first-child {
+            padding: 2rem;
+        }
+   }
     
 `);
 
 export const CommentIcon = styled(ChatBubbleOutlineIcon)`
     font-size: 1rem !important;
 `;
+
 export const CommentsWrapper = withTheme(styled.div`
+    grid-area: comments; 
+    border-top: 1px solid ${props => props.theme.palette.gray['300']};
+    
+    
+    
+`);
+
+export const SubCommentForm = withTheme(styled.div`
     grid-area: comments; 
     border-top: 1px solid ${props => props.theme.palette.gray['300']};
 `);
@@ -137,3 +153,49 @@ export const NoCommentsBold = styled.span`
 export const NoCommentsRegular = styled.span`
     font-size: 1rem;
 `;
+
+export const Like = withTheme(styled.div`
+    grid-area: like; 
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+
+    .MuiBadge-badge {
+        position: relative;
+        margin-right: .25rem;
+        transform: none;
+        font-weight: 300;
+        color: ${props => props.theme.palette.black} !important;
+        background-color: ${props => props.theme.palette.gray['200']} !important;
+        font-size: 14px !important;
+        padding: 0.6rem;
+    }
+    
+    .MuiButton-label {
+       font-weight: 300;
+       font-size: 14px;
+    }
+    
+   .MuiSvgIcon-root {
+       margin: 0 0.75rem; 
+       font-size: 1.125rem !important;
+    }
+    
+    &:after {
+        content: '';
+        position: absolute;
+        background-color: ${props => props.theme.palette.gray['300']};
+        left: 0;
+        top: 50%;
+        height: 100%;
+        width: 1px;
+        transform: translate(-50%,-50%);
+    }
+
+`);
+
+
+export const LikeIcon = withTheme(styled(ThumbUpAltOutlinedIcon)`
+    font-size: 1.15em !important;
+    fill: ${props => props.theme.palette.primary['600']} !important;  
+`);

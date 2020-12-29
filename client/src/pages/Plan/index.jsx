@@ -40,7 +40,7 @@ const Plan = ({ isMobile, isTablet }) => {
 		}
 	};
 
-	const addLikeToComment = async ({ commentId }) => {
+	const addLikeToComment = async (commentId) => {
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
 		await addLike({ commentId });
 		setRefetchComments();

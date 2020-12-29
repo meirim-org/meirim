@@ -158,7 +158,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const addCommentButtonWrapper = styled.div`
-    margin-bottom: 2rem;
+    margin: 0 -0.6rem 2rem;
     display: flex;
     justify-content: flex-end;
     
