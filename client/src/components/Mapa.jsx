@@ -1,6 +1,6 @@
 import React from 'react';
 import leaflet from 'leaflet';
-import { Map, TileLayer, GeoJSON } from 'react-leaflet';
+import { Map, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
 import './Mapa.css';
 
 const Mapa = (props) =>  {
@@ -17,7 +17,7 @@ const Mapa = (props) =>  {
 		<Map
 			center={bounds.getCenter()}
 			bounds={bounds}
-			zoomControl={!hideZoom}
+			zoomControl={false}
 			boxZoom={!disableInteractions}
 			maxZoom={17}
 			doubleClickZoom={!disableInteractions}
@@ -35,6 +35,9 @@ const Mapa = (props) =>  {
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 			/>
+			{
+				!hideZoom && <ZoomControl position="bottomleft" />
+			}
 			{
 				geom && <GeoJSON key={geomHash} data={geom} />
 			}
