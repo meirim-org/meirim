@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PlanSelectors, CommentSelectors } from 'redux/selectors';
+import { PlanSelectors } from 'redux/selectors';
 import { SavePlan, SharePlan, Tabs, Title, AddNewComment } from './components';
 import * as SC from './style';
 
-const Header = ({ handleTabChange, openNewCommentView }) => {
+const Header = ({ handleTabChange, openNewCommentView, commentsCount }) => {
 	const { planData } = PlanSelectors();
-	const { comments } = CommentSelectors();
-	const	numberOfComments = comments.length.toString();
 	const { name, countyName } = planData;
 	
 	return (
@@ -15,7 +13,7 @@ const Header = ({ handleTabChange, openNewCommentView }) => {
 			<SC.TitlesAndTabs>
 				<Title countyName={countyName} planName={name}/>
 				<SC.AppBar position="static">
-					<Tabs handleTabChange={handleTabChange} numberOfComments={numberOfComments} />
+					<Tabs handleTabChange={handleTabChange} commentsCount={commentsCount} />
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
 			<SC.Buttons>
@@ -30,6 +28,7 @@ const Header = ({ handleTabChange, openNewCommentView }) => {
 Header.propTypes = {
 	handleTabChange: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
+	commentsCount: PropTypes.string.isRequired,
 };
 
 export default Header;

@@ -14,7 +14,7 @@ export const useCommentsDataHandler = (planId, refetchComments, setRefetchCommen
 		const fetchComments = async () => {
 			const response = await getCommentsByPlanId(planId);
 			const comments = utils.extractComments(response.data);
-			dispatch(setData({ data: comments }));
+			dispatch(setData({ data: comments, commentsCount: response.data.length.toString() }));
 		};
 		fetchComments();
 		setRefetchComments(false);

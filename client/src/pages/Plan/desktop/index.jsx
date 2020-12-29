@@ -19,7 +19,7 @@ const PlanDesktop = ({
 	subscribePanel, 
 	handleSubscribePanel,
 }) => {
-	const { comments } = CommentSelectors();
+	const { comments, commentsCount } = CommentSelectors();
 	const { planData: { geom, countyName } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
 	
@@ -29,7 +29,8 @@ const PlanDesktop = ({
 				<SC.Content>
 					<Header
 						handleTabChange={handleTabChange} 
-						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
+						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))}
+						commentsCount={commentsCount}
 					/>
 					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
 						{ 
