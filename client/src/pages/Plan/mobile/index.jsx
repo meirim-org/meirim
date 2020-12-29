@@ -37,7 +37,7 @@ const PlanMobile = ({
 
 	// eslint-disable-next-line no-unused-vars
 	useScrollPosition(({ prevPos, currPos }) => {
-	    if (currPos.y < -Math.abs(tabsPanelTop)) return  handleFixedHeader(true);
+	    if (currPos.y < -Math.abs(tabsPanelTop)) return handleFixedHeader(true);
 		
 		return  handleFixedHeader(false);
 	},[tabsPanelRef]);
