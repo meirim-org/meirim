@@ -49,7 +49,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 									</Box>
 									<Box px={2}>
 										<SC.StyledLink id="nav-bar-about" to="/about/" activeClassName="active">
-											{t.about}
+											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
