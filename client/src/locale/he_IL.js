@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default {
-	alerts: 'התראות',
+	alerts: 'ההתראות שלי',
 	signin: 'התחברות',
 	signout: 'התנתקות',
 	name: 'מעירים',
