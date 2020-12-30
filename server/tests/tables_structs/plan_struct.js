@@ -13,7 +13,7 @@ const PlanStruct = function(table) {
 	table.string('status');
 	table.specificType('geom', 'GEOMETRY');
 	table.string('jurisdiction');
-	table.string('areaChanges');
+	table.string('areaChanges', 2048);
 	table.text('explanation', 65535);
 	table.float('rating').defaultTo(0);
 	table.integer('views').defaultTo(0);
