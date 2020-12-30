@@ -33,7 +33,7 @@ const StyledTabBox = withTheme(styled.div`
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: ${props => props.theme.palette.white};
+            background-color: #ffffff;
             opacity: 0.7;
             z-index: 1;
             top: 0;

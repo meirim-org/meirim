@@ -11,11 +11,10 @@ const SummaryTab = ({ subscribePanel, handleSubscribePanel }) => {
 	return (
 		<>
 			<PlanDetailsPanel type={type} status={status} url={url} terms={planTerms} />
+			<MapPanel geom={geom} />
 			<SubscribePanel
 			 	subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>
-
-			<MapPanel geom={geom}   />
 			<GoalsPanel goalsFromMavat={goalsFromMavat} />
 			<StatsPanel dataArea={dataArea} textArea={textArea} />
 		</>

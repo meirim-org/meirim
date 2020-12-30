@@ -5,7 +5,7 @@ import { setData } from './slice';
 const Actions = () => {
 	const dispatch = useDispatch();
 	const setCommentsData =  useCallback(
-		({ data, responseCode }) =>  dispatch(setData({ data, responseCode })),
+		({ data, responseCode, commentsCount }) =>  dispatch(setData({ data, responseCode, commentsCount })),
 		[dispatch]
 	);
 	

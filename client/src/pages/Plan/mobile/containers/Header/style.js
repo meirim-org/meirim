@@ -18,7 +18,6 @@ export const Header = withTheme(styled.div`
     background: ${props => props.theme.palette.gray['100']} !important;
     border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
     padding: 1rem 3.425rem 0 2.3rem;    
-    margin-bottom: 0.8rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

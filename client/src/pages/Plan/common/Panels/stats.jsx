@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Chart } from 'react-charts';
 import { TabPanel, TabBox, Typography, Text } from 'shared';
@@ -10,8 +10,9 @@ import * as SC from './style';
 
 export const StatsPanel = ({ dataArea, textArea, }) => {
 	const theme = useTheme();
-	if ( !dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
+	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
 
+	
 	return (
 		<TabPanel>
 			<TabBox>
@@ -26,29 +27,31 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 
-				{textArea.exist !== 0 
+				{textArea.exist !== 0
 					?
 					<>
 						<Text text={`${t.thisPlanIncreases} `} color={theme.palette.black}/>
-						<Text text={`${renderMultiplier(textArea)} `} color={theme.palette.primary.main} weight="600" />
-						<Text text={`(${t.extension} `} color={theme.palette.gray['alt']} />
-						<Text text={`${textArea.new} ${t.meter}`} color={theme.palette.gray['alt']} weight="600" />
-						<Text text=")" color={theme.palette.gray['alt']} />
+						<Text text={`${renderMultiplier(textArea)} `} color={theme.palette.primary.main} weight="600"/>
+						<Text text={`(${t.extension} `} color={theme.palette.gray['alt']}/>
+						<Text text={`${textArea.new} ${t.meter}`} color={theme.palette.gray['alt']} weight="600"/>
+						<Text text=")" color={theme.palette.gray['alt']}/>
 					</>
 					:
 					<>
-						<Text text={`${t.thisPlanAdds} ${t.buildingLand}`} color={theme.palette.black} />
+						<Text text={`${t.thisPlanAdds} ${t.buildingLand}`} color={theme.palette.black}/>
 						<Text text={`${textArea.new} ${t.meter}`} color={theme.palette.gray['alt']} weight="600"/>
 					</>
 				}
 
 				<br/>
-				
-				<Text text={`${renderPercent( (textArea.new + textArea.exist) / textArea.area )}% `} color={theme.palette.primary.main} weight="600"/>
-				<Text text={`${t.building} `} color={theme.palette.black} />
-				<Text text={`${t.insteadOf} `} color={theme.palette.gray['alt']} />
-				<Text text={`${renderPercent( textArea.exist / textArea.area )}%`} color={theme.palette.gray['alt']} weight="600"/>
-			
+
+				<Text text={`${renderPercent((textArea.new + textArea.exist) / textArea.area)}% `}
+					color={theme.palette.primary.main} weight="600"/>
+				<Text text={`${t.building} `} color={theme.palette.black}/>
+				<Text text={`${t.insteadOf} `} color={theme.palette.gray['alt']}/>
+				<Text text={`${renderPercent(textArea.exist / textArea.area)}%`} color={theme.palette.gray['alt']}
+					weight="600"/>
+
 				<SC.ChartWrapper>
 					<Chart
 						series={series}
