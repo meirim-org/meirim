@@ -45,7 +45,7 @@ const downloadChallengedFile = (url, file, options) => {
 
 		http.get(url, options, (response) => {
 			if (response.statusCode !== 200) {
-				Log.info(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
+				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				resolve(false);
 			} else {
 				const contentType = response.headers['content-type'] || '';
