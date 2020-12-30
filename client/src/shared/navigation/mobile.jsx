@@ -137,6 +137,11 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
+										<SC.StyledList>
+											<SC.StyledListItem component={RouterLink} to="/about/" button key={t.whoWeAre}>
+												<ListItemText primary={t.whoWeAre}/>
+											</SC.StyledListItem>
+										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
 											{!isAuthenticated && (
