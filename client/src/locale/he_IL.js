@@ -79,7 +79,6 @@ export default {
 	backToComments: 'חזרה לעמוד חוות הדעת',
 	publishComment: 'פרסום חוות דעת',
 	improvement: 'הצעה לשיפור',
-	review: 'ביקורת',
 	general: 'חוות דעת כללית'
 };
 

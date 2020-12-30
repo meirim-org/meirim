@@ -3,9 +3,9 @@ import { withTheme } from '@material-ui/core/styles';
 import { TabPanel } from 'shared';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import {
-    FormControl as MuiFormControl, FormControlLabel as MuiFormControlLabel,
-    RadioGroup as MuiRadioGroup,
-    TextareaAutosize as MuiTextareaAutosize
+	FormControl as MuiFormControl, FormControlLabel as MuiFormControlLabel,
+	RadioGroup as MuiRadioGroup,
+	TextareaAutosize as MuiTextareaAutosize
 } from '@material-ui/core';
 
 
