@@ -25,7 +25,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }];
 	
 	return (
-		<SC.StyledHeader>
+		<SC.DesktopHeader>
 			<SC.StyledContainer>
 				<Row justify="space-between">
 					<Box>
@@ -106,7 +106,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 					</Box>
 				</Row>
 			</SC.StyledContainer>
-		</SC.StyledHeader>
+		</SC.DesktopHeader>
 	);
 };
 

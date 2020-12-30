@@ -34,11 +34,22 @@ export const StyledLink = styled(NavLink)`
     }
 `;
 
-export const StyledHeader = styled.header`
+export const DesktopHeader = styled.header`
     position: fixed;
     z-index: 999;
     background-color: ${colors.white};
-    padding: .75rem 0;
+    padding: .75rem 4.8rem;
+    border-bottom: 1px solid ${colors.gray.light};   
+    top: 0;
+    right: 0;
+    left: 0;
+`;
+
+export const MobileHeader = styled.header`
+    position: fixed;
+    z-index: 999;
+    background-color: ${colors.white};
+    padding: .75rem 1.5rem .75rem .65rem;
     border-bottom: 1px solid ${colors.gray.light};   
     top: 0;
     right: 0;
@@ -46,7 +57,8 @@ export const StyledHeader = styled.header`
 `;
 
 export const StyledContainer = styled(Container)`
-    max-width: 1376px !important;
+    max-width: none !important;
+    padding: 0 !important;
 `;
 
 
