@@ -51,23 +51,21 @@ class PlanController extends Controller {
 
 			// some databases (mysql 8) already support returning ST_Distance in meters
 			// if the geometries are in the same system of reference, and others
-			// (mysql 5.7, mariadb) return the distance in degrees and need to be
+			// (mysql 5.7, mariadb) return the distance in units which need to be
 			// multiplied to get an approximate meters value
-			if (Config.locationSearch.dbDistanceInMeters) {
-				q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`));
-			} else {
-				q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*111195 as distance`));
-			}
+			const spatialUnitFactor = Config.locationSearch.dbDistanceInMeters ? 1 : 111195;
+
+			q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*${spatialUnitFactor} as distance`));
 
 			q.orderByRaw = ['distance'];
 			delete q.order;
 
 			if (Config.locationSearch.filterPlansRadiusKm !== null) {
-				if (Config.locationSearch.dbDistanceInMeters) {
-					q.whereRaw = [Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000))`)];
-				} else {
-					q.whereRaw = [Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000/111195))`)];
-				}
+				// use ST_Within to filter for plans with centroids within a polygon
+				// created with ST_Buffer. this makes use of the index on geom_centroid
+				q.whereRaw = [
+					Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000/${spatialUnitFactor}))`)
+				];
 			}
 		}
 
