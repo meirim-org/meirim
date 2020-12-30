@@ -56,10 +56,9 @@ export const CommentsWrapper = withTheme(styled.div`
 
 export const Main = withTheme(styled.main`
     background-color:  ${props => props.theme.palette.gray['bg']};
-    padding: 2rem 1rem;
+    padding: 2rem 1rem .7rem;
     &.no-comments, &.new-comment{
-        height: 100%;
-        height: 100vh;
+        min-height: 100vh;
     }
 `);
 
