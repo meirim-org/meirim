@@ -32,7 +32,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 	};
 
 	return (
-		<SC.StyledHeader>
+		<SC.MobileHeader>
 			<SC.StyledContainer>
 				<Row justify="space-between">
 					<Box>
@@ -185,7 +185,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 					</Box>
 				</Row>
 			</SC.StyledContainer>
-		</SC.StyledHeader>
+		</SC.MobileHeader>
 	);
 };
 

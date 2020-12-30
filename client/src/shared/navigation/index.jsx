@@ -19,7 +19,7 @@ const Navigation = (props) => {
 	
 	return (
 		<React.Fragment>
-			{props.isMobile() ? 
+			{props.isMobile() ||props.isTablet() ?
 				<MobileNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/> :  
 				<DesktopNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/>
 			}
@@ -28,6 +28,7 @@ const Navigation = (props) => {
 };
 
 Navigation.propTypes = {
-	isMobile: PropTypes.func.isRequired
+	isMobile: PropTypes.func.isRequired,
+	isTablet: PropTypes.func.isRequired
 };
-export default withGetScreen(Navigation);
+export default withGetScreen(Navigation, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
