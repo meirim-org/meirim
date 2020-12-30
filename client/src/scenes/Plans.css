@@ -40,3 +40,7 @@ html body {
 .card-content {
   height: 40%;
 }
+
+.leaflet-top, .leaflet-bottom {
+    z-index: 1;
+}
