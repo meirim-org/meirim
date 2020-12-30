@@ -1,12 +1,15 @@
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, SummaryTab, CommentsTab } from './containers';
 import * as SC from './style';
+import Template from './template.jsx';
 
-const PlanDesktop = ({ 
+const PlanDesktop = ({
+	match, 
 	addNewComment,
 	commentState,
 	subCommentState,
@@ -19,47 +22,27 @@ const PlanDesktop = ({
 	subscribePanel, 
 	handleSubscribePanel,
 }) => {
+	console.log('🚀 ~ file: index.jsx ~ line 25 ~ match', match);
 	const { comments } = CommentSelectors();
 	const { planData: { geom, countyName } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
 	
 	return (
-	    <Wrapper>
-			<SC.MainWrapper>
-				<SC.Content>
-					<Header
-						handleTabChange={handleTabChange} 
-						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
-					/>
-					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
-						{ 
-							tabValue === 0 && 
-							<SummaryTab 
-								handleSubscribePanel={handleSubscribePanel}
-						 		subscribePanel={subscribePanel} 
-						 	/>
-						}
-						{ 
-							tabValue === 1 && <CommentsTab
-								commentState={commentState}
-								subCommentState={subCommentState}
-								setCommentState={setCommentState}
-								setSubCommentState={setSubCommentState}
-								addSubComment={addSubComment}
-								addNewComment={addNewComment}
-								addLikeToComment={addLikeToComment}
-							/>
-						}
-					</SC.Main>
-				</SC.Content>
-				  <Mapa
-					geom={geom}
-					countyName={countyName}
-					hideZoom={false}
-					disableInteractions={false}
+		<Template match={match}>
+			<Route path={match.url + '/comments'} render={props => 
+				<CommentsTab 
+					addLikeToComment={addLikeToComment}
+					commentState={commentState}
+					addSubComment={addSubComment}
+					addNewComment={addNewComment}
+					subCommentState={subCommentState}
+					setSubCommentState={setSubCommentState}
+					setCommentState={setCommentState}
+					{...props}
 				/>
-			</SC.MainWrapper>
-		</Wrapper>
+			}	/>
+			<Route path={match.url + '/summary'} render={props => <SummaryTab/>}	/>
+		</Template>
 	);
 };
 

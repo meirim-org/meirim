@@ -9,7 +9,7 @@ import PlanMobile from './mobile';
 import PlanDesktop from './desktop';
 import { addComment, addLike } from './controller';
 
-const Plan = ({ isMobile, isTablet }) => {
+const Plan = ({ isMobile, isTablet, ...props }) => {
 	const { id: planId } = useParams();
 	const [refetchComments, setRefetchComments] = useState(false);
 	useDataHandler(planId);
@@ -97,6 +97,7 @@ const Plan = ({ isMobile, isTablet }) => {
 		newCommentViewHandler,
 		openNewCommentView,
 		closeNewCommentView,
+		...props
 	};
 
 	if (isMobile() || isTablet()) return <PlanMobile {...planProps}/>;
