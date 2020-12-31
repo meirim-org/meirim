@@ -32,7 +32,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 	};
 
 	return (
-		<SC.StyledHeader>
+		<SC.MobileHeader>
 			<SC.StyledContainer>
 				<Row justify="space-between">
 					<Box>
@@ -137,6 +137,11 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
+										<SC.StyledList>
+											<SC.StyledListItem component={RouterLink} to="/about/" button key={t.whoWeAre}>
+												<ListItemText primary={t.whoWeAre}/>
+											</SC.StyledListItem>
+										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
 											{!isAuthenticated && (
@@ -185,7 +190,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 					</Box>
 				</Row>
 			</SC.StyledContainer>
-		</SC.StyledHeader>
+		</SC.MobileHeader>
 	);
 };
 

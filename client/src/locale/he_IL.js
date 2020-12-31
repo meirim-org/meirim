@@ -1,14 +1,14 @@
 import React from 'react';
 
 export default {
-	alerts: 'התראות',
+	alerts: 'ההתראות שלי',
 	signin: 'התחברות',
 	signout: 'התנתקות',
 	name: 'מעירים',
 	plans: 'תוכניות',
 	myPlans: 'התוכניות שלי',
 	vocabulary: 'מילון',
-	about: 'אודות',
+	whoWeAre: 'מי אנחנו',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
 	newAlert: 'התראה חדשה',
 	emailAddress: 'כתובת דוא"ל',

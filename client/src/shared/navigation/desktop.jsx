@@ -25,7 +25,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }];
 	
 	return (
-		<SC.StyledHeader>
+		<SC.DesktopHeader>
 			<SC.StyledContainer>
 				<Row justify="space-between">
 					<Box>
@@ -49,7 +49,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 									</Box>
 									<Box px={2}>
 										<SC.StyledLink id="nav-bar-about" to="/about/" activeClassName="active">
-											{t.about}
+											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
@@ -66,7 +66,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 									<RouterLink id="mobile-nav-bar-close-menu">
 										<IconButton
-                                            textcolor={colors.purple}
+											textcolor={colors.purple}
 											ariaLabel={'close mobile menu'}
 											fontSize={20.5}
 										>
@@ -106,7 +106,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 					</Box>
 				</Row>
 			</SC.StyledContainer>
-		</SC.StyledHeader>
+		</SC.DesktopHeader>
 	);
 };
 
