@@ -1,9 +1,9 @@
 const assert = require('chai').assert;
 const nock = require('nock');
 const fs = require('fs');
-const path = require('path');
-const os = require('os');
 const crypto = require('crypto');
+
+const { createTempFile } = require('../../utils');
 
 const { downloadChallengedFile } = require('../../../api/lib/mavat').testOnly;
 
@@ -32,7 +32,7 @@ describe('Challenged file download', function() {
 			.reply(404, 'page not found');
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = await createTempFile(`${crypto.randomBytes(8).toString('hex')}.pdf`);
 
 		// try to download the file
 		const resSuccess = await downloadChallengedFile(
@@ -68,7 +68,7 @@ describe('Challenged file download', function() {
 			);
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = await createTempFile(`${crypto.randomBytes(8).toString('hex')}.pdf`);
 
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
@@ -100,7 +100,7 @@ describe('Challenged file download', function() {
 			.reply(200, 'fake-file-contents', {'Content-Type': 'application/pdf'});
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = await createTempFile(`${crypto.randomBytes(8).toString('hex')}.pdf`);
 
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
@@ -161,7 +161,7 @@ describe('Challenged file download', function() {
 			.reply(200, 'fake-file-contents', {'Content-Type': 'application/pdf'});
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = await createTempFile(`${crypto.randomBytes(8).toString('hex')}.pdf`);
 
 		// try to download the challenged file
 		const resSuccess = await downloadChallengedFile(
