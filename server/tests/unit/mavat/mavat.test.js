@@ -47,6 +47,7 @@ describe('Challenged file download', function() {
 
 		// make sure the temporary file stream is flushed
 		resFile.end();
+		resFile.close();
 
 		// make sure the result was not successful and that nothing was written to the file
 		assert.equal(resSuccess, false, 'download should not be successful');
@@ -86,6 +87,7 @@ describe('Challenged file download', function() {
 
 		// make sure the temporary file stream is flushed
 		resFile.end();
+		resFile.close();
 
 		// make sure the result was not successful and that nothing was written to the file
 		assert.equal(resSuccess, false, 'download should not be successful');
@@ -121,6 +123,7 @@ describe('Challenged file download', function() {
 
 		// make sure the temporary file stream is flushed
 		resFile.end();
+		resFile.close();
 
 		// make sure the result was successful and the file contains the correct data
 		assert.equal(resSuccess, true, 'download should be successful');
@@ -185,6 +188,7 @@ describe('Challenged file download', function() {
 
 		// make sure the temporary file stream is flushed
 		resFile.end();
+		resFile.close();
 
 		// make sure the result was successful and the file contains the correct data
 		assert.equal(resSuccess, true, 'download should be successful');
