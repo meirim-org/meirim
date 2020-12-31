@@ -7,6 +7,8 @@ const crypto = require('crypto');
 
 const { downloadChallengedFile } = require('../../../api/lib/mavat').testOnly;
 
+const TMP_DIR = process.env['RUNNER_TEMP'] || os.tmpdir();
+
 describe('Challenged file download', function() {
 	beforeEach(async function() {
 		// make sure nock is active
@@ -32,7 +34,7 @@ describe('Challenged file download', function() {
 			.reply(404, 'page not found');
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = fs.createWriteStream(path.join(TMP_DIR, `${crypto.randomBytes(8).toString('hex')}.pdf`));
 
 		// try to download the file
 		const resSuccess = await downloadChallengedFile(
@@ -71,7 +73,7 @@ describe('Challenged file download', function() {
 			);
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = fs.createWriteStream(path.join(TMP_DIR, `${crypto.randomBytes(8).toString('hex')}.pdf`));
 
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
@@ -106,7 +108,7 @@ describe('Challenged file download', function() {
 			.reply(200, 'fake-file-contents', {'Content-Type': 'application/pdf'});
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = fs.createWriteStream(path.join(TMP_DIR, `${crypto.randomBytes(8).toString('hex')}.pdf`));
 
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
@@ -170,7 +172,7 @@ describe('Challenged file download', function() {
 			.reply(200, 'fake-file-contents', {'Content-Type': 'application/pdf'});
 
 		// create a temporary file for the result to be written to
-		const resFile = fs.createWriteStream(path.join(os.tmpdir(), `${crypto.randomBytes(8).toString('hex')}.pdf`));
+		const resFile = fs.createWriteStream(path.join(TMP_DIR, `${crypto.randomBytes(8).toString('hex')}.pdf`));
 
 		// try to download the challenged file
 		const resSuccess = await downloadChallengedFile(
