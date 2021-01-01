@@ -44,6 +44,9 @@
 		"useS3ForTreeFiles": false,
 		"treeBucketName": "treeBucketName"
 	},
+	"trees": {
+		"rawDataDir": "/tmp/raw_trees"
+	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,
 		"filterPlansRadiusKm": null
