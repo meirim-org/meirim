@@ -47,6 +47,10 @@
 	"trees": {
 		"rawDataDir": "/tmp/raw_trees"
 	},
+	"locationSearch": {
+		"dbDistanceInMeters": false,
+		"filterPlansRadiusKm": null
+	},
 	"test": {
 		"database": {
 			"client": "mysql",
@@ -57,8 +61,7 @@
 				"password": "password",
 				"database": "test_meirim",
 				"charset": "utf8"
-			},
-			"dbDistanceInMeters": false
+			}
 		},
 		"email": {
 			"options": {
@@ -80,10 +83,8 @@
 			"password": "password",
 			"database": "meirim",
 			"charset": "utf8"
-		},
-		"dbDistanceInMeters": false
+		}
 	},
-
 	"email": {
 		"transport": "SMTP",
 		"from_name": "Meirim",
