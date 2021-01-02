@@ -9,7 +9,7 @@ const StyledButton = withTheme(styled(MUIButton)`
 	font-size: 16px !important;
 	font-stretch: normal;
 	line-height: 1.5;
-	letter-spacing: normal;
+	letter-spacing: normal
 	text-align: center; 
     color: ${props => props.theme.palette.white} !important;
     background-color: ${props => props.theme.palette.primary.main} !important;
@@ -21,7 +21,9 @@ const StyledButton = withTheme(styled(MUIButton)`
     
     .MuiButton-label  {
     	font-family: Assistant !important;
-    }
+        text-transform: none !important;
+    }    
+    
     &:hover {
       background-color: ${props => props.theme.palette.primary['600']} !important;
     }

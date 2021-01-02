@@ -23,7 +23,7 @@ const PlanMobile = ({
 	const [tabsPanelRef, setTabsPanelRef] = useState(null);
 	const [fixedHeader, setFixedHeader] = useState(false);
 
-	const { comments } = CommentSelectors();
+	const { comments, commentsCount } = CommentSelectors();
 	const isPlanHaveComments = comments.length > 0;
 	let tabsPanelTop = tabsPanelRef && tabsPanelRef.current ? tabsPanelRef.current.getBoundingClientRect().top : null;
 
@@ -37,7 +37,7 @@ const PlanMobile = ({
 
 	// eslint-disable-next-line no-unused-vars
 	useScrollPosition(({ prevPos, currPos }) => {
-	    if (currPos.y < -Math.abs(tabsPanelTop)) return  handleFixedHeader(true);
+	    if (currPos.y < -Math.abs(tabsPanelTop)) return handleFixedHeader(true);
 		
 		return  handleFixedHeader(false);
 	},[tabsPanelRef]);
@@ -52,6 +52,7 @@ const PlanMobile = ({
 						handleTabChange={handleTabChange}
 						openNewCommentView={()=> setCommentState(pv => ({ ...pv, isOpen :true }))}
 						isNewCommentOpen={commentState.isOpen}
+                        commentsCount={commentsCount}
 					/>
 					<SC.Main className={mainClasses}>
 						{ 

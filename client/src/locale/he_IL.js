@@ -1,14 +1,14 @@
 import React from 'react';
 
 export default {
-	alerts: 'התראות',
+	alerts: 'ההתראות שלי',
 	signin: 'התחברות',
 	signout: 'התנתקות',
 	name: 'מעירים',
 	plans: 'תוכניות',
 	myPlans: 'התוכניות שלי',
 	vocabulary: 'מילון',
-	about: 'אודות',
+	whoWeAre: 'מי אנחנו',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
 	newAlert: 'התראה חדשה',
 	emailAddress: 'כתובת דוא"ל',
@@ -79,7 +79,6 @@ export default {
 	backToComments: 'חזרה לעמוד חוות הדעת',
 	publishComment: 'פרסום חוות דעת',
 	improvement: 'הצעה לשיפור',
-	review: 'ביקורת',
 	general: 'חוות דעת כללית'
 };
 

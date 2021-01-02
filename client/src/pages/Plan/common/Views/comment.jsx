@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography,  Button } from 'shared';
+import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { Badge } from '@material-ui/core';
 import { daysPassed } from 'pages/Plan/utils';
 import * as SC from './style';
 
-export const CommentView = ({ addLikeToComment, commentData, isNewCommentOpen }) => {
+export const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 	const theme = useTheme();
-	const { content, created_at, person: { name }, id: commentId, likes, type } = commentData;
+	const { content, created_at, person: { name }, type } = commentData;
 
 	return (
 		<TabPanel>
@@ -56,19 +55,7 @@ export const CommentView = ({ addLikeToComment, commentData, isNewCommentOpen })
 						{content}
 					</Typography>
 				</SC.Text>
-				<SC.Like>
-					<Button
-						id={'like-' + commentId}
-						textcolor={theme.palette.black}
-						text={t.iLike}
-						onClick={() => addLikeToComment({ commentId })}
-						simple
-						iconBefore={<SC.LikeIcon/>}
-					/>
-					<Badge
-						badgeContent={!likes ? 0 : likes}
-					/>
-				</SC.Like>
+				{children}
 			</TabBox>
 		</TabPanel>
 	);
@@ -82,7 +69,7 @@ CommentView.propTypes = {
 	id: PropTypes.number.isRequired,
 	commentData: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
-	addLikeToComment: PropTypes.func.isRequired,
+	children: PropTypes.any
 };
 
 export default CommentView;

@@ -22,8 +22,7 @@ const PlanDesktop = ({
 	subscribePanel, 
 	handleSubscribePanel,
 }) => {
-	console.log('🚀 ~ file: index.jsx ~ line 25 ~ match', match);
-	const { comments } = CommentSelectors();
+	const { comments, commentsCount } = CommentSelectors();
 	const { planData: { geom, countyName } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
 	

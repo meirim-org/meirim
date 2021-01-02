@@ -56,10 +56,10 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 					<SC.TextareaAutosize
 						 value={inputValue}
 						 onChange={(e) => {
-								const length = e.target.value.length
-								if(length === 1200) return
-								handleNewCommentText(e.target.value)}
-							}
+							const length = e.target.value.length;
+							if (length === 1200) return;
+							handleNewCommentText(e.target.value);}
+						}
 						 disabled={newCommentTypeError}
 						 aria-label={t.emptyTextarea}
 						     inputProps={{ maxLength: 2 }}
@@ -81,7 +81,7 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 						small
 						simple
 						onClick={addNewComment}					
-						disabled={newCommentTypeError}
+						disabled={newCommentTypeError || !inputValue}
 					/>
 				</SC.addCommentButtonWrapper>
 			</>

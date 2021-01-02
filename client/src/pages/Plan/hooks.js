@@ -14,7 +14,7 @@ export const useCommentsDataHandler = (planId, refetchComments, setRefetchCommen
 		const fetchComments = async () => {
 			const response = await getCommentsByPlanId(planId);
 			const comments = utils.extractComments(response.data);
-			dispatch(setData({ data: comments }));
+			dispatch(setData({ data: comments, commentsCount: response.data.length.toString() }));
 		};
 		fetchComments();
 		setRefetchComments(false);
@@ -24,6 +24,7 @@ export const useCommentsDataHandler = (planId, refetchComments, setRefetchCommen
 export const useDataHandler = (planId) => {
 	const dispatch = useDispatch();
 	useEffect (() => {
+		window.scrollTo(0, 0);
 		const fetchData = async () => {
 			const response = await getPlanData(planId);
 			const { 
