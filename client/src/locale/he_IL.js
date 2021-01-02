@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default {
 	alerts: "התראות",
@@ -29,9 +29,10 @@ export default {
 	signin: 'התחברות',
 	signout: 'התנתקות',
 	name: 'מעירים',
-	plans: 'תכניות',
+	plans: 'תוכניות',
+	myPlans: 'התוכניות שלי',
 	vocabulary: 'מילון',
-	about: 'אודות',
+	whoWeAre: 'מי אנחנו',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
 	newAlert: 'התראה חדשה',
 	emailAddress: 'כתובת דוא"ל',
@@ -39,27 +40,70 @@ export default {
 	password: 'סיסמה',
 	signup: 'הרשמה',
 	signupNow: 'הרשמו עכשיו',
-	supportUs: 'תמכו בנו',
 	alreadyGotAccount: 'יש לכם כבר חשבון?',
 	km: 'ק"מ',
 	emailExists: 'כתובת דוא"ל כבר רשומה',
 	error: 'שגיאה',
 	forgotPassword: 'שכחתם את הסיסמה?',
+	forgotMyPassword: 'שכחתי סיסמה',
 	loading: 'טוען',
 	seenAllPlans: 'זה הכל!',
 	callToAction: 'הצטרפו למעירים',
 	whatToRegister: 'רוצים השכמה?',
 	whyRegister: (
 		<div>
-            רוצים לדעת אם הגינה הציבורית שלכם עומדת{' '}
-			<strong>להפוך למגדל?</strong>
+            רוצים לדעת מה בונים לכם{' '}
+			<strong>ליד הבית?</strong>
 		</div>
 	),
-	whoWeAre: 'מי אנחנו',
 	howItWorks: `
          מערכת ההתראות שלנו מאגדת במקום אחד את כל התכניות מכל
          ועדות התכנון ותשלח לכם התראה למייל לפי העדפה
         גיאוגרפית ובזמן אמת בכל פעם שסטטוס התכנית ישתנה.
         מהיום תוכלו לעקוב בקלות אחרי השינויים ליד הבית שלכם.`,
-	myPlans: 'התכניות שלי'
-}
+	summary: 'תקציר',
+	opinion: 'חוות דעת',
+	planningInformation: 'מידע תכנוני',
+	sharing: 'שיתוף',
+	saving: 'שמירה',
+	addNewComment: 'הוספת חוות דעת',
+	supportUs: 'תמכו בנו',
+	review: 'ביקורת',
+	iLike: 'אהבתי',
+	addAResponse: 'הוספת תגובה',
+	improvementProposal: 'הצעה לשיפור',
+	generalOpinion: 'חוות דעת כללית',
+	emptyTextarea: 'שדה טקסט ריק',
+	close: 'סגירה',
+	send: 'שליחה',
+	chooseType: 'בחרו סוג',
+	startDiscussion: 'היו הראשונים להתחיל דיון על התוכנית!',
+	shareThought: 'שתפו את הקהילה בדעתכם',
+	planDetails: 'פרטי התכנית',
+	planGoals: 'מטרות התכנית',
+	meanings: 'משמעויות',
+	status: 'סטטוס',
+	planType: 'סוג תכנית',
+	planDeatailOnGovSite: 'מסמכי התוכנית באתר הממשלה',
+	meter: 'מ״ר',
+	thisPlanIncreases: 'תוכנית זו מגדילה את השטח הבנוי פי',
+	thisPlanAdds: 'תוכנית זו מוסיפה',
+	extension: 'תוספת',
+	buildingLand: 'שטח בנוי',
+	building: 'בניה',
+	insteadOf: 'במקום',
+	subscribeTitle: 'רוצים לקבל התראה כשהתכנית מתקדמת?',
+	subscribeText: 'הירשמו למערכת ההתראות שלנו',
+	noThanks: 'לא תודה',
+	sharePlan: 'שיתוף תכנית',
+	whatsappShare: 'שיתוף ב-Whatsapp',
+	copyUrl: 'או העתיקו את הקישור',
+	copy: 'העתק',
+	location: 'מיקום',
+	backToComments: 'חזרה לעמוד חוות הדעת',
+	publishComment: 'פרסום חוות דעת',
+	improvement: 'הצעה לשיפור',
+	general: 'חוות דעת כללית'
+};
+
+

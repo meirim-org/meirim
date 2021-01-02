@@ -11,8 +11,10 @@ import TermsOfPayment from 'pages/Funding/termsOfPayment';
 import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
+// import { SharePlanView }  from 'pages/Plan/common/';
 
 const StyledModal = styled(MUIModal)`
+    z-index: 9999 !important; 
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -48,11 +50,12 @@ const modalComponents = {
 	emailVerified: EmailVerified,
 	payment: Payment,
 	termsOfPayment: TermsOfPayment
-}
+	// share: SharePlanView
+};
 
 const Modal = ({ id }) => {
-	const { open, modalType, modalProps } = ModalSelectors()
-	const ModalChildren = modalComponents[modalType]
+	const { open, modalType, modalProps } = ModalSelectors();
+	const ModalChildren = modalComponents[modalType];
 
 	return (
 		<ModalWrapper id={`wrapper-${id}`}>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {device} from '../../style';
+import { device } from '../../style';
 
 export const Titles = styled.div`
   padding: 0 1.5em 0;
