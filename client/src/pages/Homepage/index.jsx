@@ -1,6 +1,8 @@
 import React from 'react';
-import TopSection from './TopSection';
 import styled from 'styled-components';
+import TopSection from './TopSection';
+import TopViews from './TopViews';
+import WeNeedYou from './WeNeedYou';
 
 const Wrapper = styled.div`
     width: 100%;
@@ -9,11 +11,13 @@ const Wrapper = styled.div`
 `;
 
 const Homepage = () => {
-    return (
-        <Wrapper>
-            <TopSection />
-        </Wrapper>
-    )
+	return (
+		<Wrapper>
+			<TopSection />
+			<TopViews />
+			<WeNeedYou />
+		</Wrapper>
+	)
 }
 
 export default Homepage;

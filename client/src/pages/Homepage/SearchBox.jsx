@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import locationAutocompleteApi from "../../services/location-autocomplete";
+import locationAutocompleteApi from '../../services/location-autocomplete';
 import Autocomplete from '../../components/AutoCompleteInput';
 
 const Wrapper = styled.div`
@@ -35,28 +35,57 @@ const Button = styled.button`
     line-height: 1;
 `;
 
-export default function SearchBox() {
-    const [addresses, setAddresses] = useState([]);
+const AutocompleteWrapper = styled.div`
+    width: 305px;
 
-    async function onInputChange(input) {
-        const res = await locationAutocompleteApi.autocomplete(input);
-        setAddresses(res);
+    input[type="text"] {
+        color: #FFFFFF;
+        font-size: 14px;
+        line-height: 18px;
+
+        &::placeholder {
+            opacity: 1;
+        }
     }
 
-    useEffect(()=>{
-        locationAutocompleteApi.init();
-    },[]);
+    .MuiPaper-elevation1 {
+        border-radius: 0px 0px 12px 12px;
+        border: 1px solid #652DD0;
+        font-size: 16px;
+    }
+`;
 
-    return (
-        <Wrapper>
-            <Title>סקרנים מה בונים לכם ליד הבית?</Title>
-            <Autocomplete 
-                placeholder="חפשו כתובת"
-                inputSuggestions={addresses}
-                onInputChange={onInputChange}
-                classes=""
-            />
-            <Button>צפיה בתוכניות</Button>
-        </Wrapper>
-    )
+const InputWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+export default function SearchBox() {
+	const [addresses, setAddresses] = useState([]);
+
+	async function onInputChange(input) {
+		const res = await locationAutocompleteApi.autocomplete(input);
+		setAddresses(res);
+	}
+
+	useEffect(()=>{
+		locationAutocompleteApi.init();
+	},[]);
+
+	return (
+		<Wrapper>
+			<Title>סקרנים מה בונים לכם ליד הבית?</Title>
+			<InputWrapper>
+				<AutocompleteWrapper>
+					<Autocomplete 
+						placeholder="חפשו כתובת"
+						inputSuggestions={addresses}
+						onInputChange={onInputChange}
+						classes=""
+					/>
+				</AutocompleteWrapper>
+				<Button>צפיה בתוכניות</Button>
+			</InputWrapper>
+		</Wrapper>
+	)
 }
