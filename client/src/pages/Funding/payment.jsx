@@ -11,8 +11,9 @@ const Payment = ({ url, id, onClose, errors, inputFocus, inputBlur }) => {
 					width="800px"
 					height="940px"
 					id="external-payment-page"
-					className="myClassname"
+					className="payment-popup"
 					display="initial"
+					zoom="0.75"
 					position="relative"/>
 			</SC.MainWrapper>
 	);
