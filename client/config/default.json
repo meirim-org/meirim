@@ -4,7 +4,7 @@
         "withCredentials": true
     },
     "geocode": {
-        "mapsApiKey": "AIzaSyAb0269OfRhV9mkf2iq9bhuVtc_Yb-zw9c",
+        "mapsApiKey": "",
         "autocompleteDelay": 2000
     }
 }
