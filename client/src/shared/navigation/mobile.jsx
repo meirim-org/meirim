@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Drawer, ListItemText, Divider } from '@material-ui/core';
+import { Box, ListItemText, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -12,14 +12,14 @@ import StarIcon from '@material-ui/icons/Star';
 import t from 'locale/he_IL';
 import {  Row, IconButton, Menu } from 'shared';
 import logo from 'assets/logo.png';
-import { colors } from 'style/index'
-import * as SC from './style'
-import { PLANS } from 'router/contants'
-import { openModal } from 'redux/modal/slice'
+import { colors } from 'style/index';
+import * as SC from './style';
+import { PLANS } from 'router/contants';
+import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 
 const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
 	const [dropDownEl, setDropDownEl] = useState(null);
 
@@ -32,7 +32,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 	};
 
 	return (
-		<SC.StyledHeader>
+		<SC.MobileHeader>
 			<SC.StyledContainer>
 				<Row justify="space-between">
 					<Box>
@@ -62,7 +62,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 									<Box display="flex">
 										<RouterLink id="nav-bar-favorites" to="#">
 											<IconButton
-												color={colors.purple}
+												textcolor={colors.purple}
 												ariaLabel={'Favorites'}
 												fontSize={24}
 												paddingg={0}
@@ -74,7 +74,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 									<Box display="flex">
 										<RouterLink id="nav-bar-notifications" to="#">
 											<IconButton
-												color={colors.purple}
+												textcolor={colors.purple}
 												ariaLabel={'Notifications'}
 												fontSize={24}
 												paddingg={0}
@@ -89,7 +89,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											ariaControls="user-menu"
 											openHandler={handleDropDownClick}
 											closeHandler={handleDropDownClose}
-											textColor="#1a2d66"
+											textcolor="#1a2d66"
 											iconBefore={<AccountCircleIcon color="primary"/>}
 											dropDownEl={dropDownEl}
 											menuItems={[]}
@@ -99,20 +99,21 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 							)}
 
 							<Box>
-								<IconButton color={colors.purple} ariaLabel={'open mobile menu'}>
-									<MenuIcon onClick={() => setMobileNavIsOpened(true)}/>
+								<IconButton onClick={() => setMobileNavIsOpened(true)}  textcolor={colors.purple} ariaLabel={'open mobile menu'}>
+									<MenuIcon/>
 								</IconButton>
-								<Drawer open={mobileNavIsOpened}>
+								<SC.Drawer open={mobileNavIsOpened}>
 									<SC.MobileNavWrapper
 										role="presentation"
 									>
 										<Box display="flex" justifyContent="flex-end" m={1.5}>
 											<IconButton
-												color={colors.black}
+												textcolor={colors.black}
 												ariaLabel={'close mobile menu'}
 												fontSize={20.5}
+												onClick={() => setMobileNavIsOpened(false)}
 											>
-												<CloseIcon onClick={() => setMobileNavIsOpened(false)}/>
+												<CloseIcon />
 											</IconButton>
 										</Box>
 
@@ -132,21 +133,32 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
-											<SC.StyledListItem component={RouterLink} button key={t.supportUs}>
+											<SC.StyledListItem component={RouterLink} to="#" button key={t.supportUs}>
 												<ListItemText primary={t.supportUs}/>
+											</SC.StyledListItem>
+										</SC.StyledList>
+										<SC.StyledList>
+											<SC.StyledListItem component={RouterLink} to="/about/" button key={t.whoWeAre}>
+												<ListItemText primary={t.whoWeAre}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
 											{!isAuthenticated && (
 												<>
-													<SC.StyledListItem component={SC.StyledLink} to="#" button 
-														onClick={() => dispatch(openModal({ modalType: 'login' }))}
+													<SC.StyledListItem component={SC.StyledLink} to="#" button
+														onClick={() => {
+															setMobileNavIsOpened(false);
+															dispatch(openModal({ modalType: 'login' }));
+														}}
 														key={t.signin}>
 														<ListItemText primary={t.signin}/>
 													</SC.StyledListItem>
 													<SC.StyledListItem component={RouterLink} to="#" button
-														onClick={() => dispatch(openModal({ modalType: 'register' }))}
+														onClick={() => {
+														    dispatch(openModal({ modalType: 'register' }));
+															setMobileNavIsOpened(false);
+														}}
 														key={t.signup}
 														color="#652dd0">
 														<ListItemText primary={t.signup}/>
@@ -155,11 +167,11 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											)}
 											{isAuthenticated && (
 												<>
-													<SC.StyledListItem component={RouterLink} button
+													<SC.StyledListItem component={RouterLink} to="#" button
 														key={t.alerts}>
 														<ListItemText primary={t.alerts}/>
 													</SC.StyledListItem>
-													<SC.StyledListItem component={RouterLink}  button
+													<SC.StyledListItem component={RouterLink} to="#" button
 														onClick={logoutHandler}
 														key={t.signout}
 														color="#b71f29">
@@ -172,15 +184,15 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											)}
 										</SC.StyledList>
 									</SC.MobileNavWrapper>
-								</Drawer>
+								</SC.Drawer>
 							</Box>
 						</Row>
 					</Box>
 				</Row>
 			</SC.StyledContainer>
-		</SC.StyledHeader>
+		</SC.MobileHeader>
 	);
-}
+};
 
 MobileNavBar.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,

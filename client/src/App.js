@@ -1,38 +1,33 @@
 import './assets/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
-import styled from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner, faTimes, faBuilding, 
+import { faSpinner, faTimes, faBuilding,
 	faPaperPlane, faChartArea
 } from '@fortawesome/free-solid-svg-icons';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import * as Scenes from 'scenes'
+import * as Scenes from 'scenes';
+import Plan from 'pages/Plan';
 import EmailSent from 'pages/Register/emailSent';
 import Funding from 'pages/Funding';
 import FundingSuccess from 'pages/Funding/success';
-import Modal from 'shared/modal'
+import { Modal, CircularProgress } from 'shared';
 import 'App.css';
-import { muiTheme } from 'theme'
-import { CookieHook } from 'hooks'
+import { muiTheme } from 'theme';
+import { CookieHook } from 'hooks';
+
 library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
 
-const CircularWrapper = styled.div`
-	display: grid;
-	justify-content: center;
-	padding-top: 40%;
-`
 const App = () => {
-	const { loading, success } = CookieHook()
+	const { loading, success } = CookieHook();
 	if (loading) {
-		return <CircularWrapper> <CircularProgress /></CircularWrapper>
+		return  <CircularProgress />; 
 	}
 
-	const openRegister = !success
+	const openRegister = !success;
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
@@ -45,7 +40,7 @@ const App = () => {
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
 						<Route path="/plan/:id/:title" render={props => <Scenes.SinglePlan {...props} />} />
-						<Route path="/plan/:id" render={props => <Scenes.SinglePlan {...props} />} />
+						<Route path="/plan/:id" render={props => <Plan {...props} />} />
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
@@ -60,9 +55,9 @@ const App = () => {
 					</Switch>
 				</div>
 			</BrowserRouter>
-			<ToastContainer autoClose={false}/>
+			<ToastContainer autoClose={5000} />
 		</MuiThemeProvider>
 	);
-}
+};
 
 export default App;

@@ -10,8 +10,30 @@ import Row from './row';
 import Divider from './divider';
 import { default as IconButton } from './icon';
 import Menu from './menu';
-import HelperText from './helperText'
+import TabPanel from './tabPanel';
+import Typography from './typography';
+import TabBox from './tabBox';
+import CircularProgress from './circularProgress';
+import HelperText from './helperText';
+import Text from './text';
 
 export {
-	Button, Dropdown, TextArea, TextInput, Modal, Link, Checkbox, Navigation, Row, IconButton, Menu, Divider, HelperText
+	Button,
+	CircularProgress,
+	Dropdown,
+	TextArea,
+	TextInput,
+	Modal,
+	Link,
+	Navigation,
+	Row,
+	IconButton,
+	Menu,
+	TabPanel,
+	Typography,
+	TabBox,
+	Text,
+	Divider,
+	Checkbox,
+	HelperText
 };

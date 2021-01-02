@@ -1,6 +1,5 @@
 html body {
   direction: rtl;
-  background-color: #f8f8f8;
   font-family: Heebo, Arial, Helvetica, sans-serif !important ;
 }
 .MuiTypography-body1-48,
@@ -40,4 +39,8 @@ html body {
 
 .card-content {
   height: 40%;
+}
+
+.leaflet-top, .leaflet-bottom {
+    z-index: 1;
 }
