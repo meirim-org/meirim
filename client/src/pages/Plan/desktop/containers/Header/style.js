@@ -3,18 +3,29 @@ import { AppBar as MuiAppBar } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 export const SubTitleWrapper = styled.div`
+    position: relative;
     margin-bottom: 1rem;
+    .back-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform: translate(112%, -23%);
+        svg {
+            font-size: 1.35rem;
+        }
+    }
 `;
 
 export const TitleWrapper = styled.div`
     margin-bottom: 3rem;
 `;
 
-export const Header = styled.header`
+export const Header = withTheme(styled.header`
     padding: 2rem 4.8rem 0 2rem;
+    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
     display: grid;
     grid-template-columns: 56% 1fr;
-`;
+`);
 
 export const TitlesAndTabs = styled.div`
 `;
@@ -71,5 +82,8 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         transform: none;
         color: ${props => props.theme.palette.primary['600']} !important;
         background-color: ${props => props.theme.palette.primary['bg']} !important;
+    }
+    .MuiTab-wrapper {
+        font-size: 1rem !important;
     }
 `);

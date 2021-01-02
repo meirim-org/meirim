@@ -5,6 +5,7 @@ import {
 import { SubCommentForm, CommentForm } from './Forms';
 import { CommentView, SubCommentView, SharePlanView } from './Views';
 import AddComment from './AddComment';
+import { BackButton } from './Header';
 
 export {
 	AddComment,
@@ -17,5 +18,6 @@ export {
 	PlanDetailsPanel,
 	StatsPanel,
 	SubscribePanel,
-	SharePlanView
+	SharePlanView,
+	BackButton
 };

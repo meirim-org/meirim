@@ -17,8 +17,7 @@ export const TitleWrapper = styled.div`
 export const Header = withTheme(styled.div`
     background: ${props => props.theme.palette.gray['100']} !important;
     border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
-    padding: 1rem 3.425rem 0 2.3rem;    
-    margin-bottom: 0.8rem;
+    padding: 1rem 3.425rem 0;    
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -87,7 +86,7 @@ export const AppBar = withTheme(styled(MuiAppBar)`
     box-shadow: none !important;
     .MuiTab-root {
         min-width: auto !important;
-        padding: .4rem 1.2rem;
+        padding: .4rem 1rem;
     }
     .MuiTabs-indicator {
         background-color:  ${props => props.theme.palette.primary.main} !important;

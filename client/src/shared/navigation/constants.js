@@ -1,4 +1,4 @@
-import api from 'services/api'
+import api from 'services/api';
 
 export const userLoggedInMenuItems = [
 	{
@@ -6,4 +6,4 @@ export const userLoggedInMenuItems = [
 		'onClick': () =>  api.post('/sign/out')
 		
 	},
-]
+];
