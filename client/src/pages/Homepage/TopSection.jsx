@@ -13,6 +13,7 @@ const Image = styled.div`
 
 const Section = styled.section`
     width: 100%;
+    margin-bottom: 20px;
 `;
 
 const Cover = styled.div`
@@ -47,19 +48,19 @@ const Paragraph = styled.p`
 `;
 
 const TopSection = () => {
-    return (
-        <Section>
-            <Image>
-                <Cover>
-                    <H1>ברוכים הבאים למעירים!</H1>
-                    <Paragraph>
+	return (
+		<Section>
+			<Image>
+				<Cover>
+					<H1>ברוכים הבאים למעירים!</H1>
+					<Paragraph>
                     קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
-                    </Paragraph>
-                    <SearchBox />
-                </Cover>
-            </Image>
-        </Section>
-    )
+					</Paragraph>
+					<SearchBox />
+				</Cover>
+			</Image>
+		</Section>
+	)
 }
 
 export default TopSection;
