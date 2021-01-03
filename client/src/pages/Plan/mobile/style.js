@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { AppBar as MuiAppBar } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';

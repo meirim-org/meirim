@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Chart } from 'react-charts';
 import { TabPanel, TabBox, Typography, Text } from 'shared';
