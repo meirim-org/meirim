@@ -1,12 +1,14 @@
 import React from 'react';
 import { useTheme } from '@material-ui/styles';
 import PropTypes from 'prop-types';
+import { openModal } from 'redux/modal/slice';
 import t from 'locale/he_IL';
 import {  TabPanel, Button } from 'shared';
 import { CommentForm, CommentView,  SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
-import { CommentSelectors } from 'redux/selectors';
+import { CommentSelectors, UserSelectors } from 'redux/selectors';
 import { Badge } from '@material-ui/core';
 import * as SC from './style';
+import { useDispatch } from 'react-redux';
 
 const CommentsTab = ({
 	commentState,
@@ -17,13 +19,21 @@ const CommentsTab = ({
 	addSubComment,
 	addLikeToComment,
 	 }) => {
+	const dispatch = useDispatch();
+	const { isAuthenticated } = UserSelectors();
 	const { comments } = CommentSelectors();
 	const { isOpen: isSubCommentOpen } = subCommentState;
 	const { isOpen: isCommentOpen } = commentState;
 	const theme = useTheme();
 	const showComments = comments.length > 0; 
 	const showStartDiscussionPanel = comments.length === 0 && !isCommentOpen;
-	const newCommentViewHandler = () => setCommentState(pv => ({ ...pv, isOpen: !isCommentOpen }));
+	const newCommentViewHandler = () =>{ 
+		if (isAuthenticated){
+			setCommentState(pv => ({ ...pv, isOpen: !isCommentOpen }));
+		} else {
+			dispatch(openModal({ modalType: 'login' }));
+		}
+	};
 	
 	return (
 		<>			

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {AppBar as MuiAppBar, Button} from '@material-ui/core';
+import { AppBar as MuiAppBar, Button } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 export const TitlesButtonWrapper = styled.div`

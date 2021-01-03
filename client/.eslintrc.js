@@ -42,5 +42,6 @@ module.exports = {
 		],
 		"object-curly-spacing": ["error", "always"],
 		"keyword-spacing": ["error", { "before": true }],
+		"array-callback-return": "off"
 	}
 }

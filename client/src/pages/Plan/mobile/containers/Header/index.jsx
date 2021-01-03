@@ -9,7 +9,7 @@ import { BackButton } from 'pages/Plan/common';
 import { useHistory } from 'react-router-dom';
 import { Badge } from '@material-ui/core';
 
-const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen }) => {
+const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setCommentState }) => {
 	const history = useHistory();
 	const { planData } = PlanSelectors();
 	const { name, countyName } = planData;
@@ -42,7 +42,11 @@ const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen }) =>
 					</>
 					:
 					<SC.TitlesButtonWrapper>
-						<BackButton label={t.backToComments} classname="back-button"/>
+						<BackButton onclick={() => {
+							console.log('hey'); 
+							setCommentState(pv =>({ ...pv, isOpen: false }));}
+						} 
+						label={t.backToComments} classname="back-button"/>
 						<Title subTitle={t.addNewComment}/>
 					</SC.TitlesButtonWrapper>
 				}
