@@ -83,7 +83,6 @@ SubCommentForm.propTypes = {
 	setSubCommentState: PropTypes.func.isRequired,
 	addSubComment: PropTypes.func.isRequired,
 	subCommentState: PropTypes.object.isRequired,
-	comment: PropTypes.object.isRequired,
 };
 
 export default SubCommentForm;

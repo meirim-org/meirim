@@ -1,9 +1,10 @@
 import React from 'react';
 import { PlanSelectors } from 'redux/selectors';
 import PropTypes from 'prop-types';
-import { GoalsPanel, PlanDetailsPanel, StatsPanel, SubscribePanel } from 'pages/Plan/common';
+import { GoalsPanel, PlanDetailsPanel, StatsPanel, SubscribePanel, MapPanel } from 'pages/Plan/common';
+import { withGetScreen } from 'react-getscreen';
 
-const SummaryTab = ({ subscribePanel, handleSubscribePanel }) => {
+const SummaryTab = ({ subscribePanel, handleSubscribePanel, isMobile, isTablet }) => {
 	const { planData, dataArea, textArea } = PlanSelectors();
 	const { type, status, url, goalsFromMavat } = planData;
 
@@ -11,7 +12,13 @@ const SummaryTab = ({ subscribePanel, handleSubscribePanel }) => {
 		<>
 			<PlanDetailsPanel type={type} status={status} url={url}/>
 			<GoalsPanel goalsFromMavat={goalsFromMavat} />
-			<SubscribePanel 
+			{isMobile() || isTablet()
+				?
+				<MapPanel geom={planData.geom}/>
+				:
+				null
+			}
+			<SubscribePanel
 				subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>
 			<StatsPanel dataArea={dataArea} textArea={textArea} />
@@ -20,8 +27,11 @@ const SummaryTab = ({ subscribePanel, handleSubscribePanel }) => {
 };
 
 SummaryTab.propTypes = {
+	isMobile:PropTypes.func.isRequired,
+	isTablet:PropTypes.func.isRequired,
 	subscribePanel: PropTypes.bool.isRequired,
 	handleSubscribePanel: PropTypes.func.isRequired,
 };
 
-export default SummaryTab;
+export default withGetScreen(SummaryTab, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
+
