@@ -24,7 +24,6 @@ const CommentsTab = ({
 	const showComments = comments.length > 0; 
 	const showStartDiscussionPanel = comments.length === 0 && !isCommentOpen;
 	const newCommentViewHandler = () => setCommentState(pv => ({ ...pv, isOpen: !isCommentOpen }));
-	const setIsSubCommentOpen = () => setSubCommentState(pv => ({ ...pv, isOpen: !isSubCommentOpen }));
 	
 	return (
 		<>			
@@ -63,7 +62,7 @@ const CommentsTab = ({
 							</SC.Like>
 							<SC.AddSubComment className={isSubCommentOpen ? 'active' : ''}>
 								<Button
-									id={'add-response-' + comment.id}
+									id={'add-subcomment-' + comment.id}
 									textcolor={theme.palette.black}
 									text={t.addAResponse}
 									onClick={() => setSubCommentState(pv => ({ ...pv, isOpen: !subCommentState.isOpen }))}
@@ -74,6 +73,7 @@ const CommentsTab = ({
 							<SC.CommentsWrapper>
 								{isSubCommentOpen &&
                                 <SubCommentForm
+                                	id={'add-subcomment-form' + comment.id}
                                 	isSubCommentOpen={isSubCommentOpen}
                                 	addSubComment={addSubComment}
                                 	parentComment={comment}
