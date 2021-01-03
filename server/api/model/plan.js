@@ -208,7 +208,7 @@ class Plan extends Model {
 		return plan.save();
 	}
 
-	static async setMavatData (plan, mavatData, oldPlan = null) {
+	static async setMavatData (plan, mavatData) {
 		const addPlanIdToArray = (chart) => {
 			chart.forEach(row => { row.plan_id = plan.id; });
 		};
@@ -304,6 +304,8 @@ class Plan extends Model {
 				}
 			}
 		});
+
+		return plan;
 	}
 
 	static getUnsentPlans (userOptions) {
