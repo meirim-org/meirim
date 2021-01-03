@@ -12,7 +12,6 @@ const Template = ({
 	children,
 	match,
 }) => {
-	console.log('🚀 ~ file: template.jsx ~ line 15 ~ match', match);
 	const { comments } = CommentSelectors();
 	const { planData: { geom, countyName } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
@@ -45,6 +44,7 @@ Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
 	children: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired,
 };
 
 export default Template;

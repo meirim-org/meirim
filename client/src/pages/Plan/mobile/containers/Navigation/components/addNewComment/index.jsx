@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { BottomNavigationAction } from '@material-ui/core';
 import t from 'locale/he_IL';
+// import { useHistory } from 'react-router-dom';
 
-const AddNewComment = ({ handleTabChange, openNewCommentView }) => {
+const AddNewComment = ({ openNewCommentView }) => {
+	// const history = useHistory();
+	
 	return (
 		<BottomNavigationAction
 			onClick={()=> {
-				handleTabChange(null,1);
+				// history.push
 				openNewCommentView();
 
 			}}
@@ -19,7 +22,6 @@ const AddNewComment = ({ handleTabChange, openNewCommentView }) => {
 };
 
 AddNewComment.propTypes = {
-	handleTabChange: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
 };
 

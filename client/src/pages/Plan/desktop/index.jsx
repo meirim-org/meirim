@@ -1,11 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Mapa from 'components/Mapa';
-import Wrapper from 'components/Wrapper';
-import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import { Header, SummaryTab, CommentsTab } from './containers';
-import * as SC from './style';
+import { SummaryTab, CommentsTab } from 'pages/Plan/containers';
 import Template from './template.jsx';
 
 const PlanDesktop = ({
@@ -17,14 +13,9 @@ const PlanDesktop = ({
 	setCommentState,
 	addSubComment,
 	addLikeToComment,
-	tabValue, 
-	handleTabChange, 
 	subscribePanel, 
 	handleSubscribePanel,
 }) => {
-	const { comments, commentsCount } = CommentSelectors();
-	const { planData: { geom, countyName } } = PlanSelectors();
-	const isPlanHaveComments = comments.length > 0;
 	
 	return (
 		<Template match={match}>
@@ -38,9 +29,15 @@ const PlanDesktop = ({
 					setSubCommentState={setSubCommentState}
 					setCommentState={setCommentState}
 					{...props}
-				/>
-			}	/>
-			<Route path={match.url + '/summary'} render={props => <SummaryTab/>}	/>
+				/>}	
+			/>
+			<Route path={match.url + '/'} render={props => 
+				<SummaryTab 
+					subscribePanel={subscribePanel} 
+					handleSubscribePanel={handleSubscribePanel} 
+					{...props}
+				/>}	
+			/>
 		</Template>
 	);
 };
@@ -50,8 +47,7 @@ PlanDesktop.propTypes = {
 	setSubCommentState: PropTypes.func.isRequired,
 	commentState: PropTypes.object.isRequired,
 	subCommentState: PropTypes.object.isRequired,
-	tabValue: PropTypes.number.isRequired,
-	handleTabChange: PropTypes.func.isRequired,
+	match: PropTypes.object.isRequired,
 	subscribePanel: PropTypes.bool.isRequired,
 	handleSubscribePanel: PropTypes.func.isRequired,
 	addNewComment: PropTypes.func.isRequired,

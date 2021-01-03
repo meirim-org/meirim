@@ -1,15 +1,19 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import { Tabs, Title } from './components';
+import {  Title } from './components';
+import { Button } from 'shared';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { goBack } from 'pages/Plan/utils';
 import { BackButton } from 'pages/Plan/common';
+import { useHistory } from 'react-router-dom';
 
-const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, isNewCommentOpen, commentsCount }) => {
+const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen }) => {
+	const history = useHistory();
 	const { planData } = PlanSelectors();
 	const { name, countyName } = planData;
+	const { commentsCount } = CommentSelectors();
 
 	const tabsPanelRef = useRef(null);
 	useEffect(() => handleTabsPanelRef(tabsPanelRef));
@@ -25,7 +29,11 @@ const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, is
 					    	<Title title={countyName} subTitle={name}/>
 						</SC.TitlesButtonWrapper>
 						<SC.AppBar ref={tabsPanelRef} position="static" className={fixedHeader ? 'fixed' : ''}>
-							<Tabs tabValue={tabValue} handleTabChange={handleTabChange} commentsCount={commentsCount} />
+							<div>
+								<Button text={t.summary} onClick={() => history.push(match.url)}/>
+								<Button text={`${t.opinion}${commentsCount}`} onClick={() => history.push(`${match.url}/comments`)}/> 
+								<Button text={t.planningInformation}/>
+							</div>
 						</SC.AppBar>
 					</>
 					:
@@ -40,15 +48,11 @@ const Header = ({ handleTabsPanelRef, fixedHeader, tabValue, handleTabChange, is
 };
 
 Header.propTypes = {
-	name: PropTypes.string,
-	countyName: PropTypes.string,
-	tabValue: PropTypes.any.isRequired,
-	handleTabChange: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
+	match: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	fixedHeader: PropTypes.bool.isRequired,
-	handleTabsPanelRef: PropTypes.func.isRequired,
-    commentsCount: PropTypes.string.isRequired,
+	handleTabsPanelRef: PropTypes.func.isRequired
 };
 
 export default Header;
