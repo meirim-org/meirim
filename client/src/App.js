@@ -50,7 +50,7 @@ const App = () => {
 					</Switch>
 				</>
 			</BrowserRouter>
-			<ToastContainer autoClose={5000} />
+			<ToastContainer autoClose={3000} />
 		</MuiThemeProvider>
 	);
 };
