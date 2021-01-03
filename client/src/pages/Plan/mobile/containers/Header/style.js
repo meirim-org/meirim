@@ -3,7 +3,8 @@ import { AppBar as MuiAppBar, Button } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 export const TitlesButtonWrapper = styled.div`
-   padding: 1rem 3.425rem 0;    
+   margin-top: 1rem;
+   padding: 0 3.425rem 0;    
    position: relative;
 `;
 
