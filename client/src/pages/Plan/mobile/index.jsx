@@ -45,6 +45,7 @@ const Template = ({
 						fixedHeader={fixedHeader}
 						openNewCommentView={()=> setCommentState(pv => ({ ...pv, isOpen :true }))}
 						isNewCommentOpen={commentState.isOpen}
+						setCommentState={setCommentState}
 					/>
 					<SC.Main className={mainClasses}>
 						{children}

@@ -35,7 +35,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	const showStartDiscussionPanel = comments.length === 0 &&  !commentState.isOpen;
 
 	const openNewCommentView = () => {
-		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
+		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
 		else {
 	  	setCommentState(pv => ({ ...pv, isOpen: true }));
 			window.scrollTo(0, 0);
@@ -43,7 +43,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	};
 
 	const addLikeToComment = async (commentId) => {
-		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
+		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
 		await addLike({ commentId });
 		setRefetchComments();
 	};
@@ -73,7 +73,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	};
 	const closeNewCommentView = () => setCommentState(pv => ({ ...pv, isOpen: false }));
 	const newCommentViewHandler = () => {  
-		if (!isAuthenticated) return dispatch(openModal({ modalType: 'register' }));
+		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
 		setCommentState(pv => ({ ...pv, isOpen: !commentState.isOpen }));
 	};
 
