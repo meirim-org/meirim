@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import t from 'locale/he_IL';
 import PropTypes from 'prop-types';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import { Button } from 'shared';
 import { SavePlan, SharePlan, Title, AddNewComment } from './components';
 import * as SC from './style';
+import { Badge } from '@material-ui/core';
 
 const Header = ({ openNewCommentView, match }) => {
 	const history = useHistory();
@@ -18,9 +18,13 @@ const Header = ({ openNewCommentView, match }) => {
 				<Title countyName={countyName} planName={name}/>
 				<SC.AppBar position="static">
 					<div>
-						<Button text={t.summary} onClick={() => history.push(match.url)}/>
-						<Button text={`${t.opinion}${commentsCount}`} onClick={() => history.push(`${match.url}/comments`)}/> 
-						<Button text={t.planningInformation}/>
+						<SC.Tab className="active" onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
+						<SC.Tab onClick={() => history.push(`${match.url}/comments`)}>
+							<Badge badgeContent={commentsCount} color="primary">
+								{t.opinion}
+							</Badge>
+						</SC.Tab>
+						<SC.Tab onClick={()=> alert('coming soon')}>{t.planningInformation}</SC.Tab>
 					</div>
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
