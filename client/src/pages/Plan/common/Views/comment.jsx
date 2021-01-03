@@ -66,7 +66,6 @@ CommentView.defaultProps = {
 };
 
 CommentView.propTypes = {
-	id: PropTypes.number.isRequired,
 	commentData: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	children: PropTypes.any
