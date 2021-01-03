@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useParams, Route } from 'react-router-dom';
+import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
 import { useDataHandler, useCommentsDataHandler } from './hooks';
 import { openModal } from 'redux/modal/slice';
 import { CommentsTab, SummaryTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
 import { UserSelectors, CommentSelectors } from 'redux/selectors';
-import PlanMobile from './mobile';
-import PlanDesktop from './desktop';
+import PlanMobile from './mobile/';
+import PlanDesktop from './desktop/';
 import { addComment, addLike } from './controller';
 
 const Plan = ({ isMobile, isTablet, match, ...props }) => {
@@ -106,25 +106,27 @@ const Plan = ({ isMobile, isTablet, match, ...props }) => {
 
 	return (
 		<Template {...planProps}>
-			<Route path={match.url + '/comments'} render={props => 
-				<CommentsTab 
-					addLikeToComment={addLikeToComment}
-					commentState={commentState}
-					addSubComment={addSubComment}
-					addNewComment={addNewComment}
-					subCommentState={subCommentState}
-					setSubCommentState={setSubCommentState}
-					setCommentState={setCommentState}
-					{...props}
-				/>}	
-			/>
-			<Route path={match.url + '/'} render={props => 
-				<SummaryTab 
-					subscribePanel={subscribePanel} 
-					handleSubscribePanel={handleSubscribePanel} 
-					{...props}
-				/>}	
-			/>
+			<Switch>
+				<Route path={match.url + '/comments'} render={props => 
+					<CommentsTab 
+						addLikeToComment={addLikeToComment}
+						commentState={commentState}
+						addSubComment={addSubComment}
+						addNewComment={addNewComment}
+						subCommentState={subCommentState}
+						setSubCommentState={setSubCommentState}
+						setCommentState={setCommentState}
+						{...props}
+					/>}	
+				/>
+				<Route path={match.url + '/'} render={props => 
+					<SummaryTab 
+						subscribePanel={subscribePanel} 
+						handleSubscribePanel={handleSubscribePanel} 
+						{...props}
+					/>}	
+				/>
+			</Switch>	
 		</Template>
 	);
 };

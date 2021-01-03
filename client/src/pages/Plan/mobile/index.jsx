@@ -1,58 +1,68 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { SummaryTab, CommentsTab } from 'pages/Plan/containers';
-import Template from './template.jsx';
+import classnames from 'classnames';
+import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+import Wrapper from 'components/Wrapper';
+import { CommentSelectors } from 'redux/selectors';
+import { Header, Navigation } from './containers';
+import * as SC from './style';
 
-const PlanMobile = ({
-	addNewComment,
+const Template = ({
+	children,
 	commentState,
-	subCommentState,
-	setSubCommentState,
 	setCommentState,
-	addSubComment,
-	addLikeToComment,
-	subscribePanel, 
-	handleSubscribePanel,
-	match
-}) => {
+	match,
+	 }) => {
+	const [tabsPanelRef, setTabsPanelRef] = useState(null);
+	const [fixedHeader, setFixedHeader] = useState(false);
+
+	const { comments } = CommentSelectors();
+	const isPlanHaveComments = comments.length > 0;
+	let tabsPanelTop = tabsPanelRef && tabsPanelRef.current ? tabsPanelRef.current.getBoundingClientRect().top : null;
+
+	const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
+	const handleFixedHeader = (newValue) => setFixedHeader(newValue);
+
+	const mainClasses = classnames({
+		'no-comments': !isPlanHaveComments,
+		'new-comment': commentState.isOpen
+	});
+
+	// eslint-disable-next-line no-unused-vars
+	useScrollPosition(({ prevPos, currPos }) => {
+	    if (currPos.y < -Math.abs(tabsPanelTop)) return handleFixedHeader(true);
+		
+		return  handleFixedHeader(false);
+	},[tabsPanelRef]);
 
 	return (
-		<Template match={match} commentState={commentState} setCommentState={setCommentState}>
-			<Route path={match.url + '/comments'} render={props => 
-				<CommentsTab 
-					addLikeToComment={addLikeToComment}
-					commentState={commentState}
-					addSubComment={addSubComment}
-					addNewComment={addNewComment}
-					subCommentState={subCommentState}
-					setSubCommentState={setSubCommentState}
-					setCommentState={setCommentState}
-					{...props}
-				/>}	
-			/>
-			<Route path={match.url + '/'} render={props => 
-				<SummaryTab 
-					subscribePanel={subscribePanel} 
-					handleSubscribePanel={handleSubscribePanel} 
-					{...props}
-				/>}	
-			/>
-		</Template>
+		<Wrapper>
+			<SC.MobileMainWrapper>
+				<SC.Content>
+					<Header
+						match={match}
+						handleTabsPanelRef={handleTabsPanelRef}
+						fixedHeader={fixedHeader}
+						openNewCommentView={()=> setCommentState(pv => ({ ...pv, isOpen :true }))}
+						isNewCommentOpen={commentState.isOpen}
+					/>
+					<SC.Main className={mainClasses}>
+						{children}
+					</SC.Main>
+					<Navigation
+						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))}
+					/>
+				</SC.Content>
+			</SC.MobileMainWrapper>
+		</Wrapper>
 	);
 };
 
-PlanMobile.propTypes = {
-	setSubCommentState: PropTypes.func.isRequired,
+Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
 	commentState: PropTypes.object.isRequired,
-	subCommentState: PropTypes.object.isRequired,
+	children: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
-	subscribePanel: PropTypes.bool.isRequired,
-	handleSubscribePanel: PropTypes.func.isRequired,
-	addNewComment: PropTypes.func.isRequired,
-	addSubComment: PropTypes.func.isRequired,
-	addLikeToComment: PropTypes.func.isRequired,
 };
 
-export default PlanMobile;
+export default Template;
