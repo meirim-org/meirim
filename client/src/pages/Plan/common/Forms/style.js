@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import {
 	FormControl as MuiFormControl,
 	RadioGroup as MuiRadioGroup,
