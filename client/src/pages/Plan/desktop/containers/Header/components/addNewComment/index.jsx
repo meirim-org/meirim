@@ -5,8 +5,11 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { Button } from '@material-ui/core';
 import { Text } from 'shared';
 import t from 'locale/he_IL';
+import { useHistory, useParams } from 'react-router-dom';
 
-const AddNewComment = ({ handleTabChange, openNewCommentView }) => {
+const AddNewComment = ({ openNewCommentView }) => {
+	const { id: planId } = useParams();
+	const history = useHistory();
 	const theme = useTheme();
 	
 	return (
@@ -14,7 +17,7 @@ const AddNewComment = ({ handleTabChange, openNewCommentView }) => {
 			variant="contained"
 			color="primary"
 			onClick={()=> {
-				handleTabChange(null,1); 
+				history.push(`/plan/${planId}/comments`);
 				openNewCommentView();
 			}}
 			startIcon={<ChatBubbleOutlineIcon />}

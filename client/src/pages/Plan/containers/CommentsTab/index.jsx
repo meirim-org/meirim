@@ -74,6 +74,7 @@ const CommentsTab = ({
 							<SC.CommentsWrapper>
 								{isSubCommentOpen &&
                                 <SubCommentForm
+                                	isSubCommentOpen={isSubCommentOpen}
                                 	addSubComment={addSubComment}
                                 	parentComment={comment}
                                 	subCommentState={subCommentState}

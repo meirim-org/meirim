@@ -14,6 +14,7 @@ export const SubCommentForm = ({ addSubComment, parentComment, subCommentState, 
 		<SC.addSubCommentWrapper>
 			<SC.FormControl fullWidth={true}>
 				<TextareaAutosize  
+					id={parentComment.id}
 					onChange={(e) => {
 						const length = e.target.value.length;
 						if (length === 1200) return;

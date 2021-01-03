@@ -1,58 +1,50 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { SummaryTab, CommentsTab } from 'pages/Plan/containers';
-import Template from './template.jsx';
+import Mapa from 'components/Mapa';
+import Wrapper from 'components/Wrapper';
+import { CommentSelectors, PlanSelectors } from 'redux/selectors';
+import { Header } from './containers';
+import * as SC from './style';
 
-const PlanDesktop = ({
-	match, 
-	addNewComment,
-	commentState,
-	subCommentState,
-	setSubCommentState,
+const Template = ({ 
 	setCommentState,
-	addSubComment,
-	addLikeToComment,
-	subscribePanel, 
-	handleSubscribePanel,
+	handleTabChange,
+	children,
+	match,
 }) => {
+	const { comments } = CommentSelectors();
+	const { planData: { geom, countyName } } = PlanSelectors();
+	const isPlanHaveComments = comments.length > 0;
 	
 	return (
-		<Template match={match}>
-			<Route path={match.url + '/comments'} render={props => 
-				<CommentsTab 
-					addLikeToComment={addLikeToComment}
-					commentState={commentState}
-					addSubComment={addSubComment}
-					addNewComment={addNewComment}
-					subCommentState={subCommentState}
-					setSubCommentState={setSubCommentState}
-					setCommentState={setCommentState}
-					{...props}
-				/>}	
-			/>
-			<Route path={match.url + '/'} render={props => 
-				<SummaryTab 
-					subscribePanel={subscribePanel} 
-					handleSubscribePanel={handleSubscribePanel} 
-					{...props}
-				/>}	
-			/>
-		</Template>
+	    <Wrapper>
+			<SC.MainWrapper>
+				<SC.Content>
+					<Header
+						handleTabChange={handleTabChange} 
+						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
+						match={match}
+					/>
+					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
+						{children}
+					</SC.Main>
+				</SC.Content>
+				  <Mapa
+					geom={geom}
+					countyName={countyName}
+					hideZoom={false}
+					disableInteractions={false}
+				/>
+			</SC.MainWrapper>
+		</Wrapper>
 	);
 };
 
-PlanDesktop.propTypes = {
+Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
-	setSubCommentState: PropTypes.func.isRequired,
-	commentState: PropTypes.object.isRequired,
-	subCommentState: PropTypes.object.isRequired,
+	handleTabChange: PropTypes.func.isRequired,
+	children: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
-	subscribePanel: PropTypes.bool.isRequired,
-	handleSubscribePanel: PropTypes.func.isRequired,
-	addNewComment: PropTypes.func.isRequired,
-	addLikeToComment: PropTypes.func.isRequired,
-	addSubComment: PropTypes.func.isRequired,
 };
 
-export default PlanDesktop;
+export default Template;

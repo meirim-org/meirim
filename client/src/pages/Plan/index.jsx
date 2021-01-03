@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { useParams, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
 import { useDataHandler, useCommentsDataHandler } from './hooks';
 import { openModal } from 'redux/modal/slice';
 import { CommentsTab, SummaryTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
 import { UserSelectors, CommentSelectors } from 'redux/selectors';
-import PlanMobile from './mobile';
-import PlanDesktop from './desktop';
+import PlanMobile from './mobile/';
+import PlanDesktop from './desktop/';
 import { addComment, addLike } from './controller';
 
-const Plan = ({ isMobile, isTablet, match, ...props }) => {
+const Plan = ({ isMobile, isTablet, match }) => {
 	const { id: planId } = useParams();
 	const [refetchComments, setRefetchComments] = useState(false);
 	useDataHandler(planId);
@@ -99,34 +100,41 @@ const Plan = ({ isMobile, isTablet, match, ...props }) => {
 		openNewCommentView,
 		closeNewCommentView,
 		match,
-		...props
 	};
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;
 
 	return (
 		<Template {...planProps}>
-			<Route path={match.url + '/comments'} render={props => 
-				<CommentsTab 
-					addLikeToComment={addLikeToComment}
-					commentState={commentState}
-					addSubComment={addSubComment}
-					addNewComment={addNewComment}
-					subCommentState={subCommentState}
-					setSubCommentState={setSubCommentState}
-					setCommentState={setCommentState}
-					{...props}
-				/>}	
-			/>
-			<Route path={match.url + '/'} render={props => 
-				<SummaryTab 
-					subscribePanel={subscribePanel} 
-					handleSubscribePanel={handleSubscribePanel} 
-					{...props}
-				/>}	
-			/>
+			<Switch>
+				<Route path={match.url + '/comments'} render={props => 
+					<CommentsTab 
+						addLikeToComment={addLikeToComment}
+						commentState={commentState}
+						addSubComment={addSubComment}
+						addNewComment={addNewComment}
+						subCommentState={subCommentState}
+						setSubCommentState={setSubCommentState}
+						setCommentState={setCommentState}
+						{...props}
+					/>}	
+				/>
+				<Route path={match.url + '/'} render={props => 
+					<SummaryTab 
+						subscribePanel={subscribePanel} 
+						handleSubscribePanel={handleSubscribePanel} 
+						{...props}
+					/>}	
+				/>
+			</Switch>	
 		</Template>
 	);
+};
+
+Plan.propTypes = {
+	isMobile:PropTypes.func.isRequired,
+	isTablet:PropTypes.func.isRequired,
+	match:PropTypes.object.isRequired,
 };
 
 export default withGetScreen(Plan, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
