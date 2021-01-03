@@ -7,7 +7,7 @@ import {
 	RadioGroup as MuiRadioGroup,
 	TextareaAutosize as MuiTextareaAutosize
 } from '@material-ui/core';
-import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 
 export const CommentsWrapper = withTheme(styled.div`
     grid-area: comments; 

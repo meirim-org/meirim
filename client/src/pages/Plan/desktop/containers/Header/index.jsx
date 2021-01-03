@@ -24,7 +24,7 @@ const Header = ({ openNewCommentView, match }) => {
 								{t.opinion}
 							</Badge>
 						</SC.Tab>
-						<SC.Tab onClick={()=> alert('coming soon')}>{t.planningInformation}</SC.Tab>
+						<SC.Tab>{t.planningInformation}</SC.Tab>
 					</div>
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
