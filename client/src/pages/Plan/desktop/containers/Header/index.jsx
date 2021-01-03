@@ -39,6 +39,7 @@ const Header = ({ openNewCommentView, match }) => {
 
 Header.propTypes = {
 	openNewCommentView: PropTypes.func.isRequired,
+	handleTabChange: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
 };
 
