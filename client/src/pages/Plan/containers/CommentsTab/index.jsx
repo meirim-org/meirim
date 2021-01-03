@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { openModal } from 'redux/modal/slice';
 import t from 'locale/he_IL';
 import {  TabPanel, Button } from 'shared';
-import { CommentForm, CommentView,  SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
+import { CommentForm, CommentView, SubCommentForm, SubCommentView, AddComment, MapPanel } from 'pages/Plan/common';
 import { CommentSelectors, UserSelectors } from 'redux/selectors';
 import { Badge } from '@material-ui/core';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
+import { withGetScreen } from 'react-getscreen';
 
 const CommentsTab = ({
 	commentState,
@@ -18,6 +19,8 @@ const CommentsTab = ({
 	addNewComment,
 	addSubComment,
 	addLikeToComment,
+	isMobile,
+	isTablet
 	 }) => {
 	const dispatch = useDispatch();
 	const { isAuthenticated } = UserSelectors();
@@ -36,10 +39,15 @@ const CommentsTab = ({
 	};
 	
 	return (
-		<>			
-			<SC.ButtonWrapper>
-				<AddComment isNewCommentOpen={isCommentOpen} newCommentViewHandler={newCommentViewHandler}/>
-			</SC.ButtonWrapper>
+		<>
+			{isMobile() || isTablet()
+				?
+				null
+				:
+				<SC.ButtonWrapper>
+					<AddComment isNewCommentOpen={isCommentOpen} newCommentViewHandler={newCommentViewHandler}/>
+				</SC.ButtonWrapper>
+			}
 			{isCommentOpen && <CommentForm
 				addNewComment={addNewComment}
 				comments={comments.length}
@@ -112,6 +120,8 @@ CommentsTab.propTypes = {
 	addNewComment: PropTypes.func.isRequired,
 	addSubComment: PropTypes.func.isRequired,
 	addLikeToComment: PropTypes.func.isRequired,
+	isMobile:PropTypes.func.isRequired,
+	isTablet:PropTypes.func.isRequired,
 };
 
-export default CommentsTab;
+export default withGetScreen(CommentsTab, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
