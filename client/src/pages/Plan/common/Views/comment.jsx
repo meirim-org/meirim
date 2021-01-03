@@ -6,7 +6,7 @@ import { useTheme } from '@material-ui/styles';
 import { daysPassed } from 'pages/Plan/utils';
 import * as SC from './style';
 
-export const CommentView = ({ commentData, isNewCommentOpen, children }) => {
+const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 	const theme = useTheme();
 	const { content, created_at, person: { name }, type } = commentData;
 
