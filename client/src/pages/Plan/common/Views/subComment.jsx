@@ -5,7 +5,7 @@ import * as SC from './style';
 import { useTheme } from '@material-ui/styles';
 import { daysPassed } from 'pages/Plan/utils';
 
-export const SubCommentView = ({ subCommentData }) => {
+const SubCommentView = ({ subCommentData }) => {
 	const theme = useTheme();
 	const { content, created_at, person: { name } } = subCommentData;
 	

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
 import { useDataHandler, useCommentsDataHandler } from './hooks';
@@ -10,7 +11,7 @@ import PlanMobile from './mobile/';
 import PlanDesktop from './desktop/';
 import { addComment, addLike } from './controller';
 
-const Plan = ({ isMobile, isTablet, match, ...props }) => {
+const Plan = ({ isMobile, isTablet, match }) => {
 	const { id: planId } = useParams();
 	const [refetchComments, setRefetchComments] = useState(false);
 	useDataHandler(planId);
@@ -99,7 +100,6 @@ const Plan = ({ isMobile, isTablet, match, ...props }) => {
 		openNewCommentView,
 		closeNewCommentView,
 		match,
-		...props
 	};
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;
@@ -129,6 +129,12 @@ const Plan = ({ isMobile, isTablet, match, ...props }) => {
 			</Switch>	
 		</Template>
 	);
+};
+
+Plan.propTypes = {
+	isMobile:PropTypes.func.isRequired,
+	isTablet:PropTypes.func.isRequired,
+	match:PropTypes.object.isRequired,
 };
 
 export default withGetScreen(Plan, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
