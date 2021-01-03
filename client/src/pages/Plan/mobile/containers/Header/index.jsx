@@ -2,12 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import {  Title } from './components';
-import { Button } from 'shared';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { goBack } from 'pages/Plan/utils';
 import { BackButton } from 'pages/Plan/common';
 import { useHistory } from 'react-router-dom';
+import { Badge } from '@material-ui/core';
 
 const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen }) => {
 	const history = useHistory();
@@ -29,11 +29,15 @@ const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen }) =>
 					    	<Title title={countyName} subTitle={name}/>
 						</SC.TitlesButtonWrapper>
 						<SC.AppBar ref={tabsPanelRef} position="static" className={fixedHeader ? 'fixed' : ''}>
-							<div>
-								<Button text={t.summary} onClick={() => history.push(match.url)}/>
-								<Button text={`${t.opinion}${commentsCount}`} onClick={() => history.push(`${match.url}/comments`)}/> 
-								<Button text={t.planningInformation}/>
-							</div>
+							<SC.TabWrapper>
+								<SC.Tab className="active" onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
+								<SC.Tab onClick={() => history.push(`${match.url}/comments`)}>
+									<Badge badgeContent={commentsCount} color="primary">
+										{t.opinion}
+									</Badge>
+								</SC.Tab>
+								<SC.Tab onClick={()=> alert('coming soon')}>{t.planningInformation}</SC.Tab>
+							</SC.TabWrapper>
 						</SC.AppBar>
 					</>
 					:
