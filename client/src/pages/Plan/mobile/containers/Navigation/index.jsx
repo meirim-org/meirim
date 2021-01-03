@@ -3,19 +3,18 @@ import * as SC from './style';
 import { AddNewComment, SavePlan, SharePlan } from './components';
 import PropTypes from 'prop-types';
 
-const Navigation = ({ handleTabChange, openNewCommentView }) => {
+const Navigation = ({ openNewCommentView }) => {
 
 	return (
 		<SC.Navigation>
 			<SharePlan />
-			<AddNewComment handleTabChange={handleTabChange} openNewCommentView={openNewCommentView}/>
+			<AddNewComment openNewCommentView={openNewCommentView}/>
 			<SavePlan />
 		</SC.Navigation>
 	);
 };
 
 Navigation.propTypes = {
-	handleTabChange: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
 };
 

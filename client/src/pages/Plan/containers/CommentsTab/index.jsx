@@ -5,8 +5,8 @@ import t from 'locale/he_IL';
 import {  TabPanel, Button } from 'shared';
 import { CommentForm, CommentView,  SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
 import { CommentSelectors } from 'redux/selectors';
-import * as SC from './style';
 import { Badge } from '@material-ui/core';
+import * as SC from './style';
 
 const CommentsTab = ({
 	commentState,
