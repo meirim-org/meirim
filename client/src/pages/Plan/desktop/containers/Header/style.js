@@ -99,6 +99,13 @@ export const Tab = withTheme(styled(Button)`
     .MuiButton-label {
         color:  ${props => props.theme.palette.black} !important;
         font-size:  16px !important;
+        font-weight: 400;
+    }
+    
+    .MuiBadge-badge {
+        font-family:  ${props => props.theme.fontFamily} !important;
+        font-size:  12px !important;
+        font-weight: 600;
     }
     
     &.active {
