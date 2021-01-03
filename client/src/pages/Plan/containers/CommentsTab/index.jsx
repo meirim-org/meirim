@@ -40,7 +40,7 @@ const CommentsTab = ({
 				const { id: commentId, likes } = comment;
 
 				return ( 
-					<>
+					<div key={'add-subcomment-form' + comment.id}>
 						<CommentView
 							key={index}
 							addLikeToComment={addLikeToComment}
@@ -60,34 +60,24 @@ const CommentsTab = ({
 									badgeContent={!likes ? 0 : likes}
 								/>
 							</SC.Like>
-							<SC.AddSubComment className={isSubCommentOpen ? 'active' : ''}>
-								<Button
-									id={'add-subcomment-' + comment.id}
-									textcolor={theme.palette.black}
-									text={t.addAResponse}
-									onClick={() => setSubCommentState(pv => ({ ...pv, isOpen: !subCommentState.isOpen }))}
-									simple
-									iconBefore={<SC.CommentIcon/>}
-								/>
-							</SC.AddSubComment>
+							<SubCommentForm
+								id={'add-subcomment-form' + comment.id}
+								key={'add-subcomment-form' + comment.id}
+								isSubCommentOpen={isSubCommentOpen}
+								addSubComment={addSubComment}
+								parentComment={comment}
+								subCommentState={subCommentState}
+								setSubCommentState={setSubCommentState}
+							/>
+
 							<SC.CommentsWrapper>
-								{isSubCommentOpen &&
-                                <SubCommentForm
-                                	id={'add-subcomment-form' + comment.id}
-                                	isSubCommentOpen={isSubCommentOpen}
-                                	addSubComment={addSubComment}
-                                	parentComment={comment}
-                                	subCommentState={subCommentState}
-                                	setSubCommentState={setSubCommentState}
-                                />
-								}
 								{comment.subComments &&
                                 comment.subComments.map((subComment, index) => (
                                 	<SubCommentView key={index} id={index} subCommentData={subComment}/>
                                 ))}
 							</SC.CommentsWrapper>
 						</CommentView>
-					</>
+					</div>
 				);
 			})
 			}

@@ -28,7 +28,6 @@ const AddNewComment = ({ openNewCommentView }) => {
 };
 
 AddNewComment.propTypes = {
-	handleTabChange: PropTypes.func.isRequired,
 	openNewCommentView: PropTypes.func.isRequired,
 };
 

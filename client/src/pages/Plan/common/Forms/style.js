@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { withTheme } from '@material-ui/core/styles';
 import {
 	FormControl as MuiFormControl,
@@ -114,3 +115,29 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
     }
 `);
 
+export const AddSubComment = withTheme(styled.div`
+    grid-area: add-comment;
+    padding: 1rem; 
+    text-align: center;
+    .MuiSvgIcon-root {
+        font-size: 1.125rem !important;
+        fill: ${props => props.theme.palette.primary['600']} !important;  
+        margin: 0 0.75rem; 
+    }
+    
+    .MuiButton-label {
+        font-weight: 300;
+        font-size: 14px;
+        padding: .4rem 0 .4rem .75rem;
+        border-radius: 200px;
+    }
+    
+   &.active .MuiButton-label{
+        background-color: ${props => props.theme.palette.gray['bg']} !important; 
+    }
+    
+`);
+
+export const CommentIcon = styled(ChatBubbleOutlineIcon)`
+    font-size: 1rem !important;
+`;
