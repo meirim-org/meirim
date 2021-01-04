@@ -77,7 +77,7 @@ const Login = () => {
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
+				<SC.Title>התחברות למעירים</SC.Title>
 				<SC.SubTitleWrapper>
 					<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
 					<SC.SubTitle>
