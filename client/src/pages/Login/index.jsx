@@ -114,11 +114,11 @@ const Login = () => {
 						onChange={({ target: { value } }) => setLoginValues({ email: loginValues.email , password: value })}
 						required />
 					<SC.ForgotPassword>
-						<u><Link id="forgot-password" onClick={() => {
+						<u><SC.ForgotPasswordButton id="forgot-password" onClick={() => {
 							dispatch(closeModal());
 							
 							return history.push('/forgot');
-						}} text={t.forgotMyPassword} /></u>
+						}}>{t.forgotMyPassword}</SC.ForgotPasswordButton></u>
 					</SC.ForgotPassword>
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
