@@ -6,7 +6,7 @@ import { withGetScreen } from 'react-getscreen';
 
 const SummaryTab = ({ subscribePanel, handleSubscribePanel, isMobile, isTablet }) => {
 	const { planData, dataArea, textArea } = PlanSelectors();
-	const { type, status, url, goalsFromMavat } = planData;
+	const { type, status, url, goalsFromMavat, countyName } = planData;
 
 	return (
 		<>
@@ -14,7 +14,7 @@ const SummaryTab = ({ subscribePanel, handleSubscribePanel, isMobile, isTablet }
 			<GoalsPanel goalsFromMavat={goalsFromMavat} />
 			{isMobile() || isTablet()
 				?
-				<MapPanel geom={planData.geom}/>
+				<MapPanel geom={planData.geom} countyName={countyName}/>
 				:
 				null
 			}
