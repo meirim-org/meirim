@@ -18,6 +18,8 @@ import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple
 import t from "../locale/he_IL";
 import "./TreePermits.css";
 
+const DAY_IN_MILISECONDS = 1000 * 60 * 60 *24;
+
 class TreePermits extends Component {
 	state = {
 		error: false,
@@ -64,6 +66,15 @@ class TreePermits extends Component {
 	return 	<Typography component="p" color="textPrimary"> <strong>{fieldBold} </strong>{text}</Typography>
 	}
 
+	timeToObjectionText(start_date) {
+		const permitStartDate = new Date(start_date);
+		const now = new Date();
+		const timeLeft = (permitStartDate.getTime() - now.getTime() > 0)?  Math.floor((permitStartDate - now) / DAY_IN_MILISECONDS ) : -1; 
+		if (timeLeft == -1) { return 'בתוקף';}
+		else if (timeLeft == 0) { return `יום אחרון`}
+		else if (timeLeft == 1) { return `נותר יום אחד`}
+		else return  `נותרו ${timeLeft} ימים`;
+	}
 
 	loadTrees(pageNumber, filterPlaces) {
 		this.setState({
@@ -156,6 +167,7 @@ class TreePermits extends Component {
 												hideZoom={true}
 												disableInteractions={true}
 												title={tree.place}
+												title2={this.timeToObjectionText(tree.start_date)}
 											/>
 										</CardMedia>
 										<CardContent className="card-content">
@@ -169,10 +181,10 @@ class TreePermits extends Component {
 											</Typography>
 											<this.CardContentAddress tree={tree} />
 											<this.CardContentField field={tree.action} fieldBold='פעולה:'/>
-											<this.CardContentField field={tree.reason} fieldBold='סיבה:' />
+											<this.CardContentField field={tree.reason_short} fieldBold='סיבה:' />
 										</CardContent>
 									</CardActionArea>
-								</Link>
+								</Link>	
 							</Card>
 						))}
 					</GridList>
