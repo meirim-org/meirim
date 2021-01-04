@@ -15,13 +15,13 @@ const StyledTabBox = withTheme(styled.div`
         display: grid;
         padding: 0;
         border-radius: 4px;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-areas:
-            'header header'
-            'text text'
-            'like add-comment'
-            'comments comments'
-            ;
+        grid-template-columns: 1fr 1fr;
+        // grid-template-areas:
+        //     'header header'
+        //     'text text'
+        //     'like add-comment'
+        //     'form form'
+        //     'comments comments';
     `}  
       
     ${({ disabled }) => disabled && `

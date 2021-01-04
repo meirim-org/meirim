@@ -17,7 +17,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	useDataHandler(planId);
 	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
 	const dispatch = useDispatch();
-	const [tabValue, setValue] =useState(0);
+	const [tabValue, setValue] =useState('');
 	const { isAuthenticated, user } = UserSelectors();
 	const { comments } = CommentSelectors();
 	const [ subCommentState, setSubCommentState ] = useState({
@@ -30,7 +30,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		type: 'improvement'
 	});
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
-    
+
 	const showComments = comments.length > 0; 
 	const showStartDiscussionPanel = comments.length === 0 &&  !commentState.isOpen;
 

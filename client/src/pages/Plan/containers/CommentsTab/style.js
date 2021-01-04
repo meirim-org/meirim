@@ -10,7 +10,7 @@ import {
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 
 export const CommentsWrapper = withTheme(styled.div`
-    grid-area: comments; 
+    grid-column-start: span 2;
     border-top: 1px solid ${props => props.theme.palette.gray['300']};
 `);
 
@@ -147,7 +147,7 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
 
 
 export const Like = withTheme(styled.div`
-    grid-area: like; 
+    grid-column-start: span 1;
     padding: 1rem;
     text-align: center;
     position: relative;

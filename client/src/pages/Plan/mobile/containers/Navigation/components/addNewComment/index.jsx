@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { BottomNavigationAction } from '@material-ui/core';
 import t from 'locale/he_IL';
-// import { useHistory } from 'react-router-dom';
 
-const AddNewComment = ({ openNewCommentView }) => {
+const AddNewComment = ({ newCommentViewHandler }) => {
 	const { id: planId } = useParams();
 	const history = useHistory();
 	
@@ -14,7 +13,7 @@ const AddNewComment = ({ openNewCommentView }) => {
 		<BottomNavigationAction
 			onClick={()=> {
 				history.push(`/plan/${planId}/comments`);
-				openNewCommentView();
+				newCommentViewHandler();
 			}}
 			label={t.addNewComment}
 			icon={<ChatBubbleOutlineIcon
@@ -23,7 +22,7 @@ const AddNewComment = ({ openNewCommentView }) => {
 };
 
 AddNewComment.propTypes = {
-	openNewCommentView: PropTypes.func.isRequired,
+	newCommentViewHandler: PropTypes.func.isRequired,
 };
 
 export default AddNewComment;

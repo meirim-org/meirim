@@ -6,20 +6,25 @@ import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { SavePlan, SharePlan, Title, AddNewComment } from './components';
 import * as SC from './style';
 import { Badge } from '@material-ui/core';
+import { tabIsActive } from 'utils';
 
 const Header = ({ openNewCommentView, match }) => {
 	const history = useHistory();
 	const { planData: { name, countyName } } = PlanSelectors();
 	const { commentsCount } = CommentSelectors();
-	
+	const pathData  = {
+		pathName: history.location.pathname,
+		planId: match.params.id
+	};
+
 	return (
 		<SC.Header>
 			<SC.TitlesAndTabs>
 				<Title countyName={countyName} planName={name}/>
 				<SC.AppBar position="static">
 					<div>
-						<SC.Tab className="active" onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
-						<SC.Tab onClick={() => history.push(`${match.url}/comments`)}>
+						<SC.Tab className={tabIsActive('summary',pathData) ? 'active' : ''} onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
+						<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''} onClick={() => history.push(`${match.url}/comments`)}>
 							<Badge badgeContent={commentsCount} color="primary">
 								{t.opinion}
 							</Badge>
@@ -39,6 +44,7 @@ const Header = ({ openNewCommentView, match }) => {
 
 Header.propTypes = {
 	openNewCommentView: PropTypes.func.isRequired,
+	handleTabChange: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
 };
 
