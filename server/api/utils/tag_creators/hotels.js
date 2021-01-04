@@ -1,6 +1,6 @@
-const { TagCreatoerInterface } = require('./base');
+const { TagCreatorInterface } = require('./base');
 
-class HotelsTag extends TagCreatoerInterface {
+class HotelsTag extends TagCreatorInterface {
 	id = 'HOTELS';
 	parent = '';
 	
@@ -61,7 +61,7 @@ class HotelsTag extends TagCreatoerInterface {
 			return undefined;
 		}
 
-		return parseFloat(value.replace("+", ""));
+		return parseFloat(value.replace(/\-|\+/g, ""));
 	}
 }
 

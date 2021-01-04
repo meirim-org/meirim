@@ -1,4 +1,4 @@
-class TagCreatoerInterface {
+class TagCreatorInterface {
 	constructor() {
 		if (!this.tagPlan) {
 			throw new Error('Tag creator must have `tagPlan`');
@@ -6,4 +6,4 @@ class TagCreatoerInterface {
 	}
 }
 
-module.exports = { TagCreatoerInterface };
+module.exports = { TagCreatorInterface };
