@@ -93,8 +93,14 @@ export const Tab = withTheme(styled(Button)`
     border-radius: 0 !important;
     border-bottom: 2px solid transparent !important;
     outline: 0 !important;
-    padding-right: 1.5rem !important;
-    padding-left: 1.5rem !important;
+    
+    padding-right: .85rem !important;
+    padding-left: .85rem !important;
+    
+    @media(min-width: 1200px) {
+        padding-right: 1.5rem !important;
+        padding-left: 1.5rem !important;
+    }
     
     .MuiButton-label {
         color:  ${props => props.theme.palette.black} !important;
@@ -115,3 +121,4 @@ export const Tab = withTheme(styled(Button)`
         }
     }
 `);
+
