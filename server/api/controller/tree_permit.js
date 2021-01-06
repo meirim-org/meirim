@@ -25,7 +25,7 @@ class TreePermitController extends Controller {
 			tpc.TOTAL_TREES,
 			tpc.TREES_PER_PERMIT,
 			tpc.ACTION,
-
+			tpc.GEOM
 		];
 
 		const where = {};
@@ -35,11 +35,10 @@ class TreePermitController extends Controller {
 		if (query.PLACE) {
 			where.PLACE = query.PLACE.split(',');
 		}
-
 		return super.browse(req, {
 			columns,
 			where,
-			orderByRaw
+			orderByRaw,
 		});
 	}
 

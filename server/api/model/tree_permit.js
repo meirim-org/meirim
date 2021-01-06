@@ -56,6 +56,11 @@ class TreePermit extends Model {
 			if (attributes[tpc.TREES_PER_PERMIT]) {
 				attributes[tpc.TREES_PER_PERMIT] = JSON.parse(attributes[tpc.TREES_PER_PERMIT]);
 			}
+			if (attributes[tpc.GEOM]) {
+				attributes[tpc.GEOM] = { type: 'Polygon',
+					coordinates: [attributes[tpc.GEOM][0].map(r => [r.x, r.y])]
+				};
+			}
 		} catch (e) {
 			Log.error('Json parse error', attributes[tpc.TREES_PER_PERMIT]);
 		}
@@ -68,9 +73,9 @@ class TreePermit extends Model {
 		};
 	}
 
-	get geometry () {
-		return ['geom'];
-	}
+	// get geometry () {
+	// 	return ['geom'];
+	// }
 }
 
 module.exports = TreePermit;
