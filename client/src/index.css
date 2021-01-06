@@ -10,5 +10,9 @@ body {
 }
 
 .Toastify__toast-body {
-    direction: rtl;
+		direction: rtl;
+}
+
+.Toastify__toast-container {
+	z-index: 200000;
 }
