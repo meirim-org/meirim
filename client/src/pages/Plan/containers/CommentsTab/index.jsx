@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { openModal } from 'redux/modal/slice';
 import t from 'locale/he_IL';
 import {  TabPanel, Button } from 'shared';
-import { CommentForm, CommentView, SubCommentForm, SubCommentView, AddComment, MapPanel } from 'pages/Plan/common';
+import { CommentForm, CommentView, SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
 import { CommentSelectors, UserSelectors } from 'redux/selectors';
 import { Badge } from '@material-ui/core';
 import * as SC from './style';
