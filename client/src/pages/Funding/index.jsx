@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { externalPaymentErrorToast } from 'toasts'
-import YoutubeVideo from 'react-youtube'
-import { Button, Checkbox, TextInput, Divider, HelperText, Link } from '../../shared';
+// import YoutubeVideo from 'react-youtube'
+import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox } from '../../shared';
 import { openModal, closeModal } from 'redux/modal/slice'
 import { useDispatch } from 'react-redux'
 import { createPaymentLink } from './controller';
@@ -83,7 +83,7 @@ const FundingPage = () => {
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
-						<YoutubeVideo url="https://www.youtube.com/watch?v=Bd_RD9rHrbQ"/>
+						{/* <YoutubeVideo url="https://www.youtube.com/watch?v=Bd_RD9rHrbQ"/> */}
 					</SC.MediaContent>
 				</SC.HeaderWrapper>
 				<SC.InputsWrapper>
@@ -97,14 +97,15 @@ const FundingPage = () => {
 							</SC.RoadmapItemWrapper>))}
 					</SC.RoadmapDetails>
 					<Divider/>
+					
 					<SC.PaymentWrapper>
-							<SC.PaymentOptions>
-							{paymentAmountOptions.map(o => (
+							{/* <SC.PaymentOptions> */}
+							<TabPanel>
+						<TabBox>
+							 {paymentAmountOptions.map(o => (
 								<div>
 									<SC.PaymentOption onClick={ () => { setAmount(o) } }>
 										<SC.Amount>{o} ₪</SC.Amount>
-										<br/>
-										<SC.Monthly>בחודש</SC.Monthly>
 									 </SC.PaymentOption>
 								</div>
 							))}
@@ -117,12 +118,15 @@ const FundingPage = () => {
 									</SC.PaymentOption>
 								</div>
 								<HelperText error={formErrors.amountError.message} />
-							</SC.PaymentOptions>
+								
+							{/* </SC.PaymsentOptions> */}
 							<SC.TermsOfUseWrapper>
 							<span>אני מאשר/ת את </span>  
 								 <Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
 								<Checkbox error={formErrors.termsAcceptedError.message} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
 							</SC.TermsOfUseWrapper>
+							</TabBox>
+								</TabPanel>
 							<SC.ButtonWrapper>
 								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest } style={'width:'}/>
 							</SC.ButtonWrapper>
