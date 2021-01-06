@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
 
-import leaflet from 'leaflet';
+import leaflet from 'leaflet'
 import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 
 import './Mapa.css';
 
 class Mapa extends Component {
+
   render() {
-    const { geom, hideZoom, disableInteractions, title, title2 } = this.props;
+    const { geom, hideZoom, disableInteractions, title, title2, placeholder } = this.props;
     const bounds = leaflet.geoJSON(geom).getBounds();
 
+	if (!geom || geom.length === 0) {
+		return (
+			<div className="map-title" style={{	height: '100%',	width: '100%' }}>
+				{title && <button className="btn btn-light disabled">{title}</button>}
+         		{title2 && <button variant="info" className="btn btn-light map-title-left">{title2}</button>}
+				<img src={placeholder} />		
+			</div>
+		)	
+	}
+
     return (
-      <Map
+      
+	  <Map
         center={bounds.getCenter()}
         bounds={bounds}
         zoomControl={!hideZoom}
