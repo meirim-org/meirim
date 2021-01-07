@@ -8,6 +8,7 @@ import { Header, Navigation } from './containers';
 import * as SC from './style';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
+import Footer from 'components/Footer';
 
 const Template = ({
 	children,
@@ -50,7 +51,7 @@ const Template = ({
 
 	
 	return (
-		<Wrapper>
+		<Wrapper hideFooter={true}>
 			<SC.MobileMainWrapper>
 				<SC.Content>
 					<Header
@@ -67,7 +68,8 @@ const Template = ({
 					<Navigation
 						newCommentViewHandler={newCommentViewHandler}
 					/>
-				</SC.Content>
+                    <Footer/>
+                </SC.Content>
 			</SC.MobileMainWrapper>
 		</Wrapper>
 	);
