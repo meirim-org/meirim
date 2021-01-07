@@ -11,6 +11,7 @@ const TreePermit = require('../../model/tree_permit');
 const tpc = require('../../model/tree_permit_constants');
 const database = require('../../service/database');
 const Config = require('../../lib/config');
+const Geocoder = require('../../service/tree_geocoder').geocoder;
 
 // Regional tree permits were taken from here: 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
 const regionalTreePermitUrls = [
@@ -41,6 +42,7 @@ const EVENING = '20:00';
 
 const { treeBucketName: bucketName, useS3ForTreeFiles: useS3 } = Config.get('aws');
 const treesRawDataDir = path.resolve(Config.get('trees.rawDataDir'));
+const GEO_CODING_INTERVAL = Config.get('trees.geoCodingInterval');
 
 async function getRegionalTreePermitsFromFile(url, pathname) {
 	try {
@@ -114,8 +116,13 @@ async function saveNewTreePermits(treePermits) {
 	//save only the new ones
 	try { //TODO promise all or knex save bulk
 		new_tree_permits.map(async tp => {
-			Log.info(`Saving new tree permit: ${tp.attributes[tpc.REGIONAL_OFFICE]} ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.TOTAL_TREES]} trees.`);
-			await tp.save();
+			setTimeout(async tp => {
+				const polygonFromPoint = await generateGeomFromAddress(tp.attributes[tpc.PLACE],tp.attributes[tpc.street]);
+				tp.attributes[tpc.GEOM] = polygonFromPoint;
+				Log.info(`Saving new tree permit: ${tp.attributes[tpc.REGIONAL_OFFICE]} ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.TOTAL_TREES]} trees.`);
+				await tp.save();
+			
+			}, GEO_CODING_INTERVAL,tp); // max rate to query nominatim is 1 request per second
 		});
 	}
 	catch (err) {
@@ -169,6 +176,20 @@ const parseTreesXLS = async (filename) => {
 	});
 	return processPermits(rawTreePermits);
 };
+
+async function generateGeomFromAddress(place, street) {
+	const address = (place && street) ?
+		`${place} ${street}` : `${place}`;
+
+	const res = await Geocoder.geocode(address);
+	if (!res[0]) {
+		Log.error(`Couldn't geocode address: ${address}. return`);
+		return;
+	}
+	Log.debug(`address ${address} : ${res[0].longitude},${res[0].latitude} `);
+	const polygonFromPoint = JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res[0].longitude}, ${res[0].latitude}],[ ${res[0].longitude}, ${res[0].latitude}],[ ${res[0].longitude}, ${res[0].latitude}],[ ${res[0].longitude}, ${res[0].latitude}]  ]] }`);
+	return polygonFromPoint;
+}
 
 function processPermits(rawTreePermits) {
 	// Migrate all rows of each tree permit into one line: address, dates etc.
@@ -247,5 +268,6 @@ async function uploadToS3(filename, fullFileName) {
 }
 
 module.exports = {
-	regionalTreePermit
+	regionalTreePermit,
+	generateGeomFromAddress
 };

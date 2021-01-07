@@ -1,6 +1,7 @@
 const Model = require('./base_model');
 const tpc = require('./tree_permit_constants');
 const Log = require('../lib/log');
+const { Knex } = require('../service/database');
 
 class TreePermit extends Model {
 
@@ -46,6 +47,11 @@ class TreePermit extends Model {
 	format (attributes) {
 		if (attributes[tpc.TREES_PER_PERMIT]) {
 			attributes[tpc.TREES_PER_PERMIT] = JSON.stringify(attributes[tpc.TREES_PER_PERMIT]);
+		}
+		if (attributes[tpc.GEOM]) {
+			attributes[tpc.GEOM] = Knex.raw('ST_GeomFromGeoJSON(?)', [
+				JSON.stringify(attributes[tpc.GEOM])
+			]);
 		}
 		return super.format(attributes);
 	}
