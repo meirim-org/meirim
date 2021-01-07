@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import t from 'locale/he_IL';
+import styled from 'styled-components';
+
+const StyledFooter = styled.footer`
+    padding: 2rem 1rem;
+    line-height: 1.8;
+`;
 
 const Footer = () => {
 	return (
-		<footer className="text-center">
+		<StyledFooter className="text-center">
 			<a href="mailto:info@meirim.org">יצירת קשר</a> |&nbsp;
 			<a href="https://www.facebook.com/meirim.city/">הפייסבוק שלנו</a>{' '}
         |&nbsp;
@@ -12,7 +18,7 @@ const Footer = () => {
 			<a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות</a>
 			<br />
 			<Link to="/terms/">תנאי שימוש</Link> | כל הזכויות שמורות
-		</footer>
+		</StyledFooter>
 	);
 };
 

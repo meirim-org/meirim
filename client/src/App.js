@@ -49,8 +49,8 @@ const App = () => {
 						<Route component={Scenes.NotFound} />
 					</Switch>
 				</>
-			</BrowserRouter>
-			<ToastContainer autoClose={3000} />
+            </BrowserRouter>
+            <ToastContainer autoClose={3000} />
 		</MuiThemeProvider>
 	);
 };

@@ -4,6 +4,7 @@ import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header } from './containers';
+import Footer from 'components/Footer';
 import * as SC from './style';
 
 const Template = ({ 
@@ -17,7 +18,7 @@ const Template = ({
 	const isPlanHaveComments = comments.length > 0;
 	
 	return (
-	    <Wrapper>
+	    <Wrapper hideFooter={true}>
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
@@ -28,6 +29,7 @@ const Template = ({
 					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
 						{children}
 					</SC.Main>
+					<Footer/>
 				</SC.Content>
 				  <Mapa
 					geom={geom}

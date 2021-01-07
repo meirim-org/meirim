@@ -7,11 +7,12 @@ export const MobileMainWrapper = styled.div`
     height: calc(100vh - 79px);
 `;
 
-export const Content = styled.div`
+export const Content = withTheme(styled.div`
+    background-color:  ${props => props.theme.palette.gray['bg']};
     box-shadow: -3px 0 24px 0 rgba(0, 0, 0, 0.08);
     overflow-y: auto;
     padding-bottom: 3.75rem;
-`;
+`);
 
 export const AddSubComment = withTheme(styled.div`
     grid-area: add-comment;
