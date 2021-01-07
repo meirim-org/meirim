@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Navigation } from 'shared';
 import * as SC from './style';
-import { useHistory } from 'react-router-dom';
 import Footer from 'components/Footer';
 
 const Wrapper = ({hideFooter, ...props}) => {
