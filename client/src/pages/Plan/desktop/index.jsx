@@ -4,8 +4,8 @@ import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header } from './containers';
+import Footer from 'components/Footer';
 import * as SC from './style';
-import Footer from "components/Footer";
 
 const Template = ({ 
 	setCommentState,
@@ -29,7 +29,7 @@ const Template = ({
 					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
 						{children}
 					</SC.Main>
-                    <Footer/>
+					<Footer/>
 				</SC.Content>
 				  <Mapa
 					geom={geom}
