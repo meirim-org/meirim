@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Navigation } from 'shared';
 import * as SC from './style';
+import { useHistory } from 'react-router-dom';
+import Footer from 'components/Footer';
 
-
-const Wrapper = (props) => {
-	const { children } = props;
+const Wrapper = ({hideFooter, ...props}) => {
+    const { children } = props;
 
 	return (
 		<Fragment>
@@ -20,12 +21,21 @@ const Wrapper = (props) => {
 					{props.children}
 				</SC.ChildrenWrapper>
 			)}
+            {!hideFooter &&
+                <Footer/>
+            }
 		</Fragment>
 	);
 };
 
+Wrapper.defaultProps = {
+    hideFooter: false
+};
+
+
 Wrapper.propTypes = {
-	children: PropTypes.any
+	children: PropTypes.any,
+    hideFooter: PropTypes.bool
 };
 
 export default Wrapper;
