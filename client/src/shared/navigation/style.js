@@ -1,14 +1,14 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { colors } from '../../style/index'
-import { Container, List, ListItem, ListItemIcon } from '@material-ui/core';
+import { colors } from '../../style/index';
+import { Container, List, Drawer as MUIDrawer, ListItem, ListItemIcon } from '@material-ui/core';
 
 export const StyledList = styled(List)`
     padding: 0 !important;
-`
+`;
 
 export const StyledListItem = styled(ListItem)`
-    padding: 1.2rem 3.5rem !important;
+    padding: 1.2rem 3.5rem !important;  
     color: ${props => props.color}!important;
     .MuiListItemText-root {
       flex: none;
@@ -31,15 +31,25 @@ export const StyledLink = styled(NavLink)`
 
     &:hover, &.active {
         text-decoration: none;
-        color: ${colors.purple};
     }
 `;
 
-export const StyledHeader = styled.header`
+export const DesktopHeader = styled.header`
     position: fixed;
     z-index: 999;
     background-color: ${colors.white};
-    padding: .75rem 0;
+    padding: .75rem 4.8rem;
+    border-bottom: 1px solid ${colors.gray.light};   
+    top: 0;
+    right: 0;
+    left: 0;
+`;
+
+export const MobileHeader = styled.header`
+    position: fixed;
+    z-index: 999;
+    background-color: ${colors.white};
+    padding: .75rem 1.5rem .75rem .65rem;
     border-bottom: 1px solid ${colors.gray.light};   
     top: 0;
     right: 0;
@@ -47,7 +57,8 @@ export const StyledHeader = styled.header`
 `;
 
 export const StyledContainer = styled(Container)`
-    max-width: 1376px !important;
+    max-width: none !important;
+    padding: 0 !important;
 `;
 
 
@@ -59,16 +70,20 @@ export const LogOutIcon = styled(ListItemIcon)`
   path {
     color: #d1ccd5;
   }
-`
+`;
 
 export const StyledStarIcon = styled(ListItemIcon)`
   path {
     color: #652dd0;
   }
-`
+`;
 
 export const Logo = styled.img`
     max-width: 53px;
     height: auto;
+`;
+
+export const Drawer = styled(MUIDrawer)`
+    z-index: 9999 !important;
 `;
 

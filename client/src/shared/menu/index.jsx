@@ -8,7 +8,7 @@ const Menu = ({
 	openHandler,
 	closeHandler,
 	text,
-	textColor,
+	textcolor,
 	iconBefore,
 	iconAfter,
 	dropDownEl,
@@ -21,8 +21,8 @@ const Menu = ({
 			aria-haspopup="true"
 			onClick={openHandler}
 			text={text}
-			fontWeight={400}
-			textColor={textColor}
+			fontWeight={'400'}
+			textcolor={textcolor}
 			iconBefore={iconBefore}
 			iconAfter={iconAfter}
 		/>
@@ -47,10 +47,10 @@ Menu.propTypes = {
 	openHandler: PropTypes.func.isRequired,
 	closeHandler: PropTypes.func.isRequired,
 	text: PropTypes.string,
-	textColor: PropTypes.string,
+	textcolor: PropTypes.string,
 	iconBefore: PropTypes.node,
 	iconAfter: PropTypes.node,
-	dropDownEl: PropTypes.object.isRequired,
+	dropDownEl: PropTypes.object,
 	menuItems: PropTypes.array.isRequired
 };
 
