@@ -2,6 +2,12 @@
 	"geocoder": {
 		"provider": "openstreetmap"
 	},
+	"treeGeocoder": {
+		"provider": "openstreetmap",
+		"headers": {
+			"User-Agent": "Meirim.org (info@meirim.org)"
+		}
+	},
 	"staticmap": {
 		"width": 600,
 		"height": 400,
@@ -45,7 +51,8 @@
 		"treeBucketName": "treeBucketName"
 	},
 	"trees": {
-		"rawDataDir": "/tmp/raw_trees"
+		"rawDataDir": "/tmp/raw_trees",
+		"geoCodingInterval" : 2000
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,

@@ -5,6 +5,10 @@ const Log = require('../api/lib/log');
 
 controller
 	.fetchTreePermit()
-	.then((res) => Log.info(`Found ${res} new permits`))
+	.then((res) => {Log.info(`Found ${res} new permits`);})
 	.catch(e => Log.error(e))
-	.finally(() => process.exit());
+	.finally(() => {
+		// we give each new permit a timeout of 1 sec dur to nominatim usage policy
+		setTimeout( process.exit(), 1000 * 600); //max run time 10 minutes
+	
+	});
