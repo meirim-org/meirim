@@ -36,7 +36,7 @@ class CommentController extends Controller {
 	}
 
 	/**
-   * Return person's alerts. Must be logged in.
+   * Return person's comments. Must be logged in.
    * @param {IncomingRequest} req
    */
 	byPlan (req) {

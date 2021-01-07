@@ -18,7 +18,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
 					<SC.SubTitle>
 						<span>כבר רשומים? </span>
-						<Link id="register-signin-link" text="התחברות" onClick={() => dispatch(openModal({ modalType: 'login' }))} bold={'700'} />
+						<Link id="register-signin-link" text="התחברות" onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>

@@ -1,11 +1,18 @@
 * {
-	font-family: Heebo, Arial, Helvetica, sans-serif;
+	font-family: Assistant, sans-serif;
 	text-align: right;
 }
 
 body {
 	direction: rtl;
-	background-color: #f8f8f8;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.Toastify__toast-body {
+		direction: rtl;
+}
+
+.Toastify__toast-container {
+	z-index: 200000;
 }

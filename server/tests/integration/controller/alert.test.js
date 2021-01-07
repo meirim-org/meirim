@@ -18,12 +18,12 @@ describe('Alert controller', function() {
 
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
-		await mockDatabase.insertData(['person'], {'person': [person]});
+		await mockDatabase.insertData(['person'], { 'person': [person] });
 		await Email.init();
 		const fakeVerifyEmail = sinon.fake(function(email, options, cb) {
-			cb(null, {success: true, code: 1, banner: 'string'});
+			cb(null, { success: true, code: 1, banner: 'string' });
 		});
-		const fakeSendEmail = sinon.fake.resolves({messageId: 'fake'});
+		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake' });
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 	});

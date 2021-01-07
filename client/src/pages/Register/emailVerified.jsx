@@ -84,9 +84,9 @@ const SuccessMessage = () => (
 		<Footer>
 			<FooterTitle>רוצה לגדיר התראות נוספות לפי אזורים ותחומי עניין?</FooterTitle>
 			<ButtonWrapper>
-				<Button text="להגדרות שלי" small/>
+				<Button onClick="" text="להגדרות שלי" small />
 			</ButtonWrapper>
-			<Link text="סגירה" />
+			<Link id="success-message-close" text="סגירה" onClick=''/>
 		</Footer>
 	</MainWrapper>
 );
