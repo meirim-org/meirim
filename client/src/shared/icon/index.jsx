@@ -21,9 +21,9 @@ const StyledIcon = styled(IconButton)`
 
 `;
 
-const Component = ({ ariaLabel, color, children, fontSize }) => {
+const Component = ({ ariaLabel, textcolor, children, fontSize, onClick }) => {
 	return (
-		<StyledIcon aria-label={ariaLabel} color={color} fontSize={fontSize}>
+		<StyledIcon aria-label={ariaLabel} textcolor={textcolor} fontSize={fontSize} onClick={onClick}>
 			{children}
 		</StyledIcon>
 	);
@@ -36,8 +36,9 @@ Component.defaultProps = {
 Component.propTypes = {
 	ariaLabel: PropTypes.string.isRequired,
 	children: PropTypes.object.isRequired,
-	color: PropTypes.string,
+	textcolor: PropTypes.string,
 	fontSize: PropTypes.number,
+	onClick: PropTypes.func
 };
 
 export default Component;

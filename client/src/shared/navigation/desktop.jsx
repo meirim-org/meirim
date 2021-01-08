@@ -8,13 +8,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
 import { Button, Row, IconButton, Menu } from 'shared';
-import { colors } from 'style/index'
-import * as SC from './style'
+import { colors } from 'style/index';
+import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
 		setDropDownEl(event.currentTarget);
@@ -22,10 +22,10 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const handleDropDownClose = () => {
 		setDropDownEl(null);
 	};
-	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }]
+	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }];
 	
 	return (
-		<SC.StyledHeader>
+		<SC.DesktopHeader>
 			<SC.StyledContainer>
 				<Row justify="space-between">
 					<Box>
@@ -49,7 +49,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 									</Box>
 									<Box px={2}>
 										<SC.StyledLink id="nav-bar-about" to="/about/" activeClassName="active">
-											{t.about}
+											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
@@ -66,7 +66,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 									<RouterLink id="mobile-nav-bar-close-menu">
 										<IconButton
-											color={colors.purple}
+											textcolor={colors.purple}
 											ariaLabel={'close mobile menu'}
 											fontSize={20.5}
 										>
@@ -79,7 +79,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										ariaControls="user-menu"
 										openHandler={handleDropDownClick}
 										closeHandler={handleDropDownClose}
-										textColor="#1a2d66"
+										textcolor="#1a2d66"
 										iconBefore={<AccountCircleIcon color="primary"/>}
 										iconAfter={<ExpandMoreIcon color="secondary"/>}
 										dropDownEl={dropDownEl}
@@ -106,9 +106,9 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 					</Box>
 				</Row>
 			</SC.StyledContainer>
-		</SC.StyledHeader>
+		</SC.DesktopHeader>
 	);
-}
+};
 
 DesktopNavBar.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,

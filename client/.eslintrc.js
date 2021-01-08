@@ -24,6 +24,7 @@ module.exports = {
 		'react'
 	],
 	'rules': {
+		'semi': ["error", "always"],
 		'indent': [
 			'error',
 			'tab'
@@ -40,6 +41,7 @@ module.exports = {
 			'error'
 		],
 		"object-curly-spacing": ["error", "always"],
-		"keyword-spacing": ["error", { "before": true }]
+		"keyword-spacing": ["error", { "before": true }],
+		"array-callback-return": "off"
 	}
 }

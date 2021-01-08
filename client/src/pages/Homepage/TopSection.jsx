@@ -2,18 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import SearchBox from './SearchBox';
 import homepageImage from '../../assets/homepage-desktop.png';
+import Typography from 'shared/typography';
 
 const Image = styled.div`
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
     background-image: url(${homepageImage});
     background-repeat: no-repeat;
-    width: 100%;
     height: 564px;
 `;
 
 const Section = styled.section`
     width: 100%;
     margin-bottom: 20px;
+    position: relative;
+    height: 564px;
 `;
 
 const Cover = styled.div`
@@ -36,29 +40,23 @@ const H1 = styled.h1`
     color: #270E78;
 `;
 
-const Paragraph = styled.p`
+const Paragraph = styled(Typography)`
     margin-top: 24px;
     max-width: 495px;
-    font-family: Assistant;
-    font-style: normal;
-    font-weight: normal;
     font-size: 18px;
-    line-height: 27px;
-    text-align: right;
 `;
 
 const TopSection = () => {
 	return (
 		<Section>
-			<Image>
-				<Cover>
-					<H1>ברוכים הבאים למעירים!</H1>
-					<Paragraph>
-                    קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
-					</Paragraph>
-					<SearchBox />
-				</Cover>
-			</Image>
+			<Image/>
+			<Cover>
+                <Typography as="h1" color="#270E78" variant="megaHeadTitle" mobileVariant="megaHeadTitle">ברוכים הבאים למעירים!</Typography>
+                <Paragraph as='p'variant="paragraphText" mobileVariant="paragraphText">
+                קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
+                </Paragraph>
+                <SearchBox />
+			</Cover>
 		</Section>
 	)
 }

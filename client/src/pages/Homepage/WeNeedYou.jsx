@@ -17,7 +17,9 @@ const WeNeedYouSection = styled(CommonSection)``;
 
 const Content = styled.div`
     margin-right: 40px;
-    padding: 32px 0;
+    padding: 32px 0 32px 32px;
+    flex: 1;
+    display: flex;
 `;
 
 const Title = styled.h2`
@@ -39,13 +41,35 @@ const Message = styled.p`
     max-width: 800px;
 `;
 
+const Button = styled.button`
+    width: 120px;
+    height: 32px;
+    background: linear-gradient(0deg, #652DD0, #652DD0);
+    border-radius: 12px;
+    line-height: 32px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    margin-right: auto;
+    margin-top: auto;
+    &:focus {
+        outline: none;
+    }
+    border: 0;
+    cursor: pointer;
+`;
+
 const WeNeedYou = () => (
 	<WeNeedYouSection>
 		<Box>
 			<img src={supportUs} alt="support us" />
 			<Content>
-				<Title>אנחנו צריכים אתכם!</Title>
-				<Message>יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.</Message>
+                <div>
+                    <Title>אנחנו צריכים אתכם!</Title>
+                    <Message>יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.</Message>
+                </div>
+                <Button>לתמיכה</Button>
 			</Content>
 		</Box>
 	</WeNeedYouSection>
