@@ -41,19 +41,23 @@ class Plans extends Component {
     }
 
     handleAddressSubmit(address) {
+        // reset current displayed plans
         this.setState({
             plans: [],
             pageNumber:1,
-            searchPoint:{}
+            searchPoint: {}
         });
 
-        // finding the address from the list 
-        let placeId = this.findPlaceIdFromSuggestion(address);
+        // get selected place id
+        const placeId = this.findPlaceIdFromSuggestion(address);
+
+        // get place location
         locationAutocompleteApi.getPlaceLocation(placeId)
-        .then(location=>{
-            this.setState({searchPoint:location})
-            this.loadPlans(1, location);
-        }).catch(error => this.setState({ error: "שגיאה בחיפוש לפי כתובת" }));
+            .then(location => {
+                // this will trigger a component update which will identify the new
+                // query string and initiate a location search
+                this.props.history.push(`${window.location.pathname}?loc=${location.lat},${location.lng}`);
+            }).catch(error => this.setState({ error: "שגיאה בחיפוש לפי כתובת" }));
     }
 
     findPlaceIdFromSuggestion(string){
@@ -115,11 +119,52 @@ class Plans extends Component {
         this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
     }
 
+    loadQsSearchParams() {
+        // read query string
+        const qs = new URLSearchParams(this.props.location.search);
+
+        let searchLocation;
+
+        // load "loc" param and make sure it is the right format
+        if (qs.get('loc')) {
+            const locParts = qs.get('loc').split(',').map(i => parseFloat(i));
+            if (locParts.length === 2 && !isNaN(locParts[0]) && !isNaN(locParts[1])) {
+                searchLocation = {lat: locParts[0], lng: locParts[1]};
+            }
+        }
+
+        if (searchLocation !== undefined) {
+            // reset plans in case this was a navigation
+            this.setState({
+                plans: [],
+                pageNumber:1,
+                searchPoint: searchLocation
+            });
+
+            // load plans by params
+            this.loadPlans(1, searchLocation);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     componentDidMount() {
         // init location service
         locationAutocompleteApi.init();
 
-        this.loadPlans(this.state.pageNumber);
+        // if there is no valid query string params to search by run default search
+        if (!this.loadQsSearchParams()) {
+            this.loadPlans(this.state.pageNumber);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        // if the query string has changed load it into a search
+        if (this.props.location.search !== prevProps.location.search) {
+            this.loadQsSearchParams();
+        }
     }
 
     render() {

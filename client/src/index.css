@@ -8,3 +8,11 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+.Toastify__toast-body {
+		direction: rtl;
+}
+
+.Toastify__toast-container {
+	z-index: 200000;
+}

@@ -3,7 +3,7 @@ const PlanStruct = function(table) {
 	table.integer('sent');
 	table.integer('OBJECTID');
 	table.string('goals_from_mavat');
-	table.string('main_details_from_mavat');
+	table.text('main_details_from_mavat', 65535);
 	table.string('PLAN_COUNTY_NAME');
 	table.string('PL_NUMBER');
 	table.string('PL_NAME');
@@ -13,12 +13,13 @@ const PlanStruct = function(table) {
 	table.string('status');
 	table.specificType('geom', 'GEOMETRY');
 	table.string('jurisdiction');
-	table.string('areaChanges');
+	table.string('areaChanges', 2048);
 	table.text('explanation', 65535);
 	table.float('rating').defaultTo(0);
 	table.integer('views').defaultTo(0);
 	table.integer('erosion_views').defaultTo(0);
 	table.timestamps();
+	table.specificType('geom_centroid', 'GEOMETRY');
 	return table;
 };
 

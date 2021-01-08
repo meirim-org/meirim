@@ -10,13 +10,14 @@ import api from 'services/api';
 export const ValidUserHook = (user) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const isHomePage = history.location.pathname === '/';
 	useEffect(() => {
 		if (user){
 			dispatch(authenticated({ user }));
-			history.push(ALERTS);
+			isHomePage && history.push(ALERTS);
 			dispatch(closeModal());
 		}
-	},[user, dispatch, history]);
+	},[user, dispatch, history, isHomePage]);
 };
 
 export const CookieHook = () => {
@@ -27,7 +28,6 @@ export const CookieHook = () => {
 	const [ error, setError ] = useState({});
 	useEffect(() => {
 		api.get('/me').then((response) => {
-			console.log('🚀 ~ file: hooks.js ~ line 42 ~ api.get ~ response', response);
 			const { name, id } = response.me;
 			setSuccess(true);
 			dispatch(authenticated({ user: { name, id } }));

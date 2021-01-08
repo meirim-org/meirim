@@ -9,9 +9,10 @@ const MainWrapper = styled.div`
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    height: calc(100vh - 7rem);
+    height: calc(100vh - 79px);
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
+        height: calc(100vh - 72px);
     }
 `;
 

@@ -4,6 +4,7 @@
 context('Register and login', () => {
   const userEmail = `test${Date.now()}@meirim.org`
   beforeEach(() => {
+    cy.viewport('macbook-13');
     cy.server();
     cy.route({method: 'POST', url: '/api/sign/up*'}).as('signup');
     cy.route({method: 'POST', url: '/api/sign/in*'}).as('signin');
