@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-	return knex.schema.table('person', table => {
+	return knex.schema.table("person", table => {
 		table.string("name")
 		table.string("type")
 		table.string("about_me")
@@ -8,7 +8,7 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-	return knex.schema.table('person', table => {
+	return knex.schema.table("person", table => {
 		table.dropColumns(
 			"name",
 			"type",
@@ -17,4 +17,3 @@ exports.down = function(knex) {
 		);
 	});
 };
-

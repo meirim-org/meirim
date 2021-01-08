@@ -9,5 +9,6 @@ module.exports = session({
 	saveUninitialized: true,
 	store: new KnexSessionStore({
 		knex: Knex
-	})
+	}),
+	cookie: config.get('session.cookie')
 });

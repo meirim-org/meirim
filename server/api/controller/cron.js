@@ -169,10 +169,7 @@ const fetchIplan = iPlan =>
 						oldPlan.get('data').STATION !==
 						iPlan.properties.STATION
 					) {
-						// TODO: check why plan is undefined here
-						if (plan !== undefined) {
-							plan.set('sent', oldPlan ? 1 : 0);
-						}
+						plan.set('sent', oldPlan ? 1 : 0);
 					}
 					return plan;
 				})
@@ -190,10 +187,10 @@ const fetchIplan = iPlan =>
 const buildPlan = (iPlan, oldPlan) => {
 	return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
 		MavatAPI.getByPlan(plan)
-			.then(mavatData => Plan.setMavatData(plan, mavatData, oldPlan))
+			.then(mavatData => Plan.setMavatData(plan, mavatData))
 			.catch(e => {
 				// mavat might crash gracefully
-				console.log('Mavat error\n' + e.message + '\n' + e.stack);
+				Log.error('Mavat error', e.message, e.stack);
 				return plan;
 			})
 	);

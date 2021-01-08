@@ -1,33 +1,40 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Navigation } from 'shared';
-import Footer from '../Footer';
 import * as SC from './style';
+import Footer from 'components/Footer';
 
-
-const Wrapper = (props) => {
-	const { children } = props;
+const Wrapper = ({hideFooter, ...props}) => {
+    const { children } = props;
 
 	return (
 		<Fragment>
-			<Navigation />
+			<Navigation/>
 			{!children ? (
 				<div style={{ textAlign: 'center' }}>
-					<CircularProgress />
+					<CircularProgress/>
 				</div>
 			) : (
-                <SC.ChildrenWrapper>
-                    {props.children}
-                </SC.ChildrenWrapper>
+				<SC.ChildrenWrapper>
+					{props.children}
+				</SC.ChildrenWrapper>
 			)}
-			<Footer />
+            {!hideFooter &&
+                <Footer/>
+            }
 		</Fragment>
 	);
-}
+};
+
+Wrapper.defaultProps = {
+    hideFooter: false
+};
+
 
 Wrapper.propTypes = {
-	children: PropTypes.array
-}
+	children: PropTypes.any,
+    hideFooter: PropTypes.bool
+};
 
-export default Wrapper
+export default Wrapper;

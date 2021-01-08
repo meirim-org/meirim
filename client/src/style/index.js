@@ -5,7 +5,7 @@ export const colors = {
 	gray: {
 		light: '#e4e4e4'
 	}
-}
+};
 
 const size = {
 	tablet: '768px',
