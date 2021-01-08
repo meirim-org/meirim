@@ -14,3 +14,10 @@ export const parseNumber = string => {
 	
 	return 0;
 };
+
+export const tabIsActive = (tab, pathData) => {
+	const { pathName, planId } = pathData;
+	if ( tab === 'summary') return [`/plan/${planId}/`, `/plan/${planId}`].includes(pathName);
+
+	return pathName.includes(tab);
+};

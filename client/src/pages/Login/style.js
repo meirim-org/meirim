@@ -26,6 +26,11 @@ export const Title = styled.h1`
   }
 `;
 
+export const ForgotPasswordButton = styled.div`
+  cursor: pointer;
+  text-align: left;
+`;
+
 export const SubTitle = styled.h2`
   font-family: Assistant !important;
   font-size: 16px;

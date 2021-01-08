@@ -1,35 +1,42 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Wrapper from 'components/Wrapper';
-import { CommentSelectors } from 'redux/selectors';
-import { Header, Navigation, SummaryTab, CommentsTab } from './containers';
-import * as SC from './style';
 import classnames from 'classnames';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+import Wrapper from 'components/Wrapper';
+import { CommentSelectors, UserSelectors } from 'redux/selectors';
+import { Header, Navigation } from './containers';
+import * as SC from './style';
+import { openModal } from 'redux/modal/slice';
+import { useDispatch } from 'react-redux';
+import Footer from 'components/Footer';
 
-const PlanMobile = ({
-	addNewComment,
+const Template = ({
+	children,
 	commentState,
-	subCommentState,
-	setSubCommentState,
 	setCommentState,
-	addSubComment,
-	addLikeToComment,
-	tabValue, 
-	handleTabChange,
-	subscribePanel, 
-	handleSubscribePanel,
+	match,
 	 }) => {
 	const [tabsPanelRef, setTabsPanelRef] = useState(null);
 	const [fixedHeader, setFixedHeader] = useState(false);
 
-	const { comments, commentsCount } = CommentSelectors();
+	const { comments } = CommentSelectors();
 	const isPlanHaveComments = comments.length > 0;
-	let tabsPanelTop = tabsPanelRef ? tabsPanelRef.current.getBoundingClientRect().top : null;
+	let tabsPanelTop = tabsPanelRef && tabsPanelRef.current ? tabsPanelRef.current.getBoundingClientRect().top : null;
 
 	const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
 	const handleFixedHeader = (newValue) => setFixedHeader(newValue);
 
+	const { isAuthenticated } = UserSelectors();
+	const dispatch = useDispatch();
+
+	const newCommentViewHandler = () =>{
+		if (isAuthenticated){
+			setCommentState(pv => ({ ...pv, isOpen: true }));
+		} else {
+			dispatch(openModal({ modalType: 'login' }));
+		}
+	};
+    
 	const mainClasses = classnames({
 		'no-comments': !isPlanHaveComments,
 		'new-comment': commentState.isOpen
@@ -42,58 +49,37 @@ const PlanMobile = ({
 		return  handleFixedHeader(false);
 	},[tabsPanelRef]);
 
+	
 	return (
-		<Wrapper>
+		<Wrapper hideFooter={true}>
 			<SC.MobileMainWrapper>
 				<SC.Content>
 					<Header
+						match={match}
 						handleTabsPanelRef={handleTabsPanelRef}
 						fixedHeader={fixedHeader}
-						handleTabChange={handleTabChange}
 						openNewCommentView={()=> setCommentState(pv => ({ ...pv, isOpen :true }))}
 						isNewCommentOpen={commentState.isOpen}
-                        commentsCount={commentsCount}
+						setCommentState={setCommentState}
 					/>
 					<SC.Main className={mainClasses}>
-						{ 
-							tabValue === 0 && <SummaryTab
-								handleSubscribePanel={handleSubscribePanel}
-								subscribePanel={subscribePanel}
-							/>
-				 		}
-						{ 
-						 tabValue === 1 && <CommentsTab
-								addLikeToComment={addLikeToComment}
-								commentState={commentState}
-								addSubComment={addSubComment}
-								addNewComment={addNewComment}
-								subCommentState={subCommentState}
-								setSubCommentState={setSubCommentState}
-								setCommentState={setCommentState}
-							/>
- 						}
+						{children}
 					</SC.Main>
 					<Navigation
-						handleTabChange={handleTabChange}
-						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))}
+						newCommentViewHandler={newCommentViewHandler}
 					/>
-				</SC.Content>
+                    <Footer/>
+                </SC.Content>
 			</SC.MobileMainWrapper>
 		</Wrapper>
 	);
 };
 
-PlanMobile.propTypes = {
-	tabValue: PropTypes.any.isRequired,
-	setSubCommentState: PropTypes.func.isRequired,
+Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
 	commentState: PropTypes.object.isRequired,
-	subCommentState: PropTypes.object.isRequired,
-	closeNewCommentView: PropTypes.func.isRequired,
-	handleTabChange: PropTypes.func.isRequired,
-	subscribePanel: PropTypes.bool.isRequired,
-	handleSubscribePanel: PropTypes.func.isRequired,
-	setRefetchComments: PropTypes.func.isRequired,
+	children: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired,
 };
 
-export default PlanMobile;
+export default Template;

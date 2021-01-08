@@ -53,7 +53,7 @@ export const useDataHandler = (planId) => {
 			if (changes) {
 				changes[0].map(function(change) {
 					const isRelevantChange = change[3];
-					if (!isRelevantChange) return;
+					if (!isRelevantChange) return false;
 					const areaChangeType = utils.getAreaChangeType(change);
 					const handler = utils.areaChangeHandlers[areaChangeType];
 					const [firstChange, secondChange] = handler(change);
@@ -66,7 +66,10 @@ export const useDataHandler = (planId) => {
 						newDataUnits[0].data.push(firstChange);
 						newDataUnits[1].data.push(secondChange);
 					}
+					
+					return true;
 				});
+				
 			}
 			dispatch(setPlanData({
 				dataArea: newDataArea, 

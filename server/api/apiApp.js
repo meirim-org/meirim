@@ -7,6 +7,7 @@ const Session = require('./lib/session');
 const Email = require('./service/email');
 const routes = require('./apiRoutes');
 const errorHandler = require('./errorHandler');
+const config = require('config');
 
 const urlencoded = BodyParser.urlencoded({
 	extended: false
@@ -23,6 +24,11 @@ const cors = Cors({
 
 // init application
 const app = Express();
+
+if (config.get('general.trustProxy') !== null) {
+	app.set('trust proxy', config.get('general.trustProxy'));
+}
+
 app.use(compression());
 app.use(Session);
 app.use(cors);

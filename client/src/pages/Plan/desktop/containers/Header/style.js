@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AppBar as MuiAppBar } from '@material-ui/core';
+import { AppBar as MuiAppBar, Button } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 export const SubTitleWrapper = styled.div`
@@ -87,3 +87,38 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         font-size: 1rem !important;
     }
 `);
+
+
+export const Tab = withTheme(styled(Button)`
+    border-radius: 0 !important;
+    border-bottom: 2px solid transparent !important;
+    outline: 0 !important;
+    
+    padding-right: .85rem !important;
+    padding-left: .85rem !important;
+    
+    @media(min-width: 1200px) {
+        padding-right: 1.5rem !important;
+        padding-left: 1.5rem !important;
+    }
+    
+    .MuiButton-label {
+        color:  ${props => props.theme.palette.black} !important;
+        font-size:  16px !important;
+        font-weight: 400;
+    }
+    
+    .MuiBadge-badge {
+        font-family:  ${props => props.theme.fontFamily} !important;
+        font-size:  12px !important;
+        font-weight: 600;
+    }
+    
+    &.active {
+        border-color: ${props => props.theme.palette.primary.main} !important;
+        .MuiButton-label {
+            color:  ${props => props.theme.palette.primary.main} !important;
+        }
+    }
+`);
+

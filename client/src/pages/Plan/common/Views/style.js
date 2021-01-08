@@ -4,7 +4,7 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
 
 export const Header = styled.span`
-    grid-area: header; 
+    grid-column-start: span 2;
     padding: 2rem 2rem 0;
     margin-bottom: 0.8rem;
     display: flex;
@@ -40,7 +40,7 @@ export const SecondSide = styled.div`
 `;
 
 export const Text = withTheme(styled.div`
-    grid-area: text; 
+    grid-column-start: span 2;
     padding: 0 2rem 1rem;
     margin: 0;
     border-bottom: 1px solid ${props => props.theme.palette.gray['300']};

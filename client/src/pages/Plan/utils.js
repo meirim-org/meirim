@@ -93,7 +93,6 @@ export const handleNewCommentSubmit = (type, setTypeError) => {
 
 export const extractComments = (comments) => {
 	const forDeletion = [];
-	console.log("🚀 ~ file: utils.js ~ line 112 ~ extractComments ~ comments", comments)
 	comments.map((comment) => {
 		let parentId = comment.parent_id;
 
@@ -105,6 +104,8 @@ export const extractComments = (comments) => {
 			parent.subComments.push(comment);
 			forDeletion.push(comment.id);
 		}
+		
+		return true;
 	});
 	comments = comments.filter(item => !forDeletion.includes(item.id));
 
