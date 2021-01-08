@@ -18,6 +18,7 @@ const FundingPage = () => {
 	const [otherAmount, setOtherAmount] = useState(0);
 	const [amount, setAmount] = useState();
 	const [termsAccepted, setTermsAccepted] = useState(false );
+	const [triedSubmit, setTriedSubmit] = useState(false );
 	const [paymentUrl, setPaymentUrl] = useState();
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
@@ -43,6 +44,7 @@ const FundingPage = () => {
 	}, [ amount, termsAccepted ])
 
 	const handlePaymentRequest = async () => {
+		setTriedSubmit(true);
 		const { isValidAmount, isValidAcceptedTerms } = validateFormInput()
 		if (!isValidAmount || !isValidAcceptedTerms) return;
 
@@ -87,6 +89,7 @@ const FundingPage = () => {
 					</SC.MediaContent>
 				</SC.HeaderWrapper>
 				<SC.InputsWrapper>
+					<TabPanel>
 					<SC.RoadmapDetails>
 						<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
 						{roadmap.map(i => (
@@ -96,40 +99,43 @@ const FundingPage = () => {
 								<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
 							</SC.RoadmapItemWrapper>))}
 					</SC.RoadmapDetails>
+					</TabPanel>
 					<Divider/>
 					
 					<SC.PaymentWrapper>
 							{/* <SC.PaymentOptions> */}
-							<TabPanel>
+							<TabPanel style={{'width':'460px'}}>
 						<TabBox>
 							 {paymentAmountOptions.map(o => (
 								<div>
-									<SC.PaymentOption onClick={ () => { setAmount(o) } }>
+									<SC.PaymentOption className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
 										<SC.Amount>{o} ₪</SC.Amount>
 									 </SC.PaymentOption>
 								</div>
 							))}
 								<div>
-									<SC.PaymentOption onClick={ () => { setAmount(otherAmount) } } > סכום אחר
+									<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } > סכום אחר
 										<TextInput type="number" width="3.5em" min="1" max="20000" onChange={ ({ target: { value } }) => {
 											setOtherAmount(Number.parseInt(value));
 											setAmount(value)}}
-										/> <br/>
+										/>
 									</SC.PaymentOption>
 								</div>
-								<HelperText error={formErrors.amountError.message} />
+								<HelperText error={triedSubmit?formErrors.amountError.message:''} />
 								
 							{/* </SC.PaymsentOptions> */}
 							<SC.TermsOfUseWrapper>
 							<span>אני מאשר/ת את </span>  
 								 <Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
-								<Checkbox error={formErrors.termsAcceptedError.message} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
+								<Checkbox error={triedSubmit?formErrors.termsAcceptedError.message:''} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
 							</SC.TermsOfUseWrapper>
-							</TabBox>
-								</TabPanel>
+							{/* </TabBox>
+							</TabPanel> */}
 							<SC.ButtonWrapper>
 								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest } style={'width:'}/>
 							</SC.ButtonWrapper>
+							</TabBox>
+							</TabPanel>
 					</SC.PaymentWrapper>
 					</SC.InputsWrapper>
 			</SC.MainWrapper>
