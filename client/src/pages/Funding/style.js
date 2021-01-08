@@ -190,16 +190,14 @@ export const InputWrapper = styled.div`
 export const PaymentOptions= styled.div`
   padding: 1.5em;
   background: #CFABFA;
-  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 12px;
   width:342px;
   height:465px;
+  user-select:none;
 `;
 
 export const PaymentOption= styled.span`
-  background:${props => !props.selected ? '#FFFFFF' : '#391695'};
-  box-shadow: 0px 31.371px 155.529px rgba(0, 0, 0, 0.0503198), 0px 16.7724px 83.1534px rgba(0, 0, 0, 0.0417275), 0px 9.40248px 46.6151px rgba(0, 0, 0, 0.035), 0px 4.99359px 24.7569px rgba(0, 0, 0, 0.0282725);
-  border-radius: 12px;
+  border-radius: 2px;
   font-family: Assistant;
   font-style: normal;
   font-weight: bold;
@@ -210,21 +208,38 @@ export const PaymentOption= styled.span`
   padding:10px;
   margin:10px;
   display: inline-block;
-  height:120px;
-  width:120px;
+  height:55px;
+  width:110px;
   float:right;
-  padding-top: 30px;
+  padding-top: 10px;
   text-align: -webkit-center;
+  border:1px solid #391695;
+  overflow-y:auto;
+  transition: background-color 200ms;
+  user-select:none;
   &:hover, &.active {
     background-color:#FBFBFB;
   };
-  overflow-y:auto;
+  &.active {
+    background-color:#D9D2FF;
+    transition: background-color 50ms;
+  };
+  &.longer{
+    width:90%;
+    overflow-y:hidden;
+  }
+
+  label ,input{
+    position:absolute;
+    margin: 20px;
+  }
 `;
 
 export const Amount =styled.span`
   font-size:26px;
   font-weight: bold;
   line-height: 28px;
+  color: #391695
 `;
 
 export const Monthly =styled.span`

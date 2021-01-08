@@ -31,7 +31,7 @@ class FundingController extends Controller {
 
 		let params = {
 			...paymentDefaultConfig,
-			Amount: query.amount
+			Amount: query.amount || 50
 		}
 
 		if (query.monthly){
