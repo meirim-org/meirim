@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import Iframe from 'react-iframe';
 import * as SC from './style';
 
-const Payment = ({ url, id, onClose, errors, inputFocus, inputBlur }) => {
+const Payment = ({ url }) => {
 
 	return (
 			<SC.MainWrapper>
 				<Iframe url={url}
-					width="800px"
-					height="940px"
 					id="external-payment-page"
 					className="payment-popup"
 					display="initial"

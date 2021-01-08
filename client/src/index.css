@@ -8,3 +8,11 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+.payment-popup{
+	width:300px;
+	@media (min-width: 1024px) {
+		width:800px;
+		height:940px;
+	 }
+}
