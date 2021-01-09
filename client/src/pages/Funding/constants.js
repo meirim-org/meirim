@@ -27,4 +27,6 @@ export const roadmap = [ {
 	title: 'הרחבת הקהילה הדיגיטלית',
 	desciption: 'מעירים שואפת להיות פלטפורמה שמחברת קהלים שונים ומאפשרת שיח מקצועי ומפרה ונשמח להרחיב את הקהילה בעזרתכם',
 	fundingSVGName:'community'
-} ]
+}];
+
+export const fundingEndGoal = 100000;
