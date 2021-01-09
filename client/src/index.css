@@ -9,21 +9,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.payment-popup{
-	width:350px;
-	height:800px;
-	overflow-y: scroll;
-	@media (min-width: 1024px) {
-		width:800px;
-		height:940px;
-	 }
-	 @media (max-width: 1024px) {
-		 iframe{
-			overflow-y: hidden;
-		 }
-	 }
-}
-
 .Toastify__toast-body {
 		direction: rtl;
 }

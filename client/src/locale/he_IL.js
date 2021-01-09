@@ -103,7 +103,12 @@ export default {
 	backToComments: 'חזרה לעמוד חוות הדעת',
 	publishComment: 'פרסום חוות דעת',
 	improvement: 'הצעה לשיפור',
-	general: 'חוות דעת כללית'
+	general: 'חוות דעת כללית',
+	fundingStatsTitle: 'בכדי שנוכל להפעיל, לתחזק ולפתח את המערכת החינמית שלנו',
+	fundingEndGoal: 'אתר חדש עולה לאוויר!',
+	fundingShekel: '₪',
+	fundingOutOf: 'מתוך',
+	fundingSupporters: 'תומכים'
 };
 
 
