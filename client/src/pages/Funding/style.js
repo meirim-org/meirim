@@ -37,14 +37,20 @@ export const PaymentWrapper = styled.div`
   }
   background-color:#FBFBFB;
 `;
+
 export const PaymnetModalWrapper = styled.div`
   width:100%;
-  height:500px;
+  height:600px;
+
   .payment-popup{
     width:100%;
     height:100%;
   }
+
   @media ${device.laptop} {
+    height:920px;
+    width:800px;
+
     .payment-popup{
       width:800px;
       height:920px;
@@ -238,7 +244,7 @@ export const PaymentOption= styled.span`
   float:right;
   padding-top: 10px;
   text-align: -webkit-center;
-  border:1px solid #391695;
+  border:1px solid #652DD0;
   overflow-y:auto;
   transition: background-color 200ms;
   user-select:none;
@@ -246,7 +252,8 @@ export const PaymentOption= styled.span`
     background-color:#FBFBFB;
   };
   &.active {
-    background-color:#D9D2FF;
+    background-color:#F0E3FD;
+    opacity:(100-12)%;
     transition: background-color 50ms;
   };
   &.longer{
