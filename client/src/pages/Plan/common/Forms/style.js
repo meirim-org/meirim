@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import { withTheme } from '@material-ui/core/styles';
 import {
 	FormControl as MuiFormControl,
 	RadioGroup as MuiRadioGroup,
@@ -9,6 +8,7 @@ import {
 	FormControlLabel as MuiFormControlLabel,
 } from '@material-ui/core';
 import { TabPanel } from 'shared';
+import { device } from 'style';
 
 
 export const FormControl = withTheme(styled(MuiFormControl)`
@@ -26,9 +26,15 @@ export const FormControl = withTheme(styled(MuiFormControl)`
     }   
 `);
 
-export const addSubCommentWrapper = styled.div`
-    padding: 2rem 3.5rem;
-`;
+export const addSubCommentWrapper = withTheme(styled.div`
+    grid-column-start: span 2;
+    padding: 2rem;
+    border-top: 1px solid ${props => props.theme.palette.gray['300']};
+    
+	@media ${device.tablet} {
+        padding: 2rem 3.5rem;
+    }
+`);
 
 export const addCommentButtonWrapper = styled.div`
     margin: 0 -0.6rem 2rem;
@@ -84,15 +90,25 @@ export const NewCommentTabPanel = withTheme(styled(TabPanel)`
 
 export const RadioGroup = withTheme(styled(MuiRadioGroup)`
     margin: 0 -.5rem;
+    
 `);
 
 export const NewCommentLabelWrapper = withTheme(styled.div`
-    padding: 0 .5rem;
-    
+	padding: 0 .5rem;
+
     .MuiButtonBase-root {
         background-color: transparent !important;
-        padding: 0.187rem 0.375rem;
+        padding: 0.4rem 0.375rem;
     }
+    
+    .MuiFormControlLabel-root {
+		padding: 0.1rem !important;
+		@media(min-width: 375px) {
+			padding: 0.3rem !important;
+    	}
+    }
+    
+
 `);
 
 export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
@@ -114,5 +130,40 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
     &.error {
         border-color: ${props => props.theme.palette.red} !important;;
     }
+    .MuiSvgIcon-root {
+    	width: .9rem !important;
+    	height: .9rem !important;
+    	
+		@media ${device.tablet} {
+			width: 1rem !important;
+			height: 1rem !important;
+		}
+    }
 `);
 
+export const AddSubComment = withTheme(styled.div`
+    grid-column-start: span 1;
+    padding: 1rem; 
+    text-align: center;
+    .MuiSvgIcon-root {
+        font-size: 1.125rem !important;
+        fill: ${props => props.theme.palette.primary['600']} !important;  
+        margin: 0 0.75rem; 
+    }
+    
+    .MuiButton-label {
+        font-weight: 300;
+        font-size: 14px;
+        padding: .4rem 0 .4rem .75rem;
+        border-radius: 200px;
+    }
+    
+   &.active .MuiButton-label{
+        background-color: ${props => props.theme.palette.gray['bg']} !important; 
+    }
+    
+`);
+
+export const CommentIcon = styled(ChatBubbleOutlineIcon)`
+    font-size: 1rem !important;
+`;

@@ -9,13 +9,17 @@ export const MainWrapper = styled.div`
     height: calc(100vh - 72px);
 `;
 
-export const Content = styled.div`
+export const Content = withTheme(styled.div`
+    background-color:  ${props => props.theme.palette.gray['bg']};
     box-shadow: -3px 0 24px 0 rgba(0, 0, 0, 0.08);
     overflow-y: auto;
-`;
+    
+    header {
+        background-color:  ${props => props.theme.palette.white};
+    }
+`);
 
 export const Main = withTheme(styled.main`
-    background-color:  ${props => props.theme.palette.gray['bg']};
     padding: 2.5rem 4.8rem;
     &.no-comments {
         height: 100%;

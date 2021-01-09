@@ -3,55 +3,33 @@ import PropTypes from 'prop-types';
 import Mapa from 'components/Mapa';
 import Wrapper from 'components/Wrapper';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import { Header, SummaryTab, CommentsTab } from './containers';
+import { Header } from './containers';
+import Footer from 'components/Footer';
 import * as SC from './style';
 
-const PlanDesktop = ({ 
-	addNewComment,
-	commentState,
-	subCommentState,
-	setSubCommentState,
+const Template = ({ 
 	setCommentState,
-	addSubComment,
-	addLikeToComment,
-	tabValue, 
-	handleTabChange, 
-	subscribePanel, 
-	handleSubscribePanel,
+	handleTabChange,
+	children,
+	match,
 }) => {
-	const { comments, commentsCount } = CommentSelectors();
+	const { comments } = CommentSelectors();
 	const { planData: { geom, countyName } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
 	
 	return (
-	    <Wrapper>
+	    <Wrapper hideFooter={true}>
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
 						handleTabChange={handleTabChange} 
-						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))}
-						commentsCount={commentsCount}
+						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
+						match={match}
 					/>
 					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
-						{ 
-							tabValue === 0 && 
-							<SummaryTab 
-								handleSubscribePanel={handleSubscribePanel}
-						 		subscribePanel={subscribePanel} 
-						 	/>
-						}
-						{ 
-							tabValue === 1 && <CommentsTab
-								commentState={commentState}
-								subCommentState={subCommentState}
-								setCommentState={setCommentState}
-								setSubCommentState={setSubCommentState}
-								addSubComment={addSubComment}
-								addNewComment={addNewComment}
-								addLikeToComment={addLikeToComment}
-							/>
-						}
+						{children}
 					</SC.Main>
+					<Footer/>
 				</SC.Content>
 				  <Mapa
 					geom={geom}
@@ -64,18 +42,11 @@ const PlanDesktop = ({
 	);
 };
 
-PlanDesktop.propTypes = {
+Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
-	setSubCommentState: PropTypes.func.isRequired,
-	commentState: PropTypes.object.isRequired,
-	subCommentState: PropTypes.object.isRequired,
-	tabValue: PropTypes.number.isRequired,
 	handleTabChange: PropTypes.func.isRequired,
-	subscribePanel: PropTypes.bool.isRequired,
-	handleSubscribePanel: PropTypes.func.isRequired,
-	addNewComment: PropTypes.func.isRequired,
-	addLikeToComment: PropTypes.func.isRequired,
-	addSubComment: PropTypes.func.isRequired,
+	children: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired,
 };
 
-export default PlanDesktop;
+export default Template;

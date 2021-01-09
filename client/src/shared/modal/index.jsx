@@ -11,7 +11,7 @@ import TermsOfPayment from 'pages/Funding/termsOfPayment';
 import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
-// import { SharePlanView }  from 'pages/Plan/common/';
+import SharePlanView from 'pages/Plan/common/Views/sharePlan';
 
 const StyledModal = styled(MUIModal)`
     z-index: 9999 !important; 
@@ -48,9 +48,9 @@ const modalComponents = {
 	login: Login,
 	register: Register,
 	emailVerified: EmailVerified,
+	share: SharePlanView,
 	payment: Payment,
 	termsOfPayment: TermsOfPayment
-	// share: SharePlanView
 };
 
 const Modal = ({ id }) => {

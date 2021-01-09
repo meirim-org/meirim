@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-import { AppBar as MuiAppBar } from '@material-ui/core';
+import { AppBar as MuiAppBar, Button } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 export const TitlesButtonWrapper = styled.div`
+   margin-top: 1rem;
+   padding: 0 3.425rem 0;    
    position: relative;
 `;
 
@@ -17,7 +19,6 @@ export const TitleWrapper = styled.div`
 export const Header = withTheme(styled.div`
     background: ${props => props.theme.palette.gray['100']} !important;
     border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
-    padding: 1rem 3.425rem 0;    
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -32,7 +33,7 @@ export const Header = withTheme(styled.div`
         position: absolute;
         right: 0;
         top: 50%;
-        transform: translate(100%,-50%);
+        transform: translateY(-50%);
         &:focus {
             outline: none;
         }
@@ -81,6 +82,7 @@ export const Buttons = withTheme(styled.div`
 `);
 
 export const AppBar = withTheme(styled(MuiAppBar)`
+    padding: 0 3.425rem 0 1rem;    
     background-color:  transparent !important;
     color: black !important;
     box-shadow: none !important;
@@ -106,3 +108,45 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         background-color: ${props => props.theme.palette.primary['bg']} !important;
     }
 `);
+
+export const Tab = withTheme(styled(Button)`
+    border-radius: 0 !important;
+    border-bottom: 2px solid transparent !important;
+    outline: 0 !important;
+    padding-right: .7rem !important;
+    padding-left: .7rem !important;
+    @media(min-width: 360px) {
+        padding-right: 1.1rem !important;
+        padding-left: 1.1rem !important;
+    }
+    @media(min-width: 375px) {
+        padding-right: 1.4rem !important;
+        padding-left: 1.4rem !important;
+    }
+
+    white-space: nowrap;
+    
+    .MuiButton-label {
+        color:  ${props => props.theme.palette.black} !important;
+        font-size:  14px !important;
+        font-weight: 400;
+    }
+    
+    .MuiBadge-badge {
+        font-family:  ${props => props.theme.fontFamily} !important;
+        font-size:  12px !important;
+        font-weight: 600;
+    }
+    
+    
+    &.active {
+        border-color: ${props => props.theme.palette.primary.main} !important;
+        .MuiButton-label {
+            color:  ${props => props.theme.palette.primary.main} !important;
+        }
+    }
+`);
+
+export const TabWrapper = styled.div`
+    display: flex;    
+`;
