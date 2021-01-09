@@ -16,6 +16,7 @@ import TabBox from './tabBox';
 import CircularProgress from './circularProgress';
 import HelperText from './helperText';
 import Text from './text';
+import ProgressBar from './progressBar';
 
 export {
 	Button,
@@ -35,5 +36,6 @@ export {
 	Text,
 	Divider,
 	Checkbox,
-	HelperText
+	HelperText,
+	ProgressBar
 };
