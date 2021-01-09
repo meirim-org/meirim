@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { externalPaymentErrorToast } from 'toasts'
-// import YoutubeVideo from 'react-youtube'
+import YoutubeVideo from 'react-youtube'
 import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox } from '../../shared';
 import { openModal, closeModal } from 'redux/modal/slice'
 import { useDispatch } from 'react-redux'
@@ -9,7 +9,8 @@ import { paymentRequestValidation, getFormErrors } from './validations'
 import { titles, paymentAmountOptions, roadmap } from './constants'
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
-import Icon from '../../assets/svg/successIcon'
+import DefaultIcon from '../../assets/svg/successIcon';
+import '../../assets/funding';
 
 const FundingPage = () => {
 
@@ -72,20 +73,25 @@ const FundingPage = () => {
 		}
 		window.addEventListener("message", handler)
 	})
-
+	const renderIcon = (iconName)=>{
+		let Gal = iconName;
+		let BB = DefaultIcon;
+		return <Gal/>
+	}
 	return (
 		<Wrapper>
 		<SC.MainWrapper>
 				<SC.HeaderWrapper>
 					<SC.Titles>
 						<SC.SubTitleWrapper>
-							<SC.ThirdTitle>{titles.third}</SC.ThirdTitle>
-							<SC.SubTitle>{titles.subTitle}</SC.SubTitle>
-							<SC.SubTitle>{titles.fourth} </SC.SubTitle>
+							<SC.ThirdTitle>{titles.subTitle}</SC.ThirdTitle>
+							<SC.SubTitle>{titles.third}</SC.SubTitle>
+							<SC.SubTitle style={{'color':'#391695'}}>{titles.fourth} </SC.SubTitle>
+							<SC.SubTitle>{titles.fifth} </SC.SubTitle>
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
-						{/* <YoutubeVideo url="https://www.youtube.com/watch?v=Bd_RD9rHrbQ"/> */}
+						<YoutubeVideo url="https://www.youtube.com/watch?v=Bd_RD9rHrbQ"/>
 					</SC.MediaContent>
 				</SC.HeaderWrapper>
 				<SC.InputsWrapper>
@@ -94,7 +100,9 @@ const FundingPage = () => {
 						<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
 						{roadmap.map(i => (
 							<SC.RoadmapItemWrapper>
-								<SC.RoadmapItemIcon><Icon/></SC.RoadmapItemIcon>
+								<SC.RoadmapItemIcon>
+									{renderIcon(i.fundingSVGName)}
+								</SC.RoadmapItemIcon>
 								<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
 								<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
 							</SC.RoadmapItemWrapper>))}
@@ -103,6 +111,7 @@ const FundingPage = () => {
 					<Divider/>
 					
 					<SC.PaymentWrapper>
+					<SC.FundUsTitle>עזרו לנו להמשיך! </SC.FundUsTitle>
 							{/* <SC.PaymentOptions> */}
 							<TabPanel style={{'width':'460px'}}>
 						<TabBox>
