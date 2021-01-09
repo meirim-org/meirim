@@ -299,16 +299,17 @@ export const RoadmapItemDescription= styled.div`
 
 export const RoadmapItemIcon= styled.div`
   // border: 1px solid #E4E4E4;
-  box-sizing: border-box;
-  border-radius: 12px;
-  float:right;
   height:130px;
   margin:0 1em;
+  position:center;
+  @media ${device.tablet}{
+    float:right;
+  }
 `;
 
 export const RoadmapItemWrapper= styled.div`
  height:136px;
- width: ${device.tablet}px;
+ width: ${device.tablet-100}px;
  @media ${device.tablet}{
    width:767px;
  }
