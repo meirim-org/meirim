@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
 import { createPaymentLink } from './controller';
 import { paymentRequestValidation, getFormErrors } from './validations';
-import { titles, paymentAmountOptions, roadmap } from './constants';
+import { titles, paymentAmountOptions, roadmap, fundingEndGoal } from './constants';
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
@@ -128,7 +128,7 @@ const FundingPage = () => {
 										{t.fundingEndGoal}
 									</Typography>
 								</SC.FundingStatsGoalBubble>
-								<ProgressBar id="funding-stats-progressbar" value={statsData.totalAmount / 100000 * 100} width="100%"/>
+								<ProgressBar id="funding-stats-progressbar" value={statsData.totalAmount / fundingEndGoal * 100} width="100%"/>
 								<SC.FundingStatsNumbersWrapper>
 									<SC.FundingStatsNumberWrapper>
 										<SC.SubTitle>{statsData.totalAmount.toLocaleString('en')} {t.fundingShekel}</SC.SubTitle>
@@ -137,7 +137,7 @@ const FundingPage = () => {
 											mobileVariant="title"
 											color={theme.palette.primary['main']}
 										>
-											{t.fundingOutOf} 100,000 {t.fundingShekel}
+											{t.fundingOutOf} {fundingEndGoal.toLocaleString('en')} {t.fundingShekel}
 										</Typography>
 									</SC.FundingStatsNumberWrapper>
 									<SC.FundingStatsNumberWrapper>
