@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
 import { device } from '../../style';
 import { style } from '@material-ui/system';
 
@@ -180,7 +181,14 @@ export const InputsWrapper = styled.div`
 `;
 
 export const MainWrapper = styled.div`
-  text-align:right
+  text-align:right;
+`;
+
+export const PaymnetWrapper = styled.div`
+  text-align:right;
+  background-color:red;
+  width:800px;
+  height:940px;
 `;
 
 export const InputWrapper = styled.div`
@@ -369,3 +377,51 @@ export const Label = styled.div`
   text-align: right;
   color: #665d71;
 `;
+
+export const FundingStatsWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -.25rem .75rem;
+`;
+
+export const FundingStatsNumbersWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 1rem -.25rem .75rem;
+    width: 100%;
+`;
+
+export const FundingStatsNumberWrapper = styled.div`
+    position: static;
+    border-radius: 12px;
+    padding: 0.75rem;
+    margin-bottom: 1.3rem;
+    box-shadow: 5px 5px 5px 5px #eaeaea;
+    -webkit-box-shadow: 5px 5px 5px 5px #eaeaea;
+`;
+
+export const FundingStatsGoalBubble = withTheme(styled.div`
+    position: relative;
+    border-radius: 12px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    width: 21%;
+    left: -87%;
+    background-color: ${props => props.theme.palette.primary['100']};
+
+    &:after {
+        content: '';
+        border: 10px solid transparent;
+        border-top-color: ${props => props.theme.palette.primary['100']};
+        border-bottom: 0;
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        margin-left: -10px;
+    }
+
+    div {
+        text-align: center;
+    }
+`);

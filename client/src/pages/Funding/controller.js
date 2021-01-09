@@ -9,3 +9,12 @@ export const createPaymentLink = async (options) => {
 		throw new Error(err);
 	}
 }
+
+export const getFundingStats = async (options) => {
+	try {
+		const response = await api.getFundingStats({ ...options });
+		return response;
+	} catch (err) {
+		throw new Error(err);
+	}
+}

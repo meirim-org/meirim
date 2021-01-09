@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { externalPaymentErrorToast } from 'toasts'
-import YoutubeVideo from 'react-youtube'
-import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox } from '../../shared';
-import { openModal, closeModal } from 'redux/modal/slice'
-import { useDispatch } from 'react-redux'
+import { externalPaymentErrorToast } from 'toasts';
+import YoutubeVideo from 'react-youtube';
+import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox, ProgressBar, Typography } from '../../shared';
+import { openModal, closeModal } from 'redux/modal/slice';
+import { useDispatch } from 'react-redux';
+import { useTheme } from '@material-ui/styles';
 import { createPaymentLink } from './controller';
-import { paymentRequestValidation, getFormErrors } from './validations'
-import { titles, paymentAmountOptions, roadmap } from './constants'
+import { paymentRequestValidation, getFormErrors } from './validations';
+import { titles, paymentAmountOptions, roadmap } from './constants';
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
 import * as Icons from '../../assets/funding';
+import { useStatsDataHandler } from './hooks';
+import { FundingSelectors } from 'redux/selectors';
+import t from 'locale/he_IL';
 
 const FundingPage = () => {
 
@@ -26,7 +30,7 @@ const FundingPage = () => {
 	const [formErrors, setFormErrors] = useState({
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
-	})
+	});
 
 	const validateFormInput = () => {
 		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
@@ -73,10 +77,10 @@ const FundingPage = () => {
 		}
 		window.addEventListener("message", handler)
 	})
-	const renderIcon = (iconName)=>{
-		let Gal = Icons[iconName] || DefaultIcon
-		return (Icons[iconName] || DefaultIcon)()
-	}
+	const theme = useTheme();
+	useStatsDataHandler();
+	const { statsData } = FundingSelectors();
+
 	return (
 		<Wrapper>
 		<SC.MainWrapper>
@@ -112,7 +116,42 @@ const FundingPage = () => {
 					<SC.PaymentWrapper>
 					<SC.FundUsTitle>עזרו לנו להמשיך! </SC.FundUsTitle>
 							{/* <SC.PaymentOptions> */}
-							<TabPanel style={{'width':'460px'}}>
+						<TabPanel style={{'width':'460px'}}>
+							<SC.FundingStatsWrapper>
+								<SC.SubTitle>{t.fundingStatsTitle}</SC.SubTitle>
+								<SC.FundingStatsGoalBubble>
+									<Typography
+										variant="highlightedText"
+										mobileVariant="highlightedText"
+										color={theme.palette.black}
+									>
+										{t.fundingEndGoal}
+									</Typography>
+								</SC.FundingStatsGoalBubble>
+								<ProgressBar id="funding-stats-progressbar" value={statsData.totalAmount / 100000 * 100} width="100%"/>
+								<SC.FundingStatsNumbersWrapper>
+									<SC.FundingStatsNumberWrapper>
+										<SC.SubTitle>{statsData.totalAmount.toLocaleString('en')} {t.fundingShekel}</SC.SubTitle>
+										<Typography
+											variant="title"
+											mobileVariant="title"
+											color={theme.palette.primary['main']}
+										>
+											{t.fundingOutOf} 100,000 {t.fundingShekel}
+										</Typography>
+									</SC.FundingStatsNumberWrapper>
+									<SC.FundingStatsNumberWrapper>
+										<SC.SubTitle>{statsData.count.toLocaleString('en')}</SC.SubTitle>
+										<Typography
+											variant="title"
+											mobileVariant="title"
+											color={theme.palette.primary['main']}
+										>
+											{t.fundingSupporters}
+										</Typography>
+									</SC.FundingStatsNumberWrapper>
+								</SC.FundingStatsNumbersWrapper>
+							</SC.FundingStatsWrapper>
 						<TabBox>
 							 {paymentAmountOptions.map(o => (
 								<div>
@@ -134,7 +173,7 @@ const FundingPage = () => {
 							{/* </SC.PaymsentOptions> */}
 							<SC.TermsOfUseWrapper>
 							<span>אני מאשר/ת את </span>  
-								 <Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
+								<Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
 								<Checkbox error={triedSubmit?formErrors.termsAcceptedError.message:''} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
 							</SC.TermsOfUseWrapper>
 							{/* </TabBox>
