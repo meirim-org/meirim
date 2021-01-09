@@ -1,12 +1,15 @@
 import React from 'react';
 import { useTheme } from '@material-ui/styles';
 import PropTypes from 'prop-types';
+import { openModal } from 'redux/modal/slice';
 import t from 'locale/he_IL';
 import {  TabPanel, Button } from 'shared';
-import { CommentForm, CommentView,  SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
-import { CommentSelectors } from 'redux/selectors';
-import * as SC from './style';
+import { CommentForm, CommentView, SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
+import { CommentSelectors, UserSelectors } from 'redux/selectors';
 import { Badge } from '@material-ui/core';
+import * as SC from './style';
+import { useDispatch } from 'react-redux';
+import { withGetScreen } from 'react-getscreen';
 
 const CommentsTab = ({
 	commentState,
@@ -16,21 +19,35 @@ const CommentsTab = ({
 	addNewComment,
 	addSubComment,
 	addLikeToComment,
+	isMobile,
+	isTablet
 	 }) => {
+	const dispatch = useDispatch();
+	const { isAuthenticated } = UserSelectors();
 	const { comments } = CommentSelectors();
 	const { isOpen: isSubCommentOpen } = subCommentState;
 	const { isOpen: isCommentOpen } = commentState;
 	const theme = useTheme();
 	const showComments = comments.length > 0; 
 	const showStartDiscussionPanel = comments.length === 0 && !isCommentOpen;
-	const newCommentViewHandler = () => setCommentState(pv => ({ ...pv, isOpen: !isCommentOpen }));
-	const setIsSubCommentOpen = () => setSubCommentState(pv => ({ ...pv, isOpen: !isSubCommentOpen }));
+	const newCommentViewHandler = () =>{ 
+		if (isAuthenticated){
+			setCommentState(pv => ({ ...pv, isOpen: !isCommentOpen }));
+		} else {
+			dispatch(openModal({ modalType: 'login' }));
+		}
+	};
 	
 	return (
-		<>			
-			<SC.ButtonWrapper>
-				<AddComment isNewCommentOpen={isCommentOpen} newCommentViewHandler={newCommentViewHandler}/>
-			</SC.ButtonWrapper>
+		<>
+			{isMobile() || isTablet()
+				?
+				null
+				:
+				<SC.ButtonWrapper>
+					<AddComment isNewCommentOpen={isCommentOpen} newCommentViewHandler={newCommentViewHandler}/>
+				</SC.ButtonWrapper>
+			}
 			{isCommentOpen && <CommentForm
 				addNewComment={addNewComment}
 				comments={comments.length}
@@ -41,7 +58,7 @@ const CommentsTab = ({
 				const { id: commentId, likes } = comment;
 
 				return ( 
-					<>
+					<div key={'add-subcomment-form' + comment.id}>
 						<CommentView
 							key={index}
 							addLikeToComment={addLikeToComment}
@@ -61,32 +78,24 @@ const CommentsTab = ({
 									badgeContent={!likes ? 0 : likes}
 								/>
 							</SC.Like>
-							<SC.AddSubComment className={isSubCommentOpen ? 'active' : ''}>
-								<Button
-									id={'add-response-' + comment.id}
-									textcolor={theme.palette.black}
-									text={t.addAResponse}
-									onClick={() => setSubCommentState(pv => ({ ...pv, isOpen: !subCommentState.isOpen }))}
-									simple
-									iconBefore={<SC.CommentIcon/>}
-								/>
-							</SC.AddSubComment>
+							<SubCommentForm
+								id={'add-subcomment-form' + comment.id}
+								key={'add-subcomment-form' + comment.id}
+								isSubCommentOpen={isSubCommentOpen}
+								addSubComment={addSubComment}
+								parentComment={comment}
+								subCommentState={subCommentState}
+								setSubCommentState={setSubCommentState}
+							/>
+
 							<SC.CommentsWrapper>
-								{isSubCommentOpen &&
-                                <SubCommentForm
-                                	addSubComment={addSubComment}
-                                	parentComment={comment}
-                                	subCommentState={subCommentState}
-                                	setSubCommentState={setSubCommentState}
-                                />
-								}
 								{comment.subComments &&
                                 comment.subComments.map((subComment, index) => (
                                 	<SubCommentView key={index} id={index} subCommentData={subComment}/>
                                 ))}
 							</SC.CommentsWrapper>
 						</CommentView>
-					</>
+					</div>
 				);
 			})
 			}
@@ -111,6 +120,8 @@ CommentsTab.propTypes = {
 	addNewComment: PropTypes.func.isRequired,
 	addSubComment: PropTypes.func.isRequired,
 	addLikeToComment: PropTypes.func.isRequired,
+	isMobile:PropTypes.func.isRequired,
+	isTablet:PropTypes.func.isRequired,
 };
 
-export default CommentsTab;
+export default withGetScreen(CommentsTab, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });

@@ -32,14 +32,13 @@ const App = () => {
 	return (
 		<MuiThemeProvider theme={muiTheme}>
 			<BrowserRouter>
-				<div>
+				<>
 					<Modal />
 					<Switch>
 						<Route exact path="/" render={props => <Scenes.Home {...props} openRegister={openRegister} />}	/>
 						<Route path="/alerts/unsubscribe/:token" 
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
-						<Route path="/plan/:id/:title" render={props => <Scenes.SinglePlan {...props} />} />
 						<Route path="/plan/:id" render={props => <Plan {...props} />} />
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
@@ -53,9 +52,9 @@ const App = () => {
 						<Route path="/email-sent" render={props => <EmailSent {...props} />} />
 						<Route component={Scenes.NotFound} />
 					</Switch>
-				</div>
-			</BrowserRouter>
-			<ToastContainer autoClose={5000} />
+				</>
+            </BrowserRouter>
+            <ToastContainer autoClose={3000} />
 		</MuiThemeProvider>
 	);
 };

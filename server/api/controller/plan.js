@@ -14,10 +14,9 @@ const columns = [
 	'PLAN_CHARACTOR_NAME',
 	'geom'
 ];
+
 class PlanController extends Controller {
-
 	browse (req) {
-
 		const { query } = req;
 		let q = {
 			where:{},
@@ -26,7 +25,7 @@ class PlanController extends Controller {
 				'goals_from_mavat',
 				'main_details_from_mavat',
 			]
-		}
+		};
 
 		if (query.status) {
 			q.where.status = query.status.split(',');
@@ -36,9 +35,8 @@ class PlanController extends Controller {
 			q.where.PLAN_COUNTY_NAME = query.PLAN_COUNTY_NAME.split(',');
 		}
 
-		if(query.distancePoint){
-
-			let points = query.distancePoint.split(',').map(i => parseFloat(i))
+		if(query.distancePoint) {
+			let points = query.distancePoint.split(',').map(i => parseFloat(i));
 
 			const geojson = {
 				type: 'Point',
@@ -48,20 +46,27 @@ class PlanController extends Controller {
 			if(!GJV.valid(geojson)){
 				throw new Exception.BadRequest('point is invalid'); 
 			}
+
 			const polygon = wkt.convert(geojson);
 
 			// some databases (mysql 8) already support returning ST_Distance in meters
 			// if the geometries are in the same system of reference, and others
-			// (mysql 5.7, mariadb) return the distance in degrees and need to be
+			// (mysql 5.7, mariadb) return the distance in units which need to be
 			// multiplied to get an approximate meters value
-			if (Config.database.dbDistanceInMeters) {
-				q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326)) as distance`))
-			} else {
-				q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*111195 as distance`))
-			}
+			const spatialUnitFactor = Config.locationSearch.dbDistanceInMeters ? 1 : 111195;
 
-			q.orderByRaw = ['distance']
-			delete q.order
+			q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*${spatialUnitFactor} as distance`));
+
+			q.orderByRaw = ['distance'];
+			delete q.order;
+
+			if (Config.locationSearch.filterPlansRadiusKm !== null) {
+				// use ST_Within to filter for plans with centroids within a polygon
+				// created with ST_Buffer. this makes use of the index on geom_centroid
+				q.whereRaw = [
+					Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000/${spatialUnitFactor}))`)
+				];
+			}
 		}
 
 		return super.browse(req, q);

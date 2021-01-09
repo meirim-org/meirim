@@ -62,7 +62,7 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 						}
 						 disabled={newCommentTypeError}
 						 aria-label={t.emptyTextarea}
-						     inputProps={{ maxLength: 2 }}
+						 inputProps={{ maxLength: 2 }}
 						 rowsMin={5}/>
 				</SC.NewCommentControl>
 				<SC.addCommentButtonWrapper>
