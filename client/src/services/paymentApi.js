@@ -14,5 +14,9 @@ module.exports = {
           monthly:true
         }
       }).then(res=>{return res.data.data})
+    },
+
+    getFundingStats: (options) => {
+      return instance.get('/stats').then(res => res.data.data);
     }
 };
