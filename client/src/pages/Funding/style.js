@@ -30,10 +30,11 @@ export const MediaContent = styled.span`
 export const PaymentWrapper = styled.div`
   float:left; 
   width:100%; 
-  padding: 6em 1.5em;
+  padding: 1.5em 1.5em;
   @media ${device.laptop} {
     width:40%;
   }
+  background-color:#FBFBFB;
 `;
 
 export const RoadmapDetails = styled.div`
@@ -44,6 +45,7 @@ export const RoadmapDetails = styled.div`
     @media ${device.laptop} {
       width:60%;
     }
+    background-color:#FBFBFB;
 `;
 
 export const Title = styled.h1`
@@ -119,14 +121,15 @@ export const CentredWrapper = styled.div`
 
 export const ThirdTitle = styled.h1`
   font-family: Assistant !important;
-  font-weight: normal;
+  font-weight: bold;
   font-stretch: normal;
   font-style: normal;
   letter-spacing: normal;
-  font-size:48px;
+  font-size:36px;
   line-height: 1.5;
   color: #270E78;
   margin-bottom: 0;
+  padding-top:80px;
    >  span {
      font-family: Assistant !important;
    }
@@ -198,7 +201,7 @@ export const PaymentOptions= styled.div`
 
 export const PaymentOption= styled.span`
   border-radius: 2px;
-  font-family: Assistant;
+  font-family: Assistant; !important;
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
@@ -247,13 +250,30 @@ export const Monthly =styled.span`
 `;
 
 export const RoadMapTitle= styled.span`
-  font-family: Assistant;
+  font-family: Assistant;!important;
   font-style: normal;
   font-weight: normal;
-  font-size: 36px;
+  font-size: 28px;
   line-height: 48px;
   text-align: right;
   color: #270E78;
+  margin-top: -50px;
+  margin-bottom: 30px
+  padding-right: 300px;
+  padding-right: 40%;
+`;
+
+export const FundUsTitle= styled.span`
+  font-family: Assistant; important!
+  font-style: normal;
+  font-weight: normal;
+  font-size: 28px;
+  line-height: 48px;
+  text-align: right;
+  color: #270E78;
+  margin-top: -100px;
+  margin-bottom: 30px;
+  padding-right: 30%;
 `;
 
 export const RoadmapItemTitle= styled.div`
@@ -278,7 +298,7 @@ export const RoadmapItemDescription= styled.div`
 `;
 
 export const RoadmapItemIcon= styled.div`
-  border: 1px solid #E4E4E4;
+  // border: 1px solid #E4E4E4;
   box-sizing: border-box;
   border-radius: 12px;
   float:right;
