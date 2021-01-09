@@ -2,6 +2,7 @@ import React from 'react';
 import TopSection from './TopSection';
 import TopViews from './TopViews';
 import WeNeedYou from './WeNeedYou';
+import CommunityDiscussions from './CommunityDiscussions';
 import Wrapper from 'components/Wrapper';
 
 const Homepage = () => {
@@ -10,6 +11,7 @@ const Homepage = () => {
 			<TopSection />
 			<TopViews />
 			<WeNeedYou />
+			<CommunityDiscussions />
 		</Wrapper>
 	)
 }
