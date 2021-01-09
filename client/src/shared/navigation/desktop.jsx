@@ -4,7 +4,7 @@ import { Grid, Box } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
 import { Button, Row, IconButton, Menu } from 'shared';
@@ -15,6 +15,7 @@ import { openModal } from 'redux/modal/slice';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
 		setDropDownEl(event.currentTarget);
@@ -53,13 +54,13 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-about" to="/funding/" activeClassName="active">
-											תמכו בנו 2
-										</SC.StyledLink>
-									</Box>
-									<Box px={2}>
-										<Button id="support-us" text={t.supportUs} type={'primary'} onClick={() => {}}
-											small/>
+										<Button
+											id="support-us"
+											text={t.supportUs}
+											type={'primary'}
+											onClick={() => { history.push(`/funding/`); }}
+											small
+										/>
 									</Box>
 								</Box>
 							</Box>
