@@ -4,6 +4,7 @@ const CommentController = require('./comment');
 const PlanController = require('./plan');
 const CommentPersonController = require('./comment_person');
 const AlertController = require('./alert');
+const FundingController = require('./funding');
 
 module.exports = {
 	CommentPersonController,
@@ -11,5 +12,6 @@ module.exports = {
 	AlertController,
 	ArchiveNotificationController,
 	NotificationController,
-	PlanController
+	PlanController,
+	FundingController
 };

@@ -8,6 +8,7 @@ const PlanChartOneEightRow = require('./plan_chart_one_eight_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
+const FundingTransaction = require('./funding_transaction');
 
 module.exports = {
 	ArchiveNotification,
@@ -19,5 +20,6 @@ module.exports = {
 	PlanChartOneEightRow,
 	PlanChartFourRow,
 	PlanChartFiveRow,
-	PlanChartSixRow
+	PlanChartSixRow,
+	FundingTransaction
 };
