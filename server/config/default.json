@@ -51,6 +51,12 @@
 		"dbDistanceInMeters": false,
 		"filterPlansRadiusKm": null
 	},
+	"paymentServices": {
+		"baseURL": "",
+		"masofId": "",
+		"apiKey": "",
+		"PassP": ""
+	},
 	"test": {
 		"database": {
 			"client": "mysql",
