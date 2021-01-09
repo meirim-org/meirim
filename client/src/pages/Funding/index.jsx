@@ -116,7 +116,7 @@ const FundingPage = () => {
 					<SC.PaymentWrapper>
 					<SC.FundUsTitle>עזרו לנו להמשיך! </SC.FundUsTitle>
 							{/* <SC.PaymentOptions> */}
-						<TabPanel style={{'width':'460px'}}>
+						<TabPanel className={'leftPanel'}>
 							<SC.FundingStatsWrapper>
 								<SC.SubTitle>{t.fundingStatsTitle}</SC.SubTitle>
 								<SC.FundingStatsGoalBubble>

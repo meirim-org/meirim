@@ -36,6 +36,12 @@ export const PaymentWrapper = styled.div`
     width:40%;
   }
   background-color:#FBFBFB;
+  width:350px;
+  @media screen and (min-width:400px){
+    .leftPanel{
+      width:460px;
+    }
+  }
 `;
 
 export const PaymnetModalWrapper = styled.div`
