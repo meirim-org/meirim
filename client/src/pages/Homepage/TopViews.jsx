@@ -3,9 +3,14 @@ import styled from 'styled-components';
 import { H2, CommonSection } from './style';
 import Preview from './Preview';
 import topPlansImage from '../../assets/top-plans.svg';
+import { device } from 'style';
 
 const TopViewsSection = styled(CommonSection)``; 
-const TopPlansImage = styled.img.attrs(()=>({ src: topPlansImage }))` max-width: 100%; `;
+const TopPlansImage = styled.img.attrs(()=>({ src: topPlansImage }))` 
+	@media ${device.tablet} {
+		max-width: 100%;
+	}
+`;
 
 const TopViews = () => {
 

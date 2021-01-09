@@ -2,28 +2,41 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import locationAutocompleteApi from '../../services/location-autocomplete';
 import Autocomplete from '../../components/AutoCompleteInput';
+import { device } from 'style';
 
 const Wrapper = styled.div`
-    width: 512px;
-    height: 160px;
     background-color: #652DD0;
     box-shadow: 0px 29.6621px 147.057px rgba(0, 0, 0, 0.0503198), 0px 15.8588px 78.6238px rgba(0, 0, 0, 0.0417275), 0px 8.8903px 44.0759px rgba(0, 0, 0, 0.035), 0px 4.72157px 23.4084px rgba(0, 0, 0, 0.0282725);
     border-radius: 12px;
-    padding: 32px;
-    margin-top: 113px;
+    padding: 23px;
+    width: 343px;
+    height: 200px;
+    margin: 32px auto;
+
+    @media ${device.tablet} {
+        width: 512px;
+        height: 160px;
+        padding: 32px;
+        margin: 113px 0 0 0;  
+    }
 `;
 
 const Title = styled.p`
     color: #ffffff;
-    font-family: Assistant;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 32px;
-    line-height: 32px;
     text-align: right;
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 28px;
+
+    @media ${device.tablet} {
+        font-size: 32px;
+        line-height: 32px;
+        margin-bottom: 32px;
+    }
 `;
 
 const Button = styled.button`
+    margin-right: auto;
     background: transparent;
     width: 120px;
     height: 32px;
@@ -33,10 +46,20 @@ const Button = styled.button`
     padding: 5px 0;
     color: #FFFFFF;
     line-height: 1;
+
+    @media ${device.tablet} {
+        margin-right: 0;
+    }
 `;
 
 const AutocompleteWrapper = styled.div`
-    width: 305px;
+    margin-bottom: 35px;
+    width: 100%;
+
+    @media ${device.tablet} {
+        margin-bottom: 0;
+        width: 305px;
+    }
 
     input[type="text"] {
         color: #FFFFFF;
@@ -57,16 +80,36 @@ const AutocompleteWrapper = styled.div`
 
 const InputWrapper = styled.div`
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+
+    @media ${device.tablet} {
+        flex-direction: row;
+        justify-content: space-between;
+    }
 `;
 
 export default function SearchBox() {
-	const [addresses, setAddresses] = useState([]);
+    const [addresses, setAddresses] = useState([]);
+    const [placeId, setPlaceId] = useState('');
 
 	async function onInputChange(input) {
-		const res = await locationAutocompleteApi.autocomplete(input);
+        const res = await locationAutocompleteApi.autocomplete(input);
 		setAddresses(res);
-	}
+    }
+    
+    function onFilterChange(data) {
+        if (data) {
+            const place = addresses.find(address => address.label === data);
+            if (place) {
+                setPlaceId(place.id);
+            }
+        }
+    }
+
+    async function onGoToPlansClick() {
+        const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
+        window.location.href = `/plans?loc=${lat},${lng}`;
+    }
 
 	useEffect(()=>{
 		locationAutocompleteApi.init();
@@ -80,11 +123,12 @@ export default function SearchBox() {
 					<Autocomplete 
 						placeholder="חפשו כתובת"
 						inputSuggestions={addresses}
-						onInputChange={onInputChange}
+                        onInputChange={onInputChange}
+                        onFilterChange={onFilterChange}
 						classes=""
 					/>
 				</AutocompleteWrapper>
-				<Button>צפיה בתוכניות</Button>
+				<Button type="button" onClick={onGoToPlansClick}>צפיה בתוכניות</Button>
 			</InputWrapper>
 		</Wrapper>
 	)

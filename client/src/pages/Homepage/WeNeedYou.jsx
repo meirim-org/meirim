@@ -2,24 +2,42 @@ import React from 'react';
 import styled from 'styled-components';
 import { CommonSection } from './style';
 import supportUs from '../../assets/support-us.svg';
+import { device } from 'style';
 
 const Box = styled.div`
+    margin: 0 auto;
+    display: flex;
     background: #F0E3FD;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15), 0px 6.91436px 8.83705px rgba(0, 0, 0, 0.025);
     border-radius: 12px;
-    width: 1236px;
-    height: 164px;
-    margin: 0 auto;
-    display: flex;
+    width: 343px;
+    flex-direction: column;
+    padding-top: 14px;
+
+    @media ${device.tablet} {
+        width: 1236px;
+        max-width: 100%;
+        height: 164px;
+        flex-direction: row;
+        padding-top: 0;
+    }
 `;
 
 const WeNeedYouSection = styled(CommonSection)``;
 
 const Content = styled.div`
-    margin-right: 40px;
-    padding: 32px 0 32px 32px;
-    flex: 1;
     display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    padding: 0 24px 24px 24px;;
+
+    @media ${device.tablet} {
+        flex-direction: row;
+        flex: 1;
+        margin-right: 40px;
+        padding: 32px 0 32px 32px;
+        margin-top: 0;
+    }
 `;
 
 const Title = styled.h2`
@@ -29,7 +47,6 @@ const Title = styled.h2`
     text-align: right;
     color: #270E78;
     margin: 0;
-    padding: 0;
     margin-bottom: 16px;
 `;
 
@@ -52,18 +69,29 @@ const Button = styled.button`
     line-height: 24px;
     color: #ffffff;
     margin-right: auto;
-    margin-top: auto;
     &:focus {
         outline: none;
     }
     border: 0;
     cursor: pointer;
+
+    @media ${device.tablet} {
+        margin-top: auto;
+    }
+`;
+
+const SupportUsImage = styled.img`
+    align-self: baseline;
+
+    @media ${device.tablet} {
+        align-self: inherit;
+    }
 `;
 
 const WeNeedYou = () => (
 	<WeNeedYouSection>
 		<Box>
-			<img src={supportUs} alt="support us" />
+			<SupportUsImage src={supportUs} alt="support us" />
 			<Content>
                 <div>
                     <Title>אנחנו צריכים אתכם!</Title>
