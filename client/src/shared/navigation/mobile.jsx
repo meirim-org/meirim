@@ -133,7 +133,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
-											<SC.StyledListItem component={RouterLink} to="#" button key={t.supportUs}>
+											<SC.StyledListItem component={RouterLink} to="/funding/" button key={t.supportUs}>
 												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
