@@ -21,3 +21,5 @@ export const tabIsActive = (tab, pathData) => {
 
 	return pathName.includes(tab);
 };
+
+export const scrollToTop = () => window.scroll({ top: 0, left: 0, behavior: 'smooth' });
