@@ -7,7 +7,7 @@ class FundingTransaction extends Model {
 	get rules () {
 		return {
 			yaad_id: ['required', 'integer'],
-			recurring: ['required', 'boolean'],
+			hk_id: 'integer',
 			amount: ['required', 'integer']
 		};
 	}
