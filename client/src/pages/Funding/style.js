@@ -37,6 +37,20 @@ export const PaymentWrapper = styled.div`
   }
   background-color:#FBFBFB;
 `;
+export const PaymnetModalWrapper = styled.div`
+  width:100%;
+  height:500px;
+  .payment-popup{
+    width:100%;
+    height:100%;
+  }
+  @media ${device.laptop} {
+    .payment-popup{
+      width:800px;
+      height:920px;
+    }
+  }
+`;
 
 export const RoadmapDetails = styled.div`
     float:right; 

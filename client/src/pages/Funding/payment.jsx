@@ -7,14 +7,14 @@ const Payment = ({ url }) => {
 
 	return (
 			<SC.MainWrapper>
-				<SC.PaymnetWrapper>
+				<SC.PaymnetModalWrapper>
 					<Iframe url={url}
 						id="external-payment-page"
 						className="payment-popup"
 						display="initial"
 						zoom="0.75"
 						position="relative"/>
-				</SC.PaymnetWrapper>
+				</SC.PaymnetModalWrapper>
 			</SC.MainWrapper>
 	);
 };
