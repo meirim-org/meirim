@@ -10,7 +10,7 @@ import { titles, paymentAmountOptions, roadmap } from './constants'
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
-import '../../assets/funding';
+import * as Icons from '../../assets/funding';
 
 const FundingPage = () => {
 
@@ -74,9 +74,8 @@ const FundingPage = () => {
 		window.addEventListener("message", handler)
 	})
 	const renderIcon = (iconName)=>{
-		let Gal = iconName;
-		let BB = DefaultIcon;
-		return <Gal/>
+		let Gal = Icons[iconName] || DefaultIcon
+		return (Icons[iconName] || DefaultIcon)()
 	}
 	return (
 		<Wrapper>
@@ -101,7 +100,7 @@ const FundingPage = () => {
 						{roadmap.map(i => (
 							<SC.RoadmapItemWrapper>
 								<SC.RoadmapItemIcon>
-									{renderIcon(i.fundingSVGName)}
+									{(Icons[i.fundingSVGName] || DefaultIcon)()}
 								</SC.RoadmapItemIcon>
 								<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
 								<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
