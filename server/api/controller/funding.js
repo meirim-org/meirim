@@ -30,8 +30,8 @@ class FundingController extends Controller {
 		// validate fields are provided
 		if (req.body.yaad_id === undefined) {
 			return Promise.reject(new Exception.BadRequest('No yaad_id provided'));
-		} else if (req.body.recurring === undefined) {
-			return Promise.reject(new Exception.BadRequest('No recurring provided'));
+		} else if (req.body.hk_id === undefined) {
+			return Promise.reject(new Exception.BadRequest('No hk_id provided'));
 		} else if (req.body.amount === undefined) {
 			return Promise.reject(new Exception.BadRequest('No amount provided'));
 		}

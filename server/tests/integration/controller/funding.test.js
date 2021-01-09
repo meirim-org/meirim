@@ -30,7 +30,7 @@ describe('Funding controller', function() {
 			},
 			body: {
 				yaad_id: 1,
-				recurring: false,
+				hk_id: null,
 				amount: 100
 			}
 		};
@@ -42,7 +42,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 2,
-				recurring: true,
+				hk_id: 1,
 				amount: 50
 			}
 		};
@@ -52,10 +52,10 @@ describe('Funding controller', function() {
 		// fetch all existing transactions to make sure saved data is correct
 		const existingTransactions = await FundingTransaction.fetchAll();
 		assert.equal(existingTransactions.models[0].attributes.yaad_id, 1, 'created yaad id value is correct');
-		assert.equal(existingTransactions.models[0].attributes.recurring, false, 'created recurring value is correct');
+		assert.equal(existingTransactions.models[0].attributes.hk_id, null, 'created hk id value is correct');
 		assert.equal(existingTransactions.models[0].attributes.amount, 100, 'created amount value is correct');
 		assert.equal(existingTransactions.models[1].attributes.yaad_id, 2, 'created yaad id value is correct');
-		assert.equal(existingTransactions.models[1].attributes.recurring, true, 'created recurring value is correct');
+		assert.equal(existingTransactions.models[1].attributes.hk_id, 1, 'created hk id value is correct');
 		assert.equal(existingTransactions.models[1].attributes.amount, 50, 'created amount value is correct');
 
 		// create should not work for existing yaad id or with partial data
@@ -63,7 +63,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 3,
-				recurring: false
+				hk_id: null
 			}
 		};
 		assert.isRejected(FundingController.create(req3), Exception.BadRequest, 'No amount provided');
@@ -74,11 +74,11 @@ describe('Funding controller', function() {
 				amount: 50
 			}
 		};
-		assert.isRejected(FundingController.create(req4), Exception.BadRequest, 'No recurring provided');
+		assert.isRejected(FundingController.create(req4), Exception.BadRequest, 'No hk_id provided');
 		const req5 = {
 			session: {},
 			body: {
-				recurring: false,
+				hk_id: null,
 				amount: 50
 			}
 		};
@@ -87,7 +87,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 2,
-				recurring: false,
+				hk_id: null,
 				amount: 150
 			}
 		};
@@ -110,7 +110,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 1,
-				recurring: false,
+				hk_id: null,
 				amount: 50
 			}
 		};
@@ -121,7 +121,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 2,
-				recurring: false,
+				hk_id: null,
 				amount: 100
 			}
 		};
@@ -132,7 +132,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 3,
-				recurring: false,
+				hk_id: null,
 				amount: 150
 			}
 		};
@@ -148,7 +148,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 4,
-				recurring: true,
+				hk_id: 1,
 				amount: 50
 			}
 		};
@@ -159,7 +159,7 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 5,
-				recurring: true,
+				hk_id: 2,
 				amount: 100
 			}
 		};
