@@ -10,13 +10,12 @@ const StyledCheckbox = styled(MUICheckbox)`
 	text-align: center;
 	float:right;
 	color: #ffffff;
-  .MuiButton-label  {
+    .MuiButton-label  {
     	font-family: Assistant !important;
     }
     &:focus {
        outline: none;
 	}
-	color:yellow;
 `;
 
 const Checkbox = ({ text, id, onClick, error, small = false }) => {
@@ -24,7 +23,7 @@ const Checkbox = ({ text, id, onClick, error, small = false }) => {
 	
 	return (
 		<>
-		<StyledCheckbox id={id} size="large" minhegiht={minHegiht} onClick={onClick} variant="contained" color="Secondary">
+		<StyledCheckbox id={id} size="large" minhegiht={minHegiht} onClick={onClick} variant="contained" color="Primary">
 			{text} 
 		</StyledCheckbox>
 		{
