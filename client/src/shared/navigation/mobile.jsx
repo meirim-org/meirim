@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, ListItemText, Divider } from '@material-ui/core';
+import { Box, ListItemText, Divider, Grid } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import StarIcon from '@material-ui/icons/Star';
 import t from 'locale/he_IL';
-import {  Row, IconButton, Menu } from 'shared';
+import { Row, IconButton, Button } from 'shared';
 import logo from 'assets/logo.png';
 import { colors } from 'style/index';
 import * as SC from './style';
@@ -21,15 +18,7 @@ import { useDispatch } from 'react-redux';
 const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 	const dispatch = useDispatch();
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
-	const [dropDownEl, setDropDownEl] = useState(null);
 
-	const handleDropDownClick = (event) => {
-		setDropDownEl(event.currentTarget);
-	};
-
-	const handleDropDownClose = () => {
-		setDropDownEl(null);
-	};
 
 	return (
 		<SC.MobileHeader>
@@ -44,60 +33,29 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 							</Box>
 							<Box component="nav">
 								<Box display="flex" alignItems="center">
-									{!isAuthenticated && (
-										<Box px={2}>
-											<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
-												{t.plans}
-											</SC.StyledLink>
-										</Box>
-									)}
+									<Box px={2}>
+										<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
+											{t.plans}
+										</SC.StyledLink>
+									</Box>
+									{isAuthenticated &&
+                                        <SC.StyledLink id="nav-bar-plans" to="/my-plans/" activeClassName="active">
+                                        	{t.myPlans}
+                                        </SC.StyledLink>
+									}
 								</Box>
 							</Box>
 						</Row>
 					</Box>
 					<Box>
 						<Row gutter={0.15}>
-							{isAuthenticated && (
-								<>
-									<Box display="flex">
-										<RouterLink id="nav-bar-favorites" to="#">
-											<IconButton
-												textcolor={colors.purple}
-												ariaLabel={'Favorites'}
-												fontSize={24}
-												paddingg={0}
-											>
-												<BookmarkBorderIcon/>
-											</IconButton>
-										</RouterLink>
-									</Box>
-									<Box display="flex">
-										<RouterLink id="nav-bar-notifications" to="#">
-											<IconButton
-												textcolor={colors.purple}
-												ariaLabel={'Notifications'}
-												fontSize={24}
-												paddingg={0}
-											>
-												<NotificationsNoneIcon/>
-											</IconButton>
-										</RouterLink>
-									</Box>
-
-									<Box>
-										<Menu
-											ariaControls="user-menu"
-											openHandler={handleDropDownClick}
-											closeHandler={handleDropDownClose}
-											textcolor="#1a2d66"
-											iconBefore={<AccountCircleIcon color="primary"/>}
-											dropDownEl={dropDownEl}
-											menuItems={[]}
-										/>
-									</Box>
-								</>
-							)}
-
+							{!isAuthenticated &&
+                            <Box>
+                            	<Button id="sign-up" text={t.signup}
+                            		small altColor
+                            		onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
+                            </Box>
+							}
 							<Box>
 								<IconButton onClick={() => setMobileNavIsOpened(true)}  textcolor={colors.purple} ariaLabel={'open mobile menu'}>
 									<MenuIcon/>
