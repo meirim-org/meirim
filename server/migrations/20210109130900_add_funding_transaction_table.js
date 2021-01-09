@@ -2,7 +2,7 @@ exports.up = function(knex) {
 	return knex.schema
 		.createTable('funding_transaction', table => {
 			table.integer('yaad_id').primary();
-			table.boolean('recurring').notNullable();
+			table.integer('hk_id');
 			table.integer('amount').notNullable();
 			table.timestamps();
 		});

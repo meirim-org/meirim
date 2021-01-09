@@ -11,12 +11,20 @@ module.exports = {
       return instance.get('/paymentLink', {
         params:{ 
           amount:options.amount,
-          monthly:true
+          monthly:false
         }
       }).then(res=>{return res.data.data})
     },
 
     getFundingStats: (options) => {
       return instance.get('/stats').then(res => res.data.data);
-    }
+    },
+
+    saveTransaction: (options) => {
+      return instance.post('/', {
+        yaad_id: options.yaadId,
+        hk_id: options.hkId,
+        amount: options.amount
+      }).then(res => res.status === 'OK');
+    },
 };

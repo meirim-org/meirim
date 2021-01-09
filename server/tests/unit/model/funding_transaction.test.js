@@ -15,7 +15,7 @@ describe('funding_transaction model', function() {
 	it('has the right rules', function() {
 		const rules = instance.rules;
 		expect(rules.yaad_id).to.eql(['required', 'integer']);
-		expect(rules.recurring).to.eql(['required', 'boolean']);
+		expect(rules.hk_id).to.eql('integer');
 		expect(rules.amount).to.eql(['required', 'integer' ]);
 	});
 
