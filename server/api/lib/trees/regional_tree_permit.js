@@ -15,7 +15,7 @@ const Geocoder = require('../../service/tree_geocoder').geocoder;
 
 // Regional tree permits were taken from here: 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
 const regionalTreePermitUrls = [
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
+	//'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
 
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_amakim_galil_gilboa.XLS',
@@ -24,13 +24,13 @@ const regionalTreePermitUrls = [
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/befor_merkaz-sharon.XLS',
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz-sharon.XLS',
 
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_merkaz_shfela.XLS',
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz_shfela.XLS',
+	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_merkaz_shfela.XLS',
+	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz_shfela.XLS',
 
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_jerusalem.XLS',
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_jerusalem.XLS',
+	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_jerusalem.XLS',
+	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_jerusalem.XLS',
 
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
+	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
 	//'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS', - no after darom
 ];
 
@@ -43,6 +43,7 @@ const EVENING = '20:00';
 const { treeBucketName: bucketName, useS3ForTreeFiles: useS3 } = Config.get('aws');
 const treesRawDataDir = path.resolve(Config.get('trees.rawDataDir'));
 const GEO_CODING_INTERVAL = Config.get('trees.geoCodingInterval');
+const MAX_PERMITS = Config.get('trees.maxPermits');
 
 async function getRegionalTreePermitsFromFile(url, pathname) {
 	try {
@@ -84,7 +85,7 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 	}
 }
 
-async function saveNewTreePermits(treePermits) {
+async function saveNewTreePermits(treePermits, maxPermits) {
 	// Tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
 	// buffer should be enough for human to remove those lines from the excel sheet.
 	//We're reading a the rows as a bulk and match them at compute time for performance.
@@ -105,7 +106,7 @@ async function saveNewTreePermits(treePermits) {
 		})
 		.catch(function (error) { Log.error(error); });
 
-	const new_tree_permits = treePermits.map(tp => {
+	const newTreePermits = treePermits.map(tp => {
 		//if tp is not in the hash map of the existing one - add to the new ones
 		const compact_tp = `${tp.attributes[tpc.REGIONAL_OFFICE]}_${tp.attributes[tpc.PERMIT_NUMBER]}_${formatDate(tp.attributes[tpc.START_DATE], MORNING)}`;
 		if (tp.attributes[tpc.REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
@@ -115,20 +116,23 @@ async function saveNewTreePermits(treePermits) {
 	}).filter(Boolean); // remove undefined values
 	//save only the new ones
 	try { //TODO promise all or knex save bulk
-		new_tree_permits.map(async tp => {
-			setTimeout(async tp => {
-				const polygonFromPoint = await generateGeomFromAddress(tp.attributes[tpc.PLACE],tp.attributes[tpc.street]);
-				tp.attributes[tpc.GEOM] = polygonFromPoint;
-				Log.info(`Saving new tree permit: ${tp.attributes[tpc.REGIONAL_OFFICE]} ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.TOTAL_TREES]} trees.`);
-				await tp.save();
-			
-			}, GEO_CODING_INTERVAL,tp); // max rate to query nominatim is 1 request per second
-		});
+		const numPermits = (newTreePermits.length > maxPermits)? maxPermits : newTreePermits.length;
+		const savedTreePermits = [];
+		// Not using map / async on purpose, so node won't run this code snippet in parallel
+		for (const tp of newTreePermits.slice(0,numPermits)){
+			await new Promise(r => setTimeout(r, GEO_CODING_INTERVAL)); // max rate to query nominatim is 1 request per second
+			const polygonFromPoint = await generateGeomFromAddress(tp.attributes[tpc.PLACE], tp.attributes[tpc.STREET]);
+			tp.attributes[tpc.GEOM] = polygonFromPoint;
+			Log.info(`Saving new tree permit: ${tp.attributes[tpc.REGIONAL_OFFICE]} ${tp.attributes[tpc.PERMIT_NUMBER]} with ${tp.attributes[tpc.TOTAL_TREES]} trees.`);
+			await tp.save();
+			savedTreePermits.push(tp);
+		}	
+		return savedTreePermits;
 	}
 	catch (err) {
-		Log.error(err);
+		Log.error(err.message || err);
+		return [];
 	}
-	return new_tree_permits;
 }
 
 const parseTreesXLS = async (filename) => {
@@ -177,13 +181,33 @@ const parseTreesXLS = async (filename) => {
 	return processPermits(rawTreePermits);
 };
 
+async function getGeocode(place, street) {
+	try {
+		const address = (place && street) ?
+			`${place} ${street}` : `${place}`;
+
+		const res = await Geocoder.geocode(address);
+		return res[0];
+	}
+	catch (err) {
+		Log.error(err.message || err);
+		return;
+	}
+}
+
 async function generateGeomFromAddress(place, street) {
 	const address = (place && street) ?
 		`${place} ${street}` : `${place}`;
-
-	const res = await Geocoder.geocode(address);
+	let res = getGeocode(place, street);
 	if (!res[0]) {
-		Log.error(`Couldn't geocode address: ${address}. return`);
+		Log.debug(`Couldn't geocode address: ${address}.`);
+		// if (place && street) {
+		// 	Log.debug(`Trying to geocode place only :${place}`);
+		// 	res = getGeocode(place);
+		// 	if (!res[0]){
+		// 		Log.error(`Couldn't geocode address: ${place}.`);
+		// 	}
+		// }
 		return;
 	}
 	Log.debug(`address ${address} : ${res[0].longitude},${res[0].latitude} `);
@@ -223,11 +247,11 @@ function generateFilenameByTime(url) {
 	return { s3filename: filenameWithDate, localFilename: localFilename };
 }
 
-async function crawlRegionalTreePermit(url) {
+async function crawlRegionalTreePermit(url, maxPermits) {
 	try {
 		const { s3filename, localFilename } = generateFilenameByTime(url);
 		const treePermits = await getRegionalTreePermitsFromFile(url, localFilename);
-		const newTreePermits = await saveNewTreePermits(treePermits);
+		const newTreePermits = await saveNewTreePermits(treePermits, maxPermits);
 		Log.info('Extracted ' + newTreePermits.length + ' new permits from: ' + s3filename);
 		if (useS3) {
 			await uploadToS3(s3filename, localFilename);
@@ -238,22 +262,21 @@ async function crawlRegionalTreePermit(url) {
 		return false;
 	}
 }
-const regionalTreePermit = () => {
-	return new Promise((resolve, reject) => {
-		Promise.allSettled(regionalTreePermitUrls.map(url => crawlRegionalTreePermit(url)))
-			.then((results) => {
-				let sumNewPermits = 0;
-				results.forEach(element => {
-					sumNewPermits = sumNewPermits + element.value;
-				});
-				Log.info(`Done! Total ${sumNewPermits} new permits`);
-				resolve(sumNewPermits);
-			})
-			.catch(err => {
-				Log.error(err);
-				reject(err);
-			});
-	});
+const regionalTreePermit = async() => {
+	let sumPermits = 0;
+	let maxPermits = MAX_PERMITS;
+	try {
+		for (let i = 0; i < regionalTreePermitUrls.length && maxPermits > 0; i++) {
+			const numSavedPermits =await crawlRegionalTreePermit(regionalTreePermitUrls[i], maxPermits);
+			maxPermits = maxPermits - numSavedPermits;
+			sumPermits = sumPermits + numSavedPermits;
+		}
+	}
+	catch (err) {
+		Log.error(err.message || err);
+	}
+	Log.info(`Done! Total ${sumPermits} new permits`);
+	return sumPermits;
 };
 
 async function uploadToS3(filename, fullFileName) {
