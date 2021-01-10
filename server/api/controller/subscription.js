@@ -11,7 +11,7 @@ class PlanPersonController extends Controller {
 		}
 		// the user is found, creating a new subscription
 		return this.model
-			.subscribe(req.session.person.id, req.params.plan_id)
+			.subscribe(req.session.person.id, req.params.id)
 			.then((subscription) => {
 				Log.debug(
 					'Person subscription created create success id:',
@@ -21,7 +21,7 @@ class PlanPersonController extends Controller {
 	}
 
 	async getUserPlans(req) {
-		const userPlanIds = await PlanPerson.getPlansByUserId(req.params.userId);
+		const userPlanIds = await PlanPerson.getPlansByUserId(req.body.userId);
 		if(!userPlanIds || !userPlanIds.models) return [];
 		const plans = await Promise.all(userPlanIds.models.map(({ attributes }) => Plan.fetchByPlanID(attributes.plan_id) ));
 
