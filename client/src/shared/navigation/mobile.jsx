@@ -16,10 +16,12 @@ import { colors } from 'style/index';
 import * as SC from './style';
 import { PLANS } from 'router/contants';
 import { openModal } from 'redux/modal/slice';
+import { UserSelectors } from 'redux/selectors';
 import { useDispatch } from 'react-redux';
 
 const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 	const dispatch = useDispatch();
+	const { user: { id: userId } } = UserSelectors();
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
 	const [dropDownEl, setDropDownEl] = useState(null);
 
@@ -60,7 +62,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 							{isAuthenticated && (
 								<>
 									<Box display="flex">
-										<RouterLink id="nav-bar-favorites" to="#">
+										<RouterLink id="nav-bar-favorites" to={`/user/${userId}/plans`}>
 											<IconButton
 												textcolor={colors.purple}
 												ariaLabel={'Favorites'}
@@ -120,7 +122,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										<SC.StyledList>
 											{isAuthenticated && (
 												<SC.StyledListItem component={RouterLink} button key={t.myPlans}
-													color="#652dd0">
+													color="#652dd0" to={`user/${userId}/plans`}>
 													<ListItemText primary={t.myPlans}/>
 													<SC.StyledStarIcon>
 														<StarIcon/>
