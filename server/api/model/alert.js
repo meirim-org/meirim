@@ -20,7 +20,7 @@ class Alert extends Model {
 
 	defaults () {
 		return {
-			radius: 5
+			radius: 4
 		};
 	}
 
