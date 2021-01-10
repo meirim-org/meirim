@@ -16,10 +16,20 @@ export const StyledListItem = withTheme(styled(ListItem)`
     .MuiListItemIcon-root {
       margin: 0 .75rem;
       min-width: auto;
+      color: ${props => props.color} !important;
     }
     span {
         font-family:  ${props => props.theme.fontFamily} !important;
         font-size: 18px;      
+    }
+    &#logout-button {
+         color: ${props => props.theme.palette.red.alt} !important;
+    }
+    &#my-plans-button {
+         color: ${props => props.theme.palette.primary.main} !important;
+    }
+    &#register-button {
+         color: ${props => props.theme.palette.primary.main} !important;
     }
 `);
 

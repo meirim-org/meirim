@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, ListItemText, Divider, Grid } from '@material-ui/core';
+import { Box, ListItemText, Divider } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import StarIcon from '@material-ui/icons/Star';
+import { StarIcon } from 'shared/icons';
 import t from 'locale/he_IL';
 import { Row, IconButton, Button } from 'shared';
 import logo from 'assets/logo.png';
-import { colors } from 'style/index';
 import * as SC from './style';
 import { PLANS } from 'router/contants';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
+import { useTheme } from '@material-ui/styles';
 
 const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
+	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
 
@@ -57,7 +58,10 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
                             </Box>
 							}
 							<Box>
-								<IconButton onClick={() => setMobileNavIsOpened(true)}  textcolor={colors.purple} ariaLabel={'open mobile menu'}>
+								<IconButton
+									onClick={() => setMobileNavIsOpened(true)}
+									color="primary"
+									ariaLabel={'open mobile menu'}>
 									<MenuIcon/>
 								</IconButton>
 								<SC.Drawer open={mobileNavIsOpened}>
@@ -66,7 +70,6 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 									>
 										<Box display="flex" justifyContent="flex-end" m={1.5}>
 											<IconButton
-												textcolor={colors.black}
 												ariaLabel={'close mobile menu'}
 												fontSize={20.5}
 												onClick={() => setMobileNavIsOpened(false)}
@@ -77,8 +80,12 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 
 										<SC.StyledList>
 											{isAuthenticated && (
-												<SC.StyledListItem component={RouterLink} button key={t.myPlans}
-													color="#652dd0">
+												<SC.StyledListItem
+													component={RouterLink}
+													button
+													to="#"
+													key={t.myPlans}
+													id="my-plans-button">
 													<ListItemText primary={t.myPlans}/>
 													<SC.StyledStarIcon>
 														<StarIcon/>
@@ -117,8 +124,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 														    dispatch(openModal({ modalType: 'register' }));
 															setMobileNavIsOpened(false);
 														}}
+														id="register-button"
 														key={t.signup}
-														color="#652dd0">
+														color={theme.palette.primary.main}>
 														<ListItemText primary={t.signup}/>
 													</SC.StyledListItem>
 												</>
@@ -129,10 +137,14 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 														key={t.alerts}>
 														<ListItemText primary={t.alerts}/>
 													</SC.StyledListItem>
-													<SC.StyledListItem component={RouterLink} to="#" button
+													<SC.StyledListItem
+														component={RouterLink}
+														to="#"
+														button
 														onClick={logoutHandler}
 														key={t.signout}
-														color="#b71f29">
+														id='logout-button'
+													>
 														<ListItemText primary={t.signout}/>
 														<SC.LogOutIcon>
 															<InboxIcon/>
