@@ -156,7 +156,7 @@ const Link = styled.span`
 const EmailSent = ({ fullPage = true , ...props }) => {
 	let email = ''
 	if (props && props.location && props.location.state){
-		email = props.location.state
+		email = props.location.state.email
 	}
 	
 	return (
