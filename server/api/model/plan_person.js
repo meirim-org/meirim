@@ -36,5 +36,12 @@ class PlanPerson extends Model {
 			.destroy()
 			.then(() => true);
 	}
+
+	static getPlansByUserId (person_id) {
+		return this.where({ person_id })
+			.fetchAll()
+			.then(existingSubscription => existingSubscription);
+	}
+
 }
 module.exports = PlanPerson;
