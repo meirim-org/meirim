@@ -52,7 +52,8 @@
 	},
 	"trees": {
 		"rawDataDir": "/tmp/raw_trees",
-		"geoCodingInterval" : 2000
+		"geoCodingInterval" : 30000,
+		"maxPermits": 5
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,

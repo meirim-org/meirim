@@ -6,7 +6,7 @@ export default {
 	signout: 'התנתקות',
 	name: 'מעירים',
 	plans: 'תכניות',
-	treePermits: 'רשיונות כריתה',
+	treePermits: 'עצים',
 	vocabulary: 'מילון',
 	about: 'אודות',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
