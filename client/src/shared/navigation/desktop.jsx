@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Box } from '@material-ui/core';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { StarIcon } from 'shared/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link } from 'react-router-dom';
 import t from 'locale/he_IL';
@@ -66,7 +66,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 									<SC.MyPlansButton
 										component={Link} to={'/my-plans'}
-										startIcon={<StarBorderIcon />}
+										startIcon={<StarIcon />}
 										aria-label={t.myPlans}
 									>
 										{t.myPlans}
