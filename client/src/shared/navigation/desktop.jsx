@@ -12,9 +12,11 @@ import { colors } from 'style/index';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
+import { UserSelectors } from 'redux/selectors';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const dispatch = useDispatch();
+	const { user: { id: userId } } = UserSelectors();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
 		setDropDownEl(event.currentTarget);
@@ -64,10 +66,9 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						{isAuthenticated && (
 							<Row>
 								<Grid item>
-									<RouterLink id="mobile-nav-bar-close-menu">
+									<RouterLink id="mobile-nav-bar-close-menu" to={`/user/${userId}/plans`}>
 										<IconButton
 											textcolor={colors.purple}
-											ariaLabel={'close mobile menu'}
 											fontSize={20.5}
 										>
 											<BookmarkBorderIcon/>

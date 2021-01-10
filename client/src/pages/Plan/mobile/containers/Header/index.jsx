@@ -15,10 +15,10 @@ const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setC
 	const { planData } = PlanSelectors();
 	const { name, countyName } = planData;
 	const { commentsCount } = CommentSelectors();
-    const pathData  = {
-        pathName: history.location.pathname,
-        planId: match.params.id
-    };
+	const pathData  = {
+		pathName: history.location.pathname,
+		planId: match.params.id
+	};
 
 	const tabsPanelRef = useRef(null);
 	useEffect(() => handleTabsPanelRef(tabsPanelRef));
@@ -41,14 +41,13 @@ const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setC
 										{t.opinion}
 									</Badge>
 								</SC.Tab>
-								<SC.Tab onClick={()=> alert('coming soon')}>{t.planningInformation}</SC.Tab>
+								<SC.Tab onClick={()=>{}}>{t.planningInformation}</SC.Tab>
 							</SC.TabWrapper>
 						</SC.AppBar>
 					</>
 					:
 					<SC.TitlesButtonWrapper>
 						<BackButton onclick={() => {
-							console.log('hey'); 
 							setCommentState(pv =>({ ...pv, isOpen: false }));}
 						} 
 						label={t.backToComments} classname="back-button"/>
