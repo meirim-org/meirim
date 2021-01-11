@@ -461,3 +461,49 @@ export const FundingStatsGoalBubble = withTheme(styled.div`
         text-align: center;
     }
 `);
+
+export const PaymentTypeButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 1rem -.25rem .75rem;
+  width: 100%;
+`;
+
+export const PaymentTypeButton = withTheme(styled.div`
+  position: static;
+  padding: 0.75rem;
+  margin-bottom: 1.3rem;
+  cursor: pointer;
+  background-color: ${props => props.theme.palette.white};
+
+  span {
+    color: ${props => props.theme.palette.primary['main']};
+  }
+
+  ${({ selected, theme }) => selected && `
+    background-color: ${theme.palette.primary['main']};
+
+    span {
+      color: ${theme.palette.white};
+    }
+  `}
+
+  ${({ side, selected }) => (side === 'right') && `
+    border-radius: 0 12px 12px 0;
+
+    ${selected && `
+      box-shadow: 5px 5px 5px 5px #eaeaea;
+      -webkit-box-shadow: 5px 5px 5px 5px #eaeaea;
+    `}
+  `}
+
+  ${({ side, selected }) => side === 'left' && `
+    border-radius: 12px 0 0 12px;
+
+    ${selected && `
+      box-shadow: -5px 5px 5px 5px #eaeaea;
+      -webkit-box-shadow: -5px 5px 5px 5px #eaeaea;
+    `}
+  `}
+`);
