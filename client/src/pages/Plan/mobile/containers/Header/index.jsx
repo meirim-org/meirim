@@ -35,8 +35,12 @@ const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setC
 						</SC.TitlesButtonWrapper>
 						<SC.AppBar ref={tabsPanelRef} position="static" className={fixedHeader ? 'fixed' : ''}>
 							<SC.TabWrapper>
-								<SC.Tab className={tabIsActive('summary',pathData) ? 'active' : ''} onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
-								<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''} onClick={() => history.push(`${match.url}/comments`)}>
+								<SC.Tab className={tabIsActive('summary',pathData) ? 'active' : ''}
+									onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
+								<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''}
+									onClick={() => {
+									    history.push(`${match.url}/comments`);
+									}}>
 									<Badge badgeContent={commentsCount} color="primary">
 										{t.opinion}
 									</Badge>
@@ -64,7 +68,8 @@ Header.propTypes = {
 	match: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
 	fixedHeader: PropTypes.bool.isRequired,
-	handleTabsPanelRef: PropTypes.func.isRequired
+	handleTabsPanelRef: PropTypes.func.isRequired,
+	setCommentState: PropTypes.func.isRequired,
 };
 
 export default Header;

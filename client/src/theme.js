@@ -7,7 +7,10 @@ export const muiTheme = createMuiTheme({
 	palette: {
 		black: '#000000',
 		white: '#ffffff',
-		red: '#ff3a68',
+		red: {
+		    'main': '#ff3a68',
+		    'alt': '#b71f29',
+		},
 		gray: {
 		    '100': '#FBFBFB',
 		    '200': '#f4f4f4',
@@ -49,6 +52,9 @@ export const muiTheme = createMuiTheme({
 			'text2': '#007e6c',
 			'whatsapp': '#25D366',
 			'bg' : '#DEFFEA',
+		},
+		blue: {
+			'main': '#1a2d66',
 		},
 	},
 });

@@ -1,31 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu as MUmenu, MenuItem } from '@material-ui/core';
-import { Button } from '../index';
+import { Menu as MUmenu, MenuItem, Button } from '@material-ui/core';
+// import { Button } from '../index';
 
 const Menu = ({
 	ariaControls,
 	openHandler,
 	closeHandler,
 	text,
-	textcolor,
-	iconBefore,
 	iconAfter,
 	dropDownEl,
 	menuItems
 }) => (
 	<>
 		<Button
-			simple
 			aria-controls={ariaControls}
 			aria-haspopup="true"
 			onClick={openHandler}
-			text={text}
-			fontWeight={'400'}
-			textcolor={textcolor}
-			iconBefore={iconBefore}
-			iconAfter={iconAfter}
-		/>
+			endIcon={iconAfter}
+		>
+			{text}
+		</Button>
 		<MUmenu
 			id={ariaControls}
 			anchorEl={dropDownEl}
