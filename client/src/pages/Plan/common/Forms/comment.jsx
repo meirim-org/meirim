@@ -45,7 +45,7 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 									variant="chipsAndIconButtons"
 									mobileVariant="chipsAndIconButtons"
 									component="span"
-									color={theme.palette.red}
+									color={theme.palette.red.main}
 								>
 									{t.chooseType}
 								</Typography>
