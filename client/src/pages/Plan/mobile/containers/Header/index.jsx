@@ -8,7 +8,7 @@ import { goBack } from 'pages/Plan/utils';
 import { BackButton } from 'pages/Plan/common';
 import { useHistory } from 'react-router-dom';
 import { Badge } from '@material-ui/core';
-import { tabIsActive, scrollToTop } from 'utils';
+import { tabIsActive } from 'utils';
 
 const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setCommentState }) => {
 	const history = useHistory();
@@ -40,7 +40,6 @@ const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setC
 								<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''}
 									onClick={() => {
 									    history.push(`${match.url}/comments`);
-										scrollToTop();
 									}}>
 									<Badge badgeContent={commentsCount} color="primary">
 										{t.opinion}

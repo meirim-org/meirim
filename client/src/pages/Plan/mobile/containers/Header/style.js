@@ -46,6 +46,7 @@ export const Header = withTheme(styled.div`
         padding-right: 3.425rem;
         padding-left: 2.3rem;
         border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+        z-index: 99999;
     }
 `);
 
