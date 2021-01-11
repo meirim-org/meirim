@@ -9,11 +9,11 @@ module.exports = {
     // need to have the following funcitons- get instance token, 
     getPaymentURL: (options) => {
       return instance.get('/paymentLink', {
-        params:{ 
-          amount:options.amount,
-          monthly:false
+        params: {
+          amount: options.amount,
+          monthly: options.monthlyPayment ? '1' : ''
         }
-      }).then(res=>{return res.data.data})
+      }).then(res => res.data.data);
     },
 
     getFundingStats: (options) => {

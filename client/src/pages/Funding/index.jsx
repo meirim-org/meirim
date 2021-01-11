@@ -33,6 +33,7 @@ const FundingPage = () => {
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
 	});
+	const [monthlyPayment, setMonthlyPayment] = useState(true);
 
 	const validateFormInput = () => {
 		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
@@ -56,10 +57,9 @@ const FundingPage = () => {
 		if (!isValidAmount || !isValidAcceptedTerms) return;
 
 		try {
-			const paymentpageUrl = await createPaymentLink({amount})
-			setPaymentUrl(paymentpageUrl)
-			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }))
-
+			const paymentpageUrl = await createPaymentLink({amount, monthlyPayment});
+			setPaymentUrl(paymentpageUrl);
+			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }));
 		} catch (err) {
 			// error from the paymnet service, or other errors, need to check
 			externalPaymentErrorToast()
@@ -157,7 +157,19 @@ const FundingPage = () => {
 									</SC.FundingStatsNumberWrapper>
 								</SC.FundingStatsNumbersWrapper>
 							</SC.FundingStatsWrapper>
-						<TabBox>
+							<SC.PaymentTypeButtonsWrapper>
+								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
+									<Typography component="span" variant="planTitle" mobileVariant="planTitle">
+										{t.monthlyPayment}
+									</Typography>
+								</SC.PaymentTypeButton>
+								<SC.PaymentTypeButton side="left" selected={!monthlyPayment} onClick={() => { setMonthlyPayment(false); }}>
+									<Typography component="span" variant="planTitle" mobileVariant="planTitle">
+										{t.singleTimePayment}
+									</Typography>
+								</SC.PaymentTypeButton>
+							</SC.PaymentTypeButtonsWrapper>
+							<TabBox>
 							 {paymentAmountOptions.map(o => (
 								<div key={`amount-${o}`}>
 									<SC.PaymentOption className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
