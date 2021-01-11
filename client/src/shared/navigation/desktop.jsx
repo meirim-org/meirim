@@ -68,7 +68,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 									<SC.MyPlansButton
 										component={Link} 
-										to={`user/${userId}/plans`}
+										to={`/user/${userId}/plans`}
 										startIcon={<StarIcon />}
 										aria-label={t.myPlans}
 									>
