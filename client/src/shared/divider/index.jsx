@@ -41,7 +41,7 @@ const StyledLink = styled(RouterLink)`
 `;
 
 const Divider = ({ orientation}) => (
-	<MUIDivider orientation={orientation} flexItem="true" variant='fullWidth'></MUIDivider>
+	<MUIDivider orientation={orientation} flexItem={true} variant='fullWidth'></MUIDivider>
 );
 
 Divider.defaultProps = {

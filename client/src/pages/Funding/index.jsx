@@ -104,7 +104,7 @@ const FundingPage = () => {
 					<SC.RoadmapDetails>
 						<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
 						{roadmap.map(i => (
-							<SC.RoadmapItemWrapper>
+							<SC.RoadmapItemWrapper key={i.id}>
 								<SC.RoadmapItemIcon>
 									{(Icons[i.fundingSVGName] || DefaultIcon)()}
 								</SC.RoadmapItemIcon>
@@ -123,6 +123,7 @@ const FundingPage = () => {
 								<SC.SubTitle>{t.fundingStatsTitle}</SC.SubTitle>
 								<SC.FundingStatsGoalBubble>
 									<Typography
+										component="span"
 										variant="highlightedText"
 										mobileVariant="highlightedText"
 										color={theme.palette.black}
@@ -135,6 +136,7 @@ const FundingPage = () => {
 									<SC.FundingStatsNumberWrapper>
 										<SC.SubTitle>{statsData.totalAmount.toLocaleString('en')} {t.fundingShekel}</SC.SubTitle>
 										<Typography
+											component="span"
 											variant="title"
 											mobileVariant="title"
 											color={theme.palette.primary['main']}
@@ -145,6 +147,7 @@ const FundingPage = () => {
 									<SC.FundingStatsNumberWrapper>
 										<SC.SubTitle>{statsData.count.toLocaleString('en')}</SC.SubTitle>
 										<Typography
+											component="span"
 											variant="title"
 											mobileVariant="title"
 											color={theme.palette.primary['main']}
@@ -156,7 +159,7 @@ const FundingPage = () => {
 							</SC.FundingStatsWrapper>
 						<TabBox>
 							 {paymentAmountOptions.map(o => (
-								<div>
+								<div key={`amount-${o}`}>
 									<SC.PaymentOption className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
 										<SC.Amount>{o} ₪</SC.Amount>
 									 </SC.PaymentOption>
@@ -165,11 +168,13 @@ const FundingPage = () => {
 								<div>
 									<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } > סכום אחר
 										<TextInput
+											id="other-amount-input"
+											name="other-amount"
 											type="number"
 											width="3.5em"
-											min="1"
-											max="20000"
-											value={otherAmount}
+											min={1}
+											max={20000}
+											value={otherAmount.toString()}
 											onChange={({ target: { value } }) => {
 												setOtherAmount(Number.parseInt(value));
 												setAmount(value)}
@@ -177,13 +182,13 @@ const FundingPage = () => {
 										/>
 									</SC.PaymentOption>
 								</div>
-								<HelperText error={triedSubmit?formErrors.amountError.message:''} />
+								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''} />
 								
 							{/* </SC.PaymsentOptions> */}
 							<SC.TermsOfUseWrapper>
 							<span>אני מאשר/ת את </span>  
 								<Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
-								<Checkbox checked={termsAccepted} error={triedSubmit ? formErrors.termsAcceptedError.message : ''} onClick={() => { setTermsAccepted(!termsAccepted) }}/>
+								<Checkbox id="terms-accepted-checkbox" text="" checked={termsAccepted} error={triedSubmit ? formErrors.termsAcceptedError.message : ''} onClick={() => { setTermsAccepted(!termsAccepted) }}/>
 							</SC.TermsOfUseWrapper>
 							{/* </TabBox>
 							</TabPanel> */}

@@ -26,11 +26,11 @@ const Checkbox = ({ text, id, checked, onClick, error, small = false }) => {
 			<StyledCheckbox
 				id={id}
 				checked={checked}
-				size="large"
+				size="medium"
 				minhegiht={minHegiht}
 				onClick={onClick}
 				variant="contained"
-				color="Primary"
+				color="primary"
 			>
 				{text}
 			</StyledCheckbox>
