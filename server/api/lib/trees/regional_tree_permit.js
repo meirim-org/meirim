@@ -16,7 +16,7 @@ const Geocoder = require('../../service/tree_geocoder').geocoder;
 // Regional tree permits were taken from here: 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
 const regionalTreePermitUrls = [
 	//'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
-	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
+	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
 
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_amakim_galil_gilboa.XLS',
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_amakim_galil_gilboa.XLS',
@@ -24,13 +24,13 @@ const regionalTreePermitUrls = [
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/befor_merkaz-sharon.XLS',
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz-sharon.XLS',
 
-	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_merkaz_shfela.XLS',
-	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz_shfela.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_merkaz_shfela.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz_shfela.XLS',
 
-	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_jerusalem.XLS',
-	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_jerusalem.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_jerusalem.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_jerusalem.XLS',
 
-	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
 	//'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS', - no after darom
 ];
 
@@ -196,23 +196,58 @@ async function getGeocode(place, street) {
 }
 
 async function generateGeomFromAddress(place, street) {
-	const address = (place && street) ?
-		`${place} ${street}` : `${place}`;
-	let res = getGeocode(place, street);
-	if (!res[0]) {
-		Log.debug(`Couldn't geocode address: ${address}.`);
-		// if (place && street) {
-		// 	Log.debug(`Trying to geocode place only :${place}`);
-		// 	res = getGeocode(place);
-		// 	if (!res[0]){
-		// 		Log.error(`Couldn't geocode address: ${place}.`);
-		// 	}
-		// }
-		return;
+	
+	let res = '';
+	const address = `${place} ${street || ''}`;
+	Log.debug(`address: ${address} `);
+
+	if (!place) return;
+	if (place && street) {
+		res = await getGeocode(place, street);
+		if (!res) { // try geocode place only
+			Log.debug(`Couldn't geocode address: ${address}. try to fetch place from db.`);
+			res = await fetchOrGeocodePlace(place);
+			if (!res ) {
+				Log.debug(`Failed to geocode address: ${place}`);
+				return;
+			}
+		}
+		Log.debug(`Managed to geocode address ${address} : ${res.longitude},${res.latitude} `);
+
 	}
-	Log.debug(`address ${address} : ${res[0].longitude},${res[0].latitude} `);
-	const polygonFromPoint = JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res[0].longitude}, ${res[0].latitude}],[ ${res[0].longitude}, ${res[0].latitude}],[ ${res[0].longitude}, ${res[0].latitude}],[ ${res[0].longitude}, ${res[0].latitude}]  ]] }`);
+	else { // only place, no street
+		res = await fetchOrGeocodePlace(place);
+		if (!res ) {
+			Log.debug(`Failed to geocode address: ${place}`);
+			return;
+		}
+	} 
+	const polygonFromPoint = JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}]  ]] }`);
 	return polygonFromPoint;
+}
+
+async function fetchOrGeocodePlace(place) {
+	//Since nominatim is very strict reagrding its usage policy, we first check if we have place's location in our db.
+	const geomFromDB = await database.Knex.select(tpc.GEOM).from(tpc.TREE_PERMIT_TABLE).where({ [tpc.PLACE]: place }).limit(1);
+	if (geomFromDB && geomFromDB[0] && geomFromDB[0].geom &&
+		geomFromDB[0].geom[0] && geomFromDB[0].geom[0][0] &&
+		geomFromDB[0].geom[0][0].x && geomFromDB[0].geom[0][0].y ) {
+		const res = {
+			longitude: geomFromDB[0].geom[0][0].x,
+			latitude: geomFromDB[0].geom[0][0].y
+		};
+		Log.debug(`Found place coordinates in DB: ${res.longitude},${res.latitude} `);
+		return res;
+	}
+	else {
+		const res = await getGeocode(place);
+		if (!res ) {
+			Log.error(`Couldn't geocode address: ${place}.`);
+			return;
+		}
+		Log.debug(`Managed to geocode place ${place} : ${res.longitude},${res.latitude} `);
+		return res;
+	}
 }
 
 function processPermits(rawTreePermits) {

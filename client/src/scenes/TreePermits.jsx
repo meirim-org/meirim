@@ -161,6 +161,7 @@ class TreePermits extends Component {
 												disableInteractions={true}
 												title={tree.place}
 												title2={this.timeToObjectionText(tree.start_date)}
+												maxZoom={16}
 											/>
 										</CardMedia>
 										<CardContent className="card-content">

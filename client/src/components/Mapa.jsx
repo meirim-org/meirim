@@ -8,7 +8,7 @@ import './Mapa.css';
 class Mapa extends Component {
 
   render() {
-    const { geom, hideZoom, disableInteractions, title, title2, placeholder } = this.props;
+    const { geom, hideZoom, disableInteractions, title, title2, placeholder, maxZoom=17 } = this.props;
     const bounds = leaflet.geoJSON(geom).getBounds();
 
 	if (!geom || geom.length === 0) {
@@ -28,7 +28,7 @@ class Mapa extends Component {
         bounds={bounds}
         zoomControl={!hideZoom}
         boxZoom={!disableInteractions}
-        maxZoom={17}
+        maxZoom={maxZoom}
         doubleClickZoom={!disableInteractions}
         dragging={!disableInteractions}
         keyboard={!disableInteractions}
