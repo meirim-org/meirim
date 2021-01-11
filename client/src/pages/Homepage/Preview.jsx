@@ -1,14 +1,22 @@
 import React from 'react';
+import { withGetScreen } from 'react-getscreen';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import purpleLogo from '../../assets/meirim-logo-purple.png';
+import { device } from 'style';
+
+const DesktopImage = styled.img`
+	@media ${device.tablet} {
+		max-width: 100%; 
+	}
+`;
 
 const PreviewImageWrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
     position: relative;
-`
+`;
 
 const PreviewIconWrapper = styled.div`
     position: absolute;
@@ -34,6 +42,16 @@ const UnderDevelopment = styled.span`
     bottom: 0;
 `;
 
+const MobileImg = styled.div`
+	width: 100vh; 
+	height: 420px;
+	background-image: url(${props => props.src});
+	background-repeat: no-repeat;
+	background-position-x: right;
+	margin-bottom: 40px;
+	margin-left: -20px;
+`;
+
 const PreviewIcon = () => (
 	<PreviewIconWrapper>
 		<LogoInnerWrapper>
@@ -43,18 +61,19 @@ const PreviewIcon = () => (
 	</PreviewIconWrapper>
 );
 
-const Preview = ({ children }) => {
+const Preview = ({ isMobile, src }) => {
 	return (
 		<PreviewImageWrapper>
-			{children}
+			{isMobile() ? <MobileImg src={src} /> : <DesktopImage src={src} />}
 			<PreviewIcon />
 		</PreviewImageWrapper>
-	)
-}
+	);
+};
 
 Preview.propTypes = {
-	children: PropTypes.element.isRequired
+	isMobile: PropTypes.func.isRequired,
+	src: PropTypes.string.isRequired
 };
   
 
-export default Preview;
+export default withGetScreen(Preview, { mobileLimit: 768 });
