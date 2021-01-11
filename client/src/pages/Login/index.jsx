@@ -65,7 +65,7 @@ const Login = () => {
 	};
 
 	const submitLoginForm = async () => {
-		const res = await loginUser({ values: loginValues }); 
+		const res = await loginUser({ values: loginValues });
 		const successResponse = res.status === 'OK';
 		const wrongCredintials = res && res.response && res.response.status === 403;
 		const serverError = res && res.response && res.response.status === 504;
