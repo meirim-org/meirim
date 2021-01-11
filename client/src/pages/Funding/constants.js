@@ -30,3 +30,5 @@ export const roadmap = [ {
 }];
 
 export const fundingEndGoal = 100000;
+
+export const successPageCloseMessage = 'close-success-page';

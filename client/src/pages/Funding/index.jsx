@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { externalPaymentErrorToast } from 'toasts';
 import YoutubeVideo from 'react-youtube';
 import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox, ProgressBar, Typography } from '../../shared';
-import { openModal, closeModal } from 'redux/modal/slice';
+import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
 import { createPaymentLink } from './controller';
@@ -12,18 +12,20 @@ import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
 import * as Icons from '../../assets/funding';
-import { useStatsDataHandler } from './hooks';
+import { useStatsDataHandler, useSuccessCloseHandler } from './hooks';
 import { FundingSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
 
 const FundingPage = () => {
-
 	const dispatch = useDispatch();
+	const theme = useTheme();
+
 	const [paymentRequestReady, setPaymentRequestReady] = useState(false);
 	const [otherAmount, setOtherAmount] = useState(0);
 	const [amount, setAmount] = useState();
 	const [termsAccepted, setTermsAccepted] = useState(false );
 	const [triedSubmit, setTriedSubmit] = useState(false );
+	const [paymentDone, setPaymentDone] = useState(0);
 	const [paymentUrl, setPaymentUrl] = useState();
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
@@ -68,17 +70,17 @@ const FundingPage = () => {
 		}
 	};
 
-	useEffect(() => {
-		const handler = event => {
-		  const data = JSON.parse(event.data)
+	useStatsDataHandler(paymentDone);
 
-		  // closing the modal, as the success page alerted user pressed close
-		  dispatch(closeModal())
-		}
-		window.addEventListener("message", handler)
-	})
-	const theme = useTheme();
-	useStatsDataHandler();
+	function paymentSuccess() {
+		setAmount(0);
+		setOtherAmount(0);
+		setTermsAccepted(false);
+		setTriedSubmit(false);
+		setPaymentDone(paymentDone + 1);
+	}
+	useSuccessCloseHandler(paymentSuccess);
+
 	const { statsData } = FundingSelectors();
 
 	return (
@@ -162,9 +164,16 @@ const FundingPage = () => {
 							))}
 								<div>
 									<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } > סכום אחר
-										<TextInput type="number" width="3.5em" min="1" max="20000" onChange={ ({ target: { value } }) => {
-											setOtherAmount(Number.parseInt(value));
-											setAmount(value)}}
+										<TextInput
+											type="number"
+											width="3.5em"
+											min="1"
+											max="20000"
+											value={otherAmount}
+											onChange={({ target: { value } }) => {
+												setOtherAmount(Number.parseInt(value));
+												setAmount(value)}
+											}
 										/>
 									</SC.PaymentOption>
 								</div>
@@ -174,7 +183,7 @@ const FundingPage = () => {
 							<SC.TermsOfUseWrapper>
 							<span>אני מאשר/ת את </span>  
 								<Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
-								<Checkbox error={triedSubmit?formErrors.termsAcceptedError.message:''} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
+								<Checkbox checked={termsAccepted} error={triedSubmit ? formErrors.termsAcceptedError.message : ''} onClick={() => { setTermsAccepted(!termsAccepted) }}/>
 							</SC.TermsOfUseWrapper>
 							{/* </TabBox>
 							</TabPanel> */}

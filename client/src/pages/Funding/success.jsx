@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import * as SC from './style';
 import Icon from '../../assets/svg/successIcon'
 import { saveTransaction } from './controller';
+import { successPageCloseMessage } from './constants';
 
 const SuccessPayment = ({ ...props }) => {
     const notifyClosePage = () => {
 		window.top.postMessage(
             JSON.stringify({
-              error: false,
-              message: "Close success page"
+                error: false,
+                message: successPageCloseMessage
             })
         );
     };
