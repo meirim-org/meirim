@@ -20,7 +20,7 @@ const UserPlans = () => {
 			setPlans(response.data);
 		};
 		handler();
-	}, []);
+	}, [id]);
 
 	return (
 		<Wrapper>
