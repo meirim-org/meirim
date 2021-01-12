@@ -7,9 +7,8 @@ export const TitleWrapper = withTheme(styled.div`
 `);
 
 export const NoPlansContent = withTheme(styled.div`
-background: red;
     text-align: center;
-    padding: 0 1rem;
+    padding-top: 8rem;
     > * {
         text-align: center;
     }
