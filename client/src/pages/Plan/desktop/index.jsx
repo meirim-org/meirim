@@ -9,7 +9,6 @@ import * as SC from './style';
 
 const Template = ({ 
 	setCommentState,
-	handleTabChange,
 	children,
 	match,
 }) => {
@@ -22,7 +21,6 @@ const Template = ({
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
-						handleTabChange={handleTabChange} 
 						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
 						match={match}
 					/>
@@ -44,7 +42,6 @@ const Template = ({
 
 Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
-	handleTabChange: PropTypes.func.isRequired,
 	children: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
 };
