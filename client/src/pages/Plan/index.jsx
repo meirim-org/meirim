@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
-import { useDataHandler, useCommentsDataHandler,useIsFavPlan } from './hooks';
+import { useDataHandler, useCommentsDataHandler } from './hooks';
 import { openModal } from 'redux/modal/slice';
 import { CommentsTab, SummaryTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
@@ -16,7 +16,6 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	const [refetchComments, setRefetchComments] = useState(false);
 	useDataHandler(planId);
 	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
-	const isFav = useIsFavPlan(planId);
 	const dispatch = useDispatch();
 	const { isAuthenticated, user } = UserSelectors();
 	const [ subCommentState, setSubCommentState ] = useState({
@@ -66,7 +65,6 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		commentState,
 		setCommentState,
 		match,
-		isFav,
 	};
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;
