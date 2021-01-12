@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { device } from '../../style';
+import { withTheme } from '@material-ui/core/styles';
 
-export const ChildrenWrapper = styled.div`
+export const ChildrenWrapper = withTheme(styled.div`
     position: relative;
     z-index: 1;
-    padding-top: 79px;
+    padding-top: ${props => props.theme.navigation.mobile};
     @media ${device.tablet} {
-       padding-top: 72px;
+       padding-top: ${props => props.theme.navigation.desktop};
     }
-`;
+`);
