@@ -159,7 +159,7 @@ class TreePermits extends Component {
 												placeholder="/images/cutting_tree.jpg"
 												hideZoom={true}
 												disableInteractions={true}
-												title={tree.place}
+												countyName={tree.place}
 												title2={this.timeToObjectionText(tree.start_date)}
 												maxZoom={16}
 											/>
