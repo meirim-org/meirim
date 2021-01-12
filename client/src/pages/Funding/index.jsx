@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
 import { createPaymentLink } from './controller';
 import { paymentRequestValidation, getFormErrors } from './validations';
-import { titles, paymentAmountOptions, roadmap, fundingEndGoal } from './constants';
+import { titles, paymentAmountOptions, roadmap, fundingEndGoal, fundingYoutubeVideoId } from './constants';
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
@@ -96,13 +96,18 @@ const FundingPage = () => {
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
-						<YoutubeVideo url="https://www.youtube.com/watch?v=Bd_RD9rHrbQ"/>
+						<YoutubeVideo opts={{width: '100%'}} videoId={fundingYoutubeVideoId}/>
 					</SC.MediaContent>
 				</SC.HeaderWrapper>
 				<SC.InputsWrapper>
+					<SC.RoadMapWrapper>
 					<TabPanel>
 					<SC.RoadmapDetails>
-						<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
+						<SC.RoadMapTitleWrapper>
+							<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
+							<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
+							<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
+						</SC.RoadMapTitleWrapper>
 						{roadmap.map(i => (
 							<SC.RoadmapItemWrapper key={i.id}>
 								<SC.RoadmapItemIcon>
@@ -113,32 +118,33 @@ const FundingPage = () => {
 							</SC.RoadmapItemWrapper>))}
 					</SC.RoadmapDetails>
 					</TabPanel>
-					<Divider/>
-					
+					</SC.RoadMapWrapper>
+					<Divider orientation="vertical"/>
 					<SC.PaymentWrapper>
 					<SC.FundUsTitle>עזרו לנו להמשיך! </SC.FundUsTitle>
-							{/* <SC.PaymentOptions> */}
-						<TabPanel style={{'width':'460px'}}>
+						<TabPanel>
 							<SC.FundingStatsWrapper>
-								<SC.SubTitle>{t.fundingStatsTitle}</SC.SubTitle>
-								<SC.FundingStatsGoalBubble>
-									<Typography
-										component="span"
-										variant="highlightedText"
-										mobileVariant="highlightedText"
-										color={theme.palette.black}
-									>
-										{t.fundingEndGoal}
-									</Typography>
-								</SC.FundingStatsGoalBubble>
-								<ProgressBar id="funding-stats-progressbar" value={statsData.totalAmount / fundingEndGoal * 100} width="100%"/>
+								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
+								<div>
+									<SC.FundingStatsGoalBubble>
+										<Typography
+											component="span"
+											variant="highlightedText"
+											mobileVariant="highlightedText"
+											color={theme.palette.black}
+										>
+											{t.fundingEndGoal}
+										</Typography>
+									</SC.FundingStatsGoalBubble>
+									<ProgressBar id="funding-stats-progressbar" value={statsData.totalAmount / fundingEndGoal * 100} width="100%"/>
+								</div>
 								<SC.FundingStatsNumbersWrapper>
 									<SC.FundingStatsNumberWrapper>
 										<SC.SubTitle>{statsData.totalAmount.toLocaleString('en')} {t.fundingShekel}</SC.SubTitle>
 										<Typography
 											component="span"
 											variant="title"
-											mobileVariant="title"
+											mobileVariant="highlightedText"
 											color={theme.palette.primary['main']}
 										>
 											{t.fundingOutOf} {fundingEndGoal.toLocaleString('en')} {t.fundingShekel}
@@ -149,7 +155,7 @@ const FundingPage = () => {
 										<Typography
 											component="span"
 											variant="title"
-											mobileVariant="title"
+											mobileVariant="highlightedText"
 											color={theme.palette.primary['main']}
 										>
 											{t.fundingSupporters}
@@ -169,16 +175,15 @@ const FundingPage = () => {
 									</Typography>
 								</SC.PaymentTypeButton>
 							</SC.PaymentTypeButtonsWrapper>
-							<TabBox>
-							 {paymentAmountOptions.map(o => (
-								<div key={`amount-${o}`}>
+							<SC.PaymentOptionsWrapper>
+								{paymentAmountOptions.map(o => (
 									<SC.PaymentOption className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
 										<SC.Amount>{o} ₪</SC.Amount>
-									 </SC.PaymentOption>
-								</div>
-							))}
-								<div>
-									<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } > סכום אחר
+									</SC.PaymentOption>
+								))}
+									<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } >
+										<SC.PaymentOtherOption>
+										<SC.Amount>סכום אחר</SC.Amount>
 										<TextInput
 											id="other-amount-input"
 											name="other-amount"
@@ -192,22 +197,26 @@ const FundingPage = () => {
 												setAmount(value)}
 											}
 										/>
+										</SC.PaymentOtherOption>
 									</SC.PaymentOption>
-								</div>
 								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''} />
-								
-							{/* </SC.PaymsentOptions> */}
+							</SC.PaymentOptionsWrapper>
+
 							<SC.TermsOfUseWrapper>
-							<span>אני מאשר/ת את </span>  
-								<Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
 								<Checkbox id="terms-accepted-checkbox" text="" checked={termsAccepted} error={triedSubmit ? formErrors.termsAcceptedError.message : ''} onClick={() => { setTermsAccepted(!termsAccepted) }}/>
+							<span>אני מאשר/ת את&nbsp;</span>
+								<Link
+									id="funding-terms-of-payment-link"
+									text="תנאי התמיכה "
+									fontWeight="600"
+									textDecoration="none"
+									url="#"
+									onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}
+								/>
 							</SC.TermsOfUseWrapper>
-							{/* </TabBox>
-							</TabPanel> */}
 							<SC.ButtonWrapper>
-								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest } style={'width:'}/>
+								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest }/>
 							</SC.ButtonWrapper>
-							</TabBox>
 							</TabPanel>
 					</SC.PaymentWrapper>
 					</SC.InputsWrapper>

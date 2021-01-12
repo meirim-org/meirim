@@ -1,41 +1,47 @@
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import { device } from '../../style';
-import { style } from '@material-ui/system';
 
 export const HeaderWrapper = styled.div`
-  background-color:white;
-  height:500px;
-  text-align:right;
-  padding: 1em;  
+  background-color: white;
+  text-align: right;
+  padding: 1.5em;
+
+  @media ${device.laptop} {
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 3em;
+  }
 `;
+
 export const Titles = styled.span`
-  float:right; 
-    width:100%; 
-    background-color:white;
-    @media ${device.laptop} {
-      width:50%;
-   }
+  max-width: 40%;
+  background-color: white;
 `;
 
 export const MediaContent = styled.span`
-    float:left; 
-    width:100%; 
+    padding: 1em;
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+
     @media ${device.laptop} {
-      width:50%;
+      display: block;
+      width: 40%;
     }
-    position:center;
-    padding:1em;
+
+    div {
+      width: 100%;
+    }
 `;
 
 export const PaymentWrapper = styled.div`
-  float:left; 
-  width:100%; 
-  padding: 1.5em 1.5em;
+  padding: 1.5em;
+
   @media ${device.laptop} {
-    width:40%;
+    padding: 1.5em 5em;
+    flex-grow: 1;
   }
-  background-color:#FBFBFB;
 `;
 
 export const PaymnetModalWrapper = styled.div`
@@ -58,14 +64,17 @@ export const PaymnetModalWrapper = styled.div`
   }
 `;
 
+export const RoadMapWrapper = styled.div`
+  @media ${device.laptop} {
+    flex-grow: 3;
+  }
+`;
+
 export const RoadmapDetails = styled.div`
     float:right; 
     width:100%; 
     display: grid;
     padding: 1.5em 1.5em;
-    @media ${device.laptop} {
-      width:60%;
-    }
     background-color:#FBFBFB;
 `;
 
@@ -137,7 +146,6 @@ export const CentredSubTitle = styled.h2`
 `;
 
 export const CentredWrapper = styled.div`
-   padding:100px;
 `;
 
 export const ThirdTitle = styled.h1`
@@ -150,7 +158,7 @@ export const ThirdTitle = styled.h1`
   line-height: 1.5;
   color: #270E78;
   margin-bottom: 0;
-  padding-top:80px;
+  padding-top: 1em;
    >  span {
      font-family: Assistant !important;
    }
@@ -189,16 +197,31 @@ export const TermsOfPaymentText = styled.span`
   line-height: 1.5;
   text-align: center;
   color: #000000;
-  margin: 50px;
+  margin: 0 3em 3em 3em;
+  display: inline-block;
+  max-width: 40em;
+  max-height: 25em;
+  overflow-y: auto;
+
    >  span {
      font-family: Assistant !important;
    }
 `;
 
 
-export const InputsWrapper = styled.div`
-  width:100%
-`;
+export const InputsWrapper = withTheme(styled.div`
+  width: 100%;
+  background-color: ${props => props.theme.palette.gray['100']};
+
+  @media ${device.laptop} {
+    display: flex;
+  }
+
+  hr {
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+`);
 
 export const MainWrapper = styled.div`
   text-align:right;
@@ -207,7 +230,6 @@ export const MainWrapper = styled.div`
 export const PaymnetWrapper = styled.div`
   text-align:right;
   background-color:red;
-  width:800px;
   height:940px;
 `;
 
@@ -218,61 +240,93 @@ export const InputWrapper = styled.div`
   }
 `;
 
-export const PaymentOptions= styled.div`
-  padding: 1.5em;
-  background: #CFABFA;
-  border-radius: 12px;
-  width:342px;
-  height:465px;
-  user-select:none;
+export const RoadMapTitleWrapper = styled.div`
+  width: 100%;
+  display: flex;
+
+  hr {
+    flex-grow: 1;
+    height: 1px;
+    margin-top: -25px;
+    margin-bottom: 0;
+    margin-right: 5%;
+    margin-left: 5%;
+  }
 `;
 
-export const PaymentOption= styled.span`
+export const PaymentOptionsWrapper = withTheme(styled.div`
+  padding: 1.5em;
+  width: 100%;
+  border: 1px solid ${props => props.theme.palette.gray['main']};
+  display: grid;
+  margin: auto;
+  grid-template-columns: auto auto;
+
+  @media ${device.tablet} {
+    grid-template-columns: auto auto auto;
+  }
+`);
+
+export const PaymentOption= withTheme(styled.div`
   border-radius: 2px;
   font-family: Assistant; !important;
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;
-  color: #51465E;
   cursor:pointer;
   padding:10px;
   margin:10px;
   display: inline-block;
-  height:55px;
-  width:110px;
+  height: 2em;
+  min-width: 4.2em;
   float:right;
   padding-top: 10px;
-  text-align: -webkit-center;
-  border:1px solid #652DD0;
-  overflow-y:auto;
+  text-align: center;
+  border:1px solid ${props => props.theme.palette.primary['main']};
+  overflow: hidden;
   transition: background-color 200ms;
   user-select:none;
+
   &:hover, &.active {
-    background-color:#FBFBFB;
+    background-color: ${props => props.theme.palette.gray['100']};
   };
+
   &.active {
-    background-color:#F0E3FD;
+    background-color: ${props => props.theme.palette.primary['100']};
     opacity:(100-12)%;
     transition: background-color 50ms;
   };
-  &.longer{
-    width:90%;
-    overflow-y:hidden;
+
+  &.longer {
+    grid-column: 1 / span 2;
+
+    @media ${device.tablet} {
+      grid-column: 1 / span 3;
+    }
   }
 
-  label ,input{
-    position:absolute;
-    margin: 20px;
+  MuiFormControl-root {
+    margin: 1em;
   }
+
+  .MuiInputBase-root {
+    height: 2em;
+  }
+`);
+
+export const PaymentOtherOption = styled.span`
+  display: inline-flex;
+  position: relative;
+  top: -0.1em;
 `;
 
-export const Amount =styled.span`
+export const Amount = withTheme(styled.span`
   font-size:26px;
   font-weight: bold;
   line-height: 28px;
-  color: #391695
-`;
+  color: ${props => props.theme.palette.primary['700']}
+`);
 
 export const Monthly =styled.span`
   font-weight: normal;
@@ -284,12 +338,10 @@ export const RoadMapTitle= styled.span`
   font-weight: normal;
   font-size: 28px;
   line-height: 48px;
-  text-align: right;
+  text-align: center;
   color: #270E78;
   margin-top: -50px;
   margin-bottom: 30px
-  padding-right: 300px;
-  padding-right: 40%;
 `;
 
 export const FundUsTitle= styled.span`
@@ -298,11 +350,11 @@ export const FundUsTitle= styled.span`
   font-weight: normal;
   font-size: 28px;
   line-height: 48px;
-  text-align: right;
+  text-align: center;
   color: #270E78;
-  margin-top: -100px;
+  margin-top: -50px;
   margin-bottom: 30px;
-  padding-right: 30%;
+  display: block;
 `;
 
 export const RoadmapItemTitle= styled.div`
@@ -355,17 +407,19 @@ export const RoadmapItemWrapper= styled.div`
 
   @media ${device.tablet} {
     max-width: 767px;
-    height: 136px;
+    min-height: 8.5em;
   }
 `;
 
 export const TermsOfUseWrapper= styled.div`
-  padding: 1em;
   margin: 1em 0;
   border-radius: 12px;
   font-family: Assistant !important;
-  width:340px%;
-  padding-bottom: ${props => props.smallPadding ? '1em' : '2.45em'};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
   @media ${device.tablet} {
    max-width: initial;
   }
@@ -389,12 +443,13 @@ export const InputsTitle = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
-  border-radius:0 0 12px 12px;
-  max-width:300px;
-  display:grid;
-  padding-bottom: ${props => props.smallPadding ? '1em' : '2.45em'};
-    @media ${device.tablet} {
-     max-width: 340px;
+  border-radius: 0 0 12px 12px;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+
+  button {
+    width: 16em;
   }
 `;
 
@@ -416,6 +471,7 @@ export const Label = styled.div`
 
 export const FundingStatsWrapper = styled.div`
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     margin: 0 -.25rem .75rem;
 `;
@@ -442,23 +498,31 @@ export const FundingStatsGoalBubble = withTheme(styled.div`
     border-radius: 12px;
     padding: 0.75rem;
     margin-bottom: 0.75rem;
-    width: 21%;
-    left: -87%;
+    width: 6.5em;
+    float: left;
     background-color: ${props => props.theme.palette.primary['100']};
 
+    @media ${device.laptop} {
+      left: -2.5em;
+    }
+
     &:after {
-        content: '';
-        border: 10px solid transparent;
-        border-top-color: ${props => props.theme.palette.primary['100']};
-        border-bottom: 0;
-        position: absolute;
-        bottom: -10px;
+      content: '';
+      border: 10px solid transparent;
+      border-top-color: ${props => props.theme.palette.primary['100']};
+      border-bottom: 0;
+      position: absolute;
+      bottom: -10px;
+      left: 20%;
+      margin-left: -10px;
+
+      @media ${device.laptop} {
         left: 50%;
-        margin-left: -10px;
+      }
     }
 
     div {
-        text-align: center;
+      text-align: center;
     }
 `);
 
