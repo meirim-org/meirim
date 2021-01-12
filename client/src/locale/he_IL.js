@@ -79,7 +79,10 @@ export default {
 	backToComments: 'חזרה לעמוד חוות הדעת',
 	publishComment: 'פרסום חוות דעת',
 	improvement: 'הצעה לשיפור',
-	general: 'חוות דעת כללית'
+	general: 'חוות דעת כללית',
+	savedPlans: 'תוכניות שמורות',
+	noPlansSavedTitle: 'טרם שמרת תוכניות',
+	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ'
 };
 
 

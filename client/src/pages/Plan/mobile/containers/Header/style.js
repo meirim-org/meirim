@@ -40,7 +40,7 @@ export const Header = withTheme(styled.div`
     }
     .fixed {
         position: fixed;
-        top: 79px;
+        top: ${props => props.theme.navigation.mobile};
         background: ${props => props.theme.palette.gray['100']} !important;
         left: 0;
         padding-right: 3.425rem;
