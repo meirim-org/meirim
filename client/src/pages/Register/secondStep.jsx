@@ -4,7 +4,7 @@ import {
 	Dropdown, TextInput, TextArea, Button, Link,
 } from '../../shared';
 import * as SC from './style';
-import { personTypes } from './constants'
+import { personTypes } from './constants';
 
 const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 	const { address, type, aboutme } = values;
@@ -31,7 +31,6 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 						value={type}
 						onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) }
 						options={personTypes}
-						required={true}
 						label="מי אני" />
 				</SC.InputWrapper>
 				<SC.InputWrapper>
@@ -48,7 +47,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 			</SC.ButtonWrapper>
 			<SC.TermsOfUseWrapper>
 				<SC.TermsOfUse>בלחיצה על ״הרשמה למעירים״ הנך מאשר/ת את </SC.TermsOfUse>
-				<Link id="register-terms-of-use" text="תנאי השימוש" fontWeight="700" onClick='' />
+				<Link id="register-terms-of-use" text="תנאי השימוש" fontWeight="700"/>
 			</SC.TermsOfUseWrapper>
 		</SC.MainWrapper>
 	);
