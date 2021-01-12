@@ -14,10 +14,12 @@ const UserPlans = () => {
 	const { id } = useParams();
 	const [plans, setPlans] = React.useState([]);
 
-	React.useEffect(async () => {
-		const response = await fetchUserPlans(id);
-		console.log('data length', response.data);
-		setPlans(response.data);
+	React.useEffect( () => {
+		const handler = async () => {
+			const response = await fetchUserPlans(id);
+			setPlans(response.data);
+		};
+		handler();
 	}, []);
 
 	return (
