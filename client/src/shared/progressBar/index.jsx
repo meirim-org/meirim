@@ -31,7 +31,7 @@ const ProgressBar = ({ value, id, width }) => {
         		alignItems="center"
         		justifyContent="center"
       		>
-				<Typography variant="title" mobileVariant="title" color={theme.palette.white}>
+				<Typography component="span" variant="title" mobileVariant="title" color={theme.palette.white}>
 					{progress}%
 				</Typography>
       		</Box>

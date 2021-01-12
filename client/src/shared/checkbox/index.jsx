@@ -18,17 +18,25 @@ const StyledCheckbox = styled(MUICheckbox)`
 	}
 `;
 
-const Checkbox = ({ text, id, onClick, error, small = false }) => {
+const Checkbox = ({ text, id, checked, onClick, error, small = false }) => {
 	const minHegiht = small ? '1em' : '3.7em'
 	
 	return (
 		<>
-		<StyledCheckbox id={id} size="large" minhegiht={minHegiht} onClick={onClick} variant="contained" color="Primary">
-			{text} 
-		</StyledCheckbox>
-		{
-			error && <HelperText text={text} id={`${id}-helperText`} error={error} />
-		}
+			<StyledCheckbox
+				id={id}
+				checked={checked}
+				size="medium"
+				minhegiht={minHegiht}
+				onClick={onClick}
+				variant="contained"
+				color="primary"
+			>
+				{text}
+			</StyledCheckbox>
+			{
+				error && <HelperText text={text} id={`${id}-helperText`} error={error} />
+			}
 		</>
 	)};
 
@@ -39,6 +47,7 @@ Checkbox.defaultProps = {
 Checkbox.propTypes = {
 	id: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
+	checked: PropTypes.bool.isRequired,
 	onClick: PropTypes.func.isRequired,
 	small: PropTypes.bool,
 	error: PropTypes.string

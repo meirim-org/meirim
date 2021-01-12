@@ -318,8 +318,12 @@ export const RoadmapItemTitle= styled.div`
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0px;
-  text-align: right;
+  text-align: center;
   color:#270E78;
+
+  @media ${device.tablet} {
+    text-align: right;
+  }
 `;
 
 export const RoadmapItemDescription= styled.div`
@@ -329,25 +333,36 @@ export const RoadmapItemDescription= styled.div`
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0px;
-  text-align: right;
+  text-align: center;
+
+  @media ${device.tablet} {
+    text-align: right;
+  }
 `;
 
 export const RoadmapItemIcon= styled.div`
   // border: 1px solid #E4E4E4;
-  height:130px;
-  margin:0 1em;
-  position:center;
+  height: 130px;
+  margin: 0 1em;
+
+  svg {
+    display: block;
+    margin: auto;
+  }
+
   @media ${device.tablet}{
-    float:right;
+    float: right;
+    width: 136px;
   }
 `;
 
 export const RoadmapItemWrapper= styled.div`
- height:136px;
- width: ${device.tablet-100}px;
- @media ${device.tablet}{
-   width:767px;
- }
+  max-width: ${device.tablet-100}px;
+
+  @media ${device.tablet} {
+    max-width: 767px;
+    height: 136px;
+  }
 `;
 
 export const TermsOfUseWrapper= styled.div`
@@ -451,4 +466,50 @@ export const FundingStatsGoalBubble = withTheme(styled.div`
     div {
         text-align: center;
     }
+`);
+
+export const PaymentTypeButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 1rem -.25rem .75rem;
+  width: 100%;
+`;
+
+export const PaymentTypeButton = withTheme(styled.div`
+  position: static;
+  padding: 0.75rem;
+  margin-bottom: 1.3rem;
+  cursor: pointer;
+  background-color: ${props => props.theme.palette.white};
+
+  span {
+    color: ${props => props.theme.palette.primary['main']};
+  }
+
+  ${({ selected, theme }) => selected && `
+    background-color: ${theme.palette.primary['main']};
+
+    span {
+      color: ${theme.palette.white};
+    }
+  `}
+
+  ${({ side, selected }) => (side === 'right') && `
+    border-radius: 0 12px 12px 0;
+
+    ${selected && `
+      box-shadow: 5px 5px 5px 5px #eaeaea;
+      -webkit-box-shadow: 5px 5px 5px 5px #eaeaea;
+    `}
+  `}
+
+  ${({ side, selected }) => side === 'left' && `
+    border-radius: 12px 0 0 12px;
+
+    ${selected && `
+      box-shadow: -5px 5px 5px 5px #eaeaea;
+      -webkit-box-shadow: -5px 5px 5px 5px #eaeaea;
+    `}
+  `}
 `);

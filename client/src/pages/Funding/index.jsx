@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { externalPaymentErrorToast } from 'toasts';
 import YoutubeVideo from 'react-youtube';
 import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox, ProgressBar, Typography } from '../../shared';
-import { openModal, closeModal } from 'redux/modal/slice';
+import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
 import { createPaymentLink } from './controller';
@@ -12,18 +12,20 @@ import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
 import * as Icons from '../../assets/funding';
-import { useStatsDataHandler } from './hooks';
+import { useStatsDataHandler, useSuccessCloseHandler } from './hooks';
 import { FundingSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
 
 const FundingPage = () => {
-
 	const dispatch = useDispatch();
+	const theme = useTheme();
+
 	const [paymentRequestReady, setPaymentRequestReady] = useState(false);
 	const [otherAmount, setOtherAmount] = useState(0);
 	const [amount, setAmount] = useState();
 	const [termsAccepted, setTermsAccepted] = useState(false );
 	const [triedSubmit, setTriedSubmit] = useState(false );
+	const [paymentDone, setPaymentDone] = useState(0);
 	const [paymentUrl, setPaymentUrl] = useState();
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
@@ -31,6 +33,7 @@ const FundingPage = () => {
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
 	});
+	const [monthlyPayment, setMonthlyPayment] = useState(true);
 
 	const validateFormInput = () => {
 		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
@@ -54,10 +57,9 @@ const FundingPage = () => {
 		if (!isValidAmount || !isValidAcceptedTerms) return;
 
 		try {
-			const paymentpageUrl = await createPaymentLink({amount})
-			setPaymentUrl(paymentpageUrl)
-			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }))
-
+			const paymentpageUrl = await createPaymentLink({amount, monthlyPayment});
+			setPaymentUrl(paymentpageUrl);
+			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }));
 		} catch (err) {
 			// error from the paymnet service, or other errors, need to check
 			externalPaymentErrorToast()
@@ -68,17 +70,17 @@ const FundingPage = () => {
 		}
 	};
 
-	useEffect(() => {
-		const handler = event => {
-		  const data = JSON.parse(event.data)
+	useStatsDataHandler(paymentDone);
 
-		  // closing the modal, as the success page alerted user pressed close
-		  dispatch(closeModal())
-		}
-		window.addEventListener("message", handler)
-	})
-	const theme = useTheme();
-	useStatsDataHandler();
+	function paymentSuccess() {
+		setAmount(0);
+		setOtherAmount(0);
+		setTermsAccepted(false);
+		setTriedSubmit(false);
+		setPaymentDone(paymentDone + 1);
+	}
+	useSuccessCloseHandler(paymentSuccess);
+
 	const { statsData } = FundingSelectors();
 
 	return (
@@ -102,7 +104,7 @@ const FundingPage = () => {
 					<SC.RoadmapDetails>
 						<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
 						{roadmap.map(i => (
-							<SC.RoadmapItemWrapper>
+							<SC.RoadmapItemWrapper key={i.id}>
 								<SC.RoadmapItemIcon>
 									{(Icons[i.fundingSVGName] || DefaultIcon)()}
 								</SC.RoadmapItemIcon>
@@ -121,6 +123,7 @@ const FundingPage = () => {
 								<SC.SubTitle>{t.fundingStatsTitle}</SC.SubTitle>
 								<SC.FundingStatsGoalBubble>
 									<Typography
+										component="span"
 										variant="highlightedText"
 										mobileVariant="highlightedText"
 										color={theme.palette.black}
@@ -133,6 +136,7 @@ const FundingPage = () => {
 									<SC.FundingStatsNumberWrapper>
 										<SC.SubTitle>{statsData.totalAmount.toLocaleString('en')} {t.fundingShekel}</SC.SubTitle>
 										<Typography
+											component="span"
 											variant="title"
 											mobileVariant="title"
 											color={theme.palette.primary['main']}
@@ -143,6 +147,7 @@ const FundingPage = () => {
 									<SC.FundingStatsNumberWrapper>
 										<SC.SubTitle>{statsData.count.toLocaleString('en')}</SC.SubTitle>
 										<Typography
+											component="span"
 											variant="title"
 											mobileVariant="title"
 											color={theme.palette.primary['main']}
@@ -152,9 +157,21 @@ const FundingPage = () => {
 									</SC.FundingStatsNumberWrapper>
 								</SC.FundingStatsNumbersWrapper>
 							</SC.FundingStatsWrapper>
-						<TabBox>
+							<SC.PaymentTypeButtonsWrapper>
+								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
+									<Typography component="span" variant="planTitle" mobileVariant="planTitle">
+										{t.monthlyPayment}
+									</Typography>
+								</SC.PaymentTypeButton>
+								<SC.PaymentTypeButton side="left" selected={!monthlyPayment} onClick={() => { setMonthlyPayment(false); }}>
+									<Typography component="span" variant="planTitle" mobileVariant="planTitle">
+										{t.singleTimePayment}
+									</Typography>
+								</SC.PaymentTypeButton>
+							</SC.PaymentTypeButtonsWrapper>
+							<TabBox>
 							 {paymentAmountOptions.map(o => (
-								<div>
+								<div key={`amount-${o}`}>
 									<SC.PaymentOption className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
 										<SC.Amount>{o} ₪</SC.Amount>
 									 </SC.PaymentOption>
@@ -162,19 +179,28 @@ const FundingPage = () => {
 							))}
 								<div>
 									<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } > סכום אחר
-										<TextInput type="number" width="3.5em" min="1" max="20000" onChange={ ({ target: { value } }) => {
-											setOtherAmount(Number.parseInt(value));
-											setAmount(value)}}
+										<TextInput
+											id="other-amount-input"
+											name="other-amount"
+											type="number"
+											width="3.5em"
+											min={1}
+											max={20000}
+											value={otherAmount.toString()}
+											onChange={({ target: { value } }) => {
+												setOtherAmount(Number.parseInt(value));
+												setAmount(value)}
+											}
 										/>
 									</SC.PaymentOption>
 								</div>
-								<HelperText error={triedSubmit?formErrors.amountError.message:''} />
+								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''} />
 								
 							{/* </SC.PaymsentOptions> */}
 							<SC.TermsOfUseWrapper>
 							<span>אני מאשר/ת את </span>  
 								<Link id="funding-temrs-of-payment-link" text="תנאי התמיכה " onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}/>
-								<Checkbox error={triedSubmit?formErrors.termsAcceptedError.message:''} onClick={ () => { setTermsAccepted(!termsAccepted) } }>  </Checkbox>
+								<Checkbox id="terms-accepted-checkbox" text="" checked={termsAccepted} error={triedSubmit ? formErrors.termsAcceptedError.message : ''} onClick={() => { setTermsAccepted(!termsAccepted) }}/>
 							</SC.TermsOfUseWrapper>
 							{/* </TabBox>
 							</TabPanel> */}
