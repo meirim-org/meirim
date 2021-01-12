@@ -6,31 +6,39 @@ import { closeModal } from 'redux/modal/slice';
 import { successPageCloseMessage } from './constants';
 
 export const useStatsDataHandler = (paymentDone) => {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    useEffect(() => {
-        getFundingStats().then((stats) => {
-            dispatch(setStatsData({
-                statsData: stats
+	useEffect(() => {
+		getFundingStats().then((stats) => {
+			dispatch(setStatsData({
+				statsData: stats
 			}));
-        }).catch(err => {
-            console.error('get funding stats failed:', err);
-        });
-    }, [paymentDone]);
+		}).catch(err => {
+			console.error('get funding stats failed:', err);
+		});
+	}, [paymentDone]);
 };
 
 export const useSuccessCloseHandler = (paymentSuccessCb) => {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    const handleMessage = useCallback(event => {
-		const data = JSON.parse(event.data);
+	const handleMessage = useCallback(event => {
+		try {
+			const data = JSON.parse(event.data);
 
-		if (data.message === successPageCloseMessage) {
-			// closing the modal, as the success page alerted user pressed close
-			dispatch(closeModal())
+			if (data.message === successPageCloseMessage) {
+				// closing the modal, as the success page alerted user pressed close
+				dispatch(closeModal())
 
-			// refresh funding stats
-			paymentSuccessCb();
+				// refresh funding stats
+				paymentSuccessCb();
+			}
+		} catch (err) {
+			if (err instanceof SyntaxError) {
+				// this just means event.data wasn't a valid json
+			} else {
+				throw err;
+			}
 		}
 	});
 
