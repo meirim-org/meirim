@@ -85,7 +85,7 @@ const FundingPage = () => {
 
 	return (
 		<Wrapper>
-		<SC.MainWrapper>
+			<SC.MainWrapper>
 				<SC.HeaderWrapper>
 					<SC.Titles>
 						<SC.SubTitleWrapper>
@@ -101,27 +101,28 @@ const FundingPage = () => {
 				</SC.HeaderWrapper>
 				<SC.InputsWrapper>
 					<SC.RoadMapWrapper>
-					<TabPanel>
-					<SC.RoadmapDetails>
-						<SC.RoadMapTitleWrapper>
-							<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
-							<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
-							<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
-						</SC.RoadMapTitleWrapper>
-						{roadmap.map(i => (
-							<SC.RoadmapItemWrapper key={i.id}>
-								<SC.RoadmapItemIcon>
-									{(Icons[i.fundingSVGName] || DefaultIcon)()}
-								</SC.RoadmapItemIcon>
-								<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
-								<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
-							</SC.RoadmapItemWrapper>))}
-					</SC.RoadmapDetails>
-					</TabPanel>
+						<TabPanel>
+							<SC.RoadmapDetails>
+								<SC.RoadMapTitleWrapper>
+									<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
+									<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
+									<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
+								</SC.RoadMapTitleWrapper>
+								{roadmap.map(i => (
+									<SC.RoadmapItemWrapper key={i.id}>
+										<SC.RoadmapItemIcon>
+											{(Icons[i.fundingSVGName] || DefaultIcon)()}
+										</SC.RoadmapItemIcon>
+										<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
+										<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
+									</SC.RoadmapItemWrapper>
+								))}
+							</SC.RoadmapDetails>
+						</TabPanel>
 					</SC.RoadMapWrapper>
 					<Divider orientation="vertical"/>
 					<SC.PaymentWrapper>
-					<SC.FundUsTitle>עזרו לנו להמשיך! </SC.FundUsTitle>
+						<SC.FundUsTitle>עזרו לנו להמשיך! </SC.FundUsTitle>
 						<TabPanel>
 							<SC.FundingStatsWrapper>
 								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
@@ -178,33 +179,32 @@ const FundingPage = () => {
 							<SC.PaymentOptionsWrapper>
 								{paymentAmountOptions.map(o => (
 									<SC.PaymentOption className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
-										<SC.Amount>{o} ₪</SC.Amount>
+										<SC.Amount>{o} {t.fundingShekel}</SC.Amount>
 									</SC.PaymentOption>
 								))}
-									<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } >
-										<SC.PaymentOtherOption>
-										<SC.Amount>סכום אחר</SC.Amount>
-										<TextInput
-											id="other-amount-input"
-											name="other-amount"
-											type="number"
-											width="3.5em"
-											min={1}
-											max={20000}
-											value={otherAmount.toString()}
-											onChange={({ target: { value } }) => {
-												setOtherAmount(Number.parseInt(value));
-												setAmount(value)}
-											}
-										/>
-										</SC.PaymentOtherOption>
-									</SC.PaymentOption>
+								<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } >
+									<SC.PaymentOtherOption>
+									<SC.Amount>סכום אחר</SC.Amount>
+									<TextInput
+										id="other-amount-input"
+										name="other-amount"
+										type="number"
+										width="3.5em"
+										min={1}
+										max={20000}
+										value={otherAmount.toString()}
+										onChange={({ target: { value } }) => {
+											setOtherAmount(Number.parseInt(value));
+											setAmount(value)}
+										}
+									/>
+									</SC.PaymentOtherOption>
+								</SC.PaymentOption>
 								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''} />
 							</SC.PaymentOptionsWrapper>
-
 							<SC.TermsOfUseWrapper>
 								<Checkbox id="terms-accepted-checkbox" text="" checked={termsAccepted} error={triedSubmit ? formErrors.termsAcceptedError.message : ''} onClick={() => { setTermsAccepted(!termsAccepted) }}/>
-							<span>אני מאשר/ת את&nbsp;</span>
+								<span>אני מאשר/ת את&nbsp;</span>
 								<Link
 									id="funding-terms-of-payment-link"
 									text="תנאי התמיכה "
@@ -217,12 +217,12 @@ const FundingPage = () => {
 							<SC.ButtonWrapper>
 								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest }/>
 							</SC.ButtonWrapper>
-							</TabPanel>
+						</TabPanel>
 					</SC.PaymentWrapper>
-					</SC.InputsWrapper>
+				</SC.InputsWrapper>
 			</SC.MainWrapper>
 		</Wrapper>
-			);
+	);
 };
 
 export default FundingPage;
