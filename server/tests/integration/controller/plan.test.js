@@ -45,9 +45,9 @@ describe('Plan controller', function() {
 		expect(attributes.sent).to.eql(0);
 		const userPlansBeforeSubscribition = await SubscribtionController.getUserPlans({ body: { userId: 1 } });
 		expect(userPlansBeforeSubscribition).to.eql([]);
-		await SubscribtionController.subscribe({ params: { plan_id: attributes.id }, session: { person : { id: 1, admin: 1 } } });
+		await SubscribtionController.subscribe({ params: { id: attributes.id }, session: { person : { id: 1, admin: 1 } } });
 		const secondPlan = await PlanController.create(req);
-		await SubscribtionController.subscribe({ params: { plan_id:  secondPlan.attributes.id }, session: { person : { id: 1, admin: 1 } } });
+		await SubscribtionController.subscribe({ params: { id:  secondPlan.attributes.id }, session: { person : { id: 1, admin: 1 } } });
 		const userPlansAfterSubscribition = await SubscribtionController.getUserPlans({ body: { userId: 1 } });
 		expect(userPlansAfterSubscribition.length).to.eql(2);
 	});
