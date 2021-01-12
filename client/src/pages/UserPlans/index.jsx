@@ -25,8 +25,8 @@ const UserPlans = () => {
 			<div className="container">
 				{plans.length > 0 
 					?
-					<>
-                    	<SC.TitleWrapper>
+					<SC.PlansContent>
+						<SC.TitleWrapper>
                     		<Text
                     			size="1.5rem"
                     			weight="600"
@@ -40,10 +40,10 @@ const UserPlans = () => {
                     			<PlanCard key={plan.id} plan={plan}/>
                     		))}
                     	</Grid>
-					</>
+					</SC.PlansContent>
 					:
 					<SC.NoPlansContent>
-						<StarIcon />
+						<StarIcon id="star-icon"/>
 						<Text
 							size="1.5rem"
 							weight="700"

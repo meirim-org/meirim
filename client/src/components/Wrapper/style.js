@@ -10,3 +10,8 @@ export const ChildrenWrapper = withTheme(styled.div`
        padding-top: ${props => props.theme.navigation.desktop};
     }
 `);
+
+export const Wrapper = withTheme(styled.div`
+    background: ${props => props.theme.palette.gray.bg};
+    min-height: 100vh;
+`);
