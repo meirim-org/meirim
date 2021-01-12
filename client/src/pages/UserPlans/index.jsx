@@ -1,20 +1,16 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import GridList from '@material-ui/core/GridList';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import { Link } from 'react-router-dom';
-import CardMedia from '@material-ui/core/CardMedia';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import Wrapper from 'components/Wrapper';
-import UnsafeRender from 'components/UnsafeRender';
-import Mapa from 'components/Mapa';
 import { useParams } from 'react-router-dom';
 import { fetchUserPlans } from './controller';
-
+import { PlanCard, Text } from 'shared';
+import { Grid } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import t from 'locale/he_IL';
+import * as SC from './style';
+import { StarIcon } from 'shared/icons';
 
 const UserPlans = () => {
+	const theme = useTheme();
 	const { id } = useParams();
 	const [plans, setPlans] = React.useState([]);
 
@@ -24,58 +20,42 @@ const UserPlans = () => {
 		setPlans(response.data);
 	}, []);
 
-	console.log('plans', plans);
-	
 	return (
 		<Wrapper>
 			<div className="container">
-				<GridList
-					cellHeight={500}
-					cellWidth={335}
-					className="gridList"
-					cols={1}
-				>
-					{plans.length && plans.map(plan => (
-						<Card className="card" raised={true} key={plan.id}>
-							<Link
-								className="card-link"
-								to={`/plan/${plan.id}`}
-							>
-								<CardActionArea className="card-action-area">
-									<CardMedia
-										className="card-media"
-										title={plan.PL_NUMBER}
-									>
-										<Mapa
-											geom={plan.geom}
-											hideZoom={true}
-											disableInteractions={true}
-											title={plan.PLAN_COUNTY_NAME}
-											title2={plan.distance?` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת`:'' }
-										/>
-									</CardMedia>
-									<CardContent className="card-content">
-										<Typography
-											gutterBottom
-											variant="h5"
-											component="h2"
-											color="textPrimary"
-										>
-											{plan.PL_NAME}
-										</Typography>
-										<Typography component="p" color="textPrimary">
-											<UnsafeRender
-												html={
-													plan.main_details_from_mavat
-												}
-											/>
-										</Typography>
-									</CardContent>
-								</CardActionArea>
-							</Link>
-						</Card>
-					))}
-				</GridList>
+				{plans.length > 0 
+					?
+					<SC.PlansContent>
+						<SC.TitleWrapper>
+                    		<Text
+                    			size="1.5rem"
+                    			weight="600"
+                    			text={`${t.savedPlans} (${plans.length})`}
+                    			color={theme.palette.black}
+                    			component="h2"
+                    		/>
+                    	</SC.TitleWrapper>
+                    	<Grid container spacing={4}>
+                    		{plans.length && plans.map(plan => (
+                    			<PlanCard key={plan.id} plan={plan}/>
+                    		))}
+                    	</Grid>
+					</SC.PlansContent>
+					:
+					<SC.NoPlansContent>
+						<StarIcon id="star-icon"/>
+						<Text
+							size="1.5rem"
+							weight="700"
+							text={t.noPlansSavedTitle}
+							component="h1"
+						/>
+						<Text
+							text={t.noPlansSavedContent}
+							component="p"
+						/>
+					</SC.NoPlansContent>
+				}
 			</div>
 		</Wrapper>
 	);

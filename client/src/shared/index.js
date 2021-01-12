@@ -13,6 +13,7 @@ import Typography from './typography';
 import TabBox from './tabBox';
 import CircularProgress from './circularProgress';
 import Text from './text';
+import PlanCard from './planCard';
 
 export {
 	Button,
@@ -29,5 +30,6 @@ export {
 	TabPanel,
 	Typography,
 	TabBox,
-	Text
+	Text,
+	PlanCard
 };

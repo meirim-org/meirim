@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 
-export const MainWrapper = styled.div`
+export const MainWrapper = withTheme(styled.div`
     display: grid;
     grid-template-columns: 60% 1fr;
     grid-template-rows: 1fr;
     overflow: hidden;
-    height: calc(100vh - 72px);
-`;
+    height: calc(100vh - ${props => props.theme.navigation.desktop});
+`);
 
 export const Content = withTheme(styled.div`
     background-color:  ${props => props.theme.palette.gray['bg']};

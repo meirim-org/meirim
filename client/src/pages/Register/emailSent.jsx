@@ -2,19 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { device } from 'style';
 import Wrapper from 'components/Wrapper';
-import { resendActivationLinkToEmail } from './controller'
+import { resendActivationLinkToEmail } from './controller';
+import { withTheme } from '@material-ui/core/styles';
 
-const MainWrapper = styled.div`
+const MainWrapper = withTheme(styled.div`
     width: 100%;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    height: calc(100vh - 79px);
+    height: calc(100vh - ${props => props.theme.navigation.mobile});
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
-        height: calc(100vh - 72px);
+        height: calc(100vh - ${props => props.theme.navigation.desktop});
     }
-`;
+`);
 
 const ImageCol = styled.div`
     position: relative;
