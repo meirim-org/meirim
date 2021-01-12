@@ -42,7 +42,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										</SC.StyledLink>
 									</Box>
 									{isAuthenticated &&
-                                        <SC.StyledLink id="nav-bar-plans" to="/my-plans/" activeClassName="active">
+                                        <SC.StyledLink id="nav-bar-plans" to={() => `/user/${userId}/plans`} activeClassName="active">
                                         	{t.myPlans}
                                         </SC.StyledLink>
 									}
