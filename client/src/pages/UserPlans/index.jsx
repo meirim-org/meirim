@@ -7,6 +7,7 @@ import { Grid } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import t from 'locale/he_IL';
 import * as SC from './style';
+import { StarIcon } from 'shared/icons';
 
 const UserPlans = () => {
 	const theme = useTheme();
@@ -22,20 +23,39 @@ const UserPlans = () => {
 	return (
 		<Wrapper>
 			<div className="container">
-				<SC.TitleWrapper>
-					<Text
-						size="1.5rem"
-						weight="600"
-						text={`${t.savedPlans} (${plans.length})`}
-						color={theme.palette.black}
-						component="h2"
-					/>
-				</SC.TitleWrapper>
-				<Grid container spacing={4}>
-					{plans.length && plans.map(plan => (
-					    <PlanCard key={plan.id} plan={plan}/>
-					))}
-				</Grid>
+				{plans.length > 0 
+					?
+					<>
+                    	<SC.TitleWrapper>
+                    		<Text
+                    			size="1.5rem"
+                    			weight="600"
+                    			text={`${t.savedPlans} (${plans.length})`}
+                    			color={theme.palette.black}
+                    			component="h2"
+                    		/>
+                    	</SC.TitleWrapper>
+                    	<Grid container spacing={4}>
+                    		{plans.length && plans.map(plan => (
+                    			<PlanCard key={plan.id} plan={plan}/>
+                    		))}
+                    	</Grid>
+					</>
+					:
+					<SC.NoPlansContent>
+						<StarIcon />
+						<Text
+							size="1.5rem"
+							weight="700"
+							text={t.noPlansSavedTitle}
+							component="h1"
+						/>
+						<Text
+							text={t.noPlansSavedContent}
+							component="p"
+						/>
+					</SC.NoPlansContent>
+				}
 			</div>
 		</Wrapper>
 	);

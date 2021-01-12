@@ -80,7 +80,9 @@ export default {
 	publishComment: 'פרסום חוות דעת',
 	improvement: 'הצעה לשיפור',
 	general: 'חוות דעת כללית',
-	savedPlans: 'תוכניות שמורות'
+	savedPlans: 'תוכניות שמורות',
+	noPlansSavedTitle: 'טרם שמרת תוכניות',
+	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ'
 };
 
 
