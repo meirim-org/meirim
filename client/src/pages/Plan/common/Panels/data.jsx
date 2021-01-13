@@ -7,7 +7,7 @@ import {  Chip } from '@material-ui/core';
 import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
 
-const PlanDetailsPanel = ({ status, type, url }) => {
+const DataPanel = ({ status, type, url }) => {
 	const theme = useTheme();
 	
 	return (
@@ -20,7 +20,7 @@ const PlanDetailsPanel = ({ status, type, url }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{t.planDetails}
+						{t.planData}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 				
@@ -79,10 +79,10 @@ const PlanDetailsPanel = ({ status, type, url }) => {
 };
 
 
-PlanDetailsPanel.propTypes = {
+DataPanel.propTypes = {
 	type: PropTypes.string,
 	status: PropTypes.string,
 	url: PropTypes.string,
 };
 
-export default PlanDetailsPanel;
+export default DataPanel;

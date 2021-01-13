@@ -1,13 +1,13 @@
-import PlanDetailsPanel from './details';
-import GoalsPanel from './goals';
-import StatsPanel from './stats';
+import DataPanel from './data';
+import TextPanel from './text';
+import AreaUnitChangesPanel from './areaUnitChanges';
 import SubscribePanel from './subscribe';
 import MapPanel from './map';
 
 export { 
-	PlanDetailsPanel,
-	GoalsPanel,
-	StatsPanel,
+	DataPanel,
+	TextPanel,
+	AreaUnitChangesPanel,
 	SubscribePanel,
 	MapPanel
 };

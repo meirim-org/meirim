@@ -1,6 +1,6 @@
 import { 
-	GoalsPanel, PlanDetailsPanel, 
-	StatsPanel, SubscribePanel, MapPanel
+	TextPanel, DataPanel,
+	AreaUnitChangesPanel, SubscribePanel, MapPanel
 } from './Panels';
 import { SubCommentForm, CommentForm } from './Forms';
 import { CommentView, SubCommentView, SharePlanView } from './Views';
@@ -13,10 +13,10 @@ export {
 	CommentForm,
 	CommentView,
 	SubCommentForm,
-	GoalsPanel,
+	TextPanel,
 	MapPanel,
-	PlanDetailsPanel,
-	StatsPanel,
+	DataPanel,
+	AreaUnitChangesPanel,
 	SubscribePanel,
 	SharePlanView,
 	BackButton

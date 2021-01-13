@@ -8,7 +8,7 @@ import { useTheme } from '@material-ui/styles';
 import { series, axes } from '../../utils';
 import * as SC from './style';
 
-export const StatsPanel = ({ dataArea, textArea, }) => {
+export const AreaUnitChangesPanel = ({ dataArea, textArea, }) => {
 	const theme = useTheme();
 	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
 
@@ -23,7 +23,7 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{t.meanings}
+						{t.areaUnitChanges}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 
@@ -66,10 +66,10 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 	);
 };
 
-StatsPanel.propTypes = {
+AreaUnitChangesPanel.propTypes = {
 	dataArea: PropTypes.array.isRequired,
 	textArea: PropTypes.object.isRequired,
 	url: PropTypes.string,
 };
 
-export default StatsPanel;
+export default AreaUnitChangesPanel;

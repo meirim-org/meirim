@@ -10,7 +10,7 @@ const UnsafeRender = ({ html }) => {
 };
 
 UnsafeRender.propTypes ={ 
-	html: PropTypes.object
+	html: PropTypes.string
 };
 
 export default UnsafeRender;

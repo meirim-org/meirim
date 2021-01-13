@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
-import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import parse from 'html-react-parser';
+import UnsafeRender from 'components/UnsafeRender';
 import * as SC from './style';
 
-export const GoalsPanel = ({ goalsFromMavat }) => {
+export const TextPanel = ({ title, content }) => {
 	const theme = useTheme();
-	if (!goalsFromMavat) return null;
+	if (!title || !content) return null;
 	
 	return (
 		<TabPanel>
@@ -20,19 +19,22 @@ export const GoalsPanel = ({ goalsFromMavat }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{t.planGoals}
+						{title}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 				<SC.EntryContent>
-					{parse(goalsFromMavat)}
+					<UnsafeRender
+						html={content}
+					/>
 				</SC.EntryContent>
 			</TabBox>
 		</TabPanel>
 	);
 };
 
-GoalsPanel.propTypes = {
-	goalsFromMavat: PropTypes.string,
+TextPanel.propTypes = {
+	title: PropTypes.string,
+	content: PropTypes.string,
 };
 
-export default GoalsPanel;
+export default TextPanel;
