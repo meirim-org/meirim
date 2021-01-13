@@ -12,12 +12,14 @@ import logo from 'assets/logo.png';
 import * as SC from './style';
 import { PLANS } from 'router/contants';
 import { openModal } from 'redux/modal/slice';
+import { UserSelectors } from 'redux/selectors';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
 
 const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
+	const { user: { id: userId } } = UserSelectors();
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
 
 
@@ -40,7 +42,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										</SC.StyledLink>
 									</Box>
 									{isAuthenticated &&
-                                        <SC.StyledLink id="nav-bar-plans" to="/my-plans/" activeClassName="active">
+                                        <SC.StyledLink id="nav-bar-plans" to={() => `/user/${userId}/plans`} activeClassName="active">
                                         	{t.myPlans}
                                         </SC.StyledLink>
 									}
@@ -82,8 +84,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											{isAuthenticated && (
 												<SC.StyledListItem
 													component={RouterLink}
+													color="#652dd0" 
+													to={() => `/user/${userId}/plans`}
 													button
-													to="#"
 													key={t.myPlans}
 													id="my-plans-button">
 													<ListItemText primary={t.myPlans}/>

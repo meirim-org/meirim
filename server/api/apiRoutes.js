@@ -25,6 +25,7 @@ Router.post('/sign/auth/email', wrap(SignUp.authenticateEmail));
 
 // Plan
 Router.get('/plan/', wrap(Plan.browse, Plan));
+Router.post('/plan/user', wrap(Subscription.getUserPlans, Plan));
 Router.get('/plan/:id', wrap(Plan.read, Plan));
 
 Router.get('/plan_county', wrap(Plan.county, Plan));

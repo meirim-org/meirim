@@ -1,6 +1,7 @@
 const Log = require('../lib/log');
 const Controller = require('./controller');
 const PlanPerson = require('../model/plan_person');
+const Plan = require('../model/plan');
 const Exception = require('../model/exception');
 
 class PlanPersonController extends Controller {
@@ -10,13 +11,21 @@ class PlanPersonController extends Controller {
 		}
 		// the user is found, creating a new subscription
 		return this.model
-			.subscribe(req.session.person.id, req.params.plan_id)
+			.subscribe(req.session.person.id, req.params.id)
 			.then((subscription) => {
 				Log.debug(
 					'Person subscription created create success id:',
 					subscription.get('person_id')
 				);
 			});
+	}
+
+	async getUserPlans(req) {
+		const userPlanIds = await PlanPerson.getPlansByUserId(req.body.userId);
+		if(!userPlanIds || !userPlanIds.models) return [];
+		const plans = await Promise.all(userPlanIds.models.map(({ attributes }) => Plan.fetchByPlanID(attributes.plan_id) ));
+
+		return plans ? plans.map(({ attributes })=> ({ ...attributes })) : [];
 	}
 
 	unsubscribe (req) {
