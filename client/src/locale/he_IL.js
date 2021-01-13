@@ -82,7 +82,10 @@ export default {
 	general: 'חוות דעת כללית',
 	savedPlans: 'תוכניות שמורות',
 	noPlansSavedTitle: 'טרם שמרת תוכניות',
-	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ'
+	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ',
+	areaUnitChanges: 'שינוי שטח',
+	planData: 'נתוני התוכנית',
+	planDescription: 'תיאור התוכנית',
 };
 
 

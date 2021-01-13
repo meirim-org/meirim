@@ -43,9 +43,9 @@ export const useDataHandler = (planId) => {
 	useEffect (() => {
 		const fetchData = async () => {
 			const response = await getPlanData(planId);
-			const { 
+			const {
 				PLAN_COUNTY_NAME: countyName, PL_NAME: name, 
-				status, goals_from_mavat: goalsFromMavat, plan_url: url, 
+				status, goals_from_mavat: goalsFromMavat, main_details_from_mavat: mainDetailsFromMavat, plan_url: url,
 				areaChanges, geom } = response.data;
 			const { ENTITY_SUBTYPE_DESC: type } = response.data.data;
 			const newTextArea = { ...utils.initialTextArea, area: geom ? Math.round(geojsonArea.geometry(geom)) : 0 };
@@ -92,7 +92,7 @@ export const useDataHandler = (planId) => {
 				dataUnits: newDataUnits, 
 				textArea: newTextArea,
 				planData: { countyName, name, status, type, 
-					goalsFromMavat: goalsFromMavat, url, areaChanges, geom }
+					goalsFromMavat: goalsFromMavat, mainDetailsFromMavat: mainDetailsFromMavat, url, areaChanges, geom }
 			}));
 		};	
 
