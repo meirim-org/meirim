@@ -1,4 +1,4 @@
-function up(knex, Promise) {
+function up(knex) {
   const remove = `update plan set PL_NUMBER=concat(PL_NUMBER,"_dup_") where id in 
      (select id from (select id from plan group by PL_NUMBER having count(*) >1) as c)`;
   const next = () =>
@@ -16,4 +16,4 @@ function up(knex, Promise) {
 
 exports.up = up;
 
-exports.down = function(knex, Promise) {};
+exports.down = function(knex) {};
