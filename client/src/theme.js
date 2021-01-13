@@ -57,6 +57,10 @@ export const muiTheme = createMuiTheme({
 			'main': '#1a2d66',
 		},
 	},
+	navigation: {
+	    desktop: '72px',
+	    mobile: '79px',
+	}
 });
 
 

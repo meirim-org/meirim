@@ -6,7 +6,7 @@ import { useDataHandler, useCommentsDataHandler } from './hooks';
 import { openModal } from 'redux/modal/slice';
 import { CommentsTab, SummaryTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
-import { UserSelectors, CommentSelectors } from 'redux/selectors';
+import { UserSelectors } from 'redux/selectors';
 import PlanMobile from './mobile/';
 import PlanDesktop from './desktop/';
 import { addComment, addLike } from './controller';
@@ -17,9 +17,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	useDataHandler(planId);
 	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
 	const dispatch = useDispatch();
-	const [tabValue, setValue] =useState('');
 	const { isAuthenticated, user } = UserSelectors();
-	const { comments } = CommentSelectors();
 	const [ subCommentState, setSubCommentState ] = useState({
 		isOpen:false,
 		inputValue: ''
@@ -30,17 +28,6 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		type: 'improvement'
 	});
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
-
-	const showComments = comments.length > 0; 
-	const showStartDiscussionPanel = comments.length === 0 &&  !commentState.isOpen;
-
-	const openNewCommentView = () => {
-		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
-		else {
-	  	setCommentState(pv => ({ ...pv, isOpen: true }));
-			window.scrollTo(0, 0);
-		}
-	};
 
 	const addLikeToComment = async (commentId) => {
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
@@ -71,34 +58,12 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		setSubCommentState(pv => ({ ...pv, inputValue: '', isOpen: false }));
 		setRefetchComments(true);
 	};
-	const closeNewCommentView = () => setCommentState(pv => ({ ...pv, isOpen: false }));
-	const newCommentViewHandler = () => {  
-		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
-		setCommentState(pv => ({ ...pv, isOpen: !commentState.isOpen }));
-	};
 
-	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleSubscribePanel = (newValue) => setSubscribePanel(newValue);
-
 	
 	const planProps = {
 		commentState,
 		setCommentState,
-		subCommentState,
-		setSubCommentState,
-		addSubComment,
-		addLikeToComment,
-		tabValue,
-		addNewComment,
-		setRefetchComments,
-		handleTabChange,
-		subscribePanel,
-		handleSubscribePanel,
-		showComments,
-		showStartDiscussionPanel,
-		newCommentViewHandler,
-		openNewCommentView,
-		closeNewCommentView,
 		match,
 	};
 

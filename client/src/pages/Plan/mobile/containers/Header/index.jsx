@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import {  Title } from './components';
+import { Title } from './components';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import { goBack } from 'pages/Plan/utils';
@@ -45,14 +45,13 @@ const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setC
 										{t.opinion}
 									</Badge>
 								</SC.Tab>
-								<SC.Tab onClick={()=> alert('coming soon')}>{t.planningInformation}</SC.Tab>
+								<SC.Tab onClick={()=>{}}>{t.planningInformation}</SC.Tab>
 							</SC.TabWrapper>
 						</SC.AppBar>
 					</>
 					:
 					<SC.TitlesButtonWrapper>
 						<BackButton onclick={() => {
-							console.log('hey'); 
 							setCommentState(pv =>({ ...pv, isOpen: false }));}
 						} 
 						label={t.backToComments} classname="back-button"/>

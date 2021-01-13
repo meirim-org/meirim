@@ -19,11 +19,6 @@ html body {
   text-align: center;
 }
 
-.card {
-  max-width: 335px;
-  margin: 0 1em 3em 1em;
-}
-
 .card-link {
   height: 100%;
   width: 100%;
@@ -31,14 +26,6 @@ html body {
 
 .card-action-area {
   height: 100%;
-}
-
-.card-media {
-  height: 60%;
-}
-
-.card-content {
-  height: 40%;
 }
 
 .leaflet-top, .leaflet-bottom {

@@ -68,8 +68,8 @@ const Template = ({
 					<Navigation
 						newCommentViewHandler={newCommentViewHandler}
 					/>
-                    <Footer/>
-                </SC.Content>
+					<Footer/>
+				</SC.Content>
 			</SC.MobileMainWrapper>
 		</Wrapper>
 	);
