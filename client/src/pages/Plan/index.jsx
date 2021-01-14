@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
-import { useDataHandler, useCommentsDataHandler, useIsFavPlan, isFavoritePlan } from './hooks';
+import { useDataHandler, useCommentsDataHandler, isFavoritePlan } from './hooks';
 import { openModal } from 'redux/modal/slice';
 import { CommentsTab, SummaryTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
