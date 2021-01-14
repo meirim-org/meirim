@@ -9,13 +9,19 @@ import { useDispatch } from 'react-redux';
 import { fetchUserPlans } from 'pages/UserPlans/controller';
 import { UserSelectors } from 'redux/selectors';
 
+export const isFavoritePlan = async (userId, planId) => {
+	const favPlans = await fetchUserPlans(userId);
+	const result = favPlans.data.find(p => parseInt(p.id, 10) === parseInt(planId, 10));
+	
+	return Boolean(result);
+};
+
 export const useIsFavPlan = (planId) => {
 	const [isFav, setIsFav] = useState(false);
-	const { user:{ id: userId } } = UserSelectors();
+	const { user: { id: userId } } = UserSelectors();
 	useEffect(() => {
-		const handler= async () => {
-			const favPlans = await fetchUserPlans(userId);
-			const result = favPlans.data.find(p => parseInt(p.id, 10) === parseInt(planId, 10));
+		const handler = async () => {
+			const result = await isFavoritePlan(userId, planId);
 			setIsFav(Boolean(result));
 		};
 		handler();
