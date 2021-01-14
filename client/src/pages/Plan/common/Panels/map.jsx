@@ -7,7 +7,7 @@ import * as SC from './style';
 import Mapa from 'components/Mapa';
 
 export const MapPanel = (props) => {
-	const { geom, countyName } = props;
+	const { geom } = props;
 	const theme = useTheme();
 
 	return (
@@ -26,7 +26,6 @@ export const MapPanel = (props) => {
 				<SC.MapWrapper>
 					{geom && <Mapa
 						geom={geom}
-						countyName={countyName}
 						hideZoom={false}
 						disableInteractions={false}
 					/>}
