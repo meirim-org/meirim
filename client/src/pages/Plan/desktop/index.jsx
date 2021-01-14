@@ -15,7 +15,7 @@ const Template = ({
 	isFavPlan
 }) => {
 	const { comments } = CommentSelectors();
-	const { planData: { geom, countyName } } = PlanSelectors();
+	const { planData: { geom } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
 	
 	return (
@@ -35,7 +35,6 @@ const Template = ({
 				</SC.Content>
 				  <Mapa
 					geom={geom}
-					countyName={countyName}
 					hideZoom={false}
 					disableInteractions={false}
 				/>

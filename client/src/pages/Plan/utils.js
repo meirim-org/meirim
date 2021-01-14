@@ -2,7 +2,7 @@ import { parseNumber } from 'utils';
 import t from 'locale/he_IL';
 
 export const axes = [
-	{ primary: true, type: 'ordinal', position: 'bottom' },
+	{ primary: true, type: 'ordinal', position: 'bottom', maxLabelRotation: 0 },
 	{ position: 'left', type: 'linear', stacked: true }
 ];
 

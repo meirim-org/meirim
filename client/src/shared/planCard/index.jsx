@@ -22,9 +22,9 @@ const PlanCard = ({ plan }) => {
 						<SC.CardMedia title={plan.PL_NUMBER}>
 							<Mapa
 								geom={plan.geom}
+								countyName={plan.PLAN_COUNTY_NAME}
 								hideZoom={true}
 								disableInteractions={true}
-								title={plan.PLAN_COUNTY_NAME}
 								title2={plan.distance?` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת`:'' }
 							/>
 						</SC.CardMedia>
