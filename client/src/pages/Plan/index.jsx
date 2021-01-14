@@ -35,7 +35,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 			await getIsFav();
 		};
 		handler();
-	}, []);
+	}, [getIsFav]);
 
 	const subscriptionHandler = async () => {
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
