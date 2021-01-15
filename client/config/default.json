@@ -9,11 +9,5 @@
     "geocode": {
         "mapsApiKey": "",
         "autocompleteDelay": 2000
-    },
-    "paymentServices":{
-        "baseURL":"https://icom.yaad.net/p3",
-        "masofId":"",
-        "apiKey":"",
-        "PassP":""
     }
 }
