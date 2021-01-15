@@ -108,7 +108,7 @@ export default {
 	fundingEndGoal: 'אתר חדש עולה לאוויר!',
 	fundingShekel: '₪',
 	fundingOutOf: 'מתוך',
-	fundingSupporters: 'תומכים',
+	fundingSupporters: 'תומכים/ות',
 	monthlyPayment: 'חודשי',
 	singleTimePayment: 'חד פעמי'
 };
