@@ -31,6 +31,9 @@ export const StyledListItem = withTheme(styled(ListItem)`
     &#register-button {
          color: ${props => props.theme.palette.primary.main} !important;
     }
+    &.active {
+        color: ${props => props.theme.palette.primary.main} !important;
+    }
 `);
 
 export const StyledLink = withTheme(styled(NavLink)`
@@ -41,6 +44,7 @@ export const StyledLink = withTheme(styled(NavLink)`
 
     &:hover, &.active {
         text-decoration: none;
+        color: ${props => props.theme.palette.primary.main};
     }
 `);
 

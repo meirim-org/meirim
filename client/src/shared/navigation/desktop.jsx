@@ -40,17 +40,21 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 							<Box component="nav">
 								<Box display="flex" alignItems="center">
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
+										<SC.StyledLink 
+											id="nav-bar-plans"
+											to="/plans/"
+											isActive={(match, location) => location.pathname.includes('plans')}
+										>
 											{t.plans}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-alerts" to="/alerts/" activeClassName="active">
+										<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
 											{t.alerts}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-about" to="/about/" activeClassName="active">
+										<SC.StyledLink id="nav-bar-about" to="/about/">
 											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
