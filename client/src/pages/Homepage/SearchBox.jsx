@@ -7,9 +7,8 @@ import { device } from 'style';
 const Wrapper = styled.div`
     background-color: #652DD0;
     box-shadow: 0px 29.6621px 147.057px rgba(0, 0, 0, 0.0503198), 0px 15.8588px 78.6238px rgba(0, 0, 0, 0.0417275), 0px 8.8903px 44.0759px rgba(0, 0, 0, 0.035), 0px 4.72157px 23.4084px rgba(0, 0, 0, 0.0282725);
-    border-radius: 12px;
     padding: 23px;
-    width: 343px;
+    width: 100%;
     height: 200px;
     margin: 32px auto;
 
@@ -18,6 +17,7 @@ const Wrapper = styled.div`
         height: 160px;
         padding: 32px;
         margin: 113px 0 0 0;  
+        border-radius: 12px;
     }
 `;
 
