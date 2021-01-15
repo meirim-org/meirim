@@ -1,7 +1,6 @@
 import '../../node_modules/leaflet/dist/leaflet.css';
 import 'rc-slider/assets/index.css';
 import React from 'react';
-import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Slider from 'rc-slider';
 import api from 'services/api';

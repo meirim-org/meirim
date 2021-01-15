@@ -5,7 +5,6 @@ export default {
 	signin: 'התחברות',
 	signout: 'התנתקות',
 	name: 'מעירים',
-	plans: 'תוכניות',
 	myPlans: 'התוכניות שלי',
 	plans: 'תכניות',
 	treePermits: 'עצים',
@@ -82,7 +81,10 @@ export default {
 	backToComments: 'חזרה לעמוד חוות הדעת',
 	publishComment: 'פרסום חוות דעת',
 	improvement: 'הצעה לשיפור',
-	general: 'חוות דעת כללית'
+	general: 'חוות דעת כללית',
+	lastDateToObjectTrees: 'תאריך אחרון להגשת ערר',
+	permitNumber: 'מספר רשיון:',
+	treePermitOnGovSite: 'קישור לרשיון באתר הציבורי:'
 };
 
 

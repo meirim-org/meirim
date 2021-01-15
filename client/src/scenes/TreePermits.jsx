@@ -17,8 +17,7 @@ import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple
 
 import t from "../locale/he_IL";
 import "./TreePermits.css";
-
-const DAY_IN_MILISECONDS = 1000 * 60 * 60 *24;
+import { timeToObjectionText } from '../pages/Tree/utils';
 
 class TreePermits extends Component {
 	state = {
@@ -66,16 +65,6 @@ class TreePermits extends Component {
 	return 	<Typography component="p" color="textPrimary"> <strong>{fieldBold} </strong>{text}</Typography>
 	}
 
-	timeToObjectionText(start_date) {
-		const permitStartDate = new Date(start_date);
-		const now = new Date();
-		const timeLeft = (permitStartDate.getTime() - now.getTime() > 0)?  Math.floor((permitStartDate - now) / DAY_IN_MILISECONDS ) : -1; 
-		if (timeLeft == -1) { return 'בתוקף';}
-		else if (timeLeft == 0) { return `יום אחרון`}
-		else if (timeLeft == 1) { return `נותר יום אחד`}
-		else return  `נותרו ${timeLeft} ימים`;
-	}
-
 	loadTrees(pageNumber, filterPlaces) {
 		this.setState({
 			noData: false
@@ -101,12 +90,12 @@ class TreePermits extends Component {
 	}
 
 	loadNextPage() {
-		const { pageNumber, filterPlaces: filterPlaces } = this.state;
+		const { pageNumber, filterPlaces } = this.state;
 		this.loadTrees(pageNumber + 1, filterPlaces);
 	}
 
 	componentDidMount() {
-		const { pageNumber, filterPlaces: filterPlaces } = this.state;
+		const { pageNumber, filterPlaces } = this.state;
 
 		api.get("/tree_place")
 			.then(result => {
@@ -160,7 +149,7 @@ class TreePermits extends Component {
 												hideZoom={true}
 												disableInteractions={true}
 												countyName={tree.place}
-												title2={this.timeToObjectionText(tree.start_date)}
+												title2={timeToObjectionText(tree.start_date)}
 												maxZoom={16}
 											/>
 										</CardMedia>

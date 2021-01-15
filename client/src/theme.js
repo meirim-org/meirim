@@ -56,6 +56,10 @@ export const muiTheme = createMuiTheme({
 		blue: {
 			'main': '#1a2d66',
 		},
+		orange: {
+			'text' : '#A95623',
+			'bg' : '#FDE3B6',
+		},
 	},
 });
 

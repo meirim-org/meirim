@@ -11,6 +11,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as Scenes from 'scenes';
 import Plan from 'pages/Plan';
+import Tree from 'pages/Tree';
 import EmailSent from 'pages/Register/emailSent';
 import { Modal, CircularProgress } from 'shared';
 import 'App.css';
@@ -44,6 +45,7 @@ const App = () => {
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route path="/about" render={props => <Scenes.About {...props} />} />
 						<Route path="/trees" render={props => <Scenes.TreePermits {...props} />}/>
+						<Route path="/tree/:id" render={props => <Tree {...props} />}/>
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />
 						<Route path="/email-sent" render={props => <EmailSent {...props} />} />
