@@ -4,7 +4,6 @@ import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import {  Chip } from '@material-ui/core';
-import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
 import { TreeSelectors } from 'redux/selectors';
 import { timeToObjectionText} from '../../utils';
@@ -42,21 +41,17 @@ const TreeList = ({trees_per_permit})=> {
 	);
 }
 
-const TreeDetailsPanel = ({ status, type, url, }) => {
+const TreeDetailsPanel = ({ url }) => {
 	const theme = useTheme();
-	const { treeData: { geom, place, action, start_date, permit_number, total_trees, trees_per_permit } } = TreeSelectors();
+	const { treeData: { action, start_date, permit_number, total_trees, trees_per_permit } } = TreeSelectors();
 
 	const treeText = (total_trees === 1)? 'עץ אחד': `${total_trees} עצים`;
 	return (
 		<TabPanel>
 			<TabBox>
 				<SC.TreeSummaryTitleWrapper>
-					<Typography
-						variant="planDetailTitle"
-						mobileVariant="planDetailTitle"
-						component="h2"
-						color={theme.palette.black}
-					>
+					<Typography		variant="planDetailTitle" mobileVariant="planDetailTitle"
+						component="h2"	color={theme.palette.black}	>
 						{`עצים ל${action}`}
 					</Typography>
 				</SC.TreeSummaryTitleWrapper>
@@ -98,7 +93,6 @@ const TreeDetailsPanel = ({ status, type, url, }) => {
 					</SC.StatusWrapper>
 				</SC.StatusAndTypeWrapper>
 				
-
 				<SC.UrlWrapper>
 					<a target="_blank" rel="noopener noreferrer" href={url}>{t.treePermitOnGovSite}</a>
 					<SC.CustomLinkIcon></SC.CustomLinkIcon>

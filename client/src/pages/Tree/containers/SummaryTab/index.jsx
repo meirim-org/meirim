@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { TreeSelectors } from 'redux/selectors';
 import PropTypes from 'prop-types';
-import { TreeDetailsPanel,  MapPanel } from 'pages/Tree/common';
+import { TreeDetailsPanel,  MapPanel, TreeReasonPanel } from 'pages/Tree/common';
 import { withGetScreen } from 'react-getscreen';
 import { scrollToTop } from 'utils';
 
@@ -14,7 +14,8 @@ const SummaryTab = ({  isMobile, isTablet }) => {
 
 	return (
 		<>
-			<TreeDetailsPanel type={place} status={place}/>
+			<TreeDetailsPanel/>
+			<TreeReasonPanel/>
 		
 			{isMobile() || isTablet()
 				?
