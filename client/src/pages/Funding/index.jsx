@@ -61,12 +61,7 @@ const FundingPage = () => {
 			setPaymentUrl(paymentpageUrl);
 			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }));
 		} catch (err) {
-			// error from the paymnet service, or other errors, need to check
 			externalPaymentErrorToast()
-			// if(err.message === 'Error: Request failed with status code 400'){
-			// 	const emailError = { isValid: false, message: 'המייל לא תקין' }
-			// 	// setFormErrors({ ...formErrors, emailError })
-			// }
 		}
 	};
 
@@ -172,23 +167,20 @@ const FundingPage = () => {
 										<SC.Amount>{o} {t.fundingShekel}</SC.Amount>
 									</SC.PaymentOption>
 								))}
-								<SC.PaymentOption className={'longer'} onClick={ () => { setAmount(otherAmount) } } >
-									<SC.PaymentOtherOption>
-									<SC.Amount>סכום אחר</SC.Amount>
-									<TextInput
+								<SC.PaymentOption className={amount===otherAmount?'active longer':'longer'} onClick={ () => { setAmount(otherAmount) } } >
+								<SC.PaymentOtherOption>
+									<input type="number"
 										id="other-amount-input"
 										name="other-amount"
-										type="number"
 										width="3.5em"
-										min={1}
-										max={20000}
-										value={otherAmount.toString()}
+										placeholder="סכום אחר"
 										onChange={({ target: { value } }) => {
-											setOtherAmount(Number.parseInt(value));
-											setAmount(value)}
+											setOtherAmount(Number.parseInt(value))
+											setAmount(Number.parseInt(value))}
 										}
 									/>
 									</SC.PaymentOtherOption>
+									<div>{amount}</div>
 								</SC.PaymentOption>
 								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''} />
 							</SC.PaymentOptionsWrapper>

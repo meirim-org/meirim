@@ -319,11 +319,39 @@ export const PaymentOption= withTheme(styled.div`
   }
 `);
 
-export const PaymentOtherOption = styled.span`
+export const PaymentOtherOption = withTheme(styled.span`
   display: inline-flex;
   position: relative;
   top: -0.1em;
-`;
+
+  input[type="number"]{
+    border:0px;
+    background-color:#FBFBFB;
+  }
+  input::placeholder, input {
+    font-style: normal;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 28px;
+    color: #391695;
+    transition: color 200ms;
+    transition: font-size 300ms;
+  }
+  input:focus::placeholder {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(153, 153, 153, 0.9);
+  }
+  &.active{
+    background-color: ${props => props.theme.palette.primary['100']};
+    opacity:(100-12)%;
+    transition: background-color 50ms;
+    input[type="number"]{
+      background-color:${props => props.theme.palette.primary['100']};
+    }
+  }
+`);
 
 export const Amount = withTheme(styled.span`
   font-size:26px;
