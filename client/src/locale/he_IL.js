@@ -104,7 +104,7 @@ export default {
 	publishComment: 'פרסום חוות דעת',
 	improvement: 'הצעה לשיפור',
 	general: 'חוות דעת כללית',
-	fundingStatsTitle: 'בכדי שנוכל להפעיל, לתחזק ולפתח את המערכת החינמית שלנו',
+	fundingStatsTitle: 'עם קצת פוש מכם נוכל להנגיש יותר מידע ויותר תוכניות, ויחד נשנה את התכנון בישראל',
 	fundingEndGoal: 'אתר חדש עולה לאוויר!',
 	fundingShekel: '₪',
 	fundingOutOf: 'מתוך',
