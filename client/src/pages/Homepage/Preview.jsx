@@ -43,13 +43,13 @@ const UnderDevelopment = styled.span`
 `;
 
 const MobileImg = styled.div`
-	width: 100vh; 
+	width: 100vw; 
 	height: 420px;
 	background-image: url(${props => props.src});
 	background-repeat: no-repeat;
 	background-position-x: right;
+	background-size: cover;
 	margin-bottom: 40px;
-	margin-left: -20px;
 `;
 
 const PreviewIcon = () => (
@@ -61,10 +61,10 @@ const PreviewIcon = () => (
 	</PreviewIconWrapper>
 );
 
-const Preview = ({ isMobile, src }) => {
+const Preview = ({ isMobile, src, mobileSrc }) => {
 	return (
 		<PreviewImageWrapper>
-			{isMobile() ? <MobileImg src={src} /> : <DesktopImage src={src} />}
+			{isMobile() ? <MobileImg src={mobileSrc ?? src} /> : <DesktopImage src={src} />}
 			<PreviewIcon />
 		</PreviewImageWrapper>
 	);
@@ -72,7 +72,8 @@ const Preview = ({ isMobile, src }) => {
 
 Preview.propTypes = {
 	isMobile: PropTypes.func.isRequired,
-	src: PropTypes.string.isRequired
+	src: PropTypes.string.isRequired,
+	mobileSrc: PropTypes.string,
 };
   
 

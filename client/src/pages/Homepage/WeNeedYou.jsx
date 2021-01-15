@@ -10,7 +10,7 @@ const Box = styled.div`
     background: #F0E3FD;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15), 0px 6.91436px 8.83705px rgba(0, 0, 0, 0.025);
     border-radius: 12px;
-    width: 343px;
+    width: 100%;
     flex-direction: column;
     padding-top: 14px;
 
