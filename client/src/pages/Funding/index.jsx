@@ -122,21 +122,11 @@ const FundingPage = () => {
 					</SC.RoadMapWrapper>
 					<Divider orientation="vertical"/>
 					<SC.PaymentWrapper>
-						<SC.FundUsTitle>עזרו לנו להמשיך! </SC.FundUsTitle>
+						<SC.FundUsTitle>הצטרפו למהפכה </SC.FundUsTitle>
 						<TabPanel>
 							<SC.FundingStatsWrapper>
 								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
 								<div>
-									<SC.FundingStatsGoalBubble>
-										<Typography
-											component="span"
-											variant="highlightedText"
-											mobileVariant="highlightedText"
-											color={theme.palette.black}
-										>
-											{t.fundingEndGoal}
-										</Typography>
-									</SC.FundingStatsGoalBubble>
 									<ProgressBar id="funding-stats-progressbar" value={statsData.totalAmount / fundingEndGoal * 100} width="100%"/>
 								</div>
 								<SC.FundingStatsNumbersWrapper>
