@@ -1,29 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/styles';
-import { StarIcon } from 'shared/icons';
-import { Button } from '@material-ui/core';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
 import { Text } from 'shared';
-import { subscribeUserToPlan } from 'pages/Plan/controller';
 import t from 'locale/he_IL';
-import { useParams } from 'react-router-dom';
-import { useIsFavPlan } from 'pages/Plan/hooks';
+import * as SC from './style';
 
-const SavePlan = () => {
-	const { id } = useParams();
-	const isFav = useIsFavPlan(id);
+const SavePlan = ({ subscriptionHandler, isFavPlan }) => {
 	const theme = useTheme();
 	
 	return (				
-		<Button 
-			onClick={() => subscribeUserToPlan(id)} 
+		<SC.Button
+			onClick={subscriptionHandler}
 			variant="contained" 
-			disabled={isFav}
-			color="primary" 
-			startIcon={isFav ? <StarIcon/> : <StarBorderIcon fontSize={'small'}/>}>
-			<Text size="14px" text={t.saving} component="span" color={theme.palette.gray['800']}/>
-		</Button>
+			color="primary"
+			className={isFavPlan ? 'active' : null}
+			startIcon={isFavPlan ? <StarIcon/> :<StarBorderIcon/> }>
+			<Text size="14px" text={isFavPlan ? t.saved : t.saving} component="span" color={theme.palette.gray['800']}/>
+		</SC.Button>
 	);
 };
 
+SavePlan.propTypes = {
+	subscriptionHandler: PropTypes.func.isRequired,
+	isFavPlan: PropTypes.bool.isRequired,
+};
 export default SavePlan;
