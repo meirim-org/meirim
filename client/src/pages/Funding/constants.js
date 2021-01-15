@@ -38,4 +38,5 @@ export const fundingEndGoal = 100000;
 
 export const fundingYoutubeVideoId = 'iDzws2bUs4M';
 
-export const successPageCloseMessage = 'close-success-page';
+export const successPageCloseMessage = 'success-page-close';
+export const successPageTransactionCompleteMessage = 'success-page-transaction-complete';

@@ -4,14 +4,23 @@ import styled from 'styled-components';
 import * as SC from './style';
 import Icon from '../../assets/svg/successIcon'
 import { saveTransaction } from './controller';
-import { successPageCloseMessage } from './constants';
+import { successPageCloseMessage, successPageTransactionCompleteMessage } from './constants';
 
 const SuccessPayment = ({ ...props }) => {
     const notifyClosePage = () => {
-		window.top.postMessage(
+        window.top.postMessage(
             JSON.stringify({
                 error: false,
                 message: successPageCloseMessage
+            })
+        );
+    };
+
+    const notifyTransactionComplete = () => {
+		window.top.postMessage(
+            JSON.stringify({
+                error: false,
+                message: successPageTransactionCompleteMessage
             })
         );
     };
@@ -27,6 +36,8 @@ const SuccessPayment = ({ ...props }) => {
             // do not fail over this
             console.error('save transaction failed:', err);
         }
+
+        notifyTransactionComplete();
     };
 
     useEffect(() => {
@@ -50,7 +61,7 @@ const SuccessPayment = ({ ...props }) => {
                     <Icon/>
                     <SC.CentredTitle>תמיכתך התקבלה בהצלחה, תודה רבה!</SC.CentredTitle>
                     <SC.CentredSubTitle>בעזרתך נמשיך להגביר את השקיפות התכנונית ולהרחיב את המעורבות האזרחית במערכת התכנון</SC.CentredSubTitle>
-                    <Link onClick={()=>{notifyClosePage()}} text="סגור"/>
+                    <Link onClick={()=>{notifyClosePage()}} text="סגור" url="#"/>
                 </SC.CentredWrapper>
             </SC.HeaderWrapper>
         </>
