@@ -1,12 +1,9 @@
 import '../../node_modules/leaflet/dist/leaflet.css';
 import 'rc-slider/assets/index.css';
 import React from 'react';
-import _ from 'lodash';
-import leaflet from 'leaflet';
 import Wrapper from '../components/Wrapper';
 import Snackbar from '@material-ui/core/Snackbar';
-import api from 'services/api';
-import t from 'locale/he_IL';
+
 import { CheckIfUserCanAccessPage } from 'hooks';
 import './Alerts.css';
 import AlertByAddress from './AlertByAddress';

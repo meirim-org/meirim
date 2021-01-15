@@ -3,7 +3,6 @@ import 'rc-slider/assets/index.css';
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Map, TileLayer, Circle } from 'react-leaflet';
-import _ from 'lodash';
 import leaflet from 'leaflet';
 import AlertTable from '../components/AlertTable';
 import { CheckIfUserCanAccessPage } from 'hooks';

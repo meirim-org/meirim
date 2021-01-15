@@ -79,9 +79,9 @@ class TreePermit extends Model {
 		};
 	}
 
-	// get geometry () {
-	// 	return ['geom'];
-	// }
+	canRead () {
+		return Promise.resolve(this);
+	}
 }
 
 module.exports = TreePermit;

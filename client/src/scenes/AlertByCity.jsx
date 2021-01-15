@@ -1,6 +1,4 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import _ from "lodash";
+import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import api from "../services/api";
 import t from "../locale/he_IL";
