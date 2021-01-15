@@ -317,6 +317,10 @@ export const PaymentOption= withTheme(styled.div`
   .MuiInputBase-root {
     height: 2em;
   }
+
+  input {
+    background-color: rgba(255, 255, 255, 0) !important;
+  }
 `);
 
 export const PaymentOtherOption = withTheme(styled.span`
