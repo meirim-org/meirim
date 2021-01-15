@@ -362,7 +362,7 @@ export const FundUsTitle= styled.span`
 `;
 
 export const RoadmapItemTitle= styled.div`
-  font-family: Assistant SemiBold;
+  font-family: Assistant;
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
