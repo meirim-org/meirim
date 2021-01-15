@@ -34,7 +34,7 @@ export const DataPanel = ({
 						{t.planData}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
-				<ul>
+				<SC.Datalist>
 					<li key="number">
                         מספר תוכנית:{' '}
 						{number}
@@ -78,7 +78,7 @@ export const DataPanel = ({
 							{lastUpdate}
 						</Moment>
 					</li>
-				</ul>
+				</SC.Datalist>
 				{!!notCredible && (
 					<div className="note">
                         שימו לב! זוהי תכנית המופקדת
