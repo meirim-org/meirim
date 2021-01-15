@@ -43,7 +43,6 @@ export const useDataHandler = (planId) => {
 	useEffect (() => {
 		const fetchData = async () => {
 			const response = await getPlanData(planId);
-			console.log(response);
 			const {
 				PLAN_COUNTY_NAME: countyName,
 				PL_NAME: name,
@@ -87,7 +86,7 @@ export const useDataHandler = (planId) => {
 					const areaChangeType = utils.getAreaChangeType(change);
 					const handler = utils.areaChangeHandlers[areaChangeType];
 					const [firstChange, secondChange] = handler(change);
-					if (areaChangeType) {
+					if (areaChangeType === 'meter') {
 						newDataArea[0].data.push(firstChange);
 						newDataArea[1].data.push(secondChange);
 						newTextArea.exist += parseNumber(change[5]);
