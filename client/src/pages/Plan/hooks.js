@@ -43,11 +43,25 @@ export const useDataHandler = (planId) => {
 	useEffect (() => {
 		const fetchData = async () => {
 			const response = await getPlanData(planId);
+			console.log(response);
 			const {
-				PLAN_COUNTY_NAME: countyName, PL_NAME: name, 
-				status, goals_from_mavat: goalsFromMavat, main_details_from_mavat: mainDetailsFromMavat, plan_url: url,
+				PLAN_COUNTY_NAME: countyName,
+				PL_NAME: name,
+				jurisdiction,
+				status,
+				notCredible,
+				goals_from_mavat: goalsFromMavat,
+				main_details_from_mavat: mainDetailsFromMavat,
+				plan_url: url,
 				areaChanges, geom } = response.data;
-			const { ENTITY_SUBTYPE_DESC: type } = response.data.data;
+			const {
+			    ENTITY_SUBTYPE_DESC: type,
+				PL_NUMBER: number,
+				DEPOSITING_DATE: depositingDate,
+				PL_LANDUSE_STRING: landUse,
+				STATION_DESC: stationDesc,
+				LAST_UPDATE: lastUpdate,
+			} = response.data.data;
 			const newTextArea = { ...utils.initialTextArea, area: geom ? Math.round(geojsonArea.geometry(geom)) : 0 };
 			const newDataArea = [{
 				label: 'זכויות קיימות',
@@ -91,8 +105,12 @@ export const useDataHandler = (planId) => {
 				dataArea: newDataArea, 
 				dataUnits: newDataUnits, 
 				textArea: newTextArea,
-				planData: { countyName, name, status, type, 
-					goalsFromMavat: goalsFromMavat, mainDetailsFromMavat: mainDetailsFromMavat, url, areaChanges, geom }
+				planData: { countyName, name, status, type, number, jurisdiction, depositingDate, landUse, stationDesc,
+					notCredible,
+					lastUpdate,
+					goalsFromMavat,
+					mainDetailsFromMavat,
+					url, areaChanges, geom }
 			}));
 		};	
 
