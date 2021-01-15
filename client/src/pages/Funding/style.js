@@ -46,7 +46,7 @@ export const PaymentWrapper = styled.div`
 
 export const PaymnetModalWrapper = styled.div`
   width:100%;
-  height:600px;
+  height: 90vh;
 
   .payment-popup{
     width:100%;
@@ -54,12 +54,10 @@ export const PaymnetModalWrapper = styled.div`
   }
 
   @media ${device.laptop} {
-    height:920px;
-    width:800px;
+    width: 800px;
 
     .payment-popup{
-      width:800px;
-      height:920px;
+      width: 800px;
     }
   }
 `;
