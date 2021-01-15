@@ -220,6 +220,9 @@ const FundingPage = () => {
 						</TabPanel>
 					</SC.PaymentWrapper>
 				</SC.InputsWrapper>
+				<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '4px', 'margin-top': '-25px'}}/>
+				<h1>מי אנחנו</h1>
+				<TeamMembers></TeamMembers>
 			</SC.MainWrapper>
 		</Wrapper>
 	);
