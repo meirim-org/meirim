@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { externalPaymentErrorToast } from 'toasts';
 import YoutubeVideo from 'react-youtube';
-import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox, ProgressBar, Typography } from '../../shared';
+import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox, ProgressBar, Typography, TeamMembers } from '../../shared';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
@@ -211,6 +211,7 @@ const FundingPage = () => {
 							</TabPanel>
 					</SC.PaymentWrapper>
 					</SC.InputsWrapper>
+					<TeamMembers></TeamMembers>
 			</SC.MainWrapper>
 		</Wrapper>
 			);

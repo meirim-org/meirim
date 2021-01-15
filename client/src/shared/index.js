@@ -17,6 +17,7 @@ import CircularProgress from './circularProgress';
 import HelperText from './helperText';
 import Text from './text';
 import ProgressBar from './progressBar';
+import TeamMembers from './teamMembers'
 
 export {
 	Button,
@@ -37,5 +38,6 @@ export {
 	Divider,
 	Checkbox,
 	HelperText,
-	ProgressBar
+	ProgressBar,
+	TeamMembers
 };
