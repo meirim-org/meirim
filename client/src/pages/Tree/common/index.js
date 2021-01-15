@@ -1,4 +1,4 @@
-import { TreeDetailsPanel, MapPanel } from './Panels';
+import { TreeDetailsPanel, MapPanel, TreeReasonPanel } from './Panels';
 import { SubCommentForm, CommentForm } from './Forms';
 import { CommentView, SubCommentView, SharePlanView } from './Views';
 import AddComment from './AddComment';
@@ -12,6 +12,7 @@ export {
 	SubCommentForm,
 	MapPanel,
 	TreeDetailsPanel,	
+	TreeReasonPanel,
 	SharePlanView,
 	BackButton
 };
