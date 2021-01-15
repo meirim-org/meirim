@@ -42,6 +42,7 @@ export default {
 	planningInformation: 'מידע תכנוני',
 	sharing: 'שיתוף',
 	saving: 'שמירה',
+	saved: 'שמור',
 	addNewComment: 'הוספת חוות דעת',
 	supportUs: 'תמכו בנו',
 	review: 'ביקורת',

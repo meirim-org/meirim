@@ -11,6 +11,8 @@ const Template = ({
 	setCommentState,
 	children,
 	match,
+	subscriptionHandler,
+	isFavPlan
 }) => {
 	const { comments } = CommentSelectors();
 	const { planData: { geom } } = PlanSelectors();
@@ -21,6 +23,8 @@ const Template = ({
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
+						subscriptionHandler={subscriptionHandler}
+						isFavPlan={isFavPlan}
 						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
 						match={match}
 					/>
@@ -41,6 +45,8 @@ const Template = ({
 
 Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
+	subscriptionHandler: PropTypes.func.isRequired,
+	isFavPlan: PropTypes.bool.isRequired,
 	children: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
 };
