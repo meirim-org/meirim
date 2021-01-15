@@ -146,6 +146,9 @@ export const CentredSubTitle = styled.h2`
 `;
 
 export const CentredWrapper = styled.div`
+  max-width: 80vw;
+  max-height: 90vh;
+  overflow-y: auto;
 `;
 
 export const ThirdTitle = styled.h1`
@@ -189,19 +192,20 @@ export const TermsOfUse = styled.span`
 
 export const TermsOfPaymentText = styled.span`
   font-family: Assistant !important;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
   letter-spacing: normal;
   line-height: 1.5;
-  text-align: center;
+  text-align: right;
   color: #000000;
-  margin: 0 3em 3em 3em;
+  margin: 0 0.5em 0.5em 0.5em;
   display: inline-block;
-  max-width: 40em;
-  max-height: 25em;
-  overflow-y: auto;
+
+  @media ${device.tablet} {
+    margin: 0 3em 3em 3em;
+  }
 
    >  span {
      font-family: Assistant !important;

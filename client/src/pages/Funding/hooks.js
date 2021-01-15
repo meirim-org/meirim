@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { getFundingStats } from './controller';
 import { setStatsData } from 'redux/funding/slice';
 import { closeModal } from 'redux/modal/slice';
-import { successPageCloseMessage } from './constants';
+import { successPageCloseMessage, successPageTransactionCompleteMessage } from './constants';
 
 export const useStatsDataHandler = (paymentDone) => {
 	const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export const useSuccessCloseHandler = (paymentSuccessCb) => {
 			if (data.message === successPageCloseMessage) {
 				// closing the modal, as the success page alerted user pressed close
 				dispatch(closeModal())
-
+			} else if (data.message === successPageTransactionCompleteMessage) {
 				// refresh funding stats
 				paymentSuccessCb();
 			}
