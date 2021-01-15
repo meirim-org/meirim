@@ -9,7 +9,7 @@ import LandUseVocabulary from 'components/LandUseVocabulary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-export const PlanDataPanel = ({ 
+export const DataPanel = ({
 	number,
 	type, 
 	jurisdiction,
@@ -19,7 +19,7 @@ export const PlanDataPanel = ({
 	lastUpdate, 
 	notCredible }) => {
 	const theme = useTheme();
-	if (!number && !type && !jurisdiction && !depositingDate && !landUse && !stationDesc&&  !lastUpdate ) return null;
+	if (!number && !type && !jurisdiction && !depositingDate && !landUse && !stationDesc && !lastUpdate ) return null;
 
 	return (
 		<TabPanel>
@@ -92,32 +92,12 @@ export const PlanDataPanel = ({
                         מופקדת
 					</div>
 				)}
-				<div className="single-line">
-					<p>שתפו אותי:</p>
-					<a
-						className="share-link"
-						target="_blank"
-						rel="noopener noreferrer"
-						href={
-							'https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A' +
-                            encodeURI(
-                            	window.location.toString()
-                            )
-						}
-					>
-						<FontAwesomeIcon
-							icon={['fab', 'whatsapp']}
-							size="lg"
-							color="#25D366"
-						/>
-					</a>
-				</div>
 			</TabBox>
 		</TabPanel>
 	);
 };
 
-PlanDataPanel.propTypes = {
+DataPanel.propTypes = {
 	mainDetailsFromMavat: PropTypes.string,
 	number: PropTypes.string,
 	type: PropTypes.string,
@@ -129,4 +109,4 @@ PlanDataPanel.propTypes = {
 	notCredible: PropTypes.any
 };
 
-export default PlanDataPanel;
+export default DataPanel;

@@ -84,6 +84,7 @@ export default {
 	noPlansSavedTitle: 'טרם שמרת תוכניות',
 	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ',
 	areaUnitChanges: 'שינוי שטח',
+	housingUnitChanges: 'שינוי יחידות דיור',
 	planData: 'נתוני התוכנית',
 	planDescription: 'תיאור התוכנית',
 };

@@ -7,7 +7,7 @@ import {  Chip } from '@material-ui/core';
 import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
 
-const PlanDetailsPanel = ({ status, type, url }) => {
+const DetailsPanel = ({ status, type, url }) => {
 	const theme = useTheme();
 	
 	return (
@@ -79,10 +79,10 @@ const PlanDetailsPanel = ({ status, type, url }) => {
 };
 
 
-PlanDetailsPanel.propTypes = {
+DetailsPanel.propTypes = {
 	type: PropTypes.string,
 	status: PropTypes.string,
 	url: PropTypes.string,
 };
 
-export default PlanDetailsPanel;
+export default DetailsPanel;
