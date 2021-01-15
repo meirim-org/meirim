@@ -56,6 +56,7 @@ class FundingController extends Controller {
 			params.HK = "True";
 			params.Info = "תרומה חודשית לעמותת מעירים";
 			params.heshDesc = ["", "תרומה%20חודשית%20לעמותת%20מעירים", "1", `${params.Amount}`].join('~');
+			params.Tash = 999;
 		} else {
 			params.Info = "תרומה חד פעמית לעמותת מעירים";
 			params.heshDesc = ["", "תרומה%20חד%20פעמית%20לעמותת%20מעירים", "1", `${params.Amount}`].join('~');
