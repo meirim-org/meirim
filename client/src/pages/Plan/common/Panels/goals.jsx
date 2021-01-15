@@ -4,10 +4,12 @@ import { TabPanel, TabBox, Typography } from 'shared';
 import { useTheme } from '@material-ui/styles';
 import UnsafeRender from 'components/UnsafeRender';
 import * as SC from './style';
+import t from 'locale/he_IL';
 
-export const TextPanel = ({ title, content }) => {
+
+export const GoalsPanel = ({ goalsFromMavat }) => {
 	const theme = useTheme();
-	if (!title || !content) return null;
+	if (!goalsFromMavat ) return null;
 	
 	return (
 		<TabPanel>
@@ -19,12 +21,12 @@ export const TextPanel = ({ title, content }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{title}
+						{t.planGoals}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 				<SC.EntryContent>
 					<UnsafeRender
-						html={content}
+						html={goalsFromMavat}
 					/>
 				</SC.EntryContent>
 			</TabBox>
@@ -32,9 +34,8 @@ export const TextPanel = ({ title, content }) => {
 	);
 };
 
-TextPanel.propTypes = {
-	title: PropTypes.string,
-	content: PropTypes.string,
+GoalsPanel.propTypes = {
+	goalsFromMavat: PropTypes.string,
 };
 
-export default TextPanel;
+export default GoalsPanel;

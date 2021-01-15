@@ -8,7 +8,7 @@ import { useTheme } from '@material-ui/styles';
 import { series, axes } from '../../utils';
 import * as SC from './style';
 
-export const AreaUnitChangesPanel = ({ dataArea, textArea, }) => {
+export const StatsPanel = ({ dataArea, textArea, }) => {
 	const theme = useTheme();
 	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
 
@@ -66,10 +66,10 @@ export const AreaUnitChangesPanel = ({ dataArea, textArea, }) => {
 	);
 };
 
-AreaUnitChangesPanel.propTypes = {
+StatsPanel.propTypes = {
 	dataArea: PropTypes.array.isRequired,
 	textArea: PropTypes.object.isRequired,
 	url: PropTypes.string,
 };
 
-export default AreaUnitChangesPanel;
+export default StatsPanel;
