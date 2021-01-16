@@ -1,30 +1,6 @@
 import React from 'react';
 
 export default {
-	alerts: "התראות",
-	signin: "התחברות",
-	signout: "התנתקות",
-	name: "מעירים",
-	plans: "תוכניות",
-	vocabulary: "מילון",
-	about: "אודות",
-	meirimTitle: "מידע תכנוני ואקטיביזם עירוני",
-	newAlert: "התראה חדשה",
-	emailAddress: "כתובת דוא\"ל",
-	fullName: "שם מלא",
-	password: "סיסמה",
-	signup: "הרשמה",
-	signupNow: "הרשמו עכשיו",
-	alreadyGotAccount: "יש לכם כבר חשבון?",
-	funding: "תמכו בנו",
-	km: "ק\"מ",
-	emailExists: "כתובת דוא\"ל כבר רשומה",
-	error: "שגיאה",
-	forgotPassword: "שכחתם את הסיסמה?",
-	loading: "טוען",
-	seenAllPlans: "זה הכל!",
-	callToAction: "הצטרפו למעירים",
-	whatToRegister: "רוצים השכמה?",
 	alerts: 'ההתראות שלי',
 	signin: 'התחברות',
 	signout: 'התנתקות',
@@ -111,8 +87,8 @@ export default {
 	fundingSupporters: 'תומכים/ות',
 	monthlyPayment: 'תמיכה חודשית',
 	singleTimePayment: 'תמיכה חד פעמית',
-	aboutUsTitle: 'בואו להיות חלק מהקהילה שלנו!',
-	aboutUs: 'הפעילות שלנו מבוססת על מתנדבים שנושא התכנון בוער בהם, שמאמינים בשקיפות בתהליכי התכנון ופועלים להגביר את המעורבות של תושבים במערכות התכנון.'
+	fundingAboutUsTitle: 'בואו להיות חלק מהקהילה שלנו!',
+	fundingAboutUs: 'הפעילות שלנו מבוססת על מתנדבים שנושא התכנון בוער בהם, שמאמינים בשקיפות בתהליכי התכנון ופועלים להגביר את המעורבות של תושבים במערכות התכנון.'
 };
 
 

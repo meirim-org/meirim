@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { externalPaymentErrorToast } from 'toasts';
 import YoutubeVideo from 'react-youtube';
-import { Button, Checkbox, TextInput, Divider, HelperText, Link, TabPanel, TabBox, ProgressBar, Typography, TeamMembers } from '../../shared';
+import { Button, Checkbox, Divider, HelperText, Link, TabPanel, ProgressBar, Typography, TeamMembers } from '../../shared';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
@@ -20,36 +20,27 @@ const FundingPage = () => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 
-	const [paymentRequestReady, setPaymentRequestReady] = useState(false);
 	const [otherAmount, setOtherAmount] = useState(0);
 	const [amount, setAmount] = useState();
 	const [termsAccepted, setTermsAccepted] = useState(false );
 	const [triedSubmit, setTriedSubmit] = useState(false );
 	const [paymentDone, setPaymentDone] = useState(0);
-	const [paymentUrl, setPaymentUrl] = useState();
-	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false })
-	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false })
 	const [formErrors, setFormErrors] = useState({
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
 	});
 	const [monthlyPayment, setMonthlyPayment] = useState(true);
 
-	const validateFormInput = () => {
-		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted })
-		const { amountError, termsAcceptedError } =
-			getFormErrors({
-				validations: { isValidAmount, isValidAcceptedTerms },
-				values: { amount, termsAccepted }
-			})
-		setFormErrors({ ...formErrors, amountError, termsAcceptedError })
+	const validateFormInput = useCallback(() => {
+		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted });
+		const { amountError, termsAcceptedError } = getFormErrors({
+			validations: { isValidAmount, isValidAcceptedTerms },
+			values: { amount, termsAccepted }
+		});
 
-		return { isValidAmount, isValidAcceptedTerms}
-	}
-
-	useEffect(() => {
-		validateFormInput()
-	}, [ amount, termsAccepted ])
+		setFormErrors({ ...formErrors, amountError, termsAcceptedError });
+		return { isValidAmount, isValidAcceptedTerms };
+	}, [amount, termsAccepted, formErrors]);
 
 	const handlePaymentRequest = async () => {
 		setTriedSubmit(true);
@@ -58,7 +49,6 @@ const FundingPage = () => {
 
 		try {
 			const paymentpageUrl = await createPaymentLink({amount, monthlyPayment});
-			setPaymentUrl(paymentpageUrl);
 			dispatch(openModal({ modalType: 'payment', modalProps: { url: paymentpageUrl } }));
 		} catch (err) {
 			externalPaymentErrorToast()
@@ -213,11 +203,11 @@ const FundingPage = () => {
 					</SC.SectionTitleWithHorizontalDividersWrapper>
 					<SC.AboutUsSection>
 						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.primary['main']}>
-							{t.aboutUsTitle}
+							{t.fundingAboutUsTitle}
 						</Typography>
 						<br/>
 						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText">
-							{t.aboutUs}
+							{t.fundingAboutUs}
 						</Typography>
 					</SC.AboutUsSection>
 					<TeamMembers/>

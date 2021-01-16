@@ -16,7 +16,7 @@ export const useStatsDataHandler = (paymentDone) => {
 		}).catch(err => {
 			console.error('get funding stats failed:', err);
 		});
-	}, [paymentDone]);
+	}, [dispatch, paymentDone]);
 };
 
 export const useSuccessCloseHandler = (paymentSuccessCb) => {
@@ -40,7 +40,7 @@ export const useSuccessCloseHandler = (paymentSuccessCb) => {
 				throw err;
 			}
 		}
-	});
+	}, [dispatch, paymentSuccessCb]);
 
 	useEffect(() => {
 		window.addEventListener('message', handleMessage);
