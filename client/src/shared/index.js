@@ -16,8 +16,9 @@ import TabBox from './tabBox';
 import CircularProgress from './circularProgress';
 import HelperText from './helperText';
 import Text from './text';
+import PlanCard from './planCard';
 import ProgressBar from './progressBar';
-import TeamMembers from './teamMembers'
+import TeamMembers from './teamMembers';
 
 export {
 	Button,
@@ -35,6 +36,7 @@ export {
 	Typography,
 	TabBox,
 	Text,
+	PlanCard,
 	Divider,
 	Checkbox,
 	HelperText,

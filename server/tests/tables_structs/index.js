@@ -9,4 +9,5 @@ exports.table_5_building_rights = require('./chart_5_struct');
 exports.table_6_additional_instructions = require('./chart_6_struct');
 exports.comment = require('./comment');
 exports.comment_person = require('./comment_person');
+exports.plan_person = require('./plan_person_struct');
 exports.funding_transaction = require('./funding_transaction_struct');

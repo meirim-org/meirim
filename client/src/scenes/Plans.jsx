@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import _ from "lodash";
-
-import Typography from "@material-ui/core/Typography";
-import GridList from "@material-ui/core/GridList";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import {Grid} from "@material-ui/core";
+import {PlanCard} from 'shared';
 import InfiniteScroll from "react-infinite-scroll-component";
-
 import api from "../services/api";
 import locationAutocompleteApi from "../services/location-autocomplete";
-
 import Wrapper from "../components/Wrapper";
-import Mapa from "../components/Mapa";
-import UnsafeRender from "../components/UnsafeRender";
 import Autocomplete from "../components/AutoCompleteInput";
-
 import t from "../locale/he_IL";
 import "./Plans.css";
 
@@ -180,53 +169,11 @@ class Plans extends Component {
                         onInputChange={this.handleInputChange.bind(this)}
                     />
                     <br />
-                    <GridList
-                        cellHeight={500}
-                        cellWidth={335}
-                        className="gridList"
-                        cols={1}
-                    >
+                    <Grid container spacing={4}>
                         {plans.map(plan => (
-                            <Card className="card" raised={true} key={plan.id}>
-                                <Link
-                                    className="card-link"
-                                    to={`/plan/${plan.id}`}
-                                >
-                                    <CardActionArea className="card-action-area">
-                                        <CardMedia
-                                            className="card-media"
-                                            title={plan.PL_NUMBER}
-                                        >
-                                            <Mapa
-                                                geom={plan.geom}
-                                                hideZoom={true}
-                                                disableInteractions={true}
-                                                title={plan.PLAN_COUNTY_NAME}
-                                                title2={plan.distance?` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת`:'' }
-                                            />
-                                        </CardMedia>
-                                        <CardContent className="card-content">
-                                            <Typography
-                                                gutterBottom
-                                                variant="h5"
-                                                component="h2"
-                                                color="textPrimary"
-                                            >
-                                                {plan.PL_NAME}
-                                            </Typography>
-                                            <Typography component="p" color="textPrimary">
-                                                <UnsafeRender
-                                                    html={
-                                                        plan.main_details_from_mavat
-                                                    }
-                                                />
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Link>
-                            </Card>
+                            <PlanCard plan={plan} key={plan.id}/>
                         ))}
-                    </GridList>
+                    </Grid>
 
                     {error && <div className="error-container">{error}</div>}
                     {noData && <div>אין כאן כלום</div>}

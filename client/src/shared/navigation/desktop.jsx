@@ -1,20 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Box } from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import { StarIcon } from 'shared/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
-import { Button, Row, IconButton, Menu } from 'shared';
-import { colors } from 'style/index';
+import { Button, Row, Menu } from 'shared';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
+import { UserSelectors } from 'redux/selectors';
+import { useTheme } from '@material-ui/styles';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
+	const theme = useTheme();
 	const dispatch = useDispatch();
+	const { user: { id: userId } } = UserSelectors();
 	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
@@ -24,7 +26,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 		setDropDownEl(null);
 	};
 	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }];
-	
+
 	return (
 		<SC.DesktopHeader>
 			<SC.StyledContainer>
@@ -39,17 +41,21 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 							<Box component="nav">
 								<Box display="flex" alignItems="center">
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
+										<SC.StyledLink 
+											id="nav-bar-plans"
+											to="/plans/"
+											isActive={(match, location) => location.pathname.includes('plans')}
+										>
 											{t.plans}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-alerts" to="/alerts/" activeClassName="active">
+										<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
 											{t.alerts}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-about" to="/about/" activeClassName="active">
+										<SC.StyledLink id="nav-bar-about" to="/about/">
 											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
@@ -70,28 +76,28 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						{isAuthenticated && (
 							<Row>
 								<Grid item>
-									<RouterLink id="mobile-nav-bar-close-menu">
-										<IconButton
-											textcolor={colors.purple}
-											ariaLabel={'close mobile menu'}
-											fontSize={20.5}
-										>
-											<BookmarkBorderIcon/>
-										</IconButton>
-									</RouterLink>
+									<SC.MyPlansButton
+										component={Link} 
+										to={`/user/${userId}/plans`}
+										startIcon={<StarIcon />}
+										aria-label={t.myPlans}
+									>
+										{t.myPlans}
+									</SC.MyPlansButton>
 								</Grid>
 								<Grid item>
-									<Menu
-										ariaControls="user-menu"
-										openHandler={handleDropDownClick}
-										closeHandler={handleDropDownClose}
-										textcolor="#1a2d66"
-										iconBefore={<AccountCircleIcon color="primary"/>}
-										iconAfter={<ExpandMoreIcon color="secondary"/>}
-										dropDownEl={dropDownEl}
-										menuItems={dropdownItems}
-										text={user && user.name}
-									/>
+									<SC.MenuWrapper>
+										<Menu
+											ariaControls="user-menu"
+											openHandler={handleDropDownClick}
+											closeHandler={handleDropDownClose}
+											textcolor={theme.palette.blue.main}
+											iconAfter={<ExpandMoreIcon />}
+											dropDownEl={dropDownEl}
+											menuItems={dropdownItems}
+											text={user && user.name}
+										/>
+									</SC.MenuWrapper>
 								</Grid>
 							</Row>
 						)}

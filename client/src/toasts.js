@@ -41,6 +41,12 @@ export const copiedToClipboard = () =>
 
 export const FailSubscribeUserToPlan = () => ServerFailToast('faileSubscribeUsertoPlan');
 
+export const SuccessUnsubscribeUserToPlan = () =>
+	toast.success('התוכנית נמחקה מרשימת המועדפים בהצלחה', {
+		toastId: 'SuccessSubscribeUserToPlan',
+		...successConfiguration
+	}); 
+
 export const SuccessSubscribeUserToPlan = () =>
 	toast.success('התוכנית נשמרה בהצלחה!', {
 		toastId: 'SuccessSubscribeUserToPlan',

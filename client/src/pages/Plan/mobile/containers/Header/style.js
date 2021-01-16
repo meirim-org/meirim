@@ -40,12 +40,13 @@ export const Header = withTheme(styled.div`
     }
     .fixed {
         position: fixed;
-        top: 79px;
+        top: ${props => props.theme.navigation.mobile};
         background: ${props => props.theme.palette.gray['100']} !important;
         left: 0;
         padding-right: 3.425rem;
         padding-left: 2.3rem;
         border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+        z-index: 99999;
     }
 `);
 

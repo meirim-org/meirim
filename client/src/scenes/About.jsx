@@ -14,7 +14,7 @@ const About = () => {
 	return (
 		<Wrapper >
 			<div className="container">
-				<div className="row">
+				<div className="row pt-4">
 					<div className="col-lg-4">
 						<h2>צוות מעירים</h2>
 						<p>

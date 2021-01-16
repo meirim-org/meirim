@@ -1,6 +1,16 @@
 import api from 'services/api';
 import { SuccessAddComment, FailAddComment, 
-	SuccessSubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts';
+	SuccessSubscribeUserToPlan, SuccessUnsubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts';
+
+export const unsubscribeUserToPlan = async (planId) => {
+	try {
+		const response = await api.delete(`/plan/${planId}/subscribe`);
+		const success = response.status === 'OK';
+		if (success) SuccessUnsubscribeUserToPlan();
+	} catch (err){ 
+		FailSubscribeUserToPlan();
+	}
+};
 
 export const subscribeUserToPlan = async (planId) => {
 	try {

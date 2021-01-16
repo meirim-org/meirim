@@ -11,6 +11,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as Scenes from 'scenes';
 import Plan from 'pages/Plan';
+import UserPlans from 'pages/UserPlans';
 import EmailSent from 'pages/Register/emailSent';
 import Funding from 'pages/Funding';
 import FundingSuccess from 'pages/Funding/success';
@@ -40,6 +41,7 @@ const App = () => {
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
 						<Route path="/plan/:id" render={props => <Plan {...props} />} />
+						<Route path="/user/:id/plans" render={props => <UserPlans {...props} />} />
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
@@ -53,8 +55,8 @@ const App = () => {
 						<Route component={Scenes.NotFound} />
 					</Switch>
 				</>
-            </BrowserRouter>
-            <ToastContainer autoClose={3000} />
+			</BrowserRouter>
+			<ToastContainer autoClose={3000} />
 		</MuiThemeProvider>
 	);
 };
