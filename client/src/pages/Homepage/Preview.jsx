@@ -55,7 +55,7 @@ const MobileImg = styled.div`
 const PreviewIcon = () => (
 	<PreviewIconWrapper>
 		<LogoInnerWrapper>
-			<img src={purpleLogo} />
+			<img src={purpleLogo} alt="" />
 			<UnderDevelopment>בפיתוח</UnderDevelopment>
 		</LogoInnerWrapper>
 	</PreviewIconWrapper>

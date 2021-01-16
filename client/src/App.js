@@ -31,12 +31,10 @@ library.add(
 )
 
 const App = () => {
-	const { loading, success } = CookieHook();
+	const { loading } = CookieHook();
 	if (loading) {
 		return  <CircularProgress />; 
 	}
-
-	const openRegister = !success;
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
