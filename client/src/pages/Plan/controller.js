@@ -52,9 +52,15 @@ export const addLike = async ({ commentId }) => {
 
 export const getPlanData = async (planId) => {
 	try {
+		// this can fail and should not interfere with getting plan details
 		await api.post(`/impression/${planId}`);
+	} catch (err) {
+		console.log('err',err);
+	}
+
+	try {
 		const response = await api.get(`/plan/${planId}`);
-		
+
 		return response;
 	} catch (err) {
 		console.log('err',err);
