@@ -24,7 +24,7 @@
         "@material-ui/styles": "^4.11.2",
         "@n8tb1t/use-scroll-position": "^2.0.3",
         "@reduxjs/toolkit": "^1.4.0",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "classnames": "^2.2.6",
         "config": "^3.3.3",
         "customize-cra": "^1.0.0",
