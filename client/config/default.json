@@ -3,6 +3,9 @@
         "baseURL": "/api",
         "withCredentials": true
     },
+    "opengraph": {
+        "locale": "he_IL"
+    },
     "geocode": {
         "mapsApiKey": "",
         "autocompleteDelay": 2000

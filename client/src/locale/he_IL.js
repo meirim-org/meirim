@@ -83,7 +83,16 @@ export default {
 	general: 'חוות דעת כללית',
 	savedPlans: 'תוכניות שמורות',
 	noPlansSavedTitle: 'טרם שמרת תוכניות',
-	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ'
+	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ',
+	fundingStatsTitle: 'עם קצת פוש מכם נוכל להנגיש יותר מידע ויותר תוכניות, ויחד נשנה את התכנון בישראל',
+	fundingEndGoal: 'אתר חדש עולה לאוויר!',
+	fundingShekel: '₪',
+	fundingOutOf: 'מתוך',
+	fundingSupporters: 'תומכים/ות',
+	monthlyPayment: 'תמיכה חודשית',
+	singleTimePayment: 'תמיכה חד פעמית',
+	fundingAboutUsTitle: 'בואו להיות חלק מהקהילה שלנו!',
+	fundingAboutUs: 'הפעילות שלנו מבוססת על מתנדבים שנושא התכנון בוער בהם, שמאמינים בשקיפות בתהליכי התכנון ופועלים להגביר את המעורבות של תושבים במערכות התכנון.'
 };
 
 

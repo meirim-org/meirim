@@ -25,6 +25,12 @@ export const wrongLoginCredsToast = () =>
 		...failConfiguration
 	});
 
+export const externalPaymentErrorToast = () =>
+	toast.error('מתנצלים, יש תקלה בשירות התשלומים. נשמח אם תנסו שוב במועד מאוחר', {
+		toastId: '500message',
+		...failConfiguration
+	})
+
 export const serverErrorToast = () => ServerFailToast('serverErrorToast');
 
 export const copiedToClipboard = () =>

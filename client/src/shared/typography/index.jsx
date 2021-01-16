@@ -31,6 +31,8 @@ const handleVariant = variant => {
 		return template('48px', '400', '1.25');
 	case 'planTitle':
 		return template('24px', '600', '1.17');
+	case 'largeParagraphText':
+		return template('20px', '400', '1.5');
 	case 'planDetailTitle':
 		return template('18px', '600', '1.5');
 	case 'menuTitle':
@@ -110,6 +112,7 @@ Typography.propTypes = {
 		'megaHeadTitle',
 		'title',
 		'planTitle',
+		'largeParagraphText',
 		'planDetailTitle',
 		'menuTitle',
 		'paragraphText',
