@@ -68,13 +68,13 @@ export const members = [
 		photo:'dor'
 		
 	},
-	{
-		name:`היבה בוארדי`,
-		title:`מחקר וייעוץ תכנוני`,
-		order:11,
-		photo:'eyal'
+	// {
+	// 	name:`היבה בוארדי`,
+	// 	title:`מחקר וייעוץ תכנוני`,
+	// 	order:11,
+	// 	photo:'eyal'
 		
-	},
+	// },
 	{
 		name:`יואב בן שלום`,
 		title:`צוות מוצר`,
@@ -105,7 +105,7 @@ export const members = [
 	},
 	{
 		name:`נועה ויכנסקי`,
-		title:`UX / UI מעצבת`,
+		title:`מעצבת UI / UX`,
 		order:16,
 		photo:'noa'
 		
@@ -119,7 +119,7 @@ export const members = [
 	},
 	{
 		name:`שרה גדז'`,
-		title:`UX / UI מעצבת`,
+		title:`מעצבת UI / UX`,
 		order:18,
 		photo:'sarah'
 		
