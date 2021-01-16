@@ -98,11 +98,11 @@ const FundingPage = () => {
 					<SC.RoadMapWrapper>
 						<TabPanel>
 							<SC.RoadmapDetails>
-								<SC.RoadMapTitleWrapper>
-									<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
-									<SC.RoadMapTitle>מה בתוכנית? </SC.RoadMapTitle>
-									<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '1px', 'margin-top': '-25px'}}/>
-								</SC.RoadMapTitleWrapper>
+								<SC.SectionTitleWithHorizontalDividersWrapper>
+									<Divider orientation="horizontal"/>
+									<SC.SectionTitle>מה בתוכנית? </SC.SectionTitle>
+									<Divider orientation="horizontal"/>
+								</SC.SectionTitleWithHorizontalDividersWrapper>
 								{roadmap.map(i => (
 									<SC.RoadmapItemWrapper key={i.id}>
 										<SC.RoadmapItemIcon>
@@ -117,7 +117,7 @@ const FundingPage = () => {
 					</SC.RoadMapWrapper>
 					<Divider orientation="vertical"/>
 					<SC.PaymentWrapper>
-						<SC.FundUsTitle>הצטרפו למהפכה </SC.FundUsTitle>
+						<SC.SectionTitle>הצטרפו למהפכה </SC.SectionTitle>
 						<TabPanel>
 							<SC.FundingStatsWrapper>
 								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
@@ -205,12 +205,23 @@ const FundingPage = () => {
 						</TabPanel>
 					</SC.PaymentWrapper>
 				</SC.InputsWrapper>
-				<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '4px', 'margin-top': '-25px'}}/>
-				<SC.AboutUsSection>
-					<h1>מי אנחנו</h1>
-					<span>{t.aboutUs}</span>
-				</SC.AboutUsSection>
-				<TeamMembers></TeamMembers>
+				<SC.TeamMembersWrapper>
+					<SC.SectionTitleWithHorizontalDividersWrapper>
+						<Divider orientation="horizontal"/>
+						<SC.SectionTitle large>מי אנחנו</SC.SectionTitle>
+						<Divider orientation="horizontal"/>
+					</SC.SectionTitleWithHorizontalDividersWrapper>
+					<SC.AboutUsSection>
+						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.primary['main']}>
+							{t.aboutUsTitle}
+						</Typography>
+						<br/>
+						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText">
+							{t.aboutUs}
+						</Typography>
+					</SC.AboutUsSection>
+					<TeamMembers/>
+				</SC.TeamMembersWrapper>
 			</SC.MainWrapper>
 		</Wrapper>
 	);
