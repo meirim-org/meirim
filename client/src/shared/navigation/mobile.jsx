@@ -102,7 +102,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 								<IconButton onClick={() => setMobileNavIsOpened(true)}  textcolor={colors.purple} ariaLabel={'open mobile menu'}>
 									<MenuIcon/>
 								</IconButton>
-								<SC.Drawer open={mobileNavIsOpened}>
+								<SC.Drawer open={mobileNavIsOpened} anchor="right">
 									<SC.MobileNavWrapper
 										role="presentation"
 									>
