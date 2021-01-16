@@ -206,7 +206,10 @@ const FundingPage = () => {
 					</SC.PaymentWrapper>
 				</SC.InputsWrapper>
 				<Divider orientation="horizontal" style={{'flex-grow': 1, 'height': '4px', 'margin-top': '-25px'}}/>
-				<h1>מי אנחנו</h1>
+				<SC.AboutUsSection>
+					<h1>מי אנחנו</h1>
+					<span>{t.aboutUs}</span>
+				</SC.AboutUsSection>
 				<TeamMembers></TeamMembers>
 			</SC.MainWrapper>
 		</Wrapper>
