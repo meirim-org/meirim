@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { CommonSection } from './style';
 import supportUs from '../../assets/support-us.svg';
@@ -88,19 +89,21 @@ const SupportUsImage = styled.img`
     }
 `;
 
-const WeNeedYou = () => (
-	<WeNeedYouSection>
-		<Box>
-			<SupportUsImage src={supportUs} alt="support us" />
-			<Content>
-                <div>
-                    <Title>אנחנו צריכים אתכם!</Title>
-                    <Message>יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.</Message>
-                </div>
-                <Button>לתמיכה</Button>
-			</Content>
-		</Box>
-	</WeNeedYouSection>
-);
+export default function WeNeedYou() {
+    const history = useHistory();
 
-export default WeNeedYou;
+    return (
+        <WeNeedYouSection>
+            <Box>
+                <SupportUsImage src={supportUs} alt="support us" />
+                <Content>
+                    <div>
+                        <Title>אנחנו צריכים אתכם!</Title>
+                        <Message>יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.</Message>
+                    </div>
+                    <Button onClick={() => { history.push(`/funding/`); }}>לתמיכה</Button>
+                </Content>
+            </Box>
+        </WeNeedYouSection>
+    );
+}
