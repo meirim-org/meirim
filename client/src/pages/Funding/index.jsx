@@ -178,7 +178,10 @@ const FundingPage = () => {
 											setOtherAmount(Number.parseInt(value))
 											setAmount(Number.parseInt(value))}
 										}
+										min={1}
+										max={99999999}
 									/>
+									{otherAmount>0 &&(<i>{t.fundingShekel}</i>)}
 									</SC.PaymentOtherOption>
 									<div>{amount}</div>
 								</SC.PaymentOption>
