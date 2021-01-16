@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import LinkIcon from '@material-ui/icons/Link';
 import CloseIcon from '@material-ui/icons/Close';
+import { device } from '../../../../style';
 
 export const TreeSummaryTitleWrapper = styled.div`
     margin-bottom: .75rem;
@@ -121,5 +122,18 @@ export const MapWrapper = withTheme(styled.div`
         border-radius: 4px;
     }
 `);
+
+export const ButtonWrapper = styled.div`
+
+border-radius:0 0 12px 12px;
+  display: grid;
+  padding: inherit;
+    @media ${device.tablet} {
+     max-width: initial;
+     padding-right: 3.7em;
+     padding-left: 3.7em;
+  }
+  margin:center;
+`;
 
 
