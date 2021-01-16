@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import geojsonArea from '@mapbox/geojson-area';
 import { parseNumber } from 'utils';
 import { setData } from 'redux/comments/slice';
@@ -6,6 +6,29 @@ import { setPlanData } from 'redux/plan/slice';
 import * as utils from './utils';
 import { getPlanData, getCommentsByPlanId } from './controller';
 import { useDispatch } from 'react-redux';
+import { fetchUserPlans } from 'pages/UserPlans/controller';
+import { UserSelectors } from 'redux/selectors';
+
+export const isFavoritePlan = async (userId, planId) => {
+	const favPlans = await fetchUserPlans(userId);
+	const result = favPlans.data.find(p => parseInt(p.id, 10) === parseInt(planId, 10));
+	
+	return Boolean(result);
+};
+
+export const useIsFavPlan = (planId) => {
+	const [isFav, setIsFav] = useState(false);
+	const { user: { id: userId } } = UserSelectors();
+	useEffect(() => {
+		const handler = async () => {
+			const result = await isFavoritePlan(userId, planId);
+			setIsFav(Boolean(result));
+		};
+		handler();
+	}, [userId, planId]);
+
+	return isFav;
+};
 
 export const useCommentsDataHandler = (planId, refetchComments, setRefetchComments) => {
 	const dispatch = useDispatch();
@@ -24,7 +47,6 @@ export const useCommentsDataHandler = (planId, refetchComments, setRefetchCommen
 export const useDataHandler = (planId) => {
 	const dispatch = useDispatch();
 	useEffect (() => {
-		window.scrollTo(0, 0);
 		const fetchData = async () => {
 			const response = await getPlanData(planId);
 			const { 

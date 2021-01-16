@@ -35,7 +35,7 @@ const Link = ({ id, text, fontWeight, onClick, url, textDecoration }) => (
 
 Link.defaultProps = {
 	fontWeight: '400',
-	url: '',
+	url: '#',
 	textDecoration: 'underline'
 };
 

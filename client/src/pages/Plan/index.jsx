@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
-import { useDataHandler, useCommentsDataHandler } from './hooks';
+import { useDataHandler, useCommentsDataHandler, isFavoritePlan } from './hooks';
 import { openModal } from 'redux/modal/slice';
 import { CommentsTab, SummaryTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
-import { UserSelectors, CommentSelectors } from 'redux/selectors';
+import { UserSelectors } from 'redux/selectors';
 import PlanMobile from './mobile/';
 import PlanDesktop from './desktop/';
-import { addComment, addLike } from './controller';
+import { addComment, addLike, unsubscribeUserToPlan, subscribeUserToPlan } from './controller';
 
 const Plan = ({ isMobile, isTablet, match }) => {
 	const { id: planId } = useParams();
@@ -17,9 +17,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	useDataHandler(planId);
 	useCommentsDataHandler(planId, refetchComments, setRefetchComments);
 	const dispatch = useDispatch();
-	const [tabValue, setValue] =useState('');
 	const { isAuthenticated, user } = UserSelectors();
-	const { comments } = CommentSelectors();
 	const [ subCommentState, setSubCommentState ] = useState({
 		isOpen:false,
 		inputValue: ''
@@ -30,16 +28,37 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		type: 'improvement'
 	});
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
+	const [ isFavPlan, setIsFavPlan ] = useState(false);
 
-	const showComments = comments.length > 0; 
-	const showStartDiscussionPanel = comments.length === 0 &&  !commentState.isOpen;
+	useEffect(() => {
+		const handler = async () => {
+			await getIsFav();
+		};
+		handler();
+	}, [getIsFav]);
 
-	const openNewCommentView = () => {
+	const subscriptionHandler = async () => {
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
-		else {
-	  	setCommentState(pv => ({ ...pv, isOpen: true }));
-			window.scrollTo(0, 0);
+		const isFav = await isFavoritePlan(user.id, planId);
+		if (isFav) {
+			await unsubscribeToPlan();
+		} else {
+			await subscribeToPlan();
 		}
+		await getIsFav();
+	};
+
+	const getIsFav =  async () => {
+		if (!user.id) return;
+		const isFav = await isFavoritePlan(user.id, planId);
+		 setIsFavPlan(isFav);
+	};
+
+	const unsubscribeToPlan = async () => {
+		await unsubscribeUserToPlan(planId);
+	};
+	const subscribeToPlan = async () => {
+		await subscribeUserToPlan(planId);
 	};
 
 	const addLikeToComment = async (commentId) => {
@@ -71,35 +90,15 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		setSubCommentState(pv => ({ ...pv, inputValue: '', isOpen: false }));
 		setRefetchComments(true);
 	};
-	const closeNewCommentView = () => setCommentState(pv => ({ ...pv, isOpen: false }));
-	const newCommentViewHandler = () => {  
-		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
-		setCommentState(pv => ({ ...pv, isOpen: !commentState.isOpen }));
-	};
 
-	const handleTabChange = (_, newValue) => setValue(newValue);
 	const handleSubscribePanel = (newValue) => setSubscribePanel(newValue);
-
 	
 	const planProps = {
 		commentState,
 		setCommentState,
-		subCommentState,
-		setSubCommentState,
-		addSubComment,
-		addLikeToComment,
-		tabValue,
-		addNewComment,
-		setRefetchComments,
-		handleTabChange,
-		subscribePanel,
-		handleSubscribePanel,
-		showComments,
-		showStartDiscussionPanel,
-		newCommentViewHandler,
-		openNewCommentView,
-		closeNewCommentView,
 		match,
+		subscriptionHandler,
+		isFavPlan
 	};
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;

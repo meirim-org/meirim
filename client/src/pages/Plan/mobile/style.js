@@ -3,9 +3,9 @@ import { withTheme } from '@material-ui/core/styles';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 
-export const MobileMainWrapper = styled.div`
-    height: calc(100vh - 79px);
-`;
+export const MobileMainWrapper = withTheme(styled.div`
+    height: calc(100vh - ${props => props.theme.navigation.desktop});
+`);
 
 export const Content = withTheme(styled.div`
     background-color:  ${props => props.theme.palette.gray['bg']};
