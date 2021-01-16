@@ -3,7 +3,9 @@ import { Link } from '../../shared'
 import * as SC from './style';
 import Icon from '../../assets/svg/successIcon'
 import { saveTransaction } from './controller';
+import { startUsing } from './constants'
 import { successPageCloseMessage, successPageTransactionCompleteMessage } from './constants';
+import ManWithHeart from '../../assets/funding/ManWithHeart';
 
 const SuccessPayment = ({ ...props }) => {
     const notifyClosePage = () => {
@@ -56,12 +58,16 @@ const SuccessPayment = ({ ...props }) => {
     return (
         <>
             <SC.HeaderWrapper>
-                <SC.CentredWrapper>
-                    <Icon/>
-                    <SC.CentredTitle>תמיכתך התקבלה בהצלחה, תודה רבה!</SC.CentredTitle>
-                    <SC.CentredSubTitle>בעזרתך נמשיך להגביר את השקיפות התכנונית ולהרחיב את המעורבות האזרחית במערכת התכנון</SC.CentredSubTitle>
-                    <Link onClick={()=>{notifyClosePage()}} text="סגור" url="#"/>
-                </SC.CentredWrapper>
+                <SC.SucessPaymeBackground>
+                    <div className={'layer'}>
+                        <ManWithHeart/>
+                    </div>
+                    <div className={'layer center'}>
+                    <SC.CentredThankYouTitle>תודה רבה!</SC.CentredThankYouTitle>
+                    <SC.CentredThankYouSubTitle>{startUsing}</SC.CentredThankYouSubTitle>
+                    <Link onClick={()=>{notifyClosePage()}} text="סגירה" url="#"/>
+                    </div>
+                </SC.SucessPaymeBackground>
             </SC.HeaderWrapper>
         </>
     );
