@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Link } from '../../shared'
-import styled from 'styled-components';
 import * as SC from './style';
 import Icon from '../../assets/svg/successIcon'
 import { saveTransaction } from './controller';
