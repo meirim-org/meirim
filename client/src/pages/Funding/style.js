@@ -10,7 +10,7 @@ export const HeaderWrapper = styled.div`
   @media ${device.laptop} {
     display: inline-flex;
     justify-content: space-between;
-    padding: 3em;
+    padding: 3em 4.8em;
   }
 `;
 
@@ -20,7 +20,6 @@ export const Titles = styled.span`
 `;
 
 export const MediaContent = styled.span`
-    padding: 1em;
     display: inline-flex;
     justify-content: center;
     width: 100%;
@@ -39,7 +38,7 @@ export const PaymentWrapper = styled.div`
   padding: 1.5em;
 
   @media ${device.laptop} {
-    padding: 1.5em 5em;
+    padding: 1.5em 4.8em;
     flex-grow: 1;
   }
 `;
@@ -72,7 +71,7 @@ export const RoadmapDetails = styled.div`
     float:right; 
     width:100%; 
     display: grid;
-    padding: 1.5em 1.5em;
+    padding: 1.5em 4.8em;
     background-color:#FBFBFB;
 `;
 
@@ -474,7 +473,7 @@ export const RoadmapItemDescription= styled.div`
 export const RoadmapItemIcon= styled.div`
   // border: 1px solid #E4E4E4;
   height: 130px;
-  margin: 0 1em;
+  margin: 0 0 0 1em;
 
   svg {
     display: block;
