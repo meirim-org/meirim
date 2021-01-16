@@ -264,6 +264,7 @@ export const TermsOfPaymentText = styled.span`
 export const InputsWrapper = withTheme(styled.div`
   width: 100%;
   background-color: ${props => props.theme.palette.gray['100']};
+  padding-bottom: 1.5em;
 
   @media ${device.laptop} {
     display: flex;
@@ -292,7 +293,7 @@ export const InputWrapper = styled.div`
   }
 `;
 
-export const RoadMapTitleWrapper = styled.div`
+export const SectionTitleWithHorizontalDividersWrapper = styled.div`
   width: 100%;
   display: flex;
 
@@ -416,30 +417,21 @@ export const Monthly =styled.span`
   font-weight: normal;
 `;
 
-export const RoadMapTitle= styled.span`
-  font-family: Assistant;!important;
+export const SectionTitle = withTheme(styled.span`
+  font-family: Assistant;
   font-style: normal;
   font-weight: normal;
   font-size: 28px;
   line-height: 48px;
   text-align: center;
-  color: #270E78;
-  margin-top: -50px;
-  margin-bottom: 30px
-`;
-
-export const FundUsTitle= styled.span`
-  font-family: Assistant; important!
-  font-style: normal;
-  font-weight: normal;
-  font-size: 28px;
-  line-height: 48px;
-  text-align: center;
-  color: #270E78;
+  color: ${props => props.theme.palette.primary['800']};;
   margin-top: -50px;
   margin-bottom: 30px;
-  display: block;
-`;
+
+  ${({ large }) => large && `
+    font-size: 36px;
+  `}
+`);
 
 export const RoadmapItemTitle= styled.div`
   font-family: Assistant;
@@ -619,15 +611,15 @@ export const PaymentTypeButtonsWrapper = styled.div`
 `;
 
 export const AboutUsSection = styled.div`
-    justify-content:center;
-    h1{
-      color:#270E78;
-      font-size:28px;
+  text-align: center;
+  margin-bottom: 1.5em;
+
+  /*@media ${device.laptop} {
+    span {
+      font-size: 20px !important;
     }
-    span{
-      font-size:18px;
-    }
-`
+  }*/
+`;
 
 export const PaymentTypeButton = withTheme(styled.div`
   position: static;
@@ -666,3 +658,7 @@ export const PaymentTypeButton = withTheme(styled.div`
     `}
   `}
 `);
+
+export const TeamMembersWrapper = styled.div`
+  padding: 1.5em 4.8em;
+`;
