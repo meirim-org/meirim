@@ -318,6 +318,17 @@ export const PaymentOptionsWrapper = withTheme(styled.div`
   @media ${device.tablet} {
     grid-template-columns: auto auto auto;
   }
+
+  .MuiFormHelperText-root {
+    text-align: center !important;
+    margin-top: 0.5em;
+    color: ${props => props.theme.palette.red} !important;
+    grid-column: 1 / span 2;
+
+    @media ${device.tablet} {
+      grid-column: 1 / span 3;
+    }
+  }
 `);
 
 export const PaymentOption= withTheme(styled.div`
@@ -487,21 +498,31 @@ export const RoadmapItemWrapper= styled.div`
   }
 `;
 
-export const TermsOfUseWrapper= styled.div`
+export const TermsOfUseWrapper= withTheme(styled.div`
   margin: 1em 0;
   border-radius: 12px;
   font-family: Assistant !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
 
   @media ${device.tablet} {
-   max-width: initial;
+    max-width: initial;
   }
+
   >  span {
     font-family: Assistant !important;
   }
+
+  .MuiFormHelperText-root {
+    text-align: center !important;
+    color: ${props => props.theme.palette.red} !important;
+  }
+`);
+
+export const TermsOfUseCheckboxWrapper = styled.div`
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const InputsTitle = styled.div`

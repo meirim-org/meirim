@@ -175,19 +175,27 @@ const FundingPage = () => {
 									</SC.PaymentOtherOption>
 									<div>{amount}</div>
 								</SC.PaymentOption>
-								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''} />
+								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''}/>
 							</SC.PaymentOptionsWrapper>
 							<SC.TermsOfUseWrapper>
-								<Checkbox id="terms-accepted-checkbox" text="" checked={termsAccepted} error={triedSubmit ? formErrors.termsAcceptedError.message : ''} onClick={() => { setTermsAccepted(!termsAccepted) }}/>
-								<span>אני מאשר/ת את&nbsp;</span>
-								<Link
-									id="funding-terms-of-payment-link"
-									text="תנאי התמיכה "
-									fontWeight="600"
-									textDecoration="none"
-									url="#"
-									onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}
-								/>
+								<SC.TermsOfUseCheckboxWrapper>
+									<Checkbox
+										id="terms-accepted-checkbox"
+										text=""
+										checked={termsAccepted}
+										onClick={() => { setTermsAccepted(!termsAccepted) }}
+									/>
+									<span>אני מאשר/ת את&nbsp;</span>
+									<Link
+										id="funding-terms-of-payment-link"
+										text="תנאי התמיכה "
+										fontWeight="600"
+										textDecoration="none"
+										url="#"
+										onClick={ () => { dispatch(openModal({ modalType: 'termsOfPayment' }))}}
+									/>
+								</SC.TermsOfUseCheckboxWrapper>
+								<HelperText id="terms-of-paymeny-error-helper-text" text="" error={triedSubmit ? formErrors.termsAcceptedError.message : ''}/>
 							</SC.TermsOfUseWrapper>
 							<SC.ButtonWrapper>
 								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest }/>
