@@ -11,12 +11,13 @@ const Wrapper = styled.div`
     width: 100%;
     height: 200px;
     margin: 32px auto;
+    z-index: 1;
 
     @media ${device.tablet} {
         width: 512px;
         height: 160px;
         padding: 32px;
-        margin: 113px 0 0 0;  
+        margin: 32px 0 0 0;  
         border-radius: 12px;
     }
 `;
