@@ -635,7 +635,7 @@ export const PaymentTypeButton = withTheme(styled.div`
     background-color: ${theme.palette.primary['main']};
 
     span {
-      color: ${theme.palette.white};
+      color: ${theme.palette.white} !important;
     }
   `}
 
