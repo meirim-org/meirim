@@ -4,6 +4,8 @@ const Config = require('../lib/config').paymentServices;
 const FundingTransaction = require('../model/funding_transaction');
 const Exception = require('../model/exception');
 
+const DEFAULT_PAYMENT_AMOUNT = 50;
+
 let instance = axios.create({
 	baseURL: Config.baseURL
 });
@@ -49,7 +51,7 @@ class FundingController extends Controller {
 
 		let params = {
 			...paymentDefaultConfig,
-			Amount: query.amount || 50
+			Amount: !isNaN(query.amount)? query.amount : DEFAULT_PAYMENT_AMOUNT
 		};
 
 		if (query.monthly) {
