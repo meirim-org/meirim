@@ -8,7 +8,7 @@ import Label from '../label';
 const StyledInput = styled(TextField)`
 	background-color: white;
 	height: 2.75em;
-	width: 24em;
+	width: ${(props) => (props.width || '24em' )} ;
 	border-radius: 12px !important;
 	& > div {
         border-radius: 12px !important;
@@ -40,7 +40,7 @@ const StyledInput = styled(TextField)`
 `;
 
 const TextInput = ({
-	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, required = false, size = 'small', error = false, forgetPassword = false
+	id, helperText, onFocus, onBlur, value, onChange, name, variant = 'outlined', type, label, width, min, max, required = false, size = 'small', error = false, forgetPassword = false
 }) => {
 
 	return (
@@ -57,6 +57,9 @@ const TextInput = ({
 				type={type}
 				size={size}
 				error={error}
+				width={width}
+				min={min}
+				max={max}
 			/>
 			{
 				helperText && <HelperText id={`${id}-helperText`} error={error} text={helperText}/>
@@ -86,6 +89,7 @@ TextInput.propTypes = {
 	onFocus: PropTypes.func.isRequired,
 	onBlur: PropTypes.func.isRequired,
 	size: PropTypes.string,
+	width: PropTypes.string,
 	onChange: PropTypes.func.isRequired,
 	required: PropTypes.bool,
 	helperText: PropTypes.string,
@@ -93,6 +97,8 @@ TextInput.propTypes = {
 	variant: PropTypes.string,
 	error: PropTypes.bool,
 	forgetPassword: PropTypes.bool,
+	min: PropTypes.number,
+	max: PropTypes.number
 };
 
 export default TextInput;

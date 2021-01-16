@@ -14,6 +14,8 @@ import Plan from 'pages/Plan';
 import UserPlans from 'pages/UserPlans';
 import EmailSent from 'pages/Register/emailSent';
 import Homepage from 'pages/Homepage';
+import Funding from 'pages/Funding';
+import FundingSuccess from 'pages/Funding/success';
 import { Modal, CircularProgress } from 'shared';
 import 'App.css';
 import { muiTheme } from 'theme';
@@ -51,6 +53,8 @@ const App = () => {
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
+						<Route path="/funding/success" 	render={props => (<FundingSuccess {...props} />	)} />
+						<Route path="/funding" 	render={props => (<Funding {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route	path="/about" render={props => <Scenes.About {...props} />} />
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />

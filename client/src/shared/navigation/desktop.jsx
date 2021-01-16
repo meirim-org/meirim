@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Box } from '@material-ui/core';
 import { StarIcon } from 'shared/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
 import { Button, Row, Menu } from 'shared';
@@ -17,6 +17,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const { user: { id: userId } } = UserSelectors();
+	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
 		setDropDownEl(event.currentTarget);
@@ -59,8 +60,13 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<Button id="support-us" text={t.supportUs} type={'primary'} onClick={() => {}}
-											small/>
+										<Button
+											id="support-us"
+											text={t.supportUs}
+											type={'primary'}
+											onClick={() => { history.push(`/funding/`); }}
+											small
+										/>
 									</Box>
 								</Box>
 							</Box>

@@ -66,7 +66,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 									ariaLabel={'open mobile menu'}>
 									<MenuIcon/>
 								</IconButton>
-								<SC.Drawer open={mobileNavIsOpened}>
+								<SC.Drawer open={mobileNavIsOpened} anchor="right">
 									<SC.MobileNavWrapper
 										role="presentation"
 									>
@@ -101,7 +101,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
-											<SC.StyledListItem component={SC.StyledLink} to="/support-us" button key={t.supportUs}>
+											<SC.StyledListItem component={SC.StyledLink} to="/funding/" button key={t.supportUs}>
 												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
