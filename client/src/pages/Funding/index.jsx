@@ -151,12 +151,12 @@ const FundingPage = () => {
 							</SC.FundingStatsWrapper>
 							<SC.PaymentTypeButtonsWrapper>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
-									<Typography component="span" variant="planTitle" mobileVariant="planTitle">
+									<Typography component="span" variant="planTitle" mobileVariant="cardTitle">
 										{t.monthlyPayment}
 									</Typography>
 								</SC.PaymentTypeButton>
 								<SC.PaymentTypeButton side="left" selected={!monthlyPayment} onClick={() => { setMonthlyPayment(false); }}>
-									<Typography component="span" variant="planTitle" mobileVariant="planTitle">
+									<Typography component="span" variant="planTitle" mobileVariant="cardTitle">
 										{t.singleTimePayment}
 									</Typography>
 								</SC.PaymentTypeButton>
