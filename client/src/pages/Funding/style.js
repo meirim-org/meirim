@@ -110,6 +110,22 @@ export const CentredTitle = styled.h1`
     margin-bottom: 1em;
   }
 `;
+export const CentredThankYouTitle = styled.h1`
+  font-weight: 400;
+  text-align: center;
+  font-family: Assistant !important; 
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  margin-bottom: 1.3em;
+  letter-spacing: normal;
+  color: #29244A;
+  @media ${device.tablet} {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 1em;
+  }
+`;
 
 export const SubTitle = styled.h2`
   font-family: Assistant !important;
@@ -143,10 +159,45 @@ export const CentredSubTitle = styled.h2`
    }
 `;
 
+export const CentredThankYouSubTitle = styled.h2`
+  font-family: Assistant !important;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 1.5;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 0;
+   >  span {
+     font-family: Assistant !important;
+   }
+   width:400px;
+   position:absolute;
+   left:70px;
+`;
+
 export const CentredWrapper = styled.div`
   max-width: 80vw;
   max-height: 90vh;
   overflow-y: auto;
+`;
+
+export const SucessPaymeBackground = styled.div`
+ width:595px;
+ height:595px;
+ position: relative;
+
+ .layer{
+  position: absolute;
+  left: 0px;
+ }
+
+ .layer.center{
+  position: absolute;
+  left: 0px;
+ }
 `;
 
 export const ThirdTitle = styled.h1`
@@ -330,7 +381,7 @@ export const PaymentOtherOption = withTheme(styled.span`
     border:0px;
     background-color:#FBFBFB;
   }
-  input::placeholder, input {
+  input::placeholder, input, i {
     font-style: normal;
     text-align: center;
     font-size: 26px;
@@ -567,6 +618,17 @@ export const PaymentTypeButtonsWrapper = styled.div`
   margin: 1rem -.25rem .75rem;
   width: 100%;
 `;
+
+export const AboutUsSection = styled.div`
+    justify-content:center;
+    h1{
+      color:#270E78;
+      font-size:28px;
+    }
+    span{
+      font-size:18px;
+    }
+`
 
 export const PaymentTypeButton = withTheme(styled.div`
   position: static;

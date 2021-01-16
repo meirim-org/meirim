@@ -109,8 +109,9 @@ export default {
 	fundingShekel: '₪',
 	fundingOutOf: 'מתוך',
 	fundingSupporters: 'תומכים/ות',
-	monthlyPayment: 'חודשי',
-	singleTimePayment: 'חד פעמי'
+	monthlyPayment: 'תמיכה חודשית',
+	singleTimePayment: 'תמיכה חד פעמית',
+	aboutUs: 'הפעילות שלנו מבוססת על מתנדבים שנושא התכנון בוער בהם, שמאמינים בשקיפות בתהליכי התכנון ופועלים להגביר את המעורבות של תושבים במערכות התכנון.'
 };
 
 
