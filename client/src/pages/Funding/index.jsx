@@ -142,19 +142,19 @@ const FundingPage = () => {
 							</SC.FundingStatsWrapper>
 							<SC.PaymentTypeButtonsWrapper>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
-									<Typography component="span" variant="planTitle" mobileVariant="cardTitle">
+									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
 										{t.monthlyPayment}
 									</Typography>
 								</SC.PaymentTypeButton>
 								<SC.PaymentTypeButton side="left" selected={!monthlyPayment} onClick={() => { setMonthlyPayment(false); }}>
-									<Typography component="span" variant="planTitle" mobileVariant="cardTitle">
+									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
 										{t.singleTimePayment}
 									</Typography>
 								</SC.PaymentTypeButton>
 							</SC.PaymentTypeButtonsWrapper>
 							<SC.PaymentOptionsWrapper>
 								{paymentAmountOptions.map(o => (
-									<SC.PaymentOption className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
+									<SC.PaymentOption key={`amount-option-${o}`} className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
 										<SC.Amount>{o} {t.fundingShekel}</SC.Amount>
 									</SC.PaymentOption>
 								))}
@@ -212,7 +212,7 @@ const FundingPage = () => {
 							{t.fundingAboutUsTitle}
 						</Typography>
 						<br/>
-						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText">
+						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.black}>
 							{t.fundingAboutUs}
 						</Typography>
 					</SC.AboutUsSection>

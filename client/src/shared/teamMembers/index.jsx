@@ -19,7 +19,7 @@ const TeamMembers = (props) => {
       <Grid container spacing={3}>
 	  {
 		  members.map(m=>{
-			  return (<Grid item xs>
+			  return (<Grid item xs key={`team-member-${m.order}`}>
 				  <SC.Member>
 					<img src={Photos[m.photo]} alt=""></img>
 				  <div className="name">{m.name} </div>
