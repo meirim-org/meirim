@@ -153,7 +153,8 @@ export const CentredSubTitle = styled.h2`
   line-height: 1.5;
   text-align: center;
   color: #000000;
-  margin-bottom: 0;
+  margin-bottom: 1em;
+
    >  span {
      font-family: Assistant !important;
    }
@@ -416,6 +417,7 @@ export const SectionTitle = withTheme(styled.span`
   color: ${props => props.theme.palette.primary['800']};;
   margin-top: -50px;
   margin-bottom: 30px;
+  display: block;
 
   ${({ large }) => large && `
     font-size: 36px;
@@ -671,7 +673,7 @@ export const OtherAmountInput = withTheme(styled(MuiInput)`
 
   .MuiInputBase-input::placeholder, input, i {
     opacity: 1;
-
+    font-family: Assistant;
     font-style: normal;
     text-align: center;
     font-size: 26px;
