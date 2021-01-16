@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import _ from "lodash";
 import locationAutocompleteApi from '../../services/location-autocomplete';
 import Autocomplete from '../../components/AutoCompleteInput';
 import { device } from 'style';
@@ -93,9 +94,19 @@ export default function SearchBox() {
     const [addresses, setAddresses] = useState([]);
     const [placeId, setPlaceId] = useState('');
 
-	async function onInputChange(input) {
+    const getAutocompleteSuggestions = _.debounce(async (input) => {
         const res = await locationAutocompleteApi.autocomplete(input);
-		setAddresses(res);
+        setAddresses(res);
+    }, process.env.CONFIG.geocode.autocompleteDelay);
+
+    async function onInputChange(input) {
+        if (input) {
+            getAutocompleteSuggestions(input);
+        } else {
+            // cancel pending calls and clear results
+            getAutocompleteSuggestions.cancel();
+            setAddresses([]);
+        }
     }
     
     function onFilterChange(data) {
