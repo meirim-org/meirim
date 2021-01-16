@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Input as MuiInput } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 import { device } from '../../style';
 
@@ -384,30 +385,7 @@ export const PaymentOption= withTheme(styled.div`
 `);
 
 export const PaymentOtherOption = withTheme(styled.span`
-  display: inline-flex;
-  position: relative;
-  top: -0.1em;
-
-  input[type="number"]{
-    border:0px;
-    background-color:#FBFBFB;
-  }
-  input::placeholder, input, i {
-    font-style: normal;
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    line-height: 28px;
-    color: #391695;
-    transition: color 200ms;
-    transition: font-size 300ms;
-  }
-  input:focus::placeholder {
-    font-size: 20px;
-    font-weight: bold;
-    color: rgb(153, 153, 153, 0.9);
-  }
-  &.active{
+  &.active {
     background-color: ${props => props.theme.palette.primary['100']};
     opacity:(100-12)%;
     transition: background-color 50ms;
@@ -683,3 +661,28 @@ export const PaymentTypeButton = withTheme(styled.div`
 export const TeamMembersWrapper = styled.div`
   padding: 1.5em 4.8em;
 `;
+
+export const OtherAmountInput = withTheme(styled(MuiInput)`
+  input {
+    background-color: rgba(255, 255, 255, 0) !important;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+  }
+
+  .MuiInputBase-input::placeholder, input, i {
+    opacity: 1;
+
+    font-style: normal;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 28px;
+    color: ${props => props.theme.palette.primary['700']};
+    transition: color 200ms;
+    transition: font-size 300ms;
+  }
+
+  .MuiInputBase-input:focus::placeholder {
+    opacity: 0;
+  }
+`);

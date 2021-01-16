@@ -12,6 +12,7 @@ import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
 import * as Icons from '../../assets/funding';
+import AmountInput from './amountInput';
 import { useStatsDataHandler, useSuccessCloseHandler } from './hooks';
 import { FundingSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
@@ -158,22 +159,19 @@ const FundingPage = () => {
 									</SC.PaymentOption>
 								))}
 								<SC.PaymentOption className={amount===otherAmount?'active longer':'longer'} onClick={ () => { setAmount(otherAmount) } } >
-								<SC.PaymentOtherOption>
-									<input type="number"
-										id="other-amount-input"
-										name="other-amount"
-										width="3.5em"
-										placeholder="סכום אחר"
-										onChange={({ target: { value } }) => {
-											setOtherAmount(Number.parseInt(value))
-											setAmount(Number.parseInt(value))}
-										}
-										min={1}
-										max={99999999}
-									/>
-									{otherAmount>0 &&(<i>{t.fundingShekel}</i>)}
+									<SC.PaymentOtherOption>
+										<SC.OtherAmountInput
+											id="other-amount-input"
+											name="other-amount"
+											placeholder="סכום אחר"
+											onChange={({ target: { value }}) => {
+												setOtherAmount(Number.parseInt(value));
+												setAmount(Number.parseInt(value));
+											}}
+											disableUnderline={true}
+											inputComponent={AmountInput}
+										/>
 									</SC.PaymentOtherOption>
-									<div>{amount}</div>
 								</SC.PaymentOption>
 								<HelperText id="amount-error-helper-text" text="" error={triedSubmit ? formErrors.amountError.message : ''}/>
 							</SC.PaymentOptionsWrapper>
