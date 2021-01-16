@@ -97,8 +97,8 @@ const StyledTypography = styled(Box)`
     color: ${props => props.color} !important;
 `;
 
-const Typography = ({ component, variant, mobileVariant, color, children }) => (
-	<StyledTypography as={component} variant={variant} mobileVariant={mobileVariant} color={color}>
+const Typography = ({ component, variant, mobileVariant, color, children, className }) => (
+	<StyledTypography as={component} variant={variant} mobileVariant={mobileVariant} color={color} className={className}>
 		{children}
 	</StyledTypography>
 );
@@ -107,6 +107,7 @@ Typography.propTypes = {
 	component: PropTypes.string.isRequired,
 	color: PropTypes.string.isRequired,
 	children: PropTypes.any,
+	className: PropTypes.string,
 	variant: PropTypes.oneOf([
 		'megaHeadTitle',
 		'title',
