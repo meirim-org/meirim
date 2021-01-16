@@ -13,12 +13,20 @@ import * as Scenes from 'scenes';
 import Plan from 'pages/Plan';
 import UserPlans from 'pages/UserPlans';
 import EmailSent from 'pages/Register/emailSent';
+import Homepage from 'pages/Homepage';
 import { Modal, CircularProgress } from 'shared';
 import 'App.css';
 import { muiTheme } from 'theme';
 import { CookieHook } from 'hooks';
 
-library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
+library.add(
+    faSpinner,
+    faTimes,
+    faBuilding,
+    faPaperPlane,
+    faChartArea,
+    faWhatsapp
+)
 
 const App = () => {
 	const { loading, success } = CookieHook();
@@ -34,7 +42,7 @@ const App = () => {
 				<>
 					<Modal />
 					<Switch>
-						<Route exact path="/" render={props => <Scenes.Home {...props} openRegister={openRegister} />}	/>
+						<Route exact path="/" component={Homepage}	/>
 						<Route path="/alerts/unsubscribe/:token" 
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
