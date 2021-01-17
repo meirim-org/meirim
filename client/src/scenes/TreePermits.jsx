@@ -145,7 +145,6 @@ class TreePermits extends Component {
 											<Mapa
 											
 												geom={tree.geom}
-												placeholder="/images/cutting_tree.jpg"
 												hideZoom={true}
 												disableInteractions={true}
 												countyName={tree.place}
