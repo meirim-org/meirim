@@ -12,7 +12,6 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 	const theme = useTheme();
 	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
 
-	
 	return (
 		<TabPanel>
 			<TabBox>
@@ -23,7 +22,7 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{t.meanings}
+						{t.areaUnitChanges}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 

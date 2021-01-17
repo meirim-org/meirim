@@ -38,14 +38,13 @@ const Header = ({  match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, set
 								<SC.Tab className={tabIsActive('summary',pathData) ? 'active' : ''}
 									onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
 								<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''}
-									onClick={() => {
-									    history.push(`${match.url}/comments`);
-									}}>
+									onClick={() => history.push(`${match.url}/comments`)}>
 									<Badge badgeContent={commentsCount} color="primary">
 										{t.opinion}
 									</Badge>
 								</SC.Tab>
-								<SC.Tab onClick={()=>{}}>{t.planningInformation}</SC.Tab>
+								<SC.Tab className={tabIsActive('info',pathData) ? 'active' : ''}
+									onClick={() => history.push(`${match.url}/info`)}>{t.planningInformation}</SC.Tab>
 							</SC.TabWrapper>
 						</SC.AppBar>
 					</>

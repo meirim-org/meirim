@@ -7,9 +7,9 @@ import * as SC from './style';
 import t from 'locale/he_IL';
 
 
-export const GoalsPanel = ({ goalsFromMavat }) => {
+export const DescriptionPanel = ({ mainDetailsFromMavat }) => {
 	const theme = useTheme();
-	if (!goalsFromMavat ) return null;
+	if (!mainDetailsFromMavat ) return null;
 	
 	return (
 		<TabPanel>
@@ -21,12 +21,12 @@ export const GoalsPanel = ({ goalsFromMavat }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{t.planGoals}
+						{t.planDescription}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 				<SC.EntryContent>
 					<UnsafeRender
-						html={goalsFromMavat}
+						html={mainDetailsFromMavat}
 					/>
 				</SC.EntryContent>
 			</TabBox>
@@ -34,8 +34,8 @@ export const GoalsPanel = ({ goalsFromMavat }) => {
 	);
 };
 
-GoalsPanel.propTypes = {
-	goalsFromMavat: PropTypes.string,
+DescriptionPanel.propTypes = {
+	mainDetailsFromMavat: PropTypes.string,
 };
 
-export default GoalsPanel;
+export default DescriptionPanel;

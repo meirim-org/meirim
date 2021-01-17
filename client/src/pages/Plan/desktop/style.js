@@ -22,7 +22,6 @@ export const Content = withTheme(styled.div`
 export const Main = withTheme(styled.main`
     padding: 2.5rem 4.8rem;
     &.no-comments {
-        height: 100%;
         min-height: 100vh;
     }
 `);

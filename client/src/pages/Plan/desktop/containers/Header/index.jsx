@@ -29,7 +29,7 @@ const Header = ({ isFavPlan, subscriptionHandler, openNewCommentView, match }) =
 								{t.opinion}
 							</Badge>
 						</SC.Tab>
-						<SC.Tab>{t.planningInformation}</SC.Tab>
+						<SC.Tab className={tabIsActive('info',pathData) ? 'active' : ''} onClick={() => history.push(`${match.url}/info`)}>{t.planningInformation}</SC.Tab>
 					</div>
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
