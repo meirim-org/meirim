@@ -30,6 +30,12 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
 	const [ isFavPlan, setIsFavPlan ] = useState(false);
 
+	const getIsFav = React.useCallback( async () => {
+		if (!user.id) return;
+		const isFav = await isFavoritePlan(user.id, planId);
+		 setIsFavPlan(isFav);
+	}, [user.id, planId]);
+
 	useEffect(() => {
 		const handler = async () => {
 			await getIsFav();
@@ -46,12 +52,6 @@ const Plan = ({ isMobile, isTablet, match }) => {
 			await subscribeToPlan();
 		}
 		await getIsFav();
-	};
-
-	const getIsFav =  async () => {
-		if (!user.id) return;
-		const isFav = await isFavoritePlan(user.id, planId);
-		 setIsFavPlan(isFav);
 	};
 
 	const unsubscribeToPlan = async () => {
