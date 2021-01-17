@@ -51,10 +51,10 @@ const TreeDetailsPanel = () => {
 		<TabPanel>
 			<TabBox>
 				<Grid container direction="row-reverse" justify="space-between">
-					<Grid item>
+					<Grid item > 
 						<TreeCuttingIcon />
 					</Grid>
-					<Grid item>
+					<Grid item md >
 						<SC.TreeSummaryTitleWrapper>
 							<Typography variant="planDetailTitle" mobileVariant="planDetailTitle"
 								component="h2" color={theme.palette.black}	>
