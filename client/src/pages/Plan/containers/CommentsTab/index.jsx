@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import { withGetScreen } from 'react-getscreen';
 import { useScrollToTop } from '../../hooks';
 
-
 const CommentsTab = ({
 	commentState,
 	subCommentState,
