@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import geojsonArea from '@mapbox/geojson-area';
-import { parseNumber } from 'utils';
+import { parseNumber, scrollToTop } from 'utils';
 import { setData } from 'redux/comments/slice';
 import { setPlanData } from 'redux/plan/slice';
 import * as utils from './utils';
@@ -49,11 +49,24 @@ export const useDataHandler = (planId) => {
 	useEffect (() => {
 		const fetchData = async () => {
 			const response = await getPlanData(planId);
-			const { 
-				PLAN_COUNTY_NAME: countyName, PL_NAME: name, 
-				status, goals_from_mavat: goalsFromMavat, plan_url: url, 
+			const {
+				PLAN_COUNTY_NAME: countyName,
+				PL_NAME: name,
+				jurisdiction,
+				status,
+				notCredible,
+				goals_from_mavat: goalsFromMavat,
+				main_details_from_mavat: mainDetailsFromMavat,
+				plan_url: url,
 				areaChanges, geom } = response.data;
-			const { ENTITY_SUBTYPE_DESC: type } = response.data.data;
+			const {
+			    ENTITY_SUBTYPE_DESC: type,
+				PL_NUMBER: number,
+				DEPOSITING_DATE: depositingDate,
+				PL_LANDUSE_STRING: landUse,
+				STATION_DESC: stationDesc,
+				LAST_UPDATE: lastUpdate,
+			} = response.data.data;
 			const newTextArea = { ...utils.initialTextArea, area: geom ? Math.round(geojsonArea.geometry(geom)) : 0 };
 			const newDataArea = [{
 				label: 'זכויות קיימות',
@@ -79,7 +92,7 @@ export const useDataHandler = (planId) => {
 					const areaChangeType = utils.getAreaChangeType(change);
 					const handler = utils.areaChangeHandlers[areaChangeType];
 					const [firstChange, secondChange] = handler(change);
-					if (areaChangeType) {
+					if (areaChangeType === 'meter') {
 						newDataArea[0].data.push(firstChange);
 						newDataArea[1].data.push(secondChange);
 						newTextArea.exist += parseNumber(change[5]);
@@ -97,11 +110,19 @@ export const useDataHandler = (planId) => {
 				dataArea: newDataArea, 
 				dataUnits: newDataUnits, 
 				textArea: newTextArea,
-				planData: { countyName, name, status, type, 
-					goalsFromMavat: goalsFromMavat, url, areaChanges, geom }
+				planData: { countyName, name, status, type, number, jurisdiction, depositingDate, landUse, stationDesc,
+					notCredible,
+					lastUpdate,
+					goalsFromMavat,
+					mainDetailsFromMavat,
+					url, areaChanges, geom }
 			}));
 		};	
 
 		fetchData();
 	} , [planId, dispatch]);
+};
+
+export const useScrollToTop = () => {
+	useEffect(() => scrollToTop(), []);
 };

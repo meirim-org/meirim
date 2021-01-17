@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Chart } from 'react-charts';
 import { TabPanel, TabBox, Typography } from 'shared';
-import { useTheme } from '@material-ui/styles';
-import UnsafeRender from 'components/UnsafeRender';
-import * as SC from './style';
 import t from 'locale/he_IL';
+import { useTheme } from '@material-ui/styles';
+import { series, axes } from '../../utils';
+import * as SC from './style';
 
-
-export const GoalsPanel = ({ goalsFromMavat }) => {
+export const AreaUnitPanel = ({ dataArea }) => {
 	const theme = useTheme();
-	if (!goalsFromMavat ) return null;
-	
+	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
+
 	return (
 		<TabPanel>
 			<TabBox>
@@ -21,21 +21,27 @@ export const GoalsPanel = ({ goalsFromMavat }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{t.planGoals}
+						{t.areaUnitChanges}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
-				<SC.EntryContent>
-					<UnsafeRender
-						html={goalsFromMavat}
+
+				<SC.ChartWrapper>
+					<Chart
+						series={series}
+						data={dataArea}
+						axes={axes}
+						tooltip={true}
 					/>
-				</SC.EntryContent>
+				</SC.ChartWrapper>
+
 			</TabBox>
 		</TabPanel>
 	);
 };
 
-GoalsPanel.propTypes = {
-	goalsFromMavat: PropTypes.string,
+AreaUnitPanel.propTypes = {
+	dataArea: PropTypes.array.isRequired,
+	url: PropTypes.string,
 };
 
-export default GoalsPanel;
+export default AreaUnitPanel;

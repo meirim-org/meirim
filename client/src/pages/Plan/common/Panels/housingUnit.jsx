@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Chart } from 'react-charts';
 import { TabPanel, TabBox, Typography } from 'shared';
-import { useTheme } from '@material-ui/styles';
-import UnsafeRender from 'components/UnsafeRender';
-import * as SC from './style';
 import t from 'locale/he_IL';
+import { useTheme } from '@material-ui/styles';
+import { series, axes } from '../../utils';
+import * as SC from './style';
 
-
-export const GoalsPanel = ({ goalsFromMavat }) => {
+export const HousingUnitPanel = ({ dataUnits }) => {
 	const theme = useTheme();
-	if (!goalsFromMavat ) return null;
+	if (!dataUnits || !dataUnits[0] || !dataUnits[0].data.length) return null;
 	
 	return (
 		<TabPanel>
@@ -21,21 +21,26 @@ export const GoalsPanel = ({ goalsFromMavat }) => {
 						component="h2"
 						color={theme.palette.black}
 					>
-						{t.planGoals}
+						{t.housingUnitChanges}
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
-				<SC.EntryContent>
-					<UnsafeRender
-						html={goalsFromMavat}
+
+				<SC.ChartWrapper>
+					<Chart
+						series={series}
+						data={dataUnits}
+						axes={axes}
+						tooltip={true}
 					/>
-				</SC.EntryContent>
+				</SC.ChartWrapper>
+
 			</TabBox>
 		</TabPanel>
 	);
 };
 
-GoalsPanel.propTypes = {
-	goalsFromMavat: PropTypes.string,
+HousingUnitPanel.propTypes = {
+	dataUnits: PropTypes.array.isRequired,
 };
 
-export default GoalsPanel;
+export default HousingUnitPanel;

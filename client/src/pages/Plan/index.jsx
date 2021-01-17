@@ -4,7 +4,7 @@ import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
 import { useDataHandler, useCommentsDataHandler, isFavoritePlan } from './hooks';
 import { openModal } from 'redux/modal/slice';
-import { CommentsTab, SummaryTab } from 'pages/Plan/containers';
+import { CommentsTab, SummaryTab, PlanningInfoTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
 import { UserSelectors } from 'redux/selectors';
 import PlanMobile from './mobile/';
@@ -30,6 +30,12 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
 	const [ isFavPlan, setIsFavPlan ] = useState(false);
 
+	const getIsFav = React.useCallback( async () => {
+		if (!user.id) return;
+		const isFav = await isFavoritePlan(user.id, planId);
+		 setIsFavPlan(isFav);
+	}, [user.id, planId]);
+
 	useEffect(() => {
 		const handler = async () => {
 			await getIsFav();
@@ -46,12 +52,6 @@ const Plan = ({ isMobile, isTablet, match }) => {
 			await subscribeToPlan();
 		}
 		await getIsFav();
-	};
-
-	const getIsFav =  async () => {
-		if (!user.id) return;
-		const isFav = await isFavoritePlan(user.id, planId);
-		 setIsFavPlan(isFav);
 	};
 
 	const unsubscribeToPlan = async () => {
@@ -103,9 +103,13 @@ const Plan = ({ isMobile, isTablet, match }) => {
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;
 
+
 	return (
 		<Template {...planProps}>
 			<Switch>
+				<Route path={match.url + '/info'} render={props =>
+					<PlanningInfoTab {...props}/>}
+				/>
 				<Route path={match.url + '/comments'} render={props => 
 					<CommentsTab 
 						addLikeToComment={addLikeToComment}
