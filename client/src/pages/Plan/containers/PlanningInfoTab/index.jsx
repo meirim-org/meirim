@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { PlanSelectors } from 'redux/selectors';
 import { GoalsPanel, DataPanel, DescriptionPanel, HousingUnitPanel, AreaUnitPanel } from 'pages/Plan/common';
-import { scrollToTop } from 'utils';
+import { useScrollToTop } from '../../hooks';
 
 const PlanningInfoTab = () => {
 	const { planData, dataUnits, dataArea } = PlanSelectors();
 	const { number, type, jurisdiction, depositingDate,
-		landUse, stationDesc, lastUpdate, notCredible, goalsFromMavat, mainDetailsFromMavat } = planData;
-	useEffect(() => {
-		scrollToTop();
-	}, []);
-
+		stationDesc, lastUpdate, notCredible, goalsFromMavat, mainDetailsFromMavat } = planData;
+	useScrollToTop();
+    
 	return (
 	    <>
 			<DataPanel
@@ -18,7 +16,6 @@ const PlanningInfoTab = () => {
 				type={type}
 				jurisdiction={jurisdiction}
 				depositingDate={depositingDate}
-				landUse={landUse}
 				stationDesc={stationDesc}
 				lastUpdate={lastUpdate}
 				notCredible={notCredible}

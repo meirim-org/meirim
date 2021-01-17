@@ -5,21 +5,18 @@ import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import Moment from 'react-moment';
-import LandUseVocabulary from 'components/LandUseVocabulary';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 export const DataPanel = ({
 	number,
 	type, 
 	jurisdiction,
-	depositingDate, 
-	landUse,
+	depositingDate,
 	stationDesc,
 	lastUpdate, 
 	notCredible }) => {
 	const theme = useTheme();
-	if (!number && !type && !jurisdiction && !depositingDate && !landUse && !stationDesc && !lastUpdate ) return null;
+	if (!number && !type && !jurisdiction && !depositingDate && !stationDesc && !lastUpdate ) return null;
 
 	return (
 		<TabPanel>
@@ -58,14 +55,6 @@ export const DataPanel = ({
 							</Moment>
 						</li>
 					)}
-					{/*<li key="landUse">*/}
-                    {/*    שימוש קרקע:{' '}*/}
-					{/*	<LandUseVocabulary*/}
-					{/*		landUseJoined={*/}
-					{/*			landUse*/}
-					{/*		}*/}
-					{/*	/>*/}
-					{/*</li>*/}
 					<li key="stationDesc">
                         סטטוס: {stationDesc}
 					</li>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTheme } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { openModal } from 'redux/modal/slice';
@@ -10,7 +10,7 @@ import { Badge } from '@material-ui/core';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { withGetScreen } from 'react-getscreen';
-import { scrollToTop } from 'utils';
+import { useScrollToTop } from '../../hooks';
 
 
 const CommentsTab = ({
@@ -39,10 +39,8 @@ const CommentsTab = ({
 			dispatch(openModal({ modalType: 'login' }));
 		}
 	};
-	useEffect(() => {
-		scrollToTop();
-	}, []);
-
+	useScrollToTop();
+    
 	return (
 		<>
 			{isMobile() || isTablet()
