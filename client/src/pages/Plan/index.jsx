@@ -103,6 +103,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;
 
+
 	return (
 		<Template {...planProps}>
 			<Switch>

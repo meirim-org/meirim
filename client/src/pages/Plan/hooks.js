@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import geojsonArea from '@mapbox/geojson-area';
-import { parseNumber } from 'utils';
+import { parseNumber, scrollToTop } from 'utils';
 import { setData } from 'redux/comments/slice';
 import { setPlanData } from 'redux/plan/slice';
 import * as utils from './utils';
@@ -121,4 +121,8 @@ export const useDataHandler = (planId) => {
 
 		fetchData();
 	} , [planId, dispatch]);
+};
+
+export const useScrollToTop = () => {
+	useEffect(() => scrollToTop(), []);
 };
