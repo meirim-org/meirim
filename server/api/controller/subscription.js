@@ -34,7 +34,7 @@ class PlanPersonController extends Controller {
 		}
 		// the user is found, creating a new subscription
 		return this.model
-			.unsubscribe(req.session.person.id, req.params.plan_id)
+			.unsubscribe(req.session.person.id, req.params.id)
 			.then(() => {
 				Log.debug('Person subscription created removed');
 				return true;

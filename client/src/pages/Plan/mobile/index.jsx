@@ -15,6 +15,8 @@ const Template = ({
 	commentState,
 	setCommentState,
 	match,
+	subscriptionHandler,
+	isFavPlan
 	 }) => {
 	const [tabsPanelRef, setTabsPanelRef] = useState(null);
 	const [fixedHeader, setFixedHeader] = useState(false);
@@ -42,8 +44,7 @@ const Template = ({
 		'new-comment': commentState.isOpen
 	});
 
-	// eslint-disable-next-line no-unused-vars
-	useScrollPosition(({ prevPos, currPos }) => {
+	useScrollPosition(({ currPos }) => {
 	    if (currPos.y < -Math.abs(tabsPanelTop)) return handleFixedHeader(true);
 		
 		return  handleFixedHeader(false);
@@ -55,6 +56,8 @@ const Template = ({
 			<SC.MobileMainWrapper>
 				<SC.Content>
 					<Header
+						subscriptionHandler={subscriptionHandler}
+						isFavPlan={isFavPlan}
 						match={match}
 						handleTabsPanelRef={handleTabsPanelRef}
 						fixedHeader={fixedHeader}
@@ -66,6 +69,8 @@ const Template = ({
 						{children}
 					</SC.Main>
 					<Navigation
+						subscriptionHandler={subscriptionHandler}
+						isFavPlan={isFavPlan}
 						newCommentViewHandler={newCommentViewHandler}
 					/>
 					<Footer/>
@@ -76,6 +81,8 @@ const Template = ({
 };
 
 Template.propTypes = {
+	subscriptionHandler: PropTypes.func.isRequired,
+	isFavPlan: PropTypes.bool.isRequired,
 	setCommentState: PropTypes.func.isRequired,
 	commentState: PropTypes.object.isRequired,
 	children: PropTypes.object.isRequired,

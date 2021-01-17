@@ -31,6 +31,8 @@ const handleVariant = variant => {
 		return template('48px', '400', '1.25');
 	case 'planTitle':
 		return template('24px', '600', '1.17');
+	case 'largeParagraphText':
+		return template('20px', '400', '1.5');
 	case 'planDetailTitle':
 		return template('18px', '600', '1.5');
 	case 'menuTitle':
@@ -95,8 +97,8 @@ const StyledTypography = styled(Box)`
     color: ${props => props.color} !important;
 `;
 
-const Typography = ({ component, variant, mobileVariant, color, children }) => (
-	<StyledTypography as={component} variant={variant} mobileVariant={mobileVariant} color={color}>
+const Typography = ({ component, variant, mobileVariant, color, children, className }) => (
+	<StyledTypography as={component} variant={variant} mobileVariant={mobileVariant} color={color} className={className}>
 		{children}
 	</StyledTypography>
 );
@@ -105,10 +107,12 @@ Typography.propTypes = {
 	component: PropTypes.string.isRequired,
 	color: PropTypes.string.isRequired,
 	children: PropTypes.any,
+	className: PropTypes.string,
 	variant: PropTypes.oneOf([
 		'megaHeadTitle',
 		'title',
 		'planTitle',
+		'largeParagraphText',
 		'planDetailTitle',
 		'menuTitle',
 		'paragraphText',

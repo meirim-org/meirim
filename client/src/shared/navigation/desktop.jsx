@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Box } from '@material-ui/core';
 import { StarIcon } from 'shared/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import t from 'locale/he_IL';
 import logo from 'assets/logo.png';
 import { Button, Row, Menu } from 'shared';
@@ -17,6 +17,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const { user: { id: userId } } = UserSelectors();
+	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
 		setDropDownEl(event.currentTarget);
@@ -40,23 +41,32 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 							<Box component="nav">
 								<Box display="flex" alignItems="center">
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
+										<SC.StyledLink 
+											id="nav-bar-plans"
+											to="/plans/"
+											isActive={(match, location) => location.pathname.includes('plans')}
+										>
 											{t.plans}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-alerts" to="/alerts/" activeClassName="active">
+										<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
 											{t.alerts}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-about" to="/about/" activeClassName="active">
+										<SC.StyledLink id="nav-bar-about" to="/about/">
 											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<Button id="support-us" text={t.supportUs} type={'primary'} onClick={() => {}}
-											small/>
+										<Button
+											id="support-us"
+											text={t.supportUs}
+											type={'primary'}
+											onClick={() => { history.push(`/funding/`); }}
+											small
+										/>
 									</Box>
 								</Box>
 							</Box>

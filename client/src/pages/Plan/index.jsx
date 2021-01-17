@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Route, Switch } from 'react-router-dom';
 import { withGetScreen } from 'react-getscreen';
-import { useDataHandler, useCommentsDataHandler } from './hooks';
+import { useDataHandler, useCommentsDataHandler, isFavoritePlan } from './hooks';
 import { openModal } from 'redux/modal/slice';
 import { CommentsTab, SummaryTab, PlanningInfoTab } from 'pages/Plan/containers';
 import { useDispatch } from 'react-redux';
 import { UserSelectors } from 'redux/selectors';
 import PlanMobile from './mobile/';
 import PlanDesktop from './desktop/';
-import { addComment, addLike } from './controller';
+import { addComment, addLike, unsubscribeUserToPlan, subscribeUserToPlan } from './controller';
 
 const Plan = ({ isMobile, isTablet, match }) => {
 	const { id: planId } = useParams();
@@ -28,6 +28,38 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		type: 'improvement'
 	});
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
+	const [ isFavPlan, setIsFavPlan ] = useState(false);
+
+	useEffect(() => {
+		const handler = async () => {
+			await getIsFav();
+		};
+		handler();
+	}, [getIsFav]);
+
+	const subscriptionHandler = async () => {
+		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
+		const isFav = await isFavoritePlan(user.id, planId);
+		if (isFav) {
+			await unsubscribeToPlan();
+		} else {
+			await subscribeToPlan();
+		}
+		await getIsFav();
+	};
+
+	const getIsFav =  async () => {
+		if (!user.id) return;
+		const isFav = await isFavoritePlan(user.id, planId);
+		 setIsFavPlan(isFav);
+	};
+
+	const unsubscribeToPlan = async () => {
+		await unsubscribeUserToPlan(planId);
+	};
+	const subscribeToPlan = async () => {
+		await subscribeUserToPlan(planId);
+	};
 
 	const addLikeToComment = async (commentId) => {
 		if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
@@ -65,6 +97,8 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		commentState,
 		setCommentState,
 		match,
+		subscriptionHandler,
+		isFavPlan
 	};
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;

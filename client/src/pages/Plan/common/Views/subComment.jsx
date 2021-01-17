@@ -29,7 +29,7 @@ const SubCommentView = ({ subCommentData }) => {
 						color={theme.palette.gray['main']}
 					>
                         לפני
-						{daysPassed(created_at)}
+						{created_at ? daysPassed(created_at) : ' הרבה '}
                         ימים
 					</Typography>
 				</SC.SubCommentHeader>

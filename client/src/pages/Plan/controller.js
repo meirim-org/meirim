@@ -1,6 +1,16 @@
 import api from 'services/api';
 import { SuccessAddComment, FailAddComment, 
-	SuccessSubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts';
+	SuccessSubscribeUserToPlan, SuccessUnsubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts';
+
+export const unsubscribeUserToPlan = async (planId) => {
+	try {
+		const response = await api.delete(`/plan/${planId}/subscribe`);
+		const success = response.status === 'OK';
+		if (success) SuccessUnsubscribeUserToPlan();
+	} catch (err){ 
+		FailSubscribeUserToPlan();
+	}
+};
 
 export const subscribeUserToPlan = async (planId) => {
 	try {
@@ -42,9 +52,15 @@ export const addLike = async ({ commentId }) => {
 
 export const getPlanData = async (planId) => {
 	try {
+		// this can fail and should not interfere with getting plan details
 		await api.post(`/impression/${planId}`);
+	} catch (err) {
+		console.log('err',err);
+	}
+
+	try {
 		const response = await api.get(`/plan/${planId}`);
-		
+
 		return response;
 	} catch (err) {
 		console.log('err',err);

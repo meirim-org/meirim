@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import {  Chip } from '@material-ui/core';
-import { planTerms } from 'pages/Plan/utils';
+//import {  Chip } from '@material-ui/core';
+//import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
 
 const DetailsPanel = ({ status, type, url }) => {
@@ -24,7 +24,7 @@ const DetailsPanel = ({ status, type, url }) => {
 					</Typography>
 				</SC.PlanSummaryTitleWrapper>
 				
-				{planTerms.length > 0 &&
+				{/*{planTerms.length > 0 &&
 					<SC.PlanTermsWrapper>
 						{planTerms.map((term, index) => (
 							<SC.PlanTermWrapper key={index}>
@@ -32,7 +32,7 @@ const DetailsPanel = ({ status, type, url }) => {
 							</SC.PlanTermWrapper>
 						))}
 					</SC.PlanTermsWrapper>
-				}
+				}*/}
 
 				<SC.StatusAndTypeWrapper>
 					<SC.StatusWrapper>
