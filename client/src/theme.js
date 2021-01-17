@@ -1,6 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 export const muiTheme = createMuiTheme({
+	direction: 'rtl',
 	fontFamily: [
 		'Assistant',
 	].join(','),
@@ -45,7 +46,8 @@ export const muiTheme = createMuiTheme({
 			'600': '#CA7433',
 			'700': '#A95623',
 			'800': '#883B16',
-			'contrastForGraphics': '#E7731E'
+			'contrastForGraphics': '#E7731E',
+			'active': '#E7731E0F'
 		},
 		green: {
 			'text' : '#00453B',

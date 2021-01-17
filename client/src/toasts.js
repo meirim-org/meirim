@@ -25,6 +25,12 @@ export const wrongLoginCredsToast = () =>
 		...failConfiguration
 	});
 
+export const externalPaymentErrorToast = () =>
+	toast.error('מתנצלים, יש תקלה בשירות התשלומים. נשמח אם תנסו שוב במועד מאוחר', {
+		toastId: '500message',
+		...failConfiguration
+	})
+
 export const serverErrorToast = () => ServerFailToast('serverErrorToast');
 
 export const copiedToClipboard = () =>
@@ -34,6 +40,12 @@ export const copiedToClipboard = () =>
 	}); 
 
 export const FailSubscribeUserToPlan = () => ServerFailToast('faileSubscribeUsertoPlan');
+
+export const SuccessUnsubscribeUserToPlan = () =>
+	toast.success('התוכנית נמחקה מרשימת המועדפים בהצלחה', {
+		toastId: 'SuccessSubscribeUserToPlan',
+		...successConfiguration
+	}); 
 
 export const SuccessSubscribeUserToPlan = () =>
 	toast.success('התוכנית נשמרה בהצלחה!', {

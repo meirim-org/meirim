@@ -11,9 +11,11 @@ const Template = ({
 	setCommentState,
 	children,
 	match,
+	subscriptionHandler,
+	isFavPlan
 }) => {
 	const { comments } = CommentSelectors();
-	const { planData: { geom, countyName } } = PlanSelectors();
+	const { planData: { geom } } = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
 	
 	return (
@@ -21,6 +23,8 @@ const Template = ({
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
+						subscriptionHandler={subscriptionHandler}
+						isFavPlan={isFavPlan}
 						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
 						match={match}
 					/>
@@ -31,7 +35,6 @@ const Template = ({
 				</SC.Content>
 				  <Mapa
 					geom={geom}
-					countyName={countyName}
 					hideZoom={false}
 					disableInteractions={false}
 				/>
@@ -42,6 +45,8 @@ const Template = ({
 
 Template.propTypes = {
 	setCommentState: PropTypes.func.isRequired,
+	subscriptionHandler: PropTypes.func.isRequired,
+	isFavPlan: PropTypes.bool.isRequired,
 	children: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
 };

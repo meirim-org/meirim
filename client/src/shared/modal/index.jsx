@@ -3,11 +3,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import MUIModal from '@material-ui/core/Modal';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Login from 'pages/Login';
-import Register from 'pages/Register/';
-import EmailVerified from 'pages/Register/emailVerified';
-import { ModalActions } from 'redux/actions';
-import { ModalSelectors } from 'redux/selectors';
+import Login from 'pages/Login'
+import Register from 'pages/Register/'
+import EmailVerified from 'pages/Register/emailVerified'
+import Payment from 'pages/Funding/payment'
+import TermsOfPayment from 'pages/Funding/termsOfPayment';
+import { ModalActions } from 'redux/actions'
+import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
 import SharePlanView from 'pages/Plan/common/Views/sharePlan';
 
@@ -45,7 +47,9 @@ const modalComponents = {
 	login: Login,
 	register: Register,
 	emailVerified: EmailVerified,
-	share: SharePlanView
+	share: SharePlanView,
+	payment: Payment,
+	termsOfPayment: TermsOfPayment
 };
 
 const Modal = ({ id }) => {

@@ -13,20 +13,28 @@ import * as Scenes from 'scenes';
 import Plan from 'pages/Plan';
 import UserPlans from 'pages/UserPlans';
 import EmailSent from 'pages/Register/emailSent';
+import Homepage from 'pages/Homepage';
+import Funding from 'pages/Funding';
+import FundingSuccess from 'pages/Funding/success';
 import { Modal, CircularProgress } from 'shared';
 import 'App.css';
 import { muiTheme } from 'theme';
 import { CookieHook } from 'hooks';
 
-library.add(faSpinner, faTimes, faBuilding, faPaperPlane, faChartArea, faWhatsapp);
+library.add(
+    faSpinner,
+    faTimes,
+    faBuilding,
+    faPaperPlane,
+    faChartArea,
+    faWhatsapp
+)
 
 const App = () => {
-	const { loading, success } = CookieHook();
+	const { loading } = CookieHook();
 	if (loading) {
 		return  <CircularProgress />; 
 	}
-
-	const openRegister = !success;
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
@@ -34,7 +42,7 @@ const App = () => {
 				<>
 					<Modal />
 					<Switch>
-						<Route exact path="/" render={props => <Scenes.Home {...props} openRegister={openRegister} />}	/>
+						<Route exact path="/" component={Homepage}	/>
 						<Route path="/alerts/unsubscribe/:token" 
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
@@ -43,6 +51,8 @@ const App = () => {
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
+						<Route path="/funding/success" 	render={props => (<FundingSuccess {...props} />	)} />
+						<Route path="/funding" 	render={props => (<Funding {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route	path="/about" render={props => <Scenes.About {...props} />} />
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />

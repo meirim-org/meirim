@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { Badge } from '@material-ui/core';
 import { tabIsActive } from 'utils';
 
-const Header = ({ match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setCommentState }) => {
+const Header = ({  match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setCommentState }) => {
 	const history = useHistory();
 	const { planData } = PlanSelectors();
 	const { name, countyName } = planData;

@@ -42,6 +42,7 @@ export default {
 	planningInformation: 'מידע תכנוני',
 	sharing: 'שיתוף',
 	saving: 'שמירה',
+	saved: 'שמור',
 	addNewComment: 'הוספת חוות דעת',
 	supportUs: 'תמכו בנו',
 	review: 'ביקורת',
@@ -87,6 +88,15 @@ export default {
 	housingUnitChanges: 'שינוי יחידות דיור',
 	planData: 'נתוני התוכנית',
 	planDescription: 'תיאור התוכנית',
+	fundingStatsTitle: 'עם קצת פוש מכם נוכל להנגיש יותר מידע ויותר תוכניות, ויחד נשנה את התכנון בישראל',
+	fundingEndGoal: 'אתר חדש עולה לאוויר!',
+	fundingShekel: '₪',
+	fundingOutOf: 'מתוך',
+	fundingSupporters: 'תומכים/ות',
+	monthlyPayment: 'תמיכה חודשית',
+	singleTimePayment: 'תמיכה חד פעמית',
+	fundingAboutUsTitle: 'בואו להיות חלק מהקהילה שלנו!',
+	fundingAboutUs: 'הפעילות שלנו מבוססת על מתנדבים שנושא התכנון בוער בהם, שמאמינים בשקיפות בתהליכי התכנון ופועלים להגביר את המעורבות של תושבים במערכות התכנון.'
 };
 
 
