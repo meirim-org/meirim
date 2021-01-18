@@ -47,7 +47,7 @@ const App = () => {
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
 						<Route path="/plan/:id" render={props => <Plan {...props} />} />
-						<Route path="/user/:id/plans" render={props => <UserPlans {...props} />} />
+						<Route path="/my-plans" render={props => <UserPlans {...props} />} />
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />

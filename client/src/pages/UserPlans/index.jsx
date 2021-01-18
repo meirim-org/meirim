@@ -1,6 +1,5 @@
 import React from 'react';
 import Wrapper from 'components/Wrapper';
-import { useParams } from 'react-router-dom';
 import { fetchUserPlans } from './controller';
 import { PlanCard, Text } from 'shared';
 import { Grid } from '@material-ui/core';
@@ -8,19 +7,24 @@ import { useTheme } from '@material-ui/core/styles';
 import t from 'locale/he_IL';
 import * as SC from './style';
 import { StarIcon } from 'shared/icons';
+import { CheckIfUserCanAccessPage } from 'hooks';
 
 const UserPlans = () => {
+	CheckIfUserCanAccessPage();
 	const theme = useTheme();
-	const { id } = useParams();
 	const [plans, setPlans] = React.useState([]);
 
 	React.useEffect( () => {
 		const handler = async () => {
-			const response = await fetchUserPlans(id);
-			setPlans(response.data);
+			try {
+				const response = await fetchUserPlans();
+				setPlans(response.data);
+			} catch (err) {
+				console.error('fetch user plans failed: ', err);
+			}
 		};
 		handler();
-	}, [id]);
+	}, []);
 
 	return (
 		<Wrapper>

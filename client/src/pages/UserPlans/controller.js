@@ -1,9 +1,9 @@
 
 import api from 'services/api';
 
-export const fetchUserPlans = async (id) => {
+export const fetchUserPlans = async () => {
 	try {
-		const response = await api.post('plan/user', { userId: id });
+		const response = await api.get('plan/user');
 
 		return response;
 	} catch (err) {
