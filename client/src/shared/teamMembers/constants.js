@@ -68,13 +68,13 @@ export const members = [
 		photo:'dor'
 		
 	},
-	// {
-	// 	name:`היבה בוארדי`,
-	// 	title:`מחקר וייעוץ תכנוני`,
-	// 	order:11,
-	// 	photo:'eyal'
+	{
+		name:`היבה בוארדי`,
+		title:`מחקר וייעוץ תכנוני`,
+		order:11,
+		photo:'hiba'
 		
-	// },
+	},
 	{
 		name:`יואב בן שלום`,
 		title:`צוות מוצר`,
