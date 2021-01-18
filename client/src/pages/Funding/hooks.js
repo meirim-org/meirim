@@ -50,3 +50,13 @@ export const useSuccessCloseHandler = (paymentSuccessCb) => {
 		};
 	}, [handleMessage]);
 };
+
+export const useWhoWeAreAnchor = (props, whoWeAreRef) => {
+	useEffect(() => {
+		if (props.location.hash === '#who-we-are') {
+			// scrollIntoView isn't sufficient since the header hides some of the view
+			const y = whoWeAreRef.current.getBoundingClientRect().top - 100;
+			window.scrollBy({top: y, behavior: 'smooth'})
+		}
+	}, [props, whoWeAreRef]);
+};
