@@ -99,12 +99,33 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
-											<SC.StyledListItem component={SC.StyledLink} to="/funding/" button key={t.supportUs}>
+											<SC.StyledListItem
+												component={SC.StyledLink}
+												to="/funding/"
+												isActive={(match, location) =>
+													['/funding', '/funding/'].indexOf(location.pathname) > -1 &&
+													location.hash !== '#who-we-are'
+												}
+												button
+												key={t.supportUs}
+											>
 												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
 										<SC.StyledList>
-											<SC.StyledListItem component={SC.StyledLink} to="/about/" button key={t.whoWeAre}>
+											<SC.StyledListItem
+												component={SC.StyledLink}
+												to={{
+													pathname: '/funding/',
+													hash: 'who-we-are'
+												}}
+												isActive={(match, location) =>
+													['/funding', '/funding/'].indexOf(location.pathname) > -1 &&
+													location.hash === '#who-we-are'
+												}
+												button
+												key={t.whoWeAre}
+											>
 												<ListItemText primary={t.whoWeAre}/>
 											</SC.StyledListItem>
 										</SC.StyledList>

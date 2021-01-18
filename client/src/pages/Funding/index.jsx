@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { externalPaymentErrorToast } from 'toasts';
 import YoutubeVideo from 'react-youtube';
 import { Button, Checkbox, Divider, HelperText, Link, TabPanel, ProgressBar, Typography, TeamMembers } from '../../shared';
@@ -13,13 +13,14 @@ import Wrapper from '../../components/Wrapper';
 import DefaultIcon from '../../assets/svg/successIcon';
 import * as Icons from '../../assets/funding';
 import AmountInput from './amountInput';
-import { useStatsDataHandler, useSuccessCloseHandler } from './hooks';
+import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor } from './hooks';
 import { FundingSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
 
-const FundingPage = () => {
+const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
+	const whoWeAreRef = useRef();
 
 	const [otherAmount, setOtherAmount] = useState(0);
 	const [amount, setAmount] = useState();
@@ -66,6 +67,8 @@ const FundingPage = () => {
 		setPaymentDone(paymentDone + 1);
 	}
 	useSuccessCloseHandler(paymentSuccess);
+
+	useWhoWeAreAnchor(props, whoWeAreRef);
 
 	const { statsData } = FundingSelectors();
 
@@ -201,7 +204,7 @@ const FundingPage = () => {
 						</TabPanel>
 					</SC.PaymentWrapper>
 				</SC.InputsWrapper>
-				<SC.TeamMembersWrapper>
+				<SC.TeamMembersWrapper ref={whoWeAreRef}>
 					<SC.SectionTitleWithHorizontalDividersWrapper>
 						<Divider orientation="horizontal"/>
 						<SC.SectionTitle large>מי אנחנו</SC.SectionTitle>

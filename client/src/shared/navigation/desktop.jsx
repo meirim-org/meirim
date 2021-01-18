@@ -60,7 +60,17 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										)}
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-about" to="/about/">
+										<SC.StyledLink
+											id="nav-bar-about"
+											to={{
+												pathname: '/funding/',
+												hash: 'who-we-are'
+											}}
+											isActive={(match, location) =>
+												['/funding', '/funding/'].indexOf(location.pathname) > -1 &&
+												location.hash === '#who-we-are'
+											}
+										>
 											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
