@@ -29,8 +29,8 @@ const StyledLink = withTheme(styled(RouterLink)`
 
 `);
 
-const Link = ({ id, text, fontWeight, onClick, url, textDecoration }) => (
-	<StyledLink id={id} to={url} fontWeight={fontWeight} onClick={onClick} textDecoration={textDecoration}>{text}</StyledLink>
+const Link = ({ id, text, fontWeight, onClick, url, textDecoration, ...other }) => (
+	<StyledLink id={id} to={url} fontWeight={fontWeight} onClick={onClick} textDecoration={textDecoration} {...other}>{text}</StyledLink>
 );
 
 Link.defaultProps = {
