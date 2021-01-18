@@ -29,5 +29,9 @@ html body {
 }
 
 .leaflet-top, .leaflet-bottom {
-    z-index: 1;
+  z-index: 1;
+}
+
+#plans-search-input {
+  margin-top: 1em;
 }
