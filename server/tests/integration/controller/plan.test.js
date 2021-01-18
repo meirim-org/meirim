@@ -33,6 +33,16 @@ describe('Plan controller', function() {
 				rating: 2,
 			}
 		};
+
+		const req2 = {
+			session: {
+				person: {
+					id: 1,
+					admin: 1
+				}
+			}
+		};
+
 		const { attributes } = await PlanController.create(req);
 		expect(attributes.OBJECTID).to.eql(req.body.OBJECTID);
 		expect(attributes.PLAN_COUNTY_NAME).to.eql(req.body.PLAN_COUNTY_NAME);
@@ -43,12 +53,12 @@ describe('Plan controller', function() {
 		expect(attributes.areaChanges).to.eql(req.body.areaChanges);
 		expect(attributes.rating).to.eql(req.body.rating);
 		expect(attributes.sent).to.eql(0);
-		const userPlansBeforeSubscribition = await SubscribtionController.getUserPlans({ body: { userId: 1 } });
+		const userPlansBeforeSubscribition = await SubscribtionController.getUserPlans(req2);
 		expect(userPlansBeforeSubscribition).to.eql([]);
 		await SubscribtionController.subscribe({ params: { id: attributes.id }, session: { person : { id: 1, admin: 1 } } });
 		const secondPlan = await PlanController.create(req);
 		await SubscribtionController.subscribe({ params: { id:  secondPlan.attributes.id }, session: { person : { id: 1, admin: 1 } } });
-		const userPlansAfterSubscribition = await SubscribtionController.getUserPlans({ body: { userId: 1 } });
+		const userPlansAfterSubscribition = await SubscribtionController.getUserPlans(req2);
 		expect(userPlansAfterSubscribition.length).to.eql(2);
 	});
 });
