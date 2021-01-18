@@ -48,6 +48,7 @@ const Button = styled.button`
     padding: 5px 0;
     color: #FFFFFF;
     line-height: 1;
+    cursor: pointer;
 
     @media ${device.tablet} {
         margin-right: 0;
@@ -119,8 +120,10 @@ export default function SearchBox() {
     }
 
     async function onGoToPlansClick() {
-        const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
-        window.location.href = `/plans?loc=${lat},${lng}`;
+        if (placeId) {
+            const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
+            window.location.href = `/plans?loc=${lat},${lng}`;
+        }
     }
 
 	useEffect(()=>{
