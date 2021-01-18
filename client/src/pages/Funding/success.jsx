@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from '../../shared'
 import * as SC from './style';
-import Icon from '../../assets/svg/successIcon'
 import { saveTransaction } from './controller';
 import { startUsing } from './constants'
 import { successPageCloseMessage, successPageTransactionCompleteMessage } from './constants';
