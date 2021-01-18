@@ -162,7 +162,8 @@ class Plans extends Component {
         return (
             <Wrapper>
                 <div className="container">
-                    <Autocomplete  classes=""
+                    <Autocomplete classes=""
+                        id="plans-search-input"
                         placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
