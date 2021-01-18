@@ -47,7 +47,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 			</SC.ButtonWrapper>
 			<SC.TermsOfUseWrapper>
 				<SC.TermsOfUse>בלחיצה על ״הרשמה למעירים״ הנך מאשר/ת את </SC.TermsOfUse>
-				<Link id="register-terms-of-use" text="תנאי השימוש" fontWeight="700"/>
+				<Link id="register-terms-of-use" text="תנאי השימוש" url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 			</SC.TermsOfUseWrapper>
 		</SC.MainWrapper>
 	);
