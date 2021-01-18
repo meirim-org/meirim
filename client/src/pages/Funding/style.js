@@ -46,7 +46,7 @@ export const PaymentWrapper = styled.div`
 
 export const PaymnetModalWrapper = styled.div`
   width:100%;
-  height: 90vh;
+  height: 80vh;
 
   .payment-popup{
     width:100%;
