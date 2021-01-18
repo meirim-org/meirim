@@ -10,13 +10,11 @@ import { Button, Row, Menu } from 'shared';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
-import { UserSelectors } from 'redux/selectors';
 import { useTheme } from '@material-ui/styles';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
-	const { user: { id: userId } } = UserSelectors();
 	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
 	const handleDropDownClick = (event) => {
@@ -44,7 +42,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										<SC.StyledLink 
 											id="nav-bar-plans"
 											to="/plans/"
-											isActive={(match, location) => location.pathname.includes('plans')}
+											isActive={(match, location) => location.pathname.includes('/plans')}
 										>
 											{t.plans}
 										</SC.StyledLink>
@@ -78,7 +76,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 									<SC.MyPlansButton
 										component={Link} 
-										to={`/user/${userId}/plans`}
+										to={`/my-plans/`}
 										startIcon={<StarIcon />}
 										aria-label={t.myPlans}
 									>

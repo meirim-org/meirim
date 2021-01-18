@@ -21,7 +21,11 @@ class PlanPersonController extends Controller {
 	}
 
 	async getUserPlans(req) {
-		const userPlanIds = await PlanPerson.getPlansByUserId(req.body.userId);
+		if (!req.session.person) {
+			throw new Exception.NotAllowed('Must be logged in');
+		}
+
+		const userPlanIds = await PlanPerson.getPlansByUserId(req.session.person.id);
 		if(!userPlanIds || !userPlanIds.models) return [];
 		const plans = await Promise.all(userPlanIds.models.map(({ attributes }) => Plan.fetchByPlanID(attributes.plan_id) ));
 
