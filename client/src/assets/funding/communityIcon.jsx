@@ -5,7 +5,6 @@ function CommunityIcon(props) {
 		// eslint-disable-next-line react/jsx-props-no-spreading
 		<svg width="136" height="136" viewBox="0 0 136 136" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<g clip-path="url(#clip0)">
-		<g filter="url(#filter0_d)">
 		<g filter="url(#filter1_dddd)">
 		<rect x="63.082" y="34" width="3.00521" height="68" fill="white"/>
 		</g>
@@ -46,7 +45,6 @@ function CommunityIcon(props) {
 		<ellipse cx="109.071" cy="67.9099" rx="10.9288" ry="10.9099" fill="#8F5DE2"/>
 		<rect x="108.127" y="62.4771" width="2.00347" height="10" rx="1.00174" fill="white"/>
 		<rect x="114.137" y="66.4771" width="2" height="10.0174" rx="1" transform="rotate(90 114.137 66.4771)" fill="white"/>
-		</g>
 		</g>
 		<defs>
 		<filter id="filter0_d" x="6" y="18" width="124" height="108" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
