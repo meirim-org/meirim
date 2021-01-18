@@ -48,9 +48,16 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
-											{t.alerts}
-										</SC.StyledLink>
+										{isAuthenticated && (
+											<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
+												{t.alerts}
+											</SC.StyledLink>
+										)}
+										{!isAuthenticated && (
+											<SC.StyledLink id="nav-bar-alerts" to="#" isActive={() => false} onClick={() => { dispatch(openModal({ modalType: 'login' })); }}>
+												{t.alerts}
+											</SC.StyledLink>
+										)}
 									</Box>
 									<Box px={2}>
 										<SC.StyledLink id="nav-bar-about" to="/about/">
