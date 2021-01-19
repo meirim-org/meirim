@@ -38,8 +38,4 @@ export const fundingEndGoal = 100000;
 
 export const fundingYoutubeVideoId = 'iDzws2bUs4M';
 
-export const successPageCloseMessage = 'success-page-close';
 export const successPageTransactionCompleteMessage = 'success-page-transaction-complete';
-
-export const thanksForTheSupport='תודה על התמיכה!'
-export const startUsing = 'התרומה התקבלה בהצלחה. אתם.ן מוזמנות להכנס לעמוד התוכניות שלנו, לגלות מה בונים לכם.ן ליד הבית, לשתף עם  החברים והחברות באזור ולהשפיע על עתיד מקום המגורים שלכם.ן'
