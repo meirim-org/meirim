@@ -64,7 +64,7 @@ const H1 = styled.h1`
         padding-right: 0;
         margin-top: 0;
         margin-bottom: 16px;
-        background-color: #FCF9FF;
+        background-color: rgb(252 249 255 / 85%);
         display: inline;
     }
 `;
@@ -85,7 +85,7 @@ const Paragraph = styled(Typography)`
         max-width: 495px;
         font-size: 20px;
         padding-right: 0;
-        background-color: #FCF9FF;
+        background-color: rgb(252 249 255 / 85%);
     }
 
 `;
