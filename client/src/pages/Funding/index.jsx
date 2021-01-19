@@ -60,7 +60,7 @@ const FundingPage = ({ ...props }) => {
 	useStatsDataHandler(paymentDone);
 
 	function paymentSuccess() {
-		setAmount(0);
+		setAmount(null);
 		setOtherAmount(0);
 		setTermsAccepted(false);
 		setTriedSubmit(false);
