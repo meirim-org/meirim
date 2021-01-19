@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { getFundingStats } from './controller';
 import { setStatsData } from 'redux/funding/slice';
+import { openModal } from 'redux/modal/slice';
 import { successPageTransactionCompleteMessage } from './constants';
 
 export const useStatsDataHandler = (paymentDone) => {
@@ -19,11 +20,16 @@ export const useStatsDataHandler = (paymentDone) => {
 };
 
 export const useSuccessCloseHandler = (paymentSuccessCb) => {
+	const dispatch = useDispatch();
+
 	const handleMessage = useCallback(event => {
 		try {
 			const data = JSON.parse(event.data);
 
 			if (data.message === successPageTransactionCompleteMessage) {
+				// open the thank you modal window instead of the payment one
+				dispatch(openModal({ modalType: 'thankYou' }));
+
 				// refresh funding stats
 				paymentSuccessCb();
 			}
@@ -34,7 +40,7 @@ export const useSuccessCloseHandler = (paymentSuccessCb) => {
 				throw err;
 			}
 		}
-	}, [paymentSuccessCb]);
+	}, [dispatch, paymentSuccessCb]);
 
 	useEffect(() => {
 		window.addEventListener('message', handleMessage);
