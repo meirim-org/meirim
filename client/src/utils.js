@@ -22,4 +22,8 @@ export const tabIsActive = (tab, pathData) => {
 	return pathName.includes(tab);
 };
 
-export const scrollToTop = () => window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+export const scrollToTop = () => {
+	// use setTimeout since the page is not rendered when we get here and scrolls to
+	// top end up being scrolls to someplace mid-page
+	setTimeout(() => window.scroll({ top: 0, left: 0, behavior: 'smooth' }), 100);
+};
