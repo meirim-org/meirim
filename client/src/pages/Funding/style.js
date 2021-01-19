@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Input as MuiInput } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 import { device } from '../../style';
+import successBackgroundImage from '../../assets/funding/man.svg';
+import SuccessIcon from '../../assets/svg/successIcon';
 
 export const HeaderWrapper = styled.div`
   background-color: white;
@@ -110,22 +112,6 @@ export const CentredTitle = styled.h1`
     margin-bottom: 1em;
   }
 `;
-export const CentredThankYouTitle = styled.h1`
-  font-weight: 400;
-  text-align: center;
-  font-family: Assistant !important; 
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  margin-bottom: 1.3em;
-  letter-spacing: normal;
-  color: #29244A;
-  @media ${device.tablet} {
-    font-size: 2em;
-    font-weight: 600;
-    margin-bottom: 1em;
-  }
-`;
 
 export const SubTitle = styled.h2`
   font-family: Assistant !important;
@@ -160,45 +146,10 @@ export const CentredSubTitle = styled.h2`
    }
 `;
 
-export const CentredThankYouSubTitle = styled.h2`
-  font-family: Assistant !important;
-  font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  line-height: 1.5;
-  text-align: center;
-  color: #000000;
-  margin-bottom: 0;
-   >  span {
-     font-family: Assistant !important;
-   }
-   width:400px;
-   position:absolute;
-   left:70px;
-`;
-
 export const CentredWrapper = styled.div`
   max-width: 80vw;
   max-height: 90vh;
   overflow-y: auto;
-`;
-
-export const SucessPaymeBackground = styled.div`
- width:595px;
- height:595px;
- position: relative;
-
- .layer{
-  position: absolute;
-  left: 0px;
- }
-
- .layer.center{
-  position: absolute;
-  left: 0px;
- }
 `;
 
 export const ThirdTitle = styled.h1`
@@ -686,5 +637,88 @@ export const OtherAmountInput = withTheme(styled(MuiInput)`
 
   .MuiInputBase-input:focus::placeholder {
     opacity: 0;
+  }
+`);
+
+export const SuccessWindowWrapper = styled.div`
+  background-image: url(${successBackgroundImage});
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 10%;
+
+  min-height: 420px;
+  width: 95vw;
+
+  @media ${device.laptop} {
+    min-width: 30vw;
+    width: 500px;
+  }
+`;
+
+export const PaymentSuccessIcon = styled(SuccessIcon)`
+  width: 100%;
+`;
+
+export const CentredThankYouTitle = styled.h1`
+  font-weight: 400;
+  text-align: center;
+  font-family: Assistant !important;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  margin-bottom: 1.3em;
+  letter-spacing: normal;
+  color: #29244A;
+  margin: 0.5em;
+`;
+
+export const CentredThankYouSubTitle = styled.h2`
+  font-family: Assistant !important;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 1.5;
+  text-align: center;
+  color: #000000;
+  font-size: 18px;
+  width: 60%;
+  margin: auto;
+
+   >  span {
+     font-family: Assistant !important;
+   }
+`;
+
+export const SuccessCloseWrapper = withTheme(styled.div`
+  width: 100%;
+  margin-top: 4em;
+
+  a {
+    font-size: 18px;
+    display: block;
+    width: 100%;
+    margin-top: 1em;
+  }
+
+  button {
+    font-size: 18px;
+    display: block;
+    margin: 0.5em auto;
+    padding: 0.03rem 0.6rem !important;
+    min-height: 1em;
+    width: 8em;
+    border-radius: 12px;
+
+    span {
+      text-align: center;
+    }
+  }
+
+  #button-home {
+    color: ${props => props.theme.palette.primary['main']} !important;
+    background-color: transparent !important;
   }
 `);
