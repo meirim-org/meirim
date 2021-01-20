@@ -36,6 +36,6 @@ export const roadmap = [ {
 
 export const fundingEndGoal = 100000;
 
-export const fundingYoutubeVideoId = 'iDzws2bUs4M';
+export const fundingYoutubeVideoId = 'e1Q7zj_2f0I';
 
 export const successPageTransactionCompleteMessage = 'success-page-transaction-complete';
