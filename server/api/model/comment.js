@@ -1,16 +1,26 @@
 const Checkit = require('checkit');
+const merge = require('lodash/merge');
 const Model = require('./base_model');
 const Person = require('./person');
 const Exception = require('./exception');
+const CommentPerson = require('./comment_person');
 
 class Comment extends Model {
 	get rules () {
 		return {
 			person_id: ['required', 'integer'],
 			content: ['required', 'string'],
+			type: ['string', function(val) {
+				const validTypes = ['improvement', 'review', 'general'];
+				if(validTypes.indexOf(val) < 0) return false;
+				return true;
+			}],
 			plan_id: ['required', 'integer'],
-			parent_id: ['required', 'integer']
+			parent_id: 'integer',
 		};
+	}
+	get hasTimestamps() {
+		return true;
 	}
 
 	get tableName () {
@@ -41,11 +51,12 @@ class Comment extends Model {
 		return Promise.resolve(this);
 	}
 
-	static byPlan (planId) {
+
+	static  async byPlan (planId) {
 		if (!planId) {
 			throw new Exception.BadRequest('Must provide planId');
 		}
-		return this.query('where', 'plan_id', '=', planId)
+		const result = await this.query('where', 'plan_id', '=', planId)
 			.query((qb) => {
 				qb.orderBy('id', 'DESC');
 			})
@@ -53,11 +64,17 @@ class Comment extends Model {
 				withRelated: [
 					{
 						person (qb) {
-							qb.column('id', 'alias');
+							qb.column('id', 'name');
 						}
 					}
 				]
 			});
+		const res = await Promise.all(result.models.map(async m => {
+			const likes = await CommentPerson.getLikesNumber(m.attributes.id );
+			return(merge(m, { attributes:{ likes } }));
+		}));
+
+		return res;
 	}
 
 	static canCreate (session) {
@@ -69,3 +86,4 @@ class Comment extends Model {
 }
 
 module.exports = Comment;
+

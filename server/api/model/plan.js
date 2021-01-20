@@ -79,7 +79,32 @@ class Plan extends Model {
 		this.on('created', this._created, this);
 		this.on('updated', this._updated, this);
 		this.on('saving', this._saving, this);
+		this.on('creating', this._creating, this);
+		this.on('updating', this._updating, this);
 		super.initialize();
+	}
+
+	_creating (model) {
+		return new Promise((resolve) => {
+			// set the geometry's centroid using ST_Centroid function
+			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
+			resolve();
+		});
+	}
+
+	_updating (model, attrs) {
+		return new Promise((resolve) => {
+			// if the geometry is being updated update the centroid as well,
+			// otherwise never update the centroid since the value is not
+			// parsed and formatted like the geometry value is
+			if (attrs.geom !== undefined) {
+				model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
+			} else {
+				model.unset('geom_centroid');
+			}
+
+			resolve();
+		});
 	}
 
 	_saving () {
@@ -183,7 +208,7 @@ class Plan extends Model {
 		return plan.save();
 	}
 
-	static async setMavatData (plan, mavatData, oldPlan = null) {
+	static async setMavatData (plan, mavatData) {
 		const addPlanIdToArray = (chart) => {
 			chart.forEach(row => { row.plan_id = plan.id; });
 		};
@@ -279,6 +304,8 @@ class Plan extends Model {
 				}
 			}
 		});
+
+		return plan;
 	}
 
 	static getUnsentPlans (userOptions) {

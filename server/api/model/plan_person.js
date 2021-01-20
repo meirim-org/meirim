@@ -13,7 +13,7 @@ class PlanPerson extends Model {
 	}
 
 	static subscribe (person_id, plan_id) {
-		return this.forge({
+		return this.where({
 			person_id,
 			plan_id
 		})
@@ -23,7 +23,7 @@ class PlanPerson extends Model {
 				if (existingSubscription && existingSubscription.length > 0) {
 					return Promise.resolve(existingSubscription.models[0]);
 				}
-				return this.forge({
+				return new PlanPerson({
 					person_id,
 					plan_id
 				}).save();
@@ -36,5 +36,12 @@ class PlanPerson extends Model {
 			.destroy()
 			.then(() => true);
 	}
+
+	static getPlansByUserId (person_id) {
+		return this.where({ person_id })
+			.fetchAll()
+			.then(existingSubscription => existingSubscription);
+	}
+
 }
 module.exports = PlanPerson;

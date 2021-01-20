@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { openModal } from 'redux/modal/slice'
+import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 import { TextInput, Button, Link } from 'shared';
 import * as SC from './style';
 
 const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const { name, email, password } = values;
-	const { nameError, emailError, passwordError } = errors
+	const { nameError, emailError, passwordError } = errors;
 
 	return (
 		<SC.MainWrapper>
@@ -18,7 +18,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
 					<SC.SubTitle>
 						<span>כבר רשומים? </span>
-						<Link id="register-signin-link" text="התחברות" onClick={() => dispatch(openModal({ modalType: 'login' }))} bold={'700'} />
+						<Link id="register-signin-link" text="התחברות" onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>

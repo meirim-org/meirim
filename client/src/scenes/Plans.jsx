@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import _ from "lodash";
-
-import Typography from "@material-ui/core/Typography";
-import GridList from "@material-ui/core/GridList";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import {Grid} from "@material-ui/core";
+import {PlanCard} from 'shared';
 import InfiniteScroll from "react-infinite-scroll-component";
-
 import api from "../services/api";
 import locationAutocompleteApi from "../services/location-autocomplete";
-
 import Wrapper from "../components/Wrapper";
-import Mapa from "../components/Mapa";
-import UnsafeRender from "../components/UnsafeRender";
 import Autocomplete from "../components/AutoCompleteInput";
-
 import t from "../locale/he_IL";
 import "./Plans.css";
 
@@ -41,19 +30,23 @@ class Plans extends Component {
     }
 
     handleAddressSubmit(address) {
+        // reset current displayed plans
         this.setState({
             plans: [],
             pageNumber:1,
-            searchPoint:{}
+            searchPoint: {}
         });
 
-        // finding the address from the list 
-        let placeId = this.findPlaceIdFromSuggestion(address);
+        // get selected place id
+        const placeId = this.findPlaceIdFromSuggestion(address);
+
+        // get place location
         locationAutocompleteApi.getPlaceLocation(placeId)
-        .then(location=>{
-            this.setState({searchPoint:location})
-            this.loadPlans(1, location);
-        }).catch(error => this.setState({ error: "שגיאה בחיפוש לפי כתובת" }));
+            .then(location => {
+                // this will trigger a component update which will identify the new
+                // query string and initiate a location search
+                this.props.history.push(`${window.location.pathname}?loc=${location.lat},${location.lng}`);
+            }).catch(error => this.setState({ error: "שגיאה בחיפוש לפי כתובת" }));
     }
 
     findPlaceIdFromSuggestion(string){
@@ -96,7 +89,7 @@ class Plans extends Component {
 
         api.get(
             `/plan/?page=${pageNumber}`+
-            (point ? `&distancePoint=${point.lat},${point.lng}` : "")
+            (point ? `&distancePoint=${point.lng},${point.lat}` : "")
             
         )
             .then(result => {
@@ -115,11 +108,52 @@ class Plans extends Component {
         this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
     }
 
+    loadQsSearchParams() {
+        // read query string
+        const qs = new URLSearchParams(this.props.location.search);
+
+        let searchLocation;
+
+        // load "loc" param and make sure it is the right format
+        if (qs.get('loc')) {
+            const locParts = qs.get('loc').split(',').map(i => parseFloat(i));
+            if (locParts.length === 2 && !isNaN(locParts[0]) && !isNaN(locParts[1])) {
+                searchLocation = {lat: locParts[0], lng: locParts[1]};
+            }
+        }
+
+        if (searchLocation !== undefined) {
+            // reset plans in case this was a navigation
+            this.setState({
+                plans: [],
+                pageNumber:1,
+                searchPoint: searchLocation
+            });
+
+            // load plans by params
+            this.loadPlans(1, searchLocation);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     componentDidMount() {
         // init location service
         locationAutocompleteApi.init();
 
-        this.loadPlans(this.state.pageNumber);
+        // if there is no valid query string params to search by run default search
+        if (!this.loadQsSearchParams()) {
+            this.loadPlans(this.state.pageNumber);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        // if the query string has changed load it into a search
+        if (this.props.location.search !== prevProps.location.search) {
+            this.loadQsSearchParams();
+        }
     }
 
     render() {
@@ -128,60 +162,19 @@ class Plans extends Component {
         return (
             <Wrapper>
                 <div className="container">
-                    <Autocomplete  classes=""
+                    <Autocomplete classes=""
+                        id="plans-search-input"
                         placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
                         onInputChange={this.handleInputChange.bind(this)}
                     />
                     <br />
-                    <GridList
-                        cellHeight={500}
-                        cellWidth={335}
-                        className="gridList"
-                        cols={1}
-                    >
+                    <Grid container spacing={4}>
                         {plans.map(plan => (
-                            <Card className="card" raised={true} key={plan.id}>
-                                <Link
-                                    className="card-link"
-                                    to={`/plan/${plan.id}`}
-                                >
-                                    <CardActionArea className="card-action-area">
-                                        <CardMedia
-                                            className="card-media"
-                                            title={plan.PL_NUMBER}
-                                        >
-                                            <Mapa
-                                                geom={plan.geom}
-                                                hideZoom={true}
-                                                disableInteractions={true}
-                                                title={plan.PLAN_COUNTY_NAME}
-                                                title2={plan.distance?` ${Math.ceil(plan.distance/5)*5} מ׳ מהכתובת`:'' }
-                                            />
-                                        </CardMedia>
-                                        <CardContent className="card-content">
-                                            <Typography
-                                                gutterBottom
-                                                variant="h5"
-                                                component="h2"
-                                                color="textPrimary"
-                                            >
-                                                {plan.PL_NAME}
-                                            </Typography>
-                                            <Typography component="p" color="textPrimary">
-                                                <UnsafeRender
-                                                    html={
-                                                        plan.main_details_from_mavat
-                                                    }
-                                                />
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Link>
-                            </Card>
+                            <PlanCard plan={plan} key={plan.id}/>
                         ))}
-                    </GridList>
+                    </Grid>
 
                     {error && <div className="error-container">{error}</div>}
                     {noData && <div>אין כאן כלום</div>}

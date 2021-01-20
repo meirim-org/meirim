@@ -6,9 +6,13 @@ import PropTypes from 'prop-types';
 import Login from 'pages/Login'
 import Register from 'pages/Register/'
 import EmailVerified from 'pages/Register/emailVerified'
+import Payment from 'pages/Funding/modals/payment'
+import TermsOfPayment from 'pages/Funding/modals/termsOfPayment';
+import ThankYou from 'pages/Funding/modals/thankYou';
 import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
+import SharePlanView from 'pages/Plan/common/Views/sharePlan';
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -44,11 +48,15 @@ const modalComponents = {
 	login: Login,
 	register: Register,
 	emailVerified: EmailVerified,
-}
+	share: SharePlanView,
+	payment: Payment,
+	termsOfPayment: TermsOfPayment,
+	thankYou: ThankYou
+};
 
 const Modal = ({ id }) => {
-	const { open, modalType, modalProps } = ModalSelectors()
-	const ModalChildren = modalComponents[modalType]
+	const { open, modalType, modalProps } = ModalSelectors();
+	const ModalChildren = modalComponents[modalType];
 
 	return (
 		<ModalWrapper id={`wrapper-${id}`}>

@@ -2,36 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MUIButton from '@material-ui/core/Button';
 import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 
-const StyledButton = styled(MUIButton)`
+const StyledButton = withTheme(styled(MUIButton)`
 	font-size: 16px !important;
 	font-stretch: normal;
 	line-height: 1.5;
-	letter-spacing: normal;
+	letter-spacing: normal
 	text-align: center; 
-    color: #ffffff !important;
-    background-color: #652dd0 !important;
+    color: ${props => props.theme.palette.white} !important;
+    background-color: ${props => props.theme.palette.primary.main} !important;
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
-    border: 1px solid #652dd0 !important;
+    border: 1px solid ${props => props.theme.palette.primary.main} !important;
     min-width: auto !important;
     
     .MuiButton-label  {
     	font-family: Assistant !important;
-    }
+        text-transform: none !important;
+    }    
+    
     &:hover {
-      background-color: #4d20b2 !important;
+      background-color: ${props => props.theme.palette.primary['600']} !important;
     }
     &:focus {
        outline: none;
     }
     
-    ${({ simple }) => simple && `
+    ${({ simple, theme }) => simple && `
         font-weight: 600 !important;
-        color: #652dd0 !important;
+        color: ${theme.palette.primary.main} !important;
         border: none !important;
-        background-color: #ffffff !important;
+        background-color: transparent !important;
         min-height: auto !important;
         padding: 0 !important;
         transition: 0.3s !important;
@@ -39,16 +43,16 @@ const StyledButton = styled(MUIButton)`
             line-height: 1 !important;
         }
        &:hover {
-          color: #8f5de2 !important;
+          color: ${theme.palette.primary['400']} !important;
           background-color: transparent !important;
        }
     `}
-    
-    ${({ altcolor }) => altcolor && `
-        color: #652dd0 !important;
-        background-color: #ffffff !important;
+
+    ${({ altcolor, theme }) => altcolor && `
+        color: ${theme.palette.primary.main} !important;
+        background-color: ${theme.palette.white} !important;
        &:hover {
-          background-color: rgba(101, 45, 208, 0.04) !important;
+          background-color: ${theme.palette.primary['custom']} !important;
        }
     `}
        
@@ -59,78 +63,139 @@ const StyledButton = styled(MUIButton)`
         min-height: 1em;
     `}
     
+    ${({ extrasmall }) => extrasmall && `
+        font-weight: 400 !important;
+        font-size: 14px !important;
+        min-height: 1.374rem;
+        padding: 0.03rem 0.45rem !important;
+        border-radius: 4px !important;
+        > span {
+            line-height: 1;
+        }
+`}
+
     ${({ fontWeight }) => fontWeight && `
         font-weight: ${fontWeight} !important;
     `}
-    
-    ${({ textcolor }) => textcolor && `
-        color: ${textcolor} !important;
-    `}    
-    
-    ${({ textcolor }) => textcolor && `
-        color: ${textcolor} !important;
-    `}
-    
-    
-     ${({ textcolor }) => textcolor && `
-        color: ${textcolor} !important;
-    `}
+
     
     ${({ iconbefore, iconafter }) => (iconbefore || iconafter) && `
        .MuiSvgIcon-root {
              margin: 0 .25rem;
         }
-    `}
+    `}    
+    
+    ${({ active, theme }) => active && `
+        background-color: ${theme.palette.primary['custom']} !important;
+    `}    
+    
+    ${({ disabled, theme }) => disabled && `
+        color: ${theme.palette.gray.main} !important;
+    `}    
+    
+    ${({ textcolor }) => textcolor && `
+        color: ${textcolor} !important;
+    `}   
 
-`;
+    ${({ fontSize }) => fontSize && `
+        font-size: ${fontSize} !important;
+    `}   
+
+    ${({ textDecoration }) => textDecoration && `
+        text-decoration: ${textDecoration} !important;
+    `}   
+    
+    ${({ width }) => width && `
+        width: ${width} !important;
+    `}   
+    
+`);
 
 const Button = ({
 	text,
 	id,
+	to,
+	component,
+	href,
+	target,
 	onClick,
 	small,
+	extrasmall,
 	altColor,
 	simple,
 	fontWeight,
-	textColor,
+	textcolor,
+	textDecoration,
+	fontSize,
 	iconBefore,
-	iconAfter
-}) => (
-	<StyledButton
-		id={id}
-		small={small ? '1' : ''}
-		onClick={onClick}
-		altcolor={altColor ? '1' : ''}
-		simple={simple ? '1' : ''}
-		fontWeight={fontWeight}
-		disableRipple={simple}
-		textcolor = {textColor ? '1' : ''}
-		iconbefore={iconBefore ? '1' : ''}
-		iconafter={iconAfter}
-	>
-		{iconBefore}
-		{text}
-		{iconAfter}
-	</StyledButton>
-);
+	iconAfter,
+	active,
+	disabled,
+	width
+}) => {
+	const theme = useTheme();
+
+	return (
+		<StyledButton
+			id={id}
+			to={to}
+			component={component}
+			href={href}
+			target={target}
+			small={small ? '1' : ''}
+			extrasmall={extrasmall ? '1' : ''}
+			onClick={onClick}
+			altcolor={altColor ? '1' : ''}
+			simple={simple ? '1' : ''}
+			fontWeight={fontWeight}
+			disableRipple={simple}
+			textcolor={textcolor}
+			fontSize={fontSize}
+			textDecoration={textDecoration}
+			iconbefore={iconBefore}
+			iconafter={iconAfter}
+			active={active ? 1 : ''}
+			disabled={disabled}
+			theme={theme}
+			width={width}
+		>
+			{iconBefore}
+			{text}
+			{iconAfter}
+		</StyledButton>
+	);
+};
 
 Button.defaultProps = {
 	small: false,
 	altColor: false,
-	simple: false
-}
+	simple: false,
+	extrasmall: false,
+	disabled: false,
+	active: false,
+};
 
 Button.propTypes = {
 	id: PropTypes.string,
 	text: PropTypes.string,
-	onClick: PropTypes.func.isRequired,
+	to: PropTypes.string,
+	component: PropTypes.any,
+	href: PropTypes.string,
+	target: PropTypes.string,
+	onClick: PropTypes.func,
 	small: PropTypes.bool,
+	extrasmall: PropTypes.bool,
 	altColor: PropTypes.bool,
 	simple: PropTypes.bool,
 	fontWeight: PropTypes.string,
-	textColor: PropTypes.string,
+	textcolor: PropTypes.string,
+	fontSize: PropTypes.string,
+	textDecoration: PropTypes.string,
 	iconBefore: PropTypes.object,
-	iconAfter: PropTypes.object
+	iconAfter: PropTypes.object,
+	active: PropTypes.bool,
+	disabled: PropTypes.bool,
+	width: PropTypes.string,
 };
 
 export default Button;
