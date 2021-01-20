@@ -26,9 +26,9 @@ const Wrapper = styled.div`
 const Title = styled.p`
     color: #ffffff;
     text-align: right;
-    font-size: 24px;
-    line-height: 28px;
-    margin-bottom: 28px;
+    font-size: 22px;
+    line-height: 22px;
+    margin-bottom: 22px;
 
     @media ${device.tablet} {
         font-size: 28px;
@@ -89,6 +89,10 @@ const InputWrapper = styled.div`
         flex-direction: row;
         justify-content: space-between;
     }
+
+    .text{
+        font-family:Assistant;
+    }
 `;
 
 export default function SearchBox() {
@@ -140,7 +144,7 @@ export default function SearchBox() {
 						inputSuggestions={addresses}
                         onInputChange={onInputChange}
                         onFilterChange={onFilterChange}
-						classes=""
+						classes={{inputRoot:'text'}}
 					/>
 				</AutocompleteWrapper>
 				<Button type="button" onClick={onGoToPlansClick}>צפיה בתוכניות</Button>
