@@ -45,6 +45,7 @@ function renderSuggestion({
       component="div"
       style={{
         fontWeight: isSelected ? 500 : 400,
+        fontFamily:'Assistant'
       }}
     >
       {suggestion.label}
