@@ -31,9 +31,9 @@ const Title = styled.p`
     margin-bottom: 28px;
 
     @media ${device.tablet} {
-        font-size: 32px;
-        line-height: 32px;
-        margin-bottom: 32px;
+        font-size: 28px;
+        line-height: 28px;
+        margin-bottom: 28px;
     }
 `;
 
@@ -132,7 +132,7 @@ export default function SearchBox() {
 
 	return (
 		<Wrapper>
-			<Title>סקרנים מה בונים לכם ליד הבית?</Title>
+			<Title>סקרנים לדעת מה בונים לכם ליד הבית?</Title>
 			<InputWrapper>
 				<AutocompleteWrapper>
 					<Autocomplete 
