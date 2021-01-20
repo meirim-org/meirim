@@ -5,6 +5,7 @@ import {
 } from '../../shared';
 import * as SC from './style';
 import { personTypes } from './constants';
+import { AddressInput } from 'shared';
 
 const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 	const { address, type, aboutme } = values;
@@ -16,14 +17,11 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 			</SC.Titles>
 			<SC.InputsWrapper>
 				<SC.InputWrapper>
-					<TextInput
+					<AddressInput 
 						id="register-address-input"
-						name="adress"
-						label="כתובת"
-						type="text"
-						value={address}
-						onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })}
-						helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" />
+						label={"כתובת"}
+						helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" 
+					/>
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<Dropdown
