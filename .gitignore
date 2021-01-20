@@ -12,7 +12,4 @@ client/cypress/screenshots/
 server/config/local.json
 server/api/lib/mavat/tmp/tmpPDF.pdf
 build
-<<<<<<< HEAD
-=======
 .vscode
->>>>>>> 36fc96363737afaf47781351daa6a8b3cb57a73f

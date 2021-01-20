@@ -26,7 +26,7 @@ export const roadmap = [ {
 	id: 'develop-map',
 	title: 'לפתח את המפה של מעירים',
 	desciption: 'בקרוב, כל מה שהולכים לבנות לכם ליד הבית יופיע על גבי מפה, בעזרתה תוכלו לדעת מה מתוכנן באופן ידידותי ונוח.',
-	fundingSVGName:'tree'
+	fundingSVGName:'map'
 },{
 	id: 'expand-community',
 	title: 'הרחבת הקהילה הדיגיטלית',
