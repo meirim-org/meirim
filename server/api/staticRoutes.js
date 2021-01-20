@@ -33,7 +33,16 @@ Router.get(['/plan/:planId', '/plan/:planId/*'], (req, res) => {
 		});
 });
 
-// all non-plan pages have static opengraph tag values
+Router.get('/funding', (req, res) => {
+	res.render('index', {
+		layout: false,
+		isSupportUs: true,
+		pageLocale,
+		pageImage: `${req.protocol}://${req.get('host')}/favicon.ico`
+	});
+});
+
+// all non-plan non-support-us pages have static opengraph tag values
 Router.get('*', (req, res) => {
 	res.render('index', {
 		layout: false,
