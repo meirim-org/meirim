@@ -114,7 +114,7 @@ class AutocompleteInput extends Component {
   }
 
   render() {
-    const { classes, placeholder } = this.props;
+    const { classes, placeholder, id } = this.props;
     const { inputValue, selectedItem } = this.state;
 
     return (
@@ -132,7 +132,7 @@ class AutocompleteInput extends Component {
           selectedItem: selectedItem2,
           highlightedIndex,
         }) => (
-          <div className={classes.container}>
+          <div className={classes.container} id={id}>
             {renderInput({
               fullWidth: true,
               classes,

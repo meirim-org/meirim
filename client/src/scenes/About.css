@@ -1,12 +1,5 @@
 html body {
   direction: rtl;
-  background-color: #f8f8f8;
-}
-
-.container {
-  position: relative;
-  padding-top: 15px;
-  padding-bottom: 35px;
 }
 
 .d-block {

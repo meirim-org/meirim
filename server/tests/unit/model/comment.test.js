@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const {Comment} = require('../../../api/model');
+const { Comment } = require('../../../api/model');
 
 describe('Comment model', function () {
 	let instance;
@@ -16,7 +16,7 @@ describe('Comment model', function () {
 		expect(rules.person_id).to.eql(['required', 'integer']);
 		expect(rules.content).to.eql(['required', 'string']);
 		expect(rules.plan_id).to.eql(['required', 'integer']);
-		expect(rules.parent_id).to.eql(['required', 'integer']);
+		expect(rules.parent_id).to.eql('integer');
 	});
 
 	it('has the right table name', function () {

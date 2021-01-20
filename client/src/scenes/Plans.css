@@ -1,6 +1,5 @@
 html body {
   direction: rtl;
-  background-color: #f8f8f8;
   font-family: Heebo, Arial, Helvetica, sans-serif !important ;
 }
 .MuiTypography-body1-48,
@@ -20,11 +19,6 @@ html body {
   text-align: center;
 }
 
-.card {
-  max-width: 335px;
-  margin: 0 1em 3em 1em;
-}
-
 .card-link {
   height: 100%;
   width: 100%;
@@ -34,10 +28,10 @@ html body {
   height: 100%;
 }
 
-.card-media {
-  height: 60%;
+.leaflet-top, .leaflet-bottom {
+  z-index: 1;
 }
 
-.card-content {
-  height: 40%;
+#plans-search-input {
+  margin-top: 1em;
 }

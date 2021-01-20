@@ -2,18 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { device } from 'style';
 import Wrapper from 'components/Wrapper';
-import { resendActivationLinkToEmail } from './controller'
+import { resendActivationLinkToEmail } from './controller';
+import { withTheme } from '@material-ui/core/styles';
 
-const MainWrapper = styled.div`
+const MainWrapper = withTheme(styled.div`
     width: 100%;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
-    height: calc(100vh - 7rem);
+    height: calc(100vh - ${props => props.theme.navigation.mobile});
     @media ${device.tablet} { 
         grid-template-columns: 55% 45%;
+        height: calc(100vh - ${props => props.theme.navigation.desktop});
     }
-`;
+`);
 
 const ImageCol = styled.div`
     position: relative;
@@ -34,7 +36,6 @@ const ImageCol = styled.div`
         position: absolute;
         top: 0;
         right: 0;
-        background: #f8f8f8;
         height: 110%;
         transform: translateX(100%) rotate(3.5deg);
         transform-origin: top left;
@@ -156,7 +157,7 @@ const Link = styled.span`
 const EmailSent = ({ fullPage = true , ...props }) => {
 	let email = ''
 	if (props && props.location && props.location.state){
-		email = props.location.state
+		email = props.location.state.email
 	}
 	
 	return (
