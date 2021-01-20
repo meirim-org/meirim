@@ -51,12 +51,14 @@ export const useSuccessCloseHandler = (paymentSuccessCb) => {
 	}, [handleMessage]);
 };
 
-export const useWhoWeAreAnchor = (props, whoWeAreRef) => {
+export const useWhoWeAreAnchor = (locationHash, whoWeAreRef) => {
 	useEffect(() => {
-		if (props.location.hash === '#who-we-are') {
+		if (locationHash === '#who-we-are') {
 			// scrollIntoView isn't sufficient since the header hides some of the view
 			const y = whoWeAreRef.current.getBoundingClientRect().top - 100;
-			window.scrollBy({top: y, behavior: 'smooth'})
+			window.scrollBy({top: y, behavior: 'smooth'});
+		} else {
+			window.scroll({top: 0, behavior: 'smooth'});
 		}
-	}, [props, whoWeAreRef]);
+	}, [locationHash, whoWeAreRef]);
 };

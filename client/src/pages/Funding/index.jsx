@@ -68,7 +68,7 @@ const FundingPage = ({ ...props }) => {
 	}
 	useSuccessCloseHandler(paymentSuccess);
 
-	useWhoWeAreAnchor(props, whoWeAreRef);
+	useWhoWeAreAnchor(props.location.hash, whoWeAreRef);
 
 	const { statsData } = FundingSelectors();
 
