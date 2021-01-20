@@ -78,10 +78,9 @@ const FundingPage = ({ ...props }) => {
 				<SC.HeaderWrapper>
 					<SC.Titles>
 						<SC.SubTitleWrapper>
-							<SC.ThirdTitle>{titles.subTitle}</SC.ThirdTitle>
-							<SC.SubTitle>{titles.third}</SC.SubTitle>
+							<SC.ThirdTitle>{titles.subTitle} <br/> {titles.third}</SC.ThirdTitle>
 							<SC.SubTitle style={{'color':'#391695'}}>{titles.fourth} </SC.SubTitle>
-							<SC.SubTitle>{titles.fifth} </SC.SubTitle>
+							{/* <SC.SubTitle>{titles.fifth} </SC.SubTitle> */}
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
@@ -216,7 +215,8 @@ const FundingPage = ({ ...props }) => {
 						</Typography>
 						<br/>
 						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.black}>
-							{t.fundingAboutUs}
+							{/* {t.fundingAboutUs} */}
+							{titles.fifth}
 						</Typography>
 					</SC.AboutUsSection>
 					<TeamMembers/>
