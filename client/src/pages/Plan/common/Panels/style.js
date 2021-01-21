@@ -26,15 +26,22 @@ export const PlanTermWrapper = withTheme(styled.div`
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -.5rem 1rem;
+    margin: 0 -.5rem 0.5rem;
 `;
 
 export const StatusWrapper = styled.div`
-    padding: 0 0.5rem
+    padding: 0 0.5rem;
 `;
 
 export const TypeWrapper = styled.div`
-    padding: 0 0.5rem
+    padding: 0 0.5rem;
+`;
+
+export const LastUpdateDateWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -.5rem 1rem;
+    padding: 0 0.5rem;
 `;
 
 export const UrlWrapper = styled.div``;
