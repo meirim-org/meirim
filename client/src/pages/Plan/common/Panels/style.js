@@ -120,6 +120,10 @@ export const MapWrapper = withTheme(styled.div`
 export const Datalist = styled.ul`
     padding: 0;
     list-style-position: inside;
+
+    .MuiChip-root {
+        height: 26px;
+    }
 `;
 
 
