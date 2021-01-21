@@ -7,6 +7,7 @@ export const HeaderWrapper = styled.div`
   background-color: white;
   text-align: right;
   padding: 1.5em;
+  width: 100%;
 
   @media ${device.laptop} {
     display: inline-flex;
