@@ -14,3 +14,7 @@
 .map-title button {
   font-weight: bolder;
 }
+
+.leaflet-control-container .leaflet-bottom {
+  z-index: 9999;
+}
