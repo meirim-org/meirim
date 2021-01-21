@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import LinkIcon from '@material-ui/icons/Link';
 import CloseIcon from '@material-ui/icons/Close';
+import { device } from 'style';
 
 export const PlanSummaryTitleWrapper = styled.div`
     margin-bottom: .75rem;
@@ -26,7 +27,11 @@ export const PlanTermWrapper = withTheme(styled.div`
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -.5rem 0.5rem;
+    margin: 0 -.5rem;
+
+    @media ${device.tablet} {
+        margin: 0 -.5rem 0.5rem;
+    }
 `;
 
 export const StatusWrapper = styled.div`
