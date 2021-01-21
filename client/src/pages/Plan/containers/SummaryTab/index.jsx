@@ -14,14 +14,14 @@ const SummaryTab = ({ subscribePanel, handleSubscribePanel, isMobile, isTablet }
 		<>
 			<DetailsPanel type={type} status={status} lastUpdate={lastUpdate} url={url}/>
 			<GoalsPanel goalsFromMavat={goalsFromMavat} />
-			<StatsPanel dataArea={dataArea} textArea={textArea} />
-			<HousingUnitPanel dataUnits={dataUnits} />
 			{isMobile() || isTablet()
 				?
 				<MapPanel geom={planData.geom} countyName={countyName}/>
 				:
 				null
 			}
+			<StatsPanel dataArea={dataArea} textArea={textArea} />
+			<HousingUnitPanel dataUnits={dataUnits} />
 			<SubscribePanel
 				subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>
