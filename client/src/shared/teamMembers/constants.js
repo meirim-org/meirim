@@ -22,7 +22,7 @@ export const members = [
 	},
 	{
 		name:` אד' יונתן דורטהיימר`,
-		title:`מייסד ומתכנת`,
+		title:`מייסד`,
 		order:4,
 		photo:'yonatan'
 	},
