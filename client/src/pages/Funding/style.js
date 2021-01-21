@@ -339,10 +339,12 @@ export const RoadmapItemDescription= styled.div`
   }
 `;
 
-export const RoadmapItemIcon= styled.div`
+export const RoadmapItemIcon = styled.div`
   // border: 1px solid #E4E4E4;
   height: 130px;
   margin: 0 0 0 1em;
+  justify-content: center;
+  display: flex;
 
   svg {
     display: block;
