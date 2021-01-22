@@ -9,7 +9,8 @@ const SuccessPayment = ({ ...props }) => {
 			JSON.stringify({
 				error: false,
 				message: successPageTransactionCompleteMessage
-			})
+			}),
+			window.location.origin
 		);
 	};
 
