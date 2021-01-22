@@ -110,7 +110,7 @@ export const CentredSubTitle = styled.h2`
    }
 `;
 
-export const ThirdTitle = styled.h1`
+export const MainTitle = styled.h1`
   font-family: Assistant !important;
   font-weight: bold;
   font-stretch: normal;
@@ -119,7 +119,7 @@ export const ThirdTitle = styled.h1`
   font-size:36px;
   line-height: 1.5;
   color: #270E78;
-  margin-bottom: 0;
+  margin-bottom: 0.5em;
   padding-top: 1em;
    >  span {
      font-family: Assistant !important;
