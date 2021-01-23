@@ -67,6 +67,9 @@ class PlanController extends Controller {
 					Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000/${spatialUnitFactor}))`)
 				];
 			}
+
+			// filter out plans that should not be returned in geo search
+			q.where.geo_search_filter = [false];
 		}
 
 		return super.browse(req, q);

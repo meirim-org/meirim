@@ -27,6 +27,7 @@ describe('Plan model', function() {
 		expect(rules.data).to.eql([ 'required' ]);
 		expect(rules.geom).to.eql([ 'required', 'object' ]);
 		expect(rules.PLAN_COUNTY_NAME).to.eql('string');
+		expect(rules.geo_search_filter).to.eql('boolean');
 	});
 
 	it('has the right table name', function() {
@@ -36,7 +37,7 @@ describe('Plan model', function() {
 
 	it('has the right defaults', function() {
 		const defaults = instance.defaults();
-		expect(defaults).to.eql({sent: 0});
+		expect(defaults).to.eql({sent: 0, geo_search_filter: false});
 	});
 
 	it('has timestamps', function() {

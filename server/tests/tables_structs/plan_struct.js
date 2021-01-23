@@ -20,6 +20,7 @@ const PlanStruct = function(table) {
 	table.integer('erosion_views').defaultTo(0);
 	table.timestamps();
 	table.specificType('geom_centroid', 'GEOMETRY');
+	table.boolean('geo_search_filter');
 	return table;
 };
 
