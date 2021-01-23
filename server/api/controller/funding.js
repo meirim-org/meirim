@@ -10,7 +10,7 @@ let instance = axios.create({
 	baseURL: Config.baseURL
 });
 
-const paymentDefaultConfig = {
+const paymentUrlConfig = {
 	"action": "APISign",
 	"What": "SIGN",
 	"KEY": Config.apiKey,
@@ -24,7 +24,16 @@ const paymentDefaultConfig = {
 	"PageLang": "HEB",
 	"tmp": 11,
 	"Pritim": "True",
-	"OnlyOnApprove": "True"
+	"OnlyOnApprove": "True",
+	"Sign": "True"
+};
+
+const paymentVerificationConfig = {
+	"action": "APISign",
+	"What": "VERIFY",
+	"KEY": Config.apiKey,
+	"PassP": Config.PassP,
+	"Masof": Config.masofId
 };
 
 class FundingController extends Controller {
@@ -36,21 +45,38 @@ class FundingController extends Controller {
 			return Promise.reject(new Exception.BadRequest('No hk_id provided'));
 		} else if (req.body.amount === undefined) {
 			return Promise.reject(new Exception.BadRequest('No amount provided'));
+		} else if (req.body.redirect_params === undefined) {
+			return Promise.reject(new Exception.BadRequest('No redirect_params provided'));
 		}
 
-		// TODO: validate transaction is verified
+		// verify transaction details
+		const params = {
+			...paymentVerificationConfig,
+			...req.body.redirect_params
+		}
 
-		const fundingTransaction = new FundingTransaction(req.body);
+		return instance.get('/p/', { params }).then((res) => {
+			// check if result is success
+			if (res.data.trim() === 'CCode=0') {
+				const fundingTransaction = new FundingTransaction({
+					yaad_id: req.body.yaad_id,
+					hk_id: req.body.hk_id,
+					amount: req.body.amount
+				});
 
-		// save and return no data
-		return fundingTransaction.save(null, {autoRefresh: false}).then(() => true);
+				// save and return no data
+				return fundingTransaction.save(null, {autoRefresh: false}).then(() => true);
+			} else {
+				return Promise.reject(new Exception.BadRequest('invalid redirect params'));
+			}
+		});
 	}
 
 	paymentLink (req) {
 		const { query } = req;
 
 		let params = {
-			...paymentDefaultConfig,
+			...paymentUrlConfig,
 			Amount: !isNaN(query.amount)? query.amount : DEFAULT_PAYMENT_AMOUNT
 		};
 
@@ -64,9 +90,9 @@ class FundingController extends Controller {
 			params.heshDesc = ["", "תרומה%20חד%20פעמית%20לעמותת%20מעירים", "1", `${params.Amount}`].join('~');
 		}
 		
-		return instance.get('/', {
+		return instance.get('/p3/', {
 			params
-		}).then(res => `${Config.baseURL}/?action=pay&${res.data}`);
+		}).then(res => `${Config.baseURL}/p3/?action=pay&${res.data}`);
 	}
 
 	getFundingStats () {

@@ -14,12 +14,13 @@ const SuccessPayment = ({ ...props }) => {
 		);
 	};
 
-	const saveSuccessfulTransaction = async (yaadId, hkId, amount) => {
+	const saveSuccessfulTransaction = async (yaadId, hkId, amount, redirectParams) => {
 		try {
 			await saveTransaction({
 				yaadId,
 				hkId,
-				amount
+				amount,
+				redirectParams
 			});
 		} catch (err) {
 			// do not fail over this
@@ -39,7 +40,11 @@ const SuccessPayment = ({ ...props }) => {
 
 		// check that payment was successful
 		if (ccode === '0' && !isNaN(id) && !isNaN(amount)) {
-			saveSuccessfulTransaction(id, isNaN(hkid) ? null : hkid, amount);
+			// build redirect params object
+			let redirectParams = {};
+			qs.forEach((value, key) => redirectParams[key] = value);
+
+			saveSuccessfulTransaction(id, isNaN(hkid) ? null : hkid, amount, redirectParams);
 		}
 	});
 
