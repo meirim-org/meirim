@@ -52,7 +52,7 @@
 		"filterPlansRadiusKm": null
 	},
 	"paymentServices": {
-		"baseURL": "",
+		"baseURL": "https://icom.yaad.net",
 		"masofId": "",
 		"apiKey": "",
 		"PassP": ""
