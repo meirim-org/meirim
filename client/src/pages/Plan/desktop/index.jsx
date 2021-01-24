@@ -14,6 +14,7 @@ const Template = ({
 	children,
 	match,
 	subscriptionHandler,
+	newCommentViewHandler,
 	isFavPlan
 }) => {
 	const { comments } = CommentSelectors();
@@ -28,6 +29,7 @@ const Template = ({
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
+						newCommentViewHandler={newCommentViewHandler}
 						subscriptionHandler={subscriptionHandler}
 						isFavPlan={isFavPlan}
 						openNewCommentView={() => isAuthenticated ? setCommentState(pv => ({ ...pv, isOpen: true })) : dispatch(openModal({ modalType: 'login' }))}
@@ -49,6 +51,7 @@ const Template = ({
 };
 
 Template.propTypes = {
+	newCommentViewHandler: PropTypes.func.isRequired,
 	setCommentState: PropTypes.func.isRequired,
 	subscriptionHandler: PropTypes.func.isRequired,
 	isFavPlan: PropTypes.bool.isRequired,

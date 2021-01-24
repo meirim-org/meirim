@@ -30,7 +30,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 	const [ subscribePanel, setSubscribePanel ] = useState(true);
 	const [ isFavPlan, setIsFavPlan ] = useState(false);
 
-	const getIsFav = React.useCallback( async () => {
+	const getIsFav = React.useCallback(async () => {
 		if (!user.id) return;
 		const isFav = await isFavoritePlan(user.id, planId);
 		 setIsFavPlan(isFav);
@@ -67,6 +67,14 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		setRefetchComments();
 	};
 
+	const newCommentViewHandler = () =>{
+		if (isAuthenticated){
+			setCommentState(pv => ({ ...pv, isOpen: true }));
+		} else {
+			dispatch(openModal({ modalType: 'login' }));
+		}
+	};
+
 	const addNewComment = async () => {
 		await addComment({ 
 			content: commentState.inputValue, 
@@ -98,7 +106,8 @@ const Plan = ({ isMobile, isTablet, match }) => {
 		setCommentState,
 		match,
 		subscriptionHandler,
-		isFavPlan
+		isFavPlan,
+		newCommentViewHandler
 	};
 
 	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;
