@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import geojsonArea from '@mapbox/geojson-area';
 import { setTreeData } from 'redux/tree/slice';
-import * as utils from './utils';
 import { getTreeData } from './controller';
 import { useDispatch } from 'react-redux';
 

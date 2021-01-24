@@ -7,7 +7,7 @@ import { scrollToTop } from 'utils';
 
 const SummaryTab = ({  isMobile, isTablet }) => {
 	const { treeData } = TreeSelectors();
-	const { geom, place , street, street_number, action } = treeData;
+	const { geom, place } = treeData;
 	useEffect(() => {
 		scrollToTop();
 	}, []);
