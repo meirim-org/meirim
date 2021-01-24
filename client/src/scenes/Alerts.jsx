@@ -1,47 +1,59 @@
-import '../../node_modules/leaflet/dist/leaflet.css';
-import 'rc-slider/assets/index.css';
-import React from 'react';
+import React, { useState } from 'react';
 import Wrapper from '../components/Wrapper';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import { CheckIfUserCanAccessPage } from 'hooks';
+import api from 'services/api';
 import './Alerts.css';
-import AlertByAddress from './AlertByAddress';
-import MyAlerts from './MyAlerts';
-import AlertByCity from './AlertByCity';
+import AlertPlans from '../components/AlertPlans';
+import AlertTrees from '../components/AlertTrees';
+import AlertList from '../components/AlertList';
 
 const messages = {
 	alertAdded:'התראת תכנון התווספה בהצלחה!',
 	alertDeleted:'התראת תכנון הוסרה בהצלחה'
 }
 
-const initialBounds = [{ lat: 35, lng: 35 }, { lat: 25,lng: 25 }]
-const initialSlider = { min: 1, max: 10 }
-
 const Alerts = () => {
 	CheckIfUserCanAccessPage()
-	const [state, setState] = React.useState({ 
-		error: false, loading: false, alerts: [], added: false,
-		deleted: false, form: { radius: 5, address: '' }, bounds: initialBounds ,
-		slider: initialSlider, sliderText: {} 
-	})
-    
-	const handleClose = () => {
-		setState(pv => ({
-			...pv, 
-			added: false,
-			deleted: false
-		}));
+
+	const [ added, setAdded ] = useState(false);
+	const [ deleted, setDeleted ] = useState(false);
+	const [ alerts, setAlerts ] = useState([]);
+
+	const handleCloseSnackbar = () => {
+		setAdded(false);
+		setDeleted(false);
 	};
-    
-	const { added, deleted } = state;
+
+	const handleAddedAlert = () => {
+		getAlerts();
+		setAdded(true);
+	};
+
+	const handleDeletedAlert = () => {
+		getAlerts();
+		setAdded(true);
+	};
+
+	const getAlerts = () => {
+		return api.get('/alert')
+			.then(result => {
+				setAlerts(result.data);
+			})
+			.catch(error => console.error(error));
+	}
+
+	React.useEffect(() => {
+		getAlerts();
+	}, []);
 
 	return (
 		<Wrapper>
 			<div className="container alerts-container widedialog">
-				<AlertByAddress />
-				<AlertByCity />
-				<MyAlerts />
+				<AlertPlans notifyAddedAlert={handleAddedAlert} />
+				<AlertTrees notifyAddedAlert={handleAddedAlert} />
+				<AlertList notifyDeletedAlert={handleDeletedAlert} alerts={alerts} />
 
 			</div>
 			<Snackbar
@@ -51,13 +63,13 @@ const Alerts = () => {
 					horizontal: 'left'
 				}}
 				autoHideDuration={3000}
-				onClose={handleClose}
-				onClick={handleClose}
+				onClose={handleCloseSnackbar}
+				onClick={handleCloseSnackbar}
 				ContentProps={{
 					'aria-describedby': 'message-id'
 				}}
 				message={
-					<span id="message-id">{added? messages.alertAdded : messages.alertDeleted}</span>
+					<span id="message-id">{added ? messages.alertAdded : messages.alertDeleted}</span>
 				}
 			/>
 		</Wrapper>

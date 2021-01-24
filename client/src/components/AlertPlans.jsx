@@ -1,75 +1,58 @@
-import '../../node_modules/leaflet/dist/leaflet.css';
 import 'rc-slider/assets/index.css';
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Slider from 'rc-slider';
 import api from 'services/api';
 import t from 'locale/he_IL';
-import { CheckIfUserCanAccessPage } from 'hooks';
 
+const sliderBounds = { min: 1, max: 10 };
+const sliderText = {};
+_.map(new Array(sliderBounds.max), (obj, i) => {
+	sliderText[i + 1] = `${sliderBounds.max - i} ${t.km}`;
+});
 
-const initialBounds = [{ lat: 35, lng: 35 }, { lat: 25,lng: 25 }]
-const initialSlider = { min: 1, max: 10 }
-
-const AlertByAddress = () => {
-	
-	CheckIfUserCanAccessPage();
-	
-	const [state, setState] = React.useState({ 
-		error: false, loading: false, alerts: [], added: false,
-		deleted: false, form: { radius: 5, address: '' }, bounds: initialBounds ,
-		slider: initialSlider, sliderText: {} 
-	});
+const AlertPlans = ({notifyAddedAlert}) => {
+	const [ error, setError ] = useState(false);
+	const [ loading, setLoading ] = useState(false);
+	const [ radius, setRadius ] = useState(5);
+	const [ address, setAddress ] = useState('');
 
 	const handleSlide = (value)  =>{
-		const { form } = state;
-		form.radius = value;
-		setState(pv => ({ ...pv, form, error: false }));
+		setRadius(value);
+		setError(false);
 	}
 
 	const handleAddress = (e) => {
-		const { form } = state;
-		form.address = e.target.value;
-
-		setState( pv => ({ ...pv, form, error: false }));
+		setAddress(e.target.value);
+		setError(false);
 	}
 
-
 	const handleSubmit = (e)  =>{
-		const { address, radius } = state.form;
 		e.preventDefault();
 
-		setState(pv => ({ ...pv,  loading: true }));
+		setLoading(true);
 
 		api.post('/alert', {
 			address,
 			// we make the calculation as the slider is LTR, and the value
 			// is the opposite in RTL
-			radius: state.slider.max + state.slider.min - radius,
+			radius: sliderBounds.max + sliderBounds.min - radius,
 			type: 'plan'
-		})
-			.then(() => {
-				setState( pv => ({ ...pv, added: true }))
-			})
-			.finally(() => {
-				setState( pv => ({
-					...pv,
-					loading: false,
-					form: {
-						radius: 3,
-						address: ''
-					}
-				}));
-			})
-			.catch(error => {
-				setState(pv => ({ ...pv, error }));
-				console.error(error);
-			});
+		}).then(() => {
+			notifyAddedAlert();
+		}).finally(() => {
+			// reset values
+			setLoading(false);
+			setAddress('');
+			setRadius(5);
+		}).catch(error => {
+			setError(error);
+			console.error(error);
+		});
 	}
 
-	const { form, error } = state;
-
-	
 	return (
 		<form className="rectangle" onSubmit={handleSubmit}>
 			<h5 className="container-title">{t.newAlert}</h5>
@@ -92,7 +75,7 @@ const AlertByAddress = () => {
 					<input
 						id="homeAddress"
 						type="text"
-						value={form.address}
+						value={address}
 						placeholder='לדוגמא: מאז"ה 9, תל אביב'
 						required
 						onChange={handleAddress}
@@ -103,10 +86,10 @@ const AlertByAddress = () => {
 				<div className="col">
 					<label id="radiusLabale">רדיוס:</label>
 					<Slider
-						min={state.slider.min}
-						max={state.slider.max}
+						min={sliderBounds.min}
+						max={sliderBounds.max}
 						onChange={handleSlide}
-						marks={state.sliderText}
+						marks={sliderText}
 						trackStyle={[
 							{
 								backgroundColor: 'gray'
@@ -122,7 +105,7 @@ const AlertByAddress = () => {
 							backgroundColor: 'blue'
 						}}
 						dots={true}
-						defaultValue={form.radius}
+						defaultValue={radius}
 					/>
 				</div>
 			</div>
@@ -133,17 +116,21 @@ const AlertByAddress = () => {
 					<button
 						id="submitButton"
 						title="הוסף התראה"
-						disabled={state.loading}
+						disabled={loading}
 					>
 						הוספה
-								{state.loading && (
+						{loading && (
 							<FontAwesomeIcon icon="spinner" spin />
 						)}
 					</button>
 				</div>
 			</div>
 		</form>
-	)
+	);
 }
 
-export default AlertByAddress;
+AlertPlans.propTypes = {
+	notifyAddedAlert: PropTypes.func.isRequired
+};
+
+export default AlertPlans;
