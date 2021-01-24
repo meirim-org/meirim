@@ -1,22 +1,15 @@
 import React from 'react';
 import * as SC from './style';
-import { AddNewComment, SavePlan, SharePlan } from './components';
-import PropTypes from 'prop-types';
+import { ShareTree } from './components';
 
-const Navigation = ( { newCommentViewHandler } ) => {
-
+const Navigation = () => {
 	return (
 		<SC.Navigation>
-			<SharePlan />
-			<AddNewComment newCommentViewHandler={newCommentViewHandler}/>
-			<SavePlan />
+			<ShareTree />
 		</SC.Navigation>
 	);
 };
 
-Navigation.propTypes = {
-	newCommentViewHandler: PropTypes.func.isRequired,
-};
+Navigation.propTypes = {};
 
 export default Navigation;
-

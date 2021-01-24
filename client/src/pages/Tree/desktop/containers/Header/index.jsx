@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {  TreeSelectors } from 'redux/selectors';
 import { ShareTree, Title } from './components';
 import * as SC from './style';
-import { tabIsActive } from '../../../utils';
+import { tabIsActive, pageTitleText } from '../../../utils';
 
 const Header = ({ match }) => {
 	const history = useHistory();
@@ -15,14 +15,12 @@ const Header = ({ match }) => {
 		treeId: match.params.id
 	};
 
-	const treeText = (total_trees === 1)? 'עץ אחד': `${total_trees} עצים`;
-	const inText = 'ב'
-	const address = (street)? `${street} ${street_number || ''}` : '';
-	const text = address? `${treeText} ${inText}${address}` : `${treeText}`; 
+	const titleText = pageTitleText(total_trees, street, street_number);
+
 	return (
 		<SC.Header>
 			<SC.TitlesAndTabs>
-				<Title place={place} text={text}/>
+				<Title place={place} text={titleText}/>
 				<SC.AppBar position="static">
 					<div>
 						<SC.Tab className={tabIsActive('summary', pathData) ? 'active' : ''} onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
