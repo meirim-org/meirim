@@ -1,9 +1,5 @@
-import CommentView from './comment';
-import SubCommentView from './subComment';
-import SharePlanView from './sharePlan';
+import ShareTreeView from './shareTree';
 
 export {
-	SharePlanView,
-	SubCommentView,
-	CommentView
+	ShareTreeView
 };
