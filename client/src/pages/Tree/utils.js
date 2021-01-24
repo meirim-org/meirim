@@ -18,3 +18,12 @@ export const tabIsActive = (tab, pathData) => {
 };
 
 export const goBack = () => window.history.go(-1);
+
+export const pageTitleText = (totalTrees, street, streetNumber) => {
+	const treeText = (totalTrees === 1) ? 'עץ אחד' : `${totalTrees} עצים`;
+	if (street) {
+		return `${treeText} ב${street} ${streetNumber || ''}`;
+	} else {
+		return treeText;
+	}
+};

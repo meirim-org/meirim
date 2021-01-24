@@ -4,26 +4,24 @@ import { useTheme } from '@material-ui/styles';
 import { Text } from 'shared';
 import * as SC from '../../style';
 
-const Title = ({ title, subTitle }) => {
+const Title = ({ place, text }) => {
 	const theme = useTheme();
 
 	return (
 		<>
-			{title &&
-                <SC.SubTitleWrapper>
-                	<Text size="18px" weight="700" text={title} component="span" color={theme.palette.primary.main}/>
-                </SC.SubTitleWrapper>
-			}
+			<SC.SubTitleWrapper>
+				<Text size="18px" weight="700" text={place} component="span" color={theme.palette.primary.main}/>
+			</SC.SubTitleWrapper>
 			<SC.TitleWrapper>
-				<Text size="18px" lineHeight="1.4" weight="600" text={subTitle} component="h1" color={theme.palette.black}/>
+				<Text size="18px" lineHeight="1.4" weight="600" text={text} component="h1" color={theme.palette.black}/>
 			</SC.TitleWrapper>
 		</>
 	);
 };
 
 Title.propTypes = {
-	title: PropTypes.string,
-	subTitle: PropTypes.string
+	place: PropTypes.string,
+	text: PropTypes.string
 };
 
 export default Title;

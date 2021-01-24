@@ -15,14 +15,14 @@ const SummaryTab = ({  isMobile, isTablet }) => {
 	return (
 		<>
 			<TreeDetailsPanel/>
-			<TreeReasonPanel/>
-			<TreeAppealPanel/>
 			{isMobile() || isTablet()
 				?
 				<MapPanel geom={geom} countyName={place}/>
 				:
 				null
 			}
+			<TreeReasonPanel/>
+			<TreeAppealPanel/>
 		</>
 	);
 };

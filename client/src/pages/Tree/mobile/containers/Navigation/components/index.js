@@ -1,9 +1,5 @@
-import SavePlan from './savePlan';
-import SharePlan from './sharePlan';
-import AddNewComment from './addNewComment';
+import ShareTree from './shareTree';
 
 export {
-    AddNewComment,
-    SavePlan,
-    SharePlan,
+    ShareTree
 };

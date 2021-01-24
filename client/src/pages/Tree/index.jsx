@@ -15,10 +15,8 @@ const Tree = ({ isMobile, isTablet, match }) => {
 		match
 	};
 	
-	// TODO mobile
-	// const Template = isMobile() || isTablet() ? TreeMobile : TreeDesktop;
+	const Template = isMobile() || isTablet() ? TreeMobile : TreeDesktop;
 
-	const Template = TreeDesktop;
 	return (
 		<Template {...treeProps}>
 			<Switch>
