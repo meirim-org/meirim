@@ -104,7 +104,7 @@ export default {
 	fundingSuccessText: 'יאללה, כנסו לעמוד התוכניות שלנו, גלו מה בונים לכם ליד הבית, שתפו עם החברים והחברות באזור והשפיעו על עתיד השכונה והעיר שלכם!',
 	fundingSuccessPlans: 'לעמוד התוכניות',
 	fundingSuccessHome: 'לדף הבית',
-	fundingSuccessClose: 'סגירה'
+	fundingSuccessClose: 'סגירה',
 	lastDateToObjectTrees: 'תאריך אחרון להגשת ערר',
 	permitNumber: 'מספר רשיון:',
 	treePermitOnGovSite: 'קישור לרשיון באתר הציבורי:',

@@ -56,6 +56,7 @@
         "proj4": "^2.6.2",
         "puppeteer": "^5.4.1",
         "query-string": "^6.13.1",
+        "react-iframe": "^1.8.0",
         "reproject": "^1.2.6",
         "request-promise": "^4.2.6",
         "staticmaps": "^1.4.1",

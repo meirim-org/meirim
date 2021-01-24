@@ -1,6 +1,6 @@
 import Home from './Home/Home';
 import Plans from './Plans';
-import TreePermits from './TreePermits'
+import TreePermits from './TreePermits';
 import SinglePlan from './SinglePlan';
 import Activate from './Activate';
 import Alerts from './Alerts';
