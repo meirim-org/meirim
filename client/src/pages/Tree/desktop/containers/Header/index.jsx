@@ -3,12 +3,11 @@ import { useHistory } from 'react-router-dom';
 import t from 'locale/he_IL';
 import PropTypes from 'prop-types';
 import {  TreeSelectors } from 'redux/selectors';
-import { SavePlan, SharePlan, Title, AddNewComment } from './components';
+import { ShareTree, Title } from './components';
 import * as SC from './style';
-import { Badge } from '@material-ui/core';
-import { tabIsActive } from 'utils';
+import { tabIsActive } from '../../../utils';
 
-const Header = ({ openNewCommentView, match }) => {
+const Header = ({ match }) => {
 	const history = useHistory();
 	const { treeData: { place, street , street_number, total_trees } } = TreeSelectors();
 	const pathData  = {
@@ -26,28 +25,19 @@ const Header = ({ openNewCommentView, match }) => {
 				<Title place={place} text={text}/>
 				<SC.AppBar position="static">
 					<div>
-						<SC.Tab className={tabIsActive('summary',pathData) ? 'active' : ''} onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
-						<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''} onClick={() => history.push(`${match.url}/comments`)}>
-							{/* <Badge badgeContent={commentsCount} color="primary">
-								{t.opinion}
-							</Badge> */}
-						</SC.Tab>
+						<SC.Tab className={tabIsActive('summary', pathData) ? 'active' : ''} onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
 					</div>
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
 			<SC.Buttons>
-				<SharePlan />
-				<SavePlan />
-				<AddNewComment openNewCommentView={openNewCommentView}/>
+				<ShareTree />
 			</SC.Buttons>
 		</SC.Header>
 	);
 };
 
 Header.propTypes = {
-	openNewCommentView: PropTypes.func.isRequired,
-	handleTabChange: PropTypes.func.isRequired,
-	match: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired
 };
 
 export default Header;

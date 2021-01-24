@@ -29,10 +29,7 @@ const SummaryTab = ({  isMobile, isTablet }) => {
 
 SummaryTab.propTypes = {
 	isMobile:PropTypes.func.isRequired,
-	isTablet:PropTypes.func.isRequired,
-	// subscribePanel: PropTypes.bool.isRequired,
-	// handleSubscribePanel: PropTypes.func.isRequired,
+	isTablet:PropTypes.func.isRequired
 };
 
 export default withGetScreen(SummaryTab, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
-

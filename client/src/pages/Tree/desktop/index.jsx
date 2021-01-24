@@ -8,8 +8,6 @@ import Footer from 'components/Footer';
 import * as SC from './style';
 
 const Template = ({ 
-	// setCommentState,
-	handleTabChange,
 	children,
 	match,
 }) => {
@@ -20,7 +18,6 @@ const Template = ({
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
-						handleTabChange={handleTabChange} 
 						match={match}
 					/>
 					<SC.Main >
@@ -40,10 +37,8 @@ const Template = ({
 };
 
 Template.propTypes = {
-	// setCommentState: PropTypes.func.isRequired,
-	handleTabChange: PropTypes.func.isRequired,
 	children: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired
 };
 
 export default Template;

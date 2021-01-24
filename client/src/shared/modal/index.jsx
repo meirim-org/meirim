@@ -13,6 +13,7 @@ import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
 import SharePlanView from 'pages/Plan/common/Views/sharePlan';
+import ShareTreeView from 'pages/Tree/common/Views/shareTree';
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -51,7 +52,8 @@ const modalComponents = {
 	share: SharePlanView,
 	payment: Payment,
 	termsOfPayment: TermsOfPayment,
-	thankYou: ThankYou
+	thankYou: ThankYou,
+	shareTree: ShareTreeView
 };
 
 const Modal = ({ id }) => {

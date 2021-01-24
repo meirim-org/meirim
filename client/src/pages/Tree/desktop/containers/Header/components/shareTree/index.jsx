@@ -7,7 +7,7 @@ import { Button } from '@material-ui/core';
 import { Text } from 'shared';
 import t from 'locale/he_IL';
 
-const SharePlan = () => {
+const ShareTree = () => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	
@@ -15,7 +15,7 @@ const SharePlan = () => {
 		<Button
 			variant="contained"
 			color="primary"
-			onClick={() => dispatch(openModal({ modalType: 'share' }))}
+			onClick={() => dispatch(openModal({ modalType: 'shareTree' }))}
 			startIcon={<ShareIcon />}
 		>
 			<Text size="14px" text={t.sharing} component="span" color={theme.palette.gray['800']}/>
@@ -23,4 +23,4 @@ const SharePlan = () => {
 	);
 };
 
-export default SharePlan;
+export default ShareTree;

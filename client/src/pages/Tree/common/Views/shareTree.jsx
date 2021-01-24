@@ -108,13 +108,13 @@ const CopyUrlArea = withTheme(styled.div`
 const url = encodeURI(window.location.toString());
 const whatsappURL = `https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A${url}`; 
 
-const SharePlanView = () => {
+const ShareTreeView = () => {
 	const theme = useTheme();
 
 	return (
 		<ShareWrapper>
 			<ShareTitleWrapper>
-				<Text text={t.sharePlan} color={theme.palette.primary['800']}/>
+				<Text text={t.shareTree} color={theme.palette.primary['800']}/>
 			</ShareTitleWrapper>
 			<ShareActionWrapper>
 				<ShareButtonWrapper>
@@ -147,4 +147,4 @@ const SharePlanView = () => {
 	);
 };
 
-export default SharePlanView;
+export default ShareTreeView;
