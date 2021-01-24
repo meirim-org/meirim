@@ -11,12 +11,12 @@ const TreePermit = require('../../model/tree_permit');
 const tpc = require('../../model/tree_permit_constants');
 const database = require('../../service/database');
 const Config = require('../../lib/config');
-const Geocoder = require('../../service/tree_geocoder').geocoder;
+const Geocoder = require('../../service/osm_geocoder');
 
 // Regional tree permits were taken from here: 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx';
 const regionalTreePermitUrls = [
-	//'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
-	// 'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
 
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_amakim_galil_gilboa.XLS',
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_amakim_galil_gilboa.XLS',
@@ -181,20 +181,6 @@ const parseTreesXLS = async (filename) => {
 	return processPermits(rawTreePermits);
 };
 
-async function getGeocode(place, street) {
-	try {
-		const address = (place && street) ?
-			`${place} ${street}` : `${place}`;
-
-		const res = await Geocoder.geocode(address);
-		return res[0];
-	}
-	catch (err) {
-		Log.error(err.message || err);
-		return;
-	}
-}
-
 async function generateGeomFromAddress(place, street) {
 	
 	let res = '';
@@ -203,10 +189,10 @@ async function generateGeomFromAddress(place, street) {
 
 	if (!place) return;
 	if (place && street) {
-		res = await getGeocode(place, street);
+		res = await Geocoder.getGeocode(place, street);
 		if (!res) { // try geocode place only
 			Log.debug(`Couldn't geocode address: ${address}. try to fetch place from db.`);
-			res = await fetchOrGeocodePlace(place);
+			res = await Geocoder.fetchOrGeocodePlace({ 'db':database.Knex, 'table':tpc.TREE_PERMIT_TABLE, 'place': place });
 			if (!res ) {
 				Log.debug(`Failed to geocode address: ${place}`);
 				return;
@@ -216,7 +202,7 @@ async function generateGeomFromAddress(place, street) {
 
 	}
 	else { // only place, no street
-		res = await fetchOrGeocodePlace(place);
+		res = await Geocoder.fetchOrGeocodePlace({ 'db':database.Knex, 'table':tpc.TREE_PERMIT_TABLE, 'place': place });
 		if (!res ) {
 			Log.debug(`Failed to geocode address: ${place}`);
 			return;
@@ -224,30 +210,6 @@ async function generateGeomFromAddress(place, street) {
 	} 
 	const polygonFromPoint = JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}]  ]] }`);
 	return polygonFromPoint;
-}
-
-async function fetchOrGeocodePlace(place) {
-	//Since nominatim is very strict reagrding its usage policy, we first check if we have place's location in our db.
-	const geomFromDB = await database.Knex.select(tpc.GEOM).from(tpc.TREE_PERMIT_TABLE).where({ [tpc.PLACE]: place }).limit(1);
-	if (geomFromDB && geomFromDB[0] && geomFromDB[0].geom &&
-		geomFromDB[0].geom[0] && geomFromDB[0].geom[0][0] &&
-		geomFromDB[0].geom[0][0].x && geomFromDB[0].geom[0][0].y ) {
-		const res = {
-			longitude: geomFromDB[0].geom[0][0].x,
-			latitude: geomFromDB[0].geom[0][0].y
-		};
-		Log.debug(`Found place coordinates in DB: ${res.longitude},${res.latitude} `);
-		return res;
-	}
-	else {
-		const res = await getGeocode(place);
-		if (!res ) {
-			Log.error(`Couldn't geocode address: ${place}.`);
-			return;
-		}
-		Log.debug(`Managed to geocode place ${place} : ${res.longitude},${res.latitude} `);
-		return res;
-	}
 }
 
 function processPermits(rawTreePermits) {
@@ -259,6 +221,8 @@ function processPermits(rawTreePermits) {
 		const key = `${rtp.core[tpc.REGIONAL_OFFICE]}_${rtp.core[tpc.PERMIT_NUMBER]}_${rtp.core[tpc.START_DATE]}}`;
 		if (treePermits[key] && treePermits[key].attributes[tpc.TOTAL_TREES]) { //exist
 			treePermits[key].attributes[tpc.TOTAL_TREES] = treePermits[key].attributes[tpc.TOTAL_TREES] + Number(rtp.extra[tpc.NUMBER_OF_TREES]);
+
+			//TODO bug it overrides existing tree kinds
 			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { ...treePermits[key].attributes[tpc.TREES_PER_PERMIT], [rtp.extra[tpc.TREE_NAME]]: rtp.extra[tpc.NUMBER_OF_TREES] };
 		}
 		else { // a new one

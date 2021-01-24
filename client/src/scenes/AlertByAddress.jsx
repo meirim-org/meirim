@@ -45,10 +45,10 @@ const AlertByAddress = () => {
 			address,
 			// we make the calculation as the slider is LTR, and the value
 			// is the opposite in RTL
-			radius: state.slider.max + state.slider.min - radius
+			radius: state.slider.max + state.slider.min - radius,
+			type: 'plan'
 		})
 			.then(() => {
-				//getAlerts()
 				setState( pv => ({ ...pv, added: true }))
 			})
 			.finally(() => {

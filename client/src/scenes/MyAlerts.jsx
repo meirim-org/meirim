@@ -2,8 +2,8 @@ import '../../node_modules/leaflet/dist/leaflet.css';
 import 'rc-slider/assets/index.css';
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Map, TileLayer, Circle } from 'react-leaflet';
-import leaflet from 'leaflet';
+import { Map, TileLayer, Circle} from 'react-leaflet';
+import  leaflet from 'leaflet';
 import AlertTable from '../components/AlertTable';
 import { CheckIfUserCanAccessPage } from 'hooks';
 import api from 'services/api';
@@ -12,13 +12,16 @@ const MyAlerts = () => {
 
 	CheckIfUserCanAccessPage();
 	const [state, setState] = React.useState({ 
-		error: false, loading: false, alerts: [], added: false,
+		error: false, loading: false, alerts: [], added: false,		
+		selectedPlaces :[],
 		deleted: false, form: { radius: 5, address: '' }, 		
 	})
 
+
 	React.useEffect(() => {
 		getAlerts();
-	});
+	},[state.added]);
+
 
 	const handleDelete = (alertId) => {
 		api.delete('/alert/' + alertId).then(() => {
@@ -90,9 +93,11 @@ function Mapa(props) {
 					.getBounds()
 					.getCenter();
 				
+				const radius = alert.radius? alert.radius * 1000 : 1000;
+				
 				return (
 					<Circle
-						radius={alert.radius * 1000}
+						radius={radius}
 						center={center}
 						key={idx}
 					/>

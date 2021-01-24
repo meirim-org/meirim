@@ -7,20 +7,24 @@ const { Knex } = require('../service/database');
 const Geocoder = require('../service/geocoder').geocoder;
 const DegreeToMeter = require('../service/geocoder').degreeToMeter;
 const Exception = require('./exception');
+const { fetchOrGeocodePlace } = require('../service/osm_geocoder');
+const Log = require('../lib/log');
 
 class Alert extends Model {
 	get rules () {
 		return {
 			person_id: ['required', 'integer'],
-			address: ['required', 'string'],
-			geom: ['required', 'object'],
-			radius: ['required', 'number']
+			address: [ 'string'],
+			geom: [ 'object'],
+			radius: [ 'number'],
+			place: ['string'],
+			type: ['string']
 		};
 	}
 
 	defaults () {
 		return {
-			radius: 5
+			type: 'plan'
 		};
 	}
 
@@ -33,12 +37,33 @@ class Alert extends Model {
 	}
 
 	initialize () {
-		this.on('saving', this.geocodeAddress, this);
+		if(this.get('address')){
+			this.on('saving', this.geocodeAddress, this);
+		}
+		if(this.get('place')){
+			this.on('saving', this.geocodePlace, this);
+		}
 		super.initialize();
 	}
 
 	alerts () {
 		return this.belongsTo(Person);
+	}
+
+	geocodePlace(model) {		
+		return fetchOrGeocodePlace({ db:Knex,'table':'alert','place': this.get('place') })
+			.then(geom => {
+				const partialRules = Object.assign(model.rules, {});
+				delete partialRules.geom;
+				return new Checkit(partialRules).run(model.attributes).then(() => {
+					model.set('geom', {
+						type: 'Polygon',
+						coordinates: [[ [ geom.longitude, geom.latitude],[ geom.longitude, geom.latitude],[ geom.longitude, geom.latitude],[ geom.longitude, geom.latitude]  ]]
+					});
+					return new Checkit(model.rules).run(model.attributes);
+				});
+			})
+			.catch(err => { Log.error(err); });	
 	}
 
 	geocodeAddress (model) {

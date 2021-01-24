@@ -14,13 +14,14 @@ const AlertByCity = (props) => {
 		treePlaces: [],
 		filterPlaces: [],
 		searchPoint: {},
-		error: false
+		selectedPlaces :[],
+		error: false,
+		added: false,
 	});
 
-	// Hack - empty fuction
-	// This function is passed as props into FilterAutoCompleteMultiple component,
-	// as onFilterChange event, so it couldn't be deleted.
-	function handleFilterChange(selectedCounties) { }
+	function handleFilterChange(placesFromFilter) { 
+		setState(pv =>({ ...pv,selectedPlaces: placesFromFilter} ) )
+	}
 
 	React.useEffect(() => {
 		async function fetchPlaces() {
@@ -39,8 +40,29 @@ const AlertByCity = (props) => {
 
 
 	function handleSubmit() {
-		console.log('--------------submit alert by city-----------------');
-	};
+
+		state.selectedPlaces.map(place => {
+			api.post('/alert', {
+				place: place,
+				type: 'tree'
+			})
+			.then(() => {
+				setState(pv => ({ ...pv, added: true }));
+			})
+			.finally(() => {
+				setState(pv => ({
+					...pv,
+					loading: false,
+					form: {
+						treePlaces: []
+					}
+				}));
+			})
+			.catch(error => {
+				setState(pv => ({ ...pv, error }));
+				console.error(error);
+			});
+		});}
 
 	const { treePlaces, error, noData } = state;
 

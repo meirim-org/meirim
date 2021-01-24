@@ -2,7 +2,7 @@
 	"geocoder": {
 		"provider": "openstreetmap"
 	},
-	"treeGeocoder": {
+	"osmGeocoder": {
 		"provider": "openstreetmap",
 		"headers": {
 			"User-Agent": "Meirim.org (info@meirim.org)"
