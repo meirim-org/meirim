@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import _ from "lodash";
 import locationAutocompleteApi from '../../services/location-autocomplete';
@@ -98,18 +98,25 @@ const InputWrapper = styled.div`
 export default function SearchBox() {
     const [addresses, setAddresses] = useState([]);
     const [placeId, setPlaceId] = useState('');
+    const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
 
-    const getAutocompleteSuggestions = _.debounce(async (input) => {
-        const res = await locationAutocompleteApi.autocomplete(input);
-        setAddresses(res);
-    }, process.env.CONFIG.geocode.autocompleteDelay);
+    const getAutocompleteSuggestions = useCallback(
+        _.debounce(async (input) => {
+            const res = await locationAutocompleteApi.autocomplete(input);
+            setloadingAutocomplete(false);
+            setAddresses(res);
+        }, process.env.CONFIG.geocode.autocompleteDelay),
+        []
+    );
 
     async function onInputChange(input) {
         if (input) {
+            setloadingAutocomplete(true);
             getAutocompleteSuggestions(input);
         } else {
             // cancel pending calls and clear results
             getAutocompleteSuggestions.cancel();
+            setloadingAutocomplete(false);
             setAddresses([]);
         }
     }
@@ -144,7 +151,8 @@ export default function SearchBox() {
 						inputSuggestions={addresses}
                         onInputChange={onInputChange}
                         onFilterChange={onFilterChange}
-						classes={{inputRoot:'text'}}
+                        classes={{inputRoot:'text'}}
+                        loading={loadingAutocomplete}
 					/>
 				</AutocompleteWrapper>
 				<Button type="button" onClick={onGoToPlansClick}>צפיה בתוכניות</Button>

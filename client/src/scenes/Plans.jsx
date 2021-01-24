@@ -17,9 +17,10 @@ class Plans extends Component {
         noData: false,
         pageNumber: 1,
         plans: [],
-        address:'',
-        addressLocation:[],
-        list:[]
+        address: '',
+        addressLocation: [],
+        list: [],
+        loadingAutocomplete: false
     };
 
     constructor(props) {
@@ -66,7 +67,8 @@ class Plans extends Component {
             this.getAutocompleteSuggestions.cancel();
 
             this.setState({
-                list: []
+                list: [],
+                loadingAutocomplete: false
             });
         }
     }
@@ -78,7 +80,7 @@ class Plans extends Component {
                 list: res
             });
         }).catch(error => {
-            this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
+            this.setState({ error: "שגיאה בחיפוש לפי כתובת", loadingAutocomplete: false });
         });
     }, process.env.CONFIG.geocode.autocompleteDelay);
 
@@ -157,7 +159,7 @@ class Plans extends Component {
     }
 
     render() {
-        const { plans, error, noData, hasMore, list } = this.state;
+        const { plans, error, noData, hasMore, list, loadingAutocomplete } = this.state;
 
         return (
             <Wrapper>
@@ -168,6 +170,7 @@ class Plans extends Component {
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
                         onInputChange={this.handleInputChange.bind(this)}
+                        loading={loadingAutocomplete}
                     />
                     <br />
                     <Grid container spacing={4}>
