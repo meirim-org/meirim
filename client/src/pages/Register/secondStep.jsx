@@ -5,8 +5,9 @@ import {
 } from '../../shared';
 import * as SC from './style';
 import { personTypes } from './constants';
+import { AddressInput } from 'shared';
 
-const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
+const SecondStepSignup = ({ handleSubmit, values, setValues, setAddress }) => {
 	const { address, type, aboutme } = values;
 
 	return (
@@ -16,20 +17,18 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 			</SC.Titles>
 			<SC.InputsWrapper>
 				<SC.InputWrapper>
-					<TextInput
+					<AddressInput 
 						id="register-address-input"
-						name="adress"
-						label="כתובת"
-						type="text"
-						value={address}
-						onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })}
-						helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" />
+						label={"כתובת"}
+						helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" 
+						setAddress={setAddress}
+					/>
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<Dropdown
 						id="register-type-input"
 						value={type}
-						onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) }
+						onChange={({ target: { value } }) => setValues({ type: value, aboutme }) }
 						options={personTypes}
 						label="מי אני" />
 				</SC.InputWrapper>
@@ -37,7 +36,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 					<TextArea
 						id="register-aboutme-input"
 						value={aboutme}
-						onChange={({ target: { value } }) => setValues({ type, aboutme: value, address })}
+						onChange={({ target: { value } }) => setValues({ type, aboutme: value })}
 						helperText="כדי ששאר חברי הקהילה יכירו אותך"
 						label="קצת עליך" />
 				</SC.InputWrapper>
@@ -55,11 +54,11 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 
 SecondStepSignup.propTypes = {
 	values: PropTypes.shape({
-		address: PropTypes.string,
 		type: PropTypes.string.isRequired,
 		aboutme: PropTypes.string,
 	}).isRequired,
 	setValues: PropTypes.func.isRequired,
+	setAddress: PropTypes.func.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
 };
 

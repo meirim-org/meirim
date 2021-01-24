@@ -15,7 +15,8 @@ const SignupForms = () => {
 	const [firstStepSuccess, setFirstStepSucess] = useState(false);
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
-	const [secondStepValues, setSecondStepValues] = useState({ type: personTypes[0].value, aboutme: '', address: '' });
+	const [secondStepValues, setSecondStepValues] = useState({ type: personTypes[0].value, aboutme: '' });
+	const [address, setAddress] = useState('');
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false });
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false });
 	const [formErrors, setFormErrors] = useState({
@@ -117,6 +118,7 @@ const SignupForms = () => {
 					errors={formErrors}
 					values={secondStepValues}
 					setValues={setSecondStepValues}
+					setAddress={setAddress}
 					handleSubmit={handleSecondFormSubmit}
 				/>
 			)

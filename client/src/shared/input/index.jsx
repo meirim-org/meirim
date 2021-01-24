@@ -19,7 +19,7 @@ const StyledInput = styled(TextField)`
     & > .Mui-error > fieldset
     {
 		border-color: ${(props) => (props.error ? '#ff3a68' : '#8f5de2 !important')} ;
-        border-width: 2px !important;  
+        border-width: 1px !important;  
 	}
 	fieldset {
 	    border-color: ${(props) => (props.error ? '#ff3a68' : 'rgba(0, 0, 0, 0.23)')};

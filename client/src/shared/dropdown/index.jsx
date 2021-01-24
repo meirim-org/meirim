@@ -23,7 +23,7 @@ const StyledSelect = styled(Select)`
     &.Mui-focused > fieldset,
     &:hover > fieldset
      {
-        border-width: 2px;
+        border-width: 1px !important;
 		border-color: #8f5de2 !important;
 	}
 `;
