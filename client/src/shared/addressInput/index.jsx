@@ -8,9 +8,8 @@ import { Label, HelperText} from 'shared';
 
 
 
-const AddressInput = ({ id, label, helperText }) => {
+const AddressInput = ({ id, label, helperText, setAddress }) => {
     const [addresses, setAddresses] = useState([]);
-    const [placeId, setPlaceId] = useState('');
 
     const getAutocompleteSuggestions = _.debounce(async (input) => {
         const res = await locationAutocompleteApi.autocomplete(input);
@@ -20,6 +19,7 @@ const AddressInput = ({ id, label, helperText }) => {
     async function onInputChange(input) {
         if (input) {
             getAutocompleteSuggestions(input);
+            setAddress(input);
         } else {
             // cancel pending calls and clear results
             getAutocompleteSuggestions.cancel();
@@ -31,7 +31,7 @@ const AddressInput = ({ id, label, helperText }) => {
         if (data) {
             const place = addresses.find(address => address.label === data);
             if (place) {
-                setPlaceId(place.id);
+                setAddress(place.label);
             }
         }
     } 
@@ -69,6 +69,7 @@ AddressInput.propTypes = {
 	id: PropTypes.string.isRequired,
 	helperText: PropTypes.string,
 	label: PropTypes.string,
+	setAddress: PropTypes.func.isRequired,
 };
 
 export default AddressInput;
