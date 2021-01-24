@@ -16,7 +16,7 @@ function AlertTable(props) {
 			</thead>
 			<tbody>
 				{alerts.map((alert) => (
-					<AlertTableRow alert={alert} onDelete={props.onDelete} />
+					<AlertTableRow key={alert.id} alert={alert} onDelete={props.onDelete} />
 				))}
 			</tbody>
 		</table>

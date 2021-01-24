@@ -1,58 +1,33 @@
 import '../../node_modules/leaflet/dist/leaflet.css';
-import 'rc-slider/assets/index.css';
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types'
 import { Map, TileLayer, Circle} from 'react-leaflet';
 import  leaflet from 'leaflet';
 import AlertTable from '../components/AlertTable';
-import { CheckIfUserCanAccessPage } from 'hooks';
 import api from 'services/api';
 
-const MyAlerts = () => {
-
-	CheckIfUserCanAccessPage();
-	const [state, setState] = React.useState({ 
-		error: false, loading: false, alerts: [], added: false,		
-		selectedPlaces :[],
-		deleted: false, form: { radius: 5, address: '' }, 		
-	})
-
+const AlertList = ({notifyDeletedAlert, alerts}) => {
+	const [ bounds, setBounds ] = useState([{ lat: 35, lng: 35 }, { lat: 25,lng: 25 }]);
 
 	React.useEffect(() => {
-		getAlerts();
-	},[state.added]);
-
+		let transparentLayer = leaflet.geoJSON();
+		if (alerts.length > 0) {
+			alerts.map(alert =>
+				leaflet.geoJSON(alert.geom).addTo(transparentLayer)
+			);
+			const layerBounds = transparentLayer.getBounds();
+			setBounds([
+				layerBounds._southWest,
+				layerBounds._northEast
+			]);
+		}
+	}, [alerts]);
 
 	const handleDelete = (alertId) => {
 		api.delete('/alert/' + alertId).then(() => {
-			getAlerts()
-			setState(pv =>({ ...pv, deleted: true }))
+			notifyDeletedAlert();
 		});
 	}
-
-	const getAlerts = () => {
-		return api
-			.get('/alert')
-			.then(result => {
-				let transparentLayer = leaflet.geoJSON();
-				if (result.data.length > 0) {
-					result.data.map(alert =>
-						leaflet.geoJSON(alert.geom).addTo(transparentLayer)
-					);
-					const layerBounds = transparentLayer.getBounds();
-					setState(pv => ({ ...pv,
-						bounds: [
-							layerBounds._southWest,
-							layerBounds._northEast
-						],
-						alerts: result.data
-					}));
-				}
-			})
-			.catch(error => setState(pv => ({ ...pv, error })));
-	}
-
-	const { alerts, bounds } = state;
 
 	return (
 		<div className="rectangle">
@@ -73,6 +48,13 @@ const MyAlerts = () => {
 		</div>
 	)
 }
+
+AlertList.propTypes = {
+	notifyDeletedAlert: PropTypes.func.isRequired,
+	alerts: PropTypes.array.isRequired
+};
+
+export default AlertList;
 
 function Mapa(props) {
 	return (
@@ -111,5 +93,3 @@ Mapa.propTypes = {
 	alerts: PropTypes.array,
 	bounds: PropTypes.array
 }
-
-export default MyAlerts;

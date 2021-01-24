@@ -1,81 +1,64 @@
-import React from "react";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from "../services/api";
-import t from "../locale/he_IL";
-import "./Plans.css";
-import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
-import { CheckIfUserCanAccessPage } from 'hooks';
+import api from '../services/api';
+import t from '../locale/he_IL';
+import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
 
-const AlertByCity = (props) => {
+const AlertTrees = ({notifyAddedAlert}) => {
+	const [ error, setError ] = useState(false);
+	const [ loading, setLoading ] = useState(false);
+	const [ treePlaces, setTreePlaces ] = useState([]);
+	const [ selectedPlaces, setSelectedPlaces ] = useState([]);
 
-	CheckIfUserCanAccessPage();
-	const [state, setState] = React.useState({
-		plans: [],
-		treePlaces: [],
-		filterPlaces: [],
-		searchPoint: {},
-		selectedPlaces :[],
-		error: false,
-		added: false,
-	});
-
-	function handleFilterChange(placesFromFilter) { 
-		setState(pv =>({ ...pv,selectedPlaces: placesFromFilter} ) )
+	function handleFilterChange(placesFromFilter) {
+		setSelectedPlaces(placesFromFilter);
 	}
 
 	React.useEffect(() => {
 		async function fetchPlaces() {
 			return api.get('/tree_place')
 				.then(result => {
-					setState({
-						treePlaces: result.data.map(tree_place => {
-							return { label: tree_place.place };
-						})
+					const formattedTreePlaces = result.data.map(tp => {
+						return { label: tp.place };
 					});
+					setTreePlaces(formattedTreePlaces);
 				})
-				.catch(error => setState({ error }));
+				.catch(error => setError(error));
 		};
 		fetchPlaces();
 	}, []);
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
 
-	function handleSubmit() {
+		setLoading(true);
 
-		state.selectedPlaces.map(place => {
-			api.post('/alert', {
+		Promise.all(
+			selectedPlaces.map(place => api.post('/alert', {
 				place: place,
 				type: 'tree'
-			})
-			.then(() => {
-				setState(pv => ({ ...pv, added: true }));
-			})
-			.finally(() => {
-				setState(pv => ({
-					...pv,
-					loading: false,
-					form: {
-						treePlaces: []
-					}
-				}));
-			})
-			.catch(error => {
-				setState(pv => ({ ...pv, error }));
-				console.error(error);
-			});
-		});}
-
-	const { treePlaces, error, noData } = state;
+			}))
+		).then(() => {
+			notifyAddedAlert();
+		}).catch(error => {
+			setError(error);
+			console.error(error);
+		}).finally(() => {
+			setLoading(false);
+			setSelectedPlaces([]);
+		});
+	}
 
 	return (
 		<>
 			<form className="rectangle" onSubmit={handleSubmit}>
 			{error && <div className="error-container">{error}</div>}
-			{noData && <div>אין כאן כלום</div>}
 
 				<h5 className="container-title">{t.newAlertTree}</h5>
 				{error && (
 					<div className="alert alert-danger" role="alert">
-						הכתובת לא נמצאה
+						התרחשה תקלה, אנא נסו שוב
 					</div>
 				)}
 				<div className="selectAreaAndInterest">
@@ -101,10 +84,10 @@ const AlertByCity = (props) => {
 						<button
 							id="submitButton"
 							title="הוסף התראה"
-							disabled={state.loading}
+							disabled={loading}
 						>
 							הוספה
-								{state.loading && (
+							{loading && (
 								<FontAwesomeIcon icon="spinner" spin />
 							)}
 						</button>
@@ -115,4 +98,8 @@ const AlertByCity = (props) => {
 	);
 }
 
-export default AlertByCity;
+AlertTrees.propTypes = {
+	notifyAddedAlert: PropTypes.func.isRequired
+};
+
+export default AlertTrees;
