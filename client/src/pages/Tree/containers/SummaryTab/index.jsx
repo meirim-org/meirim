@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { TreeSelectors } from 'redux/selectors';
 import PropTypes from 'prop-types';
+import { WeNeedYou } from 'shared';
 import { TreeDetailsPanel,  MapPanel, TreeReasonPanel, TreeAppealPanel } from 'pages/Tree/common';
 import { withGetScreen } from 'react-getscreen';
 import { scrollToTop } from 'utils';
@@ -23,6 +24,7 @@ const SummaryTab = ({  isMobile, isTablet }) => {
 			}
 			<TreeReasonPanel/>
 			<TreeAppealPanel/>
+			<WeNeedYou/>
 		</>
 	);
 };

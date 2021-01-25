@@ -19,6 +19,7 @@ import Text from './text';
 import PlanCard from './planCard';
 import ProgressBar from './progressBar';
 import TeamMembers from './teamMembers';
+import WeNeedYou from './weNeedYou';
 
 export {
 	Button,
@@ -41,5 +42,6 @@ export {
 	Checkbox,
 	HelperText,
 	ProgressBar,
-	TeamMembers
+	TeamMembers,
+	WeNeedYou
 };
