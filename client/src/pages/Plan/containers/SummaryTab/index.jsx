@@ -1,26 +1,27 @@
 import React from 'react';
 import { PlanSelectors } from 'redux/selectors';
 import PropTypes from 'prop-types';
-import { GoalsPanel, DetailsPanel, StatsPanel, SubscribePanel, MapPanel } from 'pages/Plan/common';
+import { GoalsPanel, DetailsPanel, StatsPanel, HousingUnitPanel, SubscribePanel, MapPanel } from 'pages/Plan/common';
 import { withGetScreen } from 'react-getscreen';
 import { useScrollToTop } from '../../hooks';
 
 const SummaryTab = ({ subscribePanel, handleSubscribePanel, isMobile, isTablet }) => {
-	const { planData, dataArea, textArea } = PlanSelectors();
-	const { type, status, url, goalsFromMavat, countyName } = planData;
+	const { planData, dataArea, dataUnits, textArea } = PlanSelectors();
+	const { type, status, lastUpdate, url, goalsFromMavat, countyName } = planData;
 	useScrollToTop();
     
 	return (
 		<>
-			<DetailsPanel type={type} status={status} url={url}/>
+			<DetailsPanel type={type} status={status} lastUpdate={lastUpdate} url={url}/>
 			<GoalsPanel goalsFromMavat={goalsFromMavat} />
-			<StatsPanel dataArea={dataArea} textArea={textArea} />
 			{isMobile() || isTablet()
 				?
 				<MapPanel geom={planData.geom} countyName={countyName}/>
 				:
 				null
 			}
+			<StatsPanel dataArea={dataArea} textArea={textArea} />
+			<HousingUnitPanel dataUnits={dataUnits} />
 			<SubscribePanel
 				subscribePanel={subscribePanel}
 				handleSubscribePanel={handleSubscribePanel}/>

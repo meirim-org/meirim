@@ -5,7 +5,7 @@ import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import Moment from 'react-moment';
-
+import LandUseVocabulary from '../../../../components/LandUseVocabulary';
 
 export const DataPanel = ({
 	number,
@@ -14,9 +14,11 @@ export const DataPanel = ({
 	depositingDate,
 	stationDesc,
 	lastUpdate, 
-	notCredible }) => {
+	notCredible,
+	landUse }) => {
 	const theme = useTheme();
-	if (!number && !type && !jurisdiction && !depositingDate && !stationDesc && !lastUpdate ) return null;
+
+	if (!number && !type && !stationDesc && !lastUpdate ) return null;
 
 	return (
 		<TabPanel>
@@ -53,6 +55,12 @@ export const DataPanel = ({
 							<Moment format="DD/MM/YYYY">
 								{depositingDate}
 							</Moment>
+						</li>
+					)}
+					{landUse && (
+						<li>
+							שימוש קרקע:{" "}
+							<LandUseVocabulary landUseJoined={landUse}/>
 						</li>
 					)}
 					<li key="stationDesc">

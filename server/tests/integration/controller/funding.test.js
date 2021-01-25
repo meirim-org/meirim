@@ -1,5 +1,6 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const nock = require('nock');
 const { mockDatabase } = require('../../mock');
 const Exception = require('../../../api/model/exception');
 
@@ -8,12 +9,30 @@ const assert = chai.assert;
 
 describe('Funding controller', function() {
 	const tables = ['funding_transaction'];
+	let yaadScope;
 
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
+
+		// make sure nock is activated
+		if (!nock.isActive()) {
+			nock.activate();
+		}
+
+		// create mocked response for payment verification requests
+		yaadScope = nock('https://icom.yaad.net')
+			.persist()
+			.get('/p/')
+			// allow all query string params so we don't deal with field names etc.
+			.query(true)
+			// reply with verification success
+			.reply(200, 'CCode=0\n');
 	});
 
 	afterEach(async function() {
+		// restore unmocked networking
+		nock.restore();
+
 		await mockDatabase.dropTables(tables);
 	});
 
@@ -31,7 +50,8 @@ describe('Funding controller', function() {
 			body: {
 				yaad_id: 1,
 				hk_id: null,
-				amount: 100
+				amount: 100,
+				redirect_params: {}
 			}
 		};
 		const res = await FundingController.create(req);
@@ -43,7 +63,8 @@ describe('Funding controller', function() {
 			body: {
 				yaad_id: 2,
 				hk_id: 1,
-				amount: 50
+				amount: 50,
+				redirect_params: {}
 			}
 		};
 		const res2 = await FundingController.create(req2);
@@ -63,7 +84,8 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 3,
-				hk_id: null
+				hk_id: null,
+				redirect_params: {}
 			}
 		};
 		assert.isRejected(FundingController.create(req3), Exception.BadRequest, 'No amount provided');
@@ -71,27 +93,39 @@ describe('Funding controller', function() {
 			session: {},
 			body: {
 				yaad_id: 3,
-				amount: 50
+				amount: 50,
+				redirect_params: {}
 			}
 		};
 		assert.isRejected(FundingController.create(req4), Exception.BadRequest, 'No hk_id provided');
 		const req5 = {
 			session: {},
 			body: {
-				hk_id: null,
-				amount: 50
+				hkId: null,
+				amount: 50,
+				redirectParams: {}
 			}
 		};
 		assert.isRejected(FundingController.create(req5), Exception.BadRequest, 'No yaad_id provided');
 		const req6 = {
 			session: {},
 			body: {
-				yaad_id: 2,
+				yaad_id: 3,
 				hk_id: null,
-				amount: 150
+				amount: 50
 			}
 		};
-		assert.isRejected(FundingController.create(req6), 'ER_DUP_ENTRY');
+		assert.isRejected(FundingController.create(req6), Exception.BadRequest, 'No redirect_params provided');
+		const req7 = {
+			session: {},
+			body: {
+				yaad_id: 2,
+				hk_id: null,
+				amount: 150,
+				redirect_params: {}
+			}
+		};
+		await assert.isRejected(FundingController.create(req7), 'ER_DUP_ENTRY');
 	});
 
 	it('get funding stats', async function() {
@@ -111,7 +145,8 @@ describe('Funding controller', function() {
 			body: {
 				yaad_id: 1,
 				hk_id: null,
-				amount: 50
+				amount: 50,
+				redirect_params: {}
 			}
 		};
 		const res2 = await FundingController.create(req2);
@@ -122,7 +157,8 @@ describe('Funding controller', function() {
 			body: {
 				yaad_id: 2,
 				hk_id: null,
-				amount: 100
+				amount: 100,
+				redirect_params: {}
 			}
 		};
 		const res3 = await FundingController.create(req3);
@@ -133,7 +169,8 @@ describe('Funding controller', function() {
 			body: {
 				yaad_id: 3,
 				hk_id: null,
-				amount: 150
+				amount: 150,
+				redirect_params: {}
 			}
 		};
 		const res4 = await FundingController.create(req4);
@@ -149,7 +186,8 @@ describe('Funding controller', function() {
 			body: {
 				yaad_id: 4,
 				hk_id: 1,
-				amount: 50
+				amount: 50,
+				redirect_params: {}
 			}
 		};
 		const res6 = await FundingController.create(req6);
@@ -160,7 +198,8 @@ describe('Funding controller', function() {
 			body: {
 				yaad_id: 5,
 				hk_id: 2,
-				amount: 100
+				amount: 100,
+				redirect_params: {}
 			}
 		};
 		const res7 = await FundingController.create(req7);

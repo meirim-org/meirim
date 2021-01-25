@@ -78,9 +78,8 @@ const FundingPage = ({ ...props }) => {
 				<SC.HeaderWrapper>
 					<SC.Titles>
 						<SC.SubTitleWrapper>
-							<SC.ThirdTitle>{titles.subTitle} <br/> {titles.third}</SC.ThirdTitle>
-							<SC.SubTitle style={{'color':'#391695'}}>{titles.fourth} </SC.SubTitle>
-							{/* <SC.SubTitle>{titles.fifth} </SC.SubTitle> */}
+							<SC.MainTitle>{titles.mainTitle}</SC.MainTitle>
+							<SC.SubTitle>{titles.subTitle}</SC.SubTitle>
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>

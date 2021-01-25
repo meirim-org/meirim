@@ -61,6 +61,7 @@ export default {
 	meanings: 'משמעויות',
 	status: 'סטטוס',
 	planType: 'סוג תכנית',
+	lastUpdateDate: 'עדכון אחרון',
 	planDeatailOnGovSite: 'מסמכי התוכנית באתר הממשלה',
 	meter: 'מ״ר',
 	thisPlanIncreases: 'תוכנית זו מגדילה את השטח הבנוי פי',
