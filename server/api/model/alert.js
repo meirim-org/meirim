@@ -24,6 +24,7 @@ class Alert extends Model {
 
 	defaults () {
 		return {
+			radius: 4,
 			type: 'plan'
 		};
 	}
