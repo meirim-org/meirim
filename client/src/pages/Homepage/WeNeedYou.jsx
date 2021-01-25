@@ -101,7 +101,7 @@ export default function WeNeedYou() {
                         <Title>אנחנו צריכים אתכם!</Title>
                         <Message>יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.</Message>
                     </div>
-                    <Button onClick={() => { history.push(`/funding/`); }}>לתמיכה</Button>
+                    <Button onClick={() => { history.push(`/support-us/`); }}>לתמיכה</Button>
                 </Content>
             </Box>
         </WeNeedYouSection>
