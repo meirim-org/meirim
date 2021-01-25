@@ -46,8 +46,10 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 				<Button id="register-send-form-button" text="הרשמה למעירים" onClick={handleSubmit} />
 			</SC.ButtonWrapper>
 			<SC.TermsOfUseWrapper>
-				<SC.TermsOfUse>בלחיצה על ״הרשמה למעירים״ הנך מאשר/ת את </SC.TermsOfUse>
+				<SC.TermsOfUse>בלחיצה על הכפתור הנך מאשר/ת את </SC.TermsOfUse>
 				<Link id="register-terms-of-use" text="תנאי השימוש" url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
+				<SC.TermsOfUse> ו</SC.TermsOfUse>
+				<Link id="register-terms-of-use" text="מדיניות הפרטיות" url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 			</SC.TermsOfUseWrapper>
 		</SC.MainWrapper>
 	);
