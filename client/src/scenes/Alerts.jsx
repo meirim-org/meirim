@@ -33,7 +33,7 @@ const Alerts = () => {
 
 	const handleDeletedAlert = () => {
 		getAlerts();
-		setAdded(true);
+		setDeleted(true);
 	};
 
 	const getAlerts = () => {
