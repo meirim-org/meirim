@@ -7,8 +7,6 @@ import { Chip, Grid } from '@material-ui/core';
 import * as SC from './style';
 import { TreeSelectors } from 'redux/selectors';
 import { timeToObjectionText } from '../../utils';
-import TreeCuttingIcon from 'assets/svg/treeCuttingIcon';
-
 
 const TreeList = ({ trees_per_permit }) => {
 
@@ -50,61 +48,56 @@ const TreeDetailsPanel = () => {
 	return (
 		<TabPanel>
 			<TabBox>
-				<Grid container direction="row-reverse" justify="space-between">
-					<Grid item > 
-						<TreeCuttingIcon />
-					</Grid>
-					<Grid item md >
-						<SC.TreeSummaryTitleWrapper>
-							<Typography variant="planDetailTitle" mobileVariant="planDetailTitle"
-								component="h2" color={theme.palette.black}	>
-								{`עצים ל${action}`}
-							</Typography>
-						</SC.TreeSummaryTitleWrapper>
-						<SC.StatusAndTypeWrapper>
-							<SC.TotalTreeWrapper>
-								<Chip label={treeText} />
-								<Typography variant="paragraphText" mobileVariant="paragraphText"
-									component="span" color={theme.palette.black}>
-									{' מסוג '}
-								</Typography>
-							</SC.TotalTreeWrapper>
-							<TreeList trees_per_permit={trees_per_permit} />
-						</SC.StatusAndTypeWrapper>
-						<SC.StatusAndTypeWrapper>
-							<SC.StatusWrapper>
-								<Typography variant="paragraphText" mobileVariant="paragraphText"
-									component="span" color={theme.palette.gray['main']}>
-									{`${t.lastDateToObjectTrees}: `}
-								</Typography>
-								<Typography variant="paragraphText" mobileVariant="paragraphText"
-									component="span" color={theme.palette.black}>
-									{start_date && new Intl.DateTimeFormat('he-IL').format(new Date(start_date))}
-									{start_date && ` (${timeToObjectionText(start_date)})`}
-								</Typography>
-							</SC.StatusWrapper>
-						</SC.StatusAndTypeWrapper>
+			
+				<SC.TreeSummaryTitleWrapper>
+					<Typography variant="planDetailTitle" mobileVariant="planDetailTitle"
+						component="h2" color={theme.palette.black}	>
+						{`עצים ל${action}`}
+					</Typography>
+				</SC.TreeSummaryTitleWrapper>
+				<SC.StatusAndTypeWrapper>
+					<SC.TotalTreeWrapper>
+						<Chip label={treeText} />
+						<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color={theme.palette.black}>
+							{' מסוג '}
+						</Typography>
+					</SC.TotalTreeWrapper>
+					<TreeList trees_per_permit={trees_per_permit} />
+				</SC.StatusAndTypeWrapper>
+				<SC.StatusAndTypeWrapper>
+					<SC.StatusWrapper>
+						<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color={theme.palette.gray['main']}>
+							{`${t.lastDateToObjectTrees}: `}
+						</Typography>
+						<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color={theme.palette.black}>
+							{start_date && new Intl.DateTimeFormat('he-IL').format(new Date(start_date))}
+							{start_date && ` (${timeToObjectionText(start_date)})`}
+						</Typography>
+					</SC.StatusWrapper>
+				</SC.StatusAndTypeWrapper>
 
-						<SC.StatusAndTypeWrapper>
-							<SC.StatusWrapper>
-								<Typography variant="paragraphText" mobileVariant="paragraphText"
-									component="span" color={theme.palette.gray['main']}>
-									{`${t.permitNumber} `}
-								</Typography>
-								<Typography variant="paragraphText" mobileVariant="paragraphText"
-									component="span" color={theme.palette.black}>
-									{permit_number}
+				<SC.StatusAndTypeWrapper>
+					<SC.StatusWrapper>
+						<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color={theme.palette.gray['main']}>
+							{`${t.permitNumber} `}
+						</Typography>
+						<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color={theme.palette.black}>
+							{permit_number}
 
-								</Typography>
-							</SC.StatusWrapper>
-						</SC.StatusAndTypeWrapper>
+						</Typography>
+					</SC.StatusWrapper>
+				</SC.StatusAndTypeWrapper>
 
-						<SC.UrlWrapper>
-							<a target="_blank" rel="noopener noreferrer" href={'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx'}>{t.treePermitOnGovSite}</a>
-							<SC.CustomLinkIcon></SC.CustomLinkIcon>
-						</SC.UrlWrapper>
-					</Grid>
-				</Grid>
+				<SC.UrlWrapper>
+					<a target="_blank" rel="noopener noreferrer" href={'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx'}>{t.treePermitOnGovSite}</a>
+					<SC.CustomLinkIcon></SC.CustomLinkIcon>
+				</SC.UrlWrapper>
+
 			</TabBox>
 		</TabPanel>
 	);

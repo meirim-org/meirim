@@ -8,6 +8,7 @@ const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { regionalTreePermit } = require('../lib/trees/regional_tree_permit');
+const TreePermit = require('../model/tree_permit');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -144,6 +145,60 @@ const sendPlanningAlerts = () => {
 		});
 };
 
+const sendTreeAlerts = () => {
+	// send emails for each tree permit to each user in the place
+	Log.info('Running send tree permits alert');
+
+	return TreePermit.getUnsentTreePermits({
+		limit: 300
+	})
+		.then(unsentTrees => {
+			Log.debug('Got', unsentTrees.models.length, 'Tree permits');
+			return unsentTrees.models;
+		})
+		.mapSeries(unsentTree => {
+			const centroid = Turf.centroid(unsentTree.get('geom'));
+			return Promise.all([
+				Alert.getUsersByPlace(unsentTree.get('id')),
+				fetchStaticMap(
+					centroid.geometry.coordinates[1],
+					centroid.geometry.coordinates[0]
+				)
+			]).then(([users, planStaticMap]) => {
+				Log.debug(
+					'Got',
+					users[0].length,
+					'users for tree permit',
+					unsentTree.get('id')
+				);
+
+				if (!users[0] || !users[0].length) {
+					return {
+						tree_id: unsentTree.get('id'),
+						users: 0
+					};
+				}
+				return Bluebird.mapSeries(users[0], user =>
+					Email.treeAlert(user, unsentTree, planStaticMap)
+				).then(() => ({
+					tree_id: unsentTree.get('id'),
+					users: users.length
+				}));
+			});
+		})
+		.then(successArray => {
+			const idArray = [];
+			successArray.reduce((pv, cv) => idArray.push(cv.tree_id), 0);
+			if (idArray.length) {
+				return TreePermit.markTreesAsSent(idArray).then(() =>
+					Log.info('Processed trees', idArray)
+				);
+			}
+			return true;
+		});
+};
+
+
 /** Private */
 
 const fetchIplan = iPlan =>
@@ -207,5 +262,6 @@ module.exports = {
 	complete_jurisdiction_from_mavat,
 	fix_geodata,
 	fetchIplan,
-	fetchTreePermit
+	fetchTreePermit,
+	sendTreeAlerts
 };
