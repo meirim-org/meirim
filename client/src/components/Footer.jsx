@@ -17,7 +17,9 @@ const Footer = () => {
 			<Link to="/funding/#who-we-are">{t.whoWeAre}</Link> |&nbsp;
 			<a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות</a>
 			<br />
-			<Link to="/terms/">תנאי שימוש</Link> | כל הזכויות שמורות
+			<Link to="/terms/">תנאי שימוש</Link> |&nbsp;
+			<Link to="/privacy-policy/">מדיניות פרטיות</Link> |&nbsp;
+			כל הזכויות שמורות
 		</StyledFooter>
 	);
 };

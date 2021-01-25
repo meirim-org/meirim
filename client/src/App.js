@@ -52,10 +52,11 @@ const App = () => {
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
 						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
 						<Route path="/funding/success" 	render={props => (<FundingSuccess {...props} />	)} />
-						<Route path="/funding" 	render={props => (<Funding {...props} />	)} />
+						<Route path="/funding" render={props => (<Funding {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
-						<Route	path="/about" render={props => <Scenes.About {...props} />} />
+						<Route path="/about" render={props => <Scenes.About {...props} />} />
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />
+						<Route path="/privacy-policy" render={props => <Scenes.PrivacyPolicy {...props} />} />
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />
 						<Route path="/email-sent" render={props => <EmailSent {...props} />} />
 						<Route component={Scenes.NotFound} />

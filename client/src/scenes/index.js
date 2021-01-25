@@ -7,6 +7,7 @@ import AlertUnsubscribe from './AlertUnsubscribe';
 import ForgotPassword from './ForgotPassword';
 import About from './About';
 import Terms from './Terms';
+import PrivacyPolicy from './PrivacyPolicy';
 import Vocabulary from './Vocabulary';
 import NotFound from './NotFound';
 
@@ -20,6 +21,7 @@ export {
 	ForgotPassword,
 	About,
 	Terms,
+	PrivacyPolicy,
 	Vocabulary,
 	NotFound
 }
