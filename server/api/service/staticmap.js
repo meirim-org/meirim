@@ -8,7 +8,7 @@ const fetchStaticMap = (lat, lon) => {
 	const map = new StaticMaps(Config.get('staticmap'));
 
 	const marker = {
-		img: path.resolve('public/images/map_marker.png'),
+		img: path.resolve('../client/public/images/map_marker.png'),
 		width: 32,
 		height: 32,
 		coord: [lon, lat]
