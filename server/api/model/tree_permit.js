@@ -43,6 +43,9 @@ class TreePermit extends Model {
 		return `${tpc.TREE_PERMIT_TABLE}`;
 	}
 
+	_saving () {
+		//return new Checkit(model.rules).run(model.attributes);
+	}
 	// support json encode for data field
 	format (attributes) {
 		if (attributes[tpc.TREES_PER_PERMIT]) {
@@ -82,6 +85,50 @@ class TreePermit extends Model {
 	canRead () {
 		return Promise.resolve(this);
 	}
+
+	static getUnsentTreePermits (userOptions) {
+		const options = userOptions || {};
+		if (!options.limit) {
+			options.limit = 1;
+		}
+		//const where = Knex.raw('');
+		return TreePermit.query(qb => {
+			qb.whereRaw('sent = 0 AND datediff(current_date(), tree_permit.start_date) < -1');
+		
+		}).fetchPage({
+			pageSize: options.limit,
+			columns: [
+				'id',
+				tpc.PLACE,
+				tpc.TOTAL_TREES,
+				tpc.TREES_PER_PERMIT,
+				tpc.STREET,
+				tpc.STREET_NUMBER,
+				tpc.REASON_SHORT,
+				tpc.REASON_DETAILED,
+				tpc.START_DATE,
+				tpc.PERMIT_NUMBER,
+				tpc.GEOM,
+				tpc.ACTION
+			]
+		});
+	}
+
+	static markTreesAsSent (tree_ids) {
+		return new TreePermit()
+			.query(qb => {
+				qb.whereIn('id', tree_ids);
+			})
+			.save(
+				{
+					sent: '2'
+				},
+				{
+					method: 'update'
+				}
+			);
+	}
+
 }
 
 module.exports = TreePermit;

@@ -181,6 +181,20 @@ class Alert extends Model {
     GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
 	}
+
+	static getUsersByPlace (treeId) {
+		const sql = `SELECT 
+    person.email,
+    person.id as person_id,
+    alert.id as alert_id
+    FROM alert 
+    INNER JOIN tree_permit ON tree_permit.place=alert.place
+    INNER JOIN person ON person.id=alert.person_id
+    WHERE tree_permit.id=${treeId} AND
+    person.status=1
+    GROUP BY person.id, alert.id`;
+		return Knex.raw(sql);
+	}
 }
 
 module.exports = Alert;
