@@ -50,9 +50,9 @@ const App = () => {
 						<Route path="/my-plans" render={props => <UserPlans {...props} />} />
 						<Route path="/plans" render={props => <Scenes.Plans {...props} />} />
 						<Route path="/activate" render={props => <Scenes.Activate {...props} />} />
-						<Route path="/forgot" 	render={props => (<Scenes.ForgotPassword {...props} />	)} />
-						<Route path="/funding/success" 	render={props => (<FundingSuccess {...props} />	)} />
-						<Route path="/funding" render={props => (<Funding {...props} />	)} />
+						<Route path="/forgot" render={props => (<Scenes.ForgotPassword {...props} />	)} />
+						<Route path="/support-us/success" render={props => (<FundingSuccess {...props} />	)} />
+						<Route path="/support-us" render={props => (<Funding {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route path="/about" render={props => <Scenes.About {...props} />} />
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />
