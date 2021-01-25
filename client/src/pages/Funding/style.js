@@ -7,6 +7,7 @@ export const HeaderWrapper = styled.div`
   background-color: white;
   text-align: right;
   padding: 1.5em;
+  width: 100%;
 
   @media ${device.laptop} {
     display: inline-flex;
@@ -109,7 +110,7 @@ export const CentredSubTitle = styled.h2`
    }
 `;
 
-export const ThirdTitle = styled.h1`
+export const MainTitle = styled.h1`
   font-family: Assistant !important;
   font-weight: bold;
   font-stretch: normal;
@@ -118,7 +119,7 @@ export const ThirdTitle = styled.h1`
   font-size:36px;
   line-height: 1.5;
   color: #270E78;
-  margin-bottom: 0;
+  margin-bottom: 0.5em;
   padding-top: 1em;
    >  span {
      font-family: Assistant !important;
@@ -338,10 +339,12 @@ export const RoadmapItemDescription= styled.div`
   }
 `;
 
-export const RoadmapItemIcon= styled.div`
+export const RoadmapItemIcon = styled.div`
   // border: 1px solid #E4E4E4;
   height: 130px;
   margin: 0 0 0 1em;
+  justify-content: center;
+  display: flex;
 
   svg {
     display: block;

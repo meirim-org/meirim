@@ -7,7 +7,7 @@ import { Text } from 'shared';
 import t from 'locale/he_IL';
 import { useHistory, useParams } from 'react-router-dom';
 
-const AddNewComment = ({ openNewCommentView }) => {
+const AddNewComment = ({ newCommentViewHandler  }) => {
 	const { id: planId } = useParams();
 	const history = useHistory();
 	const theme = useTheme();
@@ -18,7 +18,7 @@ const AddNewComment = ({ openNewCommentView }) => {
 			color="primary"
 			onClick={()=> {
 				history.push(`/plan/${planId}/comments`);
-				openNewCommentView();
+				newCommentViewHandler();
 			}}
 			startIcon={<ChatBubbleOutlineIcon />}
 		>
@@ -28,7 +28,7 @@ const AddNewComment = ({ openNewCommentView }) => {
 };
 
 AddNewComment.propTypes = {
-	openNewCommentView: PropTypes.func.isRequired,
+	newCommentViewHandler: PropTypes.func.isRequired,
 };
 
 export default AddNewComment;

@@ -8,7 +8,7 @@ import * as SC from './style';
 import { Badge } from '@material-ui/core';
 import { tabIsActive } from 'utils';
 
-const Header = ({ isFavPlan, subscriptionHandler, openNewCommentView, match }) => {
+const Header = ({ isFavPlan, subscriptionHandler, match, newCommentViewHandler }) => {
 	const history = useHistory();
 	const { planData: { name, countyName } } = PlanSelectors();
 	const { commentsCount } = CommentSelectors();
@@ -36,7 +36,7 @@ const Header = ({ isFavPlan, subscriptionHandler, openNewCommentView, match }) =
 			<SC.Buttons>
 				<SharePlan />
 				<SavePlan isFavPlan={isFavPlan} subscriptionHandler={subscriptionHandler}/>
-				<AddNewComment openNewCommentView={openNewCommentView}/>
+				<AddNewComment newCommentViewHandler={newCommentViewHandler}/>
 			</SC.Buttons>
 		</SC.Header>
 	);
@@ -44,7 +44,7 @@ const Header = ({ isFavPlan, subscriptionHandler, openNewCommentView, match }) =
 
 Header.propTypes = {
 	subscriptionHandler: PropTypes.func.isRequired,
-	openNewCommentView: PropTypes.func.isRequired,
+	newCommentViewHandler: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
 	isFavPlan: PropTypes.bool.isRequired,
 };
