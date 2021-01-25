@@ -110,7 +110,8 @@ const FundingPage = ({ ...props }) => {
 					<Divider orientation="vertical"/>
 					<SC.PaymentWrapper>
 						<SC.SectionTitle>הצטרפו למהפכה </SC.SectionTitle>
-						<TabPanel>
+						<SC.CentredSubTitle>אנחנו עוד מסדרים את חשבון הבנק שלנו. תבדקו אותנו שוב בעוד יומיים-שלושה</SC.CentredSubTitle>
+						<TabPanel id="funding-panel">
 							<SC.FundingStatsWrapper>
 								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
 								<div>
