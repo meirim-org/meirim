@@ -222,12 +222,16 @@ function processPermits(rawTreePermits) {
 		if (treePermits[key] && treePermits[key].attributes[tpc.TOTAL_TREES]) { //exist
 			treePermits[key].attributes[tpc.TOTAL_TREES] = treePermits[key].attributes[tpc.TOTAL_TREES] + Number(rtp.extra[tpc.NUMBER_OF_TREES]);
 
-			//TODO bug it overrides existing tree kinds
-			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { ...treePermits[key].attributes[tpc.TREES_PER_PERMIT], [rtp.extra[tpc.TREE_NAME]]: rtp.extra[tpc.NUMBER_OF_TREES] };
+			if ( Object.keys(treePermits[key].attributes[tpc.TREES_PER_PERMIT]).includes(rtp.extra[tpc.TREE_NAME])){
+				treePermits[key].attributes[tpc.TREES_PER_PERMIT][rtp.extra[tpc.TREE_NAME]] = treePermits[key].attributes[tpc.TREES_PER_PERMIT][rtp.extra[tpc.TREE_NAME]] + Number(rtp.extra[tpc.NUMBER_OF_TREES]);
+			}
+			else{
+				treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { ...treePermits[key].attributes[tpc.TREES_PER_PERMIT], [rtp.extra[tpc.TREE_NAME]]: Number(rtp.extra[tpc.NUMBER_OF_TREES]) };
+			}
 		}
 		else { // a new one
 			treePermits[key] = new TreePermit({ ...rtp.core, [tpc.TOTAL_TREES]: Number(rtp.extra[tpc.NUMBER_OF_TREES]) });
-			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { [rtp.extra[tpc.TREE_NAME]]: rtp.extra[tpc.NUMBER_OF_TREES] };
+			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { [rtp.extra[tpc.TREE_NAME]]: Number(rtp.extra[tpc.NUMBER_OF_TREES]) };
 		}
 	});
 	return Object.values(treePermits);
