@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
 import Typography from "@material-ui/core/Typography";
 import GridList from "@material-ui/core/GridList";
 import Card from "@material-ui/core/Card";
@@ -109,7 +108,7 @@ class TreePermits extends Component {
 
 		this.loadTrees(pageNumber, filterPlaces);
 	}
-
+	
 	render() {
 		const { treePermits, treePlaces, error, noData, hasMore } = this.state;
 		const { me } = this.props;
@@ -125,6 +124,11 @@ class TreePermits extends Component {
 							this
 						)}
 					/>
+					<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color="textSecondary">
+							{`* ישנן רשויות שלא זמינות לנו כרגע. תמכו בנו כדי שנוכל להגיע גם לעיר שלכם!`}
+						</Typography>
+					<div>  </div>
 					<br />
 					<GridList
 						cellHeight={500}
