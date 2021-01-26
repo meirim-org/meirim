@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { Chip, Grid } from '@material-ui/core';
+import { Chip } from '@material-ui/core';
 import * as SC from './style';
 import { TreeSelectors } from 'redux/selectors';
 import { timeToObjectionText } from '../../utils';
