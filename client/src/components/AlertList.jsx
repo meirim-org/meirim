@@ -70,20 +70,28 @@ function Mapa(props) {
 				attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 			/>
 			{props.alerts.map((alert, idx) => {
-				let center = leaflet
-					.geoJSON(alert.geom)
-					.getBounds()
-					.getCenter();
-				
-				const radius = alert.radius? alert.radius * 1000 : 1000;
-				
-				return (
-					<Circle
-						radius={radius}
-						center={center}
-						key={idx}
-					/>
-				);
+				if (alert.geom) {
+					let center = leaflet
+						.geoJSON(alert.geom)
+						.getBounds()
+						.getCenter();
+
+					const radius = alert.radius? alert.radius * 1000 : 1000;
+
+					return (
+						<Circle
+							radius={radius}
+							center={center}
+							key={idx}
+						/>
+					);
+				} else {
+					// return no element
+					return (
+						<>
+						</>
+					);
+				}
 			})}
 		</Map>
 	);
