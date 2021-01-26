@@ -6,7 +6,7 @@ import * as SC from '../../style';
 import { BackButton } from 'pages/Tree/common';
 import { goBack } from 'pages/Tree/utils';
 import t from 'locale/he_IL';
-
+import { Typography } from 'shared';
 
 const Title = ({ place, text }) => {
 	const theme = useTheme();
@@ -19,6 +19,10 @@ const Title = ({ place, text }) => {
 			</SC.SubTitleWrapper>
 			<SC.TitleWrapper>
 				<Text size="24px" lineHeight="1.17" weight="600" text={text} component="h1" color={theme.palette.black}/>
+				<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color={theme.palette.gray['main']}>
+						{t.estimatedLocation}
+					</Typography>
 			</SC.TitleWrapper>
 		</>
 	);

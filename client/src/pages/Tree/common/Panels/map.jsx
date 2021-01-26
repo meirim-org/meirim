@@ -23,6 +23,12 @@ export const MapPanel = (props) => {
 						{t.location}
 					</Typography>
 				</SC.TreeSummaryTitleWrapper>
+				<SC.TreeSummarySubtitleWrapper>
+				<Typography variant="paragraphText" mobileVariant="paragraphText"
+							component="span" color={theme.palette.gray['main']}>
+						{t.estimatedLocation}
+					</Typography>
+				</SC.TreeSummarySubtitleWrapper>
 				<SC.MapWrapper>
 					{geom && <Mapa
 						geom={geom}
