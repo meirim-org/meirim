@@ -1,7 +1,11 @@
 const { extractChartFive } = require('./chartFive');
 const { extractChartsOneEight } = require('./chartsOneEight');
+const { extractChartOneSix } = require('./chartOneSix');
+const { extractChartOneSeven } = require('./chartOneSeven');
 const { extractChartFour } = require('./chartFour');
 const { extractChartSix } = require('./chartSix');
+const { extractChartThreeTwo } = require('./chartThreeTwo');
+const { getNonTableInOneFour } = require('./textOneFour');
 const { extractPlanInformation } = require('./planInformation');
 const log = require('../../../log');
 const pdfTableExtractor = require('@florpor/pdf-table-extractor');
@@ -12,7 +16,11 @@ function parsePdf (result) {
 		chartFive: []
 	};
 
+	extractedData.textOneFour = getNonTableInOneFour(result.pageTables);
+	extractedData.chartOneSix = extractChartOneSix(result.pageTables);
+	extractedData.chartOneSeven = extractChartOneSeven(result.pageTables);
 	extractedData.chartsOneEight = extractChartsOneEight(result.pageTables);
+	extractedData.chartsThreeTwo = extractChartThreeTwo(result.pageTables);
 	extractedData.chartFour = extractChartFour(result.pageTables);
 	extractedData.chartFive = extractChartFive(result.pageTables);
 	extractedData.chartSix = extractChartSix(result.pageTables);
