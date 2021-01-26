@@ -23,7 +23,7 @@ const TreeAppealPanel = () => {
 					{t.treeAppealExplained}
 				</Typography>
 				<SC.ButtonWrapper>
-					<Button id="tree-appeal-button" text="כל מה שצריך לדעת על הגשת ערר באזורך"
+					<Button id="tree-appeal-button" text={t.treeAppealButton}
 					 small='small'  target="_blank" rel="noopener noreferrer" href={GUIDE_LINK} />
 				</SC.ButtonWrapper>
 			</TabBox>
