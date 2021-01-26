@@ -8,6 +8,10 @@ export const TreeSummaryTitleWrapper = styled.div`
     margin-bottom: .75rem;
 `;
 
+export const TreeSummarySubtitleWrapper = styled.div`
+    padding: 0 0.5rem
+`;
+
 export const TreeTermsWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
