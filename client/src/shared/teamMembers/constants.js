@@ -49,25 +49,26 @@ export const members = [
 	},
 	{
 		name:`אד' בוריס פלוטניקוב`,
-		title:`מתכנת`,
+		title:`פיתוח תוכנה`,
 		order:8,
 		photo:'boris'
 		
 	},
 	{
 		name:`גל גנדלר`,
-		title:`מתכנתת`,
+		title:`פיתוח תוכנה`,
 		order:9,
 		photo:'gal'
 		
 	},
 	{
-		name:`גליה רופין `,
-		title:`מתכנתת`,
+		name:`גליה רופין`,
+		title:`ראש תחום סביבה`,
 		order:10,
 		photo:'galia'
 		
-	},{
+	},
+	{
 		name:`דור זומר`,
 		title:`שיווק ואסטרטגיה`,
 		order:11,
@@ -97,7 +98,7 @@ export const members = [
 	},
 	{
 		name:`נועה ויכנסקי`,
-		title:`מעצבת UI / UX`,
+		title:`מובילת עיצוב`,
 		order:15,
 		photo:'noa'
 		

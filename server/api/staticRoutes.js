@@ -33,7 +33,7 @@ Router.get(['/plan/:planId', '/plan/:planId/*'], (req, res) => {
 		});
 });
 
-Router.get('/funding', (req, res) => {
+Router.get('/support-us', (req, res) => {
 	res.render('index', {
 		layout: false,
 		isSupportUs: true,
