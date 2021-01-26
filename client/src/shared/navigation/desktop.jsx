@@ -72,11 +72,11 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										<SC.StyledLink
 											id="nav-bar-about"
 											to={{
-												pathname: '/funding/',
+												pathname: '/support-us/',
 												hash: 'who-we-are'
 											}}
 											isActive={(match, location) =>
-												['/funding', '/funding/'].indexOf(location.pathname) > -1 &&
+												['/support-us', '/support-us/'].indexOf(location.pathname) > -1 &&
 												location.hash === '#who-we-are'
 											}
 										>
@@ -88,7 +88,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											id="support-us"
 											text={t.supportUs}
 											type={'primary'}
-											onClick={() => { history.push(`/funding/`); }}
+											onClick={() => { history.push(`/support-us/`); }}
 											small
 										/>
 									</Box>
