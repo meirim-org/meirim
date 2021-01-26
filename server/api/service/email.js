@@ -134,7 +134,7 @@ class Email {
 		return `${(d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())}/${(d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))}/${d.getFullYear()}`;
 	}
 
-	treeAlert (user, unsentTree, planStaticMap) {
+	treeAlert (user, unsentTree, treeStaticMap) {
 		const alert = new Alert({
 			id: user.alert_id,
 			person_id: user.person_id
@@ -143,8 +143,7 @@ class Email {
 
 		Object.assign(data, unsentTree.attributes);
 		
-		data.unsubscribeLink =
-      `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
+		data.unsubscribeLink = `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
 		data.link = `${this.baseUrl}tree/${unsentTree.get('id')}`;
 		data.place_text = data.place? `רשיון כריתה חדש ב${data.place}` : 'רשיון כריתה חדש באזורך';
 		data.address = data.street ? (data.street_number? `${data.street} ${data.street_number}`: `${data.street}`) : 'לא צוינה כתובת';
@@ -152,14 +151,18 @@ class Email {
 		data.reason_short_text = data.reason_short? data.reason_short : 'לא צוינה סיבה';
 		data.reason_detailed_text = data.reason_detailed? data.reason_detailed : 'לא צוין פירוט הסיבה';
 		data.start_date_text = this.formatDate(data.start_date);
-		data.attachments = [
-			{
-				cid: 'planmap',
-				filename: 'plan_map.png',
-				content: planStaticMap,
-				encoding: 'base64'
-			}
-		];
+		data.hasMap = Boolean(treeStaticMap);
+
+		if (treeStaticMap) {
+			data.attachments = [
+				{
+					cid: 'planmap',
+					filename: 'plan_map.png',
+					content: treeStaticMap,
+					encoding: 'base64'
+				}
+			];
+		}
 
 		return this.sendWithTemplate(this.templates.treeAlert, data);
 	}

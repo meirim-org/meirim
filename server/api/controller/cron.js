@@ -150,21 +150,33 @@ const sendTreeAlerts = () => {
 	Log.info('Running send tree permits alert');
 
 	return TreePermit.getUnsentTreePermits({
-		limit: 300
+		limit: 1
 	})
 		.then(unsentTrees => {
 			Log.debug('Got', unsentTrees.models.length, 'Tree permits');
 			return unsentTrees.models;
 		})
 		.mapSeries(unsentTree => {
-			const centroid = Turf.centroid(unsentTree.get('geom'));
-			return Promise.all([
-				Alert.getUsersByPlace(unsentTree.get('id')),
-				fetchStaticMap(
-					centroid.geometry.coordinates[1],
-					centroid.geometry.coordinates[0]
-				)
-			]).then(([users, planStaticMap]) => {
+			let prepDataPromise;
+
+			if (unsentTree.get('geom')) {
+				const centroid = Turf.centroid(unsentTree.get('geom'));
+
+				prepDataPromise = Promise.all([
+					Alert.getUsersByPlace(unsentTree.get('id')),
+					fetchStaticMap(
+						centroid.geometry.coordinates[1],
+						centroid.geometry.coordinates[0]
+					)
+				]);
+			} else {
+				prepDataPromise = Promise.all([
+					Alert.getUsersByPlace(unsentTree.get('id')),
+					Promise.resolve()
+				]);
+			}
+
+			return prepDataPromise.then(([users, treeStaticMap]) => {
 				Log.debug(
 					'Got',
 					users[0].length,
@@ -179,7 +191,7 @@ const sendTreeAlerts = () => {
 					};
 				}
 				return Bluebird.mapSeries(users[0], user =>
-					Email.treeAlert(user, unsentTree, planStaticMap)
+					Email.treeAlert(user, unsentTree, treeStaticMap)
 				).then(() => ({
 					tree_id: unsentTree.get('id'),
 					users: users.length
