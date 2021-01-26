@@ -104,9 +104,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										<SC.StyledList>
 											<SC.StyledListItem
 												component={SC.StyledLink}
-												to="/funding/"
+												to="/support-us/"
 												isActive={(match, location) =>
-													['/funding', '/funding/'].indexOf(location.pathname) > -1 &&
+													['/support-us', '/support-us/'].indexOf(location.pathname) > -1 &&
 													location.hash !== '#who-we-are'
 												}
 												button
@@ -119,11 +119,11 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											<SC.StyledListItem
 												component={SC.StyledLink}
 												to={{
-													pathname: '/funding/',
+													pathname: '/support-us/',
 													hash: 'who-we-are'
 												}}
 												isActive={(match, location) =>
-													['/funding', '/funding/'].indexOf(location.pathname) > -1 &&
+													['/support-us', '/support-us/'].indexOf(location.pathname) > -1 &&
 													location.hash === '#who-we-are'
 												}
 												button

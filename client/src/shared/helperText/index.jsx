@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledHelperText = styled(FormHelperText)`
-  font-family: Assistant;
+  font-family: Assistant !important;
   font-size: 14px !important;
   font-weight: normal;
   font-stretch: normal;
