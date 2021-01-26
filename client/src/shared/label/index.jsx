@@ -5,10 +5,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 export const Required = styled.span`
   color:red;
+  font-family: Assistant !important;
 `;
 
 const Label = ({ id, required = false, text }) => (
-	<InputLabel id={id}>
+	<InputLabel id={id} style={{'font-family': 'Assistant'}}>
 		{text}
 		{required && <Required> *</Required>}
 	</InputLabel>

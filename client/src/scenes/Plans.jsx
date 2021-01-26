@@ -15,11 +15,13 @@ class Plans extends Component {
         error: false,
         hasMore: true,
         noData: false,
+        loadingPlans: false,
         pageNumber: 1,
         plans: [],
         address: '',
         addressLocation: [],
         list: [],
+        searchPoint: false,
         loadingAutocomplete: false
     };
 
@@ -33,9 +35,12 @@ class Plans extends Component {
     handleAddressSubmit(address) {
         // reset current displayed plans
         this.setState({
+            loadingPlans: true,
+            hasMore: true,
+            noData: false,
             plans: [],
             pageNumber:1,
-            searchPoint: {}
+            searchPoint: false
         });
 
         // get selected place id
@@ -86,19 +91,20 @@ class Plans extends Component {
 
     loadPlans(pageNumber, point) {
         this.setState({
-            noData: false
+            noData: false,
+            loadingPlans: true
         });
 
         api.get(
             `/plan/?page=${pageNumber}`+
             (point ? `&distancePoint=${point.lng},${point.lat}` : "")
-            
         )
             .then(result => {
                 this.setState({
                     hasMore:
                         result.pagination.page < result.pagination.pageCount,
                     noData: this.state.plans.length + result.data.length === 0,
+                    loadingPlans: false,
                     pageNumber,
                     plans: [...this.state.plans, ...result.data]
                 });
@@ -107,7 +113,9 @@ class Plans extends Component {
     }
 
     loadNextPage() {
-        this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
+        if (!this.state.loadingPlans) {
+            this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
+        }
     }
 
     loadQsSearchParams() {
