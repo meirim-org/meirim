@@ -5,15 +5,19 @@ import './Mapa.css';
 
 
 const Mapa = (props) =>  {
-	const { hideZoom, disableInteractions, title2, geom, countyName, maxZoom=17 } = props;
+	const { hideZoom, disableInteractions, title2, geom, countyName, maxZoom=17, showPlaceholder=false } = props;
 	
 	if (!geom || geom.length === 0) {
-		return (
-			<div className="map-title-placeholder" style={{ height: '100%', width: '100%' }}>
-				{countyName && <button className="btn btn-light disabled">{countyName}</button>}
-				{title2 && <button variant="info" className="btn btn-light map-title-left">{title2}</button>}
-			</div>
-		)
+		if (showPlaceholder) {
+			return (
+				<div className="map-title-placeholder" style={{ height: '100%', width: '100%' }}>
+					{countyName && <button className="btn btn-light disabled">{countyName}</button>}
+					{title2 && <button variant="info" className="btn btn-light map-title-left">{title2}</button>}
+				</div>
+			);
+		} else {
+			return null;
+		}
 	}
 
 	const bounds = leaflet.geoJSON(geom).getBounds();

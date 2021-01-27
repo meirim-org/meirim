@@ -10,36 +10,41 @@ export const MapPanel = (props) => {
 	const { geom, countyName } = props;
 	const theme = useTheme();
 
-	return (
-		<TabPanel>
-			<TabBox>
-				<SC.TreeSummaryTitleWrapper>
-					<Typography
-						variant="planDetailTitle"
-						mobileVariant="planDetailTitle"
-						component="h2"
-						color={theme.palette.black}
-					>
-						{t.location}
-					</Typography>
-				</SC.TreeSummaryTitleWrapper>
-				<SC.TreeSummarySubtitleWrapper>
-				<Typography variant="paragraphText" mobileVariant="paragraphText"
-							component="span" color={theme.palette.gray['main']}>
-						{t.estimatedLocation}
-					</Typography>
-				</SC.TreeSummarySubtitleWrapper>
-				<SC.MapWrapper>
-					{geom && <Mapa
-						geom={geom}
-						countyName={countyName}
-						hideZoom={false}
-						disableInteractions={false}
-					/>}
-				</SC.MapWrapper>
-			</TabBox>
-		</TabPanel>
-	);
+	if (geom) {
+		return (
+			<TabPanel>
+				<TabBox>
+					<SC.TreeSummaryTitleWrapper>
+						<Typography
+							variant="planDetailTitle"
+							mobileVariant="planDetailTitle"
+							component="h2"
+							color={theme.palette.black}
+						>
+							{t.location}
+						</Typography>
+					</SC.TreeSummaryTitleWrapper>
+					<SC.TreeSummarySubtitleWrapper>
+					<Typography variant="paragraphText" mobileVariant="paragraphText"
+								component="span" color={theme.palette.gray['main']}>
+							{t.estimatedLocation}
+						</Typography>
+					</SC.TreeSummarySubtitleWrapper>
+					<SC.MapWrapper>
+						<Mapa
+							geom={geom}
+							countyName={countyName}
+							hideZoom={false}
+							disableInteractions={false}
+							showPlaceholder={true}
+						/>
+					</SC.MapWrapper>
+				</TabBox>
+			</TabPanel>
+		);
+	} else {
+		return null;
+	}
 };
 
 MapPanel.propTypes = {
