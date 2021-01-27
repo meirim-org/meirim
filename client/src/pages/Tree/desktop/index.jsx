@@ -30,6 +30,7 @@ const Template = ({
 					countyName={place}
 					hideZoom={false}
 					disableInteractions={false}
+					showPlaceholder={true}
 				/>
 			</SC.MainWrapper>
 		</Wrapper>

@@ -154,6 +154,7 @@ class TreePermits extends Component {
 												countyName={tree.place}
 												title2={timeToObjectionText(tree.start_date)}
 												maxZoom={16}
+												showPlaceholder={true}
 											/>
 										</CardMedia>
 										<CardContent className="card-content">
