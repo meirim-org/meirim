@@ -43,12 +43,6 @@ export const PaymentWrapper = styled.div`
     padding: 1.5em 4.8em;
     flex-grow: 1;
   }
-
-  #funding-panel {
-    filter: blur(4px);
-    pointer-events: none;
-    user-select: none;
-  }
 `;
 
 export const RoadMapWrapper = styled.div`
