@@ -8,13 +8,12 @@ const CommentPerson = require('./controller/comment_person');
 const Rate = require('./controller/rate');
 const Impression = require('./controller/impression');
 const Funding = require('./controller/funding');
-
+const TreePermit = require('./controller/tree_permit');
 const Subscription = require('./controller/subscription');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
 const { wrap, publicWrapper } = require('./controller/controller');
-const TreePermit = require('./controller/tree_permit');
 
 // Sign up
 Router.post('/sign/up', wrap(SignUp.signup, SignUp));
