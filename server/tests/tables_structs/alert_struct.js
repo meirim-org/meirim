@@ -4,6 +4,8 @@ const AlertStruct = function(table) {
 	table.string('address');
 	table.integer('radius');
 	table.specificType('geom', 'GEOMETRY');
+	table.string('type');
+	table.string('place');
 	return table;
 };
 

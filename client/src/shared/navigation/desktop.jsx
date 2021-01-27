@@ -48,6 +48,15 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
+										<SC.StyledLink 
+											id="nav-bar-plans"
+											to="/trees/"
+											isActive={(match, location) => location.pathname.includes('/trees')}
+										>
+											{t.treePermits}
+										</SC.StyledLink>
+									</Box>
+									<Box px={2}>
 										{isAuthenticated && (
 											<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
 												{t.alerts}

@@ -3,10 +3,23 @@ import leaflet from 'leaflet';
 import { Map, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
 import './Mapa.css';
 
+
 const Mapa = (props) =>  {
-	const { hideZoom, disableInteractions, title2, geom, countyName } = props;
+	const { hideZoom, disableInteractions, title2, geom, countyName, maxZoom=17, showPlaceholder=false } = props;
 	
-	if (!geom) return null;
+	if (!geom || geom.length === 0) {
+		if (showPlaceholder) {
+			return (
+				<div className="map-title-placeholder" style={{ height: '100%', width: '100%' }}>
+					{countyName && <button className="btn btn-light disabled">{countyName}</button>}
+					{title2 && <button variant="info" className="btn btn-light map-title-left">{title2}</button>}
+				</div>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	const bounds = leaflet.geoJSON(geom).getBounds();
 
 	// hash the geom to create a key for the layer so react replaces the component properly
@@ -19,7 +32,7 @@ const Mapa = (props) =>  {
 			bounds={bounds}
 			zoomControl={false}
 			boxZoom={!disableInteractions}
-			maxZoom={17}
+			maxZoom={maxZoom}
 			doubleClickZoom={!disableInteractions}
 			dragging={!disableInteractions}
 			keyboard={!disableInteractions}

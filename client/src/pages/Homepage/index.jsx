@@ -1,7 +1,7 @@
 import React from 'react';
+import { WeNeedYou } from 'shared';
 import TopSection from './TopSection';
 import TopViews from './TopViews';
-import WeNeedYou from './WeNeedYou';
 import CommunityDiscussions from './CommunityDiscussions';
 import Wrapper from 'components/Wrapper';
 

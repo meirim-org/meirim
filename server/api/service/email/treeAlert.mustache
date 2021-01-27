@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+  <title>
+    {{place_text}}
+	</title>
+</head>
+
+<body dir="rtl">
+  <h2 class="headline">יש לך התראה חדשה!</h2>
+  <h2 class="headline">{{place_text}}</h2>
+
+  <a href="{{link}}"><h2 class="headline"> {{total_trees_text}} ל{{action}} </h2></a>
+  {{#hasMap}}
+  <a href="{{link}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
+  {{/hasMap}}
+
+  <div class="subSubHeadline">
+ 	<strong>כתובת:</strong> {{address}}
+	<br>
+    <strong>סיבה:</strong> {{reason_short_text}}
+	<br>
+	<strong>פירוט הסיבה:</strong> {{reason_detailed_text}}
+    <br>
+	<strong>תאריך כניסה לתוקף:</strong> {{start_date_text}}
+  </div>
+  
+  
+  <a href="{{unsubscribeLink}}">מחיקת התראה</a>
+  </div>
+  
+</body>
+
+</html>
