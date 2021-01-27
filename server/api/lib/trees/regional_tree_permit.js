@@ -2,6 +2,7 @@ const Log = require('../log');
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
+const https = require('https');
 const fetch = require('node-fetch');
 const moment = require('moment');
 const AbortController = require('abort-controller');
@@ -31,12 +32,12 @@ const regionalTreePermitUrls = [
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_jerusalem.XLS',
 
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
-	//'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS', - no after darom
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS',
 ];
 
 const SHEET_BEFORE = 'Data2ToExcel_BeforDate';
 const SHEET_AFTER = 'Data2ToExcel_ToDate';
-const TIMEOUT_MS = 5000;
+const TIMEOUT_MS = 15000;
 const MORNING = '08:00';
 const EVENING = '20:00';
 
@@ -53,30 +54,30 @@ async function getRegionalTreePermitsFromFile(url, pathname) {
 			TIMEOUT_MS,
 		);
 		Log.info('Fetching trees file... ' + `${url}`);
-		return new Promise((resolve, reject) => {
-			(async () => {
-				try {
-					const res = await fetch(url, { signal: controller.signal });
-					const stream = fs.createWriteStream(pathname);
-					stream.on('open', () => {
-						res.body.pipe(stream);
-					});
-					stream.on('finish', async function () {
-						stream.close();
-						Log.info(`Successfully Downloaded trees file: ${url}. File Could be found here: ${pathname}`);
+		return new Promise(async (resolve, reject) => {
+			try {
+				// use new agent for request to avoid consecutive-request-hanging bug
+				// NOTE: we use https.Agent since all urls are currently https. if a http
+				// url is added there needs to be a condition here to use the correct agent
+				const res = await fetch(url, { signal: controller.signal, agent: new https.Agent() });
+				const stream = fs.createWriteStream(pathname);
+				stream.on('open', () => {
+					res.body.pipe(stream);
+				});
+				stream.on('close', async function () {
+					Log.info(`Successfully Downloaded trees file: ${url}. File Could be found here: ${pathname}`);
 
-						const treePermits = await parseTreesXLS(pathname);
-						resolve(treePermits);
-					});
-				}
-				catch (err) {
-					Log.error(`Error fetching file ${url} :  ${err}`);
-					reject(err);
-				}
-				finally {
-					() => { clearTimeout(controllerTimeout); };
-				}
-			})();
+					const treePermits = await parseTreesXLS(pathname);
+					resolve(treePermits);
+				});
+			}
+			catch (err) {
+				Log.error(`Error fetching file ${url} :  ${err}`);
+				reject(err);
+			}
+			finally {
+				clearTimeout(controllerTimeout);
+			}
 		});
 	}
 	catch (err) {
@@ -270,7 +271,7 @@ const regionalTreePermit = async() => {
 	let maxPermits = MAX_PERMITS;
 	try {
 		for (let i = 0; i < regionalTreePermitUrls.length && maxPermits > 0; i++) {
-			const numSavedPermits =await crawlRegionalTreePermit(regionalTreePermitUrls[i], maxPermits);
+			const numSavedPermits = await crawlRegionalTreePermit(regionalTreePermitUrls[i], maxPermits);
 			maxPermits = maxPermits - numSavedPermits;
 			sumPermits = sumPermits + numSavedPermits;
 		}
