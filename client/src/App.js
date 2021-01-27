@@ -12,6 +12,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as Scenes from 'scenes';
 import Plan from 'pages/Plan';
 import UserPlans from 'pages/UserPlans';
+import Tree from 'pages/Tree';
 import EmailSent from 'pages/Register/emailSent';
 import Homepage from 'pages/Homepage';
 import Funding from 'pages/Funding';
@@ -55,6 +56,8 @@ const App = () => {
 						<Route path="/support-us" render={props => (<Funding {...props} />	)} />
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route path="/about" render={props => <Scenes.About {...props} />} />
+						<Route path="/trees" render={props => <Scenes.TreePermits {...props} />}/>
+						<Route path="/tree/:id" render={props => <Tree {...props} />}/>
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />
 						<Route path="/privacy-policy" render={props => <Scenes.PrivacyPolicy {...props} />} />
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />

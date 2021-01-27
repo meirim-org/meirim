@@ -10,7 +10,7 @@ import t from 'locale/he_IL';
 import { Row, IconButton, Button } from 'shared';
 import logo from 'assets/logo.png';
 import * as SC from './style';
-import { PLANS } from 'router/contants';
+import { PLANS, TREE_PERMITS } from 'router/contants';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
@@ -95,6 +95,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											)}
 											<SC.StyledListItem component={SC.StyledLink} to={PLANS} button key={t.plans}>
 												<ListItemText primary={t.plans}/>
+											</SC.StyledListItem>
+											<SC.StyledListItem component={RouterLink} to={TREE_PERMITS} button key={t.treePermits}>
+												<ListItemText primary={t.treePermits}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
 										<Divider/>
