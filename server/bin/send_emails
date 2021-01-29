@@ -5,7 +5,11 @@ const Log = require('../api/lib/log');
 const Email = require('../api/service/email');
 
 
-Email.init().then(() => controller.sendPlanningAlerts())
+Email.init()
+  .then(() => controller.sendPlanningAlerts())
   .then(() => Log.info('sendPlanningAlerts completed'))
-  .catch(e => Log.error(e))
+  .catch((err) => Log.error('sendPlanningAlerts error', err.message, err.stack))
+  .then(() => controller.sendTreeAlerts())
+  .then(() => Log.info('sendTreeAlerts completed'))
+  .catch((err) => Log.error('sendTreeAlerts error', err.message, err.stack))
   .finally(() => process.exit());
