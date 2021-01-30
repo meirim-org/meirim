@@ -18,8 +18,7 @@ const Login = () => {
 	const [loginValues, setLoginValues] = useState({ email: '', password: '' });
 	const [onFocusInput, setOnFocusInput] = useState({ password: false, email: false });
 	const [formErrors, setFormErrors] = useState({
-		emailError: { isValid: true, message: '' },
-		passwordError: { isValid: true, message: '' }
+		emailError: { isValid: true, message: '' }
 	});
 
 	ValidUserHook(user);
@@ -52,16 +51,12 @@ const Login = () => {
 		setOnFocusInput(ps => ({ ...ps, ...newState }) );
 	};
 
-	const getIsPasswordInvalid = () => onFocusInput.password ? false : loginValues.password.length < 6;
-
 	const validateBeforeFormSubmittion = (e) => {
 		e.preventDefault();
 		const isEmailValid = !getIsEmailInvalid();
-		const isPasswordValid = !getIsPasswordInvalid();
 		const emailError = { isValid: isEmailValid, message: isEmailValid ? '' : 'מייל לא תקין' };
-		const passwordError = { isValid: isPasswordValid, message: isPasswordValid ? '' : 'סיסמה לא תקינה' };
-		setFormErrors(ps => ({ ...ps, emailError, passwordError }));
-		if (isEmailValid && isPasswordValid) submitLoginForm();
+		setFormErrors(ps => ({ ...ps, emailError }));
+		if (isEmailValid) submitLoginForm();
 	};
 
 	const submitLoginForm = async () => {

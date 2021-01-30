@@ -51,7 +51,7 @@ class ForgotPassword extends Component {
         const { stage, error } = this.state;
 
         if (stage === "changed") {
-            return <Redirect to="/sign/in/" />;
+            return <Redirect to="/" />;
         }
         return (
             <Wrapper>
