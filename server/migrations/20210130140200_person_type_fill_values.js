@@ -7,7 +7,7 @@ exports.up = async function(knex) {
 		table.string('email').notNullable().alter();
 		table.string('password').notNullable().alter();
 		table.string('status').notNullable().alter();
-		table.string('admin').notNullable().alter();
+		table.string('admin').defaultTo(0).notNullable().alter();
 		table.string('name').notNullable().alter();
 		table.string('type').notNullable().alter();
 	});
@@ -21,7 +21,7 @@ exports.down = async function(knex) {
 		table.string('email').nullable().alter();
 		table.string('password').nullable().alter();
 		table.string('status').nullable().alter();
-		table.string('admin').nullable().alter();
+		table.string('admin').defaultTo(0).nullable().alter();
 		table.string('name').nullable().alter();
 		table.string('type').nullable().alter();
 	});
