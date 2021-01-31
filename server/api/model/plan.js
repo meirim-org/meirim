@@ -32,13 +32,15 @@ class Plan extends Model {
 			status: 'string',
 			goals_from_mavat: 'string',
 			main_details_from_mavat: 'string',
-			explanation: 'string'
+			explanation: 'string',
+			geo_search_filter: 'boolean'
 		};
 	}
 
 	defaults () {
 		return {
-			sent: 0
+			sent: 0,
+			geo_search_filter: false
 		};
 	}
 

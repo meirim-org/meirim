@@ -16,6 +16,7 @@ import ruth from './ruth.png'
 import sarah from './sarah.png'
 import dor from './dor.png'
 import yoav from './yoav.png'
+import hiba from './hiba.png'
 
 
 export {
@@ -36,5 +37,6 @@ export {
     ruth,
     sarah,
     dor,
-    yoav
+    yoav,
+    hiba
 }

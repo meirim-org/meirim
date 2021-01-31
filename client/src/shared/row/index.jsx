@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 const StyledRow = styled(MUIGrid)`
    ${({ gutter }) => gutter  && `
-        width: calc(100% + ${gutter * 2}rem) !important;
+        width: calc(100% + ${gutter * 2.5}rem) !important;
         margin: 0 -${gutter}rem;
         > div {
             padding: 0 ${gutter}rem;

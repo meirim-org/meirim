@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import Wrapper from 'components/Wrapper';
-import { CommentSelectors, UserSelectors } from 'redux/selectors';
+import { CommentSelectors } from 'redux/selectors';
 import { Header, Navigation } from './containers';
 import * as SC from './style';
-import { openModal } from 'redux/modal/slice';
-import { useDispatch } from 'react-redux';
 import Footer from 'components/Footer';
 
 const Template = ({
@@ -16,7 +14,8 @@ const Template = ({
 	setCommentState,
 	match,
 	subscriptionHandler,
-	isFavPlan
+	isFavPlan,
+	newCommentViewHandler
 	 }) => {
 	const [tabsPanelRef, setTabsPanelRef] = useState(null);
 	const [fixedHeader, setFixedHeader] = useState(false);
@@ -28,17 +27,6 @@ const Template = ({
 	const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
 	const handleFixedHeader = (newValue) => setFixedHeader(newValue);
 
-	const { isAuthenticated } = UserSelectors();
-	const dispatch = useDispatch();
-
-	const newCommentViewHandler = () =>{
-		if (isAuthenticated){
-			setCommentState(pv => ({ ...pv, isOpen: true }));
-		} else {
-			dispatch(openModal({ modalType: 'login' }));
-		}
-	};
-    
 	const mainClasses = classnames({
 		'no-comments': !isPlanHaveComments,
 		'new-comment': commentState.isOpen
@@ -81,6 +69,7 @@ const Template = ({
 };
 
 Template.propTypes = {
+	newCommentViewHandler: PropTypes.func.isRequired,
 	subscriptionHandler: PropTypes.func.isRequired,
 	isFavPlan: PropTypes.bool.isRequired,
 	setCommentState: PropTypes.func.isRequired,

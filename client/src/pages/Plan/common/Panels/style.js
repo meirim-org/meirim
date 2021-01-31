@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import LinkIcon from '@material-ui/icons/Link';
 import CloseIcon from '@material-ui/icons/Close';
+import { device } from 'style';
 
 export const PlanSummaryTitleWrapper = styled.div`
     margin-bottom: .75rem;
@@ -26,15 +27,26 @@ export const PlanTermWrapper = withTheme(styled.div`
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -.5rem 1rem;
+    margin: 0 -.5rem;
+
+    @media ${device.tablet} {
+        margin: 0 -.5rem 0.5rem;
+    }
 `;
 
 export const StatusWrapper = styled.div`
-    padding: 0 0.5rem
+    padding: 0 0.5rem;
 `;
 
 export const TypeWrapper = styled.div`
-    padding: 0 0.5rem
+    padding: 0 0.5rem;
+`;
+
+export const LastUpdateDateWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -.5rem 1rem;
+    padding: 0 0.5rem;
 `;
 
 export const UrlWrapper = styled.div``;
@@ -113,6 +125,10 @@ export const MapWrapper = withTheme(styled.div`
 export const Datalist = styled.ul`
     padding: 0;
     list-style-position: inside;
+
+    .MuiChip-root {
+        height: 26px;
+    }
 `;
 
 

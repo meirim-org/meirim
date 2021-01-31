@@ -13,6 +13,7 @@ const Image = styled.div`
     background-color: #FCF9FF;
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
 
     @media ${device.tablet} {
         background-image: url(${homepageImage});
@@ -21,6 +22,7 @@ const Image = styled.div`
         left: 0;
         right: 0;
         height: 588px;
+        background-position: inherit;
     }
 `;
 
@@ -46,7 +48,7 @@ const Section = styled.section`
 
 const H1 = styled.h1`
     width: 100%;
-    text-align:right;
+    text-align: center;
     color: #270E78;
     font-size: 36px;
     line-height: 54px;
@@ -56,33 +58,34 @@ const H1 = styled.h1`
     margin-bottom: 24px;
 
     @media ${device.tablet} {
+        text-align: right;
         font-size: 48px;
         line-height: 60px;
         padding-right: 0;
         margin-top: 0;
         margin-bottom: 16px;
-        background-color: #FCF9FF;
+        background-color: rgb(252 249 255 / 85%);
         display: inline;
     }
 `;
 
 const Paragraph = styled(Typography)`
     width: 100%;
-    text-align: right;
+    text-align: center;
     font-size: 16px;
     line-height: 24px;
     max-width: 328px;
-    margin: 24px 0 0;
+    margin: 24px auto;
     padding-right: 16px;
     z-index: 1;
 
     @media ${device.tablet} {
-        margin: 0;
-        margin-top: 24px;
+        text-align: right;
+        margin: 24px 0 0;
         max-width: 495px;
         font-size: 20px;
         padding-right: 0;
-        background-color: #FCF9FF;
+        background-color: rgb(252 249 255 / 85%);
     }
 
 `;
@@ -93,7 +96,7 @@ const TopSection = () => {
 			<Image/>
             <Cover>
                 <H1>ברוכים הבאים למעירים!</H1>
-                <Paragraph as='p'variant="paragraphText" mobileVariant="paragraphText">
+                <Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
                 קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
                 </Paragraph>
                 <SearchBox />

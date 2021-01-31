@@ -48,6 +48,15 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
+										<SC.StyledLink 
+											id="nav-bar-plans"
+											to="/trees/"
+											isActive={(match, location) => location.pathname.includes('/trees')}
+										>
+											{t.treePermits}
+										</SC.StyledLink>
+									</Box>
+									<Box px={2}>
 										{isAuthenticated && (
 											<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
 												{t.alerts}
@@ -60,7 +69,17 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										)}
 									</Box>
 									<Box px={2}>
-										<SC.StyledLink id="nav-bar-about" to="/about/">
+										<SC.StyledLink
+											id="nav-bar-about"
+											to={{
+												pathname: '/support-us/',
+												hash: 'who-we-are'
+											}}
+											isActive={(match, location) =>
+												['/support-us', '/support-us/'].indexOf(location.pathname) > -1 &&
+												location.hash === '#who-we-are'
+											}
+										>
 											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
@@ -69,7 +88,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											id="support-us"
 											text={t.supportUs}
 											type={'primary'}
-											onClick={() => { history.push(`/funding/`); }}
+											onClick={() => { history.push(`/support-us/`); }}
 											small
 										/>
 									</Box>

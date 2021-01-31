@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
+import Moment from 'react-moment';
 //import {  Chip } from '@material-ui/core';
 //import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
 
-const DetailsPanel = ({ status, type, url }) => {
+const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 	const theme = useTheme();
 	
 	return (
@@ -67,8 +68,28 @@ const DetailsPanel = ({ status, type, url }) => {
 							{type}
 						</Typography>
 					</SC.TypeWrapper>
-				
 				</SC.StatusAndTypeWrapper>
+				<SC.LastUpdateDateWrapper>
+					<Typography
+						variant="paragraphText"
+						mobileVariant="paragraphText"
+						component="span"
+						color={theme.palette.gray['main']}>
+						{`${t.lastUpdateDate}: `}
+					</Typography>
+					<Typography
+						variant="paragraphText"
+						mobileVariant="paragraphText"
+						component="span"
+						color={theme.palette.black}>
+						<Moment
+							parse="YYYYMMDDHHmm"
+							format="DD/MM/YYYY"
+						>
+							{lastUpdate}
+						</Moment>
+					</Typography>
+				</SC.LastUpdateDateWrapper>
 				<SC.UrlWrapper>
 					<a target="_blank" rel="noopener noreferrer" href={url}>{t.planDeatailOnGovSite}</a>
 					<SC.CustomLinkIcon></SC.CustomLinkIcon>

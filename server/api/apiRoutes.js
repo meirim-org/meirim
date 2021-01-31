@@ -8,7 +8,7 @@ const CommentPerson = require('./controller/comment_person');
 const Rate = require('./controller/rate');
 const Impression = require('./controller/impression');
 const Funding = require('./controller/funding');
-
+const TreePermit = require('./controller/tree_permit');
 const Subscription = require('./controller/subscription');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
@@ -35,6 +35,13 @@ Router.get('/plan_status', wrap(Plan.statuses, Plan));
 Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
 Router.delete('/plan/:id/subscribe', wrap(Subscription.unsubscribe, Subscription)
 );
+
+// Tree
+Router.get('/tree/', wrap(TreePermit.browse, TreePermit));
+Router.get('/tree/:id', wrap(TreePermit.read, TreePermit));
+
+Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
+
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));

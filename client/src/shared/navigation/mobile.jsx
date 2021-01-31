@@ -10,7 +10,7 @@ import t from 'locale/he_IL';
 import { Row, IconButton, Button } from 'shared';
 import logo from 'assets/logo.png';
 import * as SC from './style';
-import { PLANS } from 'router/contants';
+import { PLANS, TREE_PERMITS } from 'router/contants';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
@@ -96,15 +96,39 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 											<SC.StyledListItem component={SC.StyledLink} to={PLANS} button key={t.plans}>
 												<ListItemText primary={t.plans}/>
 											</SC.StyledListItem>
+											<SC.StyledListItem component={RouterLink} to={TREE_PERMITS} button key={t.treePermits}>
+												<ListItemText primary={t.treePermits}/>
+											</SC.StyledListItem>
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>
-											<SC.StyledListItem component={SC.StyledLink} to="/funding/" button key={t.supportUs}>
+											<SC.StyledListItem
+												component={SC.StyledLink}
+												to="/support-us/"
+												isActive={(match, location) =>
+													['/support-us', '/support-us/'].indexOf(location.pathname) > -1 &&
+													location.hash !== '#who-we-are'
+												}
+												button
+												key={t.supportUs}
+											>
 												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
 										<SC.StyledList>
-											<SC.StyledListItem component={SC.StyledLink} to="/about/" button key={t.whoWeAre}>
+											<SC.StyledListItem
+												component={SC.StyledLink}
+												to={{
+													pathname: '/support-us/',
+													hash: 'who-we-are'
+												}}
+												isActive={(match, location) =>
+													['/support-us', '/support-us/'].indexOf(location.pathname) > -1 &&
+													location.hash === '#who-we-are'
+												}
+												button
+												key={t.whoWeAre}
+											>
 												<ListItemText primary={t.whoWeAre}/>
 											</SC.StyledListItem>
 										</SC.StyledList>

@@ -27,6 +27,8 @@ describe('Crawler', function() {
 	});
 
 	afterEach(async function() {
+		// wait a few seconds for all database activity to finish
+		await wait(3);
 		await mockDatabase.dropTables(tables);
 	});
 

@@ -5,8 +5,8 @@ import { useScrollToTop } from '../../hooks';
 
 const PlanningInfoTab = () => {
 	const { planData, dataUnits, dataArea } = PlanSelectors();
-	const { number, type, jurisdiction, depositingDate,
-		stationDesc, lastUpdate, notCredible, goalsFromMavat, mainDetailsFromMavat } = planData;
+	const { number, type, jurisdiction, depositingDate, stationDesc, lastUpdate,
+		notCredible, landUse, goalsFromMavat, mainDetailsFromMavat } = planData;
 	useScrollToTop();
     
 	return (
@@ -19,10 +19,11 @@ const PlanningInfoTab = () => {
 				stationDesc={stationDesc}
 				lastUpdate={lastUpdate}
 				notCredible={notCredible}
+				landUse={landUse}
 			/>
+			<DescriptionPanel mainDetailsFromMavat={mainDetailsFromMavat}/>
 			<GoalsPanel goalsFromMavat={goalsFromMavat} />
 			<AreaUnitPanel dataArea={dataArea} />
-			<DescriptionPanel mainDetailsFromMavat={mainDetailsFromMavat}/>
 			<HousingUnitPanel dataUnits={dataUnits} />
 		</>
 

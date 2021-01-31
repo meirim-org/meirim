@@ -1,10 +1,10 @@
 html body {
   direction: rtl;
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
+  font-family: Assistant, Arial, Helvetica, sans-serif !important ;
 }
 .MuiTypography-body1-48,
 .MuiTypography-h5-55 .jss55 .MuiTypography-h5-681 {
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
+  font-family: Assistant, Arial, Helvetica, sans-serif !important ;
 }
 .container .btn .active {
   background-color: #054487;
@@ -29,5 +29,15 @@ html body {
 }
 
 .leaflet-top, .leaflet-bottom {
-    z-index: 1;
+  z-index: 1;
+}
+
+#plans-search-input {
+  margin-top: 1em;
+  font-family: Assistant !important;
+}
+
+#plans-search-input ::placeholder, #plans-search-input ::value {
+  font-size: 14px;
+  font-family: Assistant;
 }

@@ -1,7 +1,7 @@
 export const members = [
 	{
 		name:`ד"ר אד' טליה מרגלית`,
-		title:`יו"ר ועד מנהל`,
+		title:`מייסדת ויו"ר ועד מנהל`,
 		order:1,
 		photo:'talia'
 		
@@ -21,72 +21,72 @@ export const members = [
 		
 	},
 	{
-		name:`אד' איל מגדלוביץ`,
-		title:`מנכ"ל`,
+		name:` אד' יונתן דורטהיימר`,
+		title:`מייסד`,
 		order:4,
+		photo:'yonatan'
+	},
+	{
+		name:`אד' איל מגדלוביץ`,
+		title:`מייסד ומנכ"ל`,
+		order:5,
 		photo:'eyal'
 		
 	},
 	{
 		name:`דרור גבתון`,
 		title:`מנהל מוצר`,
-		order:5,
+		order:6,
 		photo:'dror'
 		
 	},
 	{
 		name:`כרם ואן מיל`,
 		title:`מנהלת קהילה`,
-		order:6,
+		order:7,
 		photo:'kerem'
 		
 	},
 	{
 		name:`אד' בוריס פלוטניקוב`,
-		title:`מתכנת`,
-		order:7,
+		title:`פיתוח תוכנה`,
+		order:8,
 		photo:'boris'
 		
 	},
 	{
 		name:`גל גנדלר`,
-		title:`מתכנתת`,
-		order:8,
+		title:`פיתוח תוכנה`,
+		order:9,
 		photo:'gal'
 		
 	},
 	{
-		name:`גליה רופין `,
-		title:`מתכנתת`,
-		order:9,
+		name:`גליה רופין`,
+		title:`ראש תחום סביבה`,
+		order:10,
 		photo:'galia'
 		
-	},{
+	},
+	{
 		name:`דור זומר`,
 		title:`שיווק ואסטרטגיה`,
-		order:10,
+		order:11,
 		photo:'dor'
 		
 	},
-	// {
-	// 	name:`היבה בוארדי`,
-	// 	title:`מחקר וייעוץ תכנוני`,
-	// 	order:11,
-	// 	photo:'eyal'
-		
-	// },
 	{
-		name:`יואב בן שלום`,
-		title:`צוות מוצר`,
+		name:`היבה בוארדי`,
+		title:`מחקר וייעוץ תכנוני`,
 		order:12,
-		photo:'yoav'
+		photo:'hiba'
 		
 	},
 	{
-		name:` אד' יונתן דורטהיימר`,
-		title:`מתכנת`,
+		name:`יואב בן שלום`,
+		title:`צוות מוצר`,
 		order:13,
-		photo:'yonatan'
+		photo:'yoav'
 		
 	},
 	{
@@ -97,17 +97,17 @@ export const members = [
 		
 	},
 	{
-		name:`אד' עידית מן`,
-		title:`מחקר וייעוץ תכנוני`,
+		name:`נועה ויכנסקי`,
+		title:`מובילת עיצוב`,
 		order:15,
-		photo:'idit'
+		photo:'noa'
 		
 	},
 	{
-		name:`נועה ויכנסקי`,
-		title:`מעצבת UI / UX`,
+		name:`אד' עידית מן`,
+		title:`מחקר וייעוץ תכנוני`,
 		order:16,
-		photo:'noa'
+		photo:'idit'
 		
 	},
 	{

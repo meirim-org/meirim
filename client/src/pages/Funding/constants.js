@@ -1,8 +1,6 @@
 export const titles = {
-	subTitle : 'עזרו לנו להמשיך',
-	third: 'ולהגביר את השקיפות והשותפות בהחלטות שמעצבות את המרחב שלנו',
-	fourth : 'קהילת מעירים פועלת להנגיש מידע תכנוני ולהגביר את המעורבות המקצועית והאזרחית בכדי לשנות זאת.',
-	fifth: 'אנחנו קבוצה עצמאית, קטנה ונחושה של אנשי מקצוע מתחומי התכנון, הבנייה והטכנולוגיה הפועלת ללא מטרות רווח במטרה להגביר את השקיפות והמעורבות המקצועית והציבורית במערכת התכנון והבנייה, במטרה לתת ייצוג.'
+	mainTitle : 'עזרו לנו להמשיך ולהגביר את השקיפות והשותפות בהחלטות שמעצבות את המרחב שלנו',
+	subTitle: 'קהילת מעירים פועלת להנגיש מידע תכנוני ולהגביר את המעורבות המקצועית והאזרחית. לאחרונה השקנו מערכת דיגיטלית להנגשת מידע ולעידוד שיח בה תכלו לדעת בקלות מה בונים לכם ליד הבית ולהשפיע באמת. אבל יש עוד הרבה עבודה עד להגשמת החלום - ואנחנו מזמינים אתכם להצטרף אלינו.'
 }
 
 export const paymentAmountOptions = [50, 75, 100, 150, 200, 250]
@@ -26,7 +24,7 @@ export const roadmap = [ {
 	id: 'develop-map',
 	title: 'לפתח את המפה של מעירים',
 	desciption: 'בקרוב, כל מה שהולכים לבנות לכם ליד הבית יופיע על גבי מפה, בעזרתה תוכלו לדעת מה מתוכנן באופן ידידותי ונוח.',
-	fundingSVGName:'tree'
+	fundingSVGName:'map'
 },{
 	id: 'expand-community',
 	title: 'הרחבת הקהילה הדיגיטלית',
@@ -36,10 +34,6 @@ export const roadmap = [ {
 
 export const fundingEndGoal = 100000;
 
-export const fundingYoutubeVideoId = 'iDzws2bUs4M';
+export const fundingYoutubeVideoId = 'e1Q7zj_2f0I';
 
-export const successPageCloseMessage = 'success-page-close';
 export const successPageTransactionCompleteMessage = 'success-page-transaction-complete';
-
-export const thanksForTheSupport='תודה על התמיכה!'
-export const startUsing = 'התרומה התקבלה בהצלחה. אתם.ן מוזמנות להכנס לעמוד התוכניות שלנו, לגלות מה בונים לכם.ן ליד הבית, לשתף עם  החברים והחברות באזור ולהשפיע על עתיד מקום המגורים שלכם.ן'

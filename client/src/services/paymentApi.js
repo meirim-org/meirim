@@ -24,7 +24,8 @@ module.exports = {
       return instance.post('/', {
         yaad_id: options.yaadId,
         hk_id: options.hkId,
-        amount: options.amount
+        amount: options.amount,
+        redirect_params: options.redirectParams
       }).then(res => res.status === 'OK');
     },
 };

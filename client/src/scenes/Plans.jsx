@@ -15,11 +15,14 @@ class Plans extends Component {
         error: false,
         hasMore: true,
         noData: false,
+        loadingPlans: false,
         pageNumber: 1,
         plans: [],
-        address:'',
-        addressLocation:[],
-        list:[]
+        address: '',
+        addressLocation: [],
+        list: [],
+        searchPoint: false,
+        loadingAutocomplete: false
     };
 
     constructor(props) {
@@ -32,9 +35,12 @@ class Plans extends Component {
     handleAddressSubmit(address) {
         // reset current displayed plans
         this.setState({
+            loadingPlans: true,
+            hasMore: true,
+            noData: false,
             plans: [],
             pageNumber:1,
-            searchPoint: {}
+            searchPoint: false
         });
 
         // get selected place id
@@ -66,7 +72,8 @@ class Plans extends Component {
             this.getAutocompleteSuggestions.cancel();
 
             this.setState({
-                list: []
+                list: [],
+                loadingAutocomplete: false
             });
         }
     }
@@ -78,25 +85,26 @@ class Plans extends Component {
                 list: res
             });
         }).catch(error => {
-            this.setState({ error: "שגיאה בחיפוש לפי כתובת" });
+            this.setState({ error: "שגיאה בחיפוש לפי כתובת", loadingAutocomplete: false });
         });
     }, process.env.CONFIG.geocode.autocompleteDelay);
 
     loadPlans(pageNumber, point) {
         this.setState({
-            noData: false
+            noData: false,
+            loadingPlans: true
         });
 
         api.get(
             `/plan/?page=${pageNumber}`+
             (point ? `&distancePoint=${point.lng},${point.lat}` : "")
-            
         )
             .then(result => {
                 this.setState({
                     hasMore:
                         result.pagination.page < result.pagination.pageCount,
                     noData: this.state.plans.length + result.data.length === 0,
+                    loadingPlans: false,
                     pageNumber,
                     plans: [...this.state.plans, ...result.data]
                 });
@@ -105,7 +113,9 @@ class Plans extends Component {
     }
 
     loadNextPage() {
-        this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
+        if (!this.state.loadingPlans) {
+            this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
+        }
     }
 
     loadQsSearchParams() {
@@ -157,16 +167,18 @@ class Plans extends Component {
     }
 
     render() {
-        const { plans, error, noData, hasMore, list } = this.state;
+        const { plans, error, noData, hasMore, list, loadingAutocomplete } = this.state;
 
         return (
             <Wrapper>
                 <div className="container">
-                    <Autocomplete  classes=""
+                    <Autocomplete classes=""
+                        id="plans-search-input"
                         placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
                         onInputChange={this.handleInputChange.bind(this)}
+                        loading={loadingAutocomplete}
                     />
                     <br />
                     <Grid container spacing={4}>

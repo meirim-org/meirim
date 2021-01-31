@@ -7,6 +7,7 @@ export const HeaderWrapper = styled.div`
   background-color: white;
   text-align: right;
   padding: 1.5em;
+  width: 100%;
 
   @media ${device.laptop} {
     display: inline-flex;
@@ -44,24 +45,6 @@ export const PaymentWrapper = styled.div`
   }
 `;
 
-export const PaymnetModalWrapper = styled.div`
-  width:100%;
-  height: 80vh;
-
-  .payment-popup{
-    width:100%;
-    height:100%;
-  }
-
-  @media ${device.laptop} {
-    width: 800px;
-
-    .payment-popup{
-      width: 800px;
-    }
-  }
-`;
-
 export const RoadMapWrapper = styled.div`
   @media ${device.laptop} {
     flex-grow: 3;
@@ -87,39 +70,6 @@ export const Title = styled.h1`
   margin-bottom: 1.3em;
   letter-spacing: normal;
   color: #270E78;
-  @media ${device.tablet} {
-    font-size: 2em;
-    font-weight: 600;
-    margin-bottom: 1em;
-  }
-`;
-
-export const CentredTitle = styled.h1`
-  font-weight: 400;
-  text-align: center;
-  font-family: Assistant !important; 
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  margin-bottom: 1.3em;
-  letter-spacing: normal;
-  color: #29244A;
-  @media ${device.tablet} {
-    font-size: 2em;
-    font-weight: 600;
-    margin-bottom: 1em;
-  }
-`;
-export const CentredThankYouTitle = styled.h1`
-  font-weight: 400;
-  text-align: center;
-  font-family: Assistant !important; 
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  margin-bottom: 1.3em;
-  letter-spacing: normal;
-  color: #29244A;
   @media ${device.tablet} {
     font-size: 2em;
     font-weight: 600;
@@ -160,48 +110,7 @@ export const CentredSubTitle = styled.h2`
    }
 `;
 
-export const CentredThankYouSubTitle = styled.h2`
-  font-family: Assistant !important;
-  font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  line-height: 1.5;
-  text-align: center;
-  color: #000000;
-  margin-bottom: 0;
-   >  span {
-     font-family: Assistant !important;
-   }
-   width:400px;
-   position:absolute;
-   left:70px;
-`;
-
-export const CentredWrapper = styled.div`
-  max-width: 80vw;
-  max-height: 90vh;
-  overflow-y: auto;
-`;
-
-export const SucessPaymeBackground = styled.div`
- width:595px;
- height:595px;
- position: relative;
-
- .layer{
-  position: absolute;
-  left: 0px;
- }
-
- .layer.center{
-  position: absolute;
-  left: 0px;
- }
-`;
-
-export const ThirdTitle = styled.h1`
+export const MainTitle = styled.h1`
   font-family: Assistant !important;
   font-weight: bold;
   font-stretch: normal;
@@ -210,7 +119,7 @@ export const ThirdTitle = styled.h1`
   font-size:36px;
   line-height: 1.5;
   color: #270E78;
-  margin-bottom: 0;
+  margin-bottom: 0.5em;
   padding-top: 1em;
    >  span {
      font-family: Assistant !important;
@@ -239,29 +148,6 @@ export const TermsOfUse = styled.span`
      font-family: Assistant !important;
    }
 `;
-
-export const TermsOfPaymentText = styled.span`
-  font-family: Assistant !important;
-  font-size: 20px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  line-height: 1.5;
-  text-align: right;
-  color: #000000;
-  margin: 0 0.5em 0.5em 0.5em;
-  display: inline-block;
-
-  @media ${device.tablet} {
-    margin: 0 3em 3em 3em;
-  }
-
-   >  span {
-     font-family: Assistant !important;
-   }
-`;
-
 
 export const InputsWrapper = withTheme(styled.div`
   width: 100%;
@@ -453,10 +339,12 @@ export const RoadmapItemDescription= styled.div`
   }
 `;
 
-export const RoadmapItemIcon= styled.div`
+export const RoadmapItemIcon = styled.div`
   // border: 1px solid #E4E4E4;
   height: 130px;
   margin: 0 0 0 1em;
+  justify-content: center;
+  display: flex;
 
   svg {
     display: block;

@@ -6,12 +6,14 @@ import PropTypes from 'prop-types';
 import Login from 'pages/Login'
 import Register from 'pages/Register/'
 import EmailVerified from 'pages/Register/emailVerified'
-import Payment from 'pages/Funding/payment'
-import TermsOfPayment from 'pages/Funding/termsOfPayment';
+import Payment from 'pages/Funding/modals/payment'
+import TermsOfPayment from 'pages/Funding/modals/termsOfPayment';
+import ThankYou from 'pages/Funding/modals/thankYou';
 import { ModalActions } from 'redux/actions'
 import { ModalSelectors } from 'redux/selectors'
 import { device } from 'style';
 import SharePlanView from 'pages/Plan/common/Views/sharePlan';
+import ShareTreeView from 'pages/Tree/common/Views/shareTree';
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -49,7 +51,9 @@ const modalComponents = {
 	emailVerified: EmailVerified,
 	share: SharePlanView,
 	payment: Payment,
-	termsOfPayment: TermsOfPayment
+	termsOfPayment: TermsOfPayment,
+	thankYou: ThankYou,
+	shareTree: ShareTreeView
 };
 
 const Modal = ({ id }) => {

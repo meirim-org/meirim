@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import _ from "lodash";
 import locationAutocompleteApi from '../../services/location-autocomplete';
@@ -26,14 +26,14 @@ const Wrapper = styled.div`
 const Title = styled.p`
     color: #ffffff;
     text-align: right;
-    font-size: 24px;
-    line-height: 28px;
-    margin-bottom: 28px;
+    font-size: 22px;
+    line-height: 22px;
+    margin-bottom: 22px;
 
     @media ${device.tablet} {
-        font-size: 32px;
-        line-height: 32px;
-        margin-bottom: 32px;
+        font-size: 28px;
+        line-height: 28px;
+        margin-bottom: 28px;
     }
 `;
 
@@ -48,6 +48,7 @@ const Button = styled.button`
     padding: 5px 0;
     color: #FFFFFF;
     line-height: 1;
+    cursor: pointer;
 
     @media ${device.tablet} {
         margin-right: 0;
@@ -88,23 +89,34 @@ const InputWrapper = styled.div`
         flex-direction: row;
         justify-content: space-between;
     }
+
+    .text{
+        font-family:Assistant;
+    }
 `;
 
 export default function SearchBox() {
     const [addresses, setAddresses] = useState([]);
     const [placeId, setPlaceId] = useState('');
+    const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
 
-    const getAutocompleteSuggestions = _.debounce(async (input) => {
-        const res = await locationAutocompleteApi.autocomplete(input);
-        setAddresses(res);
-    }, process.env.CONFIG.geocode.autocompleteDelay);
+    const getAutocompleteSuggestions = useCallback(
+        _.debounce(async (input) => {
+            const res = await locationAutocompleteApi.autocomplete(input);
+            setloadingAutocomplete(false);
+            setAddresses(res);
+        }, process.env.CONFIG.geocode.autocompleteDelay),
+        []
+    );
 
     async function onInputChange(input) {
         if (input) {
+            setloadingAutocomplete(true);
             getAutocompleteSuggestions(input);
         } else {
             // cancel pending calls and clear results
             getAutocompleteSuggestions.cancel();
+            setloadingAutocomplete(false);
             setAddresses([]);
         }
     }
@@ -119,8 +131,10 @@ export default function SearchBox() {
     }
 
     async function onGoToPlansClick() {
-        const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
-        window.location.href = `/plans?loc=${lat},${lng}`;
+        if (placeId) {
+            const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
+            window.location.href = `/plans?loc=${lat},${lng}`;
+        }
     }
 
 	useEffect(()=>{
@@ -129,7 +143,7 @@ export default function SearchBox() {
 
 	return (
 		<Wrapper>
-			<Title>סקרנים מה בונים לכם ליד הבית?</Title>
+			<Title>סקרנים לדעת מה בונים לכם ליד הבית?</Title>
 			<InputWrapper>
 				<AutocompleteWrapper>
 					<Autocomplete 
@@ -137,7 +151,8 @@ export default function SearchBox() {
 						inputSuggestions={addresses}
                         onInputChange={onInputChange}
                         onFilterChange={onFilterChange}
-						classes=""
+                        classes={{inputRoot:'text'}}
+                        loading={loadingAutocomplete}
 					/>
 				</AutocompleteWrapper>
 				<Button type="button" onClick={onGoToPlansClick}>צפיה בתוכניות</Button>

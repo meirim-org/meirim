@@ -129,9 +129,56 @@ class Email {
 		return this.sendWithTemplate(this.templates.alert, data);
 	}
 
+	formatDate(date) {
+		const d = new Date(date);
+		return `${(d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())}/${(d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))}/${d.getFullYear()}`;
+	}
+
+	treeAlert (user, unsentTree, treeStaticMap) {
+		const alert = new Alert({
+			id: user.alert_id,
+			person_id: user.person_id
+		});
+		const data = user;
+
+		Object.assign(data, unsentTree.attributes);
+		
+		data.unsubscribeLink = `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
+		data.link = `${this.baseUrl}tree/${unsentTree.get('id')}`;
+		data.place_text = data.place? `רשיון כריתה חדש ב${data.place}` : 'רשיון כריתה חדש באזורך';
+		data.address = data.street ? (data.street_number? `${data.street} ${data.street_number}`: `${data.street}`) : 'לא צוינה כתובת';
+		data.total_trees_text = (data.total_trees === 1)? 'עץ אחד': `${data.total_trees} עצים`;
+		data.reason_short_text = data.reason_short? data.reason_short : 'לא צוינה סיבה';
+		data.reason_detailed_text = data.reason_detailed? data.reason_detailed : 'לא צוין פירוט הסיבה';
+		data.start_date_text = this.formatDate(data.start_date);
+		data.hasMap = Boolean(treeStaticMap);
+
+		if (treeStaticMap) {
+			data.attachments = [
+				{
+					cid: 'planmap',
+					filename: 'plan_map.png',
+					content: treeStaticMap,
+					encoding: 'base64'
+				}
+			];
+		}
+
+		return this.sendWithTemplate(this.templates.treeAlert, data);
+	}
+
+	newAlertTemplateByType(type){
+		let alertTemplate = this.templates.newAlert;
+		if (type === 'tree'){
+			alertTemplate = this.templates.newTreeAlert;
+		}
+		return alertTemplate;
+	}
+
 	newAlert (person, alert) {
 		const templateProperties = Object.assign({}, person, alert.toJSON());
-		return this.sendWithTemplate(this.templates.newAlert, templateProperties);
+		const alertTemplate = this.newAlertTemplateByType(alert.attributes.type);
+		return this.sendWithTemplate(alertTemplate, templateProperties);
 	}
 
 	resetPasswordToken (person) {

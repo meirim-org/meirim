@@ -2,8 +2,8 @@ import { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { getFundingStats } from './controller';
 import { setStatsData } from 'redux/funding/slice';
-import { closeModal } from 'redux/modal/slice';
-import { successPageCloseMessage, successPageTransactionCompleteMessage } from './constants';
+import { openModal } from 'redux/modal/slice';
+import { successPageTransactionCompleteMessage } from './constants';
 
 export const useStatsDataHandler = (paymentDone) => {
 	const dispatch = useDispatch();
@@ -26,10 +26,10 @@ export const useSuccessCloseHandler = (paymentSuccessCb) => {
 		try {
 			const data = JSON.parse(event.data);
 
-			if (data.message === successPageCloseMessage) {
-				// closing the modal, as the success page alerted user pressed close
-				dispatch(closeModal())
-			} else if (data.message === successPageTransactionCompleteMessage) {
+			if (data.message === successPageTransactionCompleteMessage) {
+				// open the thank you modal window instead of the payment one
+				dispatch(openModal({ modalType: 'thankYou' }));
+
 				// refresh funding stats
 				paymentSuccessCb();
 			}
@@ -49,4 +49,16 @@ export const useSuccessCloseHandler = (paymentSuccessCb) => {
 			window.removeEventListener('message', handleMessage);
 		};
 	}, [handleMessage]);
+};
+
+export const useWhoWeAreAnchor = (locationHash, whoWeAreRef) => {
+	useEffect(() => {
+		if (locationHash === '#who-we-are') {
+			// scrollIntoView isn't sufficient since the header hides some of the view
+			const y = whoWeAreRef.current.getBoundingClientRect().top - 100;
+			window.scrollBy({top: y, behavior: 'smooth'});
+		} else {
+			window.scroll({top: 0, behavior: 'smooth'});
+		}
+	}, [locationHash, whoWeAreRef]);
 };

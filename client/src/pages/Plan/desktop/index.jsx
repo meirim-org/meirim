@@ -8,10 +8,10 @@ import Footer from 'components/Footer';
 import * as SC from './style';
 
 const Template = ({ 
-	setCommentState,
 	children,
 	match,
 	subscriptionHandler,
+	newCommentViewHandler,
 	isFavPlan
 }) => {
 	const { comments } = CommentSelectors();
@@ -23,9 +23,9 @@ const Template = ({
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
+						newCommentViewHandler={newCommentViewHandler}
 						subscriptionHandler={subscriptionHandler}
 						isFavPlan={isFavPlan}
-						openNewCommentView={() => setCommentState(pv => ({ ...pv, isOpen: true }))} 
 						match={match}
 					/>
 					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
@@ -44,6 +44,7 @@ const Template = ({
 };
 
 Template.propTypes = {
+	newCommentViewHandler: PropTypes.func.isRequired,
 	setCommentState: PropTypes.func.isRequired,
 	subscriptionHandler: PropTypes.func.isRequired,
 	isFavPlan: PropTypes.bool.isRequired,

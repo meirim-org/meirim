@@ -4,26 +4,32 @@ import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Downshift from 'downshift';
 
 import './FilterAutoCompleteMultiple.css';
 
 function renderInput(inputProps) {
-  const { InputProps, classes, ref, ...other } = inputProps;
+  const { InputProps, classes, ref, loading, ...other } = inputProps;
 
   return (
-    <TextField
-      InputProps={{
-        inputRef: ref,
-        classes: {
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        },
-        ...InputProps,
-      }}
-      {...other}
-    />
+    <>
+      <TextField
+        InputProps={{
+          inputRef: ref,
+          classes: {
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          },
+          ...InputProps,
+        }}
+        {...other}
+      />
+      {loading && (
+        <LinearProgress/>
+      )}
+    </>
   );
 }
 
@@ -45,6 +51,7 @@ function renderSuggestion({
       component="div"
       style={{
         fontWeight: isSelected ? 500 : 400,
+        fontFamily:'Assistant'
       }}
     >
       {suggestion.label}
@@ -114,7 +121,7 @@ class AutocompleteInput extends Component {
   }
 
   render() {
-    const { classes, placeholder } = this.props;
+    const { classes, placeholder, id, loading } = this.props;
     const { inputValue, selectedItem } = this.state;
 
     return (
@@ -132,7 +139,7 @@ class AutocompleteInput extends Component {
           selectedItem: selectedItem2,
           highlightedIndex,
         }) => (
-          <div className={classes.container}>
+          <div className={classes.container} id={id}>
             {renderInput({
               fullWidth: true,
               classes,
@@ -144,6 +151,7 @@ class AutocompleteInput extends Component {
                 onKeyDown: this.handleKeyDown,
                 placeholder,
               }),
+              loading
             })}
             {isOpen ? (
               <Paper className={classes.paper} square>

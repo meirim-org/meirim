@@ -1,9 +1,5 @@
-import NotificationIcon from '../funding/notoficationIcon'
-import TreeIcon from '../funding/treeIcon'
-import CommunityIcon from '../funding/communityIcon'
-import ConstructionIcon from '../funding/constructionIcon'
-
-export const notification = NotificationIcon;
-export const tree = TreeIcon;
-export const community = CommunityIcon;
-export const construction = ConstructionIcon;
+export {default as map} from '../funding/mapIcon'
+export {default as notification} from '../funding/notoficationIcon'
+export {default as tree} from '../funding/treeIcon'
+export {default as community} from '../funding/communityIcon'
+export {default as construction} from '../funding/constructionIcon'
