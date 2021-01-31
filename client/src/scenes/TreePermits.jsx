@@ -60,7 +60,7 @@ class TreePermits extends Component {
 
 	CardContentField(props) {
 		const {field, fieldBold} = props;
-		const text = field || 'לא מצוין' 
+		const text = field || 'לא מצוין'
 	return 	<Typography component="p" color="textPrimary"> <strong>{fieldBold} </strong>{text}</Typography>
 	}
 
@@ -108,7 +108,7 @@ class TreePermits extends Component {
 
 		this.loadTrees(pageNumber, filterPlaces);
 	}
-	
+
 	render() {
 		const { treePermits, treePlaces, error, noData, hasMore } = this.state;
 		const { me } = this.props;
@@ -124,7 +124,7 @@ class TreePermits extends Component {
 							this
 						)}
 					/>
-					<Typography variant="paragraphText" mobileVariant="paragraphText"
+					<Typography
 							component="span" color="textSecondary">
 							{`* ישנן רשויות שלא זמינות לנו כרגע. תמכו בנו כדי שנוכל להגיע גם לעיר שלכם!`}
 						</Typography>
@@ -132,7 +132,6 @@ class TreePermits extends Component {
 					<br />
 					<GridList
 						cellHeight={500}
-						cellWidth={335}
 						className="gridList"
 						cols={1}
 					>
@@ -147,7 +146,7 @@ class TreePermits extends Component {
 											className="card-media"
 										>
 											<Mapa
-											
+
 												geom={tree.geom}
 												hideZoom={true}
 												disableInteractions={true}
@@ -171,7 +170,7 @@ class TreePermits extends Component {
 											<this.CardContentField field={tree.reason_short} fieldBold='סיבה:' />
 										</CardContent>
 									</CardActionArea>
-								</Link>	
+								</Link>
 							</Card>
 						))}
 					</GridList>

@@ -6,13 +6,13 @@ import './Mapa.css';
 
 const Mapa = (props) =>  {
 	const { hideZoom, disableInteractions, title2, geom, countyName, maxZoom=17, showPlaceholder=false } = props;
-	
+
 	if (!geom || geom.length === 0) {
 		if (showPlaceholder) {
 			return (
 				<div className="map-title-placeholder" style={{ height: '100%', width: '100%' }}>
 					{countyName && <button className="btn btn-light disabled">{countyName}</button>}
-					{title2 && <button variant="info" className="btn btn-light map-title-left">{title2}</button>}
+					{title2 && <button className="btn btn-light map-title-left">{title2}</button>}
 				</div>
 			);
 		} else {
@@ -25,7 +25,7 @@ const Mapa = (props) =>  {
 	// hash the geom to create a key for the layer so react replaces the component properly
 	// since updated GeoJson layers are not updated after mount according to docs
 	const geomHash = JSON.stringify(geom).split('').reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
-	
+
 	return (
 		<Map
 			center={bounds.getCenter()}
@@ -55,8 +55,8 @@ const Mapa = (props) =>  {
 				geom && <GeoJSON key={geomHash} data={geom} />
 			}
 			<div className="map-title">
-				{countyName && <button className="btn btn-light disabled">{countyName}</button>}
-				{title2 && <button variant="info" className="btn btn-light map-title-left">{title2}</button>}
+				{countyName && <span className="btn btn-light disabled">{countyName}</span>}
+				{title2 && <span className="btn btn-light map-title-left">{title2}</span>}
 			</div>
 		</Map>
 	);

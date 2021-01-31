@@ -9,7 +9,7 @@ export const Required = styled.span`
 `;
 
 const Label = ({ id, required = false, text }) => (
-	<InputLabel id={id} style={{'font-family': 'Assistant'}}>
+	<InputLabel id={id} style={{fontFamily: 'Assistant'}}>
 		{text}
 		{required && <Required> *</Required>}
 	</InputLabel>
