@@ -73,7 +73,10 @@ const pageTablesToDataArray = ({
 			if (dataRowPredicateFn(newDataRows[i])) {
 				const rowTrimmed = rowTrimmer(newDataRows[i]);
 				if (!rowTrimmed.every(val => val === undefined && val === '')) {
-					chartRows.push(rowFactory(rowTrimmed));
+					const row = rowFactory(rowTrimmed);
+					if (Object.values(row).some(val => val !== undefined)) {
+						chartRows.push(row);
+					}
 				}
 			}
 		}
@@ -114,7 +117,7 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred, shouldHappenBefo
 
 // returns true if the row is not empty
 const dataRowPredicateFn = (row) => {
-	return row.some((cell) => cell !== '');
+	return row.some((cell) => cell !== undefined && cell.trim() !== '');
 };
 
 // returns true if the row in the given index is the first row that is not a noise row (noise row is a row with empty cells only)

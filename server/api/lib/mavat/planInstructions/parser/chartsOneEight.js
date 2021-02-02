@@ -56,6 +56,35 @@ const rowAbstractFactoryChartsOneEight = (firstPageOfTable, headersStartIndex) =
 };
 
 const extractChartsOneEight = (pageTables) => {
+	const tbl184 = chartToArrayBuilder({
+		pageTables,
+		rowAbstractFactory: rowAbstractFactoryChartsOneEight,
+		startOfChartPred: (cell) => cell.includes('1.8.4') && !cell.includes('1.8.3'),
+		offsetOfRowWithDataInChart: 1,
+		chartDonePredicate: (row) => row.some(cell => cell.includes('1.9') && cell.includes('הגדרות בתכנית')),
+		getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
+			row.some(cell => cell.includes('שם'))) + searchFrom,
+		rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
+		identifier: '1.8.4'
+	});
+
+	// tbl 184 can have a trail of details about the table, like a small apendix.
+	// This will appear in the email column - and it will be the only thing in the row.
+	const tbl184Filtered = [];
+	for (let i = 0; i < tbl184.length; i++) {
+		for (const [key, value] of Object.entries(tbl184[i])) {
+			if (key === 'email') {
+				continue;
+			}
+			if (value !== undefined && value !== '') {
+				// there's one value at least that isn't "email"
+				// if there's a line of junk - it will be only in the email
+				tbl184Filtered.push(tbl184[i]);
+				break;    // go to the next line!
+			}
+		}
+	}
+
 	return {
 		chart181: chartToArrayBuilder({
 			pageTables,
@@ -87,7 +116,8 @@ const extractChartsOneEight = (pageTables) => {
                 row.some(cell => cell.includes('שם'))) + searchFrom,
 			rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
 			identifier: '1.8.3'
-		})
+		}),
+		chart184: tbl184Filtered
 	};
 };
 
