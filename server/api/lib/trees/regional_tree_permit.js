@@ -33,10 +33,15 @@ const regionalTreePermitUrls = [
 
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
 	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS',
+	//KKL - Keren Kayemet LeIsrael
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/trees_befor.xlsx',
+	'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/trees_after.xlsx'
 ];
 
 const SHEET_BEFORE = 'Data2ToExcel_BeforDate';
 const SHEET_AFTER = 'Data2ToExcel_ToDate';
+const KKL = 'Rep03-License-List-To-Excel-Las';
+
 const TIMEOUT_MS = 15000;
 const MORNING = '08:00';
 const EVENING = '20:00';
@@ -109,14 +114,14 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 
 	const newTreePermits = treePermits.map(tp => {
 		//if tp is not in the hash map of the existing one - add to the new ones
-		const compact_tp = `${tp.attributes[tpc.REGIONAL_OFFICE]}_${tp.attributes[tpc.PERMIT_NUMBER]}_${formatDate(tp.attributes[tpc.START_DATE], MORNING)}`;
+		const compact_tp = `${tp.attributes[tpc.REGIONAL_OFFICE]}_${tp.attributes[tpc.PERMIT_NUMBER]}_${formatDate(tp.attributes[tpc.START_DATE], MORNING, 'YYYY-MM-DD')}`;
 		if (tp.attributes[tpc.REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
 			Log.debug(`A new tree liecence! queued for saving ${compact_tp}`);
 			return tp; //original one, not compact
 		}
 	}).filter(Boolean); // remove undefined values
 	//save only the new ones
-	try { //TODO promise all or knex save bulk
+	try {
 		const numPermits = (newTreePermits.length > maxPermits)? maxPermits : newTreePermits.length;
 		const savedTreePermits = [];
 		// Not using map / async on purpose, so node won't run this code snippet in parallel
@@ -136,50 +141,104 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 	}
 }
 
+const getValueBySheetName = (row, tree_permit_field, sheetName) => {
+
+	if (sheetName === SHEET_AFTER || sheetName === SHEET_BEFORE ){
+		if (tree_permit_field === tpc.REGIONAL_OFFICE) return row['אזור'];
+		if (tree_permit_field === tpc.PERSON_REQUEST_NAME) return row['מבקש'];
+		if (tree_permit_field === tpc.REASON_DETAILED) return row['פרטי הסיבה'];
+		if (tree_permit_field === tpc.PLACE) return row['מקום הפעולה'];
+		if (tree_permit_field === tpc.STREET_NUMBER) return row['מספר'];
+		if (tree_permit_field === tpc.START_DATE) return formatDate(row['מתאריך'], MORNING, 'MM/DD/YYYY');
+		if (tree_permit_field === tpc.END_DATE) return formatDate(row['עד תאריך'], MORNING, 'MM/DD/YYYY');
+		if (tree_permit_field === tpc.LAST_DATE_TO_OBJECTION) return row['תאריך אחרון להגשת ערער'] ? formatDate(row['תאריך אחרון להגשת ערער'], EVENING, 'MM/DD/YYYY') : undefined;
+		if (tree_permit_field === tpc.APPROVER_NAME) return row['שם מאשר'];
+		if (tree_permit_field === tpc.APPROVER_TITLE) return row['תפיד מאשר'];
+		if (tree_permit_field === tpc.TREE_NAME) return row['שם העץ'];
+		if (tree_permit_field === tpc.COMMENTS_IN_DOC) return row['הערות לעצים'];
+		if (tree_permit_field === tpc.PERMIT_NUMBER) return row['מספר רשיון'];
+		if (tree_permit_field === tpc.PERMIT_ISSUE_DATE) return formatDate(row['תאריך הרשיון'], MORNING, 'MM/DD/YYYY') ;
+	}
+	if (sheetName === KKL) {
+		// Each regional office has its own numbering for permits.
+		// KKL shares numbering across all its regions, as well as they publish in the same file.
+		// Therefore, their regional office unit is one (קקל) and the sub division for regions manifest in 
+		// the field 'approver_title'.
+		if (tree_permit_field === tpc.REGIONAL_OFFICE) return 'קקל'; 
+		if (tree_permit_field === tpc. PERSON_REQUEST_NAME) return row['  שם   בעל הרישיון'];
+		if (tree_permit_field === tpc.REASON_DETAILED) return row['סיבה  מילולית'];
+		if (tree_permit_field === tpc.PLACE) return row['יישוב'];
+		if (tree_permit_field === tpc.STREET_NUMBER) return row['\'מס'];
+		if (tree_permit_field === tpc.START_DATE) return formatDate(row['מ-תאריך'], MORNING);
+		if (tree_permit_field === tpc.END_DATE) return formatDate(row['עד-תאריך'], MORNING);
+		if (tree_permit_field === tpc.LAST_DATE_TO_OBJECTION) return row['תאריך אחרון להגשת ערר'] ? formatDate(row['תאריך אחרון להגשת ערר'], EVENING) : undefined;
+		if (tree_permit_field === tpc.APPROVER_NAME) return row['שם   מאשר הרישיון'];
+		if (tree_permit_field === tpc.APPROVER_TITLE) return row['אזור'];
+		if (tree_permit_field === tpc.TREE_NAME) return row['שם   מין עץ']; 
+		if (tree_permit_field === tpc.COMMENTS_IN_DOC) return row['הערות'];
+		if (tree_permit_field === tpc.PERMIT_NUMBER) return row['מספר רישיון'];
+		if (tree_permit_field === tpc.PERMIT_ISSUE_DATE) return undefined;
+	}
+
+	Log.error(`Bad conversion: no such ${tree_permit_field} in sheet: ${sheetName} in row: ${row}`);
+	return '';
+};
+
+const figureSheetName = (filename) => {
+	const fname = path.parse(filename).name.toLowerCase();
+	if (fname === 'trees_befor' || fname === 'trees_after') return KKL;
+	if (fname.includes('after')) return SHEET_AFTER;
+	else return SHEET_BEFORE;
+};
+
+const isEmptyRow = (row) => {
+	return (Object.values(row).filter(Boolean).length === 0);
+};
+
 const parseTreesXLS = async (filename) => {
 	// hack
-	const sheetname = path.parse(filename).name.toLowerCase().includes('after') ? SHEET_AFTER : SHEET_BEFORE;
+	const sheetname = figureSheetName(filename);
 	const workbook = xlsx.readFile(filename);
 	const sheet = workbook.Sheets[sheetname];
-	const sheet_json = xlsx.utils.sheet_to_json(sheet, { raw: false });
+	const sheet_json = (sheetname === KKL)? xlsx.utils.sheet_to_json(sheet, { raw: false, range: 1  , blankrows: false } ) : xlsx.utils.sheet_to_json(sheet, { raw: false });
 	const rawTreePermits = sheet_json.map(row => {
 
 		try {
-			return {
+			if (!isEmptyRow(row)) return {
 				'core': {
-					[tpc.REGIONAL_OFFICE]: row['אזור'],
-					[tpc.PERMIT_NUMBER]: row['מספר רשיון'],
+					[tpc.REGIONAL_OFFICE]: getValueBySheetName(row, tpc.REGIONAL_OFFICE, sheetname),
+					[tpc.PERMIT_NUMBER]: getValueBySheetName(row, tpc.PERMIT_NUMBER, sheetname),
 					[tpc.ACTION]: row['פעולה'], // cutting , copying
-					[tpc.PERMIT_ISSUE_DATE]: formatDate(row['תאריך הרשיון'], MORNING),
-					[tpc.PERSON_REQUEST_NAME]: row['מבקש'],
-					[tpc.START_DATE]: formatDate(row['מתאריך'], MORNING),
-					[tpc.END_DATE]: formatDate(row['עד תאריך'], EVENING),
-					[tpc.LAST_DATE_TO_OBJECTION]: row['תאריך אחרון להגשת ערער'] ? formatDate(row['תאריך אחרון להגשת ערער'], MORNING) : undefined, // column might be missing from
-					[tpc.APPROVER_NAME]: row['שם מאשר'],
-					[tpc.APPROVER_TITLE]: row['תפיד מאשר'],
+					[tpc.PERMIT_ISSUE_DATE]: getValueBySheetName(row, tpc.PERMIT_ISSUE_DATE, sheetname),
+					[tpc.PERSON_REQUEST_NAME]: getValueBySheetName(row, tpc.PERSON_REQUEST_NAME, sheetname),
+					[tpc.START_DATE]: getValueBySheetName(row, tpc.START_DATE, sheetname),
+					[tpc.END_DATE]: getValueBySheetName(row, tpc.END_DATE, sheetname),
+					[tpc.LAST_DATE_TO_OBJECTION]: getValueBySheetName(row, tpc.LAST_DATE_TO_OBJECTION, sheetname),
+					[tpc.APPROVER_NAME]: getValueBySheetName(row, tpc.APPROVER_NAME, sheetname),
+					[tpc.APPROVER_TITLE]: getValueBySheetName(row, tpc.APPROVER_TITLE, sheetname),
 					// Location
-					[tpc.PLACE]: row['מקום הפעולה'],
+					[tpc.PLACE]: getValueBySheetName(row, tpc.PLACE, sheetname),
 					[tpc.STREET]: row['רחוב'],
-					[tpc.STREET_NUMBER]: row['מספר'],
+					[tpc.STREET_NUMBER]: getValueBySheetName(row, tpc.STREET_NUMBER, sheetname),
 					[tpc.GUSH]: row['גוש'],
 					[tpc.HELKA]: row['חלקה'],
 
 					[tpc.REASON_SHORT]: row['סיבה'],
-					[tpc.REASON_DETAILED]: row['פרטי הסיבה'],
-					[tpc.COMMENTS_IN_DOC]: row['הערות לעצים']	
+					[tpc.REASON_DETAILED]: getValueBySheetName(row, tpc.REASON_DETAILED, sheetname),
+					[tpc.COMMENTS_IN_DOC]: getValueBySheetName(row, tpc.COMMENTS_IN_DOC, sheetname),	
 				},
 				'extra': {
-					[tpc.TREE_NAME]: row['שם העץ'],
+					[tpc.TREE_NAME]: getValueBySheetName(row, tpc.TREE_NAME, sheetname),
 					[tpc.NUMBER_OF_TREES]: row['מספר עצים'],
 				}
 			};
 		}
 		catch (err) {
-			Log.error(`Error reading line ${row['מספר רשיון']}-${row['שם העץ']} from file ${filename}`);
+			Log.error(`Error reading line ${getValueBySheetName(row, tpc.PERMIT_NUMBER, sheetname)}-${getValueBySheetName(row, tpc.TREE_NAME, sheetname)} from file ${filename}`);
 			Log.error(err);
 		}
 	});
-	return processPermits(rawTreePermits);
+	return processPermits(rawTreePermits.filter(Boolean));
 };
 
 async function generateGeomFromAddress(place, street) {
@@ -231,15 +290,17 @@ function processPermits(rawTreePermits) {
 			}
 		}
 		else { // a new one
-			treePermits[key] = new TreePermit({ ...rtp.core, [tpc.TOTAL_TREES]: Number(rtp.extra[tpc.NUMBER_OF_TREES]) });
-			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { [rtp.extra[tpc.TREE_NAME]]: Number(rtp.extra[tpc.NUMBER_OF_TREES]) };
+			treePermits[key] = new TreePermit({ ...rtp.core, [tpc.TOTAL_TREES]: Number(rtp.extra[tpc.NUMBER_OF_TREES]) || 0 });
+			treePermits[key].attributes[tpc.TREES_PER_PERMIT] = { [rtp.extra[tpc.TREE_NAME] || 'לא צוין סוג העץ']: Number(rtp.extra[tpc.NUMBER_OF_TREES]) };
 		}
 	});
 	return Object.values(treePermits);
 }
 
-function formatDate(strDate, hour) {
-	const isoDate = new Date(strDate).toISOString().split('T')[0]; //Date
+function formatDate(strDate, hour, inputFormat) {
+	if (strDate == '' || strDate == undefined) return undefined;
+	const format = inputFormat || 'DD/MM/YYYY';
+	const isoDate = moment(strDate, format).toISOString().split('T')[0]; //Date
 	return `${isoDate}T${hour}`;
 }
 

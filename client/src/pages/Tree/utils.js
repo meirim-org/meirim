@@ -4,6 +4,7 @@ export const timeToObjectionText =(start_date) => {
 	const permitStartDate = new Date(start_date);
 	const now = new Date();
 	const timeLeft = (permitStartDate.getTime() - now.getTime() > 0)?  Math.floor((permitStartDate - now) / DAY_IN_MILISECONDS ) : -1; 
+	if (!start_date) {return 'לא צוין תאריך'};
 	if (timeLeft === -1) { return 'בתוקף';}
 	else if (timeLeft === 0) { return `יום אחרון`}
 	else if (timeLeft === 1) { return `נותר יום אחד`}
