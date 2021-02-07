@@ -5,6 +5,7 @@ import homepageImage from '../../assets/homepage.svg';
 import homepageMobileImage from '../../assets/homepage-mobile.svg'
 import Typography from 'shared/typography';
 import { device } from 'style';
+import TreeSearchBox from './TreeSearchBox';
 
 const Image = styled.div`
     height: 288px;
@@ -30,8 +31,8 @@ const Cover = styled.div`
     @media ${device.tablet} {
         position: absolute;
         left:0; top: 0; right: 0; bottom: 0;
-        padding-top: 132px;
-        padding-right: 80px;
+        padding-top: 82px;
+		padding-right: 80px;
     }
 `;
 
@@ -75,7 +76,7 @@ const Paragraph = styled(Typography)`
     font-size: 16px;
     line-height: 24px;
     max-width: 328px;
-    margin: 24px auto;
+    margin: 26px auto;
     padding-right: 16px;
     z-index: 1;
 
@@ -100,6 +101,7 @@ const TopSection = () => {
                 קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
                 </Paragraph>
                 <SearchBox />
+				<TreeSearchBox />
             </Cover>
 		</Section>
 	)
