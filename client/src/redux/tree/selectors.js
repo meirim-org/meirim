@@ -1,13 +1,11 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const Selectors = () => {
-	const treeData = useSelector(
-		(state) => state.tree.treeData
-	);
+    const treeData = useSelector((state) => state.tree.treeData);
 
-	return {
-		treeData,
-	};
+    return {
+        treeData,
+    };
 };
 
 export default Selectors;

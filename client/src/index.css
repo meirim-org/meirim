@@ -1,18 +1,18 @@
 * {
-	font-family: Assistant, sans-serif;
-	text-align: right;
+    font-family: Assistant, sans-serif;
+    text-align: right;
 }
 
 body {
-	direction: rtl;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .Toastify__toast-body {
-		direction: rtl;
+    direction: rtl;
 }
 
 .Toastify__toast-container {
-	z-index: 200000;
+    z-index: 200000;
 }

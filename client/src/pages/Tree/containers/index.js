@@ -1,5 +1,3 @@
-import SummaryTab from './SummaryTab';
+import SummaryTab from "./SummaryTab";
 
-export {
-	SummaryTab
-};
+export { SummaryTab };

@@ -12,22 +12,21 @@ import "./Alerts.css";
 class AlertUnsubscribe extends Component {
     state = {
         loading: true,
-        error: false
+        error: false,
     };
 
     unsubscribeAlertByToken(token) {
-        api
-            .delete(`/alert/_token/${token}`)
-            .then(result => {
-                this.setState({
-                    loading: false
-                });
-            })
-            .catch(error => {
-                console.log('error: ' + error);
+        api.delete(`/alert/_token/${token}`)
+            .then((result) => {
                 this.setState({
                     loading: false,
-                    error
+                });
+            })
+            .catch((error) => {
+                console.log("error: " + error);
+                this.setState({
+                    loading: false,
+                    error,
                 });
             });
     }
@@ -39,7 +38,6 @@ class AlertUnsubscribe extends Component {
     }
 
     render() {
-
         return (
             <Wrapper>
                 <div className="container">
@@ -55,12 +53,12 @@ class AlertUnsubscribe extends Component {
         const { loading, error } = this.state;
 
         if (loading) {
-            return 'טוען...';
+            return "טוען...";
         } else if (error) {
-            return 'חלה שגיאה בעת מחיקת התראה. אנא נסו שנית';
+            return "חלה שגיאה בעת מחיקת התראה. אנא נסו שנית";
         }
 
-        return 'ההתראה נמחקה';
+        return "ההתראה נמחקה";
     }
 }
 

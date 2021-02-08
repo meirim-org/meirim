@@ -1,11 +1,11 @@
 .filterChip {
-  margin: 0 0 5px 15px;
+    margin: 0 0 5px 15px;
 }
 
 .filterChip svg {
-  margin: 0 -8px 0 4px;
+    margin: 0 -8px 0 4px;
 }
 
 .MuiLinearProgress-root {
-  height: 2px !important;
+    height: 2px !important;
 }

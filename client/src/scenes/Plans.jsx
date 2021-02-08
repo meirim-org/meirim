@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import {Grid} from "@material-ui/core";
-import {PlanCard} from 'shared';
+import { Grid } from "@material-ui/core";
+import { PlanCard } from "shared";
 import InfiniteScroll from "react-infinite-scroll-component";
 import api from "../services/api";
 import locationAutocompleteApi from "../services/location-autocomplete";
@@ -18,11 +18,11 @@ class Plans extends Component {
         loadingPlans: false,
         pageNumber: 1,
         plans: [],
-        address: '',
+        address: "",
         addressLocation: [],
         list: [],
         searchPoint: false,
-        loadingAutocomplete: false
+        loadingAutocomplete: false,
     };
 
     constructor(props) {
@@ -39,31 +39,37 @@ class Plans extends Component {
             hasMore: true,
             noData: false,
             plans: [],
-            pageNumber:1,
-            searchPoint: false
+            pageNumber: 1,
+            searchPoint: false,
         });
 
         // get selected place id
         const placeId = this.findPlaceIdFromSuggestion(address);
 
         // get place location
-        locationAutocompleteApi.getPlaceLocation(placeId)
-            .then(location => {
+        locationAutocompleteApi
+            .getPlaceLocation(placeId)
+            .then((location) => {
                 // this will trigger a component update which will identify the new
                 // query string and initiate a location search
-                this.props.history.push(`${window.location.pathname}?loc=${location.lat},${location.lng}`);
-            }).catch(error => this.setState({ error: "שגיאה בחיפוש לפי כתובת" }));
+                this.props.history.push(
+                    `${window.location.pathname}?loc=${location.lat},${location.lng}`
+                );
+            })
+            .catch((error) =>
+                this.setState({ error: "שגיאה בחיפוש לפי כתובת" })
+            );
     }
 
-    findPlaceIdFromSuggestion(string){
-        let {list} = this.state;
-        return _.find(list,i=> i.label===string).id
+    findPlaceIdFromSuggestion(string) {
+        let { list } = this.state;
+        return _.find(list, (i) => i.label === string).id;
     }
 
     handleInputChange(text) {
         if (text) {
             this.setState({
-                loadingAutocomplete: true
+                loadingAutocomplete: true,
             });
 
             this.getAutocompleteSuggestions(text);
@@ -73,43 +79,49 @@ class Plans extends Component {
 
             this.setState({
                 list: [],
-                loadingAutocomplete: false
+                loadingAutocomplete: false,
             });
         }
     }
 
     getAutocompleteSuggestions = _.debounce((input) => {
-        locationAutocompleteApi.autocomplete(input).then((res) => {
-            this.setState({
-                loadingAutocomplete: false,
-                list: res
+        locationAutocompleteApi
+            .autocomplete(input)
+            .then((res) => {
+                this.setState({
+                    loadingAutocomplete: false,
+                    list: res,
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    error: "שגיאה בחיפוש לפי כתובת",
+                    loadingAutocomplete: false,
+                });
             });
-        }).catch(error => {
-            this.setState({ error: "שגיאה בחיפוש לפי כתובת", loadingAutocomplete: false });
-        });
     }, process.env.CONFIG.geocode.autocompleteDelay);
 
     loadPlans(pageNumber, point) {
         this.setState({
             noData: false,
-            loadingPlans: true
+            loadingPlans: true,
         });
 
         api.get(
-            `/plan/?page=${pageNumber}`+
-            (point ? `&distancePoint=${point.lng},${point.lat}` : "")
+            `/plan/?page=${pageNumber}` +
+                (point ? `&distancePoint=${point.lng},${point.lat}` : "")
         )
-            .then(result => {
+            .then((result) => {
                 this.setState({
                     hasMore:
                         result.pagination.page < result.pagination.pageCount,
                     noData: this.state.plans.length + result.data.length === 0,
                     loadingPlans: false,
                     pageNumber,
-                    plans: [...this.state.plans, ...result.data]
+                    plans: [...this.state.plans, ...result.data],
                 });
             })
-            .catch(error => this.setState({ error: "שגיאה בשליפת תוכניות" }));
+            .catch((error) => this.setState({ error: "שגיאה בשליפת תוכניות" }));
     }
 
     loadNextPage() {
@@ -125,10 +137,17 @@ class Plans extends Component {
         let searchLocation;
 
         // load "loc" param and make sure it is the right format
-        if (qs.get('loc')) {
-            const locParts = qs.get('loc').split(',').map(i => parseFloat(i));
-            if (locParts.length === 2 && !isNaN(locParts[0]) && !isNaN(locParts[1])) {
-                searchLocation = {lat: locParts[0], lng: locParts[1]};
+        if (qs.get("loc")) {
+            const locParts = qs
+                .get("loc")
+                .split(",")
+                .map((i) => parseFloat(i));
+            if (
+                locParts.length === 2 &&
+                !isNaN(locParts[0]) &&
+                !isNaN(locParts[1])
+            ) {
+                searchLocation = { lat: locParts[0], lng: locParts[1] };
             }
         }
 
@@ -136,8 +155,8 @@ class Plans extends Component {
             // reset plans in case this was a navigation
             this.setState({
                 plans: [],
-                pageNumber:1,
-                searchPoint: searchLocation
+                pageNumber: 1,
+                searchPoint: searchLocation,
             });
 
             // load plans by params
@@ -167,12 +186,20 @@ class Plans extends Component {
     }
 
     render() {
-        const { plans, error, noData, hasMore, list, loadingAutocomplete } = this.state;
+        const {
+            plans,
+            error,
+            noData,
+            hasMore,
+            list,
+            loadingAutocomplete,
+        } = this.state;
 
         return (
             <Wrapper>
                 <div className="container">
-                    <Autocomplete classes=""
+                    <Autocomplete
+                        classes=""
                         id="plans-search-input"
                         placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
                         inputSuggestions={list}
@@ -182,8 +209,8 @@ class Plans extends Component {
                     />
                     <br />
                     <Grid container spacing={4}>
-                        {plans.map(plan => (
-                            <PlanCard plan={plan} key={plan.id}/>
+                        {plans.map((plan) => (
+                            <PlanCard plan={plan} key={plan.id} />
                         ))}
                     </Grid>
 

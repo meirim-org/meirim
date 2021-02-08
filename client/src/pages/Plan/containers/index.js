@@ -1,9 +1,5 @@
-import CommentsTab from './CommentsTab';
-import SummaryTab from './SummaryTab';
-import PlanningInfoTab from './PlanningInfoTab';
+import CommentsTab from "./CommentsTab";
+import SummaryTab from "./SummaryTab";
+import PlanningInfoTab from "./PlanningInfoTab";
 
-export {
-	CommentsTab,
-	SummaryTab,
-	PlanningInfoTab
-};
+export { CommentsTab, SummaryTab, PlanningInfoTab };

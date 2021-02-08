@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { AppBar as MuiAppBar, Button } from '@material-ui/core';
-import { withTheme } from '@material-ui/core/styles';
+import styled from "styled-components";
+import { AppBar as MuiAppBar, Button } from "@material-ui/core";
+import { withTheme } from "@material-ui/core/styles";
 
 export const SubTitleWrapper = styled.div`
     position: relative;
@@ -22,103 +22,104 @@ export const TitleWrapper = styled.div`
 
 export const Header = withTheme(styled.header`
     padding: 2rem 4.8rem 0 2rem;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+    border-bottom: 1px solid ${(props) => props.theme.palette.gray["300"]};
     display: grid;
     grid-template-columns: 56% 1fr;
 `);
 
-export const TitlesAndTabs = styled.div`
-`;
+export const TitlesAndTabs = styled.div``;
 
 export const Buttons = withTheme(styled.div`
     text-align: left;
-    margin: 0 -.25rem;
+    margin: 0 -0.25rem;
     .MuiButton-containedPrimary {
         background-color: transparent !important;
         border: solid 1px #cdc9d8;
         box-shadow: none;
-        color: ${props => props.theme.palette.black['100']} !important;
+        color: ${(props) => props.theme.palette.black["100"]} !important;
     }
     .MuiButton-startIcon {
         margin: 0;
     }
     .MuiButton-root {
-        padding: .4rem .35rem;
-        margin: 0 .25rem .5rem;
-        &:hover, &:focus {
+        padding: 0.4rem 0.35rem;
+        margin: 0 0.25rem 0.5rem;
+        &:hover,
+        &:focus {
             box-shadow: none;
             outline: 0 !important;
         }
     }
     .MuiButton-label > span {
-        padding: 0 .25rem;
+        padding: 0 0.25rem;
     }
-    .MuiButton-startIcon svg{
-        fill: ${props => props.theme.palette.secondary.contrastForGraphics} !important;
+    .MuiButton-startIcon svg {
+        fill: ${(props) =>
+            props.theme.palette.secondary.contrastForGraphics} !important;
     }
 `);
 
 export const AppBar = withTheme(styled(MuiAppBar)`
-    background-color:  transparent !important;
+    background-color: transparent !important;
     color: black !important;
     box-shadow: none !important;
     .MuiTab-root {
         min-width: auto !important;
-        padding: .4rem 1.5rem;
+        padding: 0.4rem 1.5rem;
     }
     .MuiTabs-indicator {
-        background-color:  ${props => props.theme.palette.primary.main} !important;
+        background-color: ${(props) =>
+            props.theme.palette.primary.main} !important;
     }
     .Mui-selected {
         outline: 0 !important;
-        color:  ${props => props.theme.palette.primary.main} !important;
+        color: ${(props) => props.theme.palette.primary.main} !important;
     }
     .MuiBadge-root {
         align-items: center;
     }
     .MuiBadge-badge {
         position: relative;
-        margin-right: .25rem;
+        margin-right: 0.25rem;
         transform: none;
-        color: ${props => props.theme.palette.primary['600']} !important;
-        background-color: ${props => props.theme.palette.primary['bg']} !important;
+        color: ${(props) => props.theme.palette.primary["600"]} !important;
+        background-color: ${(props) =>
+            props.theme.palette.primary["bg"]} !important;
     }
     .MuiTab-wrapper {
         font-size: 1rem !important;
     }
 `);
 
-
 export const Tab = withTheme(styled(Button)`
     border-radius: 0 !important;
     border-bottom: 2px solid transparent !important;
     outline: 0 !important;
-    
-    padding-right: .85rem !important;
-    padding-left: .85rem !important;
-    
-    @media(min-width: 1200px) {
+
+    padding-right: 0.85rem !important;
+    padding-left: 0.85rem !important;
+
+    @media (min-width: 1200px) {
         padding-right: 1.5rem !important;
         padding-left: 1.5rem !important;
     }
-    
+
     .MuiButton-label {
-        color:  ${props => props.theme.palette.black} !important;
-        font-size:  16px !important;
+        color: ${(props) => props.theme.palette.black} !important;
+        font-size: 16px !important;
         font-weight: 400;
     }
-    
+
     .MuiBadge-badge {
-        font-family:  ${props => props.theme.fontFamily} !important;
-        font-size:  12px !important;
+        font-family: ${(props) => props.theme.fontFamily} !important;
+        font-size: 12px !important;
         font-weight: 600;
     }
-    
+
     &.active {
-        border-color: ${props => props.theme.palette.primary.main} !important;
+        border-color: ${(props) => props.theme.palette.primary.main} !important;
         .MuiButton-label {
-            color:  ${props => props.theme.palette.primary.main} !important;
+            color: ${(props) => props.theme.palette.primary.main} !important;
         }
     }
 `);
-

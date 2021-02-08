@@ -1,5 +1,3 @@
-import Title from './title';
+import Title from "./title";
 
-export {
-	Title,
-};
+export { Title };

@@ -1,8 +1,4 @@
-import SubCommentForm from './subComment';
-import CommentForm from './comment';
+import SubCommentForm from "./subComment";
+import CommentForm from "./comment";
 
-
-export {
-	SubCommentForm,
-	CommentForm,
-};
+export { SubCommentForm, CommentForm };
