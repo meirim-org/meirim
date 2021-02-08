@@ -3,79 +3,93 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import Wrapper from 'components/Wrapper';
-import { CommentSelectors } from 'redux/selectors';
+import { CommentSelectors, PlanSelectors } from 'redux/selectors';
 import { Header, Navigation } from './containers';
 import * as SC from './style';
 import Footer from 'components/Footer';
+import { useTitle } from '../../../hooks';
+import t from '../../../locale/he_IL';
 
 const Template = ({
-	children,
-	commentState,
-	setCommentState,
-	match,
-	subscriptionHandler,
-	isFavPlan,
-	newCommentViewHandler
-	 }) => {
-	const [tabsPanelRef, setTabsPanelRef] = useState(null);
-	const [fixedHeader, setFixedHeader] = useState(false);
+    children,
+    commentState,
+    setCommentState,
+    match,
+    subscriptionHandler,
+    isFavPlan,
+    newCommentViewHandler,
+}) => {
+    const [tabsPanelRef, setTabsPanelRef] = useState(null);
+    const [fixedHeader, setFixedHeader] = useState(false);
 
-	const { comments } = CommentSelectors();
-	const isPlanHaveComments = comments.length > 0;
-	let tabsPanelTop = tabsPanelRef && tabsPanelRef.current ? tabsPanelRef.current.getBoundingClientRect().top : null;
+    const { comments } = CommentSelectors();
+    const {
+        planData: { name },
+    } = PlanSelectors();
 
-	const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
-	const handleFixedHeader = (newValue) => setFixedHeader(newValue);
+    const isPlanHaveComments = comments.length > 0;
+    let tabsPanelTop =
+        tabsPanelRef && tabsPanelRef.current
+            ? tabsPanelRef.current.getBoundingClientRect().top
+            : null;
 
-	const mainClasses = classnames({
-		'no-comments': !isPlanHaveComments,
-		'new-comment': commentState.isOpen
-	});
+    const handleTabsPanelRef = (ref) => setTabsPanelRef(ref);
+    const handleFixedHeader = (newValue) => setFixedHeader(newValue);
 
-	useScrollPosition(({ currPos }) => {
-	    if (currPos.y < -Math.abs(tabsPanelTop)) return handleFixedHeader(true);
-		
-		return  handleFixedHeader(false);
-	},[tabsPanelRef]);
+    const mainClasses = classnames({
+        'no-comments': !isPlanHaveComments,
+        'new-comment': commentState.isOpen,
+    });
 
-	
-	return (
-		<Wrapper hideFooter={true}>
-			<SC.MobileMainWrapper>
-				<SC.Content>
-					<Header
-						subscriptionHandler={subscriptionHandler}
-						isFavPlan={isFavPlan}
-						match={match}
-						handleTabsPanelRef={handleTabsPanelRef}
-						fixedHeader={fixedHeader}
-						openNewCommentView={()=> setCommentState(pv => ({ ...pv, isOpen :true }))}
-						isNewCommentOpen={commentState.isOpen}
-						setCommentState={setCommentState}
-					/>
-					<SC.Main className={mainClasses}>
-						{children}
-					</SC.Main>
-					<Navigation
-						subscriptionHandler={subscriptionHandler}
-						isFavPlan={isFavPlan}
-						newCommentViewHandler={newCommentViewHandler}
-					/>
-					<Footer/>
-				</SC.Content>
-			</SC.MobileMainWrapper>
-		</Wrapper>
-	);
+    useScrollPosition(
+        ({ currPos }) => {
+            if (currPos.y < -Math.abs(tabsPanelTop))
+                return handleFixedHeader(true);
+
+            return handleFixedHeader(false);
+        },
+        [tabsPanelRef]
+    );
+
+    useTitle(`${t.plan}: ${name || '...'}`);
+
+    return (
+        <Wrapper hideFooter={true}>
+            <SC.MobileMainWrapper>
+                <SC.Content>
+                    <Header
+                        subscriptionHandler={subscriptionHandler}
+                        isFavPlan={isFavPlan}
+                        match={match}
+                        handleTabsPanelRef={handleTabsPanelRef}
+                        fixedHeader={fixedHeader}
+                        openNewCommentView={() =>
+                            setCommentState((pv) => ({ ...pv, isOpen: true }))
+                        }
+                        isNewCommentOpen={commentState.isOpen}
+                        setCommentState={setCommentState}
+                    />
+                    <SC.Main className={mainClasses}>{children}</SC.Main>
+                    <Navigation
+                        subscriptionHandler={subscriptionHandler}
+                        isFavPlan={isFavPlan}
+                        newCommentViewHandler={newCommentViewHandler}
+                    />
+                    <Footer />
+                </SC.Content>
+            </SC.MobileMainWrapper>
+        </Wrapper>
+    );
 };
 
 Template.propTypes = {
-	newCommentViewHandler: PropTypes.func.isRequired,
-	subscriptionHandler: PropTypes.func.isRequired,
-	isFavPlan: PropTypes.bool.isRequired,
-	setCommentState: PropTypes.func.isRequired,
-	commentState: PropTypes.object.isRequired,
-	children: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
+    newCommentViewHandler: PropTypes.func.isRequired,
+    subscriptionHandler: PropTypes.func.isRequired,
+    isFavPlan: PropTypes.bool.isRequired,
+    setCommentState: PropTypes.func.isRequired,
+    commentState: PropTypes.object.isRequired,
+    children: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
 };
 
 export default Template;
