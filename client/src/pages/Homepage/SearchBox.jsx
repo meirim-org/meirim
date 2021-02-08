@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
 import _ from "lodash";
-import locationAutocompleteApi from '../../services/location-autocomplete';
-import Autocomplete from '../../components/AutoCompleteInput';
-import { device } from 'style';
+import locationAutocompleteApi from "../../services/location-autocomplete";
+import Autocomplete from "../../components/AutoCompleteInput";
+import { device } from "style";
 
 const Wrapper = styled.div`
-    background-color: #652DD0;
-    box-shadow: 0px 29.6621px 147.057px rgba(0, 0, 0, 0.0503198), 0px 15.8588px 78.6238px rgba(0, 0, 0, 0.0417275), 0px 8.8903px 44.0759px rgba(0, 0, 0, 0.035), 0px 4.72157px 23.4084px rgba(0, 0, 0, 0.0282725);
+    background-color: #652dd0;
+    box-shadow: 0px 29.6621px 147.057px rgba(0, 0, 0, 0.0503198),
+        0px 15.8588px 78.6238px rgba(0, 0, 0, 0.0417275),
+        0px 8.8903px 44.0759px rgba(0, 0, 0, 0.035),
+        0px 4.72157px 23.4084px rgba(0, 0, 0, 0.0282725);
     padding: 23px;
     width: 100%;
     height: 200px;
@@ -18,7 +21,7 @@ const Wrapper = styled.div`
         width: 512px;
         height: 160px;
         padding: 32px;
-        margin: 32px 0 0 0;  
+        margin: 32px 0 0 0;
         border-radius: 12px;
     }
 `;
@@ -42,11 +45,11 @@ const Button = styled.button`
     background: transparent;
     width: 120px;
     height: 32px;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #ffffff;
     border-radius: 4px;
     text-align: center;
     padding: 5px 0;
-    color: #FFFFFF;
+    color: #ffffff;
     line-height: 1;
     cursor: pointer;
 
@@ -65,7 +68,7 @@ const AutocompleteWrapper = styled.div`
     }
 
     input[type="text"] {
-        color: #FFFFFF;
+        color: #ffffff;
         font-size: 14px;
         line-height: 18px;
 
@@ -76,7 +79,7 @@ const AutocompleteWrapper = styled.div`
 
     .MuiPaper-elevation1 {
         border-radius: 0px 0px 12px 12px;
-        border: 1px solid #652DD0;
+        border: 1px solid #652dd0;
         font-size: 16px;
     }
 `;
@@ -90,14 +93,14 @@ const InputWrapper = styled.div`
         justify-content: space-between;
     }
 
-    .text{
-        font-family:Assistant;
+    .text {
+        font-family: Assistant;
     }
 `;
 
 export default function SearchBox() {
     const [addresses, setAddresses] = useState([]);
-    const [placeId, setPlaceId] = useState('');
+    const [placeId, setPlaceId] = useState("");
     const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
 
     const getAutocompleteSuggestions = useCallback(
@@ -120,10 +123,10 @@ export default function SearchBox() {
             setAddresses([]);
         }
     }
-    
+
     function onFilterChange(data) {
         if (data) {
-            const place = addresses.find(address => address.label === data);
+            const place = addresses.find((address) => address.label === data);
             if (place) {
                 setPlaceId(place.id);
             }
@@ -132,31 +135,35 @@ export default function SearchBox() {
 
     async function onGoToPlansClick() {
         if (placeId) {
-            const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
+            const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(
+                placeId
+            );
             window.location.href = `/plans?loc=${lat},${lng}`;
         }
     }
 
-	useEffect(()=>{
-		locationAutocompleteApi.init();
-	},[]);
+    useEffect(() => {
+        locationAutocompleteApi.init();
+    }, []);
 
-	return (
-		<Wrapper>
-			<Title>סקרנים לדעת מה בונים לכם ליד הבית?</Title>
-			<InputWrapper>
-				<AutocompleteWrapper>
-					<Autocomplete 
-						placeholder="חפשו כתובת"
-						inputSuggestions={addresses}
+    return (
+        <Wrapper>
+            <Title>סקרנים לדעת מה בונים לכם ליד הבית?</Title>
+            <InputWrapper>
+                <AutocompleteWrapper>
+                    <Autocomplete
+                        placeholder="חפשו כתובת"
+                        inputSuggestions={addresses}
                         onInputChange={onInputChange}
                         onFilterChange={onFilterChange}
-                        classes={{inputRoot:'text'}}
+                        classes={{ inputRoot: "text" }}
                         loading={loadingAutocomplete}
-					/>
-				</AutocompleteWrapper>
-				<Button type="button" onClick={onGoToPlansClick}>צפיה בתוכניות</Button>
-			</InputWrapper>
-		</Wrapper>
-	)
+                    />
+                </AutocompleteWrapper>
+                <Button type="button" onClick={onGoToPlansClick}>
+                    צפיה בתוכניות
+                </Button>
+            </InputWrapper>
+        </Wrapper>
+    );
 }

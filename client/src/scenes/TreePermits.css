@@ -1,43 +1,43 @@
-  html body {
-  direction: rtl;
-  background-color: #f8f8f8;
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
+html body {
+    direction: rtl;
+    background-color: #f8f8f8;
+    font-family: Heebo, Arial, Helvetica, sans-serif !important ;
 }
 .MuiTypography-body1-48,
 .MuiTypography-h5-55 .jss55 .MuiTypography-h5-681 {
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
+    font-family: Heebo, Arial, Helvetica, sans-serif !important ;
 }
 .container .btn .active {
-  background-color: #054487;
-  border-color: #054487;
+    background-color: #054487;
+    border-color: #054487;
 }
 
 .error-container {
-  color: '#900';
+    color: "#900";
 }
 
 .centerNote {
-  text-align: center;
+    text-align: center;
 }
 
 .card {
-  max-width: 335px;
-  margin: 0 1em 3em 1em;
+    max-width: 335px;
+    margin: 0 1em 3em 1em;
 }
 
 .card-link {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .card-action-area {
-  height: 100%;
+    height: 100%;
 }
 
 .card-media {
-  height: 60%;
+    height: 60%;
 }
 
 .card-content {
-  height: 40%;
+    height: 40%;
 }

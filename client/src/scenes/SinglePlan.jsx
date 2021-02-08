@@ -21,15 +21,15 @@ import "./SinglePlan.css";
 
 const axes = [
     { primary: true, type: "ordinal", position: "bottom" },
-    { position: "left", type: "linear", stacked: true }
+    { position: "left", type: "linear", stacked: true },
 ];
 
-const renderMultiplier = areaObj =>
+const renderMultiplier = (areaObj) =>
     Math.round(((areaObj.new + areaObj.exist) / areaObj.exist) * 100) / 100;
 
-const renderPercent = number => Math.round(number * 100);
+const renderPercent = (number) => Math.round(number * 100);
 
-const parseNumber = string => {
+const parseNumber = (string) => {
     string = string.replace(",", "");
     if (parseInt(string)) {
         return parseInt(string.replace(",", ""));
@@ -41,23 +41,22 @@ const parseNumber = string => {
 };
 class SinglePlan extends Component {
     state = {
-        plan: {}
+        plan: {},
     };
 
     componentDidMount() {
         const { id } = this.props.match.params;
 
         // log impression
-        api.post(`/impression/${id}`)
-            .catch(error => {
-           // this may fail gracefully
-           console.error(error)
+        api.post(`/impression/${id}`).catch((error) => {
+            // this may fail gracefully
+            console.error(error);
         });
-        
+
         return api
             .get("/plan/" + id)
-            .then(plan => this.setState({ plan: plan.data }))
-            .catch(error => {
+            .then((plan) => this.setState({ plan: plan.data }))
+            .catch((error) => {
                 this.setState({ error });
             });
     }
@@ -79,43 +78,43 @@ class SinglePlan extends Component {
         const textArea = {
             exist: 0,
             new: 0,
-            area: plan.geom ? Math.round(geojsonArea.geometry(plan.geom)) : 0
+            area: plan.geom ? Math.round(geojsonArea.geometry(plan.geom)) : 0,
         };
 
         const dataArea = [
             {
                 label: "זכויות קיימות",
-                data: []
+                data: [],
             },
             {
                 label: "זכויות מבוקשות",
-                data: []
-            }
+                data: [],
+            },
         ];
 
         const dataUnits = [
             {
                 label: "יחידות קיימות",
-                data: []
+                data: [],
             },
             {
                 label: "יחידות מבוקשות",
-                data: []
-            }
+                data: [],
+            },
         ];
 
         changes &&
-            changes[0].forEach(change => {
+            changes[0].forEach((change) => {
                 // some data may be corrupt and result with an empty row
                 if (!change[3]) return;
                 if (change[3].includes('מ"ר')) {
                     dataArea[0].data.push({
                         x: change[3],
-                        y: parseNumber(change[5])
+                        y: parseNumber(change[5]),
                     });
                     dataArea[1].data.push({
                         x: change[3],
-                        y: parseNumber(change[6])
+                        y: parseNumber(change[6]),
                     });
 
                     textArea.exist += parseNumber(change[5]);
@@ -123,11 +122,11 @@ class SinglePlan extends Component {
                 } else {
                     dataUnits[0].data.push({
                         x: change[3],
-                        y: parseNumber(change[5])
+                        y: parseNumber(change[5]),
                     });
                     dataUnits[1].data.push({
                         x: change[3],
-                        y: parseNumber(change[6])
+                        y: parseNumber(change[6]),
                     });
                 }
             });
@@ -141,7 +140,9 @@ class SinglePlan extends Component {
                             {!true && (
                                 <div className="row">
                                     <div className="col">
-                                        <h5>רוצים לקבל הודעה כשהתוכנית מתקדמת?</h5>
+                                        <h5>
+                                            רוצים לקבל הודעה כשהתוכנית מתקדמת?
+                                        </h5>
                                         <Link className="register-link" to="/">
                                             הרשמו למערכת ההתראות שלנו כאן
                                         </Link>
@@ -184,21 +185,20 @@ class SinglePlan extends Component {
                                     {!!dataArea && !!dataArea[0].data.length && (
                                         <div className="rectangle">
                                             <h4>שינוי שטח</h4>
-                                            {textArea.exist !== 0 &&
+                                            {textArea.exist !== 0 && (
                                                 <p>
-                                                    תוכנית זו מגדילה את השטח הבנוי
-                                                    פי {renderMultiplier(textArea)}{" "}
+                                                    תוכנית זו מגדילה את השטח
+                                                    הבנוי פי{" "}
+                                                    {renderMultiplier(textArea)}{" "}
                                                     (תוספת {textArea.new} מ"ר)
                                                 </p>
-                                            }
-                                             {textArea.exist === 0 &&
+                                            )}
+                                            {textArea.exist === 0 && (
                                                 <p>
-                                                    תוכנית זו מוסיפה
-                                                   {" "}
-                                                   {textArea.new} מ"ר
-                                                   שטח בנוי
+                                                    תוכנית זו מוסיפה{" "}
+                                                    {textArea.new} מ"ר שטח בנוי
                                                 </p>
-                                            }
+                                            )}
                                             <p>
                                                 {renderPercent(
                                                     (textArea.new +
@@ -212,7 +212,12 @@ class SinglePlan extends Component {
                                                 )}
                                                 % )
                                             </p>
-                                            <div style={{ height: 200, 'max-width':'450px' }}>
+                                            <div
+                                                style={{
+                                                    height: 200,
+                                                    "max-width": "450px",
+                                                }}
+                                            >
                                                 <Chart
                                                     series={series}
                                                     data={dataArea}
@@ -225,7 +230,12 @@ class SinglePlan extends Component {
                                     {!!dataUnits && !!dataUnits[0].data.length && (
                                         <div className="rectangle">
                                             <h4>שינוי יחידות דיור</h4>
-                                            <div style={{ height: 200, 'max-width':'450px' }}>
+                                            <div
+                                                style={{
+                                                    height: 200,
+                                                    "max-width": "450px",
+                                                }}
+                                            >
                                                 <Chart
                                                     series={series}
                                                     data={dataUnits}

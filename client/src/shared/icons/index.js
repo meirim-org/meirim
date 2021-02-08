@@ -1,5 +1,3 @@
-import StarIcon from './StarIcon';
+import StarIcon from "./StarIcon";
 
-export {
-	StarIcon,
-};
+export { StarIcon };

@@ -1,17 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import MUIDivider from '@material-ui/core/Divider';
+import React from "react";
+import PropTypes from "prop-types";
+import MUIDivider from "@material-ui/core/Divider";
 
-const Divider = ({ orientation}) => (
-	<MUIDivider orientation={orientation} flexItem={true} variant='fullWidth'></MUIDivider>
+const Divider = ({ orientation }) => (
+    <MUIDivider
+        orientation={orientation}
+        flexItem={true}
+        variant="fullWidth"
+    ></MUIDivider>
 );
 
 Divider.defaultProps = {
-	orientation: 'vertical',
-}
+    orientation: "vertical",
+};
 
 Divider.propTypes = {
-	orientation: PropTypes.string,
+    orientation: PropTypes.string,
 };
 
 export default Divider;

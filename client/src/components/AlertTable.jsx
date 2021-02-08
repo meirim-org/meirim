@@ -1,31 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types'
-import AlertTableRow from './AlertTableRow';
+import React from "react";
+import PropTypes from "prop-types";
+import AlertTableRow from "./AlertTableRow";
 
 function AlertTable(props) {
-	const { alerts } = props;
+    const { alerts } = props;
 
-	return (
-		<table id="alertTable">
-			<thead>
-				<tr>
-					<th>כתובת</th>
-					<th>רדיוס</th>
-					<th />
-				</tr>
-			</thead>
-			<tbody>
-				{alerts.map((alert) => (
-					<AlertTableRow key={alert.id} alert={alert} onDelete={props.onDelete} />
-				))}
-			</tbody>
-		</table>
-	);
+    return (
+        <table id="alertTable">
+            <thead>
+                <tr>
+                    <th>כתובת</th>
+                    <th>רדיוס</th>
+                    <th />
+                </tr>
+            </thead>
+            <tbody>
+                {alerts.map((alert) => (
+                    <AlertTableRow
+                        key={alert.id}
+                        alert={alert}
+                        onDelete={props.onDelete}
+                    />
+                ))}
+            </tbody>
+        </table>
+    );
 }
 
 AlertTable.propTypes = {
-	onDelete: PropTypes.func,
-	alerts: PropTypes.array,
-}
+    onDelete: PropTypes.func,
+    alerts: PropTypes.array,
+};
 
 export default AlertTable;

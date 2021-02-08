@@ -1,43 +1,45 @@
 html body {
-  direction: rtl;
-  font-family: Assistant, Arial, Helvetica, sans-serif !important ;
+    direction: rtl;
+    font-family: Assistant, Arial, Helvetica, sans-serif !important ;
 }
 .MuiTypography-body1-48,
 .MuiTypography-h5-55 .jss55 .MuiTypography-h5-681 {
-  font-family: Assistant, Arial, Helvetica, sans-serif !important ;
+    font-family: Assistant, Arial, Helvetica, sans-serif !important ;
 }
 .container .btn .active {
-  background-color: #054487;
-  border-color: #054487;
+    background-color: #054487;
+    border-color: #054487;
 }
 
 .error-container {
-  color: '#900';
+    color: "#900";
 }
 
 .centerNote {
-  text-align: center;
+    text-align: center;
 }
 
 .card-link {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .card-action-area {
-  height: 100%;
+    height: 100%;
 }
 
-.leaflet-top, .leaflet-bottom {
-  z-index: 1;
+.leaflet-top,
+.leaflet-bottom {
+    z-index: 1;
 }
 
 #plans-search-input {
-  margin-top: 1em;
-  font-family: Assistant !important;
+    margin-top: 1em;
+    font-family: Assistant !important;
 }
 
-#plans-search-input ::placeholder, #plans-search-input ::value {
-  font-size: 14px;
-  font-family: Assistant;
+#plans-search-input ::placeholder,
+#plans-search-input ::value {
+    font-size: 14px;
+    font-family: Assistant;
 }

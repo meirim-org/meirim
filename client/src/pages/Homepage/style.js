@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import Typography from 'shared/typography';
-import { device } from 'style';
+import styled from "styled-components";
+import Typography from "shared/typography";
+import { device } from "style";
 export const H2 = styled(Typography).attrs(() => ({
-    as: 'h2',
-    variant: 'planTitle',
-    mobileVariant: 'planTitle',
-    color: '',
+    as: "h2",
+    variant: "planTitle",
+    mobileVariant: "planTitle",
+    color: "",
 }))`
     padding-right: 16px;
     color: #999999;

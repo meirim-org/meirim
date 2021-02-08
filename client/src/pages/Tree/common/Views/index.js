@@ -1,5 +1,3 @@
-import ShareTreeView from './shareTree';
+import ShareTreeView from "./shareTree";
 
-export {
-	ShareTreeView
-};
+export { ShareTreeView };

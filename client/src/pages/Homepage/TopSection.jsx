@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import SearchBox from './SearchBox';
-import homepageImage from '../../assets/homepage.svg';
-import homepageMobileImage from '../../assets/homepage-mobile.svg'
-import Typography from 'shared/typography';
-import { device } from 'style';
+import React from "react";
+import styled from "styled-components";
+import SearchBox from "./SearchBox";
+import homepageImage from "../../assets/homepage.svg";
+import homepageMobileImage from "../../assets/homepage-mobile.svg";
+import Typography from "shared/typography";
+import { device } from "style";
 
 const Image = styled.div`
     height: 288px;
     width: 100%;
     background-image: url(${homepageMobileImage});
-    background-color: #FCF9FF;
+    background-color: #fcf9ff;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -29,7 +29,10 @@ const Image = styled.div`
 const Cover = styled.div`
     @media ${device.tablet} {
         position: absolute;
-        left:0; top: 0; right: 0; bottom: 0;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
         padding-top: 132px;
         padding-right: 80px;
     }
@@ -42,14 +45,14 @@ const Section = styled.section`
 
     @media ${device.tablet} {
         height: 588px;
-        background: #FCF9FF;
+        background: #fcf9ff;
     }
 `;
 
 const H1 = styled.h1`
     width: 100%;
     text-align: center;
-    color: #270E78;
+    color: #270e78;
     font-size: 36px;
     line-height: 54px;
     padding-right: 16px;
@@ -87,22 +90,27 @@ const Paragraph = styled(Typography)`
         padding-right: 0;
         background-color: rgb(252 249 255 / 85%);
     }
-
 `;
 
 const TopSection = () => {
-	return (
-		<Section>
-			<Image/>
+    return (
+        <Section>
+            <Image />
             <Cover>
                 <H1>ברוכים הבאים למעירים!</H1>
-                <Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
-                קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
+                <Paragraph
+                    as="p"
+                    variant="paragraphText"
+                    mobileVariant="paragraphText"
+                >
+                    קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה
+                    הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות
+                    פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
                 </Paragraph>
                 <SearchBox />
             </Cover>
-		</Section>
-	)
-}
+        </Section>
+    );
+};
 
 export default TopSection;

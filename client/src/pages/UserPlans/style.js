@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
-
+import styled from "styled-components";
+import { withTheme } from "@material-ui/core/styles";
 
 export const TitleWrapper = withTheme(styled.div`
     margin-bottom: 1rem;
@@ -13,23 +12,26 @@ export const NoPlansContent = withTheme(styled.div`
     > * {
         text-align: center;
     }
-    min-height: calc(100vh -  ${props => props.theme.navigation.desktop});
-    
+    min-height: calc(100vh - ${(props) => props.theme.navigation.desktop});
+
     svg {
         width: 54px;
         height: auto;
         path {
             &:first-child {
-                fill: ${props => props.theme.palette.secondary['100']} !important;
+                fill: ${(props) =>
+                    props.theme.palette.secondary["100"]} !important;
             }
             &:last-child {
-                fill: ${props => props.theme.palette.secondary.main} !important;
-                stroke: ${props => props.theme.palette.secondary.main} !important;
+                fill: ${(props) =>
+                    props.theme.palette.secondary.main} !important;
+                stroke: ${(props) =>
+                    props.theme.palette.secondary.main} !important;
             }
-        }           
+        }
     }
 `);
 
 export const PlansContent = withTheme(styled.div`
-    min-height: calc(100vh -  ${props => props.theme.navigation.desktop});
+    min-height: calc(100vh - ${(props) => props.theme.navigation.desktop});
 `);

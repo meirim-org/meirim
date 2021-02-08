@@ -1,8 +1,6 @@
-import React from 'react';
-import { ReactComponent as Icon } from './star-icon.svg';
+import React from "react";
+import { ReactComponent as Icon } from "./star-icon.svg";
 
-const StarIcon = () => (
-	<Icon/>
-);
+const StarIcon = () => <Icon />;
 
 export default StarIcon;

@@ -14,23 +14,23 @@ import "./Alerts.css";
 class ForgotPassword extends Component {
     state = {
         error: false,
-        stage: "email"
+        stage: "email",
     };
 
-    handleChange = event => {
+    handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value,
-            error: false
+            error: false,
         });
     };
 
-    sendEmail = event => {
+    sendEmail = (event) => {
         event.preventDefault();
         const { email } = this.state;
         this.setState({ stage: "sending" });
         api.post("/password/sendResetToken", { email })
-            .then(success => this.setState({ stage: "sent" }))
-            .catch(error => this.setState({ error, stage: "email" }));
+            .then((success) => this.setState({ stage: "sent" }))
+            .catch((error) => this.setState({ error, stage: "email" }));
     };
     componentDidMount() {
         const { token } = queryString.parse(this.props.location.search);
@@ -39,13 +39,13 @@ class ForgotPassword extends Component {
         }
     }
 
-    changePassword = event => {
+    changePassword = (event) => {
         event.preventDefault();
         const { password, token } = this.state;
         this.setState({ stage: "changing" });
         api.post("/password/resetWithToken", { password, token })
             .then(() => this.setState({ stage: "changed" }))
-            .catch(error => this.setState({ error, stage: "change" }));
+            .catch((error) => this.setState({ error, stage: "change" }));
     };
     render() {
         const { stage, error } = this.state;
@@ -136,7 +136,7 @@ class ForgotPassword extends Component {
                                             id="stage2"
                                             method="post"
                                             style={{
-                                                marginTop: "20px"
+                                                marginTop: "20px",
                                             }}
                                             onSubmit={this.changePassword}
                                         >
