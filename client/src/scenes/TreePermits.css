@@ -41,3 +41,30 @@
 .card-content {
   height: 40%;
 }
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 1;
+}
+
+#trees-search-input {
+  margin-top: 1em;
+  font-family: Assistant !important;
+}
+
+.trees-helper-title {
+  display: block;
+  text-align: center;
+  margin: 1em 1em 0 1em;
+}
+
+.trees-helper-text {
+  display: block;
+  text-align: center;
+  margin: 0 1em 1em 1em;
+}
+
+@media (min-width: 768px) {
+  .trees-helper-text a {
+    font-size: 20px;
+  }
+}

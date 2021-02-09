@@ -38,6 +38,11 @@ html body {
 }
 
 #plans-search-input ::placeholder, #plans-search-input ::value {
-  font-size: 14px;
   font-family: Assistant;
+}
+
+.plans-helper-text {
+  display: block;
+  text-align: center;
+  margin: 1em;
 }

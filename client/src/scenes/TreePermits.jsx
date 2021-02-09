@@ -7,6 +7,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Link as SharedLink, Typography as SharedTypography } from 'shared';
 
 import api from "../services/api";
 
@@ -14,6 +15,7 @@ import Wrapper from "../components/Wrapper";
 import Mapa from "../components/Mapa";
 import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
 
+import { treeAppealGuideUrl } from '../pages/Tree/constants';
 import t from "../locale/he_IL";
 import "./TreePermits.css";
 import { timeToObjectionText } from '../pages/Tree/utils';
@@ -115,10 +117,31 @@ class TreePermits extends Component {
 
 		return (
 			<Wrapper me={me}>
+				<SharedTypography
+					className="trees-helper-title"
+					component="span"
+					variant="planTitle"
+					mobileVariant="cardTitle"
+					color="#270E78"
+				>
+					{t.treesHelperTitle}
+				</SharedTypography>
+				<SharedTypography
+					className="trees-helper-text"
+					component="span"
+					variant="largeParagraphText"
+					mobileVariant="paragraphText"
+					color="#000000"
+				>
+					{t.treesHelperTextA}
+					<SharedLink text={t.treesHelperTextLink} url={treeAppealGuideUrl} textDecoration="none" target="_blank" rel="noopener noreferrer"/>
+					{t.treesHelperTextB}
+				</SharedTypography>
 				<div className="container">
 					<FilterAutoCompleteMultiple
+					    id="trees-search-input"
 						classes=""
-						placeholder="הזינו עיר, מועצה אזורית או רשות מקומית "
+						placeholder="לדוגמה: נהריה"
 						inputSuggestions={treePlaces}
 						onFilterChange={this.handlePlaceFilterChange.bind(
 							this

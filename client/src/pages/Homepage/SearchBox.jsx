@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     padding: 23px;
     width: 100%;
     height: 200px;
-    margin: 32px auto;
+    margin: 1em auto;
     z-index: 1;
 
     @media ${device.tablet} {
