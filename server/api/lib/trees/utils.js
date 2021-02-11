@@ -9,7 +9,7 @@ const tpc = require('../../model/tree_permit_constants');
 const {
 	SHEET_AFTER, SHEET_BEFORE, KKL,
 	TEL_AVIV_OFFICAL, TEL_AVIV_FORMATS, PARDES_HANA_FORMATS, PARDES_HANA_OFFICAL,
-	TREE_PERMIT_TABLE
+	TREE_PERMIT_TABLE, PLACES_WITHOUT_GEOM
 } = tpc;
 
 const formatDate =(strDate, hour, inputFormat) =>{
@@ -42,11 +42,11 @@ const isEmptyRow = (row) => {
 const unifyPlaceFormat = (place) => {
 	const formattedPlace = place.replace('-', ' ').trim();
 	// special cases
-	if (formattedPlace in TEL_AVIV_FORMATS ) {
+	if (TEL_AVIV_FORMATS.has(formattedPlace) ) {
 		return TEL_AVIV_OFFICAL;
 	}
-	if (formattedPlace in PARDES_HANA_FORMATS) {
-		return  PARDES_HANA_OFFICAL;
+	if (PARDES_HANA_FORMATS.has(formattedPlace)) {
+		return PARDES_HANA_OFFICAL;
 	}
 	return formattedPlace;
 };
@@ -69,6 +69,7 @@ async function generateGeomFromAddress(db, place, street) {
 	Log.debug(`address: ${address} `);
 
 	if (!place) return;
+	if (PLACES_WITHOUT_GEOM.has(place)) return;
 	if (place && street) {
 		res = await Geocoder.getGeocode( place, street);
 		if (!res) { // try geocode place only

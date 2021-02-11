@@ -35,12 +35,11 @@ class TreePermitController extends Controller {
 		if (query.PLACE) {
 			where.PLACE = query.PLACE.split(',');
 		}
-		const whereRaw = [Knex.raw(`${tpc.PLACE} NOT IN (${tpc.UNSUPPORTED_PLACES.map(p => `'${p}'`).join(',')})`)];
-		
+		const whereNotIn = { [tpc.PLACE] : tpc.UNSUPPORTED_PLACES.map(p => `'${p}'`).join(',') };
 		return super.browse(req, {
 			columns,
 			where,
-			whereRaw,
+			whereNotIn,
 			orderByRaw,
 		});
 	}
