@@ -33,6 +33,11 @@ exports.SENT = 'sent';
 exports.GEOM = 'geom';
 exports.URL = 'url';
 
+exports.TEL_AVIV_FORMATS = ['תל אביב', 'תל אביב יפו', 'יפו', 'ת״א'];
+exports.TEL_AVIV_OFFICAL = 'תל אביב -יפו';
+
+exports.PARDES_HANA_FORMATS = ['פרדס חנה כרכור','כרכור','פרדס חנה'];
+exports.PARDES_HANA_OFFICAL = 'פרדס חנה -כרכור';
 exports.UNSUPPORTED_PLACES = [
 	'אשדוד',
 	'באר שבע',
@@ -58,3 +63,7 @@ exports.UNSUPPORTED_PLACES = [
 	'תל אביב יפו',
 	'תל אביב'
 ];
+
+exports.SHEET_BEFORE = 'Data2ToExcel_BeforDate';
+exports.SHEET_AFTER = 'Data2ToExcel_ToDate';
+exports.KKL = 'Rep03-License-List-To-Excel-Las';
