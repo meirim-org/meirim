@@ -1,6 +1,4 @@
 const moment = require('moment');
-const DAY_IN_MILISECONDS = 1000 * 60 * 60 *24;
-
 
 export const timeToObjectionText =(start_date) => {
 	const permitStartDate = moment(start_date);
