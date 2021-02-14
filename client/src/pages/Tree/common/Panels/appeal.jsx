@@ -2,9 +2,9 @@ import React from 'react';
 import { TabPanel, TabBox, Typography, Button } from 'shared';
 import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
+import { treeAppealGuideUrl } from '../../constants';
 import t from 'locale/he_IL';
 
-const GUIDE_LINK = '/docs/מדריך להגשת ערר על כריתת עץ.pdf';
 const TreeAppealPanel = () => {
 
 	const theme = useTheme();
@@ -24,7 +24,7 @@ const TreeAppealPanel = () => {
 				</Typography>
 				<SC.ButtonWrapper>
 					<Button id="tree-appeal-button" text={t.treeAppealButton}
-					 small='small'  target="_blank" rel="noopener noreferrer" href={GUIDE_LINK} />
+					 small='small' target="_blank" rel="noopener noreferrer" href={treeAppealGuideUrl} />
 				</SC.ButtonWrapper>
 			</TabBox>
 		</TabPanel>

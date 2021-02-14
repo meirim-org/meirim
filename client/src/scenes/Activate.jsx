@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import queryString from "query-string";
 import Wrapper from "../components/Wrapper";
+import { Link } from 'shared';
 
 import api from "../services/api";
 
+import t from "../locale/he_IL";
 import logo from "../assets/logo.png";
-import "./Alerts.css";
+import "./Activate.css";
 
 class Activate extends Component {
     state = {
@@ -43,11 +45,17 @@ class Activate extends Component {
                                     className="goodMorning"
                                     id="goodMorningText"
                                 >
-                                    ברוכים הבאים למעירים!
+                                    {t.accountActivationTitle}
                                 </div>
                                 <div className="selectAreaAndInterest">
-                                    {step === 0 && "מנסים להפעיל את החשבון שלך"}
-                                    {step === 1 && "החשבון הופעל בהצלחה"}
+                                    {step === 0 && t.accountActivationLoading}
+                                    {step === 1 && (
+                                        <>
+                                            {t.accountActivationSuccessPrefix}
+                                            <Link id="my-alerts-link" text={t.accountActivationSuccessAlerts} url="/alerts/" textDecoration="none"/>
+                                            {t.accountActivationSuccessSuffix}
+                                        </>
+                                    )}
                                     {step === -1 && (
                                         <div className="alert alert-danger">
                                             {error}
