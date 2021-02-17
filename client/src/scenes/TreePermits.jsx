@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import GridList from "@material-ui/core/GridList";
+import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -153,51 +153,47 @@ class TreePermits extends Component {
 						</Typography>
 					<div>  </div>
 					<br />
-					<GridList
-						cellHeight={500}
-						cellWidth={335}
-						className="gridList"
-						cols={1}
-					>
+					<Grid container spacing={4}>
 						{treePermits.map(tree => (
-							<Card className="card" raised={true} key={tree.id}>
-								<Link
-									className="card-link"
-									to={`/tree/${tree.id}`}
-								>
-									<CardActionArea className="card-action-area">
-										<CardMedia
-											className="card-media"
-										>
-											<Mapa
-											
-												geom={tree.geom}
-												hideZoom={true}
-												disableInteractions={true}
-												countyName={tree.place}
-												title2={timeToObjectionText(tree.start_date)}
-												maxZoom={16}
-												showPlaceholder={true}
-											/>
-										</CardMedia>
-										<CardContent className="card-content">
-											<Typography
-												gutterBottom
-												variant="h5"
-												component="h2"
-												color="textPrimary"
+							<Grid item xs={12} sm={6} md={4}>
+								<Card className="card" raised={true} key={tree.id}>
+									<Link
+										className="card-link"
+										to={`/tree/${tree.id}`}
+									>
+										<CardActionArea className="card-action-area">
+											<CardMedia
+												className="card-media"
 											>
-												{`מספר העצים: ${tree.total_trees}`}
-											</Typography>
-											<this.CardContentAddress tree={tree} />
-											<this.CardContentField field={tree.action} fieldBold='פעולה:'/>
-											<this.CardContentField field={tree.reason_short} fieldBold='סיבה:' />
-										</CardContent>
-									</CardActionArea>
-								</Link>	
-							</Card>
+												<Mapa
+													geom={tree.geom}
+													hideZoom={true}
+													disableInteractions={true}
+													countyName={tree.place}
+													title2={timeToObjectionText(tree.start_date)}
+													maxZoom={16}
+													showPlaceholder={true}
+												/>
+											</CardMedia>
+											<CardContent className="card-content">
+												<Typography
+													gutterBottom
+													variant="h5"
+													component="h2"
+													color="textPrimary"
+												>
+													{`מספר העצים: ${tree.total_trees}`}
+												</Typography>
+												<this.CardContentAddress tree={tree} />
+												<this.CardContentField field={tree.action} fieldBold='פעולה:'/>
+												<this.CardContentField field={tree.reason_short} fieldBold='סיבה:' />
+											</CardContent>
+										</CardActionArea>
+									</Link>
+								</Card>
+							</Grid>
 						))}
-					</GridList>
+					</Grid>
 
 					{error && <div className="error-container">{error}</div>}
 					{noData && <div>אין כאן כלום</div>}

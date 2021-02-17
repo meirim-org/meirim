@@ -21,8 +21,8 @@
 }
 
 .card {
-  max-width: 335px;
-  margin: 0 1em 3em 1em;
+  height: 504px;
+  display: block;
 }
 
 .card-link {
