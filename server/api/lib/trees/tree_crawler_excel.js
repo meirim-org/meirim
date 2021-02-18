@@ -9,10 +9,6 @@ const AbortController = require('abort-controller');
 const TreePermit = require('../../model/tree_permit');
 const database = require('../../service/database');
 const Config = require('../../lib/config');
-const kklTreePermit = require ('./kkl_tree_permit');
-const regionalTreePermit = require( './regional_tree_permit');
-const utils = require('./utils');
-const tpc = require('../../model/tree_permit_constants');
 
 const TIMEOUT_MS = 15000;
 const MORNING = '08:00';
@@ -28,19 +24,18 @@ const {
 	END_DATE, LAST_DATE_TO_OBJECTION, TREE_NAME, TOTAL_TREES, REASON_DETAILED,
 	REASON_SHORT, GUSH, HELKA, GEOM, PLACE, STREET, STREET_NUMBER, COMMENTS_IN_DOC,
 	TREES_PER_PERMIT, PERSON_REQUEST_NAME, PERMIT_ISSUE_DATE, TREE_PERMIT_TABLE, NUMBER_OF_TREES
-} = tpc;
+} = require('../../model/tree_permit_constants');
 
 const {
 	generateFilenameByTime,
 	formatDate,
-	figureSheetName, 
 	unifyPlaceFormat,
 	isEmptyRow, 
 	generateGeomFromAddress, 
 	uploadToS3
-} = utils;
-const { RegionalTreePermit } = regionalTreePermit;
-const { KKLTreePermit } = kklTreePermit;
+} = require('./utils');
+const { RegionalTreePermit } = require( './regional_tree_permit');
+const { KKLTreePermit } = require ('./kkl_tree_permit');
 
 async function getTreePermitsFromFile(url, pathname, permitType) {
 	try {
@@ -133,9 +128,8 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 	}
 }
 const parseTreesXLS = async (filename, permit) => {
-	const sheetname = figureSheetName(filename);
 	const workbook = xlsx.readFile(filename);
-	const sheet = workbook.Sheets[sheetname];
+	const sheet = workbook.Sheets[workbook.SheetNames[0]];
 	const sheet_json =permit.convertSheetToRows(sheet);
 	const rawTreePermits = sheet_json.map(row => {
 		try {

@@ -4,13 +4,13 @@ const Geocoder = require('../../service/osm_geocoder');
 const Log = require('../log');
 const aws = require('aws-sdk');
 const fs = require('fs');
-const tpc = require('../../model/tree_permit_constants');
 
+const { TREE_PERMIT_TABLE } = require('../../model/tree_permit_constants');
 const {
-	SHEET_AFTER, SHEET_BEFORE, KKL,
 	TEL_AVIV_OFFICAL, TEL_AVIV_FORMATS, PARDES_HANA_FORMATS, PARDES_HANA_OFFICAL,
-	TREE_PERMIT_TABLE, PLACES_WITHOUT_GEOM
-} = tpc;
+	PLACES_WITHOUT_GEOM
+} = require('./tree_crawler_consts');
+
 
 const formatDate =(strDate, hour, inputFormat) =>{
 	if (strDate == '' || strDate == undefined) return undefined;
@@ -26,13 +26,6 @@ const generateFilenameByTime =(url, localTreesDir) =>{
 	const filenameWithDate = parsedFile.name.toLowerCase() + '-' + moment().format('YYYY-MM-DD-hh-mm-ss') + parsedFile.ext.toLowerCase();
 	const localFilename = path.resolve(localTreesDir, filenameNoDate);
 	return { s3filename: filenameWithDate, localFilename: localFilename };
-};
-
-const figureSheetName = (filename) => {
-	const fname = path.parse(filename).name.toLowerCase();
-	if (fname === 'trees_befor' || fname === 'trees_after') return KKL;
-	if (fname.includes('after')) return SHEET_AFTER;
-	else return SHEET_BEFORE;
 };
 
 const isEmptyRow = (row) => {
@@ -98,7 +91,6 @@ module.exports = {
 	generateGeomFromAddress,
 	uploadToS3,
 	generateFilenameByTime,
-	figureSheetName,
 	isEmptyRow,
 	unifyPlaceFormat,
 	formatDate,
