@@ -1,5 +1,4 @@
 const xlsx = require('xlsx');
-const tpc = require ('../../model/tree_permit_constants');
 const {
 	REGIONAL_OFFICE,
 	PERSON_REQUEST_NAME,
@@ -21,7 +20,7 @@ const {
 	STREET,
 	REASON_SHORT,
 	NUMBER_OF_TREES
-} = tpc;
+} = require ('../../model/tree_permit_constants');
 
 exports.RegionalTreePermit = {
 

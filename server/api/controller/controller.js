@@ -61,7 +61,7 @@ class Controller {
 		
 		if (options.whereNotIn) {
 			bsQuery = bsQuery.query((qb) =>
-				Object.keys(options.whereNotIn).map(index => qb.whereNotIn(index, [options.whereNotIn[index]]))
+				Object.keys(options.whereNotIn).map(index => qb.whereNotIn(index, options.whereNotIn[index]))
 			);
 		}
 		if (options.whereRaw) {
