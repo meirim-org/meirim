@@ -7,7 +7,7 @@ const Email = require('../service/email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
-const { regionalTreePermit } = require('../lib/trees/regional_tree_permit');
+const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
 
 // const isNewPlan = iPlan => Plan
@@ -264,7 +264,7 @@ const buildPlan = (iPlan, oldPlan) => {
 };
 
 const fetchTreePermit = () =>{
-	return regionalTreePermit();
+	return crawlTreesExcel();
 };
 
 module.exports = {
