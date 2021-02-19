@@ -32,3 +32,20 @@ exports.TREES_PER_PERMIT = 'trees_per_permit';
 exports.SENT = 'sent';
 exports.GEOM = 'geom';
 exports.URL = 'url';
+
+exports.UNSUPPORTED_PLACES = [
+	'אשדוד',
+	'באר שבע',
+	'גבעתיים',
+	'גבעת שמואל',
+	'הוד השרון',
+	'חיפה',
+	'יבנה',
+	'יפו',
+	'ירושלים',
+	'נתניה',
+	'פתח תקווה',
+	'ראשון לציון',
+	'רחובות',
+	'רמת גן',
+];

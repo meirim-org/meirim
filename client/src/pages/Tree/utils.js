@@ -1,9 +1,10 @@
-const DAY_IN_MILISECONDS = 1000 * 60 * 60 *24;
+const moment = require('moment');
 
 export const timeToObjectionText =(start_date) => {
-	const permitStartDate = new Date(start_date);
-	const now = new Date();
-	const timeLeft = (permitStartDate.getTime() - now.getTime() > 0)?  Math.floor((permitStartDate - now) / DAY_IN_MILISECONDS ) : -1; 
+	const permitStartDate = moment(start_date);
+	const now = moment();
+	const timeLeft = (permitStartDate.diff(now, 'hours') > 0)?  permitStartDate.diff(now, 'days') : -1; 
+	if (!start_date) {return 'לא צוין תאריך'};
 	if (timeLeft === -1) { return 'בתוקף';}
 	else if (timeLeft === 0) { return `יום אחרון`}
 	else if (timeLeft === 1) { return `נותר יום אחד`}
