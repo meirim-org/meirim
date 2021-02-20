@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { UserSelectors } from 'redux/selectors';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import ReactGA from 'react-ga';
 import { authenticated } from 'redux/user/slice'; 
 import { closeModal } from 'redux/modal/slice'; 
 import { HOME, ALERTS } from 'router/contants';
@@ -52,4 +53,12 @@ export const CheckIfUserCanAccessPage = () => {
 			history.push(HOME, 'openRegister');
 		}
 	}, [isAuthenticated, history]);
+};
+
+export const useInitGA = () => {
+	useEffect(() => {
+		if (process.env.CONFIG.analytics.ga.enabled) {
+			ReactGA.initialize(process.env.CONFIG.analytics.ga.ua);
+		}
+	}, []);
 };
