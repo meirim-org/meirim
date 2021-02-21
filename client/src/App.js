@@ -20,7 +20,7 @@ import FundingSuccess from 'pages/Funding/success';
 import { Modal, CircularProgress } from 'shared';
 import 'App.css';
 import { muiTheme } from 'theme';
-import { CookieHook, useInitGA } from 'hooks';
+import { CookieHook, useInitGA, useInitHotjar } from 'hooks';
 
 library.add(
     faSpinner,
@@ -32,8 +32,9 @@ library.add(
 )
 
 const App = (props) => {
-	// initialize ga
+	// initialize analytics
 	useInitGA();
+	useInitHotjar();
 
 	const { loading } = CookieHook();
 	if (loading) {
