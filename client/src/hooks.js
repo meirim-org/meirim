@@ -3,6 +3,7 @@ import { UserSelectors } from 'redux/selectors';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
+import { hotjar } from 'react-hotjar';
 import { authenticated } from 'redux/user/slice'; 
 import { closeModal } from 'redux/modal/slice'; 
 import { HOME, ALERTS } from 'router/contants';
@@ -59,6 +60,17 @@ export const useInitGA = () => {
 	useEffect(() => {
 		if (process.env.CONFIG.analytics.ga.enabled) {
 			ReactGA.initialize(process.env.CONFIG.analytics.ga.ua);
+		}
+	}, []);
+};
+
+export const useInitHotjar = () => {
+	useEffect(() => {
+		if (process.env.CONFIG.analytics.hotjar.enabled) {
+			hotjar.initialize(
+				process.env.CONFIG.analytics.hotjar.hjid,
+				process.env.CONFIG.analytics.hotjar.hjsv
+			);
 		}
 	}, []);
 };
