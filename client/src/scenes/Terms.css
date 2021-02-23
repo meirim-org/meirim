@@ -1,3 +1,11 @@
 html body {
   direction: rtl;
 }
+
+.terms-of-use-container h2 {
+  text-align: center;
+}
+
+.terms-of-use-container p {
+  font-size: 18px;
+}
