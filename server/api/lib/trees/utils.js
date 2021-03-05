@@ -20,6 +20,13 @@ const formatDate =(strDate, hour, inputFormat) =>{
 	return `${isoDate}T${hour}`;
 };
 
+const figureStartDate = (permit_issue_date, hour, inputFormat) => {
+	const format = inputFormat || 'DD/MM/YYYY';
+	const issue_date = permit_issue_date ? moment(permit_issue_date, format).add(4, 'hours') : moment().format(format);
+	const isoDate = issue_date.add(14, 'days').toISOString().split('T')[0]; 
+	return `${isoDate}T${hour}`;
+};
+
 const generateFilenameByTime =(url, localTreesDir) =>{
 	const parsedFile = path.parse(url);
 	const filenameNoDate = parsedFile.base;
@@ -94,4 +101,5 @@ module.exports = {
 	isEmptyRow,
 	unifyPlaceFormat,
 	formatDate,
+	figureStartDate,
 };
