@@ -29,6 +29,7 @@ const {
 const {
 	generateFilenameByTime,
 	formatDate,
+	figureStartDate,
 	unifyPlaceFormat,
 	isEmptyRow, 
 	generateGeomFromAddress, 
@@ -143,7 +144,7 @@ const parseTreesXLS = async (filename, permit) => {
 					[APPROVER_TITLE]: row[permit[APPROVER_TITLE]],
 					// Dates
 					[PERMIT_ISSUE_DATE]: formatDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),			
-					[START_DATE]: formatDate(row[permit[START_DATE]], MORNING, permit.dateFormat),
+					[START_DATE]: formatDate(row[permit[START_DATE]], MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]],MORNING, permit.dateFormat),
 					[END_DATE]: formatDate(row[permit[END_DATE]], EVENING, permit.dateFormat),
 					[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ? formatDate(row[permit[LAST_DATE_TO_OBJECTION]], EVENING, permit.dateFormat) : undefined,
 					// Location
