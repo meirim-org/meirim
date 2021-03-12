@@ -20,33 +20,33 @@ const {
 	STREET,
 	REASON_SHORT,
 	NUMBER_OF_TREES
-} = require ('../../model/tree_permit_constants');
+} = require('../../model/tree_permit_constants');
 
 exports.RegionalTreePermit = {
 
-	[REGIONAL_OFFICE] : 'אזור',
-	[PERSON_REQUEST_NAME] : 'מבקש',
-	[REASON_DETAILED] :'פרטי הסיבה',
-	[PLACE] : 'מקום הפעולה',
-	[STREET_NUMBER] : 'מספר',
-	[START_DATE] : 'מתאריך',
-	[END_DATE] : 'עד תאריך',
-	[LAST_DATE_TO_OBJECTION] : 'תאריך אחרון להגשת ערער',
-	[APPROVER_NAME] : 'שם מאשר',
-	[APPROVER_TITLE] : 'תפיד מאשר',
-	[TREE_NAME] : 'שם העץ',
-	[COMMENTS_IN_DOC] : 'הערות לעצים',
-	[PERMIT_NUMBER] : 'מספר רשיון',
-	[PERMIT_ISSUE_DATE] : 'תאריך הרשיון',
-	[ACTION] : 'פעולה',
-	[STREET] : 'רחוב',
-	[GUSH] : 'גוש',
-	[HELKA] : 'חלקה',
-	[REASON_SHORT] : 'סיבה',
-	[NUMBER_OF_TREES] : 'מספר עצים',
+	[REGIONAL_OFFICE]: 'אזור',
+	[PERSON_REQUEST_NAME]: 'מבקש',
+	[REASON_DETAILED]: 'פרטי הסיבה',
+	[PLACE]: 'מקום הפעולה',
+	[STREET_NUMBER]: 'מספר',
+	[START_DATE]: 'מתאריך',
+	[END_DATE]: 'עד תאריך',
+	[LAST_DATE_TO_OBJECTION]: 'תאריך אחרון להגשת ערער',
+	[APPROVER_NAME]: 'שם מאשר',
+	[APPROVER_TITLE]: 'תפיד מאשר',
+	[TREE_NAME]: 'שם העץ',
+	[COMMENTS_IN_DOC]: 'הערות לעצים',
+	[PERMIT_NUMBER]: 'מספר רשיון',
+	[PERMIT_ISSUE_DATE]: 'תאריך הרשיון',
+	[ACTION]: 'פעולה',
+	[STREET]: 'רחוב',
+	[GUSH]: 'גוש',
+	[HELKA]: 'חלקה',
+	[REASON_SHORT]: 'סיבה',
+	[NUMBER_OF_TREES]: 'מספר עצים',
 
-	dateFormat : 'MM/DD/YYYY',
-	urls : [
+	dateFormat: 'MM/DD/YYYY',
+	urls: [
 		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
 		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
 
@@ -64,9 +64,15 @@ exports.RegionalTreePermit = {
 
 		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
 		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS',
+		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befortashtiot.XLS',
+		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/aftartashtiot.XLS',
+		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/befor_haifa.XLS',
+		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_haifa.XLS',
+		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/before-telaviv.XLS',
+		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after-telaviv.XLS',
 	],
 
-	getRegionalOffice (row) {
+	getRegionalOffice(row) {
 		return row['אזור'];
 	},
 	convertSheetToRows(sheet) {
