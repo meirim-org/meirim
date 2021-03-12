@@ -40,7 +40,7 @@ const isEmptyRow = (row) => {
 };
 
 const unifyPlaceFormat = (place) => {
-	const formattedPlace = place.replace('-', ' ').trim();
+	const formattedPlace = place.replace('-', ' ').replace(/\s+/gi, ' ').trim();
 	// special cases
 	if (TEL_AVIV_FORMATS.has(formattedPlace) ) {
 		return TEL_AVIV_OFFICAL;
