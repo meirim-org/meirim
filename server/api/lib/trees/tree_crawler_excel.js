@@ -167,7 +167,7 @@ const parseTreesXLS = async (filename, permit) => {
 		}
 		catch (err) {
 			Log.error(`Error reading line ${row[permit[PERMIT_NUMBER]]}-${row[permit[TREE_NAME]]} from file ${filename}`);
-			Log.error(err);
+			Log.error(err.message);
 		}
 	});
 	return processPermits(rawTreePermits.filter(Boolean));
