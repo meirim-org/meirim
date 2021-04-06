@@ -54,11 +54,16 @@ class Controller {
 
 		const columns = options.columns || '*';
 		const where = options.where || {};
-
+		
 		let bsQuery = this.model.query(qb =>
 			Object.keys(where).map(index => qb.where(index, 'in', where[index]))
 		);
-
+		
+		if (options.whereNotIn) {
+			bsQuery = bsQuery.query((qb) =>
+				Object.keys(options.whereNotIn).map(index => qb.whereNotIn(index, options.whereNotIn[index]))
+			);
+		}
 		if (options.whereRaw) {
 			bsQuery = bsQuery.query((qb) =>
 				options.whereRaw.map((w) => qb.where(w))

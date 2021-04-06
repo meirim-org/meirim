@@ -1,12 +1,12 @@
   html body {
   direction: rtl;
   background-color: #f8f8f8;
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
 }
-.MuiTypography-body1-48,
-.MuiTypography-h5-55 .jss55 .MuiTypography-h5-681 {
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
+
+.MuiTypography-root {
+  font-family: Assistant !important ;
 }
+
 .container .btn .active {
   background-color: #054487;
   border-color: #054487;
@@ -21,8 +21,8 @@
 }
 
 .card {
-  max-width: 335px;
-  margin: 0 1em 3em 1em;
+  height: 504px;
+  display: block;
 }
 
 .card-link {
@@ -40,4 +40,31 @@
 
 .card-content {
   height: 40%;
+}
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 1;
+}
+
+#trees-search-input {
+  margin-top: 1em;
+  font-family: Assistant !important;
+}
+
+.trees-helper-title {
+  display: block;
+  text-align: center;
+  margin: 1em 1em 0 1em;
+}
+
+.trees-helper-text {
+  display: block;
+  text-align: center;
+  margin: 0 1em 1em 1em;
+}
+
+@media (min-width: 768px) {
+  .trees-helper-text a {
+    font-size: 20px;
+  }
 }

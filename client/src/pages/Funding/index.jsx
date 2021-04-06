@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
 import { createPaymentLink } from './controller';
 import { paymentRequestValidation, getFormErrors } from './validations';
-import { titles, paymentAmountOptions, roadmap, fundingEndGoal, fundingYoutubeVideoId } from './constants';
+import { paymentAmountOptions, roadmap, fundingEndGoal, fundingYoutubeVideoId } from './constants';
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
 import AmountInput from './amountInput';
@@ -76,8 +76,9 @@ const FundingPage = ({ ...props }) => {
 				<SC.HeaderWrapper>
 					<SC.Titles>
 						<SC.SubTitleWrapper>
-							<SC.MainTitle>{titles.mainTitle}</SC.MainTitle>
-							<SC.SubTitle>{titles.subTitle}</SC.SubTitle>
+							<SC.MainTitle>{t.fundingMainTitle}</SC.MainTitle>
+							<SC.SubTitle>{t.fundingSubTitle}</SC.SubTitle>
+							<SC.SubTitle fontWeight="600">{t.fundingSubTitleBold}</SC.SubTitle>
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
@@ -107,7 +108,7 @@ const FundingPage = ({ ...props }) => {
 					</SC.RoadMapWrapper>
 					<Divider orientation="vertical"/>
 					<SC.PaymentWrapper>
-						<SC.SectionTitle>הצטרפו למהפכה </SC.SectionTitle>
+						<SC.SectionTitle>{t.fundingSectionTitle}</SC.SectionTitle>
 						<TabPanel>
 							<SC.FundingStatsWrapper>
 								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
@@ -207,13 +208,8 @@ const FundingPage = ({ ...props }) => {
 						<Divider orientation="horizontal"/>
 					</SC.SectionTitleWithHorizontalDividersWrapper>
 					<SC.AboutUsSection>
-						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.primary['main']}>
-							{t.fundingAboutUsTitle}
-						</Typography>
-						<br/>
 						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.black}>
-							{/* {t.fundingAboutUs} */}
-							{titles.fifth}
+							{t.fundingAboutUsText}
 						</Typography>
 					</SC.AboutUsSection>
 					<TeamMembers/>
