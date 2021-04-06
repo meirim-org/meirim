@@ -10,8 +10,6 @@ import { paymentRequestValidation, getFormErrors } from './validations';
 import { paymentAmountOptions, roadmap, fundingEndGoal, fundingYoutubeVideoId } from './constants';
 import * as SC from './style';
 import Wrapper from '../../components/Wrapper';
-import DefaultIcon from '../../assets/svg/successIcon';
-import * as Icons from '../../assets/funding';
 import AmountInput from './amountInput';
 import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor } from './hooks';
 import { FundingSelectors } from 'redux/selectors';
@@ -99,7 +97,7 @@ const FundingPage = ({ ...props }) => {
 								{roadmap.map(i => (
 									<SC.RoadmapItemWrapper key={i.id}>
 										<SC.RoadmapItemIcon>
-											{(Icons[i.fundingSVGName] || DefaultIcon)()}
+                                            {i.icon}
 										</SC.RoadmapItemIcon>
 										<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
 										<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
