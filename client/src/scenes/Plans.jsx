@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import {Grid} from "@material-ui/core";
-import {PlanCard} from 'shared';
+import { Grid } from "@material-ui/core";
+import { PlanCard, Typography } from 'shared';
 import InfiniteScroll from "react-infinite-scroll-component";
 import api from "../services/api";
 import locationAutocompleteApi from "../services/location-autocomplete";
@@ -171,10 +171,19 @@ class Plans extends Component {
 
         return (
             <Wrapper>
+                <Typography
+                    className="plans-helper-text"
+                    component="span"
+                    variant="largeParagraphText"
+                    mobileVariant="paragraphText"
+                    color="#000000"
+                >
+                    {t.plansHelperText}
+                </Typography>
                 <div className="container">
                     <Autocomplete classes=""
                         id="plans-search-input"
-                        placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
+                        placeholder="לדוגמה: תרמ&quot;ב 6, ראשון לציון"
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
                         onInputChange={this.handleInputChange.bind(this)}
