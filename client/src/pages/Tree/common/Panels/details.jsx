@@ -44,7 +44,8 @@ const TreeDetailsPanel = () => {
 	const theme = useTheme();
 	const { treeData: { action, start_date, permit_number, total_trees, trees_per_permit } } = TreeSelectors();
 
-	const treeText = (total_trees === 1) ? 'עץ אחד' : `${total_trees} עצים`;
+	let treeText = (total_trees === 1) ? 'עץ אחד' : `${total_trees} עצים`;
+	if (total_trees === 0) { treeText = 'לא צוין מספר העצים'};
 	return (
 		<TabPanel>
 			<TabBox>
@@ -74,7 +75,7 @@ const TreeDetailsPanel = () => {
 						<Typography variant="paragraphText" mobileVariant="paragraphText"
 							component="span" color={theme.palette.black}>
 							{start_date && new Intl.DateTimeFormat('he-IL').format(new Date(start_date))}
-							{start_date && ` (${timeToObjectionText(start_date)})`}
+							{ ` (${timeToObjectionText(start_date)})`}
 						</Typography>
 					</SC.StatusWrapper>
 				</SC.StatusAndTypeWrapper>

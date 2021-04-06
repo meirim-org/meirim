@@ -12,7 +12,7 @@ const PlanCard = ({ plan }) => {
 	const theme = useTheme();
 
 	return (
-		<Grid item xs={12} sm={4}>
+		<Grid item xs={12} sm={6} md={4}>
 			<SC.Card raised={true}>
 				<Link
 					className="card-link"
