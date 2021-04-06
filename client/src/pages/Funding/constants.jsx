@@ -1,4 +1,7 @@
-export const paymentAmountOptions = [50, 75, 100, 150, 200, 250]
+import React from 'react';
+import * as Icons from 'assets/funding';
+
+export const paymentAmountOptions = [50, 75, 100, 150, 200, 250];
 
 export const roadmap = [
     {
