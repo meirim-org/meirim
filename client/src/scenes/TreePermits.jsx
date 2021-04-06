@@ -54,7 +54,7 @@ class TreePermits extends Component {
 			address = `${street}`;
 		}
 		return (
-				<Typography component="p" color="textPrimary"> <strong>כתובת: </strong>{address}</Typography>
+			<Typography component="p" color="textPrimary"> <strong>כתובת: </strong>{address}</Typography>
 		)
 	};
 
@@ -125,9 +125,12 @@ class TreePermits extends Component {
 						)}
 					/>
 					<Typography
-							component="span" color="textSecondary">
-							{`* ישנן רשויות שלא זמינות לנו כרגע. תמכו בנו כדי שנוכל להגיע גם לעיר שלכם!`}
-						</Typography>
+						component="span"
+						variant="subtitle1"
+						color="textSecondary"
+					>
+						{`* ישנן רשויות שלא זמינות לנו כרגע. תמכו בנו כדי שנוכל להגיע גם לעיר שלכם!`}
+					</Typography>
 					<div>  </div>
 					<br />
 					<GridList
