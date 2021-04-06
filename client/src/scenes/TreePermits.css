@@ -1,12 +1,12 @@
   html body {
   direction: rtl;
   background-color: #f8f8f8;
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
 }
-.MuiTypography-body1-48,
-.MuiTypography-h5-55 .jss55 .MuiTypography-h5-681 {
-  font-family: Heebo, Arial, Helvetica, sans-serif !important ;
+
+.MuiTypography-root {
+  font-family: Assistant !important ;
 }
+
 .container .btn .active {
   background-color: #054487;
   border-color: #054487;
