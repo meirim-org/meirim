@@ -11,8 +11,8 @@ const Mapa = (props) =>  {
 		if (showPlaceholder) {
 			return (
 				<div className="map-title-placeholder" style={{ height: '100%', width: '100%' }}>
-					{countyName && <button className="btn btn-light disabled">{countyName}</button>}
-					{title2 && <button className="btn btn-light map-title-left">{title2}</button>}
+					{countyName && <span className="btn btn-light disabled">{countyName}</span>}
+					{title2 && <span className="btn btn-light map-title-left">{title2}</span>}
 				</div>
 			);
 		} else {

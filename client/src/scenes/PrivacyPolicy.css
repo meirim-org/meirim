@@ -1,0 +1,11 @@
+html body {
+    direction: rtl;
+}
+
+.privacy-policy-container h2 {
+    text-align: center;
+}
+
+.privacy-policy-container p {
+    font-size: 18px;
+}

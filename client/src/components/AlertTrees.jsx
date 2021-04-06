@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'shared';
 import api from '../services/api';
 import t from '../locale/he_IL';
 import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
@@ -77,7 +78,7 @@ const AlertTrees = ({notifyAddedAlert}) => {
 				<br />
 
 				<div> * ישנן רשויות שלא זמינות לנו כרגע</div>
-				<div> תמכו בנו כדי שנוכל להגיע גם לעיר שלכם!</div>
+				<div> <Link url="/support-us/" textDecoration="none" text="תמכו בנו" /> כדי שנוכל להגיע גם לעיר שלכם!</div>
 				<div className="row">
 					<div className="col">
 						<br />
