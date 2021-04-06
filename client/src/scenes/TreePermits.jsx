@@ -56,13 +56,13 @@ class TreePermits extends Component {
 			address = `${street}`;
 		}
 		return (
-				<Typography component="p" color="textPrimary"> <strong>כתובת: </strong>{address}</Typography>
+			<Typography component="p" color="textPrimary"> <strong>כתובת: </strong>{address}</Typography>
 		)
 	};
 
 	CardContentField(props) {
 		const {field, fieldBold} = props;
-		const text = field || 'לא מצוין' 
+		const text = field || 'לא מצוין'
 	return 	<Typography component="p" color="textPrimary"> <strong>{fieldBold} </strong>{text}</Typography>
 	}
 
@@ -110,7 +110,7 @@ class TreePermits extends Component {
 
 		this.loadTrees(pageNumber, filterPlaces);
 	}
-	
+
 	render() {
 		const { treePermits, treePlaces, error, noData, hasMore } = this.state;
 		const { me } = this.props;
@@ -147,10 +147,13 @@ class TreePermits extends Component {
 							this
 						)}
 					/>
-					<Typography variant="paragraphText" mobileVariant="paragraphText"
-							component="span" color="textSecondary">
-							{`* ישנן רשויות שלא זמינות לנו כרגע. תמכו בנו כדי שנוכל להגיע גם לעיר שלכם!`}
-						</Typography>
+					<Typography
+						component="span"
+						variant="subtitle1"
+						color="textSecondary"
+					>
+						{`* ישנן רשויות שלא זמינות לנו כרגע. תמכו בנו כדי שנוכל להגיע גם לעיר שלכם!`}
+					</Typography>
 					<div>  </div>
 					<br />
 					<Grid container spacing={4}>
