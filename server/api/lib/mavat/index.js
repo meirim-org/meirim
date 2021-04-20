@@ -110,8 +110,8 @@ const parseChallenge = (pageSrc) => {
 	const top = pageSrc.split('<script>')[1].split('\n');
 	const challenge = top[1].split(';')[0].split('=')[1];
 	const challengeId = top[2].split(';')[0].split('=')[1];
-	return { challenge, challengeId, result: solveChallenge(challenge) }
-}
+	return { challenge, challengeId, result: solveChallenge(challenge) };
+};
 
 const solveChallenge = (challenge) => {
 	// solve mavat's page challenge.
@@ -130,7 +130,7 @@ const solveChallenge = (challenge) => {
 	answer += (minDig * 1) - (LastDig * 1);
 	answer = answer + subvar2;
 	return answer;
-}
+};
 
 const downloadPlanPDF = async (functionCallText) => {
 	if (functionCallText === undefined) {
@@ -366,11 +366,21 @@ const getByPlan = plan =>
 				mainPlanDetails: getMainPlanDetailText(cheerioPage),
 				areaChanges: getAreaChanges(cheerioPage),
 				jurisdiction: getJurisdictionString(cheerioPage),
+				kindOfPlan: pageInstructions && pageInstructions.textOneFour ? pageInstructions.textOneFour.kindOfPlan : undefined,
+				isContainsDetailed: pageInstructions && pageInstructions.textOneFour ? pageInstructions.textOneFour.isContainsDetailed : undefined,
+				laws: pageInstructions && pageInstructions.textOneFour ? pageInstructions.textOneFour.laws : undefined,
+				permit: pageInstructions && pageInstructions.textOneFour ? pageInstructions.textOneFour.permit : undefined,
+				unionAndDivision: pageInstructions && pageInstructions.textOneFour ? pageInstructions.textOneFour.unionAndDivision : undefined,
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
+				chartOneSix: pageInstructions ? pageInstructions.chartOneSix : undefined,
+				chartOneSeven: pageInstructions ? pageInstructions.chartOneSeven : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
+				chartsThreeOne: pageInstructions ? pageInstructions.chartsThreeOne : undefined,
+				chartsThreeTwo: pageInstructions ? pageInstructions.chartsThreeTwo: undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
 				chartFive: pageInstructions ? pageInstructions.chartFive : undefined,
-				chartSix: pageInstructions ? pageInstructions.chartSix : undefined
+				chartSix: pageInstructions ? pageInstructions.chartSix : undefined,
+				chartSevenOne: pageInstructions ? pageInstructions.chartSevenOne : undefined
 			});
 		});
 

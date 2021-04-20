@@ -27,12 +27,12 @@ const rowAbstractFactoryChart1_6 = (firstPageOfTable, headersStartIndex) => {
 
 	return (row) => {
 		return {
-			planNumberIdx: getFromArr(row, planNumberIdx),
-			kindIdx: getFromArr(row, kindIdx),
-			commentIdx: getFromArr(row, commentIdx),
-			yalkootNumberIdx: getFromArr(row, yalkootNumberIdx),
-			yalkootPageNumberIdx: getFromArr(row, yalkootPageNumberIdx),
-			dateIdx: getFromArr(row, dateIdx),
+			prev_plan_number: getFromArr(row, planNumberIdx),
+			kind: getFromArr(row, kindIdx),
+			comment: getFromArr(row, commentIdx),
+			yalkoot_number: getFromArr(row, yalkootNumberIdx),
+			yalkoot_page_number: getFromArr(row, yalkootPageNumberIdx),
+			date: getFromArr(row, dateIdx),
 		};
 	};
 };

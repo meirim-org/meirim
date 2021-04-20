@@ -36,10 +36,10 @@ const getNonTableInOneFour = (pageTables) => {
 								data.laws = currentLaws.trim();
 							}
 							else if (line.includes(HEITER_IDENTIFIER)) {
-								data.heiter = line.replace(HEITER_IDENTIFIER, '').trim();
+								data.permit = line.replace(HEITER_IDENTIFIER, '').trim();
 							}
 							else if (line.includes(UNION_AND_DIVISION_IDENTIFIER)) {
-								data.union_and_division = line.replace(UNION_AND_DIVISION_IDENTIFIER, '').trim();
+								data.unionAndDivision = line.replace(UNION_AND_DIVISION_IDENTIFIER, '').trim();
 							}
 						}
 						return data;

@@ -23,7 +23,7 @@ const rowAbstractFactoryCharts3_1_without_change = (firstPageOfTable, headersSta
 	return (row) => {
 		return {
 			designation: getFromArr(row, designationIndex),
-			fieldCells: getFromArr(row, fieldCells),
+			field_cells: getFromArr(row, fieldCells),
 		};
 	};
 };
@@ -49,16 +49,16 @@ const rowAbstractFactoryCharts3_1_with_change = (firstPageOfTable, headersStartI
 
 	return (row) => {
 		return {
-			tasritMarking: getFromArr(row, tasritMarking),
+			tasrit_marking: getFromArr(row, tasritMarking),
 			designation: getFromArr(row, designationIndex),
-			fieldCells: getFromArr(row, fieldCells),
+			field_cells: getFromArr(row, fieldCells),
 		};
 	};
 };
 
 const extractChartThreeOne = (pageTables) => {
 	return {
-		'3.1_without_change': chartToArrayBuilder({
+		'3_1_without_change': chartToArrayBuilder({
 			pageTables,
 			rowAbstractFactory: rowAbstractFactoryCharts3_1_without_change,
 			startOfChartPred: (cell) => cell.includes('3.1') && cell.includes('טבלת יעודי קרקע ותאי שטח בתכנית'),
@@ -71,9 +71,9 @@ const extractChartThreeOne = (pageTables) => {
 				row.some(cell => cell.includes('תאי שטח')) &&
 				!row.some(cell => cell.includes('3.1'))) + searchFrom,
 			rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
-			identifier: '3.1_without_change'
+			identifier: '3_1_without_change'
 		}),
-		'3.1_with_change': chartToArrayBuilder({
+		'3_1_with_change': chartToArrayBuilder({
 			pageTables,
 			rowAbstractFactory: rowAbstractFactoryCharts3_1_with_change,
 			shouldHappenBeforeTbl: (cell) => cell.includes('3.1') && cell.includes('טבלת יעודי קרקע ותאי שטח בתכנית'),
@@ -84,7 +84,7 @@ const extractChartThreeOne = (pageTables) => {
 				row.some(cell => cell.includes('תאי שטח כפופים')) &&
 				row.some(cell => cell.includes('סימון בתשריט'))) + searchFrom,
 			rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
-			identifier: '3.1_with_change'
+			identifier: '3_1_with_change'
 		})
 	};
 

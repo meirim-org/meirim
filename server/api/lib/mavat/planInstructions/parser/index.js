@@ -12,7 +12,7 @@ const { extractPlanInformation } = require('./planInformation');
 const log = require('../../../log');
 const pdfTableExtractor = require('@florpor/pdf-table-extractor');
 
-function parsePdf (result) {
+async function parsePdf (result, path) {
 	const extractedData = {
 		planExplanation: '',
 		chartFive: []
@@ -23,7 +23,7 @@ function parsePdf (result) {
 	extractedData.chartOneSeven = extractChartOneSeven(result.pageTables);
 	extractedData.chartsOneEight = extractChartsOneEight(result.pageTables);
 	extractedData.chartsThreeOne = extractChartThreeOne(result.pageTables);
-	extractedData.chartsThreeTwo = extractChartThreeTwo(result.pageTables);
+	extractedData.chartsThreeTwo = await extractChartThreeTwo(path);
 	extractedData.chartFour = extractChartFour(result.pageTables);
 	extractedData.chartFive = extractChartFive(result.pageTables);
 	extractedData.chartSix = extractChartSix(result.pageTables);
@@ -35,9 +35,9 @@ function parsePdf (result) {
 const extractPdfData = async (path) => {
 	try {
 		const tableData = await pdfTableExtractor(path, { maxEdgesPerPage: 3000 })
-			.then(data => {
+			.then(async (data) => {
 				if (data.pageTables && data.numPages && data.currentPages) {
-					const tableData = parsePdf(data);
+					const tableData = await parsePdf(data, path);
 					return tableData;
 				} else {
 					log.error('error reading plan instruction pdf', data);

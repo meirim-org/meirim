@@ -23,8 +23,8 @@ const rowAbstractFactoryChart7_1 = (firstPageOfTable, headersStartIndex) => {
 
 	return (row) => {
 		return {
-			phaseIndex: getFromArr(row, phaseIndex),
-			phaseDescription: getFromArr(row, phaseDescription),
+			phase: getFromArr(row, phaseIndex),
+			phase_description: getFromArr(row, phaseDescription),
 			conditioning: getFromArr(row, conditioning),
 		};
 	};
@@ -32,7 +32,7 @@ const rowAbstractFactoryChart7_1 = (firstPageOfTable, headersStartIndex) => {
 
 
 const extractChartSevenOne = (pageTables) => {
-	return chartToArrayBuilder({
+	const rowsFromBuilder = chartToArrayBuilder({
 		pageTables,
 		rowAbstractFactory: rowAbstractFactoryChart7_1,
 		startOfChartPred: (cell) => cell.includes('7.1') && cell.includes('שלבי ביצוע'),
@@ -44,6 +44,27 @@ const extractChartSevenOne = (pageTables) => {
 		rowTrimmer: (row) => row.map((cell) => cell.replace(/\n/g, ' ').replace(/ {2}/g, ' ').trim()),
 		identifier: '7.1'
 	});
+
+	const newRows = [];
+
+	for (let i = 0; i < rowsFromBuilder.length; i++) {
+		const currRow = rowsFromBuilder[i];
+
+		if (currRow.phase === '' && newRows.length > 0) {
+			const lastFromNewRows = newRows[newRows.length - 1];
+
+			lastFromNewRows.phase_description += ' ' + currRow.phase_description;
+			lastFromNewRows.conditioning += ' ' + currRow.conditioning;
+		}
+
+		else {
+			newRows.push(currRow);
+		}
+
+	}
+
+	return newRows;
+
 };
 
 module.exports = {

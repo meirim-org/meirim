@@ -31,15 +31,15 @@ const rowAbstractFactoryChart1_7 = (firstPageOfTable, headersStartIndex) => {
 
 	return (row) => {
 		return {
-			kindIdx: getFromArr(row, kindIdx),
-			containsIdx: getFromArr(row, containsIdx),
-			scaleIdx: getFromArr(row, scaleIdx),
-			numberOfPagesIdx: getFromArr(row, numberOfPagesIdx),
-			editDateIdx: getFromArr(row, editDateIdx),
-			editorIdx: getFromArr(row, editorIdx),
-			creationDateIdx: getFromArr(row, creationDateIdx),
-			descriptionIdx: getFromArr(row, descriptionIdx),
-			includedIdx: getFromArr(row, includedIdx),
+			kind: getFromArr(row, kindIdx),
+			contains: getFromArr(row, containsIdx),
+			scale: getFromArr(row, scaleIdx),
+			number_of_pages: getFromArr(row, numberOfPagesIdx),
+			edit_date: getFromArr(row, editDateIdx),
+			editor: getFromArr(row, editorIdx),
+			creation_date: getFromArr(row, creationDateIdx),
+			description: getFromArr(row, descriptionIdx),
+			included: getFromArr(row, includedIdx),
 		};
 	};
 };

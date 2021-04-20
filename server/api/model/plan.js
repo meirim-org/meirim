@@ -4,7 +4,13 @@ const Log = require('../lib/log');
 const Exception = require('./exception');
 const { Bookshelf, Knex } = require('../service/database');
 const PlanChartFiveRow = require('./plan_chart_five_row');
+const PlanChartOneSixRow = require('./plan_chart_one_six_row');
+const PlanChartOneSevenRow = require('./plan_chart_one_seven_row');
 const PlanChartOneEightRow = require('./plan_chart_one_eight_row');
+const PlanChart31WithChangeAreaRow = require('./plan_chart_three_one_with_change_row');
+const PlanChart31WithoutChangeAreaRow = require('./plan_chart_three_one_without_change_row');
+const PlanChart32Row = require('./plan_chart_three_two');
+const PlanChartSevenOneRow = require('./plan_chart_seven_one_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
 const {	notification_types } = require('../constants');
@@ -33,7 +39,11 @@ class Plan extends Model {
 			goals_from_mavat: 'string',
 			main_details_from_mavat: 'string',
 			explanation: 'string',
-			geo_search_filter: 'boolean'
+			geo_search_filter: 'boolean',
+			kind_of_plan: 'string',
+			laws: 'string',
+			permit: 'string',
+			union_and_division: 'string',
 		};
 	}
 
@@ -89,7 +99,7 @@ class Plan extends Model {
 	_creating (model) {
 		return new Promise((resolve) => {
 			// set the geometry's centroid using ST_Centroid function
-			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
+			model.set('geom_centroid', Knex.raw('ST_GeomFromText(\'GEOMETRYCOLLECTION EMPTY\')'));
 			resolve();
 		});
 	}
@@ -100,7 +110,7 @@ class Plan extends Model {
 			// otherwise never update the centroid since the value is not
 			// parsed and formatted like the geometry value is
 			if (attrs.geom !== undefined) {
-				model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
+				model.set('geom_centroid', Knex.raw('ST_GeomFromText(\'GEOMETRYCOLLECTION EMPTY\')'));
 			} else {
 				model.unset('geom_centroid');
 			}
@@ -221,10 +231,14 @@ class Plan extends Model {
 				main_details_from_mavat: mavatData.mainPlanDetails,
 				jurisdiction: mavatData.jurisdiction,
 				areaChanges: mavatData.areaChanges,
-				explanation: mavatData.planExplanation
+				explanation: mavatData.planExplanation,
+				kind_of_plan: mavatData.kindOfPlan,
+				laws: mavatData.laws,
+				permit: mavatData.permit,
+				union_and_division: mavatData.unionAndDivision
 			});
 
-			await plan.save(null, {transacting: transaction});
+			await plan.save(null, { transacting: transaction });
 
 			// delete existing chart rows since we have no identifiers for the single
 			// rows and so scrape them all again each time
@@ -233,8 +247,32 @@ class Plan extends Model {
 					qb.where('plan_id', plan.id);
 				}).fetchAll();
 				chartRows.models.forEach(async (chartModel) => {
-					await chartModel.destroy({transacting: transaction});
+					await chartModel.destroy({ transacting: transaction });
 				});
+			}
+
+			if (mavatData.chartOneSix !== undefined) {
+				addPlanIdToArray(mavatData.chartOneSix);
+
+				for (let i = 0; i < mavatData.chartOneSix.length; i++) {
+					try {
+						await new PlanChartOneSixRow(mavatData.chartOneSix[i]).save(null, { transacting: transaction });
+					} catch (e) {
+						Log.error(e);
+					}
+				}
+			}
+
+			if (mavatData.chartOneSeven !== undefined) {
+				addPlanIdToArray( mavatData.chartOneSeven);
+
+				for (let i = 0; i < mavatData.chartOneSeven.length; i++) {
+					try {
+						await new PlanChartOneSevenRow(mavatData.chartOneSeven[i]).save(null, { transacting: transaction });
+					} catch (e) {
+						Log.error(e);
+					}
+				}
 			}
 
 			if (mavatData.chartsOneEight !== undefined) {
@@ -257,10 +295,70 @@ class Plan extends Model {
 					row.origin = '1.8.3';
 				});
 
-				const chartsOneEight = chart181.concat(chart182, chart183);
+				const chart184 = mavatData.chartsOneEight.chart184;
+				chart184.forEach(row => {
+					row.plan_id = plan.id;
+					row.origin = '1.8.4';
+				});
+
+				const chartsOneEight = chart181.concat(chart182, chart183, chart184);
 				for (let i = 0; i < chartsOneEight.length; i++) {
 					try {
-						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, {transacting: transaction});
+						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
+					} catch (e) {
+						Log.error(e);
+					}
+				}
+			}
+
+			if (mavatData.chartsThreeOne !== undefined && mavatData.chartsThreeOne['3_1_with_change'] !== undefined) {
+				addPlanIdToArray(mavatData.chartsThreeOne['3_1_with_change']);
+
+				for (let i = 0; i < mavatData.chartsThreeOne['3_1_with_change'].length; i++) {
+					try {
+						await new PlanChart31WithChangeAreaRow(mavatData.chartsThreeOne['3_1_with_change'][i]).save(null, { transacting: transaction });
+					} catch (e) {
+						Log.error(e);
+					}
+				}
+			}
+
+			if (mavatData.chartsThreeOne !== undefined && mavatData.chartsThreeOne['3_1_without_change'] !== undefined) {
+				addPlanIdToArray(mavatData.chartsThreeOne['3_1_without_change']);
+
+				for (let i = 0; i < mavatData.chartsThreeOne['3_1_without_change'].length; i++) {
+					try {
+						await new PlanChart31WithoutChangeAreaRow(mavatData.chartsThreeOne['3_1_without_change'][i]).save(null, { transacting: transaction });
+					} catch (e) {
+						Log.error(e);
+					}
+				}
+			}
+
+			if (mavatData.chartsThreeTwo !== undefined && mavatData.chartsThreeTwo.chart3_2_approved !== undefined) {
+				const chart3_2_approved = mavatData.chartsThreeTwo.chart3_2_approved;
+				addPlanIdToArray(chart3_2_approved);
+
+				for (let i = 0; i < chart3_2_approved.length; i++) {
+					chart3_2_approved[i].is_current_state = true;
+
+					try {
+						await new PlanChart32Row(chart3_2_approved[i]).save(null, { transacting: transaction });
+					} catch (e) {
+						Log.error(e);
+					}
+				}
+			}
+
+			if (mavatData.chartsThreeTwo !== undefined && mavatData.chartsThreeTwo.chart3_2_suggested !== undefined) {
+				const chart3_2_suggested = mavatData.chartsThreeTwo.chart3_2_suggested;
+				addPlanIdToArray(chart3_2_suggested);
+
+				for (let i = 0; i < chart3_2_suggested.length; i++) {
+					chart3_2_suggested[i].is_current_state = false;
+
+					try {
+						await new PlanChart32Row(chart3_2_suggested[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}
@@ -273,7 +371,7 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartFourData.length; i++) {
 					try {
-						await new PlanChartFourRow(chartFourData[i]).save(null, {transacting: transaction});
+						await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}
@@ -286,7 +384,7 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartFiveData.length; i++) {
 					try {
-						await new PlanChartFiveRow(chartFiveData[i]).save(null, {transacting: transaction});
+						await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}
@@ -299,7 +397,19 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartSixData.length; i++) {
 					try {
-						await new PlanChartSixRow(chartSixData[i]).save(null, {transacting: transaction});
+						await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
+					} catch (e) {
+						Log.error(e);
+					}
+				}
+			}
+
+			if (mavatData.chartSevenOne !== undefined) {
+				addPlanIdToArray(mavatData.chartSevenOne);
+
+				for (let i = 0; i < mavatData.chartSevenOne.length; i++) {
+					try {
+						await new PlanChartSevenOneRow(mavatData.chartSevenOne[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}

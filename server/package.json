@@ -53,6 +53,7 @@
         "node-exceptions": "^4.0.1",
         "node-geocoder": "^3.27.0",
         "nodemailer": "^6.4.11",
+        "pdfreader": "^1.2.8",
         "proj4": "^2.6.2",
         "puppeteer": "^5.4.1",
         "query-string": "^6.13.1",

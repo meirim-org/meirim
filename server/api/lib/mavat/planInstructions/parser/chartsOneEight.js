@@ -68,7 +68,7 @@ const extractChartsOneEight = (pageTables) => {
 		identifier: '1.8.4'
 	});
 
-	// tbl 184 can have a trail of details about the table, like a small apendix.
+	// tbl 184 can have a trail of details about the table, like a small appendix.
 	// This will appear in the email column - and it will be the only thing in the row.
 	const tbl184Filtered = [];
 	for (let i = 0; i < tbl184.length; i++) {
