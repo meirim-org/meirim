@@ -10,6 +10,7 @@ const PlanChartSixRow = require('./plan_chart_six_row');
 const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
+const File = require('./file');
 
 class Plan extends Model {
 	get rules () {
@@ -225,6 +226,11 @@ class Plan extends Model {
 			});
 
 			await plan.save(null, {transacting: transaction});
+
+			// Saving all files of the plan from mavat
+			await Bluebird.all(Bluebird.map(mavatData.files, (file) => {
+				return new File({ plan_id: planId, ...file} ).save();
+			}));
 
 			// delete existing chart rows since we have no identifiers for the single
 			// rows and so scrape them all again each time

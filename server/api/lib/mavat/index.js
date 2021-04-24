@@ -7,7 +7,7 @@ const Log = require('../../lib/log');
 const path = require('path');
 const http = require('follow-redirects').http;
 const fs = require('fs');
-
+const { getFileUrl, formatFile } = require('./files');
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
@@ -133,22 +133,10 @@ const solveChallenge = (challenge) => {
 }
 
 const downloadPlanPDF = async (functionCallText) => {
-	if (functionCallText === undefined) {
-		return false;
-	}
 
-	// functionCallText is in the format `openDoc(X, Y)`
-	// where X can be `'6000611696321'` for example
-	// and Y can be `'0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE'` for example
-	// we wish to find X and Y, so we look for substrings that has numbers and letters between two ' chars.
-	const matches = functionCallText.match(/'[\dA-Z]+'/g);
-	if (matches === null) {
-		return false;
-	}
+	const downloadUrl = getFileUrl(functionCallText)
+	if (!downloadUrl) return false;
 
-	const entityDocId = matches[0].slice(1, matches[0].length - 1); // without the beginning and ending quotes
-	const entityDocNumber = matches[1].slice(1, matches[1].length - 1);
-	const downloadUrl = `http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=${entityDocId}&edn=${entityDocNumber}&opener=AttachmentError.aspx`;
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
 	const downloadSuccess = await downloadChallengedFile(downloadUrl, file);
 
@@ -178,7 +166,6 @@ const getPlanInstructions = async (page) => {
 	});
 
 	const hasDownloaded = await downloadPlanPDF(functionCallText);
-
 	if (hasDownloaded) {
 		try {
 			return processPlanInstructionsFile(PLAN_DOWNLOAD_PATH);
@@ -187,6 +174,36 @@ const getPlanInstructions = async (page) => {
 		}
 	}
 };
+
+
+const getPlanFiles = async (page) => {
+		const files = await page.evaluate(() => {
+			const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
+			const innerTexts = elements.map(ele => ele.innerText.trim());
+			// elements look like this:
+			// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
+			// (flattened table)
+			let files = []
+			for (let i = 0; i < innerTexts.length; i += 5) {
+
+				let file = {
+					kind: innerTexts[i], 
+					name: innerTexts[i+1],
+					description: innerTexts[i+2],
+					date: innerTexts[i+3],
+					open_doc: elements[i + 4].querySelector('img').getAttribute('onclick'),
+					file_icon: elements[i + 4].querySelector('img').getAttribute('src')
+				}
+				files.push(file)
+			
+			}
+			console.log(`fetched ${files.length} files`);
+			return files;
+		});
+
+		// cleaning and formatting the files
+		return  files.map(formatFile)
+}
 
 const fetch = planUrl =>
 	new Promise((resolve, reject) => {
@@ -211,6 +228,7 @@ const fetch = planUrl =>
 				);
 
 				const pageInstructions = await getPlanInstructions(page);
+				const files = await getPlanFiles(page);
 
 				page.close();
 
@@ -220,7 +238,8 @@ const fetch = planUrl =>
 				if (!dom) {
 					reject('cheerio dom is null');
 				}
-				resolve({ cheerioPage: dom, pageInstructions: pageInstructions });
+				
+				resolve({ cheerioPage: dom, files, pageInstructions  });
 			} catch (err) {
 				Log.error('Mavat fetch error', err);
 
@@ -349,6 +368,7 @@ const getByPlan = plan =>
 	init()
 		.then(() => {
 			return plan.get('plan_url') ? fetch(plan.get('plan_url')) : search(plan.get('PL_NUMBER'));
+			//return fetch(plan.plan_url);
 		})
 		.then(dict => {
 			const cheerioPage = dict.cheerioPage;
@@ -366,6 +386,7 @@ const getByPlan = plan =>
 				mainPlanDetails: getMainPlanDetailText(cheerioPage),
 				areaChanges: getAreaChanges(cheerioPage),
 				jurisdiction: getJurisdictionString(cheerioPage),
+				files: getPlanFiles(cheerioPage),
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
