@@ -7,7 +7,8 @@ const env = process.env.NODE_ENV === 'test' ? 'test.database' : 'database'; /// 
 const KnexConnection = Knex({
 	client: Config.get(`${env}.client`),
 	connection: Config.get(`${env}.connection`),
-	debug: Config.get('debug.database'),
+	pool: Config.get(`${env}.pool`),
+	debug: Config.get('debug.database')
 });
 
 const Bookshelf = require('bookshelf');
