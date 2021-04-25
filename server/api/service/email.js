@@ -15,9 +15,9 @@ const Alert = require('../model/alert');
 
 class Email {
 	/**
-   * Generate test SMTP service account from ethereal.email
-   * Only needed if you don't have a real mail account for testing
-   */
+	 * Generate test SMTP service account from ethereal.email
+	 * Only needed if you don't have a real mail account for testing
+	 */
 	constructor() {
 		// create reusable transporter object using the default SMTP transport
 		const env = process.env.NODE_ENV === 'test' ? 'test.email' : 'email'; // hack, should be fixed
@@ -29,8 +29,8 @@ class Email {
 	}
 
 	/**
-   * Init the class and load the template files.
-   */
+	 * Init the class and load the template files.
+	 */
 	init () {
 		const templateDir = `${__dirname}/email/`;
 		const templates = {};
@@ -112,7 +112,7 @@ class Email {
 		}
 
 		data.unsubscribeLink =
-      `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
+			`${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
 		data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}`;
 		data.jurisdiction = unsentPlan.get('jurisdiction');
 		data.isLocalAuthority = data.jurisdiction === 'מקומית';
@@ -204,6 +204,12 @@ class Email {
 			path: path.resolve('api/service/email/logo_email.png'),
 			cid: 'logomeirim'
 		});
+		attachments.push({
+			filename: 'support_us.png',
+			path: path.resolve('api/service/email/support_us.png'),
+			cid: 'supportus'
+		});
+
 		const subject = Mustache.render(template.title, templateProperties)
 			.replace(/\r?\n|\r/g, '')
 			.replace(/\s\s+/g, ' ');
@@ -222,13 +228,14 @@ class Email {
 	}
 
 	/**
-   * send mail with defined transport object
-   * @param {*} mailOptions
-   */
+	 * send mail with defined transport object
+	 * @param {*} mailOptions
+	 */
 	send (mailOptions) {
 		return this.transporter
 			.sendMail(mailOptions)
 			.then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
 	}
 }
+
 module.exports = new Email();
