@@ -113,29 +113,38 @@ class Plan extends Model {
 		// return new Checkit(model.rules).run(model.attributes);
 	}
 
-	_updated(model){
-		this.handleUpdatedPlan(model);
+	_updated(model) {
+		return this.handleUpdatedPlan(model);
 	}
 
 	_created(model) {
-		this.handleNewPlan(model);
+		return this.handleNewPlan(model);
 	}
 
 	async handleNewPlan (model) {
 		const planId = model.id;
 		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
 		const type = notification_types['NEW_PLAN_IN_AREA']; 
-		return Notification.createNotifications({ users: usersSubscribedToPlanArea, planId, type });
+		await Notification.createNotifications({
+			users: usersSubscribedToPlanArea,
+			planId,
+			type
+		});
 	}
 
 	async handleUpdatedPlan (model) {
 		const types = this.getPlanUpdateTypes(model);
-		if(!types.length) return null;
+		if (!types.length)
+			return null;
 
 		const planId = model.id;
 		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
-		for(let type of types) {
-			Notification.createNotifications({ users:usersSubscribedToPlanArea ,  planId, type });
+		for (let type of types) {
+			await Notification.createNotifications({
+				users: usersSubscribedToPlanArea,
+				planId,
+				type
+			});
 		}
 	}
 
