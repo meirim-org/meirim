@@ -75,6 +75,7 @@
     },
     "scripts": {
         "start": "BROWSER=none ./node_modules/react-app-rewired/bin/index.js start",
+        "start-windows": "react-app-rewired start",
         "build": "./node_modules/react-app-rewired/bin/index.js build",
         "api": "node bin/api",
         "serve": "node bin/serve",
