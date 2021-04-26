@@ -40,7 +40,8 @@ class Email {
 			dir.readFiles(
 				templateDir,
 				{
-					match: /.mustache$/
+					match: /.mustache$/,
+					shortName: true
 				},
 				(err, content, next) => {
 					if (err) {
@@ -62,8 +63,6 @@ class Email {
 		}).then(() => {
 			mapper.map((file, index) => {
 				const key = file
-					.split('/')
-					.pop()
 					.split('.')
 					.shift();
 				templates[key] = contents[index];
