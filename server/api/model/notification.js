@@ -29,8 +29,7 @@ class Notification extends Model {
 					type
 				};
 
-				const instance = new Notification(data);
-				await instance.save(null, {transacting: transaction});
+				await new Notification(data).save(null, {transacting: transaction});
 			}
 		});
 	}
