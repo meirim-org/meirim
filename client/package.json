@@ -74,12 +74,11 @@
         "extends": "react-app"
     },
     "scripts": {
-        "start": "BROWSER=none ./node_modules/react-app-rewired/bin/index.js start",
-        "start-windows": "react-app-rewired start",
-        "build": "./node_modules/react-app-rewired/bin/index.js build",
+        "start": "react-app-rewired start",
+        "build": "react-app-rewired build",
         "api": "node bin/api",
         "serve": "node bin/serve",
-        "cypress": "./node_modules/.bin/cypress open"
+        "cypress": "cypress open"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^3.9.1",
