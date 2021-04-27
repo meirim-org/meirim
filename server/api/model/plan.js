@@ -79,7 +79,6 @@ class Plan extends Model {
 
 	initialize() {
 		this.on('created', this._created, this);
-		this.on('updated', this._updated, this);
 		this.on('saving', this._saving, this);
 		this.on('creating', this._creating, this);
 		this.on('updating', this._updating, this);
@@ -106,15 +105,11 @@ class Plan extends Model {
 			}
 
 			resolve();
-		});
+		}).then(() => this.handleUpdatingPlan(model));
 	}
 
 	_saving () {
 		// return new Checkit(model.rules).run(model.attributes);
-	}
-
-	_updated(model) {
-		return this.handleUpdatedPlan(model);
 	}
 
 	_created(model) {
@@ -125,6 +120,9 @@ class Plan extends Model {
 		const planId = model.id;
 		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
 		const type = notification_types['NEW_PLAN_IN_AREA']; 
+
+		Log.info(`Creating ${usersSubscribedToPlanArea.length} new plan notifications`);
+
 		await Notification.createNotifications({
 			users: usersSubscribedToPlanArea,
 			planId,
@@ -132,13 +130,23 @@ class Plan extends Model {
 		});
 	}
 
-	async handleUpdatedPlan (model) {
+	async handleUpdatingPlan (model) {
+		// NOTE: this would be best done after the model was successfully saved (ie. the
+		// updated event), but in that point in time we can't accurately determine which
+		// attributes have changed. previousAttributes returns all attributes originally
+		// fetched and is not reset by a save (details: https://github.com/bookshelf/bookshelf/pull/1848),
+		// and so if we update a model again after saving it previousAttributes will still
+		// hint that all attributes that were updated on the first save are again being
+		// updated
 		const types = this.getPlanUpdateTypes(model);
 		if (!types.length)
 			return null;
 
 		const planId = model.id;
 		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
+
+		Log.info(`Creating ${usersSubscribedToPlanArea.length} updated plan notifications of ${types.length} types`);
+
 		for (let type of types) {
 			await Notification.createNotifications({
 				users: usersSubscribedToPlanArea,
@@ -148,13 +156,13 @@ class Plan extends Model {
 		}
 	}
 
-	getPlanUpdateTypes (model){
+	getPlanUpdateTypes (model) {
 		const updates = [];
-		const attrs = model.attributes;
-		const prevAttrs = model._previousAttributes;
-		if(attrs.status !== prevAttrs.status) {
+
+		if (model.changed.status) {
 			updates.push(notification_types['STATUS_CHANGE']);
 		}
+
 		return updates;
 	}
 
@@ -240,10 +248,11 @@ class Plan extends Model {
 			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
 				const chartRows = await modelClass.query(qb => {
 					qb.where('plan_id', plan.id);
-				}).fetchAll();
-				chartRows.models.forEach(async (chartModel) => {
+				}).fetchAll({transacting: transaction});
+
+				for (const chartModel of chartRows.models) {
 					await chartModel.destroy({transacting: transaction});
-				});
+				}
 			}
 
 			if (mavatData.chartsOneEight !== undefined) {
