@@ -240,10 +240,11 @@ class Plan extends Model {
 			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
 				const chartRows = await modelClass.query(qb => {
 					qb.where('plan_id', plan.id);
-				}).fetchAll();
-				chartRows.models.forEach(async (chartModel) => {
+				}).fetchAll({transacting: transaction});
+
+				for (const chartModel of chartRows.models) {
 					await chartModel.destroy({transacting: transaction});
-				});
+				}
 			}
 
 			if (mavatData.chartsOneEight !== undefined) {
