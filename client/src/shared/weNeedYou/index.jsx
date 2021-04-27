@@ -13,6 +13,7 @@ const Box = styled.div`
 	width: 100%;
 	flex-direction: column;
 	padding-top: 14px;
+	cursor: pointer;
 
 	@media ${device.tablet} {
 		width: 1236px;
@@ -92,7 +93,7 @@ const WeNeedYou = () => {
 	const history = useHistory();
 
 	return (
-		<WeNeedYouSection>
+		<WeNeedYouSection onClick={() => { history.push(`/support-us/`); }}>
 			<Box>
 				<SupportUsImage src={supportUs} alt="support us" />
 				<Content>
@@ -100,7 +101,7 @@ const WeNeedYou = () => {
 						<Title>אנחנו צריכים אתכם!</Title>
 						<Message>יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.</Message>
 					</div>
-					<Button onClick={() => { history.push(`/support-us/`); }}>לתמיכה</Button>
+					<Button>לתמיכה</Button>
 				</Content>
 			</Box>
 		</WeNeedYouSection>
