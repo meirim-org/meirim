@@ -13,6 +13,7 @@ class ChartThreeTwoBuilder {
 		this.promiseResolveFunc = undefined;
 
 		this.hasSeenTavlatShtahim = false;
+		this.timesSinceTavlatShtahim = -1;
 		this.hasSeen3_2 = false;
 		this.isInApprovedState = false;
 		this.wasOnApprovedState = false;
@@ -142,16 +143,30 @@ class ChartThreeTwoBuilder {
 					return;
 				}
 
+
 				const text = item.text;
 				const reversedText = text.split('').reverse().join('');
+
+				if (thisObj.hasSeenTavlatShtahim && thisObj.timesSinceTavlatShtahim >= 0) {
+					if (thisObj.timesSinceTavlatShtahim === 1 && !thisObj.hasSeen3_2) {
+						// tavlat shtahim is too far and we didn't get to 3.2 yet
+						this.hasSeenTavlatShtahim = false;
+						thisObj.timesSinceTavlatShtahim = -1;
+					}
+					else {
+						// if in the previous cell we saw tavlat shtahim
+						thisObj.timesSinceTavlatShtahim++;
+					}
+				}
 
 				if (!thisObj.hasSeenTavlatShtahim) {
 					if (reversedText === 'טבלת שטחים') {
 						thisObj.hasSeenTavlatShtahim = true;
+						thisObj.timesSinceTavlatShtahim = 0;
 					}
 				}
 
-				if (!thisObj.hasSeen3_2) {
+				else if (!thisObj.hasSeen3_2 && thisObj.hasSeenTavlatShtahim) {
 					if (text === '3.2') {
 						thisObj.hasSeen3_2 = true;
 					}
