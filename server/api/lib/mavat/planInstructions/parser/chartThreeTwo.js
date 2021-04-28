@@ -157,7 +157,7 @@ class ChartThreeTwoBuilder {
 					}
 				}
 
-				else if (thisObj.hasSeen3_2 && !thisObj.isInApprovedState && !thisObj.isInSuggestedState) {
+				else if (thisObj.hasSeenTavlatShtahim && thisObj.hasSeen3_2 && !thisObj.isInApprovedState && !thisObj.isInSuggestedState) {
 					if (reversedText === 'מצב מאושר') {
 						thisObj.isInApprovedState = true;
 						thisObj.wasOnApprovedState = true;
