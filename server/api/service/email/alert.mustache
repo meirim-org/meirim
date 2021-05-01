@@ -15,8 +15,8 @@
     <h2 class="headline">תכנית חדשה באזור העניין שלך</h2>
   {{/data.PLAN_COUNTY_NAME}}
 
-  <a href="{{link}}"><h2 class="headline">{{data.PL_NAME}}</h2></a>
-  <a href="{{link}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
+  <a href="{{{link}}}"><h2 class="headline">{{data.PL_NAME}}</h2></a>
+  <a href="{{{link}}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
 
   <div class="subSubHeadline">
     <strong>סטטוס:</strong> {{data.STATION_DESC}}
@@ -61,9 +61,9 @@
   </div>
 
   <div class="link_wrapper">
-    <a class="link" href="{{link}}">צפייה במסמכי התכנית</a>
+    <a class="link" href="{{{link}}}">צפייה במסמכי התכנית</a>
   </div>
-  <a href="{{unsubscribeLink}}">מחיקת התראה</a>
+  <a href="{{{unsubscribeLink}}}">מחיקת התראה</a>
 
   {{#isLocalAuthority}}
     <div class="subSubHeadline" style="color: #999; padding: 10px; margin: 10px;">
