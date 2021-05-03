@@ -41,6 +41,8 @@
         "handlebars-loader": "^1.7.1",
         "html-table-to-json": "^1.0.0",
         "http-proxy-middleware": "^1.0.5",
+        "hummus-recipe": "^2.0.1",
+        "hummus": "^1.0.110",
         "juice": "^7.0.0",
         "knex": "^0.21.12",
         "leaflet": "^1.6.0",
