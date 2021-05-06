@@ -150,7 +150,16 @@ const downloadPlanPDF = async (functionCallText) => {
 	const entityDocNumber = matches[1].slice(1, matches[1].length - 1);
 	const downloadUrl = `http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=${entityDocId}&edn=${entityDocNumber}&opener=AttachmentError.aspx`;
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
-	const downloadSuccess = await downloadChallengedFile(downloadUrl, file);
+
+	let downloadSuccess;
+	try {
+		downloadSuccess = await downloadChallengedFile(downloadUrl, file);
+	}
+	catch (e) {
+		Log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
+		Log.error(e);
+		return false;
+	}
 
 	if (!downloadSuccess) {
 		Log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
