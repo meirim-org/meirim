@@ -9,6 +9,7 @@ const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
 const FundingTransaction = require('./funding_transaction');
+const File = require('./file');
 
 module.exports = {
 	ArchiveNotification,
@@ -21,5 +22,6 @@ module.exports = {
 	PlanChartFourRow,
 	PlanChartFiveRow,
 	PlanChartSixRow,
-	FundingTransaction
+	FundingTransaction,
+	File
 };

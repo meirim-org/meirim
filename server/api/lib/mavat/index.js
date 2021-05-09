@@ -180,29 +180,29 @@ const getPlanFiles = async (page) => {
 		const files = await page.evaluate(() => {
 			const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
 			const innerTexts = elements.map(ele => ele.innerText.trim());
+
 			// elements look like this:
 			// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
 			// (flattened table)
 			let files = []
 			for (let i = 0; i < innerTexts.length; i += 5) {
-
-				let file = {
+				const file = {
 					kind: innerTexts[i], 
 					name: innerTexts[i+1],
 					description: innerTexts[i+2],
 					date: innerTexts[i+3],
-					open_doc: elements[i + 4].querySelector('img').getAttribute('onclick'),
-					file_icon: elements[i + 4].querySelector('img').getAttribute('src')
+					openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
+					fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
 				}
 				files.push(file)
-			
 			}
+
 			console.log(`fetched ${files.length} files`);
 			return files;
 		});
 
 		// cleaning and formatting the files
-		return  files.map(formatFile)
+		return files.map(formatFile)
 }
 
 const fetch = planUrl =>
@@ -228,7 +228,7 @@ const fetch = planUrl =>
 				);
 
 				const pageInstructions = await getPlanInstructions(page);
-				const files = await getPlanFiles(page);
+				const planFiles = await getPlanFiles(page);
 
 				page.close();
 
@@ -239,7 +239,7 @@ const fetch = planUrl =>
 					reject('cheerio dom is null');
 				}
 				
-				resolve({ cheerioPage: dom, files, pageInstructions  });
+				resolve({ cheerioPage: dom, planFiles, pageInstructions  });
 			} catch (err) {
 				Log.error('Mavat fetch error', err);
 
@@ -373,11 +373,14 @@ const getByPlan = plan =>
 		.then(dict => {
 			const cheerioPage = dict.cheerioPage;
 			const pageInstructions = dict.pageInstructions;
+			const planFiles = dict.planFiles;
+
 			Log.debug(
 				'Retrieving',
 				plan.get('PL_NUMBER'),
 				getGoalsText(cheerioPage),
-				getAreaChanges(cheerioPage)
+				getAreaChanges(cheerioPage),
+				planFiles.length
 			);
 
 			return Bluebird.props({
@@ -386,7 +389,7 @@ const getByPlan = plan =>
 				mainPlanDetails: getMainPlanDetailText(cheerioPage),
 				areaChanges: getAreaChanges(cheerioPage),
 				jurisdiction: getJurisdictionString(cheerioPage),
-				files: getPlanFiles(cheerioPage),
+				files: planFiles,
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,

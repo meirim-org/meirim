@@ -227,10 +227,18 @@ class Plan extends Model {
 
 			await plan.save(null, {transacting: transaction});
 
-			// Saving all files of the plan from mavat
-			await Bluebird.all(Bluebird.map(mavatData.files, (file) => {
-				return new File({ plan_id: planId, ...file} ).save();
-			}));
+			// delete all of the plan's existing files
+			const fileRows = await File.query(qb => {
+				qb.where('plan_id', plan.id);
+			}).fetchAll({transacting: transaction});
+			for (const existingFile of fileRows.models) {
+				await existingFile.destroy({transacting: transaction});
+			}
+
+			// save all plan files scraped from mavat
+			mavatData.files.forEach(async (file) => {
+				await new File({ plan_id: plan.id, ...file }).save(null, {transacting: transaction});
+			});
 
 			// delete existing chart rows since we have no identifiers for the single
 			// rows and so scrape them all again each time
