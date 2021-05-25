@@ -11,9 +11,9 @@
   <h2 class="headline">יש לך התראה חדשה!</h2>
   <h2 class="headline">{{place_text}}</h2>
 
-  <a href="{{{link}}}"><h2 class="headline"> {{total_trees_text}} ל{{action}} </h2></a>
+  <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><h2 class="headline"> {{total_trees_text}} ל{{action}} </h2></a>
   {{#hasMap}}
-    <a href="{{{link}}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
+    <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
   {{/hasMap}}
 
   <div class="subSubHeadline">
@@ -26,7 +26,7 @@
     <strong>תאריך כניסה לתוקף:</strong> {{start_date_text}}
   </div>
 
-  <a href="{{{unsubscribeLink}}}">מחיקת התראה</a>
+  <a href="{{{unsubscribeLink}}}?utm_medium=email&utm_source={{{type}}}">מחיקת התראה</a>
   
 </body>
 
