@@ -19,6 +19,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
+			plan_display_name: 'string',
 			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
 			geom: ['required', 'object'],
@@ -205,12 +206,119 @@ class Plan extends Model {
 		}).fetch();
 	}
 
+	static cleanPlanName (planName) {
+
+		const cleanFromStart = (planName) => {
+			const reSearchWithBackSlash = /^([א-ת0-9]+\\(\ )?[א-ת0-9]+(((\\(\ )?)|\-)[א-ת0-9]+)*)/;
+			let searchAns = reSearchWithBackSlash.exec(planName);
+			if (searchAns === null) {
+				const reSearchWithForwardSlash = /^([א-ת0-9]+\/(\ )?[א-ת0-9]+(((\/(\ )?)|\-)[א-ת0-9]+)*)/;
+				searchAns = reSearchWithForwardSlash.exec(planName);
+			}
+
+			if (searchAns === null) {
+				return planName;
+			}
+
+			const matchStr = searchAns[0];
+			// the match starts and the beginning of the string
+			const endOfMatch = matchStr.length;
+			// can't strip the whole plan name
+			if (endOfMatch === planName.length) {
+				return planName;
+			}
+
+			const idxOfSlash1 = matchStr.lastIndexOf('/');
+			const idxOfSlash2 = matchStr.lastIndexOf('\\');
+			const idxOfHyphen = matchStr.lastIndexOf('-');
+			const idxOfSlash = idxOfSlash1 === -1 ? idxOfSlash2 : idxOfSlash1;
+
+			const endOfStripping = idxOfSlash !== -1 && idxOfHyphen > idxOfSlash ? idxOfHyphen : endOfMatch;
+
+			const stripped = planName.substring(endOfStripping + 1);
+
+			const hebrewABCre = /[א-ת]/;
+			const separatorRe = /[ ,:\-"']/;
+
+			let hasContinued = false;
+			for (let i = 0; i < stripped.length; i++) {
+				const char = stripped[i];
+
+				if (char.match(separatorRe) === null) {
+					// look for a situation of something like: א\ב\גדה א' עוד דברים כתובים
+					// on these cases, we would like to drop the א' as well
+
+					if (!hasContinued && i < stripped.length - 1 && char.match(hebrewABCre) &&
+						stripped[i + 1].match(separatorRe)) {
+						hasContinued = true;
+						continue;
+					}
+
+					return stripped.substring(i);
+				}
+			}
+
+			// we can get here only if all of the chars in the stripped str are separators,
+			// so we will return the plan_name...
+			return planName;
+
+		};
+
+		const cleanFromEnd = (planName) => {
+			const reSearchWithBackSlash = /((\()?[א-ת0-9]+\\(\ )?[א-ת0-9]+(\\(\ )?[א-ת0-9]+)*(\))?(\.)?)$/g;
+			let searchAns = reSearchWithBackSlash.exec(planName);
+			if (searchAns === null) {
+				const reSearchWithForwardSlash = /((\()?[א-ת0-9]+\/(\ )?[א-ת0-9]+(\/(\ )?[א-ת0-9]+)*(\))?(\.)?)$/g;
+				searchAns = reSearchWithForwardSlash.exec(planName);
+			}
+
+			if (searchAns === null) {
+				return planName;
+			}
+
+			const startOfStripping = searchAns.index;
+			// we can't strip the whole name
+			if (startOfStripping === 0) {
+				return planName;
+			}
+
+			const stripped = planName.substring(0, startOfStripping);
+
+			const seperatorRe = /[ ,:\-"']/;
+			// we don't want a plan name with a single character
+			for (let i = stripped.length - 1; i > 0; i--) {
+				if(!stripped[i].match(seperatorRe)) {
+					return stripped.substring(0, i + 1);
+				}
+			}
+
+			// we can get here only if all of the chars in the stripped str are separators,
+			// so we will return the plan_name...
+			return planName;
+		};
+
+		// Tama is important. Don't clean it.
+		if (planName === '' || planName.includes('תמא') || planName.includes('תמ"א')) {
+			return planName;
+		}
+
+		let cleaned = cleanFromStart(planName);
+
+		// we can clean from end XOR from the start (one side only!)
+		if (cleaned.length === planName.length) {
+			cleaned = cleanFromEnd(planName);
+		}
+
+		return cleaned;
+	}
+
 	static buildFromIPlan (iPlan, oldPlan = null) {
 		const data = {
 			OBJECTID: iPlan.properties.OBJECTID,
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
 			PL_NUMBER: iPlan.properties.PL_NUMBER || '',
 			PL_NAME: iPlan.properties.PL_NAME || '',
+			plan_display_name: Plan.cleanPlanName(iPlan.properties.PL_NAME),
 			// 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
 			data: iPlan.properties,
 			geom: iPlan.geometry,
@@ -241,17 +349,17 @@ class Plan extends Model {
 				explanation: mavatData.planExplanation
 			});
 
-			await plan.save(null, {transacting: transaction});
+			await plan.save(null, { transacting: transaction });
 
 			// delete existing chart rows since we have no identifiers for the single
 			// rows and so scrape them all again each time
 			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
 				const chartRows = await modelClass.query(qb => {
 					qb.where('plan_id', plan.id);
-				}).fetchAll({transacting: transaction});
+				}).fetchAll({ transacting: transaction });
 
 				for (const chartModel of chartRows.models) {
-					await chartModel.destroy({transacting: transaction});
+					await chartModel.destroy({ transacting: transaction });
 				}
 			}
 
@@ -278,7 +386,7 @@ class Plan extends Model {
 				const chartsOneEight = chart181.concat(chart182, chart183);
 				for (let i = 0; i < chartsOneEight.length; i++) {
 					try {
-						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, {transacting: transaction});
+						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}
@@ -291,7 +399,7 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartFourData.length; i++) {
 					try {
-						await new PlanChartFourRow(chartFourData[i]).save(null, {transacting: transaction});
+						await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}
@@ -304,7 +412,7 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartFiveData.length; i++) {
 					try {
-						await new PlanChartFiveRow(chartFiveData[i]).save(null, {transacting: transaction});
+						await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}
@@ -317,7 +425,7 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartSixData.length; i++) {
 					try {
-						await new PlanChartSixRow(chartSixData[i]).save(null, {transacting: transaction});
+						await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
 					} catch (e) {
 						Log.error(e);
 					}
