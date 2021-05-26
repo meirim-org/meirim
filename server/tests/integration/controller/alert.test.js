@@ -13,7 +13,13 @@ describe('Alert controller', function() {
 		email: 'test@meirim.org',
 		password: 'xxxx',
 		status: 1,
-		id: 1,	
+		id: 1
+	};
+	const person2 = {
+		email: 'test2@meirim.org',
+		password: 'xxxx',
+		status: 1,
+		id: 2
 	};
 
 	beforeEach(async function() {
@@ -46,5 +52,51 @@ describe('Alert controller', function() {
 		const alert = await alertController.create(req);
 
 		assert.isOk(alert);
+	});
+
+	it('Alert unsubscribe should work', async function() {
+		this.timeout(10000);
+		const req = {
+			body: {
+				address: 'ben yehuda 32 tel aviv'
+			},
+			session: {
+				person
+			}
+		};
+
+		// alert is created and has an unsubscribe token
+		const alert = await alertController.create(req);
+		assert.isOk(alert);
+		assert.isOk(alert.unsubsribeToken());
+
+		// try to unsubscribe alert using a user who doesn't own the alert
+		const failedReq = {
+			params: {
+				token: alert.unsubsribeToken()
+			},
+			session: {
+				person: person2
+			}
+		};
+
+		// request should fail and return null
+		const failedRes = await alertController.unsubscribe(failedReq);
+		assert.isNull(failedRes);
+
+		// try to unsubscribe alert using the owning user
+		const successReq = {
+			params: {
+				token: alert.unsubsribeToken()
+			},
+			session: {
+				person: person
+			}
+		};
+
+		// request should succeed and return the deleted alert
+		const successRes = await alertController.unsubscribe(successReq);
+		assert.isNotNull(successRes);
+		assert.equal(successRes.previousAttributes().id, alert.attributes.id);
 	});
 });
