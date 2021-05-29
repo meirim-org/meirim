@@ -21,6 +21,7 @@ const PlanStruct = function(table) {
 	table.timestamps();
 	table.specificType('geom_centroid', 'GEOMETRY');
 	table.boolean('geo_search_filter');
+	table.string('plan_display_name', 256);
 	return table;
 };
 
