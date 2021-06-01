@@ -51,7 +51,8 @@ export const useDataHandler = (planId) => {
 			const response = await getPlanData(planId);
 			const {
 				PLAN_COUNTY_NAME: countyName,
-				PL_NAME: name,
+				plan_display_name: name,
+				PL_NAME: originalName,
 				jurisdiction,
 				status,
 				notCredible,
@@ -115,7 +116,7 @@ export const useDataHandler = (planId) => {
 					lastUpdate,
 					goalsFromMavat,
 					mainDetailsFromMavat,
-					url, areaChanges, geom }
+					url, areaChanges, geom, originalName }
 			}));
 		};	
 

@@ -15,6 +15,7 @@ export const DataPanel = ({
 	stationDesc,
 	lastUpdate, 
 	notCredible,
+	originalName,
 	landUse }) => {
 	const theme = useTheme();
 
@@ -76,6 +77,12 @@ export const DataPanel = ({
 						</Moment>
 					</li>
 				</SC.Datalist>
+				{originalName && (
+						<li key="jurisdiction">
+                           שם תוכנית מקורי:
+							{originalName}
+						</li>
+					)}
 				{!!notCredible && (
 					<div className="note">
                         שימו לב! זוהי תכנית המופקדת
@@ -103,6 +110,7 @@ DataPanel.propTypes = {
 	landUse: PropTypes.string,
 	stationDesc: PropTypes.string,
 	lastUpdate: PropTypes.string,
+	originalName: PropTypes.string,
 	notCredible: PropTypes.any
 };
 

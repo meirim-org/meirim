@@ -134,10 +134,10 @@ class SinglePlan extends Component {
 
         return (
             <Wrapper>
-                {plan.PL_NAME && (
+                {plan.plan_display_name && (
                     <div className="container">
                         <div className="container">
-                            <h1>{plan.PL_NAME}</h1>
+                            <h1>{plan.plan_display_name}</h1>
                             {!true && (
                                 <div className="row">
                                     <div className="col">
