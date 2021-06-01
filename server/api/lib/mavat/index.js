@@ -368,7 +368,6 @@ const getByPlan = plan =>
 	init()
 		.then(() => {
 			return plan.get('plan_url') ? fetch(plan.get('plan_url')) : search(plan.get('PL_NUMBER'));
-			//return fetch(plan.plan_url);
 		})
 		.then(dict => {
 			const cheerioPage = dict.cheerioPage;
