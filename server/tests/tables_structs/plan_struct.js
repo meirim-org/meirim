@@ -2,7 +2,7 @@ const PlanStruct = function(table) {
 	table.increments();
 	table.integer('sent');
 	table.integer('OBJECTID');
-	table.string('goals_from_mavat');
+	table.text('goals_from_mavat');
 	table.text('main_details_from_mavat', 65535);
 	table.string('PLAN_COUNTY_NAME');
 	table.string('PL_NUMBER');
