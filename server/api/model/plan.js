@@ -10,6 +10,7 @@ const PlanChartSixRow = require('./plan_chart_six_row');
 const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
+const File = require('./file');
 
 class Plan extends Model {
 	get rules () {
@@ -350,6 +351,19 @@ class Plan extends Model {
 			});
 
 			await plan.save(null, { transacting: transaction });
+
+			// delete all of the plan's existing files
+			const fileRows = await File.query(qb => {
+				qb.where('plan_id', plan.id);
+			}).fetchAll({transacting: transaction});
+			for (const existingFile of fileRows.models) {
+				await existingFile.destroy({transacting: transaction});
+			}
+
+			// save all plan files scraped from mavat
+			mavatData.files.forEach(async (file) => {
+				await new File({ plan_id: plan.id, ...file }).save(null, {transacting: transaction});
+			});
 
 			// delete existing chart rows since we have no identifiers for the single
 			// rows and so scrape them all again each time
