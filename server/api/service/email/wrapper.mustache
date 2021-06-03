@@ -5,7 +5,7 @@
   <title>{{title}}</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="http://fonts.googleapis.com/css?family=Assistant" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Assistant" rel="stylesheet" />
   <style type="text/css">
 
     * {
@@ -167,9 +167,12 @@
 
 <body dir="rtl">
   <div class="wrapper">
-    <a href="http://meirim.org/" class="logo">
+    {{! this forces the first render to keep inner template values as they are. they will be rendered on the second pass }}
+    {{=<% %>=}}
+    <a href="https://meirim.org/?utm_medium=email&utm_source={{{type}}}" class="logo">
       <img src="cid:logomeirim" alt="מעירים"/>
     </a>
+    <%={{ }}=%>
 
     {{{body}}}
 
@@ -184,9 +187,12 @@
             יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.
           </p>
         </div>
-        <a id="support-us-button" href="https://meirim.org/support-us/">
+        {{! this forces the first render to keep inner template values as they are. they will be rendered on the second pass }}
+        {{=<% %>=}}
+        <a id="support-us-button" href="https://meirim.org/support-us/?utm_medium=email&utm_source={{{type}}}">
           לתמיכה
         </a>
+        <%={{ }}=%>
       </div>
     </div>
   </div>

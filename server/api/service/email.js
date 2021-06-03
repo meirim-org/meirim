@@ -25,7 +25,6 @@ class Email {
 		this.baseUrl = Config.get('general.domain');
 		this.transporter = Nodemailer.createTransport(this.config.options);
 		this.templates = {};
-		//
 	}
 
 	/**
@@ -91,7 +90,8 @@ class Email {
 		const token = person.getActivationToken();
 		const templateProperties = {
 			url: `${this.baseUrl}activate/?token=${token}`,
-			email: person.get('email')
+			email: person.get('email'),
+			type: 'signup'
 		};
 		// setup email data with unicode symbols
 		return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
@@ -115,6 +115,7 @@ class Email {
 		data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}`;
 		data.jurisdiction = unsentPlan.get('jurisdiction');
 		data.isLocalAuthority = data.jurisdiction === 'מקומית';
+		data.type = 'plan-alert';
 
 		data.attachments = [
 			{
@@ -151,6 +152,7 @@ class Email {
 		data.reason_detailed_text = data.reason_detailed? data.reason_detailed : 'לא צוין פירוט הסיבה';
 		data.start_date_text = this.formatDate(data.start_date);
 		data.hasMap = Boolean(treeStaticMap);
+		data.type = 'tree-alert';
 
 		if (treeStaticMap) {
 			data.attachments = [
@@ -176,6 +178,7 @@ class Email {
 
 	newAlert (person, alert) {
 		const templateProperties = Object.assign({}, person, alert.toJSON());
+		templateProperties.type = 'new-alert';
 		const alertTemplate = this.newAlertTemplateByType(alert.attributes.type);
 		return this.sendWithTemplate(alertTemplate, templateProperties);
 	}
@@ -185,7 +188,8 @@ class Email {
 			email: person.get('email'),
 			url: `${Config.get(
 				'general.domain'
-			)}forgot/?token=${person.resetPasswordToken()}`
+			)}forgot/?token=${person.resetPasswordToken()}`,
+			type: 'reset-password'
 		};
 		return this.sendWithTemplate(
 			this.templates.resetPasswordToken,
