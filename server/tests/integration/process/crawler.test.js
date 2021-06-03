@@ -10,7 +10,7 @@ const { wait } = require('../../utils');
 const tables = [
 	'plan', 'notification', 'alert', 'person', 'tables_18_interests_in_plan',
 	'table_4_area_designation_and_usage', 'table_5_building_rights',
-	'table_6_additional_instructions'
+	'table_6_additional_instructions', 'file'
 ];
 
 describe('Crawler', function() {
@@ -57,6 +57,7 @@ describe('Crawler scraped data', function() {
 	let chartFourModel;
 	let chartFiveModel;
 	let chartSixModel;
+	let fileModel;
 
 	let plans;
 	let plan;
@@ -64,6 +65,7 @@ describe('Crawler scraped data', function() {
 	let chartFourRows;
 	let chartFiveRows;
 	let chartSixRows;
+	let fileRows;
 
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
@@ -123,6 +125,7 @@ describe('Crawler scraped data', function() {
 		chartFourModel = require('../../../api/model/plan_chart_four_row');
 		chartFiveModel = require('../../../api/model/plan_chart_five_row');
 		chartSixModel = require('../../../api/model/plan_chart_six_row');
+		fileModel = require('../../../api/model/file');
 	});
 
 	afterEach(async function() {
@@ -328,6 +331,30 @@ describe('Crawler scraped data', function() {
 		assert.equal(chartSixRows.models[1].attributes.category_number, '6.2', 'second chart 6 row category number is correct');
 		assert.equal(chartSixRows.models[1].attributes.category, 'עתיקות', 'second chart 6 row category is correct');
 		assert.equal(chartSixRows.models[1].attributes.text.slice(0, 18), 'כל עבודה בתחום שטח', 'second chart 6 row text beginning is correct');
+
+		// fetch all file rows
+		fileRows = await fileModel.fetchAll();
+		assert.equal(fileRows.length, 8, 'eight file rows were scraped');
+
+		// make sure all first file row fields are correct
+		assert.equal(fileRows.models[0].id, 1, 'first file row id is correct');
+		assert.equal(fileRows.models[0].attributes.plan_id, 1, 'first file row is related to the correct plan');
+		assert.equal(fileRows.models[0].attributes.tree_id, null, 'first file row tree id is correct');
+		assert.equal(fileRows.models[0].attributes.type, 'PDF', 'first file row type is correct');
+		assert.equal(fileRows.models[0].attributes.extension, 'pdf', 'first file row extension is correct');
+		assert.equal(fileRows.models[0].attributes.link, 'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=6000611696321&edn=0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE&opener=AttachmentError.aspx', 'first file row link is correct');
+		assert.equal(fileRows.models[0].attributes.source, 'MAVAT', 'first file row source is correct');
+		assert.equal(fileRows.models[0].attributes.name, 'הוראות התכנית', 'first file row name is correct');
+
+		// make sure all last file row fields are correct
+		assert.equal(fileRows.models[7].id, 8, 'last file row id is correct');
+		assert.equal(fileRows.models[7].attributes.plan_id, 1, 'last file row is related to the correct plan');
+		assert.equal(fileRows.models[7].attributes.tree_id, null, 'last file row tree id is correct');
+		assert.equal(fileRows.models[7].attributes.type, 'KML', 'last file row type is correct');
+		assert.equal(fileRows.models[7].attributes.extension, 'kml', 'last file row extension is correct');
+		assert.equal(fileRows.models[7].attributes.link, 'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=6000611665797&edn=F624F2F3CAF9BCA38FB4AC8829EDF132E4D661CB6C14D81AE49D81A476C419A0&opener=AttachmentError.aspx', 'last file row link is correct');
+		assert.equal(fileRows.models[7].attributes.source, 'MAVAT', 'last file row source is correct');
+		assert.equal(fileRows.models[7].attributes.name, 'גבול התכנית(KML) לצפיה ב google earth', 'last file row name is correct');
 	});
 
 	it('should update existing plan data', async function() {
@@ -523,6 +550,30 @@ describe('Crawler scraped data', function() {
 		assert.equal(chartSixRows.models[1].attributes.category_number, '6.2', 'second chart 6 row category number is correct');
 		assert.equal(chartSixRows.models[1].attributes.category, 'עתיקות', 'second chart 6 row category is correct');
 		assert.equal(chartSixRows.models[1].attributes.text.slice(0, 18), 'כל עבודה בתחום שטח', 'second chart 6 row text beginning is correct');
+
+		// fetch all file rows
+		fileRows = await fileModel.fetchAll();
+		assert.equal(fileRows.length, 8, 'eight file rows were scraped');
+
+		// make sure all first file row fields are correct
+		assert.equal(fileRows.models[0].id, 1, 'first file row id is correct');
+		assert.equal(fileRows.models[0].attributes.plan_id, 1, 'first file row is related to the correct plan');
+		assert.equal(fileRows.models[0].attributes.tree_id, null, 'first file row tree id is correct');
+		assert.equal(fileRows.models[0].attributes.type, 'PDF', 'first file row type is correct');
+		assert.equal(fileRows.models[0].attributes.extension, 'pdf', 'first file row extension is correct');
+		assert.equal(fileRows.models[0].attributes.link, 'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=6000611696321&edn=0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE&opener=AttachmentError.aspx', 'first file row link is correct');
+		assert.equal(fileRows.models[0].attributes.source, 'MAVAT', 'first file row source is correct');
+		assert.equal(fileRows.models[0].attributes.name, 'הוראות התכנית', 'first file row name is correct');
+
+		// make sure all last file row fields are correct
+		assert.equal(fileRows.models[7].id, 8, 'last file row id is correct');
+		assert.equal(fileRows.models[7].attributes.plan_id, 1, 'last file row is related to the correct plan');
+		assert.equal(fileRows.models[7].attributes.tree_id, null, 'last file row tree id is correct');
+		assert.equal(fileRows.models[7].attributes.type, 'KML', 'last file row type is correct');
+		assert.equal(fileRows.models[7].attributes.extension, 'kml', 'last file row extension is correct');
+		assert.equal(fileRows.models[7].attributes.link, 'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=6000611665797&edn=F624F2F3CAF9BCA38FB4AC8829EDF132E4D661CB6C14D81AE49D81A476C419A0&opener=AttachmentError.aspx', 'last file row link is correct');
+		assert.equal(fileRows.models[7].attributes.source, 'MAVAT', 'last file row source is correct');
+		assert.equal(fileRows.models[7].attributes.name, 'גבול התכנית(KML) לצפיה ב google earth', 'last file row name is correct');
 
 		// new iplan values with the same LAST_UPDATE value will not result in data being updated
 		iPlanScope
@@ -742,5 +793,29 @@ describe('Crawler scraped data', function() {
 		assert.equal(chartSixRows.models[1].attributes.category_number, '6.14', 'second chart 6 row category number is correct');
 		assert.equal(chartSixRows.models[1].attributes.category, 'מעודכן עתיקות', 'second chart 6 row category is correct');
 		assert.equal(chartSixRows.models[1].attributes.text.slice(0, 18), 'כל עבודה בתחום שטח', 'second chart 6 row text beginning is correct');
+
+		// fetch all file rows
+		fileRows = await fileModel.fetchAll();
+		assert.equal(fileRows.length, 7, 'seven file rows were scraped');
+
+		// make sure all first file row fields are correct
+		assert.equal(fileRows.models[0].id, 9, 'first file row id is correct');
+		assert.equal(fileRows.models[0].attributes.plan_id, 1, 'first file row is related to the correct plan');
+		assert.equal(fileRows.models[0].attributes.tree_id, null, 'first file row tree id is correct');
+		assert.equal(fileRows.models[0].attributes.type, 'PDF', 'first file row type is correct');
+		assert.equal(fileRows.models[0].attributes.extension, 'pdf', 'first file row extension is correct');
+		assert.equal(fileRows.models[0].attributes.link, 'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=6000611696321&edn=0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE&opener=AttachmentError.aspx', 'first file row link is correct');
+		assert.equal(fileRows.models[0].attributes.source, 'MAVAT', 'first file row source is correct');
+		assert.equal(fileRows.models[0].attributes.name, 'הוראות התכנית', 'first file row name is correct');
+
+		// make sure all last file row fields are correct
+		assert.equal(fileRows.models[6].id, 15, 'last file row id is correct');
+		assert.equal(fileRows.models[6].attributes.plan_id, 1, 'last file row is related to the correct plan');
+		assert.equal(fileRows.models[6].attributes.tree_id, null, 'last file row tree id is correct');
+		assert.equal(fileRows.models[6].attributes.type, 'SHP_ZIP', 'last file row type is correct');
+		assert.equal(fileRows.models[6].attributes.extension, 'zip', 'last file row extension is correct');
+		assert.equal(fileRows.models[6].attributes.link, 'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=6000611665789&edn=1CFC14B25196138F5819EA2E984C7628DF7854C1E9767EBB4F68F72D86769428&opener=AttachmentError.aspx', 'last file row link is correct');
+		assert.equal(fileRows.models[6].attributes.source, 'MAVAT', 'last file row source is correct');
+		assert.equal(fileRows.models[6].attributes.name, 'קבצי התכנית (SHP)', 'last file row name is correct');
 	});
 });
