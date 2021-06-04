@@ -76,13 +76,13 @@ export const DataPanel = ({
 							{lastUpdate}
 						</Moment>
 					</li>
-				</SC.Datalist>
 				{originalName && (
-						<li key="jurisdiction">
-                           שם תוכנית מקורי:
+					<li key="originalName">
+                           שם תוכנית מקורי:{' '}
 							{originalName}
 						</li>
 					)}
+				</SC.Datalist>
 				{!!notCredible && (
 					<div className="note">
                         שימו לב! זוהי תכנית המופקדת
