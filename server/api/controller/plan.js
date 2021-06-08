@@ -12,7 +12,8 @@ const columns = [
 	'PL_NUMBER',
 	'PL_NAME',
 	'PLAN_CHARACTOR_NAME',
-	'geom'
+	'geom',
+	'plan_display_name'
 ];
 
 class PlanController extends Controller {
