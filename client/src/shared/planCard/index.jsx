@@ -32,7 +32,7 @@ const PlanCard = ({ plan }) => {
 							<Text
 								size="1.5rem"
 								weight="600"
-								text={plan.PL_NAME}
+								text={plan.plan_display_name}
 								color={theme.palette.black}
 								component="h2"
 							/>
