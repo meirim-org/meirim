@@ -33,7 +33,7 @@
         "handlebars-loader": "^1.7.1",
         "http-proxy-middleware": "^1.0.6",
         "leaflet": "^1.6.0",
-        "lodash": "^4.17.20",
+        "lodash": "^4.17.21",
         "moment": "^2.27.0",
         "prop-types": "^15.7.2",
         "query-string": "^6.13.1",
