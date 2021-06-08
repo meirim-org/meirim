@@ -9,6 +9,8 @@ const fs = require('fs');
 const { getFileUrl, formatFile } = require('./files');
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
 const { downloadChallengedFile } = require('../challanged-file');
+const PlanStatusChange = require('../../model/plan_status_change');
+const { formatDate } = require('../date');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
 
@@ -41,7 +43,7 @@ const init = () =>
 
 const downloadPlanPDF = async (functionCallText) => {
 
-	const downloadUrl = getFileUrl(functionCallText)
+	const downloadUrl = getFileUrl(functionCallText);
 	if (!downloadUrl) return false;
 
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
@@ -62,12 +64,12 @@ const getPlanInstructions = async (page) => {
 		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
 		// (flattened table)
 		for (let i = 0; i < innerTexts.length; i += 5) {
-			// before approval
 			if ((innerTexts[i] === 'הוראות התכנית' && innerTexts[i + 1] === 'הוראות התכנית') || // before approval
                 (innerTexts[i] === 'מסמכים חתומים' && innerTexts[i + 1] === 'תדפיס הוראות התכנית - חתום לאישור')) { // after approval
 				return elements[i + 4].querySelector('img').getAttribute('onclick');
 			}
 		}
+		// note: this is run in the headless browser context. `Log` is not available for use
 		console.log('couldn\'t find the plan details PDF link on this web page');
 		return undefined;
 	});
@@ -84,33 +86,33 @@ const getPlanInstructions = async (page) => {
 
 
 const getPlanFiles = async (page) => {
-		const files = await page.evaluate(() => {
-			const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
-			const innerTexts = elements.map(ele => ele.innerText.trim());
+	const files = await page.evaluate(() => {
+		const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
+		const innerTexts = elements.map(ele => ele.innerText.trim());
 
-			// elements look like this:
-			// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
-			// (flattened table)
-			let files = []
-			for (let i = 0; i < innerTexts.length; i += 5) {
-				const file = {
-					kind: innerTexts[i], 
-					name: innerTexts[i+1],
-					description: innerTexts[i+2],
-					date: innerTexts[i+3],
-					openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
-					fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
-				}
-				files.push(file)
-			}
+		// elements look like this:
+		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
+		// (flattened table)
+		let files = [];
+		for (let i = 0; i < innerTexts.length; i += 5) {
+			const file = {
+				kind: innerTexts[i], 
+				name: innerTexts[i+1],
+				description: innerTexts[i+2],
+				date: innerTexts[i+3],
+				openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
+				fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
+			};
+			files.push(file);
+		}
 
-			console.log(`fetched ${files.length} files`);
-			return files;
-		});
+		// console.log(`fetched ${files.length} files`);
+		return files;
+	});
 
-		// cleaning and formatting the files
-		return files.map(formatFile)
-}
+	// cleaning and formatting the files
+	return files.map(formatFile);
+};
 
 const fetch = planUrl =>
 	new Promise((resolve, reject) => {
@@ -245,32 +247,50 @@ const getAreaChanges = cheerioPage => {
 	return JSON.stringify(jsonTables.results);
 };
 
-// function getShapeFile(cheerioPage) {
+const getPlanStatusList = cheerioPage => {
+	const html = cheerioPage('#tblInternet tbody').html();
 
-//     shapefile.open("example.shp")
-//         .then(source => source.read()
-//             .then(function log(result) {
-//                 if (result.done) return;
-//                 console.log(result.value);
-//                 return source.read().then(log);
-//             }))
-//         .catch(error => console.error(error.stack));
-// }
+	// a library update led to this conversion using the first row as field names
+	// instead of using the field ids as their names, so create a fake first row
+	// to be used as headers. in the future we probably should stop using this
+	// library in favour of a bit of custom cheerio value extraction code
+	const jsonTables = new HtmlTableToJson(
+		`<table>
+			<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+			${html}
+		</table>`
+	);
+	return jsonTables.results;
+};
 
-// const getByUrl = planUrl =>
-//     init()
-//         .then(() => fetch(planUrl))
-//         .then(cheerioPage => {
-//             log.debug("Retrieving", planUrl);
+const getPlanStatus = (plan) => {
+	const planId = plan.id;
+	return new Promise((resolve, reject) => {
+		getByPlan(plan)
+			.then(mavatData => {
+				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
+					!mavatData['planStatusList'][0])) {
+					return null;
+				}
 
-//             return Bluebird.props({
-//                 goals: getGoalsText(cheerioPage),
-//                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
-//                 areaChanges: getAreaChanges(cheerioPage),
-//                 jurisdiction: getJurisdictionString(cheerioPage)
-//             });
-//         });
-
+				const planStatusList = mavatData['planStatusList'][0].map(statusDetails => {
+					const title = statusDetails['1']; // תיאור
+					const date = statusDetails['2']; // תאריך
+					const statusDescription = statusDetails['3']; // פירוט
+					Log.debug(`${`title: ${title}: date: ${date}`} `);
+					return new PlanStatusChange({
+						plan_id: planId,
+						status: title,
+						date: formatDate(date),
+						status_description: statusDescription,
+					});
+				});
+				resolve(planStatusList);
+			})
+			.catch(err => Log.error('plan status error:', err));
+	});
+};
+	
 const getByPlan = plan =>
 	init()
 		.then(() => {
@@ -295,7 +315,7 @@ const getByPlan = plan =>
 				mainPlanDetails: getMainPlanDetailText(cheerioPage),
 				areaChanges: getAreaChanges(cheerioPage),
 				jurisdiction: getJurisdictionString(cheerioPage),
-				files: planFiles,
+				planStatusList: getPlanStatusList(cheerioPage),
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
@@ -309,6 +329,7 @@ module.exports = {
 	getByPlan,
 	init,
 	fetch,
+	getPlanStatus,
 
 	// exported for tests
 	testOnly: {

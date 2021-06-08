@@ -1,11 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import t, { useTranslation } from 'locale/he_IL';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Slider from 'rc-slider';
 import api from 'services/api';
-import t from 'locale/he_IL';
 
 const sliderBounds = { min: 1, max: 10 };
 const sliderText = {};
@@ -13,23 +13,24 @@ _.map(new Array(sliderBounds.max), (obj, i) => {
 	sliderText[i + 1] = `${sliderBounds.max - i} ${t.km}`;
 });
 
-const AlertPlans = ({notifyAddedAlert}) => {
+const AlertPlans = ({ notifyAddedAlert }) => {
+	const { t } = useTranslation();
 	const [ error, setError ] = useState(false);
 	const [ loading, setLoading ] = useState(false);
 	const [ radius, setRadius ] = useState(5);
 	const [ address, setAddress ] = useState('');
 
-	const handleSlide = (value)  =>{
+	const handleSlide = (value) => {
 		setRadius(value);
 		setError(false);
-	}
+	};
 
 	const handleAddress = (e) => {
 		setAddress(e.target.value);
 		setError(false);
-	}
+	};
 
-	const handleSubmit = (e)  =>{
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		setLoading(true);
@@ -54,29 +55,30 @@ const AlertPlans = ({notifyAddedAlert}) => {
 	}
 
 	return (
-		<form className="rectangle" onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit}>
 			<h5 className="container-title">{t.newAlert}</h5>
 			{error && (
 				<div className="alert alert-danger" role="alert">
-					הכתובת לא נמצאה
+					{t.noAddress}
 				</div>
 			)}
 			<div className="selectAreaAndInterest">
-				כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
-						<small>
-					*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת
-					שיש לכם עניין לגבי הסביבה שלה
-						</small>
-				<small>**ניתן להוסיף יותר מכתובת אחת</small>
+				 {t.alertsSubtitle}
+				<small>
+					{t.alertsSubtitleInfo}
+				</small>
+				<small>
+					{t.alertsSubtitleInfo2}
+				</small>
 			</div>
 			<div className="row">
 				<div className="col">
-					<label id="homeLabale">כתובת:</label>
+					<label id="homeLabale">{t.address}:</label>
 					<input
 						id="homeAddress"
 						type="text"
 						value={address}
-						placeholder='לדוגמא: מאז"ה 9, תל אביב'
+						placeholder={t.addressExample}
 						required
 						onChange={handleAddress}
 					/>
@@ -84,7 +86,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 			</div>
 			<div className="row">
 				<div className="col">
-					<label id="radiusLabale">רדיוס:</label>
+					<label id="radiusLabale">{t.radius}:</label>
 					<Slider
 						min={sliderBounds.min}
 						max={sliderBounds.max}
@@ -118,7 +120,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 						title="הוסף התראה"
 						disabled={loading}
 					>
-						הוספה
+						{t.addition}
 						{loading && (
 							<FontAwesomeIcon icon="spinner" spin />
 						)}

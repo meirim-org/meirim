@@ -1,12 +1,7 @@
-import React, { Component } from "react";
-
 import Typography from "@material-ui/core/Typography";
-
+import React, { Component } from "react";
 import Wrapper from "../components/Wrapper";
-
 import api from "../services/api";
-
-//import t from "../locale/he_IL";
 import "./Alerts.css";
 
 class AlertUnsubscribe extends Component {

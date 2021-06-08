@@ -9,7 +9,7 @@ import api from "../services/api";
 
 import t from "../locale/he_IL";
 import logo from "../assets/logo.png";
-import "./Alerts.css";
+import "./alerts/Alerts.css";
 
 class ForgotPassword extends Component {
     state = {

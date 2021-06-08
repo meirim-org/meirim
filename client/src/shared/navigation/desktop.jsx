@@ -1,19 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Box } from '@material-ui/core';
-import { StarIcon } from 'shared/icons';
+import { Box, Grid } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Link, useHistory } from 'react-router-dom';
-import t from 'locale/he_IL';
-import logo from 'assets/logo.png';
-import { Button, Row, Menu } from 'shared';
-import * as SC from './style';
-import { useDispatch } from 'react-redux';
-import { openModal } from 'redux/modal/slice';
 import { useTheme } from '@material-ui/styles';
+import logo from 'assets/logo.png';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { openModal } from 'redux/modal/slice';
+import { Button, Menu, Row } from 'shared';
+import { StarIcon } from 'shared/icons';
+import * as SC from './style';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const theme = useTheme();
+	const { t, changeLanguage, selectedLanguage } = useTranslation();
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
@@ -88,7 +89,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											id="support-us"
 											text={t.supportUs}
 											type={'primary'}
-											onClick={() => { history.push(`/support-us/`); }}
+											onClick={() => { history.push('/support-us/'); }}
 											small
 										/>
 									</Box>
@@ -100,9 +101,23 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						{isAuthenticated && (
 							<Row>
 								<Grid item>
+							{ 
+								selectedLanguage === 'HE'	&&	<Grid item>
+									<Button id="change-lang-to-ar" text={'عربي'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('AR')}/>
+								</Grid>
+							}
+								{ selectedLanguage === 'AR' && <Grid item>
+									<Button id="sign-in" text={'עברית'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('HE')}/>
+								</Grid>}
+								</Grid>
+								<Grid item>
 									<SC.MyPlansButton
 										component={Link} 
-										to={`/my-plans/`}
+										to={'/my-plans/'}
 										startIcon={<StarIcon />}
 										aria-label={t.myPlans}
 									>
@@ -127,6 +142,18 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						)}
 						{!isAuthenticated && (
 							<Row gutter={0.75}>
+							{ 
+								selectedLanguage === 'HE'	&&	<Grid item>
+									<Button id="change-lang-to-arab" text={'عربي'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('AR')}/>
+								</Grid>
+							}
+								{ selectedLanguage === 'AR' && <Grid item>
+									<Button id="change-lang-to-he" text={'עברית'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('HE')}/>
+								</Grid>}
 								<Grid item>
 									<Button id="sign-in" text={t.signin} 
 										fontWeight="400" simple 
