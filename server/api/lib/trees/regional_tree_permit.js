@@ -54,7 +54,7 @@ exports.RegionalTreePermit = {
 		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_amakim_galil_gilboa.XLS',
 
 		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_befor_merkaz-sharon.XLS',
-		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_merkaz-sharon.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_merkaz_sharon.XLS',
 
 		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_merkaz_shfela.XLS',
 		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_merkaz_shfela.XLS',
