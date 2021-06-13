@@ -47,29 +47,29 @@ exports.RegionalTreePermit = {
 
 	dateFormat: 'MM/DD/YYYY',
 	urls: [
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_galil_golan.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_galil_golan.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_galil_golan.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_galil_golan.XLS',
 
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_amakim_galil_gilboa.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_amakim_galil_gilboa.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_amakim_galil_gilboa.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_amakim_galil_gilboa.XLS',
 
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/befor_merkaz-sharon.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz-sharon.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_befor_merkaz-sharon.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_merkaz_sharon.XLS',
 
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_merkaz_shfela.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_merkaz_shfela.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_merkaz_shfela.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_merkaz_shfela.XLS',
 
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_jerusalem.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_jerusalem.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_jerusalem.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_jerusalem.XLS',
 
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befor_darom.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_darom.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/Befortashtiot.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/aftartashtiot.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/befor_haifa.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after_haifa.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/before-telaviv.XLS',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/after-telaviv.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_darom.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_darom.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befortashtiot.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_aftartashtiot.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_befor_haifa.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_haifa.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_before-telaviv.XLS',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after-telaviv.XLS',
 	],
 
 	getRegionalOffice(row) {
