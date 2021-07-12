@@ -15,12 +15,6 @@ describe('Alert controller', function() {
 		status: 1,
 		id: 1
 	};
-	const person2 = {
-		email: 'test2@meirim.org',
-		password: 'xxxx',
-		status: 1,
-		id: 2
-	};
 
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
@@ -69,20 +63,6 @@ describe('Alert controller', function() {
 		const alert = await alertController.create(req);
 		assert.isOk(alert);
 		assert.isOk(alert.unsubsribeToken());
-
-		// try to unsubscribe alert using a user who doesn't own the alert
-		const failedReq = {
-			params: {
-				token: alert.unsubsribeToken()
-			},
-			session: {
-				person: person2
-			}
-		};
-
-		// request should fail and return null
-		const failedRes = await alertController.unsubscribe(failedReq);
-		assert.isNull(failedRes);
 
 		// try to unsubscribe alert using the owning user
 		const successReq = {

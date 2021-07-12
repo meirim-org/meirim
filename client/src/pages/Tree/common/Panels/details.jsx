@@ -95,7 +95,7 @@ const TreeDetailsPanel = () => {
 				</SC.StatusAndTypeWrapper>
 
 				<SC.UrlWrapper>
-					<a target="_blank" rel="noopener noreferrer" href={'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Pages/default.aspx'}>{t.treePermitOnGovSite}</a>
+					<a target="_blank" rel="noopener noreferrer" href={'https://www.gov.il/he/departments/guides/pro_felling_trees'}>{t.treePermitOnGovSite}</a>
 					<SC.CustomLinkIcon></SC.CustomLinkIcon>
 				</SC.UrlWrapper>
 
