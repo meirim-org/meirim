@@ -2,13 +2,13 @@ const Log = require('../log');
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
-const https = require('https');
-const fetch = require('node-fetch');
+const https = require('follow-redirects').https;
 const moment = require('moment');
 const AbortController = require('abort-controller');
 const TreePermit = require('../../model/tree_permit');
 const database = require('../../service/database');
 const Config = require('../../lib/config');
+const { downloadChallengedFile } = require('../challanged-file');
 
 const TIMEOUT_MS = 15000;
 const MORNING = '08:00';
@@ -51,8 +51,9 @@ async function getTreePermitsFromFile(url, pathname, permitType) {
 				// use new agent for request to avoid consecutive-request-hanging bug
 				// NOTE: we use https.Agent since all urls are currently https. if a http
 				// url is added there needs to be a condition here to use the correct agent
-				const res = await fetch(url, { signal: controller.signal, agent: new https.Agent() });
 				const stream = fs.createWriteStream(pathname);
+				const res = await downloadChallengedFile(url, stream, { signal: controller.signal, agent: new https.Agent() }, https );
+				
 				stream.on('open', () => {
 					res.body.pipe(stream);
 				});
