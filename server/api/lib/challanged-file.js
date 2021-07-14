@@ -29,12 +29,13 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 
 								// send the request again with the challenge headers
 								downloadChallengedFile(url, file, {
+									...options,
 									headers: {
 										'X-AA-Challenge': challenge.challenge,
 										'X-AA-Challenge-ID': challenge.challengeId,
 										'X-AA-Challenge-Result': challenge.result
 									}
-								}).then((res) => resolve(res));
+								}, protocol).then((res) => resolve(res));
 							} else {
 								Log.error(`url content type was html, but response contained no challenge: "${responseData.substr(0, 50)}..."`);
 								resolve(false);
@@ -44,10 +45,11 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 						// if we did get a cookie we completed the challenge successfuly and
 						// should use it to download the file
 						downloadChallengedFile(url, file, {
+							...options,
 							headers: {
 								'Cookie': response.headers['set-cookie']
 							}
-						}).then((res) => resolve(res));
+						}, protocol).then((res) => resolve(res));
 					}
 				} else {
 					// this is the actual file, so pipe the response into the supplied file
