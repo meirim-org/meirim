@@ -12,7 +12,8 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 		Log.info('protocol2:', protocol);
 
 		protocol.get(url, options, (response) => {
-			Log.info(` protocol get. respose: ${response}`);
+			Log.info('protocol get');
+			Log.info('response', response);
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				resolve(false);
@@ -36,7 +37,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 								// extract challenge params
 								const challenge = parseChallenge(responseData);
 
-								Log.info(`parsed challange ${challenge}`);
+								Log.info('challenge',challenge);
 
 								// send the request again with the challenge headers
 								
