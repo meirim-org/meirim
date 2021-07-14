@@ -3,10 +3,14 @@ const Log = require('../lib/log');
 
 const downloadChallengedFile = (url, file, options, protocol) => {
 	return new Promise((resolve) => {
-		Log.info(`in downloadChallangedFile. url is ${url}, protocol is: ${protocol}`);
+		Log.info(`in downloadChallangedFile. url is ${url}`);
+		Log.info('protocol:', protocol);
+		Log.info('options.agent', options.agent);
+		Log.info('options.signal', options.signal);
 		options = options || {};
 		protocol = protocol || http ;
-		
+		Log.info('protocol2:', protocol);
+
 		protocol.get(url, options, (response) => {
 			Log.info(` protocol get. respose: ${response}`);
 			if (response.statusCode !== 200) {
