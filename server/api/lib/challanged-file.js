@@ -38,6 +38,8 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 								
 								Log.info(`no cookie, re send DCF with ${url},  options: ${options}`);	
 								downloadChallengedFile(url, file, {
+									agent: options.agent,
+									signal: options.signal,
 									headers: {
 										'X-AA-Challenge': challenge.challenge,
 										'X-AA-Challenge-ID': challenge.challengeId,
@@ -54,6 +56,8 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 						// should use it to download the file
 						Log.info(`yes cookie, re send DCF with ${url},  options: ${options}`);	
 						downloadChallengedFile(url, file, {
+							agent: options.agent,
+							signal: options.signal,
 							headers: {
 								'Cookie': response.headers['set-cookie']
 							}
