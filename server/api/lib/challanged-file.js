@@ -5,7 +5,6 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 	return new Promise((resolve) => {
 		Log.info(`in downloadChallangedFile. url is ${url}`);
 		Log.info('protocol:', protocol);
-		Log.info('options.agent', options.agent);
 		Log.info('options.signal', options.signal);
 		options = options || {};
 		protocol = protocol || http ;
@@ -41,7 +40,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 
 								// send the request again with the challenge headers
 								
-								Log.info(`no cookie, re send DCF with ${url},  options: ${options}`);	
+								Log.info(`no cookie, re send DCF with ${url}`);	
 								downloadChallengedFile(url, file, {
 									agent: options.agent,
 									signal: options.signal,
