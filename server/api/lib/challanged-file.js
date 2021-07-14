@@ -3,10 +3,12 @@ const Log = require('../lib/log');
 
 const downloadChallengedFile = (url, file, options, protocol) => {
 	return new Promise((resolve) => {
+		Log.info(`in downloadChallangedFile. url is ${url}, protocol is: ${protocol}`);
 		options = options || {};
 		protocol = protocol || http ;
-
+		
 		protocol.get(url, options, (response) => {
+			Log.info(` protocol get. respose: ${response}`);
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				resolve(false);
@@ -14,11 +16,14 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 				const contentType = response.headers['content-type'] || '';
 				// if content-type is text/html this isn't the file we wish to download but one
 				// of the challenge stages
+				Log.info(`content type is ${contentType}`);
 				if (contentType.startsWith('text/html')) {
 					// if we didn't get a cookie yet this is the first part of the challenge -
 					// the page source contains the javascript code we need to run and challenge
 					// paramters for the calculation
 					if (!('set-cookie' in response.headers)) {
+						Log.info(`no set cookie, response headers; ${response.headers}`);
+
 						// download the entire response so we can solve the challenge
 						let responseData = '';
 						response.on('data', (chunk) => { responseData += chunk; });
@@ -27,9 +32,12 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 								// extract challenge params
 								const challenge = parseChallenge(responseData);
 
+								Log.info(`parsed challange ${challenge}`);
+
 								// send the request again with the challenge headers
+								
+								Log.info(`no cookie, re send DCF with ${url},  options: ${options}`);	
 								downloadChallengedFile(url, file, {
-									...options,
 									headers: {
 										'X-AA-Challenge': challenge.challenge,
 										'X-AA-Challenge-ID': challenge.challengeId,
@@ -44,8 +52,8 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 					} else {
 						// if we did get a cookie we completed the challenge successfuly and
 						// should use it to download the file
+						Log.info(`yes cookie, re send DCF with ${url},  options: ${options}`);	
 						downloadChallengedFile(url, file, {
-							...options,
 							headers: {
 								'Cookie': response.headers['set-cookie']
 							}
@@ -53,6 +61,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 					}
 				} else {
 					// this is the actual file, so pipe the response into the supplied file
+					Log.info(`managed to get the file! ${url},  options: ${options}`);	
 					response.pipe(file);
 					file.on('finish', async function () {
 						await file.close();
