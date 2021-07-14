@@ -12,7 +12,6 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 
 		protocol.get(url, options, (response) => {
 			Log.info('protocol get');
-			Log.info('response', response);
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				resolve(false);
