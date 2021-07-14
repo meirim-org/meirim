@@ -1,18 +1,17 @@
 const http = require('follow-redirects').http;
 const Log = require('../lib/log');
 
-
-const downloadChallengedFile = (url, file, options) => {
+const downloadChallengedFile = (url, file, options, protocol) => {
 	return new Promise((resolve) => {
 		options = options || {};
+		protocol = protocol || http ;
 
-		http.get(url, options, (response) => {
+		protocol.get(url, options, (response) => {
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				resolve(false);
 			} else {
 				const contentType = response.headers['content-type'] || '';
-
 				// if content-type is text/html this isn't the file we wish to download but one
 				// of the challenge stages
 				if (contentType.startsWith('text/html')) {
