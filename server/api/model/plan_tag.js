@@ -3,6 +3,7 @@ const Log = require('../lib/log');
 const Exception = require('./exception');
 const { Bookshelf, Knex } = require('../service/database');
 const PlanAreaChanges = require('./plan_area_changes');
+const {	tags } = require('../constants');
 
 class PlanTag extends Model {
 	get rules () {
@@ -52,9 +53,7 @@ class PlanTag extends Model {
 		try {
 			await Bookshelf.transaction(async (transaction) => {
 				for (const datum in data ){
-					console.log(data[datum]);
 					await new PlanTag(data[datum]).save(null, {transacting: transaction});
-					console.log('saved');
 			}
 		});
 		} catch (err){
@@ -64,18 +63,28 @@ class PlanTag extends Model {
 	}	
 
 	static async generateTagsForPlan(planId) {
-		console.log(`generateTagsForPlan for ${planId}`);
 		let planTags = [];
+		let dataRules = [];
 		// start with housing by square meters
-		const isHousingByUnits = await PlanAreaChanges.isHousingBySqaureMeters(planId);
-		if (isHousingByUnits && isHousingByUnits.tagApplies==true) {
-			planTags.push( {
-				plan_id: planId,
-				tag_id: isHousingByUnits.tag_id,
-				display_score: isHousingByUnits.display_score,
-				created_by_data_rules: isHousingByUnits.created_by_data_rules
-			});
+		const isHousingByArea = await PlanAreaChanges.isHousingByArea(planId);
+		if (isHousingByArea) {
+			dataRules.push( 
+				isHousingByArea.created_by_data_rules
+			);
 		}
+		const isHousingByUnits = await PlanAreaChanges.isHousingByUnits(planId);
+		if (isHousingByUnits) {
+			dataRules.push( 
+				isHousingByUnits.created_by_data_rules
+			);
+		}
+		if (isHousingByArea || isHousingByUnits)
+		planTags.push( {
+			plan_id: planId,
+			tag_id: tags['דיור'],
+			display_score: 0, /* TODO: Add the correct display score here */
+			created_by_data_rules: `[${dataRules.toString(',')}]`
+		});
 		return planTags;
 	}
 

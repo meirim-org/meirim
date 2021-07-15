@@ -213,21 +213,24 @@ const sendTreeAlerts = () => {
 
 const updatePlanTags = async () => {
 	Log.info('Re-creating plan tags');
+	let tagCounter = 0;
 	// Re-compute the tags of a plan if the last update time of the plan is after the last update time of the tags of this plan.
 	// Before re-computing the tags of a plan, remove all previous tags for this plan.
 	
 	// TODO: Loop on the plans that need to be updated , looping on all plans for now because none have tags 
 	// TODO: Refactor to async await style
-	const plans = await Plan.getPlansToTag({limit: 2000});
-	console.log(`I found ${plans.models.length} plans, friendo`);
+	const plans = await Plan.getPlansToTag();
+	Log.info(`Processing ${plans.models.length} plans`);
 	for (const plan in plans.models) {
 		const planId = plans.models[plan].get('id');
 		await PlanTag.deletePlanTags(planId);
 		const tags = await PlanTag.generateTagsForPlan(planId);
-		if (tags){
+		if (tags && tags.length>0){
 			await PlanTag.createPlanTags( tags);
+			tagCounter++;
 		}
 	}
+	Log.info(`Done. Added tags to ${tagCounter} plans.`);
 };
 
 /** Private */

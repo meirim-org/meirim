@@ -2,7 +2,7 @@ const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 const { Bookshelf, Knex } = require('../service/database');
-const {	tags } = require('../constants');
+const {	tags, tagDataRules } = require('../constants');
 
 class PlanTag extends Model {
 	get rules () {
@@ -32,38 +32,50 @@ class PlanTag extends Model {
 		return this.collection();
 	}
 
-	static async isHousingBySqaureMeters(planId) {
-        console.log(`isHousingBySqaureMeters for plan ID ${planId}}`);
-
+	static async isHousingByArea(planId) {
         try {
             const rawSql = `SELECT plan_id,change_to_approved_state,\`usage\` 
-            FROM plan_area_changes WHERE plan_id = ${planId} AND \`usage\`='מגורים (מ"ר)' 
-            AND cast(REGEXP_REPLACE(change_to_approved_state, '[\,+]', '') as unsigned)>1000
+            FROM plan_area_changes WHERE plan_id = ${planId} AND \`usage\`='${tagDataRules['housingByArea'].usage}' 
+            AND cast(REGEXP_REPLACE(change_to_approved_state, '[\,+]', '') as unsigned)>${tagDataRules['housingByArea'].minValue}
             AND SUBSTR(change_to_approved_state,1,1)='+'` ;
             const result = await Bookshelf.knex.raw(rawSql);
-            console.log(`inside isHousingBySqaureMeters`);
             let resultFromDb= Object.values(result)[0];
-            console.log(`resultFromDb.length = ${resultFromDb.length}`);
             if (resultFromDb.length>0) {
-                return {   tagApplies: true, 
+                return {   
                     tag_id: tags['דיור'], 
-                    display_score: 0,
-                    created_by_data_rules: 'adds more than 1,000 sqm of housing'
+                    created_by_data_rules: `{rule:'${tagDataRules['housingByArea'].description}$',
+                    detail:'adds ${resultFromDb[0].change_to_approved_state} ${resultFromDb[0].usage}'}`
                 }; 
-            } else {
-                return {  tagApplies: false }
-            }
+            } 
            
         } catch (error) {
             console.log(`error ${error.message}\n`);
             console.debug(error);
         }
-
-
-
 	}
 
-
+	static async isHousingByUnits(planId) {
+        try {
+            const rawSql = `SELECT plan_id,change_to_approved_state,\`usage\` 
+            FROM plan_area_changes WHERE plan_id = ${planId} 
+            AND \`usage\`='${tagDataRules['housingByUnits'].usage}' 
+            AND cast(REGEXP_REPLACE(change_to_approved_state, '[\,+]', '') as unsigned)>${tagDataRules['housingByUnits'].minValue}
+            AND SUBSTR(change_to_approved_state,1,1)='+'` ;
+            const result = await Bookshelf.knex.raw(rawSql);
+            let resultFromDb= Object.values(result)[0];
+            if (resultFromDb.length>0) {
+                return {   
+                    tag_id: tags['דיור'], 
+                    created_by_data_rules: `{   rule: ${tagDataRules['housingByUnits'].description}$,
+                    detail:'adds ${resultFromDb[0].change_to_approved_state} ${resultFromDb[0].usage}'}`
+                }; 
+            } 
+           
+        } catch (error) {
+            console.log(`error ${error.message}\n`);
+            console.debug(error);
+        }
+	}
 
 
 }
