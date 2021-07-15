@@ -13,3 +13,7 @@ exports.personTypes = {
 	'5': 'יזם',
 	'6': 'אחר'
 };
+
+exports.tags = {
+	'דיור': '1'
+}
