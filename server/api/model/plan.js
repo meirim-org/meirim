@@ -481,7 +481,7 @@ class Plan extends Model {
 	// TODO: actually get the plans we want to tag today, for now getting all of them in dev
 	static async getPlansToTag (options) {
 		return Plan.query(qb => {
-			if (options.OBJECTID) {
+			if (options && options.OBJECTID) {
 				qb.where('OBJECTID', '=', options.OBJECTID);
 			}
 		}).fetchAll({
