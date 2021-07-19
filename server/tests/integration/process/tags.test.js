@@ -22,7 +22,7 @@ const HOUSING_BY_AREA = 'housingByArea'
 
 
 
-describe('lib\tags', function() {
+describe('Tags', function() {
 
 
  
