@@ -4,7 +4,7 @@ const Exception = require('./exception');
 const { Bookshelf, Knex } = require('../service/database');
 const {	tags, tagDataRules } = require('../constants');
 
-class PlanTag extends Model {
+class PlanAreaChanges extends Model {
 	get rules () {
 		return {
 			id: ['required', 'integer'],
@@ -14,8 +14,8 @@ class PlanTag extends Model {
 			approved_state: ['text'],
 			change_to_approved_state: ['text'],
             total_in_detailed_plan: ['text'],
-            total_in_detailed_plan: ['text'],
-            total_in_detailed_plan: ['text']
+            total_in_mitaarit_plan: ['text'],
+            remarks: ['text']
 		}
 
 	}
@@ -32,49 +32,18 @@ class PlanTag extends Model {
 		return this.collection();
 	}
 
-	static async isHousingByArea(planId) {
-        try {
-            const rawSql = `SELECT plan_id,change_to_approved_state,\`usage\` 
-            FROM plan_area_changes WHERE plan_id = ${planId} AND \`usage\`='${tagDataRules['housingByArea'].usage}' 
-            AND cast(REGEXP_REPLACE(change_to_approved_state, '[\,+]', '') as unsigned)>${tagDataRules['housingByArea'].minValue}
-            AND SUBSTR(change_to_approved_state,1,1)='+'` ;
-            const result = await Bookshelf.knex.raw(rawSql);
-            let resultFromDb= Object.values(result)[0];
-            if (resultFromDb.length>0) {
-                return {   
-                    tag_id: tags['דיור'], 
-                    created_by_data_rules: `{rule:'${tagDataRules['housingByArea'].description}$',
-                    detail:'adds ${resultFromDb[0].change_to_approved_state} ${resultFromDb[0].usage}'}`
-                }; 
-            } 
-           
-        } catch (error) {
-            console.log(`error ${error.message}\n`);
-            console.debug(error);
-        }
-	}
-
-	static async isHousingByUnits(planId) {
-        try {
-            const rawSql = `SELECT plan_id,change_to_approved_state,\`usage\` 
-            FROM plan_area_changes WHERE plan_id = ${planId} 
-            AND \`usage\`='${tagDataRules['housingByUnits'].usage}' 
-            AND cast(REGEXP_REPLACE(change_to_approved_state, '[\,+]', '') as unsigned)>${tagDataRules['housingByUnits'].minValue}
-            AND SUBSTR(change_to_approved_state,1,1)='+'` ;
-            const result = await Bookshelf.knex.raw(rawSql);
-            let resultFromDb= Object.values(result)[0];
-            if (resultFromDb.length>0) {
-                return {   
-                    tag_id: tags['דיור'], 
-                    created_by_data_rules: `{   rule: ${tagDataRules['housingByUnits'].description}$,
-                    detail:'adds ${resultFromDb[0].change_to_approved_state} ${resultFromDb[0].usage}'}`
-                }; 
-            } 
-           
-        } catch (error) {
-            console.log(`error ${error.message}\n`);
-            console.debug(error);
-        }
+    static async byPlanAndUsage (planId, usage) {
+		if (!planId) {
+			throw new Exception.BadRequest('Must provide planId');
+		}
+		if (!usage) {
+			throw new Exception.BadRequest('Must provide usage');
+		}		
+        console.log(`checking for planId ${planId} and usage ${usage}`);
+        const result = await this.query('where', 'plan_id', '=', planId)
+            .query('where', 'usage', '=', usage)
+			.fetchAll();
+		return result;
 	}
 
 
@@ -83,4 +52,4 @@ class PlanTag extends Model {
 
  
  
-module.exports =  PlanTag ;
+module.exports =  PlanAreaChanges ;

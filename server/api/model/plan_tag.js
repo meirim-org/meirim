@@ -2,19 +2,17 @@ const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
 const { Bookshelf, Knex } = require('../service/database');
-const PlanAreaChanges = require('./plan_area_changes');
-const {	tags } = require('../constants');
 
 class PlanTag extends Model {
 	get rules () {
 		return {
 			tag_id: ['required', 'integer'],
-            plan_id: ['required', 'integer'],
+        	plan_id: ['required', 'integer'],
 			display_score: ['integer'],
 			created_by_data_rules: ['string'],
 			created_by_child: ['boolean'],
 			child_is_stand_alone: ['boolean'],
-            creation_date: ['datetime']
+        	creation_date: ['datetime']
 		}
 
 	}
@@ -62,38 +60,8 @@ class PlanTag extends Model {
 
 	}	
 
-	static async generateTagsForPlan(planId) {
-		let planTags = [];
-		let dataRules = [];
-		// start with housing by square meters
-		const isHousingByArea = await PlanAreaChanges.isHousingByArea(planId);
-		if (isHousingByArea) {
-			dataRules.push( 
-				isHousingByArea.created_by_data_rules
-			);
-		}
-		const isHousingByUnits = await PlanAreaChanges.isHousingByUnits(planId);
-		if (isHousingByUnits) {
-			dataRules.push( 
-				isHousingByUnits.created_by_data_rules
-			);
-		}
-		if (isHousingByArea || isHousingByUnits)
-		planTags.push( {
-			plan_id: planId,
-			tag_id: tags['דיור'],
-			display_score: 0, /* TODO: Add the correct display score here */
-			created_by_data_rules: `[${dataRules.toString(',')}]`
-		});
-		return planTags;
-	}
+
 
 }
 
-
-
-
-
- 
- 
 module.exports =  PlanTag ;

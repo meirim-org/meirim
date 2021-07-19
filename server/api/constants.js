@@ -22,12 +22,12 @@ exports.tagDataRules = {
 	housingByArea: {
 		usage: 'מגורים (מ"ר)' ,
 		minValue: 1000,
-		description: 'adds more than 1,000 square meters of housing'
+		description: 'adds more than 1,000 Sq Meters of housing'
 	},
 	housingByUnits: {
 		usage: 'מגורים (יח"ד)',
 		minValue: 10,
 		description: 'adds more than 10 units of housing'
-	}	
+	}
 	
 }

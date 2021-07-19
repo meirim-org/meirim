@@ -10,10 +10,7 @@ const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
-
-// const isNewPlan = iPlan => Plan
-//   .fetchByObjectID(iPlan.properties.OBJECTID)
-//   .then(plan => !plan);
+const { generateTagsForPlan } = require('../lib/tags');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -212,6 +209,7 @@ const sendTreeAlerts = () => {
 };
 
 const updatePlanTags = async () => {
+	let start = Number(Date.now());
 	Log.info('Re-creating plan tags');
 	let tagCounter = 0;
 	// Re-compute the tags of a plan if the last update time of the plan is after the last update time of the tags of this plan.
@@ -224,13 +222,15 @@ const updatePlanTags = async () => {
 	for (const plan in plans.models) {
 		const planId = plans.models[plan].get('id');
 		await PlanTag.deletePlanTags(planId);
-		const tags = await PlanTag.generateTagsForPlan(planId);
+		const tags = await generateTagsForPlan(planId);
 		if (tags && tags.length>0){
 			await PlanTag.createPlanTags( tags);
 			tagCounter++;
 		}
 	}
-	Log.info(`Done. Added tags to ${tagCounter} plans.`);
+	let end = Number(Date.now());
+	const duration = end - start;
+	Log.info(`Done. Added tags to ${tagCounter}/${plans.models.length} plans. It took ${duration/1000} seconds`);
 };
 
 /** Private */

@@ -1,7 +1,7 @@
 const Controller = require('../controller/controller');
 const PlanTag = require('../model/plan_tag');
 const Log = require('../lib/log');
-const { Knex } = require('../service/database');
+
 
 class PlanTagController extends Controller {
 	/**
