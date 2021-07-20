@@ -70,9 +70,8 @@ async function getTreePermitsFromFile(url, pathname, permitType) {
 				// stream.on('close', async function () {
 				// 	Log.info(`Successfully Downloaded trees file: ${url}. File Could be found here: ${pathname}`);
 
-					const treePermits = await parseTreesXLS(pathname, permitType);
-					resolve(treePermits);
-				});
+				const treePermits = await parseTreesXLS(pathname, permitType);
+				resolve(treePermits);
 			}
 			catch (err) {
 				Log.error(`Error fetching file ${url} :  ${err}`);
