@@ -52,7 +52,7 @@ async function getTreePermitsFromFile(url, pathname, permitType) {
 				// NOTE: we use https.Agent since all urls are currently https. if a http
 				// url is added there needs to be a condition here to use the correct agent
 				const stream = fs.createWriteStream(pathname);
-				const res = await downloadChallengedFile(url, stream, { signal: controller.signal, agent: new https.Agent() }, https );
+				let res = await downloadChallengedFile(url, stream, { signal: controller.signal, agent: new https.Agent() }, https );
 				
 				if (! res) {
 					// Failed to download - try again. gov.il servers have the tendancy to fail the first time
