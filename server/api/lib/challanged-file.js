@@ -64,6 +64,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 				}
 			}
 		}).on('error', (err) => {
+			Log.error('error in challanged file:');
 			Log.error(err);
 			resolve(false);
 		});
