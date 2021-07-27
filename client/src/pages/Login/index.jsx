@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { validateEmail } from 'validations';
-import { Button, TextInput, Link } from 'shared';
-import { wrongLoginCredsToast, serverErrorToast } from 'toasts';
 import { ValidUserHook } from 'hooks';
-import { openModal, closeModal } from 'redux/modal/slice';
-import { loginUser } from './controller';
-import t from 'locale/he_IL';
-import * as SC from './style';
+import { useTranslation } from 'locale/he_IL';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { closeModal, openModal } from 'redux/modal/slice';
+import { Button, Link, TextInput } from 'shared';
+import { serverErrorToast, wrongLoginCredsToast } from 'toasts';
+import { validateEmail } from 'validations';
+import { loginUser } from './controller';
+import * as SC from './style';
 
 const Login = () => {
 	const history = useHistory();
@@ -20,7 +20,7 @@ const Login = () => {
 	const [formErrors, setFormErrors] = useState({
 		emailError: { isValid: true, message: '' }
 	});
-
+	const { translate } = useTranslation();
 	ValidUserHook(user);
 
 	const getIsEmailInvalid = React.useCallback(() => 
@@ -72,17 +72,17 @@ const Login = () => {
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>התחברות למעירים</SC.Title>
+				<SC.Title>{translate.signInToMeirim}</SC.Title>
 				<SC.SubTitleWrapper>
-					<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
+					<SC.SubTitle>{translate.loginToCompleteAction}</SC.SubTitle>
 					<SC.SubTitle>
-						<span>עוד לא הצטרפתם? </span>
-						<Link id="login-signin-link" text="הרשמו עכשיו" onClick={() => dispatch(openModal({ modalType: 'register' }))} fontWeight="700" />
+						<span>{translate.didntJoinYet}</span>
+						<Link id="login-signin-link" text={translate.signupNow} onClick={() => dispatch(openModal({ modalType: 'register' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>
 			<SC.InputsWrapper>
-				<SC.InputsTitle>כבר חברים בקהילה?</SC.InputsTitle>
+				<SC.InputsTitle>{translate.alreadyMembers}</SC.InputsTitle>
 				<SC.InputWrapper>
 					<TextInput
 						id="login-email-input"
@@ -91,7 +91,7 @@ const Login = () => {
 						onBlur={onInputBlur}
 						helperText={!formErrors.emailError.isValid && formErrors.emailError.message ? formErrors.emailError.message : ''}
 						error={!formErrors.emailError.isValid}
-						label="אימייל"
+						label={translate.emailAddress}
 						type="email"
 						value={loginValues.email}
 						onChange={({ target: { value } }) => setLoginValues({ email: value, password: loginValues.password })} required />
@@ -102,7 +102,7 @@ const Login = () => {
 						name="password"
 						onFocus={onInputFocus}
 						onBlur={onInputBlur}
-						label="סיסמא"
+						label={translate.password}
 						type="password"
 						forgetPassword = {true}
 						value={loginValues.password}
@@ -113,12 +113,12 @@ const Login = () => {
 							dispatch(closeModal());
 							
 							return history.push('/forgot');
-						}}>{t.forgotMyPassword}</SC.ForgotPasswordButton></u>
+						}}>{translate.forgotMyPassword}</SC.ForgotPasswordButton></u>
 					</SC.ForgotPassword>
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper>
-				<Button id="login-button" text="התחברות למעירים" onClick={validateBeforeFormSubmittion} />
+				<Button id="login-button" text={translate.signInToMeirim} onClick={validateBeforeFormSubmittion} />
 			</SC.ButtonWrapper>
 		</SC.MainWrapper>
 	);

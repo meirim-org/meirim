@@ -1,19 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Box } from '@material-ui/core';
-import { StarIcon } from 'shared/icons';
+import { Box, Grid } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Link, useHistory } from 'react-router-dom';
-import t from 'locale/he_IL';
-import logo from 'assets/logo.png';
-import { Button, Row, Menu } from 'shared';
-import * as SC from './style';
-import { useDispatch } from 'react-redux';
-import { openModal } from 'redux/modal/slice';
 import { useTheme } from '@material-ui/styles';
+import logo from 'assets/logo.png';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { openModal } from 'redux/modal/slice';
+import { Button, Menu, Row } from 'shared';
+import { StarIcon } from 'shared/icons';
+import * as SC from './style';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const theme = useTheme();
+	const { translate, changeLanguage, selectedLanguage } = useTranslation();
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
@@ -23,7 +24,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const handleDropDownClose = () => {
 		setDropDownEl(null);
 	};
-	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }];
+	const dropdownItems = [{ 'text': translate.signout, 'onClick': logoutHandler }];
 
 	return (
 		<SC.DesktopHeader>
@@ -33,7 +34,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						<Row gutter={1.2}>
 							<Box>
 								<SC.StyledLink id='nav-bar-logo' to="/">
-									<SC.Logo src={logo} alt={t.name}/>
+									<SC.Logo src={logo} alt={translate.name}/>
 								</SC.StyledLink>
 							</Box>
 							<Box component="nav">
@@ -44,7 +45,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											to="/plans/"
 											isActive={(match, location) => location.pathname.includes('/plans')}
 										>
-											{t.plans}
+											{translate.plans}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
@@ -53,18 +54,18 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											to="/trees/"
 											isActive={(match, location) => location.pathname.includes('/trees')}
 										>
-											{t.treePermits}
+											{translate.treePermits}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
 										{isAuthenticated && (
 											<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
-												{t.alerts}
+												{translate.alerts}
 											</SC.StyledLink>
 										)}
 										{!isAuthenticated && (
 											<SC.StyledLink id="nav-bar-alerts" to="#" isActive={() => false} onClick={() => { dispatch(openModal({ modalType: 'login' })); }}>
-												{t.alerts}
+												{translate.alerts}
 											</SC.StyledLink>
 										)}
 									</Box>
@@ -80,15 +81,15 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 												location.hash === '#who-we-are'
 											}
 										>
-											{t.whoWeAre}
+											{translate.whoWeAre}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
 										<Button
 											id="support-us"
-											text={t.supportUs}
+											text={translate.supportUs}
 											type={'primary'}
-											onClick={() => { history.push(`/support-us/`); }}
+											onClick={() => { history.push('/support-us/'); }}
 											small
 										/>
 									</Box>
@@ -102,11 +103,11 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 									<SC.MyPlansButton
 										component={Link} 
-										to={`/my-plans/`}
+										to={'/my-plans/'}
 										startIcon={<StarIcon />}
-										aria-label={t.myPlans}
+										aria-label={translate.myPlans}
 									>
-										{t.myPlans}
+										{translate.myPlans}
 									</SC.MyPlansButton>
 								</Grid>
 								<Grid item>
@@ -127,13 +128,25 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						)}
 						{!isAuthenticated && (
 							<Row gutter={0.75}>
+							{ 
+								selectedLanguage === 'HE'	&&	<Grid item>
+									<Button id="sign-in" text={'عربي'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('AR')}/>
+								</Grid>
+							}
+								{ selectedLanguage === 'AR' && <Grid item>
+									<Button id="sign-in" text={'עברית'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('HE')}/>
+								</Grid>}
 								<Grid item>
-									<Button id="sign-in" text={t.signin} 
+									<Button id="sign-in" text={translate.signin} 
 										fontWeight="400" simple 
 										onClick={() => dispatch(openModal({ modalType: 'login' }))}/>
 								</Grid>
 								<Grid item>
-									<Button id="sign-up" text={t.signup} 
+									<Button id="sign-up" text={translate.signup} 
 										small altColor 
 										onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
 								</Grid>

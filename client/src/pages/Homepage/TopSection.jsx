@@ -1,11 +1,11 @@
+import t, { useTranslation } from 'locale/he_IL';
 import React from 'react';
-import styled from 'styled-components';
-import SearchBox from './SearchBox';
-import homepageImage from '../../assets/homepage.svg';
-import homepageMobileImage from '../../assets/homepage-mobile.svg'
 import { Link, Typography } from 'shared';
 import { device } from 'style';
-import t from 'locale/he_IL';
+import styled from 'styled-components';
+import homepageMobileImage from '../../assets/homepage-mobile.svg';
+import homepageImage from '../../assets/homepage.svg';
+import SearchBox from './SearchBox';
 
 const Image = styled.div`
     height: 288px;
@@ -101,22 +101,24 @@ const Paragraph = styled(Typography)`
 `;
 
 const TopSection = () => {
+	const { translate } = useTranslation();
+
 	return (
 		<Section>
 			<Image/>
-            <Cover>
-                <H1>{t.homepageMainTitle}</H1>
-                <Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
-                    {t.homepageMainSubTitleA}
-                    <Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
-                    {t.homepageMainSubTitleB}
-                    <Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
+			<Cover>
+				<H1>{translate.homepageMainTitle}</H1>
+				<Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
+					{t.homepageMainSubTitleA}
+					<Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
+					{t.homepageMainSubTitleB}
+					<Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
                     .
-                </Paragraph>
-                <SearchBox />
-            </Cover>
+				</Paragraph>
+				<SearchBox />
+			</Cover>
 		</Section>
-	)
-}
+	);
+};
 
 export default TopSection;

@@ -1,6 +1,6 @@
+import { useTranslation } from 'locale/he_IL';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import t from 'locale/he_IL';
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
@@ -9,17 +9,19 @@ const StyledFooter = styled.footer`
 `;
 
 const Footer = () => {
+	const { translate } = useTranslation();
+
 	return (
 		<StyledFooter className="text-center">
-			<a href="mailto:info@meirim.org">יצירת קשר</a> |&nbsp;
-			<a href="https://www.facebook.com/meirim.city/">הפייסבוק שלנו</a>{' '}
+			<a href="mailto:info@meirim.org">{translate.contactUs}</a> |&nbsp;
+			<a href="https://www.facebook.com/meirim.city/">{translate.ourFacebook}</a>{' '}
         |&nbsp;
-			<Link to="/support-us/#who-we-are">{t.whoWeAre}</Link> |&nbsp;
-			<a href="https://github.com/meirim-org/meirim/">הצטרפו לצוות</a>
+			<Link to="/support-us/#who-we-are">{translate.whoWeAre}</Link> |&nbsp;
+			<a href="https://github.com/meirim-org/meirim/">{translate.callToAction}</a>
 			<br />
-			<Link to="/terms/">תנאי שימוש</Link> |&nbsp;
-			<Link to="/privacy-policy/">מדיניות פרטיות</Link> |&nbsp;
-			כל הזכויות שמורות
+			<Link to="/terms/">{translate.termsOfUse}</Link> |&nbsp;
+			<Link to="/privacy-policy/">{translate.privacyPolicy}</Link> |&nbsp;
+			{translate.allRightsReserved}
 		</StyledFooter>
 	);
 };
