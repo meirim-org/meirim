@@ -48,9 +48,6 @@ exports.RegionalTreePermit = {
 	dateFormat: 'MM/DD/YYYY',
 	urls: [
 		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_galil_golan.XLS',
-		// Hach: the second item is duplicated because of lazy-load resposne timeout of gov.il server.
-		// the first try fails, the second success. 
-		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_galil_golan.XLS',
 		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_after_galil_golan.XLS',
 
 		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_Befor_amakim_galil_gilboa.XLS',

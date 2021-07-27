@@ -1,10 +1,12 @@
 const http = require('follow-redirects').http;
+const https = require('follow-redirects').https;
 const Log = require('../lib/log');
 
 const downloadChallengedFile = (url, file, options, protocol) => {
 	return new Promise((resolve) => {
 		options = options || {};
 		protocol = protocol || http ;
+		const agent = (protocol === https) ? new protocol.Agent(): null ;
 
 		protocol.get(url, options, (response) => {
 			if (response.statusCode !== 200) {
@@ -30,7 +32,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 								// send the request again with the challenge headers
 								
 								downloadChallengedFile(url, file, {
-									agent: new protocol.Agent(),
+									agent: agent,
 									headers: {
 										'X-AA-Challenge': challenge.challenge,
 										'X-AA-Challenge-ID': challenge.challengeId,
@@ -46,7 +48,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 						// if we did get a cookie we completed the challenge successfuly and
 						// should use it to download the file
 						downloadChallengedFile(url, file, {
-							agent: new protocol.Agent(),
+							agent: agent,
 							headers: {
 								'Cookie': response.headers['set-cookie']
 							}
@@ -62,6 +64,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 				}
 			}
 		}).on('error', (err) => {
+			Log.error('error in challanged file:');
 			Log.error(err);
 			resolve(false);
 		});
