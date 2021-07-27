@@ -1,23 +1,24 @@
-import PropTypes from 'prop-types'
-import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Wrapper from '../../components/Wrapper';
-import t from '../../locale/he_IL';
-import traktor from '../../assets/traktor_op.png';
-import logoSmall from '../../assets/logo_small.png';
-import '../../assets/bootstrap.css';
-import './Home.css';
-import { howItWorks, whatSay } from './constants'
+import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
+import '../../assets/bootstrap.css';
+import logoSmall from '../../assets/logo_small.png';
+import traktor from '../../assets/traktor_op.png';
+import Wrapper from '../../components/Wrapper';
+import t, { useTranslation } from '../../locale/he_IL';
+import { howItWorks, whatSay } from './constants';
+import './Home.css';
 
 const Home = (props) => {
-	const dispatch = useDispatch()
-	const { state } = props.location
+	const dispatch = useDispatch();
+	const { state } = props.location;
+	const { translate } = useTranslation();
 
 	useEffect(() => {
-		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }))
-	}, [state, dispatch])
+		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }));
+	}, [state, dispatch]);
 
 	return (
 		<Wrapper>
@@ -40,8 +41,8 @@ const Home = (props) => {
 					<div className="content">
 						<img className="logo" src={logoSmall} alt={t.name} />
 						<div className="d-lg-none">
-							<h4>{t.meirimTitle}</h4>
-							<p>{t.whatToRegister}</p>
+							<h4>{translate.meirimTitle}</h4>
+							<p>{translate.whatToRegister}</p>
 							<a href="#register" className="join">
 								{t.callToAction}
 							</a>
@@ -50,12 +51,12 @@ const Home = (props) => {
 				</section>
 				<div className="row garden">
 					<div className="col-lg-4">
-						<h2>{t.whyRegister}</h2>
+						<h2>{translate.whyRegister}</h2>
 					</div>
 				</div>
 				<div className="row">
 					<div className="col-lg-4">
-						<p>{t.howItWorks}</p>
+						<p>{translate.howItWorks}</p>
 					</div>
 				</div>
 			</div>
@@ -108,10 +109,10 @@ const Home = (props) => {
 			</div>
 		</Wrapper>
 	);
-}
+};
 
 Home.propTypes = {
 	location: PropTypes.object.isRequired
-}
+};
 
-export default Home
+export default Home;
