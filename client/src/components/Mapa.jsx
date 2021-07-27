@@ -54,10 +54,6 @@ const Mapa = (props) =>  {
 			{
 				geom && <GeoJSON key={geomHash} data={geom} />
 			}
-			<div className="map-title">
-				{countyName && <span className="btn btn-light disabled">{countyName}</span>}
-				{title2 && <span className="btn btn-light map-title-left">{title2}</span>}
-			</div>
 		</Map>
 	);
 };
