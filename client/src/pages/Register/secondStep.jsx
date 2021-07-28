@@ -1,25 +1,25 @@
-import React from 'react';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
-import {
-	Dropdown, TextInput, TextArea, Button, Link,
-} from '../../shared';
-import * as SC from './style';
+import React from 'react';
+import { Button, Dropdown, Link, TextArea, TextInput } from '../../shared';
 import { personTypes } from './constants';
+import * as SC from './style';
 
 const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 	const { address, type, aboutme } = values;
+	const { translate } = useTranslation();
 
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
+				<SC.Title>{translate.joinMeirimCommunity}</SC.Title>
 			</SC.Titles>
 			<SC.InputsWrapper>
 				<SC.InputWrapper>
 					<TextInput
 						id="register-address-input"
 						name="adress"
-						label="כתובת"
+						label={translate.address}
 						type="text"
 						value={address}
 						onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })}
@@ -47,9 +47,9 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 			</SC.ButtonWrapper>
 			<SC.TermsOfUseWrapper>
 				<SC.TermsOfUse>בלחיצה על הכפתור הנך מאשר/ת את </SC.TermsOfUse>
-				<Link id="register-terms-of-use" text="תנאי השימוש" url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
+				<Link id="register-terms-of-use" text={translate.termsOfUse} url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 				<SC.TermsOfUse> ו</SC.TermsOfUse>
-				<Link id="register-terms-of-use" text="מדיניות הפרטיות" url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
+				<Link id="register-terms-of-use" text={translate.privacyPolicy} url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 			</SC.TermsOfUseWrapper>
 		</SC.MainWrapper>
 	);

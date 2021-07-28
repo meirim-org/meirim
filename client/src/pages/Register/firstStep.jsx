@@ -1,29 +1,31 @@
-import React from 'react';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
-import { openModal } from 'redux/modal/slice';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { TextInput, Button, Link } from 'shared';
+import { openModal } from 'redux/modal/slice';
+import { Button, Link, TextInput } from 'shared';
 import * as SC from './style';
 
 const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const dispatch = useDispatch();
 	const { name, email, password } = values;
 	const { nameError, emailError, passwordError } = errors;
+	const { translate } = useTranslation();
 
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
+				<SC.Title>{translate.joinMeirimCommunity}</SC.Title>
 				<SC.SubTitleWrapper>
-					<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
+					<SC.SubTitle>{translate.loginToCompleteAction}</SC.SubTitle>
 					<SC.SubTitle>
-						<span>כבר רשומים? </span>
-						<Link id="register-signin-link" text="התחברות" onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
+						<span>{translate.alreadySignedup}</span>
+						<Link id="register-signin-link" text={translate.signin} onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>
 			<SC.InputsWrapper>
-				<SC.InputsTitle>הרשמה למעירים</SC.InputsTitle>
+				<SC.InputsTitle>{translate.signupToMeirim} </SC.InputsTitle>
 				<SC.InputWrapper>
 					<TextInput
 						id="register-name-input"
@@ -31,7 +33,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						onFocus={inputFocus}
 						onBlur={inputBlur}
 						error={!nameError.isValid}
-						label="שם מלא"
+						label={translate.fullName}
 						type="text"
 						value={name}
 						onChange={({ target: { value } }) => setValues({ name: value, email, password })}
@@ -45,7 +47,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						onFocus={inputFocus}
 						onBlur={inputBlur}
 						error={!emailError.isValid}
-						label="אימייל"
+						label={translate.emailAddress}
 						type="email"
 						value={email}
 						onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
@@ -58,7 +60,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						onFocus={inputFocus}
 						onBlur={inputBlur}
 						error={!passwordError.isValid}
-						label="סיסמא"
+						label={translate.password}
 						type="password"
 						value={password}
 						onChange={({ target: { value } }) => setValues({ name, email, password: value })}
@@ -66,7 +68,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper>
-				<Button id="register-firststep-button" text="המשך" onClick={handleSubmit} />
+				<Button id="register-firststep-button" text={translate.continue} onClick={handleSubmit} />
 			</SC.ButtonWrapper>
 		</SC.MainWrapper>
 	);
