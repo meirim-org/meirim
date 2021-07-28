@@ -1,4 +1,4 @@
-import t, { useTranslation } from 'locale/he_IL';
+import { useTranslation } from 'locale/he_IL';
 import React from 'react';
 import { Link, Typography } from 'shared';
 import { device } from 'style';
@@ -109,10 +109,10 @@ const TopSection = () => {
 			<Cover>
 				<H1>{translate.homepageMainTitle}</H1>
 				<Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
-					{t.homepageMainSubTitleA}
-					<Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
-					{t.homepageMainSubTitleB}
-					<Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
+					{translate.homepageMainSubTitleA}
+					<Link text={translate.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
+					{translate.homepageMainSubTitleB}
+					<Link text={translate.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
                     .
 				</Paragraph>
 				<SearchBox />
