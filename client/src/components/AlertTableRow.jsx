@@ -1,11 +1,11 @@
-import React from 'react';
-import t from '../locale/he_IL';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useTranslation } from '../locale/he_IL';
 
 const AlertTableRow = (props) => {
 	const { alert }= props;
-	
+	const { t } = useTranslation();
 	let address = '';
 	let radius = '';
 	if (alert.type === 'plan') {

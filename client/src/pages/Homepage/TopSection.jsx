@@ -101,18 +101,18 @@ const Paragraph = styled(Typography)`
 `;
 
 const TopSection = () => {
-	const { translate } = useTranslation();
+	const { t } = useTranslation();
 
 	return (
 		<Section>
 			<Image/>
 			<Cover>
-				<H1>{translate.homepageMainTitle}</H1>
+				<H1>{t.homepageMainTitle}</H1>
 				<Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
-					{translate.homepageMainSubTitleA}
-					<Link text={translate.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
-					{translate.homepageMainSubTitleB}
-					<Link text={translate.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
+					{t.homepageMainSubTitleA}
+					<Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
+					{t.homepageMainSubTitleB}
+					<Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
                     .
 				</Paragraph>
 				<SearchBox />

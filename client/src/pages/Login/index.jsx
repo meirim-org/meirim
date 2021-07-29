@@ -20,7 +20,7 @@ const Login = () => {
 	const [formErrors, setFormErrors] = useState({
 		emailError: { isValid: true, message: '' }
 	});
-	const { translate } = useTranslation();
+	const { t } = useTranslation();
 	ValidUserHook(user);
 
 	const getIsEmailInvalid = React.useCallback(() => 
@@ -72,17 +72,17 @@ const Login = () => {
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>{translate.signInToMeirim}</SC.Title>
+				<SC.Title>{t.signInToMeirim}</SC.Title>
 				<SC.SubTitleWrapper>
-					<SC.SubTitle>{translate.loginToCompleteAction}</SC.SubTitle>
+					<SC.SubTitle>{t.loginToCompleteAction}</SC.SubTitle>
 					<SC.SubTitle>
-						<span>{translate.didntJoinYet}</span>
-						<Link id="login-signin-link" text={translate.signupNow} onClick={() => dispatch(openModal({ modalType: 'register' }))} fontWeight="700" />
+						<span>{t.didntJoinYet}</span>
+						<Link id="login-signin-link" text={t.signupNow} onClick={() => dispatch(openModal({ modalType: 'register' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>
 			<SC.InputsWrapper>
-				<SC.InputsTitle>{translate.alreadyMembers}</SC.InputsTitle>
+				<SC.InputsTitle>{t.alreadyMembers}</SC.InputsTitle>
 				<SC.InputWrapper>
 					<TextInput
 						id="login-email-input"
@@ -91,7 +91,7 @@ const Login = () => {
 						onBlur={onInputBlur}
 						helperText={!formErrors.emailError.isValid && formErrors.emailError.message ? formErrors.emailError.message : ''}
 						error={!formErrors.emailError.isValid}
-						label={translate.emailAddress}
+						label={t.emailAddress}
 						type="email"
 						value={loginValues.email}
 						onChange={({ target: { value } }) => setLoginValues({ email: value, password: loginValues.password })} required />
@@ -102,7 +102,7 @@ const Login = () => {
 						name="password"
 						onFocus={onInputFocus}
 						onBlur={onInputBlur}
-						label={translate.password}
+						label={t.password}
 						type="password"
 						forgetPassword = {true}
 						value={loginValues.password}
@@ -113,12 +113,12 @@ const Login = () => {
 							dispatch(closeModal());
 							
 							return history.push('/forgot');
-						}}>{translate.forgotMyPassword}</SC.ForgotPasswordButton></u>
+						}}>{t.forgotMyPassword}</SC.ForgotPasswordButton></u>
 					</SC.ForgotPassword>
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper>
-				<Button id="login-button" text={translate.signInToMeirim} onClick={validateBeforeFormSubmittion} />
+				<Button id="login-button" text={t.signInToMeirim} onClick={validateBeforeFormSubmittion} />
 			</SC.ButtonWrapper>
 		</SC.MainWrapper>
 	);

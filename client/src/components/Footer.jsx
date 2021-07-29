@@ -9,19 +9,19 @@ const StyledFooter = styled.footer`
 `;
 
 const Footer = () => {
-	const { translate } = useTranslation();
+	const { t } = useTranslation();
 
 	return (
 		<StyledFooter className="text-center">
-			<a href="mailto:info@meirim.org">{translate.contactUs}</a> |&nbsp;
-			<a href="https://www.facebook.com/meirim.city/">{translate.ourFacebook}</a>{' '}
+			<a href="mailto:info@meirim.org">{t.contactUs}</a> |&nbsp;
+			<a href="https://www.facebook.com/meirim.city/">{t.ourFacebook}</a>{' '}
         |&nbsp;
-			<Link to="/support-us/#who-we-are">{translate.whoWeAre}</Link> |&nbsp;
-			<a href="https://github.com/meirim-org/meirim/">{translate.callToAction}</a>
+			<Link to="/support-us/#who-we-are">{t.whoWeAre}</Link> |&nbsp;
+			<a href="https://github.com/meirim-org/meirim/">{t.callToAction}</a>
 			<br />
-			<Link to="/terms/">{translate.termsOfUse}</Link> |&nbsp;
-			<Link to="/privacy-policy/">{translate.privacyPolicy}</Link> |&nbsp;
-			{translate.allRightsReserved}
+			<Link to="/terms/">{t.termsOfUse}</Link> |&nbsp;
+			<Link to="/privacy-policy/">{t.privacyPolicy}</Link> |&nbsp;
+			{t.allRightsReserved}
 		</StyledFooter>
 	);
 };

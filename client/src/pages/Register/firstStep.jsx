@@ -10,22 +10,22 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 	const dispatch = useDispatch();
 	const { name, email, password } = values;
 	const { nameError, emailError, passwordError } = errors;
-	const { translate } = useTranslation();
+	const { t } = useTranslation();
 
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>{translate.joinMeirimCommunity}</SC.Title>
+				<SC.Title>{t.joinMeirimCommunity}</SC.Title>
 				<SC.SubTitleWrapper>
-					<SC.SubTitle>{translate.loginToCompleteAction}</SC.SubTitle>
+					<SC.SubTitle>{t.loginToCompleteAction}</SC.SubTitle>
 					<SC.SubTitle>
-						<span>{translate.alreadySignedup}</span>
-						<Link id="register-signin-link" text={translate.signin} onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
+						<span>{t.alreadySignedup}</span>
+						<Link id="register-signin-link" text={t.signin} onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>
 			<SC.InputsWrapper>
-				<SC.InputsTitle>{translate.signupToMeirim} </SC.InputsTitle>
+				<SC.InputsTitle>{t.signupToMeirim} </SC.InputsTitle>
 				<SC.InputWrapper>
 					<TextInput
 						id="register-name-input"
@@ -33,7 +33,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						onFocus={inputFocus}
 						onBlur={inputBlur}
 						error={!nameError.isValid}
-						label={translate.fullName}
+						label={t.fullName}
 						type="text"
 						value={name}
 						onChange={({ target: { value } }) => setValues({ name: value, email, password })}
@@ -47,7 +47,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						onFocus={inputFocus}
 						onBlur={inputBlur}
 						error={!emailError.isValid}
-						label={translate.emailAddress}
+						label={t.emailAddress}
 						type="email"
 						value={email}
 						onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
@@ -60,7 +60,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						onFocus={inputFocus}
 						onBlur={inputBlur}
 						error={!passwordError.isValid}
-						label={translate.password}
+						label={t.password}
 						type="password"
 						value={password}
 						onChange={({ target: { value } }) => setValues({ name, email, password: value })}
@@ -68,7 +68,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper>
-				<Button id="register-firststep-button" text={translate.continue} onClick={handleSubmit} />
+				<Button id="register-firststep-button" text={t.continue} onClick={handleSubmit} />
 			</SC.ButtonWrapper>
 		</SC.MainWrapper>
 	);
