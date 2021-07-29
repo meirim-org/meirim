@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import { device } from 'style';
-import Wrapper from 'components/Wrapper';
-import { resendActivationLinkToEmail } from './controller';
 import { withTheme } from '@material-ui/core/styles';
+import Wrapper from 'components/Wrapper';
+import React from 'react';
+import { device } from 'style';
+import styled from 'styled-components';
+import { resendActivationLinkToEmail } from './controller';
 
 const MainWrapper = withTheme(styled.div`
     width: 100%;
@@ -37,7 +37,7 @@ const ImageCol = styled.div`
         top: 0;
         right: 0;
         height: 110%;
-        transform: translateX(100%) rotate(3.5deg);
+        transform: tX(100%) rotate(3.5deg);
         transform-origin: top left;
         width: 100%;
     }

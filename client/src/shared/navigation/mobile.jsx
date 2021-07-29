@@ -19,7 +19,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
-	const { translate, changeLanguage } = useTranslation();
+	const { t, changeLanguage, selectedLanguage } = useTranslation();
 
 	return (
 		<SC.MobileHeader>
@@ -29,19 +29,19 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 						<Row gutter={1.2}>
 							<Box>
 								<SC.StyledLink id='nav-bar-logo' to="/">
-									<SC.Logo src={logo} alt={translate.name}/>
+									<SC.Logo src={logo} alt={t.name}/>
 								</SC.StyledLink>
 							</Box>
 							<Box component="nav">
 								<Box display="flex" alignItems="center">
 									<Box px={2}>
 										<SC.StyledLink id="nav-bar-plans" to="/plans/" activeClassName="active">
-											{translate.plans}
+											{t.plans}
 										</SC.StyledLink>
 									</Box>
 									{isAuthenticated &&
 										<SC.StyledLink id="nav-bar-plans" to={() => '/my-plans/'} activeClassName="active">
-											{translate.myPlans}
+											{t.myPlans}
 										</SC.StyledLink>
 									}
 								</Box>
@@ -52,7 +52,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 						<Row gutter={0.15}>
 							{!isAuthenticated &&
 								<Box>
-									<Button id="sign-up" text={translate.signup}
+									<Button id="sign-up" text={t.signup}
 										small altColor
 										onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
 								</Box>
@@ -85,19 +85,19 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 													color="#652dd0" 
 													to={() => '/my-plans/'}
 													button
-													key={translate.myPlans}
+													key={t.myPlans}
 													id="my-plans-button">
-													<ListItemText primary={translate.myPlans}/>
+													<ListItemText primary={t.myPlans}/>
 													<SC.StyledStarIcon>
 														<StarIcon/>
 													</SC.StyledStarIcon>
 												</SC.StyledListItem>
 											)}
-											<SC.StyledListItem component={SC.StyledLink} to={PLANS} button key={translate.plans}>
-												<ListItemText primary={translate.plans}/>
+											<SC.StyledListItem component={SC.StyledLink} to={PLANS} button key={t.plans}>
+												<ListItemText primary={t.plans}/>
 											</SC.StyledListItem>
-											<SC.StyledListItem component={RouterLink} to={TREE_PERMITS} button key={translate.treePermits}>
-												<ListItemText primary={translate.treePermits}/>
+											<SC.StyledListItem component={RouterLink} to={TREE_PERMITS} button key={t.treePermits}>
+												<ListItemText primary={t.treePermits}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
 										<Divider/>
@@ -110,9 +110,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 													location.hash !== '#who-we-are'
 												}
 												button
-												key={translate.supportUs}
+												key={t.supportUs}
 											>
-												<ListItemText primary={translate.supportUs}/>
+												<ListItemText primary={t.supportUs}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
 										<SC.StyledList>
@@ -127,9 +127,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 													location.hash === '#who-we-are'
 												}
 												button
-												key={translate.whoWeAre}
+												key={t.whoWeAre}
 											>
-												<ListItemText primary={translate.whoWeAre}/>
+												<ListItemText primary={t.whoWeAre}/>
 											</SC.StyledListItem>
 										</SC.StyledList>
 										<Divider/>
@@ -141,8 +141,8 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 															setMobileNavIsOpened(false);
 															dispatch(openModal({ modalType: 'login' }));
 														}}
-														key={translate.signin}>
-														<ListItemText primary={translate.signin}/>
+														key={t.signin}>
+														<ListItemText primary={t.signin}/>
 													</SC.StyledListItem>
 													<SC.StyledListItem component={RouterLink} to="#" button
 														onClick={() => {
@@ -150,49 +150,53 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 															setMobileNavIsOpened(false);
 														}}
 														id="register-button"
-														key={translate.signup}
+														key={t.signup}
 														color={theme.palette.primary.main}>
-														<ListItemText primary={translate.signup}/>
-													</SC.StyledListItem>
-													<SC.StyledListItem component={SC.StyledLink} to="#" button
-														onClick={() => {
-															setMobileNavIsOpened(false);
-															changeLanguage('AR');
-														}}
-														key={translate.signin}>
-														<ListItemText primary={'عربي'}/>
-													</SC.StyledListItem>
-													<SC.StyledListItem component={SC.StyledLink} to="#" button
-														onClick={() => {
-															setMobileNavIsOpened(false);
-															changeLanguage('HE');
-														}}
-														key={translate.signin}>
-														<ListItemText primary={'עברית'}/>
+														<ListItemText primary={t.signup}/>
 													</SC.StyledListItem>
 												</>
 											)}
 											{isAuthenticated && (
 												<>
 													<SC.StyledListItem component={SC.StyledLink} to="/alerts/" button
-														key={translate.alerts}>
-														<ListItemText primary={translate.alerts}/>
+														key={t.alerts}>
+														<ListItemText primary={t.alerts}/>
 													</SC.StyledListItem>
 													<SC.StyledListItem
 														component={RouterLink}
 														to="#"
 														button
 														onClick={logoutHandler}
-														key={translate.signout}
+														key={t.signout}
 														id='logout-button'
 													>
-														<ListItemText primary={translate.signout}/>
+														<ListItemText primary={t.signout}/>
 														<SC.LogOutIcon>
 															<InboxIcon/>
 														</SC.LogOutIcon>
 													</SC.StyledListItem>
 												</>
 											)}
+											{
+												selectedLanguage != 'AR' && <SC.StyledListItem component={ SC.StyledLink } to="#" button
+													onClick={ () => {
+														setMobileNavIsOpened(false);
+														changeLanguage('AR');
+													} }
+													key={ t.signin }>
+													<ListItemText primary={ 'عربي' } />
+												</SC.StyledListItem>
+											}
+											{
+												selectedLanguage != 'HE' && <SC.StyledListItem component={ SC.StyledLink } to="#" button
+													onClick={ () => {
+														setMobileNavIsOpened(false);
+														changeLanguage('HE');
+													} }
+													key={ t.signin }>
+													<ListItemText primary={ 'עברית' } />
+												</SC.StyledListItem>
+											}
 										</SC.StyledList>
 									</SC.MobileNavWrapper>
 								</SC.Drawer>

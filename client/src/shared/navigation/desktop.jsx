@@ -14,7 +14,7 @@ import * as SC from './style';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const theme = useTheme();
-	const { translate, changeLanguage, selectedLanguage } = useTranslation();
+	const { t, changeLanguage, selectedLanguage } = useTranslation();
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
@@ -24,7 +24,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 	const handleDropDownClose = () => {
 		setDropDownEl(null);
 	};
-	const dropdownItems = [{ 'text': translate.signout, 'onClick': logoutHandler }];
+	const dropdownItems = [{ 'text': t.signout, 'onClick': logoutHandler }];
 
 	return (
 		<SC.DesktopHeader>
@@ -34,7 +34,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						<Row gutter={1.2}>
 							<Box>
 								<SC.StyledLink id='nav-bar-logo' to="/">
-									<SC.Logo src={logo} alt={translate.name}/>
+									<SC.Logo src={logo} alt={t.name}/>
 								</SC.StyledLink>
 							</Box>
 							<Box component="nav">
@@ -45,7 +45,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											to="/plans/"
 											isActive={(match, location) => location.pathname.includes('/plans')}
 										>
-											{translate.plans}
+											{t.plans}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
@@ -54,18 +54,18 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											to="/trees/"
 											isActive={(match, location) => location.pathname.includes('/trees')}
 										>
-											{translate.treePermits}
+											{t.treePermits}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
 										{isAuthenticated && (
 											<SC.StyledLink id="nav-bar-alerts" to="/alerts/">
-												{translate.alerts}
+												{t.alerts}
 											</SC.StyledLink>
 										)}
 										{!isAuthenticated && (
 											<SC.StyledLink id="nav-bar-alerts" to="#" isActive={() => false} onClick={() => { dispatch(openModal({ modalType: 'login' })); }}>
-												{translate.alerts}
+												{t.alerts}
 											</SC.StyledLink>
 										)}
 									</Box>
@@ -81,13 +81,13 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 												location.hash === '#who-we-are'
 											}
 										>
-											{translate.whoWeAre}
+											{t.whoWeAre}
 										</SC.StyledLink>
 									</Box>
 									<Box px={2}>
 										<Button
 											id="support-us"
-											text={translate.supportUs}
+											text={t.supportUs}
 											type={'primary'}
 											onClick={() => { history.push('/support-us/'); }}
 											small
@@ -101,13 +101,27 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 						{isAuthenticated && (
 							<Row>
 								<Grid item>
+							{ 
+								selectedLanguage === 'HE'	&&	<Grid item>
+									<Button id="sign-in" text={'عربي'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('AR')}/>
+								</Grid>
+							}
+								{ selectedLanguage === 'AR' && <Grid item>
+									<Button id="sign-in" text={'עברית'} 
+										fontWeight="400" simple 
+										onClick={() => changeLanguage('HE')}/>
+								</Grid>}
+								</Grid>
+								<Grid item>
 									<SC.MyPlansButton
 										component={Link} 
 										to={'/my-plans/'}
 										startIcon={<StarIcon />}
-										aria-label={translate.myPlans}
+										aria-label={t.myPlans}
 									>
-										{translate.myPlans}
+										{t.myPlans}
 									</SC.MyPlansButton>
 								</Grid>
 								<Grid item>
@@ -141,12 +155,12 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 										onClick={() => changeLanguage('HE')}/>
 								</Grid>}
 								<Grid item>
-									<Button id="sign-in" text={translate.signin} 
+									<Button id="sign-in" text={t.signin} 
 										fontWeight="400" simple 
 										onClick={() => dispatch(openModal({ modalType: 'login' }))}/>
 								</Grid>
 								<Grid item>
-									<Button id="sign-up" text={translate.signup} 
+									<Button id="sign-up" text={t.signup} 
 										small altColor 
 										onClick={() => dispatch(openModal({ modalType: 'register' }))}/>
 								</Grid>

@@ -7,19 +7,19 @@ import * as SC from './style';
 
 const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 	const { address, type, aboutme } = values;
-	const { translate } = useTranslation();
+	const { t } = useTranslation();
 
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>{translate.joinMeirimCommunity}</SC.Title>
+				<SC.Title>{t.joinMeirimCommunity}</SC.Title>
 			</SC.Titles>
 			<SC.InputsWrapper>
 				<SC.InputWrapper>
 					<TextInput
 						id="register-address-input"
 						name="adress"
-						label={translate.address}
+						label={t.address}
 						type="text"
 						value={address}
 						onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })}
@@ -47,9 +47,9 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 			</SC.ButtonWrapper>
 			<SC.TermsOfUseWrapper>
 				<SC.TermsOfUse>בלחיצה על הכפתור הנך מאשר/ת את </SC.TermsOfUse>
-				<Link id="register-terms-of-use" text={translate.termsOfUse} url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
+				<Link id="register-terms-of-use" text={t.termsOfUse} url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 				<SC.TermsOfUse> ו</SC.TermsOfUse>
-				<Link id="register-terms-of-use" text={translate.privacyPolicy} url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
+				<Link id="register-terms-of-use" text={t.privacyPolicy} url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 			</SC.TermsOfUseWrapper>
 		</SC.MainWrapper>
 	);

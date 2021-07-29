@@ -7,14 +7,14 @@ import '../../assets/bootstrap.css';
 import logoSmall from '../../assets/logo_small.png';
 import traktor from '../../assets/traktor_op.png';
 import Wrapper from '../../components/Wrapper';
-import t, { useTranslation } from '../../locale/he_IL';
+import { useTranslation } from '../../locale/he_IL';
 import { howItWorks, whatSay } from './constants';
 import './Home.css';
 
 const Home = (props) => {
 	const dispatch = useDispatch();
 	const { state } = props.location;
-	const { translate } = useTranslation();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }));
@@ -41,8 +41,8 @@ const Home = (props) => {
 					<div className="content">
 						<img className="logo" src={logoSmall} alt={t.name} />
 						<div className="d-lg-none">
-							<h4>{translate.meirimTitle}</h4>
-							<p>{translate.whatToRegister}</p>
+							<h4>{t.meirimTitle}</h4>
+							<p>{t.whatToRegister}</p>
 							<a href="#register" className="join">
 								{t.callToAction}
 							</a>
@@ -51,12 +51,12 @@ const Home = (props) => {
 				</section>
 				<div className="row garden">
 					<div className="col-lg-4">
-						<h2>{translate.whyRegister}</h2>
+						<h2>{t.whyRegister}</h2>
 					</div>
 				</div>
 				<div className="row">
 					<div className="col-lg-4">
-						<p>{translate.howItWorks}</p>
+						<p>{t.howItWorks}</p>
 					</div>
 				</div>
 			</div>

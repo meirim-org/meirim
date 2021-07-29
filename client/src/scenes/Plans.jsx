@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import _ from "lodash";
 import { Grid } from "@material-ui/core";
-import { PlanCard, Typography } from 'shared';
+import _ from "lodash";
+import React, { Component } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { PlanCard, Typography } from 'shared';
+import Autocomplete from "../components/AutoCompleteInput";
+import Wrapper from "../components/Wrapper";
+import t from "../locale/he_IL";
 import api from "../services/api";
 import locationAutocompleteApi from "../services/location-autocomplete";
-import Wrapper from "../components/Wrapper";
-import Autocomplete from "../components/AutoCompleteInput";
-import t from "../locale/he_IL";
 import "./Plans.css";
 
 class Plans extends Component {

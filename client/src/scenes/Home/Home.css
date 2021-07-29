@@ -70,7 +70,7 @@ h2 strong {
     }
 
     .how-it-works {
-        transform: translateY(0);
+        transform: tY(0);
     }
 }
 

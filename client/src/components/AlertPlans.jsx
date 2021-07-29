@@ -1,11 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import t, { useTranslation } from 'locale/he_IL';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Slider from 'rc-slider';
 import api from 'services/api';
-import t from 'locale/he_IL';
 
 const sliderBounds = { min: 1, max: 10 };
 const sliderText = {};
@@ -18,16 +18,17 @@ const AlertPlans = ({notifyAddedAlert}) => {
 	const [ loading, setLoading ] = useState(false);
 	const [ radius, setRadius ] = useState(5);
 	const [ address, setAddress ] = useState('');
+	const { t } = useTranslation();
 
 	const handleSlide = (value)  =>{
 		setRadius(value);
 		setError(false);
-	}
+	};
 
 	const handleAddress = (e) => {
 		setAddress(e.target.value);
 		setError(false);
-	}
+	};
 
 	const handleSubmit = (e)  =>{
 		e.preventDefault();
@@ -62,16 +63,17 @@ const AlertPlans = ({notifyAddedAlert}) => {
 				</div>
 			)}
 			<div className="selectAreaAndInterest">
-				כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
-						<small>
-					*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת
-					שיש לכם עניין לגבי הסביבה שלה
-						</small>
-				<small>**ניתן להוסיף יותר מכתובת אחת</small>
+				 {t.alertsSubtitle}
+				<small>
+					{t.alertsSubtitleInfo}
+				</small>
+				<small>
+					{t.alertsSubtitleInfo2}
+				</small>
 			</div>
 			<div className="row">
 				<div className="col">
-					<label id="homeLabale">כתובת:</label>
+					<label id="homeLabale">{t.address}:</label>
 					<input
 						id="homeAddress"
 						type="text"
@@ -84,7 +86,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 			</div>
 			<div className="row">
 				<div className="col">
-					<label id="radiusLabale">רדיוס:</label>
+					<label id="radiusLabale">{t.radius}:</label>
 					<Slider
 						min={sliderBounds.min}
 						max={sliderBounds.max}

@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography } from 'shared';
-import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import { Chip } from '@material-ui/core';
-import * as SC from './style';
+import { useTheme } from '@material-ui/styles';
+import t, { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { TreeSelectors } from 'redux/selectors';
+import { TabBox, TabPanel, Typography } from 'shared';
 import { timeToObjectionText } from '../../utils';
+import * as SC from './style';
 
 const TreeList = ({ trees_per_permit }) => {
-
+	const { t } = useTranslation();
 	if (!trees_per_permit) return null;
 	if (Object.keys(trees_per_permit).length === 1) {
 		return (
