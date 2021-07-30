@@ -13,7 +13,7 @@ describe('Plan Area Changes model', function() {
 
 	it('has the right rules', function() {
 		const rules = instance.rules;
-        expect(rules.id).to.eql(['required', 'integer']);
+		expect(rules.id).to.eql(['required', 'integer']);
 		expect(rules.plan_id).to.eql(['required', 'integer']);
 		expect(rules.usage).to.eql(['text']);
 		expect(rules.measurement_unit).to.eql(['text']);
