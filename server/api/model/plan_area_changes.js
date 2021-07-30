@@ -12,9 +12,9 @@ class PlanAreaChanges extends Model {
 			measurement_unit: ['text'],
 			approved_state: ['text'],
 			change_to_approved_state: ['text'],
-            total_in_detailed_plan: ['text'],
-            total_in_mitaarit_plan: ['text'],
-            remarks: ['text']
+            		total_in_detailed_plan: ['text'],
+            		total_in_mitaarit_plan: ['text'],
+            		remarks: ['text']
 		}
 
 	}
@@ -31,7 +31,7 @@ class PlanAreaChanges extends Model {
 		return this.collection();
 	}
 
-    static async byPlanAndUsage (planId, usage) {
+    	static async byPlanAndUsage (planId, usage) {
 		if (!planId) {
 			throw new Exception.BadRequest('Must provide planId');
 		}
@@ -40,7 +40,7 @@ class PlanAreaChanges extends Model {
 		}		
 		Log.info(`checking for planId ${planId} and usage ${usage}`);
 		const result = await this.query('where', 'plan_id', '=', planId)
-        	.query('where', 'usage', '=', usage)
+        		.query('where', 'usage', '=', usage)
 			.fetchAll();
 		return result;
 	}
