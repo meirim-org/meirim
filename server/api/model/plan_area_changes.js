@@ -7,7 +7,7 @@ class PlanAreaChanges extends Model {
 	get rules () {
 		return {
 			id: ['required', 'integer'],
-            plan_id: ['required', 'integer'],
+			plan_id: ['required', 'integer'],
 			usage: ['text'],
 			measurement_unit: ['text'],
 			approved_state: ['text'],
@@ -38,9 +38,9 @@ class PlanAreaChanges extends Model {
 		if (!usage) {
 			throw new Exception.BadRequest('Must provide usage');
 		}		
-        Log.info(`checking for planId ${planId} and usage ${usage}`);
-        const result = await this.query('where', 'plan_id', '=', planId)
-            .query('where', 'usage', '=', usage)
+		Log.info(`checking for planId ${planId} and usage ${usage}`);
+		const result = await this.query('where', 'plan_id', '=', planId)
+        	.query('where', 'usage', '=', usage)
 			.fetchAll();
 		return result;
 	}
