@@ -13,5 +13,5 @@ exports.up = function(knex) {
 };
 
 exports.down = async function(knex) {
-    await knex.schema.dropTableIfExists('file');
+    await knex.schema.dropTableIfExists('plan_area_changes');
 };
