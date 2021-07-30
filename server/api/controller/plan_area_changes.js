@@ -10,7 +10,7 @@ class PlanAreaChangesController extends Controller {
             if (rawAreaChangesString) {
                 let areaChangesArray = JSON.parse(rawAreaChangesString)[0];
                 let areaChanges = [];
-                for (let iChanges=0;iChanges<areaChangesArray.length; iChanges++) {
+                for (let iChanges=0; iChanges<areaChangesArray.length; iChanges++) {
                     areaChanges.push(
                         {
                             "plan_id": planId,
