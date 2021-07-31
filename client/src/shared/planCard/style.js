@@ -10,13 +10,16 @@ import { device } from 'style';
 
 export const Card = withTheme(styled(MuiCard)`
     height: 430px;
-    
+    && {
+        box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+        border-radius: 12px;
+    }
     @media ${device.mobile} {
-        width: 270px;
-    }    
-    
+        max-width: 270px;
+    }
+
     @media ${device.tablet} {
-        width: 360px;
+        max-width: 360px;
     }
 `);
 
