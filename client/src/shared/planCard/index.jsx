@@ -8,6 +8,7 @@ import { useTheme } from '@material-ui/core/styles';
 import UnsafeRender from 'components/UnsafeRender';
 import { Text } from 'shared';
 import styled from 'styled-components';
+import BookmarkIcon from '../../assets/bookmarkIcon.svg'
 
 const PlanCard = ({ plan }) => {
 	const theme = useTheme();
@@ -31,7 +32,26 @@ const PlanCard = ({ plan }) => {
 										color={theme.palette.black}
 									/>
 								</StatusBox>
+								<BookmarkBtn/>
 							</MapTitle>
+                            <MapFooter>
+                                <FooterChip>
+                                    <Text
+                                        size='14px'
+                                        weight='600'
+                                        text={'תל אביב'}
+                                        color={theme.palette.black}
+                                    />
+                                </FooterChip>
+                                <FooterChip>
+                                    <Text
+                                        size='14px'
+                                        weight='600'
+                                        text={'6 דונם'}
+                                        color={theme.palette.black}
+                                    />
+                                </FooterChip>
+                            </MapFooter>
 							<Mapa
 								geom={plan.geom}
 								countyName={plan.PLAN_COUNTY_NAME}
@@ -70,21 +90,26 @@ export default PlanCard;
 
 const MapTitle = styled.div`
     position: absolute;
+    width: 100%;
     display: flex;
+    justify-content: space-between;
     flex-direction: row;
     align-items: center;
     z-index: 9999;
-    font-size: large;
-    padding: 5px;
+    padding: 13px 15px;
 `;
 
-const StatusBox = styled.div`
+const Chip = styled.div`
     display: flex;
     align-items: center;
-    padding: 1px 4px;
     background: #FFFFFF;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
+    padding: 4px 9px;
+`;
+
+const StatusBox = styled(Chip)`
+    padding: 4px 7px;
 `;
 
 const StatusDot = styled.div`
@@ -93,4 +118,24 @@ const StatusDot = styled.div`
     margin-left: 7px;
     border-radius: 7px;
     background: ${({ approved }) => approved ? '#1976D2' : '#AE7FF0'};
+`;
+
+const BookmarkBtn = styled.button`
+    width: 37px;
+    height: 37px;
+    border: none;
+    border-radius: 18.5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    background: center no-repeat url(${BookmarkIcon}) #FFFFFF;
+    
+    & :focus {outline: none;}
+`;
+
+const MapFooter = styled(MapTitle)`
+    bottom: 0;
+    z-index: 99999;
+`;
+
+const FooterChip = styled(Chip)`
+    padding: 4px 9px;
 `;
