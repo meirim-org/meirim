@@ -5,7 +5,7 @@ const Log = require('../lib/log');
 
 class PlanTagController extends Controller {
 	/**
-	 * Return person's alerts. Must be logged in.
+	 * Return tags for this plan.
 	 * @param {IncomingRequest} req
 	 */
 	byPlan (req) {
