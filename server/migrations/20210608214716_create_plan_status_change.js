@@ -7,7 +7,8 @@ exports.up = async function(knex) {
 		t.string('status');
 		t.string('date');
 		t.string('status_description');
-		t.string('last_updated');
+		t.string('updated_at');
+		t.timestamps(true, true);
 	});
 };
 

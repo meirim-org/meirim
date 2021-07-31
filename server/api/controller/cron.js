@@ -267,6 +267,38 @@ const fetchTreePermit = () =>{
 	return crawlTreesExcel();
 };
 
+const fetchPlanStatus = () => {
+	Plan.query(qb => {
+		qb.whereNull('areaChanges'); // why? maybe no need
+		qb.orderBy('id', 'desc');
+		qb.limit(1); //TODO just for now
+	})
+		.fetchAll()
+		.then(planCollection =>
+			Bluebird.mapSeries(planCollection.models, plan => {
+				Log.debug(plan.get('plan_url'));
+	
+				return MavatAPI.getPlanStatus(plan);
+;
+									
+					// 				// check if new 
+									// plan_status_change.save()
+					// 			});
+					// 		}
+							
+					// 	}
+					// 	);
+					// 	return plan.save();
+					// })
+					// .catch(() => {
+					// 	// do nothing on error
+					// });
+			})
+		);
+
+};
+
+
 module.exports = {
 	iplan,
 	complete_mavat_data,
@@ -275,5 +307,6 @@ module.exports = {
 	fix_geodata,
 	fetchIplan,
 	fetchTreePermit,
-	sendTreeAlerts
+	sendTreeAlerts,
+	fetchPlanStatus
 };

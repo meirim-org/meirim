@@ -7,7 +7,7 @@ class PlanStatusChange extends Model {
 			status: 'string', // enum code
 			date: 'date', // status date, as shown in mavat
 			status_description: 'string', // text as shown in mavat
-			last_updated: 'date' // when did we catch the update
+			updated_at: 'date' // when did we catch the update
 		};
 	}
 
