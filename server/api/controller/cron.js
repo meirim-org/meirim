@@ -222,8 +222,8 @@ const updatePlanTags = async () => {
 		const planId = plans.models[plan].get('id');
 		await PlanTag.deletePlanTags(planId);
 		const tags = await generateTagsForPlan(planId);
-		if (tags && tags.length>0){
-			await PlanTag.createPlanTags( tags);
+		if (tags && tags.length > 0){
+			await PlanTag.createPlanTags(tags);
 			tagCounter++;
 		}
 	}

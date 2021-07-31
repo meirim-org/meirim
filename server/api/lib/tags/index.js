@@ -2,8 +2,8 @@
  const PlanAreaChanges = require('../../../api/model/plan_area_changes');
 
  const  generateTagsForPlan = async (planId) => {
-    let planTags = [];
-    let dataRules = [];
+    const planTags = [];
+    const dataRules = [];
     // HOUSING
     const housingTag = tags['דיור'];
     // check housing by square meters
