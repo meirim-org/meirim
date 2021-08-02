@@ -356,7 +356,7 @@ const getPlanStatus = (plan) => {
 					status: title,
 					date: date,
 					status_description: statusDescription, 
-					//updated_at - TODO
+					updated_at: Date.now()
 				});						
 			});
 			return planStatusList;

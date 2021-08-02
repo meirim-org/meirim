@@ -278,21 +278,10 @@ const fetchPlanStatus = () => {
 			Bluebird.mapSeries(planCollection.models, plan => {
 				Log.debug(plan.get('plan_url'));
 	
-				return MavatAPI.getPlanStatus(plan);
-;
-									
-					// 				// check if new 
-									// plan_status_change.save()
-					// 			});
-					// 		}
-							
-					// 	}
-					// 	);
-					// 	return plan.save();
-					// })
-					// .catch(() => {
-					// 	// do nothing on error
-					// });
+				return MavatAPI.getPlanStatus(plan);								
+				// check if new 
+				// plan_status_change.save()
+
 			})
 		);
 
