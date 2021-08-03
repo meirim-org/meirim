@@ -6,15 +6,14 @@ const { Bookshelf, Knex } = require('../service/database');
 class PlanAreaChanges extends Model {
 	get rules () {
 		return {
-			id: ['required', 'integer'],
 			plan_id: ['required', 'integer'],
-			usage: ['text'],
-			measurement_unit: ['text'],
-			approved_state: ['text'],
-			change_to_approved_state: ['text'],
-            		total_in_detailed_plan: ['text'],
-            		total_in_mitaarit_plan: ['text'],
-            		remarks: ['text']
+			usage: ['string'],
+			measurement_unit: ['string'],
+			approved_state: ['string'],
+			change_to_approved_state: ['string'],
+			total_in_detailed_plan: ['string'],
+			total_in_mitaarit_plan: ['string'],
+			remarks: ['string']
 		}
 
 	}
@@ -56,19 +55,15 @@ class PlanAreaChanges extends Model {
 		try {
 			await Bookshelf.transaction(async (transaction) => {
 				for (const datum in data ){
-                    const currentChange = data[datum];
-                     await Knex.raw(`INSERT INTO plan_area_changes (plan_id, \`usage\`, measurement_unit, approved_state, change_to_approved_state, total_in_detailed_plan, total_in_mitaarit_plan, remarks) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [currentChange.plan_id,currentChange.usage,currentChange.measurement_unit,currentChange.approved_state,currentChange.change_to_approved_state,
-                    currentChange.total_in_detailed_plan,currentChange.total_in_mitaarit_plan,currentChange.remarks]);
-                }            
-            });
+					const currentChange = data[datum];
+					await new PlanAreaChanges(currentChange).save(null, { transcating: transaction});
+				}
+			});
 		} catch (err){
 			console.log(err);
 		}
 
-	}	    
-
-
+	}
 }
 
 
