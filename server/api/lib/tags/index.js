@@ -7,14 +7,14 @@
     // HOUSING
     const housingTag = tags['דיור'];
     // check housing by square meters
-    const housingByArea = await isTag(planId,housingTag,'housingByArea'); 
+    const housingByArea = await isTagByUsageAddition(planId,housingTag,'housingByArea'); 
         if (housingByArea) {
             dataRules.push( 
             housingByArea.created_by_data_rules
         );
     }
     // check housing by area
-    const housingByUnits = await isTag(planId,housingTag,'housingByUnits');
+    const housingByUnits = await isTagByUsageAddition(planId,housingTag,'housingByUnits');
     if (housingByUnits) {
         dataRules.push( 
             housingByUnits.created_by_data_rules
@@ -30,7 +30,7 @@
     return planTags;
 }
 
-const isTag = async (planId, tag, rule) => {
+const isTagByUsageAddition = async (planId, tag, rule) => {
     try {
         const result = await PlanAreaChanges.byPlanAndUsage(planId, tagDataRules[rule].usage);
         if (result && result.models && result.models[0]) {
@@ -58,5 +58,5 @@ const isTag = async (planId, tag, rule) => {
 
 
 module.exports = {
-	generateTagsForPlan, isTag
+	generateTagsForPlan, isTagByUsageAddition
 };
