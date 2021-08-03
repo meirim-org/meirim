@@ -4,6 +4,8 @@ const puppeteerBrowser = require('puppeteer/lib/cjs/puppeteer/common/Browser').B
 const requestPromise = require('request-promise');
 const sinon = require('sinon');
 
+const Log = require('../../../api/lib/log');
+
 const { mockDatabase } = require('../../mock');
 const { wait } = require('../../utils');
 
@@ -14,6 +16,8 @@ const tables = [
 ];
 
 describe('Crawler', function() {
+	let sinonSandbox;
+
 	let planController;
 	let cronController;
 
@@ -22,11 +26,19 @@ describe('Crawler', function() {
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 
+		// spy on the Log.error method so we can test if it was called during crawling
+		// (meaning an error was printed)
+		sinonSandbox = sinon.createSandbox();
+		sinonSandbox.spy(Log, 'error');
+
 		planController = require('../../../api/controller/plan');
 		cronController = require('../../../api/controller/cron');
 	});
 
 	afterEach(async function() {
+		// restore mocked functions
+		await sinonSandbox.restore();
+
 		// wait a few seconds for all database activity to finish
 		await wait(3);
 		await mockDatabase.dropTables(tables);
@@ -39,8 +51,14 @@ describe('Crawler', function() {
 		plans = await planController.browse({query: {status: null, query: null}});
 		assert.equal(plans.length, 0);
 
+		// Log.error was definitely not called yet
+		assert.equal(Log.error.callCount, 0, 'no error messages should be logged');
+
 		// run crawler cron with limit of 2 plans
 		await cronController.iplan(2);
+
+		// make sure Log.error hasn't been called during the crawling process
+		assert.equal(Log.error.callCount, 0, 'no error messages should be logged');
 
 		// now there should be 2 plans
 		plans = await planController.browse({query: {status: null, query: null}});
