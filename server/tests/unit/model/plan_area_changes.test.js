@@ -13,14 +13,13 @@ describe('Plan Area Changes model', function() {
 
 	it('has the right rules', function() {
 		const rules = instance.rules;
-		expect(rules.id).to.eql(['required', 'integer']);
 		expect(rules.plan_id).to.eql(['required', 'integer']);
-		expect(rules.usage).to.eql(['text']);
-		expect(rules.measurement_unit).to.eql(['text']);
-		expect(rules.approved_state).to.eql(['text']);
-		expect(rules.total_in_detailed_plan).to.eql(['text']);
-		expect(rules.total_in_mitaarit_plan).to.eql(['text']);
-		expect(rules.remarks).to.eql(['text']);
+		expect(rules.usage).to.eql(['string']);
+		expect(rules.measurement_unit).to.eql(['string']);
+		expect(rules.approved_state).to.eql(['string']);
+		expect(rules.total_in_detailed_plan).to.eql(['string']);
+		expect(rules.total_in_mitaarit_plan).to.eql(['string']);
+		expect(rules.remarks).to.eql(['string']);
 	});
 
 	it('has the right table name', function() {
