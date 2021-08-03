@@ -10,6 +10,7 @@ const fs = require('fs');
 
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
 const PlanStatusChange = require('../../model/plan_status_change');
+const { formatDate } = require('../date');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
 
@@ -337,30 +338,32 @@ const getPlanStatusList = cheerioPage => {
 };
 
 const getPlanStatus = (plan) => {
-
 	const planId = plan.id;
-	getByPlan(plan)
-		.then(mavatData => {
-			if (! Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
-			! mavatData['planStatusList'][0] )){
-				return null;
-			}
+	return new Promise((resolve, reject) => {
 
-			const planStatusList =  mavatData['planStatusList'][0].map(statusDetails => {
-				const title = statusDetails['1']; // תיאור
-				const date = statusDetails['2']; // תאריך
-				const statusDescription = statusDetails['3']; // פירוט
-				Log.debug(`${`title: ${title}: date: ${date}`} `);
-				return new PlanStatusChange({
-					plan_id: planId,
-					status: title,
-					date: date,
-					status_description: statusDescription, 
-					updated_at: Date.now()
-				});						
+		getByPlan(plan)
+			.then(mavatData => {
+				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
+					!mavatData['planStatusList'][0])) {
+					return null;
+				}
+
+				const planStatusList = mavatData['planStatusList'][0].map(statusDetails => {
+					const title = statusDetails['1']; // תיאור
+					const date = statusDetails['2']; // תאריך
+					const statusDescription = statusDetails['3']; // פירוט
+					Log.debug(`${`title: ${title}: date: ${date}`} `);
+					return new PlanStatusChange({
+						plan_id: planId,
+						status: title,
+						date: formatDate(date),
+						status_description: statusDescription,
+					});
+				});
+				resolve(planStatusList);
 			});
-			return planStatusList;
-		});
+	});
+	
 };
 	
 const getByPlan = plan =>

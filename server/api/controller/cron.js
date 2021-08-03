@@ -9,6 +9,7 @@ const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
+const PlanStatusChange = require('../model/plan_status_change');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -269,22 +270,19 @@ const fetchTreePermit = () =>{
 
 const fetchPlanStatus = () => {
 	Plan.query(qb => {
-		qb.whereNull('areaChanges'); // why? maybe no need
 		qb.orderBy('id', 'desc');
-		qb.limit(1); //TODO just for now
+		qb.limit(4); //TODO just for now
 	})
 		.fetchAll()
 		.then(planCollection =>
 			Bluebird.mapSeries(planCollection.models, plan => {
 				Log.debug(plan.get('plan_url'));
-	
-				return MavatAPI.getPlanStatus(plan);								
-				// check if new 
-				// plan_status_change.save()
-
+				
+				MavatAPI.getPlanStatus(plan).then(planStatuses => {
+					PlanStatusChange.savePlanStatusChange(planStatuses);
+				});
 			})
 		);
-
 };
 
 
