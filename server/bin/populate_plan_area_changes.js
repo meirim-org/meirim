@@ -1,20 +1,17 @@
-
+const Plan = require('../api/model/plan');
 const PlanAreaChangesController = require('../api/controller/plan_area_changes');
-const { Knex } = require('../api/service/database');
-
-
-
-
 
 const populatePlanAreaChanges = async () => {
 	try {
-		const knexRes = await Knex.raw(`SELECT id, areaChanges
-		FROM plan
-		WHERE areaChanges!='[[]]'`);
-
-		const idsAndChanges = knexRes[0];
-		let howMuchLeft = idsAndChanges.length;
-		for (const {id: planId, areaChanges: rawAreaChangesString} of idsAndChanges) {
+		const result = await Plan.query(qb => {
+			qb.where('areaChanges', '!=', '[[]]').select('id','areaChanges');
+		})
+		.fetchAll();
+		areaChanges = result.models;
+		let howMuchLeft = areaChanges.length;
+		for (let counter = 0; counter < areaChanges.length; counter++) {
+			const planId = areaChanges[counter].attributes.id;
+			const rawAreaChangesString = areaChanges[counter].attributes.areaChanges;
 			console.log(`${howMuchLeft} plans left`);
 			howMuchLeft--;
 			await PlanAreaChangesController.refreshPlanAreaChanges(planId, rawAreaChangesString)
