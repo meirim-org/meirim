@@ -3,12 +3,12 @@ exports.up = function(knex) {
         t.increments('id').primary();
         t.integer('plan_id');
         t.text('usage');
-        t.text('measurement_unit').notNullable();
-        t.text('approved_state').notNullable();
-        t.text('change_to_approved_state').notNullable();
-        t.text('total_in_detailed_plan').notNullable();
-        t.text('total_in_mitaarit_plan').notNullable();
-        t.text('remarks').notNullable();
+        t.text('measurement_unit');
+        t.text('approved_state');
+        t.text('change_to_approved_state');
+        t.text('total_in_detailed_plan');
+        t.text('total_in_mitaarit_plan');
+        t.text('remarks');
     });
 };
 
