@@ -14,9 +14,9 @@ exports.personTypes = {
 	'6': 'אחר'
 };
 
-exports.tags = {
-	'דיור': '1'
-}
+exports.tags = [{
+	'tagName':'דיור' , 'tagId':'1', 'tagHelperFunction':'isHousing ({{{planId}}},{{{tagId}}})'
+}]
 
 exports.tagDataRules = {
 	housingByArea: {
