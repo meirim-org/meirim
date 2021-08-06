@@ -3,12 +3,11 @@ const sinon = require('sinon');
 const { generateTagsForPlan } = require('../../../api/lib/tags');
 const { isTagByUsageAddition } = require('../../../api/lib/tags/utils');
 const { tags, tagDataRules } = require('../../../api/constants');
+const { isHousing } = require('./../../../api/lib/tags/housing');
 const PlanAreaChanges = require('../../../api/model/plan_area_changes');
 
 
-const housingTag = tags['דיור'];
-
-
+const housingTag = tags.filter(res=>res.tagName == 'דיור').map(ele=>ele.tagId)[0];
 const planId = 1; 
 const fakeUnitsAdded = 11;
 const fakeSqMrAdded = 1001;
@@ -17,15 +16,8 @@ const fakeHousingByAreaTrue = { models: [{ attributes : { change_to_approved_sta
 const HOUSING_BY_UNIT = 'housingByUnits';
 const HOUSING_BY_AREA = 'housingByArea'
 
-
-
-
-
-
 describe('Tags', function() {
 
-
- 
     describe('isTagByUsageAddition helper function - housing tag tests', function() { 
         let myStub;
         afterEach(async function() {
@@ -84,20 +76,18 @@ describe('Tags', function() {
     });
 
 
-    describe('generateTagsForPlan - housing tag tests', function() { 
+    describe('isHousing - housing tag tests', function() { 
         let myStub;
         afterEach(async function() {
             myStub.restore();
             sinon.restore();
         });
 
-
-
         it('returns the correct tag from generateTagsForPlan when both housing by area and housing by units apply', async function() {
             myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage');
             myStub.onCall(0).returns(fakeHousingByAreaTrue);
             myStub.onCall(1).returns(fakeHousingByUnitsTrue);
-            const result =  await generateTagsForPlan(planId); 
+            const result =  await isHousing(planId); 
             expect(result.length).to.eql(1);
             expect(result[0].plan_id).to.eql(planId);
             expect(result[0].tag_id).to.eql( tags['דיור']);
@@ -108,7 +98,7 @@ describe('Tags', function() {
             myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage');
             myStub.onCall(0).returns(undefined);
             myStub.onCall(1).returns(fakeHousingByUnitsTrue);
-            const result =  await generateTagsForPlan(planId); 
+            const result =  await isHousing(planId); 
             expect(result.length).to.eql(1);
             expect(result[0].plan_id).to.eql(planId);
             expect(result[0].tag_id).to.eql( tags['דיור']);
@@ -119,7 +109,7 @@ describe('Tags', function() {
             myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage');
             myStub.onCall(0).returns(fakeHousingByAreaTrue);
             myStub.onCall(1).returns(null);
-            const result =  await generateTagsForPlan(planId); 
+            const result =  await isHousing(planId); 
             expect(result.length).to.eql(1);
             expect(result[0].plan_id).to.eql(planId);
             expect(result[0].tag_id).to.eql( tags['דיור']);
@@ -130,7 +120,7 @@ describe('Tags', function() {
             myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage');
             myStub.onCall(0).returns(undefined);
             myStub.onCall(1).returns(undefined);
-            const result =  await generateTagsForPlan(planId); 
+            const result =  await isHousing(planId); 
             expect(result.length).to.eql(0);
         });        
 
