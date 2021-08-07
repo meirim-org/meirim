@@ -12,6 +12,7 @@ const FundingTransaction = require('./funding_transaction');
 const File = require('./file');
 const Tag = require('./tag');
 const PlanTag = require('./plan_tag');
+const PlanAreaChanges = require ('./plan_area_changes');
 
 module.exports = {
 	ArchiveNotification,
@@ -27,5 +28,6 @@ module.exports = {
 	FundingTransaction,
 	File,
 	Tag,
-	PlanTag
+	PlanTag,
+	PlanAreaChanges
 };
