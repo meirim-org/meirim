@@ -11,13 +11,14 @@ describe('Plan Tag model', function() {
 	afterEach(function() {
 		instance = null;
 	});
+	
 	it('has the right rules', function() {
 		const rules = instance.rules;
 		expect(rules.parent_id).to.eql(['integer']);
 		expect(rules.display_name).to.eql(['string']);
-        expect(rules.score).to.eql([ 'integer']);
-        expect(rules.is_super_tag).to.eql(['boolean']);
-        expect(rules.is_stand_alone).to.eql(['boolean']);
+		expect(rules.score).to.eql([ 'integer']);
+		expect(rules.is_super_tag).to.eql(['boolean']);
+		expect(rules.is_stand_alone).to.eql(['boolean']);
 		expect(rules.display_tooltip).to.eql(['string']);
 });
 
