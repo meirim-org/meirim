@@ -21,11 +21,16 @@ export const Card = withTheme(styled(MuiCard)`
     @media ${device.tablet} {
         max-width: 360px;
     }
+
+
+    .MuiCardContent-root:last-child {
+        padding-bottom: 16px;
+    }
 `);
 
 export const CardMedia = withTheme(styled(MuiCardMedia)`
     position: relative;
-    height: 60%;
+    height: 50%;
 `);
 
 
@@ -38,8 +43,10 @@ export const CardActionArea = withTheme(styled(MuiCardActionArea)`
 `);
 
 export const CardContent = withTheme(styled(MuiCardContent)`
-    height: 40%;
+    height: 50%;
     font-family: ${props => props.theme.fontFamily} !important;
+    display: flex;
+    flex-direction: column;
 
     > *:first-child {
         font-size: 1.5rem !important;
