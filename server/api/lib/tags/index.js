@@ -1,22 +1,21 @@
-const { tags } = require('../../constants');
-const { isHousing } = require('../tags/housing');
+
 const Exception = require('../../../api/model/exception');
-const functions = {'isHousing':isHousing};
+const functions = [require('../tags/housing')];
 
 const generateTagsForPlan = async (planId) => {
 	const planTags = [];
-	for (const tagCounter in tags) {
-		const { tagId, tagName,functionName}  = tags[tagCounter];
+	for (const counter in functions) {
+		const tagFunction = functions[counter];
 		try {
-			const tagFunction = functions[functionName];
-			if (typeof(tagFunction) != "function") {
-				throw new Exception.BadRequest(`"${functionName}" must be a function that determines if tag "${tagName}" applies. Please require it and add it to the functions object`);
+			if (typeof(tagFunction.doesTagApply) != "function") {
+				throw new Exception.BadRequest(`"Please require only doesTagApply functions.`);
 			};
-			const result = await tagFunction(planId, tagId);
+			const result = await tagFunction.doesTagApply(planId);
 			planTags.push(...result);
 		} catch (err) {
 			console.debug(err);			
 		}
+			
 	} 
 	return planTags;	
 }

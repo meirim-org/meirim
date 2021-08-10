@@ -14,10 +14,6 @@ exports.personTypes = {
 	'6': 'אחר'
 };
 
-exports.tags = [
-	{'tagName':'דיור' , 'tagId':'1', 'functionName': 'isHousing'}
-]
-
 exports.tagDataRules = {
 	housingByArea: {
 		usage: 'מגורים (מ"ר)' ,
