@@ -2,10 +2,11 @@ import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dropdown, Link, TextArea, TextInput } from '../../shared';
-import { personTypes } from './constants';
+import { usePersonTypes } from './constants';
 import * as SC from './style';
 
 const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
+	const personTypes = usePersonTypes();
 	const { address, type, aboutme } = values;
 	const { t } = useTranslation();
 
@@ -23,7 +24,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 						type="text"
 						value={address}
 						onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })}
-						helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" />
+						helperText={t.toGetUpdates} />
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<Dropdown
@@ -31,22 +32,22 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 						value={type}
 						onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) }
 						options={personTypes}
-						label="מי אני" />
+						label={t.whoAmI} />
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<TextArea
 						id="register-aboutme-input"
 						value={aboutme}
 						onChange={({ target: { value } }) => setValues({ type, aboutme: value, address })}
-						helperText="כדי ששאר חברי הקהילה יכירו אותך"
-						label="קצת עליך" />
+						helperText={t.soMemembersKnowWhoYouAre}
+						label={t.aboutYou} />
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper smallPadding>
-				<Button id="register-send-form-button" text="הרשמה למעירים" onClick={handleSubmit} />
+				<Button id="register-send-form-button" text={t.signupToMeirim} onClick={handleSubmit} />
 			</SC.ButtonWrapper>
 			<SC.TermsOfUseWrapper>
-				<SC.TermsOfUse>בלחיצה על הכפתור הנך מאשר/ת את </SC.TermsOfUse>
+				<SC.TermsOfUse>{t.youAreConfirming}</SC.TermsOfUse>
 				<Link id="register-terms-of-use" text={t.termsOfUse} url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 				<SC.TermsOfUse> ו</SC.TermsOfUse>
 				<Link id="register-terms-of-use" text={t.privacyPolicy} url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
