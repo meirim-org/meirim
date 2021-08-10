@@ -7,14 +7,14 @@ const populatePlanAreaChanges = async () => {
 			qb.where('areaChanges', '!=', '[[]]').select('id','areaChanges');
 		})
 		.fetchAll();
-		areaChanges = result.models;
+		const areaChanges = result.models;
 		let howMuchLeft = areaChanges.length;
 		for (let counter = 0; counter < areaChanges.length; counter++) {
 			const planId = areaChanges[counter].attributes.id;
 			const rawAreaChangesString = areaChanges[counter].attributes.areaChanges;
 			console.log(`${howMuchLeft} plans left`);
 			howMuchLeft--;
-			await PlanAreaChangesController.refreshPlanAreaChanges(planId, rawAreaChangesString)
+			await PlanAreaChangesController.refreshPlanAreaChanges(planId, rawAreaChangesString);
 			
 		}		
 	}
