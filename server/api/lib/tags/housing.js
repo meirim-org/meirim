@@ -8,14 +8,14 @@ const isHousing = async (planId, tag) => {
 	const dataRules = [];
 	
 	// check housing by area
-	const housingByArea = await isTagByUsageAddition(planId,tag,HOUSING_BY_AREA); 
+	const housingByArea = await isTagByUsageAddition(planId, tag, HOUSING_BY_AREA); 
 	if (housingByArea) {
 		dataRules.push(
 			housingByArea.created_by_data_rules
 		);
 	}
 	// check housing by units
-	const housingByUnits = await isTagByUsageAddition(planId,tag,HOUSING_BY_UNITS);
+	const housingByUnits = await isTagByUsageAddition(planId, tag, HOUSING_BY_UNITS);
 	if (housingByUnits) {
 		dataRules.push(
 			housingByUnits.created_by_data_rules
