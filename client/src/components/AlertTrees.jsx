@@ -64,9 +64,9 @@ const AlertTrees = ({notifyAddedAlert}) => {
 					</div>
 				)}
 				<div className="selectAreaAndInterest">
-					הוסיפו את הערים עליהם תרצו לקבל התראה
+					{t.addCitiesToGetNotified}
 					<small>
-						**ניתן להוסיף יותר מעיר אחת
+					{t.youCanAddMoreThanOneCity}
 					</small>
 				</div>
 
@@ -78,7 +78,7 @@ const AlertTrees = ({notifyAddedAlert}) => {
 				/>
 				<br />
 
-				<div> * ישנן רשויות שלא זמינות לנו כרגע</div>
+				<div>{t.citiesNotAva}</div>
 				<div> <Link url="/support-us/" textDecoration="none" text="תמכו בנו" /> כדי שנוכל להגיע גם לעיר שלכם!</div>
 				<div className="row">
 					<div className="col">
