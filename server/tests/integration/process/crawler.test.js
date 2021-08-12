@@ -12,7 +12,7 @@ const { wait } = require('../../utils');
 const tables = [
 	'plan', 'notification', 'alert', 'person', 'tables_18_interests_in_plan',
 	'table_4_area_designation_and_usage', 'table_5_building_rights',
-	'table_6_additional_instructions', 'file'
+	'table_6_additional_instructions', 'file', 'plan_area_changes'
 ];
 
 describe('Crawler', function() {
