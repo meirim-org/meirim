@@ -177,9 +177,19 @@ const HEBREW_TRANSLATION = {
 	addCitiesToGetNotified:'הוסיפו את הערים עליהם תרצו לקבל התראה',
 	youCanAddMoreThanOneCity:'ניתן להוסיף יותר מעיר אחת',
 	citiesNotAva:'ישנן רשויות שלא זמינות לנו כרגע',
+	congratesOnJoining: 'ברכות על הצטרפותך למעירים!',
+	congratesOnJoining2: 'כולם מחכים לשמוע מה יש לך לומר',
+	addition: 'הוספה',
+	noAddress: 'הכתובת לא נמצאה',
+	addressExample: 'לדוגמא: מאז"ה 9, תל אביב'
 };
 
 const ARABIC_TRANSLATION =  {
+	addressExample: 'على سبيل المثال: شارع توفيق زياد 17، الناصرة',
+	noAddress: 'العنوان غير موجود',
+	addition: 'اضافة',
+	congratesOnJoining2: 'כולם מחכים לשמוע מה יש לך לומר',
+	congratesOnJoining: 'نحن سعيدون بانضمامك لنا',
 	citiesNotAva: 'هناك بعض السلطات المحلية التي المعلومات بخصوصها غير متوفرة لنا الآن',
 	youCanAddMoreThanOneCity:'يمكنك اضافة اكثر من مدينة',
 	addCitiesToGetNotified:'أضف المدن التي تريد أن يتم إعلامك بها',
@@ -269,7 +279,7 @@ const ARABIC_TRANSLATION =  {
 	emptyTextarea: 'שדה טקסט ריק',
 	close: 'اغلاق',
 	searchForAddress: 'ادخل عنوان',
-	radius: 'محيط',
+	radius: 'نصف قطر (بعد عن العنوان)',
 	send: 'ارسل',
 	continue: 'اكمل',
 	chooseType: 'בחרו סוג',
@@ -347,7 +357,7 @@ const ARABIC_TRANSLATION =  {
 	homepageMainSubTitlePlansLinkText: 'خطط بناء',
 	homepageMainSubTitleB: 'جديدة وقديمة ورخص',
 	homepageMainSubTitleTreesLinkText: 'لقطع الاشجار',
-	treesHelperTitle: 'רשיונות כריתה של עצים - חדש באתר!',
+	treesHelperTitle: 'تراخيص قطع الأشجار - جديد في الموقع!',
 	treesHelperTextA: 'כדי לכרות עץ בוגר בישראל - בשטח ציבורי או פרטי - יש להוציא רישיון כריתה. מיום פרסום הרישיון יש לציבור 14 יום ',
 	treesHelperTextLink: 'להגיש ערר',
 	treesHelperTextB: '.\nהכניסו שם יישוב וצפו ברישיונות הכריתה:',

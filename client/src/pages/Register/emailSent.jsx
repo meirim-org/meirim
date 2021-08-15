@@ -170,9 +170,9 @@ const EmailSent = ({ fullPage = true , ...props }) => {
 					<Content>
 						<PreTitle>{t.almostDone}</PreTitle>
 						<Title>
-                            { t.confirmEmail1 }
+                            {t.confirmEmail1}
                             <br />
-                            { t.confirmEmail2 }
+                            {t.confirmEmail2}
 						</Title>
 						<Text id="register-emailsent-sucess">{t.sentYouEmailForConfirmation}</Text>
 						<SmallTextWrapper>

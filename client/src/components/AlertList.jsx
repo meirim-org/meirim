@@ -1,14 +1,15 @@
-import '../../node_modules/leaflet/dist/leaflet.css';
+import leaflet from 'leaflet';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import PropTypes from 'prop-types'
-import { Map, TileLayer, Circle} from 'react-leaflet';
-import  leaflet from 'leaflet';
-import AlertTable from '../components/AlertTable';
+import { Circle, Map, TileLayer } from 'react-leaflet';
 import api from 'services/api';
+import '../../node_modules/leaflet/dist/leaflet.css';
+import AlertTable from '../components/AlertTable';
 
 const AlertList = ({notifyDeletedAlert, alerts}) => {
 	const [ bounds, setBounds ] = useState([{ lat: 35, lng: 35 }, { lat: 25,lng: 25 }]);
-
+	const { t } = useTranslation();
 	React.useEffect(() => {
 		let transparentLayer = leaflet.geoJSON();
 		if (alerts.length > 0) {
@@ -27,11 +28,11 @@ const AlertList = ({notifyDeletedAlert, alerts}) => {
 		api.delete('/alert/' + alertId).then(() => {
 			notifyDeletedAlert();
 		});
-	}
+	};
 
 	return (
 		<div className="rectangle">
-			<h5 className="container-title">ההתראות שלי</h5>
+			<h5 className="container-title">{t.alert}</h5>
 			<div className="row">
 				<div className="col col-sm-6">
 					<AlertTable
