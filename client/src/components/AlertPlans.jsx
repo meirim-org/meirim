@@ -13,12 +13,12 @@ _.map(new Array(sliderBounds.max), (obj, i) => {
 	sliderText[i + 1] = `${sliderBounds.max - i} ${t.km}`;
 });
 
-const AlertPlans = ({notifyAddedAlert}) => {
+const AlertPlans = ({ notifyAddedAlert }) => {
+	const { t } = useTranslation();
 	const [ error, setError ] = useState(false);
 	const [ loading, setLoading ] = useState(false);
 	const [ radius, setRadius ] = useState(5);
 	const [ address, setAddress ] = useState('');
-	const { t } = useTranslation();
 
 	const handleSlide = (value)  =>{
 		setRadius(value);
@@ -59,7 +59,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 			<h5 className="container-title">{t.newAlert}</h5>
 			{error && (
 				<div className="alert alert-danger" role="alert">
-					הכתובת לא נמצאה
+					{t.noAddress}
 				</div>
 			)}
 			<div className="selectAreaAndInterest">
@@ -78,7 +78,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 						id="homeAddress"
 						type="text"
 						value={address}
-						placeholder='לדוגמא: מאז"ה 9, תל אביב'
+						placeholder={t.addressExample}
 						required
 						onChange={handleAddress}
 					/>
@@ -120,7 +120,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 						title="הוסף התראה"
 						disabled={loading}
 					>
-						הוספה
+						{t.addition}
 						{loading && (
 							<FontAwesomeIcon icon="spinner" spin />
 						)}

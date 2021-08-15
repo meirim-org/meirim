@@ -6,7 +6,7 @@ import { Link } from 'shared';
 import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
 import api from '../services/api';
 
-const AlertTrees = ({notifyAddedAlert}) => {
+const AlertTrees = ({ notifyAddedAlert }) => {
 	const [ error, setError ] = useState(false);
 	const [ loading, setLoading ] = useState(false);
 	const [ treePlaces, setTreePlaces ] = useState([]);
@@ -66,7 +66,7 @@ const AlertTrees = ({notifyAddedAlert}) => {
 				<div className="selectAreaAndInterest">
 					{t.addCitiesToGetNotified}
 					<small>
-					{t.youCanAddMoreThanOneCity}
+						{ t.youCanAddMoreThanOneCity }
 					</small>
 				</div>
 
@@ -88,7 +88,7 @@ const AlertTrees = ({notifyAddedAlert}) => {
 							title="הוסף התראה"
 							disabled={loading}
 						>
-							הוספה
+							{t.addition}	
 							{loading && (
 								<FontAwesomeIcon icon="spinner" spin />
 							)}
