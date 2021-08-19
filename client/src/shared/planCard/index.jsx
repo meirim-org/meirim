@@ -7,72 +7,54 @@ import { Grid } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import UnsafeRender from 'components/UnsafeRender';
 import { Text } from 'shared';
+import moment from 'moment'
 import styled from 'styled-components';
-import BookmarkIcon from '../../assets/bookmarkIcon.svg';
+import BookmarkOutlinedIcon from '../../assets/bookmark-outlined-icon.svg';
+import BookmarkFilledIcon from '../../assets/bookmark-filled-icon.svg';
 import DropPinIcon from '../../assets/drop-pin-icon.svg';
+import { openModal } from '../../redux/modal/slice';
+import { isFavoritePlan } from '../../pages/Plan/hooks';
+import { UserSelectors } from '../../redux/selectors';
+import { useDispatch } from 'react-redux';
+import { subscribeUserToPlan, unsubscribeUserToPlan } from '../../pages/Plan/controller';
 
-
-const mockTags = [
-	{
-		text: 'משרדים',
-		type: 'offices'
-	},
-	{
-		text: 'מסחר',
-		type: 'commerce'
-	},
-	{
-		text: 'שטח פתוח',
-		type: 'open-field'
-	},
-	{
-		text: 'מגורים',
-		type: 'residence'
-	},
-	{
-		text: 'תחבורה',
-		type: 'transportation'
-	},
-	{
-		text: 'מוסדות ציבור',
-		type: 'public-institutes'
-	},
-	// {
-	// 	text: 'קגדגכ'
-	// },
-	// {
-	// 	text: 'גדכדג'
-	// },
-	// {
-	// 	text: 'כדג'
-	// },
-];
 
 const PlanCard = ({ plan }) => {
 	const theme = useTheme();
 	const tagsWrapperRef = useRef(null);
-	const [tags, setTags] = useState(mockTags);
-	const tagsRef = useRef(mockTags.map(() => createRef()));
+	const [tags, setTags] = useState(plan?.tags || []);
+    const [ isFavPlan, setIsFavPlan ] = useState(false);
+	const tagsRef = useRef([...(plan?.tags || []).map(() => createRef()), createRef()]);
+    const dispatch = useDispatch();
+    const { isAuthenticated, user } = UserSelectors();
 
-	// const intersectionObserverCallback = (entries) => {
-	// 	console.log(entries);
-	// 	const visibleTags = entries.filter(entry => entry.isIntersecting);
-	// 	if (visibleTags.length < entries.length){
-	// 		const newTags = tags.slice(0,visibleTags.length);
-	// 		newTags.push({ text: `${entries.length - visibleTags.length + 1}`, type: 'plus' });
-	// 		setTags(newTags);
-	// 	}
-	// };
+    useEffect(() => {
+        const handler = async () => {
+            await getIsFav();
+        };
+        handler();
+    }, [getIsFav]);
 
 	const intersectionObserverCallback = useCallback((entries) => {
-        console.log(entries);
         const visibleTags = entries.filter(entry => entry.isIntersecting);
+        const plusTagIndex = tags.map(tag => tag.type).indexOf('plus');
+        const newTags = [...tags];
+
+        if(plusTagIndex > -1){
+            newTags.splice(plusTagIndex, 1)
+            setTags(newTags)
+        }
+
+        if(entries.length !== tags.length){
+            return
+        }
+
         if (visibleTags.length < entries.length){
-            const newTags = tags.slice(0,visibleTags.length);
-            newTags.push({ text: `${entries.length - visibleTags.length + 1}`, type: 'plus' });
+            newTags.splice(plusTagIndex, 1)
+            newTags.splice(visibleTags.length,0, { text: `${entries.length - visibleTags.length}`, type: 'plus' })
             setTags(newTags);
         }
-    },[tags])
+    },[tagsRef])
 
 	useLayoutEffect(() => {
 	    const currentTagsRef = tagsRef.current;
@@ -84,7 +66,7 @@ const PlanCard = ({ plan }) => {
 
 		if (currentTagsRef){
 			currentTagsRef.forEach(ref => {
-				observer.observe(ref.current);
+                ref.current && observer.observe(ref.current);
 			});
 		}
 
@@ -95,8 +77,44 @@ const PlanCard = ({ plan }) => {
 				});
 			}
 		};
-	}, [tagsRef]);
-    
+	}, [intersectionObserverCallback]);
+
+    const subscriptionHandler = async () => {
+        if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
+        const isFav = await isFavoritePlan(user.id, plan.id);
+        if (isFav) {
+            await unsubscribeToPlan();
+        } else {
+            await subscribeToPlan();
+        }
+        await getIsFav();
+    };
+
+    const unsubscribeToPlan = async () => {
+        await unsubscribeUserToPlan(plan.id);
+    };
+    const subscribeToPlan = async () => {
+        await subscribeUserToPlan(plan.id);
+    };
+
+    const getIsFav = React.useCallback(async () => {
+        if (!user.id) return;
+        const isFav = await isFavoritePlan(user.id, plan.id);
+        setIsFavPlan(isFav);
+    }, [user.id, plan.id]);
+
+	function handleBookmarkClick(e){
+	    e.preventDefault()
+        subscriptionHandler()
+    }
+
+	function parseUpdateDate(){
+	    if(plan.updated_at && moment(plan.updated_at).isValid()){
+	        return `ב-${moment(plan.updated_at).format("DD.MM.YYYY")}`
+        }
+	    return ''
+    }
+
 	return (
 		<Grid item xs={12} sm={6} md={4}>
 			<SC.Card raised={true}>
@@ -108,14 +126,15 @@ const PlanCard = ({ plan }) => {
 						<MapTitle>
 							<StatusChip>
 								<StatusDot approved={plan.status === 'מאושרות'} />
+
 								<Text
 									size='14px'
 									weight='600'
-									text={`${plan.status} ב-5.4.21`}
+									text={`${plan.status} ${parseUpdateDate()}`}
 									color={theme.palette.black}
 								/>
 							</StatusChip>
-							<BookmarkBtn />
+							<BookmarkBtn isBookmarked={isFavPlan} onClick={handleBookmarkClick}/>
 						</MapTitle>
 						<MapFooter>
 							<FooterChip>
@@ -144,8 +163,8 @@ const PlanCard = ({ plan }) => {
 						/>
 					</SC.CardMedia>
 					<SC.CardContent>
-                        {plan?.data?.QUANTITY_DELTA_120 > 0 || plan.distance ? <PlanDetailsHeader>
-                            {plan.distance && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
+                        <PlanDetailsHeader>
+                            {plan.distance > 0 && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
                                 <Text
                                     size='16px'
                                     weight='600'
@@ -153,13 +172,13 @@ const PlanCard = ({ plan }) => {
                                     color={theme.palette.black}
                                 />
                             </PlanDistance>}
-                            {plan?.data?.QUANTITY_DELTA_120 > 0 ? <Text
+                            {plan?.data?.QUANTITY_DELTA_120 > 0 && <Text
                                 size='16px'
                                 weight='600'
                                 text={`${plan?.data?.QUANTITY_DELTA_120}+ דירות`}
                                 color={theme.palette.black}
-                            /> : null}
-                        </PlanDetailsHeader> : null}
+                            />}
+                        </PlanDetailsHeader>
 						<PlanName>
 							<Text
 								size='18px'
@@ -188,18 +207,6 @@ const PlanCard = ({ plan }) => {
 								</Tag>;
 							})}
 						</Tags>
-						{/*<Text*/}
-						{/*	size='1.5rem'*/}
-						{/*	weight='600'*/}
-						{/*	text={plan.plan_display_name}*/}
-						{/*	color={theme.palette.black}*/}
-						{/*	component='h2'*/}
-						{/*/>*/}
-						{/*<UnsafeRender*/}
-						{/*	html={*/}
-						{/*		plan.main_details_from_mavat*/}
-						{/*	}*/}
-						{/*/>*/}
 					</SC.CardContent>
 				</Link>
 			</SC.Card>
@@ -241,6 +248,7 @@ const StatusChip = styled(Chip)`
 const StatusDot = styled.div`
     width: 14px;
     height: 14px;
+    flex-shrink: 0;
     margin-left: 7px;
     border-radius: 7px;
     background: ${({ approved }) => approved ? '#1976D2' : '#AE7FF0'};
@@ -252,10 +260,12 @@ const BookmarkBtn = styled.button`
     border: none;
     border-radius: 18.5px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-    background: center no-repeat url(${BookmarkIcon}) #FFFFFF;
-
+    background: center no-repeat url(${({isBookmarked}) => isBookmarked ? BookmarkFilledIcon : BookmarkOutlinedIcon}) #FFFFFF;
+    flex-shrink: 0;
+    
     & :focus {
         outline: none;
+        background-color: #F5F5F5;
     }
 `;
 
