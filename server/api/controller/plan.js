@@ -25,6 +25,9 @@ class PlanController extends Controller {
 			columns: [...columns,
 				'goals_from_mavat',
 				'main_details_from_mavat',
+				'status',
+				'updated_at',
+				'data'
 			]
 		};
 
