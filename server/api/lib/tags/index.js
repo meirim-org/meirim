@@ -1,6 +1,6 @@
 
 const Exception = require('../../../api/model/exception');
-const functions = [require('../tags/housing')];
+const functions = [require('../tags/housing'),require('../tags/public')];
 
 const generateTagsForPlan = async (planId) => {
 	const planTags = [];
