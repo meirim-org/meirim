@@ -340,7 +340,6 @@ const getPlanStatusList = cheerioPage => {
 const getPlanStatus = (plan) => {
 	const planId = plan.id;
 	return new Promise((resolve, reject) => {
-
 		getByPlan(plan)
 			.then(mavatData => {
 				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
@@ -361,9 +360,9 @@ const getPlanStatus = (plan) => {
 					});
 				});
 				resolve(planStatusList);
-			});
+			})
+			.catch(err => Log.error('plan status error:', err));
 	});
-	
 };
 	
 const getByPlan = plan =>

@@ -15,10 +15,8 @@ class PlanStatusChange extends Model {
 		return 'plan_status_change';
 	}
 
-	static async getStatusesByPlan(planID) {
-		return new PlanStatusChange({
-			plan_id: planID
-		}).fetchAll();
+	static getStatusesByPlan(planID) {
+		return PlanStatusChange.where({ plan_id: planID }) .fetchAll();
 	}
 
 	static async saveBulk(planStatuses) {
@@ -36,9 +34,12 @@ class PlanStatusChange extends Model {
 	}
 
 	static async savePlanStatusChange(planStatuses) {
-
-		const existing = await (await this.getStatusesByPlan(planStatuses[0].attributes.plan_id)).map(status => status.attributes.status);
-		const newStatues = planStatuses.filter(status => existing.indexOf(status.attributes.status) == -1);
+		//compare to existing records in db. save only new ones.
+		const existing_records = await this.getStatusesByPlan(planStatuses[0].attributes.plan_id);
+		const existing_statuses = existing_records.models.map(record => record.attributes.status);
+		const newStatues = planStatuses.filter((status) => existing_statuses.indexOf(status.attributes.status) == -1);
+		Log.debug('plan id:',planStatuses[0].attributes.plan_id );
+		Log.debug('newStatuses:', newStatues);
 		await this.saveBulk(newStatues);
 	}
 }

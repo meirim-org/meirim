@@ -271,7 +271,7 @@ const fetchTreePermit = () =>{
 const fetchPlanStatus = () => {
 	Plan.query(qb => {
 		qb.orderBy('id', 'desc');
-		qb.limit(4); //TODO just for now
+		qb.limit(15); //TODO just for now
 	})
 		.fetchAll()
 		.then(planCollection =>
@@ -282,7 +282,7 @@ const fetchPlanStatus = () => {
 					PlanStatusChange.savePlanStatusChange(planStatuses);
 				});
 			})
-		);
+		).then(() => Log.info('Done fetchPlanStatus'));
 };
 
 
