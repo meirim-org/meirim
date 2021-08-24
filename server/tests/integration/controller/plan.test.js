@@ -77,7 +77,7 @@ describe('Plan controller', function() {
 				PL_NUMBER: '1-1',
 				PL_NAME: 'name/1',
 				data: 'data',
-				geom: {'type': 'Feature', 'properties': {}, 'geometry': {'type': 'Polygon', 'coordinates': [[[35.29765605926514, 32.698333027553474], [35.29937267303467, 32.698333027553474], [35.29937267303467, 32.69898308437551], [35.29765605926514, 32.69898308437551], [35.29765605926514, 32.698333027553474]]]}},
+				geom: { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'Polygon', 'coordinates': [[[35.29765605926514, 32.698333027553474], [35.29937267303467, 32.698333027553474], [35.29937267303467, 32.69898308437551], [35.29765605926514, 32.69898308437551], [35.29765605926514, 32.698333027553474]]] } },
 				jurisdiction: 'juris',
 				areaChanges: 'areachanges',
 				rating: 2,
@@ -97,7 +97,7 @@ describe('Plan controller', function() {
 				PL_NUMBER: '2-2',
 				PL_NAME: 'name/2',
 				data: 'data',
-				geom: {'type': 'Feature', 'properties': {}, 'geometry': {'type': 'Polygon', 'coordinates': [[[35.31010150909424, 32.707415336831616], [35.3116250038147, 32.707415336831616], [35.3116250038147, 32.70783060919105], [35.31010150909424, 32.70783060919105], [35.31010150909424, 32.707415336831616]]]}},
+				geom: { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'Polygon', 'coordinates': [[[35.31010150909424, 32.707415336831616], [35.3116250038147, 32.707415336831616], [35.3116250038147, 32.70783060919105], [35.31010150909424, 32.70783060919105], [35.31010150909424, 32.707415336831616]]] } },
 				jurisdiction: 'juris',
 				areaChanges: 'areachanges',
 				rating: 2,
@@ -117,7 +117,7 @@ describe('Plan controller', function() {
 				PL_NUMBER: '3-3',
 				PL_NAME: 'name/3',
 				data: 'data',
-				geom: {'type': 'Feature', 'properties': {}, 'geometry': {'type': 'Polygon', 'coordinates': [[[35.293922424316406, 32.70541116914156], [35.29435157775879, 32.705320890258115], [35.29426574707031, 32.70517644385461], [35.2948236465454, 32.70521255547741], [35.29488801956177, 32.70544728066936], [35.294501781463616, 32.70559172663443], [35.29441595077515, 32.705465336427785], [35.293922424316406, 32.70541116914156]]]}},
+				geom: { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'Polygon', 'coordinates': [[[35.293922424316406, 32.70541116914156], [35.29435157775879, 32.705320890258115], [35.29426574707031, 32.70517644385461], [35.2948236465454, 32.70521255547741], [35.29488801956177, 32.70544728066936], [35.294501781463616, 32.70559172663443], [35.29441595077515, 32.705465336427785], [35.293922424316406, 32.70541116914156]]] } },
 				jurisdiction: 'juris',
 				areaChanges: 'areachanges',
 				rating: 2,
@@ -166,8 +166,8 @@ describe('Plan controller', function() {
 		expect(distanceBrowsePlans.models[2].attributes.distance).to.eql(1439.1654446476325);
 
 		// distance point browse should not return geo-search-filtered plans
-		const firstPlan = await new Plan({PL_NUMBER: '1-1'}).fetch();
-		await firstPlan.set({geo_search_filter: true});
+		const firstPlan = await new Plan({ PL_NUMBER: '1-1' }).fetch();
+		await firstPlan.set({ geo_search_filter: true });
 		await firstPlan.save();
 
 		const filteredDistanceBrowsePlans = await PlanController.browse(req5);
