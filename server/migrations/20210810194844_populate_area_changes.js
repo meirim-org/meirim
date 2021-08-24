@@ -5,6 +5,6 @@ exports.up = async function(knex) {
   await populatePlanAreaChanges();
 };
 
-exports.down = function(knex) {
-  knex.raw('DELETE FROM plan_area_changes');
+exports.down = async function(knex) {
+  await knex('plan_area_changes').del();
 };
