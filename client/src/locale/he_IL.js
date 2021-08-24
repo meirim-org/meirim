@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStore, useStore } from 'react-hookstore';
 
-const defaultLanguage = 'AR';
+const defaultLanguage = 'HE';
 const LOCALE_STORE = 'localeStore';
 
 const HEBREW_TRANSLATION = {
