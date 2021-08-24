@@ -10,6 +10,8 @@ const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
 const FundingTransaction = require('./funding_transaction');
 const File = require('./file');
+const Tag = require('./tag');
+const PlanTag = require('./plan_tag');
 const PlanAreaChanges = require ('./plan_area_changes');
 
 module.exports = {
@@ -25,5 +27,7 @@ module.exports = {
 	PlanChartSixRow,
 	FundingTransaction,
 	File,
+	Tag,
+	PlanTag,
 	PlanAreaChanges
 };
