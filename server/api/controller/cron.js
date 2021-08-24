@@ -3,16 +3,14 @@ const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
+const PlanTag = require('../model/plan_tag');
 const Email = require('../service/email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
-
-// const isNewPlan = iPlan => Plan
-//   .fetchByObjectID(iPlan.properties.OBJECTID)
-//   .then(plan => !plan);
+const { generateTagsForPlan } = require('../lib/tags');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -210,6 +208,29 @@ const sendTreeAlerts = () => {
 		});
 };
 
+const updatePlanTags = async () => {
+	let start = Number(Date.now());
+	Log.info('Re-creating plan tags');
+	let tagCounter = 0;
+	// Re-compute the tags of a plan if the last update time of the plan is after the last update time of the tags of this plan.
+	// Before re-computing the tags of a plan, remove all previous tags for this plan.
+	
+	// TODO: Loop on the plans that need to be updated 
+	const plans = await Plan.getPlansToTag();
+	Log.info(`Processing ${plans.models.length} plans`);
+	for (const plan in plans.models) {
+		const planId = plans.models[plan].get('id');
+		await PlanTag.deletePlanTags(planId);
+		const tags = await generateTagsForPlan(planId);
+		if (tags && tags.length > 0){
+			await PlanTag.createPlanTags(tags);
+			tagCounter++;
+		}
+	}
+	let end = Number(Date.now());
+	const duration = end - start;
+	Log.info(`Done. Added tags to ${tagCounter}/${plans.models.length} plans. It took ${duration/1000} seconds`);
+};
 
 /** Private */
 
@@ -267,6 +288,8 @@ const fetchTreePermit = () =>{
 	return crawlTreesExcel();
 };
 
+
+
 module.exports = {
 	iplan,
 	complete_mavat_data,
@@ -275,5 +298,6 @@ module.exports = {
 	fix_geodata,
 	fetchIplan,
 	fetchTreePermit,
-	sendTreeAlerts
+	sendTreeAlerts,
+	updatePlanTags
 };
