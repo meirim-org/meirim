@@ -16,6 +16,7 @@
     "dependencies": {
         "@florpor/pdf-table-extractor": "^1.0.6",
         "@mapbox/geojson-area": "^0.2.2",
+        "@turf/turf": "^6.5.0",
         "abort-controller": "^3.0.0",
         "aws-sdk": "^2.806.0",
         "axios": "^0.21.1",
