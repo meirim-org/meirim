@@ -24,7 +24,7 @@ exports.up =	async function(knex)	{
 		.default(1);
 		table.string('created_by_data_rules');
 		table.boolean('created_by_child').default('false');
-		table.boolean('child_is_stand_alone').default('false');0
+		table.boolean('child_is_stand_alone').default('false');
 		table.datetime('creation_date').defaultTo(knex.fn.now());
 	 })	
 

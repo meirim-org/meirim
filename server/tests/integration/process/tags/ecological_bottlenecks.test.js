@@ -4,6 +4,8 @@ const TagsResources = require('../../../../api/lib/tags/tags_resources');
 const expect = require('chai').expect;
 
 
+//TODO: ADD TAG ID CHECK
+
 describe('Ecological Bottlenecks Tag', function() {
     const tagsResource = new TagsResources.TagsResources();
 

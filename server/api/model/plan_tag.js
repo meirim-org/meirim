@@ -47,15 +47,15 @@ class PlanTag extends Model {
 	}
 
 	// TODO: change to get array of tags rather than just one
-	static async createPlanTags( data) {
+	static async createPlanTags(data) {
 		try {
 			await Bookshelf.transaction(async (transaction) => {
-				for (const datum in data ){
-					await new PlanTag(data[datum]).save(null, {transacting: transaction});
+				for (const datum in data) {
+					await new PlanTag(data[datum]).save(null, { transacting: transaction });
 			}
 		});
 		} catch (err) {
-			console.log(err);
+			Log.error(err);
 		}
 
 	}	
