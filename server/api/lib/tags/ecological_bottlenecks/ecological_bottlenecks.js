@@ -1,13 +1,11 @@
-const turf = require('turf');
 const spatial_utils = require('../spatial_utils');
 
+const TAG_NAME = 'צוואר בקבוק מסדרון אקולוגי';
 
-const TAG_ID = 2;
-
-const doesTagApply = async (plan, tags_resources) => {
+const doesTagApply = async (plan, tagsResources) => {
 
     const bottlenecksInvolved = [];
-    tags_resources.bottlenecks.forEach(bottleneck => {
+    tagsResources.bottlenecks.forEach(bottleneck => {
         const intersection = spatial_utils.intersectPolyOrMultiPolyWithMultiPoly(plan.attributes.geom, bottleneck.geom);
 
         if (intersection != null) {
@@ -21,7 +19,7 @@ const doesTagApply = async (plan, tags_resources) => {
     if (bottlenecksInvolved.length > 0) {
         return {
             plan_id: plan.id,
-            tag_id: TAG_ID,
+            tag_id: tagsResources.tagNameToTagId[TAG_NAME],
             display_score: 0, /* TODO: Add the correct display score here */
             created_by_data_rules: JSON.stringify(bottlenecksInvolved)
         };
@@ -32,5 +30,6 @@ const doesTagApply = async (plan, tags_resources) => {
 };
 
 module.exports = {
-    doesTagApply
+    doesTagApply,
+    TAG_NAME
 };

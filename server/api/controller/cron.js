@@ -10,7 +10,7 @@ const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
-const PlanTagger = require('../lib/tags/index');
+const { getPlanTagger } = require('../lib/tags/index');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -209,7 +209,7 @@ const sendTreeAlerts = () => {
 };
 
 const updatePlanTags = async () => {
-	const tagger = new PlanTagger.PlanTagger();
+	const tagger = await getPlanTagger();
 	let start = Number(Date.now());
 	Log.info('Re-creating plan tags');
 	let tagCounter = 0;
@@ -222,8 +222,7 @@ const updatePlanTags = async () => {
 	for (const planOrder in plans.models) {
 		const plan = plans.models[planOrder];
 		await PlanTag.deletePlanTags(plan.id);
-		// TODO: Check this line
-		const tags = await tagger.generateTagsForPlan(plan);
+		const tags = await tagger(plan);
 		if (tags && tags.length > 0){
 			await PlanTag.createPlanTags(tags);
 			tagCounter++;

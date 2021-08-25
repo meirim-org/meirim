@@ -25,10 +25,9 @@ const isTagByUsageAddition = async (planId, rule) => {
 	}
 };
 
-const doesTagApplyHelper = async (planId, tagName) => {
+const doesTagApplyHelper = async (planId, tagName, tagsResources) => {
 	const dataRules = [];
 	const tagInfo = tagDataRules.filter(tag => {return tag.tagName === tagName})[0];
-	const tagId = tagInfo.tagId;
 	for (const counter in tagInfo.rules) {
 
 		const rule = tagInfo.rules[counter];
@@ -49,7 +48,7 @@ const doesTagApplyHelper = async (planId, tagName) => {
 	if (dataRules.length > 0) {
 		return {
 			plan_id: planId,
-			tag_id: tagId,
+			tag_id: tagsResources.tagNameToTagId[tagName],
 			display_score: 0, /* TODO: Add the correct display score here */
 			// TODO: MOVE TO JSON.Stringify ?
 			created_by_data_rules: `[${dataRules.toString(',')}]`
