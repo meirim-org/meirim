@@ -1,7 +1,15 @@
-
 const Exception = require('../../../api/model/exception');
-const functions = [require('../tags/housing'),require('../tags/public')];
+const TagsResources = require('../tags/tags_resources');
 
+const taggingFunctions = [
+	require('../tags/housing'),
+	require('../tags/public'),
+	require('../tags/ecological_bottlenecks/ecological_bottlenecks')
+];
+
+
+// TODO: REMOVE THIS
+/*
 const generateTagsForPlan = async (planId) => {
 	const planTags = [];
 	for (const counter in functions) {
@@ -18,8 +26,31 @@ const generateTagsForPlan = async (planId) => {
 			
 	} 
 	return planTags;	
+};
+
+
+ */
+
+class PlanTagger {
+
+	async generateTagsForPlan(plan) {
+		const planTags = [];
+		for (const tagFunction of taggingFunctions) {
+			const result = await tagFunction.doesTagApply(plan, PlanTagger.resources);
+
+			if (result !== null) {
+				planTags.push(result);
+			}
+
+		}
+		return planTags;
+	};
 }
 
+PlanTagger.resources = new TagsResources.TagsResources();
+
+
 module.exports = {
-	generateTagsForPlan
+	//generateTagsForPlan
+	PlanTagger
 };
