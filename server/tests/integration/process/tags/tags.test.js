@@ -4,7 +4,6 @@ const { isTagByUsageAddition } = require('../../../../api/lib/tags/utils');
 const { tagDataRules } = require('../../../../api/constants');
 const { doesTagApply: isHousing, TAG_NAME: housingTagName } = require('../../../../api/lib/tags/housing');
 const PlanAreaChanges = require('../../../../api/model/plan_area_changes');
-const { getTagsResources } = require('../../../../api/lib/tags/tags_resources');
 
 
 const planId = 1;
@@ -96,12 +95,21 @@ describe('Tags', function() {
 
 
 
-	describe('doesTagApply - housing tag tests', function() { 
+	describe('doesTagApply - housing tag tests', function() {
+		const CHECK_TAG_ID = 9;
 		let myStub;
 		let tagsResource;
 
-		before(async function() {
-			tagsResource = await getTagsResources();
+		before(function() {
+
+			const tagNameToTagId = {};
+			tagNameToTagId['משהו_אקראי'] = 8;
+			tagNameToTagId[housingTagName] = CHECK_TAG_ID;
+
+			tagsResource = {
+				bottlenecks: [],
+				tagNameToTagId: tagNameToTagId
+			};
 		});
 
 		afterEach(async function() {
@@ -115,7 +123,7 @@ describe('Tags', function() {
 			myStub.onCall(1).returns(fakeHousingByUnitsTrue);
 			const result = await isHousing(plan, tagsResource);
 			expect(result.plan_id).to.eql(planId);
-			expect(result.tag_id).to.eql(tagsResource.tagNameToTagId[housingTagName]);
+			expect(result.tag_id).to.eql(CHECK_TAG_ID);
 			expect(result.created_by_data_rules).to.eql( `[{rule:'${HOUSING_BY_AREA_RULE.description}',detail:'adds +${fakeSqMrAdded} מגורים (מ"ר)'},{rule:'${HOUSING_BY_UNIT_RULE.description}',detail:'adds +${fakeUnitsAdded} מגורים (יח"ד)'}]`);
 		});
 
@@ -125,7 +133,7 @@ describe('Tags', function() {
 			myStub.onCall(1).returns(fakeHousingByUnitsTrue);
 			const result =  await isHousing(plan, tagsResource);
 			expect(result.plan_id).to.eql(planId);
-			expect(result.tag_id).to.eql(tagsResource.tagNameToTagId[housingTagName]);
+			expect(result.tag_id).to.eql(CHECK_TAG_ID);
 			expect(result.created_by_data_rules).to.eql( `[{rule:'${HOUSING_BY_UNIT_RULE.description}',detail:'adds +${fakeUnitsAdded} מגורים (יח"ד)'}]`);
 		});		
 
@@ -135,7 +143,7 @@ describe('Tags', function() {
 			myStub.onCall(1).returns(null);
 			const result =  await isHousing(plan, tagsResource);
 			expect(result.plan_id).to.eql(planId);
-			expect(result.tag_id).to.eql(tagsResource.tagNameToTagId[housingTagName]);
+			expect(result.tag_id).to.eql(CHECK_TAG_ID);
 			expect(result.created_by_data_rules).to.eql( `[{rule:'${HOUSING_BY_AREA_RULE.description}',detail:'adds +${fakeSqMrAdded} מגורים (מ"ר)'}]`);
 		});
 

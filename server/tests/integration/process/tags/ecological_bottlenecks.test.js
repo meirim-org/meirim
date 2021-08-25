@@ -1,17 +1,33 @@
 const geoms = require('../tags/ecological_bottlenecks_test_geoms');
-const { doesTagApply } = require('../../../../api/lib/tags/ecological_bottlenecks/ecological_bottlenecks');
-const { getTagsResources } = require('../../../../api/lib/tags/tags_resources');
+const { doesTagApply, TAG_NAME } = require('../../../../api/lib/tags/ecological_bottlenecks/ecological_bottlenecks');
 const expect = require('chai').expect;
+const fs = require('fs');
+const path = require('path');
+const turf = require('turf');
 
-
-//TODO: ADD TAG ID CHECK
-
+const CHECK_TAG_ID = 11;
 
 describe('Ecological Bottlenecks Tag', function() {
     let tagsResource;
 
     before(async function() {
-        tagsResource = await getTagsResources();
+        const bottlenecks = JSON.parse(fs.readFileSync(path.join(__dirname,
+            '..', '..', '..', '..', 'api', 'lib', 'tags',
+            'ecological_bottlenecks',
+            'natural_corridors_bottlenecks_israel.geojson')))
+            .features.map(entry => { return {
+                geom: turf.multiPolygon(entry.geometry.coordinates),
+                name: entry.properties.title
+            }});
+
+        const tagNameToTagId = {};
+        tagNameToTagId['משהו_אקראי'] = 7;
+        tagNameToTagId[TAG_NAME] = CHECK_TAG_ID;
+
+        tagsResource = {
+            bottlenecks: bottlenecks,
+            tagNameToTagId: tagNameToTagId
+        };
     });
 
     it('should not apply ecological bottleneck tag', async () => {
@@ -39,6 +55,7 @@ describe('Ecological Bottlenecks Tag', function() {
        expect(dataRules.length).to.eql(1);
        expect(dataRules[0].bottleneckName).to.eql('בין משואות יצחק לניר ישראל');
        expect(dataRules[0].dunam).to.be.within(304, 305);
+       expect(res.tag_id).to.eql(CHECK_TAG_ID);
 
     });
 
