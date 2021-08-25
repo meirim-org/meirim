@@ -1,13 +1,18 @@
 const geoms = require('../tags/ecological_bottlenecks_test_geoms');
 const { doesTagApply } = require('../../../../api/lib/tags/ecological_bottlenecks/ecological_bottlenecks');
-const TagsResources = require('../../../../api/lib/tags/tags_resources');
+const { getTagsResources } = require('../../../../api/lib/tags/tags_resources');
 const expect = require('chai').expect;
 
 
 //TODO: ADD TAG ID CHECK
 
+
 describe('Ecological Bottlenecks Tag', function() {
-    const tagsResource = new TagsResources.TagsResources();
+    let tagsResource;
+
+    before(async function() {
+        tagsResource = await getTagsResources();
+    });
 
     it('should not apply ecological bottleneck tag', async () => {
         const plan = {
