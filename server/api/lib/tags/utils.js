@@ -23,17 +23,18 @@ const isTagByUsageAddition = async (planId, rule) => {
 		console.log(`error ${error.message}\n`);
 		console.debug(error);
 	}
-}
+};
 
-const doesTagApplyHelper = async (planId,tagName) => {  
-	const planTags = [];
-	const dataRules = [];	
-	const tagInfo = tagDataRules.filter(tag => {return tag.tagName===tagName})[0];
+const doesTagApplyHelper = async (planId, tagName) => {
+	const dataRules = [];
+	const tagInfo = tagDataRules.filter(tag => {return tag.tagName === tagName})[0];
 	const tagId = tagInfo.tagId;
 	for (const counter in tagInfo.rules) {
+
 		const rule = tagInfo.rules[counter];
 		try {
 			const isTag = await isTagByUsageAddition(planId, rule);
+
 			if (isTag) {
 				dataRules.push(
 					isTag.created_by_data_rules
@@ -45,16 +46,18 @@ const doesTagApplyHelper = async (planId,tagName) => {
 		}
 			
 	} 
-	if (dataRules.length>0) {
-		planTags.push( {
+	if (dataRules.length > 0) {
+		return {
 			plan_id: planId,
 			tag_id: tagId,
 			display_score: 0, /* TODO: Add the correct display score here */
+			// TODO: MOVE TO JSON.Stringify ?
 			created_by_data_rules: `[${dataRules.toString(',')}]`
-		});
+		};
 	}
-	return planTags;
-}
+
+	return null;
+};
 
 
 

@@ -2,9 +2,9 @@
 const { doesTagApplyHelper} = require('../tags/utils');
 const TAG_NAME = 'דיור';
 
-const doesTagApply = async (planId) => {  
-	return doesTagApplyHelper(planId,TAG_NAME);
-}
+const doesTagApply = async (plan, tags_resources) => {
+	return doesTagApplyHelper(plan.id, TAG_NAME);
+};
 
 module.exports = {
 	doesTagApply
