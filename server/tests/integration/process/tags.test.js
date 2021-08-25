@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const { isTagByUsageAddition } = require('../../../api/lib/tags/utils');
-const { tagDataRules } = require('../../../api/constants');
+const { tagDataRules, area_change_types } = require('../../../api/constants');
 const { doesTagApply: isHousing } = require('./../../../api/lib/tags/housing');
 const PlanAreaChanges = require('../../../api/model/plan_area_changes');
 
@@ -18,6 +18,10 @@ const HOUSING_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName==='�
 // Public Area
 const fakePublicByAreaTrue = { models: [{ attributes : { change_to_approved_state: `+${fakeSqMrAdded}` } }]} ;
 const PUBLIC_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName==='מבני ציבור'})[0].rules[0];;
+// Employment Area
+const fakeEmploymentByAreaFalse = { models: [{ attributes : { change_to_approved_state: `+1,500` } }]} ;
+const EMPLOYMWNT_BY_AREA_RULE_1 = tagDataRules.filter(tag => {return tag.tagName=== 'תעסוקה ותעשיה'})[0].rules[0];;
+const EMPLOYMWNT_BY_AREA_RULE_2 = tagDataRules.filter(tag => {return tag.tagName=== 'תעסוקה ותעשיה'})[0].rules[1];;
 
 describe('Tags', function() {
 
@@ -75,7 +79,7 @@ describe('Tags', function() {
 		
 	});
 
-	describe('isTagByUsageAddition helper function - public tag tests', function() { 
+	describe('isTagByUsageAddition helper function - public area tag tests', function() { 
 		let myStub;
 		afterEach(async function() {
 			myStub.restore();
@@ -83,7 +87,7 @@ describe('Tags', function() {
 		});
 
 
-		it('returns public tag from isTagByUsageAddition for public area if database record is found area added exceeds minimum', async function() {
+		it('returns public tag from isTagByUsageAddition for public area if database record is found & area added exceeds minimum', async function() {
 			myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(fakePublicByAreaTrue);
 			const result =  await isTagByUsageAddition(planId,PUBLIC_BY_AREA_RULE); 
 			expect(result.created_by_data_rules).to.eql(`{rule:'${PUBLIC_BY_AREA_RULE.description}',detail:'adds +${fakeSqMrAdded} ${PUBLIC_BY_AREA_RULE.usage}'}`);
@@ -92,6 +96,42 @@ describe('Tags', function() {
 
 		
 	});
+
+	describe('isTagByUsageAddition helper function - EMPLOYMENT tag tests', function() { 
+		let myStub;
+		afterEach(async function() {
+			myStub.restore();
+			sinon.restore();
+		});
+
+
+		it('does not return public tag from isTagByUsageAddition for employment  if database record is found but area added is less than minimum', async function() {
+			myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(fakeEmploymentByAreaFalse);
+			const result =  await isTagByUsageAddition(planId,EMPLOYMWNT_BY_AREA_RULE_1); 
+			expect(result).to.eql(undefined);
+			myStub.restore();			
+		});
+
+		it('returns public tag from isTagByUsageAddition for employment if database record is found & area added exceeds minimum', async function() {
+			const addsSqMr = 2500;
+			const fakeEmploymentByAreaTrue = { models: [{ attributes : { change_to_approved_state: `+${addsSqMr}` } }]} ;
+			myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(fakeEmploymentByAreaTrue);
+			const result =  await isTagByUsageAddition(planId,EMPLOYMWNT_BY_AREA_RULE_1); 
+			expect(result.created_by_data_rules).to.eql(`{rule:'${EMPLOYMWNT_BY_AREA_RULE_1.description}',detail:'adds +${addsSqMr} ${EMPLOYMWNT_BY_AREA_RULE_1.usage}'}`);
+			myStub.restore();			
+		});		
+
+		it('returns public tag from isTagByUsageAddition for new employment if database record is found & area added exceeds minimum as new usage ', async function() {
+			const addsSqMr = 250;
+			const fakeEmploymentByAreaTrue = { models: [{ attributes : { change_to_approved_state: `+${addsSqMr}`, approved_state:'' } }]} ;
+			myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(fakeEmploymentByAreaTrue);
+			const result =  await isTagByUsageAddition(planId,EMPLOYMWNT_BY_AREA_RULE_2); 
+			expect(result.created_by_data_rules).to.eql(`{rule:'${EMPLOYMWNT_BY_AREA_RULE_2.description}',detail:'adds +${addsSqMr} ${EMPLOYMWNT_BY_AREA_RULE_2.usage}'}`);
+			myStub.restore();			
+		});			
+
+		
+	});	
 
 
 
