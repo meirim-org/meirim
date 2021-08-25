@@ -9,7 +9,6 @@ const doesTagApply = async (plan, tags_resources) => {
     const bottlenecksInvolved = [];
     tags_resources.bottlenecks.forEach(bottleneck => {
         const intersection = spatial_utils.intersectPolyOrMultiPolyWithMultiPoly(plan.attributes.geom, bottleneck.geom);
-        //const intersection = turf.intersect(plan.attributes.geom, bottleneck.geom.geometry);
 
         if (intersection != null) {
             bottlenecksInvolved.push({

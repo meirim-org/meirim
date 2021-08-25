@@ -1,9 +1,9 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const { isTagByUsageAddition } = require('../../../api/lib/tags/utils');
-const { tagDataRules } = require('../../../api/constants');
-const { doesTagApply: isHousing } = require('./../../../api/lib/tags/housing');
-const PlanAreaChanges = require('../../../api/model/plan_area_changes');
+const { isTagByUsageAddition } = require('../../../../api/lib/tags/utils');
+const { tagDataRules } = require('../../../../api/constants');
+const { doesTagApply: isHousing } = require('../../../../api/lib/tags/housing');
+const PlanAreaChanges = require('../../../../api/model/plan_area_changes');
 
 
 const housingTag = 1;
@@ -18,7 +18,7 @@ const HOUSING_BY_UNIT_RULE = tagDataRules.filter(tag => {return tag.tagName==='�
 const HOUSING_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName==='דיור'})[0].rules[0];
 // Public Area
 const fakePublicByAreaTrue = { models: [{ attributes : { change_to_approved_state: `+${fakeSqMrAdded}` } }]} ;
-const PUBLIC_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName==='מבני ציבור'})[0].rules[0];;
+const PUBLIC_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName==='מבני ציבור'})[0].rules[0];
 
 describe('Tags', function() {
 
