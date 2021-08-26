@@ -1,0 +1,14 @@
+// Hoteliery: (request to build a completely new hotel [not an addition to an existing one]) or
+// (request to build more than 200 mr of hoteliery) or
+// (request to enlarge existing building rights of hoteliery by more than 30%).
+const { doesTagApplyHelper} = require('../tags/utils');
+const TAG_NAME = 'תיירות';
+
+const doesTagApply = async (planId) => {  
+	return doesTagApplyHelper(planId,TAG_NAME);
+}
+
+module.exports = {
+	doesTagApply
+};
+
