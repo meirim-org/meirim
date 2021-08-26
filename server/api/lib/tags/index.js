@@ -1,10 +1,14 @@
 const Exception = require('../../../api/model/exception');
 const { getTagsResources } = require('../tags/tags_resources');
 
+const housingTag = require('../tags/housing');
+const publicBuildingsTag = require('../tags/public');
+const ecologicalBottlenecksTag = require('../tags/ecological_bottlenecks/ecological_bottlenecks');
+
 const taggingFunctions = [
-	require('../tags/housing'),
-	require('../tags/public'),
-	require('../tags/ecological_bottlenecks/ecological_bottlenecks')
+	housingTag,
+	publicBuildingsTag,
+	ecologicalBottlenecksTag
 ];
 
 
