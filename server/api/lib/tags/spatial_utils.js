@@ -4,7 +4,7 @@ const turf = require('turf');
 // if they intersect, returns the area of the intersection in sqm
 // if they don't intersect, returns undefined
 const intersectMultiPolys = (multiPoly1, multiPoly2) => {
-    const multiPolyIntoPoly = (multiPoly) => {
+    const multiPolyIntoPolys = (multiPoly) => {
 
         // when reading multipolygon from the db, the "geometry" field can disappear for some reason
         if ('geometry' in multiPoly) {
@@ -27,8 +27,8 @@ const intersectMultiPolys = (multiPoly1, multiPoly2) => {
 
     };
 
-    const polys1 = multiPolyIntoPoly(multiPoly1);
-    const polys2 = multiPolyIntoPoly(multiPoly2);
+    const polys1 = multiPolyIntoPolys(multiPoly1);
+    const polys2 = multiPolyIntoPolys(multiPoly2);
 
     let areaOfIntersection = 0;
 
