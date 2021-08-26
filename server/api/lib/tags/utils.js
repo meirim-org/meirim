@@ -25,15 +25,27 @@ const isTagByUsageAddition = async (planId, rule) => {
 					if ((changeToApprovedState.length > 1) && 
 					(changeToApprovedState.substring(0,1) === '+') && 
 					(approvedState === '')) {
-					const change = Number(changeToApprovedState.replace('+','').replace(',',''));
-					if (change >= Number(rule.minValue)) {
-						return {   
-							created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
-						}; 
-					}					
+						const change = Number(changeToApprovedState.replace('+','').replace(',',''));
+						if (change >= Number(rule.minValue)) {
+							return {   
+								created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
+							}; 
+						}	
+					}
 					break;
-				}
-			}			
+				case area_change_types.PERCENT_INCREASE:
+						// usage that grows by a certain percentage
+						if ((changeToApprovedState.length > 1) && 
+						(changeToApprovedState.substring(0,1) === '+') && 
+						(approvedState !== '')) {
+							const change = Number(changeToApprovedState.replace('+','').replace(',',''));
+							if ((change+Number(approvedState))/Number(approvedState) >= (Number(rule.minValue)+100)/100.00) {
+								return {   
+									created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
+								}; 
+							}	
+						}
+						break;			}			
 		}		
 	} catch (error) {
 		console.log(`error ${error.message}\n`);
