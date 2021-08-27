@@ -1,9 +1,9 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const { isTagByUsageAddition } = require('../../../api/lib/tags/utils');
-const { tagDataRules, area_change_types } = require('../../../api/constants');
-const { doesTagApply: isHousing, TAG_NAME: housingTagName  } = require('./../../../api/lib/tags/housing');
-const PlanAreaChanges = require('../../../api/model/plan_area_changes');
+const { isTagByUsageAddition } = require('../../../../api/lib/tags/utils');
+const { tagDataRules, area_change_types } = require('../../../../api/constants');
+const { doesTagApply: isHousing, TAG_NAME: housingTagName  } = require('../../../../api/lib/tags/housing');
+const PlanAreaChanges = require('../../../../api/model/plan_area_changes');
 
 
 const planId = 1;
