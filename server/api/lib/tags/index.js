@@ -1,25 +1,37 @@
-
 const Exception = require('../../../api/model/exception');
-const functions = [require('../tags/housing'),require('../tags/public'),require('../tags/employment'),require('../tags/commerce'),require('../tags/hoteliery')];
+const { getTagsResources } = require('../tags/tags_resources');
 
-const generateTagsForPlan = async (planId) => {
-	const planTags = [];
-	for (const counter in functions) {
-		const tagFunction = functions[counter];
-		try {
-			if (typeof(tagFunction.doesTagApply) != "function") {
-				throw new Exception.BadRequest(`"Please require only doesTagApply functions.`);
-			};
-			const result = await tagFunction.doesTagApply(planId);
-			planTags.push(...result);
-		} catch (err) {
-			console.debug(err);			
+const housingTag = require('../tags/housing');
+const publicBuildingsTag = require('../tags/public');
+const EmploymentTag = require('../tags/employment');
+const HotelieryTag = require('../tags/hoteliery');
+const CommerceTag = require('../tags/commerce');
+
+const taggingFunctions = [
+	housingTag,
+	publicBuildingsTag,
+	EmploymentTag,
+	HotelieryTag,
+	CommerceTag
+];
+
+const getPlanTagger = async () => {
+	const resources = await getTagsResources();
+	return async (plan) => {
+		const planTags = [];
+		for (const tagFunction of taggingFunctions) {
+			const result = await tagFunction.doesTagApply(plan.id, resources);
+
+			if (result !== null) {
+				planTags.push(result);
+			}
+
 		}
-			
-	} 
-	return planTags;	
-}
+		return planTags;
+	};
+};
+
 
 module.exports = {
-	generateTagsForPlan
+	getPlanTagger
 };
