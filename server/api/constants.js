@@ -13,3 +13,36 @@ exports.personTypes = {
 	'5': 'יזם',
 	'6': 'אחר'
 };
+
+exports.tagDataRules = 
+[
+	{
+	tagId: 1,
+	tagName: 'דיור',
+	rules: [
+		 {
+			usage: 'מגורים (מ"ר)' ,
+			minValue: 1000,
+			description: 'adds more than 1,000 Sq Meters of housing'
+		},
+		 {
+			usage: 'מגורים (יח"ד)',
+			minValue: 10,
+			description: 'adds more than 10 units of housing'
+		}]
+	},
+	{ 
+	tagId: 3,
+	tagName: 'מבני ציבור',
+	rules: [
+		{
+			usage: 'מבני ציבור (מ"ר)' ,
+			minValue: 50,
+			description: 'adds more than 50 Sq Meters of public area'
+		}]
+}
+
+]
+	
+	
+	
