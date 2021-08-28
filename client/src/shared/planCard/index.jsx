@@ -5,13 +5,10 @@ import Mapa from 'components/Mapa';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import UnsafeRender from 'components/UnsafeRender';
 import { Text } from 'shared';
 import moment from 'moment'
 import styled from 'styled-components';
-import BookmarkOutlinedIcon from '../../assets/bookmark-outlined-icon.svg';
-import BookmarkFilledIcon from '../../assets/bookmark-filled-icon.svg';
-import DropPinIcon from '../../assets/drop-pin-icon.svg';
+import {BookmarkOutlinedIcon, BookmarkFilledIcon, DropPinIcon} from '../../assets/icons'
 import { openModal } from '../../redux/modal/slice';
 import { isFavoritePlan } from '../../pages/Plan/hooks';
 import { UserSelectors } from '../../redux/selectors';
@@ -191,7 +188,7 @@ const PlanCard = ({ plan }) => {
 							{tags.map((tag, i) => {
 								let tagIconUrl = null;
 								try {
-									tagIconUrl = require(`../../assets/${tag.type}-tag-icon.svg`);
+									tagIconUrl = require(`../../assets/icons/${tag.type}-tag-icon.svg`);
 								} catch (e){
 								    console.log(`${tag.type}-tag-icon.svg does not exist`);
 								}
@@ -329,14 +326,6 @@ const Tag = styled.div`
     border-radius: 4px;
     padding: 0 8px;
     margin: 0 0 10px 10px;
-    
-    ${({ type }) => type && `
-      &:before {
-        width: 20px;
-        height: 20px;
-        // content: url(${require('../../assets/'+type+'-tag-icon.svg')});
-      }
-    `}
 `;
 
 const TagIcon = styled.img`
