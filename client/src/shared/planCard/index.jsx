@@ -124,16 +124,16 @@ const PlanCard = ({ plan }) => {
 				>
 					<SC.CardMedia title={plan.PL_NUMBER}>
 						<MapTitle>
-							<StatusChip>
-								<StatusDot approved={plan.status === 'מאושרות'} />
+                            <StatusChip>
+                                <StatusDot approved={plan.status === 'מאושרות'}/>
 
-								<Text
-									size='14px'
-									weight='600'
-									text={`${plan.status} ${parseUpdateDate()}`}
-									color={theme.palette.black}
-								/>
-							</StatusChip>
+                                <Text
+                                    size='14px'
+                                    weight='600'
+                                    text={`${plan.status ?? ''} ${parseUpdateDate()}`}
+                                    color={theme.palette.black}
+                                />
+                            </StatusChip>
 							<BookmarkBtn isBookmarked={isFavPlan} onClick={handleBookmarkClick}/>
 						</MapTitle>
 						<MapFooter>
@@ -145,14 +145,14 @@ const PlanCard = ({ plan }) => {
 									color={theme.palette.black}
 								/>
 							</FooterChip>
-							<FooterChip>
-								<Text
-									size='14px'
-									weight='600'
-									text={`${Math.round(plan?.data?.PL_AREA_DUNAM)} דונם`}
-									color={theme.palette.black}
-								/>
-							</FooterChip>
+                            {plan?.data?.PL_AREA_DUNAM ? <FooterChip>
+                                <Text
+                                    size='14px'
+                                    weight='600'
+                                    text={`${Math.round(plan?.data?.PL_AREA_DUNAM)} דונם`}
+                                    color={theme.palette.black}
+                                />
+                            </FooterChip> : <div />}
 						</MapFooter>
 						<Mapa
 							geom={plan.geom}
