@@ -51,7 +51,7 @@ const PlanCard = ({ plan }) => {
 
         if (visibleTags.length < entries.length){
             newTags.splice(plusTagIndex, 1)
-            newTags.splice(visibleTags.length,0, { text: `${entries.length - visibleTags.length}`, type: 'plus' })
+            newTags.splice(visibleTags.length-1,0, { text: `${entries.length - visibleTags.length+1}`, type: 'plus' })
             setTags(newTags);
         }
     },[tagsRef])
