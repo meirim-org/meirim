@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const { doesTagApply, TAG_NAME } = require('../../../../api/lib/tags/rivers');
-const PlanChartFourRow = require('../../../../api/model/plan_area_changes');
+const PlanChartFourRow = require('../../../../api/model/plan_chart_four_row');
 const sinon = require('sinon');
 
 const CHECK_TAG_ID = 3;
