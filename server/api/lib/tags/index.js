@@ -3,12 +3,14 @@ const { getTagsResources } = require('../tags/tags_resources');
 
 const housingTag = require('../tags/housing');
 const publicBuildingsTag = require('../tags/public');
-const ecologicalBottlenecksTag = require('../tags/ecological_bottlenecks/ecological_bottlenecks');
+const forestTag = require('../tags/forests');
+const riverTag = require('../tags/rivers');
 
 const taggingFunctions = [
 	housingTag,
 	publicBuildingsTag,
-	ecologicalBottlenecksTag
+	forestTag,
+	riverTag
 ];
 
 
