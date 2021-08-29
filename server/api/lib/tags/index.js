@@ -5,12 +5,14 @@ const housingTag = require('../tags/housing');
 const publicBuildingsTag = require('../tags/public');
 const forestTag = require('../tags/forests');
 const streamTag = require('./streams');
+const lightRailTag = require('./light_rail');
 
 const taggingFunctions = [
 	housingTag,
 	publicBuildingsTag,
 	forestTag,
-	streamTag
+	streamTag,
+	lightRailTag
 ];
 
 
