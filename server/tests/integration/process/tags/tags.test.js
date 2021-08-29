@@ -253,7 +253,7 @@ describe('Tags', function() {
 			tagNameToTagId['משהו_אקראי'] = 8;
 			tagNameToTagId[housingTagName] = CHECK_TAG_ID;
 
-			tagsResource = {
+			tagsResources = {
 				tagNameToTagId: tagNameToTagId
 			};
 		});
