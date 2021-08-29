@@ -245,7 +245,7 @@ describe('Tags', function() {
 	describe(`doesTagApply`, function() { 
 		const CHECK_TAG_ID = 9;
 		let myStub;
-		let tagsResource;
+		let tagsResources;
 
 		before(function() {
 
