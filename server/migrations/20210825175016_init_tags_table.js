@@ -1,6 +1,5 @@
 const housingTag = require('../api/lib/tags/housing');
 const publicTag = require('../api/lib/tags/public');
-const ecologicalBottlenecksTag = require('../api/lib/tags/ecological_bottlenecks/ecological_bottlenecks');
 
 exports.up = async function(knex) {
 
@@ -23,7 +22,6 @@ exports.up = async function(knex) {
 
     await tbl.insert({name: housingTag.TAG_NAME});
     await tbl.insert({name: publicTag.TAG_NAME});
-    await tbl.insert({name: ecologicalBottlenecksTag.TAG_NAME});
 };
 
 exports.down = async function(knex) {
@@ -31,5 +29,4 @@ exports.down = async function(knex) {
 
     await tbl.where('name', housingTag.TAG_NAME).del();
     await tbl.where('name', publicTag.TAG_NAME).del();
-    await tbl.where('name', ecologicalBottlenecksTag.TAG_NAME).del();
 };

@@ -1,5 +1,6 @@
 const PlanAreaChanges = require('../../../api/model/plan_area_changes');
 const { tagDataRules } = require('../../constants');
+const PlanChartFourRow = require('../../../api/model/plan_chart_four_row');
 
 const isTagByUsageAddition = async (planId, rule) => {
 	try {
@@ -59,7 +60,30 @@ const doesTagApplyHelper = async (planId, tagName, tagsResources) => {
 };
 
 
+// isTagApplies is a function that gets a father category and return true if it satisfies the tag.
+// dataRuleIfApplies is a dict that explains on the data rule
+const isTagApplyTable4FatherCategory = async (planId, isTagApplies, tagName, tagsResources, dataRuleIfApplies) => {
+	const table4FatherCategories = await PlanChartFourRow.getFatherCategoriesOfPlan(planId);
+	if (table4FatherCategories && table4FatherCategories.models) {
+		for (const model of table4FatherCategories.models) {
+			const fatherCategory = model.attributes.father_category;
+
+			if (isTagApplies(fatherCategory)) {
+				return {
+					plan_id: planId,
+					tag_id: tagsResources.tagNameToTagId[tagName],
+					display_score: 0, /* TODO: Add the correct display score here */
+					created_by_data_rules: JSON.stringify([dataRuleIfApplies])
+				};
+			}
+		}
+	}
+
+	return null;
+};
+
+
 
 module.exports = {
-	isTagByUsageAddition, doesTagApplyHelper
+	isTagByUsageAddition, doesTagApplyHelper, isTagApplyTable4FatherCategory
 };
