@@ -6,7 +6,7 @@ const doesTagApply = async (plan, tagsResources) => {
           plan_id: plan.id,
           tag_id: tagsResources.tagNameToTagId[TAG_NAME],
           display_score: 0, /* TODO: Add the correct display score here */
-          created_by_data_rules: JSON.stringify({ rule: `has "${stringInPlanName}" in plan name` })
+          created_by_data_rules: JSON.stringify([{ rule: `has "${stringInPlanName}" in plan name` }])
       };
     };
 
