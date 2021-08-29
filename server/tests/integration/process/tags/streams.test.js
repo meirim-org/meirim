@@ -1,12 +1,12 @@
 const expect = require('chai').expect;
-const { doesTagApply, TAG_NAME } = require('../../../../api/lib/tags/rivers');
+const { doesTagApply, TAG_NAME } = require('../../../../api/lib/tags/streams');
 const PlanChartFourRow = require('../../../../api/model/plan_chart_four_row');
 const sinon = require('sinon');
 
 const CHECK_TAG_ID = 3;
 const plan = {id: 97};
 
-describe('River Tag', function() {
+describe('Stream Tag', function() {
     let getFatherCategoriesStub;
     const tagNameToTagId = {};
     tagNameToTagId['משהו_אקראי'] = 5;
