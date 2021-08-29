@@ -58,14 +58,14 @@ describe('Tags', function() {
 				const fakeUnitsAddedTooSmall = 5;
 				const fakeHousingByUnitsTooSmall = { models: [{ attributes : { change_to_approved_state: `+${fakeUnitsAddedTooSmall}` } }]} ;
 				myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(fakeHousingByUnitsTooSmall);
-				const result =  await isTagByUsageAddition(plan,housingTag,HOUSING_BY_UNIT_RULE); 
+				const result =  await isTagByUsageAddition(plan,HOUSING_BY_UNIT_RULE); 
 				expect(result).to.eql(undefined);
 				myStub.restore();			
 			}); 
 			
 			it(`does not return "${HOUSING_TAG_NAME}" tag for housingByUnits if database record is not found`, async function() {
 				myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(null);
-				const result =  await isTagByUsageAddition(plan,housingTag,HOUSING_BY_UNIT_RULE); 
+				const result =  await isTagByUsageAddition(plan,HOUSING_BY_UNIT_RULE); 
 				expect(result).to.eql(undefined);
 				myStub.restore();			
 			});		   
@@ -80,14 +80,14 @@ describe('Tags', function() {
 				const fakeAreaAddedTooSmall = 500;
 				const fakeHousingByAreaTooSmall = { models: [{ attributes : { change_to_approved_state: `+${fakeAreaAddedTooSmall}` } }]} ;
 				myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(fakeHousingByAreaTooSmall);
-				const result =  await isTagByUsageAddition(plan,housingTag,HOUSING_BY_AREA_RULE); 
+				const result =  await isTagByUsageAddition(plan,HOUSING_BY_AREA_RULE); 
 				expect(result).to.eql(undefined);
 				myStub.restore();			
 			}); 
 			
 			it(`does not return "${HOUSING_TAG_NAME}" tag for housingByArea if database record is not found`, async function() {
 				myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage').returns(null);
-				const result =  await isTagByUsageAddition(plan,housingTag,HOUSING_BY_AREA_RULE); 
+				const result =  await isTagByUsageAddition(plan,HOUSING_BY_AREA_RULE); 
 				expect(result).to.eql(undefined);
 				myStub.restore();			
 			});
@@ -270,7 +270,7 @@ describe('Tags', function() {
 				myStub.onCall(1).returns(fakeHousingByUnitsTrue);
 				const result =  await isHousing(planId); 
 				expect(result.plan_id).to.eql(planId);
-				expect(result.tag_id).to.eql(housingTag);
+				expect(result.tag_id).to.eql(CHECK_TAG_ID);
 				expect(result.created_by_data_rules).to.eql( `[{rule:'${HOUSING_BY_AREA_RULE.description}',detail:'adds +${fakeSqMrAdded} מגורים (מ"ר)'},{rule:'${HOUSING_BY_UNIT_RULE.description}',detail:'adds +${fakeUnitsAdded} מגורים (יח"ד)'}]`);
 			});
 
@@ -280,7 +280,7 @@ describe('Tags', function() {
 				myStub.onCall(1).returns(fakeHousingByUnitsTrue);
 				const result =  await isHousing(planId); 
 				expect(result.plan_id).to.eql(planId);
-				expect(result.tag_id).to.eql(housingTag);
+				expect(result.tag_id).to.eql(CHECK_TAG_ID);
 				expect(result.created_by_data_rules).to.eql( `[{rule:'${HOUSING_BY_UNIT_RULE.description}',detail:'adds +${fakeUnitsAdded} מגורים (יח"ד)'}]`);
 			});		
 
@@ -290,7 +290,7 @@ describe('Tags', function() {
 				myStub.onCall(1).returns(null);
 				const result =  await isHousing(planId); 
 				expect(result.plan_id).to.eql(planId);
-				expect(result.tag_id).to.eql(housingTag);
+				expect(result.tag_id).to.eql(CHECK_TAG_ID);
 				expect(result.created_by_data_rules).to.eql( `[{rule:'${HOUSING_BY_AREA_RULE.description}',detail:'adds +${fakeSqMrAdded} מגורים (מ"ר)'}]`);
 			});
 
