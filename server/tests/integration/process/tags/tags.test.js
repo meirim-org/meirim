@@ -278,6 +278,7 @@ describe('Tags', function() {
 				myStub = sinon.stub(PlanAreaChanges,'byPlanAndUsage');
 				myStub.onCall(0).returns(undefined);
 				myStub.onCall(1).returns(fakeHousingByUnitsTrue);
+				const result =  await isHousing(planId,tagsResources); 
 				expect(result.plan_id).to.eql(planId);
 				expect(result.tag_id).to.eql(CHECK_TAG_ID);
 				expect(result.created_by_data_rules).to.eql( `[{rule:'${HOUSING_BY_UNIT_RULE.description}',detail:'adds +${fakeUnitsAdded} מגורים (יח"ד)'}]`);
