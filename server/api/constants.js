@@ -25,7 +25,6 @@ exports.area_change_types = area_change_types;
 exports.tagDataRules = 
 [
 	{
-	tagId: 1,
 	tagName: 'דיור',
 	rules: [
 		 {
@@ -42,7 +41,6 @@ exports.tagDataRules =
 		}]
 	},
 	{ 
-	tagId: 2,
 	tagName: 'תעסוקה ותעשיה',
 	rules: [
 		{
@@ -58,7 +56,6 @@ exports.tagDataRules =
 		}]
 	},
 	{ 
-	tagId: 3,
 	tagName: 'מבני ציבור',
 	rules: [
 		{
@@ -69,7 +66,6 @@ exports.tagDataRules =
 		}]
 	},
 	{ 
-		tagId: 17,
 		tagName: 'מסחר',
 		rules: [
 			{
@@ -90,7 +86,6 @@ exports.tagDataRules =
 			}]
 		},	
 		{ 
-			tagId: 18,
 			tagName: 'תיירות',
 			rules: [
 				{
