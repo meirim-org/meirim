@@ -4,8 +4,7 @@ const { doesTagApply, TAG_NAME } = require('../../../../api/lib/tags/light_rail'
 const CHECK_TAG_ID = 19;
 const getPlan = (planName) => { return { id: 28, attributes: {PL_NAME: planName } };};
 
-describe('Forest Tag', function() {
-    let getFatherCategoriesStub;
+describe('Light rail Tag', function() {
     const tagNameToTagId = {};
     tagNameToTagId['משהו_אקראי'] = 72;
     tagNameToTagId[TAG_NAME] = CHECK_TAG_ID;
