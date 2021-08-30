@@ -21,7 +21,7 @@ const PUBLIC_TAG_NAME = 'מבני ציבור';
 const fakePublicByAreaTrue = { models: [{ attributes : { change_to_approved_state: `+${fakeSqMrAdded}` } }]} ;
 const PUBLIC_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName===PUBLIC_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.INCREASED_USAGE})[0];
 // Employment Area
-const EMPLOYMENT_TAG_NAME = 'תעסוקה ';
+const EMPLOYMENT_TAG_NAME = 'תעסוקה';
 const fakeEmploymentByAreaFalse = { models: [{ attributes : { change_to_approved_state: `+1,500` } }]} ;
 const EMPLOYMENT_BY_AREA_RULE_INCREASED_USAGE = tagDataRules.filter(tag => {return tag.tagName=== EMPLOYMENT_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.INCREASED_USAGE})[0];
 const EMPLOYMENT_BY_AREA_RULE_NEW_USAGE = tagDataRules.filter(tag => {return tag.tagName=== EMPLOYMENT_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.NEW_USAGE})[0];
