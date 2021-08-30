@@ -41,7 +41,7 @@ exports.tagDataRules =
 		}]
 	},
 	{ 
-	tagName: 'תעסוקה ותעשיה',
+	tagName: 'תעסוקה',
 	rules: [
 		{
 			usage: 'תעסוקה (מ"ר)' ,
