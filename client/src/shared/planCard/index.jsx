@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Mapa from 'components/Mapa';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import {useTheme, withTheme} from '@material-ui/core/styles';
 import { Text } from 'shared';
 import moment from 'moment'
 import styled from 'styled-components';
@@ -136,32 +136,22 @@ const PlanCard = ({ plan }) => {
 						<MapTitle>
                             <StatusChip>
                                 <StatusDot approved={plan.status === 'מאושרות'}/>
-
-                                <Text
-                                    size='14px'
-                                    weight='600'
-                                    text={`${plan.status ?? ''} ${parseUpdateDate()}`}
-                                    color={theme.palette.black}
-                                />
+                                <ChipText>
+                                    {`${plan.status ?? ''} ${parseUpdateDate()}`}
+                                </ChipText>
                             </StatusChip>
 							<BookmarkBtn isBookmarked={isFavPlan} onClick={handleBookmarkClick}/>
 						</MapTitle>
 						<MapFooter>
 							<FooterChip>
-								<Text
-									size='14px'
-									weight='600'
-									text={plan.PLAN_COUNTY_NAME}
-									color={theme.palette.black}
-								/>
+                                <ChipText>
+                                    {plan.PLAN_COUNTY_NAME}
+                                </ChipText>
 							</FooterChip>
                             {plan?.data?.PL_AREA_DUNAM ? <FooterChip>
-                                <Text
-                                    size='14px'
-                                    weight='600'
-                                    text={`${Math.round(plan?.data?.PL_AREA_DUNAM)} דונם`}
-                                    color={theme.palette.black}
-                                />
+                                <ChipText>
+                                    {`${Math.round(plan?.data?.PL_AREA_DUNAM)} דונם`}
+                                </ChipText>
                             </FooterChip> : <div />}
 						</MapFooter>
 						<Mapa
@@ -247,6 +237,12 @@ const Chip = styled.div`
 const StatusChip = styled(Chip)`
     padding: 4px 7px;
 `;
+
+const ChipText = withTheme(styled.span`
+    font-size: 14px;
+    font-weight: 600;
+    color: ${props => props.theme.palette.black};
+`);
 
 const StatusDot = styled.div`
     width: 14px;
