@@ -8,13 +8,26 @@ import { useTheme } from '@material-ui/core/styles';
 import { Text } from 'shared';
 import moment from 'moment'
 import styled from 'styled-components';
-import {BookmarkOutlinedIcon, BookmarkFilledIcon, DropPinIcon} from '../../assets/icons'
+import {
+    BookmarkOutlinedIcon,
+    BookmarkFilledIcon,
+    DropPinIcon,
+} from '../../assets/icons'
+import TagIcons from '../icons/TagIcons'
 import { openModal } from '../../redux/modal/slice';
 import { isFavoritePlan } from '../../pages/Plan/hooks';
 import { UserSelectors } from '../../redux/selectors';
 import { useDispatch } from 'react-redux';
 import { subscribeUserToPlan, unsubscribeUserToPlan } from '../../pages/Plan/controller';
 
+const tagIcons = {
+    publicInstitutes: TagIcons.PublicInstitutesTagIcon,
+    commerce: TagIcons.CommerceTagIcon,
+    openField: TagIcons.OpenFieldTagIcon,
+    offices: TagIcons.OfficesTagIcon,
+    residence: TagIcons.ResidenceTagIcon,
+    transportation: TagIcons.TransportationTagIcon,
+}
 
 const PlanCard = ({ plan }) => {
 	const theme = useTheme();
@@ -186,15 +199,8 @@ const PlanCard = ({ plan }) => {
 						</PlanName>
 						<Tags ref={tagsWrapperRef}>
 							{tags.map((tag, i) => {
-								let tagIconUrl = null;
-								try {
-									tagIconUrl = require(`../../assets/icons/${tag.type}-tag-icon.svg`);
-								} catch (e){
-								    console.log(`${tag.type}-tag-icon.svg does not exist`);
-								}
-
 								return <Tag key={i} ref={tagsRef.current[i]}>
-									{tagIconUrl && <TagIcon src={tagIconUrl} />}
+									{tagIcons[tag.type] && <TagIcon src={tagIcons[tag.type]} />}
 									<Text
 										size='16px'
 										weight='normal'
