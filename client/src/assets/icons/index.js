@@ -7,15 +7,17 @@ import OpenFieldTagIcon from './open-field-tag-icon.svg';
 import PlusTagIcon from './plus-tag-icon.svg';
 import PublicInstitutesTagIcon from './public-institutes-tag-icon.svg';
 import ResidenceTagIcon from './residence-tag-icon.svg';
+import TransportationTagIcon from './transportation-tag-icon.svg';
 
 export {
-    BookmarkOutlinedIcon,
-    BookmarkFilledIcon,
-    DropPinIcon,
-    CommerceTagIcon,
-    OfficesTagIcon,
-    OpenFieldTagIcon,
-    PlusTagIcon,
-    PublicInstitutesTagIcon,
-    ResidenceTagIcon
-}
+	BookmarkOutlinedIcon,
+	BookmarkFilledIcon,
+	DropPinIcon,
+	CommerceTagIcon,
+	OfficesTagIcon,
+	OpenFieldTagIcon,
+	PlusTagIcon,
+	PublicInstitutesTagIcon,
+	ResidenceTagIcon,
+	TransportationTagIcon
+};
