@@ -1,5 +1,3 @@
-const housingTag = require('../api/lib/tags/housing');
-const publicTag = require('../api/lib/tags/public');
 
 exports.up = async function(knex) {
 
@@ -20,13 +18,9 @@ exports.up = async function(knex) {
     // remove everything from the table
     await tbl.del();
 
-    await tbl.insert({name: housingTag.TAG_NAME});
-    await tbl.insert({name: publicTag.TAG_NAME});
 };
 
 exports.down = async function(knex) {
     const tbl = knex.table('tag');
-
-    await tbl.where('name', housingTag.TAG_NAME).del();
-    await tbl.where('name', publicTag.TAG_NAME).del();
+    
 };
