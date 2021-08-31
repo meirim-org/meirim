@@ -64,6 +64,21 @@ class PlanAreaChanges extends Model {
 		}
 
 	}
+
+	static async isAdditionInUsage(planId, usage) {
+		try {
+			const ans = await PlanAreaChanges.query('where', 'plan_id', '=', planId,
+				'AND', '`usage`', '=', usage,
+				'AND', 'change_to_approved_state', 'LIKE', '%+%');
+
+			return ans.models.length === 0;
+		}
+		catch (e) {
+			Log.error(e);
+			return false;
+		}
+
+	}
 }
 
 
