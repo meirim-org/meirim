@@ -67,9 +67,10 @@ class PlanAreaChanges extends Model {
 
 	static async isAdditionInUsage(planId, usage) {
 		try {
-			const ans = await PlanAreaChanges.query('where', 'plan_id', '=', planId,
-				'AND', '`usage`', '=', usage,
-				'AND', 'change_to_approved_state', 'LIKE', '%+%');
+			const ans = await this.query('where', 'plan_id', '=', planId)
+				.query('where', 'usage', '=', usage)
+				.query('where', 'change_to_approved_state', 'LIKE', '%+%')
+				.fetchAll({ columns: ['id'] });
 
 			return ans.models.length === 0;
 		}

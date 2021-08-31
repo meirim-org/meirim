@@ -17,7 +17,16 @@ const doesTagApply = async (plan, tagsResources) => {
     const findPattern1 = RegExp('דרך ([א-ת])*', 'g');
     const findPattern2 = RegExp('דרך ([א-ת])* ([א-ת])*', 'g');
 
-    const matches = planName.match(findPattern1).concat(planName.match(findPattern2));
+    let match1 = planName.match(findPattern1);
+    if (!match1) {
+        match1 = [];
+    }
+
+    let match2 = planName.match(findPattern2);
+    if (!match2) {
+        match2 = [];
+    }
+    const matches = match1.concat(match2);
 
     for(const match of matches) {
         if (tagsResources.streetNames.has(match)) {

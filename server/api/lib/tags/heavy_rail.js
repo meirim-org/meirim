@@ -35,10 +35,9 @@ const doesTagApply = async (plan, tagsResources) => {
             };
         }
 
-        return null;
-
     }
 
+    return null;
 
 };
 
