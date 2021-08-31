@@ -27,6 +27,7 @@ const tagIcons = {
     offices: TagIcons.OfficesTagIcon,
     residence: TagIcons.ResidenceTagIcon,
     transportation: TagIcons.TransportationTagIcon,
+    plus: TagIcons.PlusTagIcon
 }
 
 const PlanCard = ({ plan }) => {
@@ -165,38 +166,18 @@ const PlanCard = ({ plan }) => {
 					<SC.CardContent>
                         <PlanDetailsHeader>
                             {plan.distance > 0 && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
-                                <Text
-                                    size='16px'
-                                    weight='600'
-                                    text={` ${Math.ceil(plan.distance / 5) * 5} מ׳ מהכתובת`}
-                                    color={theme.palette.black}
-                                />
+                                {` ${Math.ceil(plan.distance / 5) * 5} מ׳ מהכתובת`}
                             </PlanDistance>}
-                            {plan?.data?.QUANTITY_DELTA_120 > 0 && <Text
-                                size='16px'
-                                weight='600'
-                                text={`${plan?.data?.QUANTITY_DELTA_120}+ דירות`}
-                                color={theme.palette.black}
-                            />}
+                            {plan?.data?.QUANTITY_DELTA_120 > 0 && <span>{`${plan?.data?.QUANTITY_DELTA_120}+ דירות`}</span>}
                         </PlanDetailsHeader>
 						<PlanName>
-							<Text
-								size='18px'
-								weight='normal'
-								text={plan?.plan_display_name}
-								color={theme.palette.black}
-							/>
+                            {plan?.plan_display_name}
 						</PlanName>
 						<Tags ref={tagsWrapperRef}>
 							{tags.map((tag, i) => {
 								return <Tag key={i} ref={tagsRef.current[i]}>
 									{tagIcons[tag.type] && <TagIcon src={tagIcons[tag.type]} />}
-									<Text
-										size='16px'
-										weight='normal'
-										text={tag.text}
-										color={theme.palette.black}
-									/>
+                                    {tag.text}
 								</Tag>;
 							})}
 						</Tags>
@@ -277,18 +258,26 @@ const FooterChip = styled(Chip)`
     padding: 4px 9px;
 `;
 
-const PlanDetailsHeader = styled.div`
+const PlanDetailsHeader = withTheme(styled.div`
     display: flex;
     flex-flow: row;
     align-items: center;
     height: 36px;
     flex-shrink: 0;
-`;
+    span {
+        font-size: 16px;
+        font-weight: 600;
+        color: ${props => props.theme.palette.black};
+    }
+`);
 
-const PlanDistance = styled.div`
+const PlanDistance = withTheme(styled.div`
     display: flex;
     align-items: center;
-
+    font-size: 16px;
+    font-weight: 600;
+    color: ${props => props.theme.palette.black};
+        
     &:before {
         margin-left: 14px;
         content: url(${DropPinIcon});
@@ -304,14 +293,17 @@ const PlanDistance = styled.div`
         margin: 10px;
       }
     `}
-`;
+`);
 
-const PlanName = styled.div`
+const PlanName = withTheme(styled.div`
     flex-shrink: 0;
     height: 50px;
     overflow: hidden;
-  margin-bottom: 27px;
-`;
+    margin-bottom: 27px;
+    font-weight: normal;
+    font-size: 18px;
+    color: ${props => props.theme.palette.black};
+`);
 
 const Tags = styled.div`
     display: flex;
@@ -320,7 +312,7 @@ const Tags = styled.div`
     overflow: hidden;
 `;
 
-const Tag = styled.div`
+const Tag = withTheme(styled.div`
     display: flex;
     align-items: center;
     height: 26.35px;
@@ -328,7 +320,10 @@ const Tag = styled.div`
     border-radius: 4px;
     padding: 0 8px;
     margin: 0 0 10px 10px;
-`;
+    font-size: 16px;
+    font-weight: normal;
+    color: ${props => props.theme.palette.black};
+`);
 
 const TagIcon = styled.img`
     width: 20px;
