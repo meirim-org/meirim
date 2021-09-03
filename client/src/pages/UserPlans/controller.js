@@ -10,13 +10,3 @@ export const fetchUserPlans = async () => {
 		throw new Error(err);
 	}
 };
-
-export const subscribeToPlan = async () => {
-	try {
-		const response = await api.get('plan/user');
-
-		return response;
-	} catch (err) {
-		throw new Error(err);
-	}
-};
