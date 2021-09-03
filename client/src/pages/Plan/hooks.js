@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import geojsonArea from '@mapbox/geojson-area';
 import { parseNumber, scrollToTop } from 'utils';
 import { setData } from 'redux/comments/slice';
@@ -20,15 +20,14 @@ export const isFavoritePlan = async (userId, planId) => {
 };
 
 export const useFavoritePlan = (planId) => {
-	// const [isFav, setIsFav] = useState(false);
-	const { user: { id: userId }, favoritePlans } = UserSelectors();
+	const { favoritePlans } = UserSelectors();
 	const dispatch = useDispatch();
 	const isSubscribed = favoritePlans.indexOf(planId)!== -1;
 
 	const subscribe = async () => {
 		try {
-			const res = await subscribeUserToPlan(planId)
-			dispatch(subscribedToPlan({planId}));
+			const res = await subscribeUserToPlan(planId);
+			if (res) dispatch(subscribedToPlan({planId}));
 		}
 		finally{
 
@@ -38,7 +37,7 @@ export const useFavoritePlan = (planId) => {
 	const unsubscribe = async () => {
 		try {
 			const res = await unsubscribeUserToPlan(planId)
-			dispatch(unsubscribedFromPlan({planId}));
+			if (res)  dispatch(unsubscribedFromPlan({planId}));
 		}
 		finally{
 
