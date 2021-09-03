@@ -1,4 +1,8 @@
 const TAG_NAME = 'רכבת קלה';
+const rakevetKala = 'רכבת קלה';
+const rakal = 'רק"ל';
+const tzomet = 'צומת';
+const tzir = 'ציר';
 
 const doesTagApply = async (plan, tagsResources) => {
     const getReturnDict = (stringInPlanName) => {
@@ -12,13 +16,13 @@ const doesTagApply = async (plan, tagsResources) => {
 
     const planName = plan.attributes.PL_NAME;
 
-    if (!planName.includes('צומת') && !planName.includes('ציר')) {
+    if (!planName.includes(tzomet) && !planName.includes(tzir)) {
 
-        if (planName.includes('רכבת קלה')) {
-            return getReturnDict('רכבת קלה');
+        if (planName.includes(rakevetKala)) {
+            return getReturnDict(rakevetKala);
         }
-        if (planName.includes('רק"ל')) {
-            return getReturnDict('רק"ל');
+        if (planName.includes(rakal)) {
+            return getReturnDict(rakal);
         }
 
     }

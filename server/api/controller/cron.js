@@ -10,7 +10,7 @@ const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
-const { getPlanTagger } = require('../lib/tags');
+const getPlanTagger = require('../lib/tags');
 
 const iplan = (limit = -1) =>
 	iplanApi

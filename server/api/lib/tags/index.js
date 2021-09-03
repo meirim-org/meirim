@@ -24,7 +24,7 @@ const getPlanTagger = async () => {
 		for (const tagFunction of taggingFunctions) {
 			const result = await tagFunction.doesTagApply(plan, resources);
 
-			if (result !== null) {
+			if (result) {
 				planTags.push(result);
 			}
 
@@ -34,6 +34,4 @@ const getPlanTagger = async () => {
 };
 
 
-module.exports = {
-	getPlanTagger
-};
+module.exports = getPlanTagger;
