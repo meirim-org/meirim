@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef, createRef, useLayoutEffect, useCallback } from 'react';
+import React, { useRef, createRef, useLayoutEffect, useCallback, useState } from 'react';
 import * as SC from './style';
 import { Link } from 'react-router-dom';
 import Mapa from 'components/Mapa';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import {useTheme, withTheme} from '@material-ui/core/styles';
-import { Text } from 'shared';
 import moment from 'moment'
 import styled from 'styled-components';
 import {
@@ -15,7 +14,7 @@ import {
 } from '../../assets/icons'
 import TagIcons from '../icons/TagIcons'
 import { openModal } from '../../redux/modal/slice';
-import { isFavoritePlan } from '../../pages/Plan/hooks';
+import { useFavoritePlan } from '../../pages/Plan/hooks';
 import { UserSelectors } from '../../redux/selectors';
 import { useDispatch } from 'react-redux';
 import { subscribeUserToPlan, unsubscribeUserToPlan } from '../../pages/Plan/controller';
@@ -33,18 +32,12 @@ const tagIcons = {
 const PlanCard = ({ plan }) => {
 	const theme = useTheme();
 	const tagsWrapperRef = useRef(null);
-	const [tags, setTags] = useState(plan?.tags || []);
+    const [tags, setTags] = useState(plan?.tags || []);
+    const { isSubscribed, subscribe, unsubscribe }  = useFavoritePlan(plan.id);
     const [ isFavPlan, setIsFavPlan ] = useState(false);
 	const tagsRef = useRef([...(plan?.tags || []).map(() => createRef()), createRef()]);
     const dispatch = useDispatch();
-    const { isAuthenticated, user } = UserSelectors();
-
-    useEffect(() => {
-        const handler = async () => {
-            await getIsFav();
-        };
-        handler();
-    }, [getIsFav]);
+    const { isAuthenticated, user, favoritePlans } = UserSelectors();
 
 	const intersectionObserverCallback = useCallback((entries) => {
         const visibleTags = entries.filter(entry => entry.isIntersecting);
@@ -92,13 +85,12 @@ const PlanCard = ({ plan }) => {
 
     const subscriptionHandler = async () => {
         if (!isAuthenticated) return dispatch(openModal({ modalType: 'login' }));
-        const isFav = await isFavoritePlan(user.id, plan.id);
-        if (isFav) {
-            await unsubscribeToPlan();
+        // const isFav = await isFavoritePlan(user.id, plan.id);
+        if (!isSubscribed) {
+            await subscribe();
         } else {
-            await subscribeToPlan();
+            await unsubscribe();
         }
-        await getIsFav();
     };
 
     const unsubscribeToPlan = async () => {
@@ -108,11 +100,6 @@ const PlanCard = ({ plan }) => {
         await subscribeUserToPlan(plan.id);
     };
 
-    const getIsFav = React.useCallback(async () => {
-        if (!user.id) return;
-        const isFav = await isFavoritePlan(user.id, plan.id);
-        setIsFavPlan(isFav);
-    }, [user.id, plan.id]);
 
 	function handleBookmarkClick(e){
 	    e.preventDefault()
@@ -141,7 +128,7 @@ const PlanCard = ({ plan }) => {
                                     {`${plan.status ?? ''} ${parseUpdateDate()}`}
                                 </ChipText>
                             </StatusChip>
-							<BookmarkBtn isBookmarked={isFavPlan} onClick={handleBookmarkClick}/>
+							<BookmarkBtn isBookmarked={isSubscribed} onClick={handleBookmarkClick}/>
 						</MapTitle>
 						<MapFooter>
 							<FooterChip>
