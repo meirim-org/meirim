@@ -37,7 +37,7 @@ const PlanCard = ({ plan }) => {
     const [ isFavPlan, setIsFavPlan ] = useState(false);
 	const tagsRef = useRef([...(plan?.tags || []).map(() => createRef()), createRef()]);
     const dispatch = useDispatch();
-    const { isAuthenticated, user, favoritePlans } = UserSelectors();
+    const { isAuthenticated, user } = UserSelectors();
 
 	const intersectionObserverCallback = useCallback((entries) => {
         const visibleTags = entries.filter(entry => entry.isIntersecting);
@@ -93,14 +93,6 @@ const PlanCard = ({ plan }) => {
         }
     };
 
-    const unsubscribeToPlan = async () => {
-        await unsubscribeUserToPlan(plan.id);
-    };
-    const subscribeToPlan = async () => {
-        await subscribeUserToPlan(plan.id);
-    };
-
-
 	function handleBookmarkClick(e){
 	    e.preventDefault()
         subscriptionHandler()
@@ -111,6 +103,12 @@ const PlanCard = ({ plan }) => {
 	        return `ב-${moment(plan.updated_at).format("DD.MM.YYYY")}`
         }
 	    return ''
+    }
+
+    const getDistanceText = (distance) => {
+        const roundDistance = Math.ceil(distance / 5) * 5;
+        if(distance < 1000 ) return  `${roundDistance} מ׳ מהכתובת`;
+        return `${roundDistance/1000} ק״מ מהכתובת`;
     }
 
 	return (
@@ -147,13 +145,13 @@ const PlanCard = ({ plan }) => {
 							countyName={plan.PLAN_COUNTY_NAME}
 							hideZoom={true}
 							disableInteractions={true}
-							title2={plan.distance ? ` ${Math.ceil(plan.distance / 5) * 5} מ׳ מהכתובת` : ''}
+							title2={plan.distance ? getDistanceText(plan.distance) : ''}
 						/>
 					</SC.CardMedia>
 					<SC.CardContent>
                         <PlanDetailsHeader>
                             {plan.distance > 0 && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
-                                {` ${Math.ceil(plan.distance / 5) * 5} מ׳ מהכתובת`}
+                                {getDistanceText(plan.distance)}
                             </PlanDistance>}
                             {plan?.data?.QUANTITY_DELTA_120 > 0 && <span>{`${plan?.data?.QUANTITY_DELTA_120}+ דירות`}</span>}
                         </PlanDetailsHeader>
@@ -226,6 +224,7 @@ const BookmarkBtn = styled.button`
     height: 37px;
     border: none;
     border-radius: 18.5px;
+    cursor: pointer;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
     background: center no-repeat url(${({isBookmarked}) => isBookmarked ? BookmarkFilledIcon : BookmarkOutlinedIcon}) #FFFFFF;
     flex-shrink: 0;
