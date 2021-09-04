@@ -38,24 +38,17 @@ const PlanCard = ({ plan }) => {
 
 	const intersectionObserverCallback = useCallback((entries) => {
         const visibleTags = entries.filter(entry => entry.isIntersecting);
-        const plusTagIndex = tags.map(tag => tag.type).indexOf('plus');
-        const newTags = [...tags];
+        const newTags = [...plan?.tags];
 
-        if(plusTagIndex > -1){
-            newTags.splice(plusTagIndex, 1)
-            setTags(newTags)
-        }
-
-        if(entries.length !== tags.length){
+        if(entries.length !== plan?.tags?.length){
             return
         }
 
         if (visibleTags.length < entries.length){
-            newTags.splice(plusTagIndex, 1)
             newTags.splice(visibleTags.length-1,0, { text: `${entries.length - visibleTags.length+1}`, type: 'plus' })
             setTags(newTags);
         }
-    },[tagsRef])
+    },[plan])
 
 	useLayoutEffect(() => {
 	    const currentTagsRef = tagsRef.current;
