@@ -2,7 +2,8 @@
 // (request to build more than 200 mr of hoteliery) or
 // (request to enlarge existing building rights of hoteliery by more than 30%).
 const { doesTagApplyHelper} = require('../tags/utils');
-const TAG_NAME = 'תיירות';
+const TAG_NAME = 'Hoteliery';
+const TAG_DISPLAY_NAME = 'מלונאות';
 
 const doesTagApply = async (planId, tagsResources) => {  
 	return doesTagApplyHelper(planId,TAG_NAME, tagsResources);
@@ -10,6 +11,7 @@ const doesTagApply = async (planId, tagsResources) => {
 
 module.exports = {
 	doesTagApply, 
-	TAG_NAME
+	TAG_NAME,
+	TAG_DISPLAY_NAME
 };
 

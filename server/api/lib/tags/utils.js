@@ -1,5 +1,5 @@
 const PlanAreaChanges = require('../../../api/model/plan_area_changes');
-const { tagDataRules, area_change_types } = require('../../constants');
+const { tagDataRules, AREA_CHANGE_TYPES } = require('../../constants');
 
 const isTagByUsageAddition = async (planId, rule) => {
 	try {
@@ -8,7 +8,7 @@ const isTagByUsageAddition = async (planId, rule) => {
 			const changeToApprovedState = result.models[0].attributes.change_to_approved_state;
 			const approvedState = result.models[0].attributes.approved_state;
 			switch (rule.changeType) {
-				case area_change_types.INCREASED_USAGE:
+				case AREA_CHANGE_TYPES.INCREASED_USAGE:
 					// change to approved state
 					if ((changeToApprovedState.length > 1) && 
 						(changeToApprovedState.substring(0,1) === '+') ) {
@@ -20,7 +20,7 @@ const isTagByUsageAddition = async (planId, rule) => {
 						}
 					}					
 					break;	
-				case area_change_types.NEW_USAGE:
+				case AREA_CHANGE_TYPES.NEW_USAGE:
 					// new usage that was not approved previously
 					if ((changeToApprovedState.length > 1) && 
 					(changeToApprovedState.substring(0,1) === '+') && 
@@ -33,7 +33,7 @@ const isTagByUsageAddition = async (planId, rule) => {
 						}	
 					}
 					break;
-				case area_change_types.PERCENT_INCREASE:
+				case AREA_CHANGE_TYPES.PERCENT_INCREASE:
 						// usage that grows by a certain percentage
 						if ((changeToApprovedState.length > 1) && 
 						(changeToApprovedState.substring(0,1) === '+') && 

@@ -23,11 +23,11 @@ exports.up = async function(knex) {
 	// remove everything from the table
 	await tbl.del();
 
-	await tbl.insert({name: housingTag.TAG_NAME});
-	await tbl.insert({name: publicTag.TAG_NAME});
-	await tbl.insert({name: hotelieryTag.TAG_NAME});
-	await tbl.insert({name: commerceTag.TAG_NAME});
-	await tbl.insert({name: employmentTag.TAG_NAME});
+	await tbl.insert({name: housingTag.TAG_NAME, display_name: housingTag.TAG_DISPLAY_NAME});
+	await tbl.insert({name: publicTag.TAG_NAME, display_name: publicTag.TAG_DISPLAY_NAME});
+	await tbl.insert({name: hotelieryTag.TAG_NAME, display_name: hotelieryTag.TAG_DISPLAY_NAME});
+	await tbl.insert({name: commerceTag.TAG_NAME, display_name: commerceTag.TAG_DISPLAY_NAME});
+	await tbl.insert({name: employmentTag.TAG_NAME, display_name: employmentTag.TAG_DISPLAY_NAME});
 
 };
 

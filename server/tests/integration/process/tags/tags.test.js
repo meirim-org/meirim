@@ -1,8 +1,12 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const { isTagByUsageAddition } = require('../../../../api/lib/tags/utils');
-const { tagDataRules, area_change_types } = require('../../../../api/constants');
-const { doesTagApply: isHousing, TAG_NAME: housingTagName  } = require('../../../../api/lib/tags/housing');
+const { tagDataRules, AREA_CHANGE_TYPES } = require('../../../../api/constants');
+const { doesTagApply: isHousing, TAG_NAME: HOUSING_TAG_NAME  } = require('../../../../api/lib/tags/housing');
+const { TAG_NAME: PUBLIC_TAG_NAME  } = require('../../../../api/lib/tags/public');
+const { TAG_NAME: EMPLOYMENT_TAG_NAME  } = require('../../../../api/lib/tags/employment');
+const { TAG_NAME: COMMERCE_TAG_NAME  } = require('../../../../api/lib/tags/commerce');
+const { TAG_NAME: HOTELIERY_TAG_NAME  } = require('../../../../api/lib/tags/hoteliery');
 const PlanAreaChanges = require('../../../../api/model/plan_area_changes');
 
 
@@ -11,30 +15,26 @@ const plan = {id: planId};
 const fakeUnitsAdded = 11;
 const fakeSqMrAdded = 1001;
 // Housing
-const HOUSING_TAG_NAME = 'דיור';
+
 const fakeHousingByUnitsTrue = { models: [{ attributes : { change_to_approved_state: `+${fakeUnitsAdded}` } }]} ;
 const fakeHousingByAreaTrue = { models: [{ attributes : { change_to_approved_state: `+${fakeSqMrAdded}` } }]} ;
 const HOUSING_BY_UNIT_RULE = tagDataRules.filter(tag => {return tag.tagName===HOUSING_TAG_NAME})[0].rules.filter( rule => {return rule.usage==='מגורים (יח"ד)'})[0];
 const HOUSING_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName===HOUSING_TAG_NAME})[0].rules.filter( rule => {return rule.usage==='מגורים (מ"ר)'})[0];;  
 // Public Area
-const PUBLIC_TAG_NAME = 'מבני ציבור';
 const fakePublicByAreaTrue = { models: [{ attributes : { change_to_approved_state: `+${fakeSqMrAdded}` } }]} ;
-const PUBLIC_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName===PUBLIC_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.INCREASED_USAGE})[0];
+const PUBLIC_BY_AREA_RULE = tagDataRules.filter(tag => {return tag.tagName===PUBLIC_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.INCREASED_USAGE})[0];
 // Employment Area
-const EMPLOYMENT_TAG_NAME = 'תעסוקה';
 const fakeEmploymentByAreaFalse = { models: [{ attributes : { change_to_approved_state: `+1,500` } }]} ;
-const EMPLOYMENT_BY_AREA_RULE_INCREASED_USAGE = tagDataRules.filter(tag => {return tag.tagName=== EMPLOYMENT_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.INCREASED_USAGE})[0];
-const EMPLOYMENT_BY_AREA_RULE_NEW_USAGE = tagDataRules.filter(tag => {return tag.tagName=== EMPLOYMENT_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.NEW_USAGE})[0];
+const EMPLOYMENT_BY_AREA_RULE_INCREASED_USAGE = tagDataRules.filter(tag => {return tag.tagName=== EMPLOYMENT_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.INCREASED_USAGE})[0];
+const EMPLOYMENT_BY_AREA_RULE_NEW_USAGE = tagDataRules.filter(tag => {return tag.tagName=== EMPLOYMENT_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.NEW_USAGE})[0];
 // Commerce Area
-const COMMERCE_TAG_NAME = 'מסחר';
-const COMMERCE_BY_AREA_RULE_INCREASED_USAGE = tagDataRules.filter(tag => {return tag.tagName=== COMMERCE_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.INCREASED_USAGE})[0];
-const COMMERCE_BY_AREA_RULE_NEW_USAGE = tagDataRules.filter(tag => {return tag.tagName===COMMERCE_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.NEW_USAGE})[0];
-const COMMERCE_BY_AREA_RULE_PERCENT_INCREASE = tagDataRules.filter(tag => {return tag.tagName=== COMMERCE_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.PERCENT_INCREASE})[0];
+const COMMERCE_BY_AREA_RULE_INCREASED_USAGE = tagDataRules.filter(tag => {return tag.tagName=== COMMERCE_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.INCREASED_USAGE})[0];
+const COMMERCE_BY_AREA_RULE_NEW_USAGE = tagDataRules.filter(tag => {return tag.tagName===COMMERCE_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.NEW_USAGE})[0];
+const COMMERCE_BY_AREA_RULE_PERCENT_INCREASE = tagDataRules.filter(tag => {return tag.tagName=== COMMERCE_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.PERCENT_INCREASE})[0];
 // Hoteliery Area
-const HOTELIERY_TAG_NAME = 'תיירות';
-const HOTELIERY_BY_AREA_RULE_INCREASED_USAGE = tagDataRules.filter(tag => {return tag.tagName=== HOTELIERY_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.INCREASED_USAGE})[0];
-const HOTELIERY_BY_AREA_RULE_NEW_USAGE = tagDataRules.filter(tag => {return tag.tagName=== HOTELIERY_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.NEW_USAGE})[0];;
-const HOTELIERY_BY_AREA_RULE_PERCENT_INCREASE = tagDataRules.filter(tag => {return tag.tagName=== HOTELIERY_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===area_change_types.PERCENT_INCREASE})[0];
+const HOTELIERY_BY_AREA_RULE_INCREASED_USAGE = tagDataRules.filter(tag => {return tag.tagName=== HOTELIERY_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.INCREASED_USAGE})[0];
+const HOTELIERY_BY_AREA_RULE_NEW_USAGE = tagDataRules.filter(tag => {return tag.tagName=== HOTELIERY_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.NEW_USAGE})[0];;
+const HOTELIERY_BY_AREA_RULE_PERCENT_INCREASE = tagDataRules.filter(tag => {return tag.tagName=== HOTELIERY_TAG_NAME})[0].rules.filter( rule => {return rule.changeType===AREA_CHANGE_TYPES.PERCENT_INCREASE})[0];
 
 
 
@@ -251,7 +251,7 @@ describe('Tags', function() {
 
 			const tagNameToTagId = {};
 			tagNameToTagId['משהו_אקראי'] = 8;
-			tagNameToTagId[housingTagName] = CHECK_TAG_ID;
+			tagNameToTagId[HOUSING_TAG_NAME] = CHECK_TAG_ID;
 
 			tagsResources = {
 				tagNameToTagId: tagNameToTagId
