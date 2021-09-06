@@ -12,6 +12,7 @@ const isTagByUsageAddition = async (planId, rule) => {
 					// change to approved state
 					if ((changeToApprovedState.length > 1) && 
 						(changeToApprovedState.substring(0,1) === '+') ) {
+						// get change as number 
 						const change = Number(changeToApprovedState.replace('+','').replace(',',''));
 						if (change >= Number(rule.minValue)) {
 							return {   
