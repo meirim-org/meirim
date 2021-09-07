@@ -3,6 +3,7 @@ const Promise = require('bluebird');
 const Model = require('./base_model');
 const Person = require('./person');
 const Crypt = require('../lib/crypt');
+const moment = require('moment');
 const { Knex } = require('../service/database');
 const Geocoder = require('../service/geocoder').geocoder;
 const DegreeToMeter = require('../service/geocoder').degreeToMeter;
@@ -195,6 +196,30 @@ class Alert extends Model {
     person.status=1
     GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
+	}
+
+	static getAlertToNotify (userOptions) {
+		const options = userOptions || {};
+		if (!options.limit) {
+			options.limit = 1;
+		}
+		return Alert.query(qb => {
+			// qb.whereRaw('last_email_sent IS NULL');
+		}).fetchAll({
+			columns: [
+				'address',
+				'person_id',
+				'geom',
+				'radius',
+				'place',
+				'type',
+			] 
+		}).then(res=>{
+			return res.models[0];
+		}).catch(err=>
+		{
+			console.log(err);
+		});
 	}
 }
 
