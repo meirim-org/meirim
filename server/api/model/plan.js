@@ -1,19 +1,27 @@
 const Bluebird = require('bluebird');
+const moment = require('moment');
 const Model = require('./base_model');
 const Log = require('../lib/log');
+const wkt = require('terraformer-wkt-parser');
 const Exception = require('./exception');
-const { Bookshelf, Knex } = require('../service/database');
+const {
+	Bookshelf,
+	Knex
+} = require('../service/database');
 const PlanChartFiveRow = require('./plan_chart_five_row');
 const PlanChartOneEightRow = require('./plan_chart_one_eight_row');
 const PlanChartFourRow = require('./plan_chart_four_row');
 const PlanChartSixRow = require('./plan_chart_six_row');
-const {	notification_types } = require('../constants');
+const {
+	notification_types
+} = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
 const File = require('./file');
+const { parseLandUses, describeChange, LAND_USES, LAND_USE_CHANGE_UNITS } = require('../service/landUseMappers');
 
 class Plan extends Model {
-	get rules () {
+	get rules() {
 		return {
 			sent: 'integer',
 			OBJECTID: ['required', 'integer'],
@@ -39,7 +47,7 @@ class Plan extends Model {
 		};
 	}
 
-	defaults () {
+	defaults() {
 		return {
 			sent: 0,
 			geo_search_filter: false
@@ -47,7 +55,7 @@ class Plan extends Model {
 	}
 
 	// support json encode for data field
-	format (attributes) {
+	format(attributes) {
 		if (attributes.data) {
 			attributes.data = JSON.stringify(attributes.data);
 		}
@@ -59,7 +67,7 @@ class Plan extends Model {
 	}
 
 	// support json encode for data field
-	parse (attributes) {
+	parse(attributes) {
 		try {
 			if (attributes.data) {
 				attributes.data = JSON.parse(attributes.data);
@@ -71,11 +79,11 @@ class Plan extends Model {
 		return super.parse(attributes);
 	}
 
-	get geometry () {
+	get geometry() {
 		return ['geom'];
 	}
 
-	get tableName () {
+	get tableName() {
 		return 'plan';
 	}
 
@@ -87,7 +95,7 @@ class Plan extends Model {
 		super.initialize();
 	}
 
-	_creating (model) {
+	_creating(model) {
 		return new Promise((resolve) => {
 			// set the geometry's centroid using ST_Centroid function
 			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
@@ -95,7 +103,7 @@ class Plan extends Model {
 		});
 	}
 
-	_updating (model, attrs) {
+	_updating(model, attrs) {
 		return new Promise((resolve) => {
 			// if the geometry is being updated update the centroid as well,
 			// otherwise never update the centroid since the value is not
@@ -110,7 +118,7 @@ class Plan extends Model {
 		}).then(() => this.handleUpdatingPlan(model));
 	}
 
-	_saving () {
+	_saving() {
 		// return new Checkit(model.rules).run(model.attributes);
 	}
 
@@ -118,10 +126,10 @@ class Plan extends Model {
 		return this.handleNewPlan(model);
 	}
 
-	async handleNewPlan (model) {
+	async handleNewPlan(model) {
 		const planId = model.id;
-		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
-		const type = notification_types['NEW_PLAN_IN_AREA']; 
+		const [usersSubscribedToPlanArea] = await Alert.getUsersByGeometry(planId);
+		const type = notification_types['NEW_PLAN_IN_AREA'];
 
 		Log.info(`Creating ${usersSubscribedToPlanArea.length} new plan notifications`);
 
@@ -132,7 +140,7 @@ class Plan extends Model {
 		});
 	}
 
-	async handleUpdatingPlan (model) {
+	async handleUpdatingPlan(model) {
 		// NOTE: this would be best done after the model was successfully saved (ie. the
 		// updated event), but in that point in time we can't accurately determine which
 		// attributes have changed. previousAttributes returns all attributes originally
@@ -145,7 +153,7 @@ class Plan extends Model {
 			return null;
 
 		const planId = model.id;
-		const [ usersSubscribedToPlanArea ] = await Alert.getUsersByGeometry(planId);
+		const [usersSubscribedToPlanArea] = await Alert.getUsersByGeometry(planId);
 
 		Log.info(`Creating ${usersSubscribedToPlanArea.length} updated plan notifications of ${types.length} types`);
 
@@ -158,7 +166,7 @@ class Plan extends Model {
 		}
 	}
 
-	getPlanUpdateTypes (model) {
+	getPlanUpdateTypes(model) {
 		const updates = [];
 
 		if (model.changed.status) {
@@ -167,9 +175,21 @@ class Plan extends Model {
 
 		return updates;
 	}
+	
+	parseAreaChanges(areaChangesString){
+		if (!areaChangesString) return {};
+		const rawlandUse = JSON.parse(areaChangesString);
+		const changesSummary = parseLandUses(rawlandUse);
 
+		return changesSummary;
+	}
 
-	canRead () {
+	describeHousingChange(){
+		const mappedAreaChange = this.parseAreaChanges(this.get('areaChanges'));
+		return describeChange(mappedAreaChange, LAND_USES.housing, LAND_USE_CHANGE_UNITS.units);
+	}
+
+	canRead() {
 		return Bluebird.resolve(this);
 	}
 
@@ -180,34 +200,31 @@ class Plan extends Model {
 		return Promise.resolve(this);
 	}
 
-	static markPlansAsSent (plan_ids) {
+	static markPlansAsSent(plan_ids) {
 		return new Plan()
 			.query(qb => {
 				qb.whereIn('id', plan_ids);
 			})
-			.save(
-				{
-					sent: '2'
-				},
-				{
-					method: 'update'
-				}
-			);
+			.save({
+				sent: '2'
+			}, {
+				method: 'update'
+			});
 	}
 
-	static fetchByObjectID (objectID) {
+	static fetchByObjectID(objectID) {
 		return Plan.forge({
 			OBJECTID: objectID
 		}).fetch();
 	}
 
-	static fetchByPlanID (planID) {
+	static fetchByPlanID(planID) {
 		return Plan.forge({
 			[Plan.prototype.idAttribute]: planID
 		}).fetch();
 	}
 
-	static cleanPlanName (planName) {
+	static cleanPlanName(planName) {
 
 		const cleanFromStart = (planName) => {
 			const reSearchWithBackSlash = /^([א-ת0-9]+\\(\ )?[א-ת0-9]+(((\\(\ )?)|\-)[א-ת0-9]+)*)/;
@@ -288,7 +305,7 @@ class Plan extends Model {
 			const seperatorRe = /[ ,:\-"']/;
 			// we don't want a plan name with a single character
 			for (let i = stripped.length - 1; i > 0; i--) {
-				if(!stripped[i].match(seperatorRe)) {
+				if (!stripped[i].match(seperatorRe)) {
 					return stripped.substring(0, i + 1);
 				}
 			}
@@ -313,7 +330,7 @@ class Plan extends Model {
 		return cleaned;
 	}
 
-	static buildFromIPlan (iPlan, oldPlan = null) {
+	static buildFromIPlan(iPlan, oldPlan = null) {
 		const data = {
 			OBJECTID: iPlan.properties.OBJECTID,
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
@@ -336,9 +353,11 @@ class Plan extends Model {
 		return plan.save();
 	}
 
-	static async setMavatData (plan, mavatData) {
+	static async setMavatData(plan, mavatData) {
 		const addPlanIdToArray = (chart) => {
-			chart.forEach(row => { row.plan_id = plan.id; });
+			chart.forEach(row => {
+				row.plan_id = plan.id;
+			});
 		};
 
 		await Bookshelf.transaction(async (transaction) => {
@@ -350,19 +369,30 @@ class Plan extends Model {
 				explanation: mavatData.planExplanation
 			});
 
-			await plan.save(null, { transacting: transaction });
+			await plan.save(null, {
+				transacting: transaction
+			});
 
 			// delete all of the plan's existing files
 			const fileRows = await File.query(qb => {
 				qb.where('plan_id', plan.id);
-			}).fetchAll({transacting: transaction});
+			}).fetchAll({
+				transacting: transaction
+			});
 			for (const existingFile of fileRows.models) {
-				await existingFile.destroy({transacting: transaction});
+				await existingFile.destroy({
+					transacting: transaction
+				});
 			}
 
 			// save all plan files scraped from mavat
 			mavatData.files.forEach(async (file) => {
-				await new File({ plan_id: plan.id, ...file }).save(null, {transacting: transaction});
+				await new File({
+					plan_id: plan.id,
+					...file
+				}).save(null, {
+					transacting: transaction
+				});
 			});
 
 			// delete existing chart rows since we have no identifiers for the single
@@ -370,10 +400,14 @@ class Plan extends Model {
 			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
 				const chartRows = await modelClass.query(qb => {
 					qb.where('plan_id', plan.id);
-				}).fetchAll({ transacting: transaction });
+				}).fetchAll({
+					transacting: transaction
+				});
 
 				for (const chartModel of chartRows.models) {
-					await chartModel.destroy({ transacting: transaction });
+					await chartModel.destroy({
+						transacting: transaction
+					});
 				}
 			}
 
@@ -400,7 +434,9 @@ class Plan extends Model {
 				const chartsOneEight = chart181.concat(chart182, chart183);
 				for (let i = 0; i < chartsOneEight.length; i++) {
 					try {
-						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
+						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, {
+							transacting: transaction
+						});
 					} catch (e) {
 						Log.error(e);
 					}
@@ -413,7 +449,9 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartFourData.length; i++) {
 					try {
-						await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
+						await new PlanChartFourRow(chartFourData[i]).save(null, {
+							transacting: transaction
+						});
 					} catch (e) {
 						Log.error(e);
 					}
@@ -426,7 +464,9 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartFiveData.length; i++) {
 					try {
-						await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
+						await new PlanChartFiveRow(chartFiveData[i]).save(null, {
+							transacting: transaction
+						});
 					} catch (e) {
 						Log.error(e);
 					}
@@ -439,7 +479,9 @@ class Plan extends Model {
 
 				for (let i = 0; i < chartSixData.length; i++) {
 					try {
-						await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
+						await new PlanChartSixRow(chartSixData[i]).save(null, {
+							transacting: transaction
+						});
 					} catch (e) {
 						Log.error(e);
 					}
@@ -450,7 +492,7 @@ class Plan extends Model {
 		return plan;
 	}
 
-	static getUnsentPlans (userOptions) {
+	static getUnsentPlans(userOptions) {
 		const options = userOptions || {};
 		if (!options.limit) {
 			options.limit = 1;
@@ -473,9 +515,34 @@ class Plan extends Model {
 		});
 	}
 
-	static erodeViews () {
+	static erodeViews() {
 		const query = 'UPDATE plan SET erosion_views = FLOOR(erosion_views/2)';
 		return Knex.raw(query);
+	}
+
+	static getPlansByGeometryThatWereUpdatedSince(geometryPolygon, date, limit) {
+		const dateString = moment(date).format('YYYY-MM-DD h:mm');
+		return Plan.query(qb => {
+			qb.where('created_at', '>', dateString);
+			const polygon = wkt.convert(geometryPolygon);
+			qb.whereRaw(`ST_Intersects(geom, ST_GeomFromText("${polygon}", 4326))`);
+		}).fetchPage({
+			pageSize: limit || 5,
+			columns: [
+				'id',
+				'data',
+				'main_details_from_mavat',
+				'geom',
+				'jurisdiction',
+				'PL_NAME',
+				'plan_display_name',
+				'PLAN_COUNTY_NAME',
+				'goals_from_mavat',
+				'areaChanges', 
+				'plan_url',
+				'status'
+			]
+		}).then(res=> res.models);
 	}
 }
 module.exports = Plan;

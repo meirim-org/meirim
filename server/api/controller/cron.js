@@ -3,12 +3,13 @@ const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
-const Email = require('../service/email');
+const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
-const { fetchStaticMap } = require('../service/staticmap');
+const { fetchStaticMap, drawStaticMapWithPolygon } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
+const moment = require('moment');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -145,6 +146,86 @@ const sendPlanningAlerts = () => {
 		});
 };
 
+const planToEmail = (plan, map) => {
+	return {
+		id: plan.get('id'),
+		title: plan.get('plan_display_name'),
+		city: plan.get('PLAN_COUNTY_NAME'),
+		text: plan.get('goals_from_mavat'),
+		status: plan.get('status'),
+		areaChange: plan.describeHousingChange(),
+		map: 'data:image/gif;base64,'+ map,
+		link:`${this.baseUrl}plan/${plan.get('id')}`
+	};
+}; 
+
+const alertToEmail = (alert) => {
+	const alertTitle = `תוכניות חדשות בקרבת ${alert.get('address') ||  'תחומי הענין שלך'}`;
+	return {
+		alert:{
+			title: alertTitle,
+			unsubscribeLink: `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`
+		}
+	};
+};
+
+const sendDigestPlanningAlerts = async () => {
+	// Send emails for each user, by new plans in his area, that
+	// have been added since he last received a digest email
+	// sendPlanningAlerts(req, res, next) {id
+	Log.info('Running digest send planning alert');
+	const lastSentDifference = 150;
+	const maxAlertsToSend = 5;
+	const timeDifference = moment.duration(lastSentDifference, 'd');
+	const date = moment().subtract(timeDifference);
+
+	try {
+		const alertToNotify =  await Alert.getAlertToNotify(date, 1);
+		const alertGeom = alertToNotify.get('geom');
+		const alertPlans = await Plan.getPlansByGeometryThatWereUpdatedSince(alertGeom, date);
+		Log.debug(`Got ${alertPlans[0].length} for alert ${alertToNotify.id}`);
+		const maps = await Bluebird.mapSeries(alertPlans, plan => {
+			const planGeom = plan.get('geom');
+			if(!planGeom) return plan;
+			const centroid = Turf.centroid(planGeom);	
+			return drawStaticMapWithPolygon(
+				centroid.geometry.coordinates[1],
+				centroid.geometry.coordinates[0],
+				planGeom
+			);
+		});
+
+		const emailAlertParams = alertToEmail(alertToNotify);
+
+		const emailPlanParams = {
+			firstPlan: alertPlans[2] ? planToEmail(alertPlans[2], maps[2]): {},
+			secondPlan: alertPlans[3] ? planToEmail(alertPlans[3], maps[3]): {},
+			thirdPlan: alertPlans[4] ? planToEmail(alertPlans[3], maps[4]): {},
+		// fifthPlan: planToEmail(plans[0]),
+		};
+		
+		await DigestEmail.digestPlanAlert(emailPlanParams, emailAlertParams);	
+
+	}
+	catch(e){
+	}
+	finally{
+	}
+
+
+	// })
+	// .then(successArray => {
+	// 	const idArray = [];
+	// 	successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
+	// 	if (idArray.length) {
+	// 		return Plan.markPlansAsSent(idArray).then(() =>
+	// 			Log.info('Processed plans', idArray)
+	// 		);
+	// 	}
+	// 	return true;
+	// });
+};
+
 const sendTreeAlerts = () => {
 	// send emails for each tree permit to each user in the place
 	Log.info('Running send tree permits alert');
@@ -275,5 +356,6 @@ module.exports = {
 	fix_geodata,
 	fetchIplan,
 	fetchTreePermit,
-	sendTreeAlerts
+	sendTreeAlerts,
+	sendDigestPlanningAlerts
 };
