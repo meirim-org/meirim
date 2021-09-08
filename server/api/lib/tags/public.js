@@ -3,8 +3,8 @@ const { doesTagApplyHelper} = require('../tags/utils');
 const TAG_NAME = 'Public';
 const TAG_DISPLAY_NAME = 'מבני ציבור';
 
-const doesTagApply = async (plan, tagsResources) => {
-	return doesTagApplyHelper(plan, TAG_NAME, tagsResources);
+const doesTagApply = async (planId, tagsResources) => {
+	return doesTagApplyHelper(planId, TAG_NAME, tagsResources);
 };
 
 module.exports = {
