@@ -26,18 +26,17 @@ class DynamicTemplateEmail {
 			 DigestPlanAlert: 'd-db0b55ab042e4ba9878715acd35c1d6c'
 		 };
  
-		 sgMail.setApiKey('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');
 	 }
 
 	 digestPlanAlert (emailPlanParams, emailAlertParams, recipient) {
 		 const email = {
 			 from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
-			 to: 'ggendler@gmail.com',
+			 to: 'eyal.mig@gmail.com',
 			unsubscribeLink: `${this.baseUrl}${emailAlertParams.unsubscribeLink}`,
 			 personalizations:[
 				 {
 					 'to':[{
-						 'email': 'ggendler@gmail.com'
+						 'email': 'eyal.mig@gmail.com'
 					 }
 					 ],
 					'dynamic_template_data': {
