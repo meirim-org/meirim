@@ -26,25 +26,46 @@ class DynamicTemplateEmail {
 			 DigestPlanAlert: 'd-db0b55ab042e4ba9878715acd35c1d6c'
 		 };
  
+		 sgMail.setApiKey('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');
 	 }
 
 	 digestPlanAlert (emailPlanParams, emailAlertParams, recipient) {
 		 const email = {
 			 from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
-			 to: 'eyal.mig@gmail.com',
+			 to: 'ggendler@gmail.com',
 			unsubscribeLink: `${this.baseUrl}${emailAlertParams.unsubscribeLink}`,
 			 personalizations:[
 				 {
 					 'to':[{
-						 'email': 'eyal.mig@gmail.com'
+						 'email': 'ggendler@gmail.com'
 					 }
 					 ],
 					'dynamic_template_data': {
 						 ...emailPlanParams,
 						 ...emailAlertParams
-					 }
+					 },
+					 attachments: [
+						{
+							cid: 'planmap',
+							content_id: 'planmap',
+							filename: 'plan_map.png',
+							content: emailPlanParams.firstPlan.map,
+							encoding: 'base64',
+							disposition: 'inline',
+						}
+					],
 				 }
 			  ],
+			  attachments: [
+				{
+					cid: 'planmap',
+					content_id: 'planmap',
+					filename: 'plan_map.png',
+					content: emailPlanParams.firstPlan.map,
+					encoding: 'base64',
+					disposition: 'inline',
+				}
+			],
 			 template_id : this.dynamicTemplates.DigestPlanAlert,
 		 };
 		 return sgMail
