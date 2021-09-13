@@ -3,16 +3,16 @@ import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Menu, InputWrapper, Input, Button } from './AutocompleteStyle';
-
+import { colors } from 'style';
 
 const StyledMenuItem = withStyles(() => ({
   root: {
     fontFamily: 'Assistant',
     borderRadius: '0 0 4px 4px',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
   selected: {
-    backgroundColor: '#F9F9F9 !important'
+    backgroundColor: `${colors.grey[300]} !important`
   },
 }))(MenuItem);
 
