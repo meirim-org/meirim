@@ -44,7 +44,7 @@ class Controller {
 				});
 	}
 
-	browse (req, options = {}) {
+	browse (req, options = {}, afterFetch = undefined) {
 		const { query } = req;
 
 		let page = parseInt(query.page, 10) || 1;
@@ -87,6 +87,14 @@ class Controller {
 				withRelated: options.withRelated
 			})
 			.then(collection => {
+				if (afterFetch) {
+					return afterFetch(collection).then(collection => {
+						Log.debug(this.tableName, 'browse success');
+						return collection;
+					});
+				}
+
+				console.log(collection.models[0].relations.tags.models);
 				Log.debug(this.tableName, 'browse success');
 				return collection;
 			});

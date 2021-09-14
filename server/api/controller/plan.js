@@ -5,6 +5,8 @@ const Config = require('../lib/config');
 const { Knex } = require('../service/database');
 const Exception = require('../model/exception');
 const wkt = require('terraformer-wkt-parser');
+const Tag = require('../model/tag');
+const Log = require('../lib/log');
 
 const columns = [
 	'id',
@@ -74,7 +76,50 @@ class PlanController extends Controller {
 			q.where.geo_search_filter = [false];
 		}
 
-		return super.browse(req, q);
+		return super.browse(req, q, this.afterFetch);
+	}
+
+
+	// attached tag_name into tags. The initial fetch brings only tags id, but we want the tags name.
+	async afterFetch (collection) {
+
+		// take all the unique tag ids, and get it into an array (set doesn't work in the db query later on)
+		const relevantTagIds = Array.from(new Set(collection.models.map(planModel => {
+			return planModel.relations.tags.models.map(relationTag => relationTag.attributes.tag_id);
+		}).flat()));
+
+		if (relevantTagIds.length === 0) {
+			// we got no tags, so we got nothing to do here
+			return collection;
+		}
+
+		try {
+			const relevantTagsModels = await Tag.where('id', 'IN', relevantTagIds).fetchAll({ columns: ['id', 'name'] });
+
+			const tagIdToTagName = {};
+			relevantTagsModels.models.forEach(tagModel => {
+				tagIdToTagName[tagModel.id] = tagModel.attributes.name;
+			});
+
+			collection.models.forEach(planModel => {
+				planModel.relations.tags.models.forEach(planTagModel => {
+					console.log(planTagModel.attributes.tag_id);
+					if (planTagModel.attributes.tag_id in tagIdToTagName) {
+						planTagModel.attributes.tag_name = tagIdToTagName[planTagModel.attributes.tag_id];
+					}
+					else {
+						// we somehow didn't find this tag name and it will be an empty string
+						planTagModel.attributes.tag_name = '';
+					}
+				});
+			});
+		}
+
+		catch(e) {
+			Log.error(`Error while doing afterEach in controller/plan: ${e}`);
+		}
+
+		return collection;
 	}
 
 	publicBrowse (req) {
