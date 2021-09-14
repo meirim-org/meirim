@@ -1,12 +1,8 @@
 const PlanTagStruct = function(table) {
 	table.increments('id').primary();
 	table.integer('tag_id')
-		.unsigned()
-		.references('id')
-		.inTable('tag');
-	table.integer('plan_id')
-		.references('id')
-		.inTable('plan');
+		.unsigned();
+	table.integer('plan_id');
 	table.integer('display_score')
 		.default(1);
 	table.string('created_by_data_rules');
