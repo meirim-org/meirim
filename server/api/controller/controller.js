@@ -78,11 +78,13 @@ class Controller {
 				options.orderByRaw.map((w) => qb.orderBy(w))
 			);
 		}
+
 		return bsQuery
 			.fetchPage({
 				columns,
 				page,
-				pageSize
+				pageSize,
+				withRelated: options.withRelated
 			})
 			.then(collection => {
 				Log.debug(this.tableName, 'browse success');
