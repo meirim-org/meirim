@@ -3,7 +3,7 @@ const { mockDatabase } = require('../../mock');
 const { Plan } = require('../../../api/model');
 
 describe('Plan controller', function() {
-	const tables = ['alert', 'plan', 'notification', 'person', 'plan_person'];
+	const tables = ['alert', 'plan', 'notification', 'person', 'plan_person', 'plan_tag', 'tag'];
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 	});
