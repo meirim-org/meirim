@@ -132,7 +132,7 @@ class ChartThreeTwoBuilder {
 
 	readElementFactory(thisObj) {
 
-		return (err,item) => {
+		return (err, item) => {
 			if (err) {
 				return;
 			}
@@ -146,6 +146,15 @@ class ChartThreeTwoBuilder {
 
 				const text = item.text;
 				const reversedText = text.split('').reverse().join('');
+
+				if (reversedText === 'יעודי קרקע ושימושים') {
+					// for a case that there's no מצב מוצע and only מצב מאושר
+					// we will resolve the promise cus we passed 3.2 already
+					thisObj.isDone = true;
+					thisObj.promiseResolveFunc();
+
+					return;
+				}
 
 				if (thisObj.hasSeenTavlatShtahim && thisObj.timesSinceTavlatShtahim >= 0) {
 					if (thisObj.timesSinceTavlatShtahim === 1 && !thisObj.hasSeen3_2) {
