@@ -28,7 +28,8 @@ export const colors = {
 		700: '#A95623',
 		800: '#883B16',
 		contrast: '#E7731E'
-	}
+	},
+	blue: '#1976D2'
 };
 
 const size = {
