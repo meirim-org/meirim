@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Menu, InputWrapper, Input, Button } from './AutocompleteStyle';
+import { Wrapper, Menu, InputWrapper, Input, Button } from './Autocomplete.styled';
 import { colors } from 'style';
 
 const StyledMenuItem = withStyles(() => ({
@@ -18,7 +18,7 @@ const StyledMenuItem = withStyles(() => ({
 
 
 function Autocomplete(props) {
-  const { placeholder, maxWidth, icon, items, onInputChange, onFilter } = props;
+  const { placeholder, width, icon, items, onInputChange, onFilter } = props;
   const [inputValue, setInputValue] = useState('');
   const [selectedItem, setSelectedItem] = useState([]);
 
@@ -42,13 +42,14 @@ function Autocomplete(props) {
     onChange={handleChange}
     itemToString={item => (item ? item.value : '')}>
     {({
+      getRootProps,
       getInputProps,
       getItemProps,
       getMenuProps,
       isOpen,
       highlightedIndex,
     }) =>
-      (<div style={{ maxWidth: maxWidth, position: 'relative' }}>
+      (<Wrapper width={width} {...getRootProps()}>
         <InputWrapper>
           <Input {...getInputProps({
             onChange: handleInputChange,
@@ -69,7 +70,7 @@ function Autocomplete(props) {
           }
           )}
         </Menu> : null}
-      </div>)}
+      </Wrapper>)}
   </Downshift>);
 }
 
