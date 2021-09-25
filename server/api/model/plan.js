@@ -11,6 +11,7 @@ const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
 const File = require('./file');
+const PlanTag = require('./plan_tag');
 
 class Plan extends Model {
 	get rules () {
@@ -52,6 +53,10 @@ class Plan extends Model {
 			attributes.data = JSON.stringify(attributes.data);
 		}
 		return super.format(attributes);
+	}
+
+	tags() {
+		return this.hasMany(PlanTag, 'plan_id');
 	}
 
 	get hasTimestamps() {
