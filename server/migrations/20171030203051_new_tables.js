@@ -17,7 +17,7 @@ exports.up = function(knex, Promise) {
           name: 'דיור',
         },
         {
-          name: 'תעסוקה ותעשיה',
+          name: 'תעסוקה',
         },
         {
           name: 'מבני ציבור',

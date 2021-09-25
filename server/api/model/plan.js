@@ -486,7 +486,8 @@ class Plan extends Model {
 			}
 		}).fetchAll({
 			columns: [
-				'id'
+				'id',
+				'geom'
 			]
 		});
 	}	
