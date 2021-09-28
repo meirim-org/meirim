@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import { colors, device } from 'style';
 
 export const Wrapper = styled.div`
-    width: 100%;
-    position: relative;
+width: 100%;
+position: relative;
 
-    @media ${device.tablet} {
-        width: ${props => props.width};
-    }
+@media ${device.tablet} {
+    width: ${props => props.width};
+}
 `
 
 export const Menu = styled.ul`
@@ -37,16 +37,17 @@ z-index: 1001;
 
 export const Button = styled.button`
 color: ${colors.white};
+padding: 13px;
 border: none;
 border-radius: 4px 0px 0px 4px;
 background: ${colors.purple[500]};
 width: 44px;
 z-index: 1001;
 cursor: pointer;
-    &:focus{
-        outline: none;
-    }
-        display: flex;
-    justify-content: center;
-    align-items: center;
+display: flex;
+justify-content: center;
+align-items: center;
+&:focus{
+    outline: none;
+}
 `
