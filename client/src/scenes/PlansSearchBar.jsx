@@ -13,8 +13,11 @@ const PLAN_STATUS = {
     APPROVED: 'APPROVED'
 }
 
-function PlansSearchBar(props) {
-    const { autocompleteList, onAddressSubmit, onInputChange } = props;
+function PlansSearchBar({
+    autocompleteList,
+    onAddressSubmit,
+    onInputChange
+}) {
     const [address, setAddress] = useState(undefined);
     const [planStatus, setPlanStatus] = useState(new Set([PLAN_STATUS.IN_PROGRESS]));
 
