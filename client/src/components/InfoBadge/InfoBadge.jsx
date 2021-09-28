@@ -5,14 +5,14 @@ import { ReactComponent as QuestionMarkIcon } from 'assets/svg/question-mark.svg
 import { BadgeWrapper } from './InfoBadge.styled';
 import { colors } from 'style';
 
-const StyledTooltip = withStyles(() => ({
+const StyledTooltip = withStyles((theme) => ({
     arrow: {
         color: colors.black,
     },
     tooltip: {
         backgroundColor: colors.black,
         fontSize: '14px',
-        fontFamily: 'Assistant',
+        fontFamily: theme.fontFamily,
         padding: '9px 11px',
         textAlign: 'center',
         whiteSpace: 'pre-line'
