@@ -56,14 +56,6 @@ const AutoComplteStyle = styled(Autocomplete)`
     .MuiInputBase-root {
         padding-right: 10px !important;
         color: black;
-        /* :hover {
-            border-color: green !important;
-        } */
-    }
-    & > div.MuiInputBase-root {
-        :hover {
-            border-color: red;
-        }
     }
 `;
 
@@ -71,9 +63,6 @@ const TextFieldStyle = styled(TextField)`
     input {
         border: unset;
         color: black;
-        :hover {
-            border: 1px solid red;
-        }
     }
     .MuiInputLabel-outlined {
         z-index: 1;

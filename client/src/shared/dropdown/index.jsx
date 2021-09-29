@@ -1,11 +1,21 @@
 /* eslint-disable max-len */
 /* eslint-disable react/forbid-prop-types */
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Label from '../label';
+import {
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    Input,
+    InputLabel,
+    makeStyles,
+} from '@material-ui/core';
+import { Button } from 'shared';
 
 const StyledSelect = styled(Select)`
     font-family: Assistant !important;
@@ -28,8 +38,16 @@ const StyledSelect = styled(Select)`
     }
 `;
 
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+        maxWidth: 300,
+    },
+}));
+
 const Dropdown = ({
-    onChange,
+    // onChange,
     value,
     id,
     options,
@@ -38,43 +56,99 @@ const Dropdown = ({
     placeholder,
     icon,
     multiple,
+    checkbox,
 }) => {
-    const [personName, setPersonName] = React.useState([]);
+    const [chosen, setChosen] = useState([]);
+    // const [state, setState] = useState();
+    const [state, setState] = React.useState(options);
+    const classes = useStyles();
+    // const checkRef = useRef();
+    // const onChange = (e) => {
+    //     console.log('chose', e);
+    //     const arr = [];
+    //     if (e.target.value.includes(1)) {
+    //         options.map((item) => arr.push(item.value));
+    //         setChosen(arr);
+    //         // if (e.target.value[0] !== 1) {
+    //         //     chosen.filter((item) => (item[0] = 1));
+    //         // }
+    //     } else {
+    //         setChosen(e.target.value);
+    //     }
+    //     // console.log(checkRef);
+    // };
+    const handleChange = (event) => {
+        // console.log(event.target.name);
+        // console.log(event.target.checked);
 
-    const handleChangeMultiple = (event) => {
-        const { options } = event.target;
-        console.log(options);
-        const value = [];
-        for (let i = 0, l = options.length; i < l; i += 1) {
-            if (options[i].selected) {
-                value.push(options[i].value);
+        for (let index = 0; index < state.length; index++) {
+            if (state[index].text == event.target.name) {
+                console.log('sxsx', state[index].isChecked);
+                // setState([state,{state[index].isChecked : true}]);
             }
         }
-        setPersonName(value);
+        // setState({
+        //     ...state,
+        //     [state[event.target.value].isChecked]: event.target.checked,
+        // });
+        // console.log(state);
+        console.log(state);
     };
+    // const onClick = () => {
+    //     setState(chosen);
+    // };
+    // const handleReset = () => {
+    //     setChosen(null);
+    //     setState(null);
+    // };
+    // console.log('value', chosen);
+
     return (
         <>
             {label && <Label text={label} id={`${id}-label`} />}
-            <StyledSelect
-                variant="outlined"
-                value={multiple ? personName : value}
-                id={id}
-                onChange={multiple ? handleChangeMultiple : onChange}
-                borderRadios={borderRadios}
-                IconComponent={icon}
-                multiple={multiple}
-            >
-                {placeholder && (
-                    <MenuItem disabled value={''}>
-                        {placeholder}
-                    </MenuItem>
-                )}
-                {options.map((optn) => (
-                    <MenuItem key={optn.value} value={optn.value}>
-                        {optn.text}
-                    </MenuItem>
-                ))}
-            </StyledSelect>
+            <FormControl className={classes.formControl}>
+                <StyledSelect
+                    variant="outlined"
+                    value={chosen}
+                    id={id}
+                    // onChange={onChange}
+                    borderRadios={borderRadios}
+                    IconComponent={icon}
+                    multiple={multiple}
+                    labelId={`${id}-label`}
+                    displayEmpty
+                    renderValue={
+                        chosen.length > 0
+                            ? (chosen) => `לפי נושא (${chosen.length})`
+                            : () => placeholder
+                    }
+                >
+                    <FormGroup>
+                        {options.map((optn, i) => (
+                            <MenuItem key={optn.value} value={optn.value}>
+                                {checkbox && (
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                onChange={handleChange}
+                                                checked={state[i].isChecked}
+                                                name={optn.text}
+                                            />
+                                        }
+                                    />
+                                )}
+                                {optn.text}
+                            </MenuItem>
+                        ))}
+                    </FormGroup>
+                    {multiple && (
+                        <div>
+                            {/* <Button text={'החל'} onClick={onClick} />{' '}
+                            <Button onClick={handleReset} text={'איפוס'} /> */}
+                        </div>
+                    )}
+                </StyledSelect>
+            </FormControl>
         </>
     );
 };
@@ -92,6 +166,7 @@ Dropdown.propTypes = {
     borderRadios: PropTypes.string,
     icone: PropTypes.element,
     multiple: PropTypes.bool,
+    checkbox: PropTypes.bool,
 };
 
 export default Dropdown;

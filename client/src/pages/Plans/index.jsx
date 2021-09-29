@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { AutoComplete } from 'shared/autoComplete';
+import { AutoComplete } from '../../shared/autoComplete';
 import { Dropdown } from 'shared';
 import styled from 'styled-components';
 import { FilterButton } from '../../shared/filterButton';
@@ -11,12 +11,13 @@ import Grid from '@material-ui/core/Grid';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { MultySelect } from '../../shared/multySelect';
 const locations = [{ label: 'תל אביב' }, { label: 'ירושלים' }];
 const optionsForSelect = [
-    { value: 1, text: 'כל הקטגוריות' },
-    { value: 2, text: 'טבע, חופים וים' },
-    { value: 3, text: 'מוסדות ציבור' },
-    { value: 4, text: 'מלונאות' },
+    { value: 1, text: 'כל הקטגוריות', isChecked: false },
+    { value: 2, text: 'טבע, חופים וים', isChecked: false },
+    { value: 3, text: 'מוסדות ציבור', isChecked: false },
+    { value: 4, text: 'מלונאות', isChecked: false },
 ];
 const useStyles = makeStyles({
     root: {
@@ -43,20 +44,6 @@ export const Plans = () => {
     return (
         <Container>
             <AutoComplete options={locations} />
-            {/* <FilterButton
-                variant="outlined"
-                dot
-                color={'#AE7FF0'}
-                label={' בתהליך'}
-                name={'inProsses'}
-            ></FilterButton>
-            <FilterButton
-                variant="outlined"
-                dot
-                color={'#1976D2'}
-                label={'מאושרות'}
-                name={'approved'}
-            ></FilterButton> */}
             <StyleGroupToggle
                 value={category}
                 onChange={handleClick}
@@ -81,22 +68,12 @@ export const Plans = () => {
                     {'מאושרות'}
                 </StyleToggleButton>
             </StyleGroupToggle>
-            <Dropdown
-                options={optionsForSelect}
-                borderRadios={'4px'}
-                placeholder={'לפי נושא'}
-                icon={ExpandMore}
-                multiple={true}
-            />
+            <MultySelect />
         </Container>
     );
 };
 const StyleToggleButton = styled(ToggleButton)`
-    border: 1px solid;
-    border-radius: 4x;
     .MuiToggleButtonGroup-groupedHorizontal:not(:first-child) {
-        /* border-top-left-radius: 0; */
-        /* border-bottom-left-radius: 0; */
         border-radius: 4px !important;
     }
     :focus {
@@ -110,14 +87,13 @@ const StyleToggleButton = styled(ToggleButton)`
 const StyleGroupToggle = styled(ToggleButtonGroup)`
     .MuiToggleButtonGroup-groupedHorizontal:not(:first-child) {
         border-radius: 4px;
-        border-left: 1px solid #1976d2;
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
     }
     .MuiToggleButtonGroup-groupedHorizontal:not(:last-child) {
         border-radius: 4px;
     }
 
     .MuiToggleButton-root.Mui-selected + .MuiToggleButton-root.Mui-selected {
-        border-left: 1px solid #1976d2;
         background-color: unset;
     }
     .MuiToggleButton-root.Mui-selected {
