@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
-import { device } from '../../../style';
+import { device, colors } from '../../../style';
 import successBackgroundImage from '../../../assets/funding/man.svg';
 import SuccessIcon from '../../../assets/svg/successIcon';
 
@@ -104,7 +104,7 @@ export const SuccessCloseWrapper = withTheme(styled.div`
   }
 
   #button-home {
-    color: ${props => props.theme.palette.primary['main']} !important;
+    color: ${colors.purple[500]} !important;
     background-color: transparent !important;
   }
 `);

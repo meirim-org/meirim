@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { AppBar as MuiAppBar, Button } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
+import { colors } from 'style';
 
 export const TitlesButtonWrapper = styled.div`
    margin-top: 1rem;
@@ -82,9 +83,9 @@ export const Buttons = withTheme(styled.div`
     }
 `);
 
-export const AppBar = withTheme(styled(MuiAppBar)`
+export const AppBar = styled(MuiAppBar)`
     padding: 0 3.425rem 0 1rem;    
-    background-color:  transparent !important;
+    background-color: transparent !important;
     color: black !important;
     box-shadow: none !important;
     .MuiTab-root {
@@ -92,11 +93,11 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         padding: .4rem 1rem;
     }
     .MuiTabs-indicator {
-        background-color:  ${props => props.theme.palette.primary.main} !important;
+        background-color: ${colors.purple[500]} !important;
     }
     .Mui-selected {
         outline: 0 !important;
-        color:  ${props => props.theme.palette.primary.main} !important;
+        color: ${colors.purple[500]} !important;
     }
     .MuiBadge-root {
         align-items: center;
@@ -105,10 +106,10 @@ export const AppBar = withTheme(styled(MuiAppBar)`
         position: relative;
         margin-right: .25rem;
         transform: none;
-        color: ${props => props.theme.palette.primary['600']} !important;
-        background-color: ${props => props.theme.palette.primary['bg']} !important;
+        color: ${colors.purple[600]} !important;
+        background-color: ${colors.purple[100]} !important;
     }
-`);
+`
 
 export const Tab = withTheme(styled(Button)`
     border-radius: 0 !important;
@@ -140,9 +141,9 @@ export const Tab = withTheme(styled(Button)`
     
     
     &.active {
-        border-color: ${props => props.theme.palette.primary.main} !important;
+        border-color: ${colors.purple[500]} !important;
         .MuiButton-label {
-            color:  ${props => props.theme.palette.primary.main} !important;
+            color:  ${colors.purple[500]} !important;
         }
     }
 `);

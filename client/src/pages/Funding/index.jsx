@@ -14,6 +14,7 @@ import AmountInput from './amountInput';
 import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor } from './hooks';
 import { FundingSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
+import { colors } from 'style';
 
 const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
@@ -122,7 +123,7 @@ const FundingPage = ({ ...props }) => {
 											component="span"
 											variant="title"
 											mobileVariant="highlightedText"
-											color={theme.palette.primary['main']}
+											color={colors.purple[500]}
 										>
 											{t.fundingOutOf} {fundingEndGoal.toLocaleString('en')} {t.fundingShekel}
 										</Typography>
@@ -133,7 +134,7 @@ const FundingPage = ({ ...props }) => {
 											component="span"
 											variant="title"
 											mobileVariant="highlightedText"
-											color={theme.palette.primary['main']}
+											color={colors.purple[500]}
 										>
 											{t.fundingSupporters}
 										</Typography>
@@ -142,12 +143,12 @@ const FundingPage = ({ ...props }) => {
 							</SC.FundingStatsWrapper>
 							<SC.PaymentTypeButtonsWrapper>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
-									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
+									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={colors.purple[500]}>
 										{t.monthlyPayment}
 									</Typography>
 								</SC.PaymentTypeButton>
 								<SC.PaymentTypeButton side="left" selected={!monthlyPayment} onClick={() => { setMonthlyPayment(false); }}>
-									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
+									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={colors.purple[500]}>
 										{t.singleTimePayment}
 									</Typography>
 								</SC.PaymentTypeButton>

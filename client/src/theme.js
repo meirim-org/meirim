@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { font } from 'style';
+import { font, colors } from 'style';
 
 export const muiTheme = createMuiTheme({
 	direction: 'rtl',
@@ -27,16 +27,7 @@ export const muiTheme = createMuiTheme({
 			'alt': '#665d71'
 		},
 		primary: {
-			'100' : '#F0E3FD',
-			'200' : '#CFABFA',
-			'300': '#AE7FF0',
-			'400': '#8F5DE2',
-			'main': '#652DD0',
-			'600': '#4D20B2',
-			'700': '#391695',
-			'800': '#270E78',
-			'bg': '#f0e3fd66',
-			'custom': '#652dd00a'
+			main: colors.purple[500],
 		},
 		secondary: {
 			'100' : '#FEF2DA',

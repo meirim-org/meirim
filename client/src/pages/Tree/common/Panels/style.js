@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import LinkIcon from '@material-ui/icons/Link';
 import CloseIcon from '@material-ui/icons/Close';
-import { device } from '../../../../style';
+import { device, colors } from '../../../../style';
 
 export const TreeSummaryTitleWrapper = styled.div`
     margin-bottom: .75rem;
@@ -85,7 +85,7 @@ export const SubscribeIconWrapper = withTheme(styled.div`
     box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08);
     svg {
         position: absolute;
-        fill: ${props => props.theme.palette.primary.main} !important;  
+        fill: ${colors.purple[500]} !important;  
     }
 `);
 

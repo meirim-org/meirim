@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
+import { colors } from 'style';
 
 export const Header = styled.span`
     grid-column-start: span 2;
@@ -118,7 +119,7 @@ export const SubscribeIconWrapper = withTheme(styled.div`
     box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08);
     svg {
         position: absolute;
-        fill: ${props => props.theme.palette.primary.main} !important;  
+        fill: ${colors.purple[500]} !important;  
     }
 `);
 

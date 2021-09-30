@@ -7,6 +7,7 @@ import { BackButton } from 'pages/Tree/common';
 import { goBack } from 'pages/Tree/utils';
 import t from 'locale/he_IL';
 import { Typography } from 'shared';
+import { colors } from 'style';
 
 const Title = ({ place, text }) => {
 	const theme = useTheme();
@@ -15,7 +16,7 @@ const Title = ({ place, text }) => {
 		<>
 			<SC.SubTitleWrapper>
 				<BackButton onclick={goBack} label={t.backToComments} classname="back-button"/>
-				<Text size="18px" weight="700" text={place} component="span" color={theme.palette.primary.main}/>
+				<Text size="18px" weight="700" text={place} component="span" color={colors.purple[500]}/>
 			</SC.SubTitleWrapper>
 			<SC.TitleWrapper>
 				<Text size="24px" lineHeight="1.17" weight="600" text={text} component="h1" color={theme.palette.black}/>

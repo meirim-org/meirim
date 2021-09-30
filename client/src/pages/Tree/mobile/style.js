@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import { colors } from 'style';
 
 export const MobileMainWrapper = styled.div`
     height: calc(100vh - 79px);
@@ -20,7 +21,7 @@ export const AddSubComment = withTheme(styled.div`
     text-align: center;
     .MuiSvgIcon-root {
         font-size: 1.125rem !important;
-        fill: ${props => props.theme.palette.primary['600']} !important;  
+        fill: ${colors.purple[600]} !important;  
         margin: 0 0.75rem; 
     }
     
@@ -116,7 +117,7 @@ export const Like = withTheme(styled.div`
 `);
 
 
-export const LikeIcon = withTheme(styled(ThumbUpAltOutlinedIcon)`
+export const LikeIcon = styled(ThumbUpAltOutlinedIcon)`
     font-size: 1.15em !important;
-    fill: ${props => props.theme.palette.primary['600']} !important;  
-`);
+    fill: ${colors.purple[600]} !important;  
+`

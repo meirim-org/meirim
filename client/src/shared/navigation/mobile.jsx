@@ -13,13 +13,11 @@ import * as SC from './style';
 import { PLANS, TREE_PERMITS } from 'router/contants';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
-import { useTheme } from '@material-ui/styles';
+import { colors } from 'style';
 
 const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
-	const theme = useTheme();
 	const dispatch = useDispatch();
 	const [mobileNavIsOpened, setMobileNavIsOpened] = useState(false);
-
 
 	return (
 		<SC.MobileHeader>
@@ -151,7 +149,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 														}}
 														id="register-button"
 														key={t.signup}
-														color={theme.palette.primary.main}>
+														color={colors.purple[500]}>
 														<ListItemText primary={t.signup}/>
 													</SC.StyledListItem>
 												</>

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import { BottomNavigation } from '@material-ui/core';
+import { colors } from 'style';
 
 export const Navigation = withTheme(styled(BottomNavigation)`
     position: fixed;
@@ -10,7 +11,7 @@ export const Navigation = withTheme(styled(BottomNavigation)`
     border-top: 1px solid ${props => props.theme.palette.gray['300']};
     height: 3.75rem !important;
     path {
-        color: ${props => props.theme.palette.primary.main};
+        color: ${colors.purple[500]};
     }
     .MuiButtonBase-root {
         max-width: 103px !important;

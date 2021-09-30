@@ -8,7 +8,7 @@ import {
 	FormControlLabel as MuiFormControlLabel,
 } from '@material-ui/core';
 import { TabPanel } from 'shared';
-import { device } from 'style';
+import { device, colors } from 'style';
 
 
 export const FormControl = withTheme(styled(MuiFormControl)`
@@ -21,7 +21,7 @@ export const FormControl = withTheme(styled(MuiFormControl)`
         
         &:focus {
              outline: none;
-             border-color: ${props => props.theme.palette.primary['600']} !important;
+             border-color: ${colors.purple[600]} !important;
         }
     }   
 `);
@@ -63,7 +63,7 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiRadio-colorSecondary {
         color: ${props => props.theme.palette.gray['main']} !important;
         &.Mui-checked {
-            color: ${props => props.theme.palette.primary['700']} !important;
+            color: ${colors.purple[700]} !important;
         }
     }
     
@@ -75,7 +75,7 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
         
         &:focus {
             outline: none;
-            border-color: ${props => props.theme.palette.primary['600']} !important;
+            border-color: ${colors.purple[600]} !important;
         }
     }   
 
@@ -146,7 +146,7 @@ export const AddSubComment = withTheme(styled.div`
     text-align: center;
     .MuiSvgIcon-root {
         font-size: 1.125rem !important;
-        fill: ${props => props.theme.palette.primary['600']} !important;  
+        fill: ${colors.purple[600]} !important;  
         margin: 0 0.75rem; 
     }
     

@@ -8,6 +8,7 @@ import {
 	TextareaAutosize as MuiTextareaAutosize
 } from '@material-ui/core';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import { colors } from 'style';
 
 export const CommentsWrapper = withTheme(styled.div`
     grid-column-start: span 2;
@@ -20,7 +21,7 @@ export const AddSubComment = withTheme(styled.div`
     text-align: center;
     .MuiSvgIcon-root {
         font-size: 1.125rem !important;
-        fill: ${props => props.theme.palette.primary['600']} !important;  
+        fill: ${colors.purple[600]} !important;  
         margin: 0 0.75rem; 
     }
     
@@ -73,12 +74,12 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiRadio-colorSecondary {
         color: ${props => props.theme.palette.gray['main']} !important;
         &.Mui-checked {
-            color: ${props => props.theme.palette.primary['700']} !important;
+            color: ${colors.purple[700]} !important;
         }
     }
     
     textarea {
-        border-color: ${props => props.theme.palette.primary.main} !important;
+        border-color: ${colors.purple[500]} !important;
         border-radius: 12px;
         padding: 1rem;
         margin-bottom: 1rem;
@@ -186,7 +187,7 @@ export const Like = withTheme(styled.div`
 `);
 
 
-export const LikeIcon = withTheme(styled(ThumbUpAltOutlinedIcon)`
+export const LikeIcon = styled(ThumbUpAltOutlinedIcon)`
     font-size: 1.15em !important;
-    fill: ${props => props.theme.palette.primary['600']} !important;  
-`);
+    fill: ${colors.purple[600]} !important;  
+`

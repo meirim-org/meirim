@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Text, Button } from 'shared';
 import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import * as SC from './style';
 import { UserSelectors } from 'redux/selectors';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
+import { colors } from 'style';
 
 export const SubscribePanel = ({ subscribePanel, handleSubscribePanel }) => {
 	const dispatch = useDispatch()
-	const theme = useTheme();
 	const [ isOpen, setIsOpen ] = useState(true)
 	const { isAuthenticated } = UserSelectors()
 
@@ -19,14 +18,14 @@ export const SubscribePanel = ({ subscribePanel, handleSubscribePanel }) => {
 
 	return (
 		<TabPanel>
-			<TabBox position="relative" bgColor={theme.palette.primary['100']} borderColor={theme.palette.primary['200']}>
+			<TabBox position="relative" bgColor={colors.purple[100]} borderColor={colors.purple[200]}>
 				<SC.SubscribeIconWrapper>
 					<NotificationsNoneIcon />
 				</SC.SubscribeIconWrapper>
 				<SC.SubscribeTextWrapper>
-					<Text text={t.subscribeTitle} color={theme.palette.primary['800']} weight="600" />
+					<Text text={t.subscribeTitle} color={colors.purple[800]} weight="600" />
 					<br/>
-					<Text text={t.subscribeText} color={theme.palette.primary['800']} />
+					<Text text={t.subscribeText} color={colors.purple[800]} />
 				</SC.SubscribeTextWrapper>
 				<SC.SubscribeButtonsWrapper>
 					<SC.SubscribeButtonWrapper>

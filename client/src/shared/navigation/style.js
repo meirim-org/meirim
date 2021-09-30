@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { withTheme } from '@material-ui/core/styles';
 import { Container, List, Drawer as MUIDrawer, ListItem, ListItemIcon, Button } from '@material-ui/core';
+import { colors } from 'style';
 
 export const StyledList = styled(List)`
     padding: 0 !important;
@@ -25,13 +26,13 @@ export const StyledListItem = withTheme(styled(ListItem)`
          color: ${props => props.theme.palette.red.alt} !important;
     }
     &#my-plans-button {
-         color: ${props => props.theme.palette.primary.main} !important;
+         color: ${colors.purple[500]} !important;
     }
     &#register-button {
-         color: ${props => props.theme.palette.primary.main} !important;
+         color: ${colors.purple[500]} !important;
     }
     &.active {
-        color: ${props => props.theme.palette.primary.main} !important;
+        color: ${colors.purple[500]} !important;
     }
 `);
 
@@ -42,7 +43,7 @@ export const StyledLink = withTheme(styled(NavLink)`
 
     &:hover, &.active {
         text-decoration: none;
-        color: ${props => props.theme.palette.primary.main};
+        color: ${colors.purple[500]};
     }
 `);
 
@@ -84,11 +85,11 @@ export const LogOutIcon = withTheme(styled(ListItemIcon)`
   }
 `);
 
-export const StyledStarIcon = withTheme(styled(ListItemIcon)`
+export const StyledStarIcon = styled(ListItemIcon)`
   path {
-    color: ${props => props.theme.palette.primary.main};
+    color: ${colors.purple[500]};
   }
-`);
+`
 
 export const Logo = styled.img`
     max-width: 53px;
@@ -129,7 +130,7 @@ export const MyPlansButton = withTheme(styled(Button)`
         text-decoration: none;
     }
     .MuiButton-startIcon {
-        color: ${props => props.theme.palette.primary.main};
+        color: ${colors.purple[500]};
         margin-left: 2px;
         margin-right: -4px;
     }
