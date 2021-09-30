@@ -5,9 +5,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Wrapper, Menu, InputWrapper, Input, Button } from './Autocomplete.styled';
 import { colors } from 'style';
 
-const StyledMenuItem = withStyles(() => ({
+const StyledMenuItem = withStyles(({
   root: {
-    fontFamily: 'Assistant',
     borderRadius: '0 0 4px 4px',
     backgroundColor: colors.white,
   },
@@ -15,7 +14,6 @@ const StyledMenuItem = withStyles(() => ({
     backgroundColor: `${colors.grey[300]} !important`
   },
 }))(MenuItem);
-
 
 function Autocomplete(props) {
   const { placeholder, width, icon, items, onInputChange, onFilter } = props;
