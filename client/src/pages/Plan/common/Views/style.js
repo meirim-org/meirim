@@ -102,7 +102,6 @@ export const StatusAndTypeWrapper = styled.div`
 
 
 export const EntryContent = withTheme(styled.div`
-    font-family:  ${props => props.theme.fontFamily} !important;
     font-size: 16px;
     line-height: 1.5;
     color: ${props => props.theme.palette.black} !important;  

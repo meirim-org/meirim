@@ -1,10 +1,11 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import { font } from 'style';
 
 export const muiTheme = createMuiTheme({
 	direction: 'rtl',
-	fontFamily: [
-		'Assistant',
-	].join(','),
+	typography: {
+		fontFamily: [font.assistant, 'sans-serif'].join(',')
+	},
 	palette: {
 		black: '#000000',
 		white: '#ffffff',

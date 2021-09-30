@@ -134,7 +134,6 @@ export const Tab = withTheme(styled(Button)`
     }
     
     .MuiBadge-badge {
-        font-family:  ${props => props.theme.fontFamily} !important;
         font-size:  12px !important;
         font-weight: 600;
     }

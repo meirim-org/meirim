@@ -19,7 +19,6 @@ export const StyledListItem = withTheme(styled(ListItem)`
       color: ${props => props.color} !important;
     }
     span {
-        font-family:  ${props => props.theme.fontFamily} !important;
         font-size: 18px;      
     }
     &#logout-button {
@@ -37,7 +36,6 @@ export const StyledListItem = withTheme(styled(ListItem)`
 `);
 
 export const StyledLink = withTheme(styled(NavLink)`
-    font-family:  ${props => props.theme.fontFamily} !important;
     font-size: 16px;
     color: ${props => props.theme.palette.black};
     transition: 0.3s;
@@ -108,7 +106,6 @@ export const MenuWrapper = withTheme(styled.div`
             transition: .3s;
         }
         .MuiButton-label {
-            font-family:  ${props => props.theme.fontFamily} !important;
             color: ${props => props.theme.palette.blue.main};
             font-size: 16px;      
             text-decoration: none;
@@ -127,7 +124,6 @@ export const MenuWrapper = withTheme(styled.div`
 export const MyPlansButton = withTheme(styled(Button)`
     line-height: 1.5 !important;
     .MuiButton-label {
-        font-family:  ${props => props.theme.fontFamily} !important;
         color: ${props => props.theme.palette.blue.main};
         font-size: 16px;      
         text-decoration: none;

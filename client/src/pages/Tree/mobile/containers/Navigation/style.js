@@ -19,7 +19,6 @@ export const Navigation = withTheme(styled(BottomNavigation)`
             margin-bottom: .15rem;
         }
        .MuiBottomNavigationAction-label {
-            font-family:  ${props => props.theme.fontFamily} !important;
             opacity: 1 !important;
         }
         .MuiBottomNavigationAction-wrapper {

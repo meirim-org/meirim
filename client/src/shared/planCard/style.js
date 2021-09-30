@@ -26,7 +26,6 @@ export const CardActionArea = withTheme(styled(MuiCardActionArea)`
 
 export const CardContent = withTheme(styled(MuiCardContent)`
    height: 40%;
-   font-family:  ${props => props.theme.fontFamily} !important;
    > *:first-child {
         font-size:  1.5rem !important;
    }

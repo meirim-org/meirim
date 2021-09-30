@@ -63,7 +63,6 @@ export const CustomLinkIcon = withTheme(styled(LinkIcon)`
 `);
 
 export const EntryContent = withTheme(styled.div`
-    font-family:  ${props => props.theme.fontFamily} !important;
     font-size: 16px;
     line-height: 1.5;
     color: ${props => props.theme.palette.black} !important;  

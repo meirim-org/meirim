@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 
 const StyledLink = withTheme(styled(RouterLink)`
-  font-family: ${props => props.theme.fontFamily} !important;
   font-size: 16px;
   font-weight: ${(props) => props.fontWeight};
   font-stretch: normal;
@@ -18,10 +17,6 @@ const StyledLink = withTheme(styled(RouterLink)`
   color: ${props => props.theme.palette.primary.main};
   cursor: pointer;
   
-  .MuiTypography-body1 {
-      font-family: ${props => props.theme.fontFamily} !important;
-  }
-
   &:hover {
     color: ${props => props.theme.palette.primary['400']};
     text-decoration: ${(props) => props.textDecoration} !important;

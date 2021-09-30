@@ -57,7 +57,6 @@ export const ErrorWrapper = styled.div`
 
 export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiTypography-root {
-        font-family:  ${props => props.theme.fontFamily} !important;
         font-size: 0.875rem;
         color: ${props => props.theme.palette.black} !important;
     }
