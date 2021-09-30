@@ -32,6 +32,10 @@ export const colors = {
 	blue: '#1976D2'
 };
 
+export const font = {
+	assistant: 'Assistant',
+}
+
 const size = {
 	tablet: '768px',
 	laptop: '1024px',

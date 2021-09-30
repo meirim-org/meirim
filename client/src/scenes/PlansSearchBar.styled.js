@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { colors, device } from 'style';
 
 export const SearchBarWrapper = styled.div`
-    font-family: 'Assistant';
     min-height: 42px;
     display: flex;
     flex-direction: column;
