@@ -25,6 +25,7 @@ import { Modal, CircularProgress } from 'shared';
 import 'App.css';
 import { muiTheme } from 'theme';
 import { CookieHook, useInitGA, useInitHotjar } from 'hooks';
+import { StepperProgress } from 'components/StepperProgress';
 
 library.add(
     faSpinner,
@@ -127,6 +128,10 @@ const App = (props) => {
                         <Route
                             path="/email-sent"
                             render={(props) => <EmailSent {...props} />}
+                        />
+                        <Route
+                            path="/steper"
+                            render={(props) => <StepperProgress {...props} />}
                         />
                         <Route component={Scenes.NotFound} />
                     </Switch>
