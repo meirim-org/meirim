@@ -69,7 +69,7 @@ export const CommentIcon = styled(ChatBubbleOutlineIcon)`
 export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiTypography-root {
         font-size: 0.875rem;
-        color: ${props => props.theme.palette.black} !important;
+        color: ${colors.black} !important;
     }
     .MuiRadio-colorSecondary {
         color: ${props => props.theme.palette.gray['main']} !important;
@@ -157,7 +157,7 @@ export const Like = withTheme(styled.div`
         margin-right: .25rem;
         transform: none;
         font-weight: 300;
-        color: ${props => props.theme.palette.black} !important;
+        color: ${colors.black} !important;
         background-color: ${props => props.theme.palette.gray['200']} !important;
         font-size: 14px !important;
         padding: 0.6rem;

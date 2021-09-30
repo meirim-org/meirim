@@ -87,7 +87,7 @@ export const Like = withTheme(styled.div`
         margin-right: .25rem;
         transform: none;
         font-weight: 300;
-        color: ${props => props.theme.palette.black} !important;
+        color: ${colors.black} !important;
         background-color: ${props => props.theme.palette.gray['200']} !important;
         font-size: 14px !important;
         padding: 0.6rem;

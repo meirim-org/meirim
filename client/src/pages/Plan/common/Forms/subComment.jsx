@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { Button } from 'shared';
 import * as SC from './style';
 import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import { TextareaAutosize } from '@material-ui/core';
 import { UserSelectors } from 'redux/selectors';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
+import { colors } from 'style';
 
 export const SubCommentForm = ({ addSubComment, parentComment, subCommentState, setSubCommentState }) => {
 	const dispatch = useDispatch();
 	const { isAuthenticated } = UserSelectors();
 	const { inputValue } = subCommentState;
 	const [isOpen, setIsOpen] = useState(false);
-	const theme = useTheme();
+
 	const buttonHandler = () => {
 		if (isAuthenticated){
 			setIsOpen(!isOpen);
@@ -28,7 +28,7 @@ export const SubCommentForm = ({ addSubComment, parentComment, subCommentState, 
 			<SC.AddSubComment className={isOpen ? 'active' : ''}>
 				<Button
 					id={'add-subcomment-' + parentComment.id}
-					textcolor={theme.palette.black}
+					textcolor={colors.black}
 					text={t.addAResponse}
 					onClick={buttonHandler}
 					simple
@@ -52,7 +52,7 @@ export const SubCommentForm = ({ addSubComment, parentComment, subCommentState, 
 						text={t.close}
 						simple
 						small
-						textcolor={theme.palette.black}
+						textcolor={colors.black}
 						onClick={() => {
 							setIsOpen(false);
 							setSubCommentState(pv => ({ ...pv, isOpen: false }));

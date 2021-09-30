@@ -102,11 +102,11 @@ export const StatusAndTypeWrapper = styled.div`
 `;
 
 
-export const EntryContent = withTheme(styled.div`
+export const EntryContent = styled.div`
     font-size: 16px;
     line-height: 1.5;
-    color: ${props => props.theme.palette.black} !important;  
-`);
+    color: ${colors.black} !important;  
+`
 
 export const SubscribeIconWrapper = withTheme(styled.div`
     background-color: ${props => props.theme.palette.white};

@@ -7,6 +7,7 @@ import { useTheme } from '@material-ui/styles';
 import { Radio } from '@material-ui/core';
 import { printRadioClass, commentTypes } from 'pages/Plan/utils';
 import * as SC from './style';
+import { colors } from 'style';
 
 const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 	const theme = useTheme();
@@ -71,7 +72,7 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 						text={t.close}
 						simple
 						small
-						textcolor={theme.palette.black}
+						textcolor={colors.black}
 						onClick={newCommentViewHandler}
 					/>
 					<Button

@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
-import { useTheme } from '@material-ui/styles';
 import UnsafeRender from 'components/UnsafeRender';
 import * as SC from './style';
 import t from 'locale/he_IL';
-
+import { colors } from 'style';
 
 export const DescriptionPanel = ({ mainDetailsFromMavat }) => {
-	const theme = useTheme();
 	if (!mainDetailsFromMavat ) return null;
 	
 	return (
@@ -19,7 +17,7 @@ export const DescriptionPanel = ({ mainDetailsFromMavat }) => {
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
 						component="h2"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{t.planDescription}
 					</Typography>

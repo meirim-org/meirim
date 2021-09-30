@@ -4,6 +4,7 @@ import { Typography } from 'shared';
 import * as SC from './style';
 import { useTheme } from '@material-ui/styles';
 import { daysPassed } from 'pages/Plan/utils';
+import { colors } from 'style';
 
 const SubCommentView = ({ subCommentData }) => {
 	const theme = useTheme();
@@ -18,7 +19,7 @@ const SubCommentView = ({ subCommentData }) => {
 						variant="smallTitle"
 						mobileVariant="smallTitle"
 						component="span"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{name}
 					</Typography>
@@ -37,7 +38,7 @@ const SubCommentView = ({ subCommentData }) => {
 					variant="paragraphTextLight"
 					mobileVariant="paragraphTextLight"
 					component="p"
-					color={theme.palette.black}
+					color={colors.black}
 				>
 					{content}
 				</Typography>

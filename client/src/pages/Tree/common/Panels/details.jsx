@@ -7,6 +7,7 @@ import { Chip } from '@material-ui/core';
 import * as SC from './style';
 import { TreeSelectors } from 'redux/selectors';
 import { timeToObjectionText } from '../../utils';
+import { colors } from 'style';
 
 const TreeList = ({ trees_per_permit }) => {
 
@@ -52,7 +53,7 @@ const TreeDetailsPanel = () => {
 			
 				<SC.TreeSummaryTitleWrapper>
 					<Typography variant="planDetailTitle" mobileVariant="planDetailTitle"
-						component="h2" color={theme.palette.black}	>
+						component="h2" color={colors.black}	>
 						{`עצים ל${action}`}
 					</Typography>
 				</SC.TreeSummaryTitleWrapper>
@@ -60,7 +61,7 @@ const TreeDetailsPanel = () => {
 					<SC.TotalTreeWrapper>
 						<Chip label={treeText} />
 						<Typography variant="paragraphText" mobileVariant="paragraphText"
-							component="span" color={theme.palette.black}>
+							component="span" color={colors.black}>
 							{' מסוג '}
 						</Typography>
 					</SC.TotalTreeWrapper>
@@ -73,7 +74,7 @@ const TreeDetailsPanel = () => {
 							{`${t.lastDateToObjectTrees}: `}
 						</Typography>
 						<Typography variant="paragraphText" mobileVariant="paragraphText"
-							component="span" color={theme.palette.black}>
+							component="span" color={colors.black}>
 							{start_date && new Intl.DateTimeFormat('he-IL').format(new Date(start_date))}
 							{ ` (${timeToObjectionText(start_date)})`}
 						</Typography>
@@ -87,7 +88,7 @@ const TreeDetailsPanel = () => {
 							{`${t.permitNumber} `}
 						</Typography>
 						<Typography variant="paragraphText" mobileVariant="paragraphText"
-							component="span" color={theme.palette.black}>
+							component="span" color={colors.black}>
 							{permit_number}
 
 						</Typography>

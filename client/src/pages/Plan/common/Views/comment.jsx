@@ -5,6 +5,7 @@ import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { daysPassed } from 'pages/Plan/utils';
 import * as SC from './style';
+import { colors } from 'style';
 
 const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 	const theme = useTheme();
@@ -27,7 +28,7 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 							variant="highlightedText"
 							mobileVariant="highlightedText"
 							component="span"
-							color={theme.palette.black}
+							color={colors.black}
 						>
 							{name}
 						</Typography>
@@ -50,7 +51,7 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 						variant="paragraphText"
 						mobileVariant="paragraphText"
 						component="p"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{content}
 					</Typography>

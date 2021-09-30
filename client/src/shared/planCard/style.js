@@ -6,7 +6,7 @@ import {
 	CardContent as MuiCardContent,
 	CardActionArea as MuiCardActionArea,
 } from '@material-ui/core';
-
+import { colors } from 'style';
 
 export const Card = withTheme(styled(MuiCard)`
    height: 504px;
@@ -16,7 +16,6 @@ export const CardMedia = withTheme(styled(MuiCardMedia)`
    height: 60%;
 `);
 
-
 export const CardActionArea = withTheme(styled(MuiCardActionArea)`
    height: 100%;
    &:focus {
@@ -24,14 +23,13 @@ export const CardActionArea = withTheme(styled(MuiCardActionArea)`
    }
 `);
 
-export const CardContent = withTheme(styled(MuiCardContent)`
+export const CardContent = styled(MuiCardContent)`
    height: 40%;
    > *:first-child {
         font-size:  1.5rem !important;
    }
    > *:last-child {
         font-size:  1rem !important;
-        color:  ${props => props.theme.palette.black} !important;
+        color: ${colors.black} !important;
    }
-   
-`);
+`

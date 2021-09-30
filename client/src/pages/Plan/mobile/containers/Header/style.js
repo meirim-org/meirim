@@ -62,7 +62,7 @@ export const Buttons = withTheme(styled.div`
         background-color: transparent !important;
         border: solid 1px #cdc9d8;
         box-shadow: none;
-        color: ${props => props.theme.palette.black['100']} !important;
+        color: ${colors.black} !important;
     }
     .MuiButton-startIcon {
         margin: 0;
@@ -111,7 +111,7 @@ export const AppBar = styled(MuiAppBar)`
     }
 `
 
-export const Tab = withTheme(styled(Button)`
+export const Tab = styled(Button)`
     border-radius: 0 !important;
     border-bottom: 2px solid transparent !important;
     outline: 0 !important;
@@ -129,7 +129,7 @@ export const Tab = withTheme(styled(Button)`
     white-space: nowrap;
     
     .MuiButton-label {
-        color:  ${props => props.theme.palette.black} !important;
+        color:  ${colors.black} !important;
         font-size:  14px !important;
         font-weight: 400;
     }
@@ -146,7 +146,7 @@ export const Tab = withTheme(styled(Button)`
             color:  ${colors.purple[500]} !important;
         }
     }
-`);
+`
 
 export const TabWrapper = styled.div`
     display: flex;    

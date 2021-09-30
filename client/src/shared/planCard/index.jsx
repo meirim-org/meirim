@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 import Mapa from 'components/Mapa';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
 import UnsafeRender from 'components/UnsafeRender';
 import { Text } from 'shared';
+import { colors } from 'style';
 
 const PlanCard = ({ plan }) => {
-	const theme = useTheme();
 
 	return (
 		<Grid item xs={12} sm={6} md={4}>
@@ -33,7 +32,7 @@ const PlanCard = ({ plan }) => {
 								size="1.5rem"
 								weight="600"
 								text={plan.plan_display_name}
-								color={theme.palette.black}
+								color={colors.black}
 								component="h2"
 							/>
 							<UnsafeRender

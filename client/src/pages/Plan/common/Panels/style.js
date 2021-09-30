@@ -57,12 +57,11 @@ export const CustomLinkIcon = withTheme(styled(LinkIcon)`
     margin-right: .5rem;
 `);
 
-export const EntryContent = withTheme(styled.div`
+export const EntryContent = styled.div`
     font-size: 16px;
     line-height: 1.5;
-    color: ${props => props.theme.palette.black} !important;  
-`);
-
+    color: ${colors.black} !important;  
+`
 
 export const ChartWrapper = styled.div`
     height: 200px;
@@ -101,15 +100,15 @@ export const SubscribeButtonWrapper = styled.div`
     padding: 0 .75rem;
 `;
 
-export const CloseSubscribeIcon = withTheme(styled(CloseIcon)`
+export const CloseSubscribeIcon = styled(CloseIcon)`
     position: absolute;
     top: .5rem;
     right: .5rem;
     cursor: pointer;
     font-size: 1.3rem !important;
-    fill: ${props => props.theme.palette.black} !important;  
+    fill: ${colors.black} !important;  
     opacity: .8;
-`);
+`
 
 export const MapWrapper = withTheme(styled.div`
     height: 8.875rem;

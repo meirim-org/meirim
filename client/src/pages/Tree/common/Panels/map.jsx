@@ -5,6 +5,7 @@ import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
 import Mapa from 'components/Mapa';
+import { colors } from 'style';
 
 export const MapPanel = (props) => {
 	const { geom, countyName } = props;
@@ -19,7 +20,7 @@ export const MapPanel = (props) => {
 							variant="planDetailTitle"
 							mobileVariant="planDetailTitle"
 							component="h2"
-							color={theme.palette.black}
+							color={colors.black}
 						>
 							{t.location}
 						</Typography>

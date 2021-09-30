@@ -10,7 +10,7 @@ export const StyledList = styled(List)`
 
 export const StyledListItem = withTheme(styled(ListItem)`
     padding: 1.2rem 3.5rem !important; 
-    color: ${props => props.theme.palette.black} !important;
+    color: ${colors.black} !important;
     .MuiListItemText-root {
       flex: none;
     }
@@ -36,16 +36,16 @@ export const StyledListItem = withTheme(styled(ListItem)`
     }
 `);
 
-export const StyledLink = withTheme(styled(NavLink)`
+export const StyledLink = styled(NavLink)`
     font-size: 16px;
-    color: ${props => props.theme.palette.black};
+    color: ${colors.black};
     transition: 0.3s;
 
     &:hover, &.active {
         text-decoration: none;
         color: ${colors.purple[500]};
     }
-`);
+`
 
 export const DesktopHeader = withTheme(styled.header`
     position: fixed;

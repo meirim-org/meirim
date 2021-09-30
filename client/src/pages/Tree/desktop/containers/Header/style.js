@@ -38,7 +38,7 @@ export const Buttons = withTheme(styled.div`
         background-color: transparent !important;
         border: solid 1px #cdc9d8;
         box-shadow: none;
-        color: ${props => props.theme.palette.black['100']} !important;
+        color: ${colors.black} !important;
     }
     .MuiButton-startIcon {
         margin: 0;
@@ -103,7 +103,7 @@ export const Tab = withTheme(styled(Button)`
     }
     
     .MuiButton-label {
-        color:  ${props => props.theme.palette.black} !important;
+        color:  ${colors.black} !important;
         font-size:  16px !important;
         font-weight: 400;
     }

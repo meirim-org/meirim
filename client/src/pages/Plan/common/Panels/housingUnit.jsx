@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { Chart } from 'react-charts';
 import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import { series, axes } from '../../utils';
 import * as SC from './style';
+import { colors } from 'style';
 
 export const HousingUnitPanel = ({ dataUnits }) => {
-	const theme = useTheme();
 	if (!dataUnits || !dataUnits[0] || !dataUnits[0].data.length) return null;
 	
 	return (
@@ -19,7 +18,7 @@ export const HousingUnitPanel = ({ dataUnits }) => {
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
 						component="h2"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{t.housingUnitChanges}
 					</Typography>

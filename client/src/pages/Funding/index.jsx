@@ -4,7 +4,6 @@ import YoutubeVideo from 'react-youtube';
 import { Button, Checkbox, Divider, HelperText, Link, TabPanel, ProgressBar, Typography, TeamMembers } from '../../shared';
 import { openModal } from 'redux/modal/slice';
 import { useDispatch } from 'react-redux';
-import { useTheme } from '@material-ui/styles';
 import { createPaymentLink } from './controller';
 import { paymentRequestValidation, getFormErrors } from './validations';
 import { paymentAmountOptions, roadmap, fundingEndGoal, fundingYoutubeVideoId } from './constants';
@@ -18,7 +17,6 @@ import { colors } from 'style';
 
 const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
-	const theme = useTheme();
 	const whoWeAreRef = useRef();
 
 	const [otherAmount, setOtherAmount] = useState(0);
@@ -209,7 +207,7 @@ const FundingPage = ({ ...props }) => {
 						<Divider orientation="horizontal"/>
 					</SC.SectionTitleWithHorizontalDividersWrapper>
 					<SC.AboutUsSection>
-						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.black}>
+						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={colors.black}>
 							{t.fundingAboutUsText}
 						</Typography>
 					</SC.AboutUsSection>

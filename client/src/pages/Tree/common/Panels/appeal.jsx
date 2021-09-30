@@ -1,25 +1,23 @@
 import React from 'react';
 import { TabPanel, TabBox, Typography, Button } from 'shared';
-import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
 import { treeAppealGuideUrl } from '../../constants';
 import t from 'locale/he_IL';
+import { colors } from 'style';
 
 const TreeAppealPanel = () => {
-
-	const theme = useTheme();
 
 	return (
 		<TabPanel>
 			<TabBox>
 				<SC.TreeSummaryTitleWrapper>
 					<Typography variant="planDetailTitle" mobileVariant="planDetailTitle"
-						component="h2" color={theme.palette.black}	>
+						component="h2" color={colors.black}	>
 						{t.treeAppealTitle}
 					</Typography>
 				</SC.TreeSummaryTitleWrapper>
 				<Typography variant="paragraphText" mobileVariant="paragraphText"
-					component="span" color={theme.palette.black}>
+					component="span" color={colors.black}>
 					{t.treeAppealExplained}
 				</Typography>
 				<SC.ButtonWrapper>

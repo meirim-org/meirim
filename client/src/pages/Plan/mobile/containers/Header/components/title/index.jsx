@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '@material-ui/styles';
 import { Text } from 'shared';
 import * as SC from '../../style';
 import { colors } from 'style';
 
 const Title = ({ title, subTitle }) => {
-	const theme = useTheme();
 
 	return (
 		<>
@@ -16,7 +14,7 @@ const Title = ({ title, subTitle }) => {
                 </SC.SubTitleWrapper>
 			}
 			<SC.TitleWrapper>
-				<Text size="18px" lineHeight="1.4" weight="600" text={subTitle} component="h1" color={theme.palette.black}/>
+				<Text size="18px" lineHeight="1.4" weight="600" text={subTitle} component="h1" color={colors.black}/>
 			</SC.TitleWrapper>
 		</>
 	);

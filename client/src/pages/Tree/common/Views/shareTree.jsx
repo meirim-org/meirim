@@ -127,10 +127,10 @@ const ShareTreeView = () => {
 					 iconBefore={<WhatsAppIcon/>} />
 				</ShareButtonWrapper>
 				<ShareTextWrapper>
-					<Text text={t.copyUrl} color={theme.palette.black}/>
+					<Text text={t.copyUrl} color={colors.black}/>
 				</ShareTextWrapper>
 				<CopyUrlArea>
-					<Text text={url} size="14px" color={theme.palette.black}/>
+					<Text text={url} size="14px" color={colors.black}/>
 					<CopyToClipboard text={url} onCopy={() => copiedToClipboard()}>
 						<Button
 						 text={t.copy} 

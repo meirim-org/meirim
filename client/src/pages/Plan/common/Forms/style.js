@@ -58,7 +58,7 @@ export const ErrorWrapper = styled.div`
 export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiTypography-root {
         font-size: 0.875rem;
-        color: ${props => props.theme.palette.black} !important;
+        color: ${colors.black} !important;
     }
     .MuiRadio-colorSecondary {
         color: ${props => props.theme.palette.gray['main']} !important;

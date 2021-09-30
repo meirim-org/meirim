@@ -7,6 +7,7 @@ import Moment from 'react-moment';
 //import {  Chip } from '@material-ui/core';
 //import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
+import { colors } from 'style';
 
 const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 	const theme = useTheme();
@@ -19,7 +20,7 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
 						component="h2"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{t.planDetails}
 					</Typography>
@@ -48,7 +49,7 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 							variant="paragraphText"
 							mobileVariant="paragraphText"
 							component="span"
-							color={theme.palette.black}>
+							color={colors.black}>
 							{status}
 						</Typography>
 					</SC.StatusWrapper>
@@ -64,7 +65,7 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 							variant="paragraphText"
 							mobileVariant="paragraphText"
 							component="span"
-							color={theme.palette.black}>
+							color={colors.black}>
 							{type}
 						</Typography>
 					</SC.TypeWrapper>
@@ -81,7 +82,7 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 						variant="paragraphText"
 						mobileVariant="paragraphText"
 						component="span"
-						color={theme.palette.black}>
+						color={colors.black}>
 						<Moment
 							parse="YYYYMMDDHHmm"
 							format="DD/MM/YYYY"
