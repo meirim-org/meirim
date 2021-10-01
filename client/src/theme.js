@@ -7,7 +7,6 @@ export const muiTheme = createMuiTheme({
 		fontFamily: [font.assistant, 'sans-serif'].join(',')
 	},
 	palette: {
-		white: '#ffffff',
 		red: {
 		    'main': '#ff3a68',
 		    'alt': '#b71f29',
