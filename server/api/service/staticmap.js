@@ -14,7 +14,7 @@ const fetchStaticMap = (lat, lon) => {
 		height: 32,
 		coord: [lon, lat]
 	};
-	map.add(marker);
+	map.addMarker(marker);
 
 	// resolve with base64 string so we don't pass buffers around
 	return map
@@ -27,11 +27,8 @@ const fetchStaticMap = (lat, lon) => {
 		});
 };
 
-const drawStaticMapWithPolygon = (lat, lon, geoJSON) => {
-	const map = new StaticMaps({
-		height:600,
-		width:800
-	});
+const drawStaticMapWithPolygon = (geoJSON) => {
+	const map = new StaticMaps(Config.get('staticmap'));
 
 	var bbox = Turf.bbox(geoJSON);
 
@@ -40,7 +37,6 @@ const drawStaticMapWithPolygon = (lat, lon, geoJSON) => {
 		color: '#8F5DE2',
 		width: 6
 	  };
-
 
 	map.addPolygon(polygon);
 	return map

@@ -118,6 +118,9 @@
 			"auth": {
 				"user": "",
 				"pass": ""
+			},
+			"templates":{
+				"digest_plans": "d-db0b55ab042e4ba9878715acd35c1d6c"
 			}
 		}
 	}

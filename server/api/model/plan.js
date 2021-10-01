@@ -17,8 +17,10 @@ const {
 } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
+const StaticMap = require('./staticmap');
 const File = require('./file');
 const { parseLandUses, describeChange, LAND_USES, LAND_USE_CHANGE_UNITS } = require('../service/landUseMappers');
+const { drawStaticMapWithPolygon } = require('../service/staticmap');
 
 class Plan extends Model {
 	get rules() {
@@ -187,6 +189,30 @@ class Plan extends Model {
 	describeHousingChange(){
 		const mappedAreaChange = this.parseAreaChanges(this.get('areaChanges'));
 		return describeChange(mappedAreaChange, LAND_USES.housing, LAND_USE_CHANGE_UNITS.units);
+	}
+
+	async map(){
+		const existingMap = this.related('staticmap').get('base64string');
+		if (existingMap) return existingMap;
+		try {
+			const planGeom = this.get('geom');
+			if(!planGeom) return;
+			const mapBase64 = await drawStaticMapWithPolygon(planGeom);
+
+			const mapModel = new StaticMap({ plan_id: this.get('id'), base64string: mapBase64 });
+			mapModel.save();
+			return mapBase64;
+		}
+		catch(error){
+			Log.error('Failed creatinf a base64 staticmap');
+		}
+		finally{
+			return ;
+		}
+	}
+
+	staticmap () {
+		return this.hasOne(StaticMap);
 	}
 
 	canRead() {
@@ -541,7 +567,8 @@ class Plan extends Model {
 				'areaChanges', 
 				'plan_url',
 				'status'
-			]
+			],
+			withRelated: ['staticmap']
 		}).then(res=> res.models);
 	}
 }
