@@ -2,7 +2,7 @@ import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 import { ReactComponent as QuestionMarkIcon } from 'assets/svg/question-mark.svg';
-import { BadgeWrapper } from './InfoBadge.styled';
+import { BadgeWrapper } from './style';
 import { colors } from 'style';
 
 const StyledTooltip = withStyles({

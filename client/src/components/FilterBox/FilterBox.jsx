@@ -1,5 +1,5 @@
 import React from 'react';
-import { FilterBoxWrapper, Chip } from './FilterBox.styled';
+import { FilterBoxWrapper, Chip } from './style';
 
 function FilterBox(props) {
     const { label, selected, chipColor, onToggle } = props;
