@@ -52,6 +52,10 @@ class Alert extends Model {
 		return this.belongsTo(Person);
 	}
 
+	person () {
+		return this.belongsTo(Person);
+	}
+
 	geocodePlace(model) {		
 		return fetchOrGeocodePlace({ db:Knex,'table':'alert','place': this.get('place') })
 			.then(geom => {
@@ -198,13 +202,14 @@ class Alert extends Model {
 		return Knex.raw(sql);
 	}
 
-	static getAlertToNotify (userOptions) {
+	static getAlertToNotify (userOptions, date) {
 		const options = userOptions || {};
 		if (!options.limit) {
 			options.limit = 1;
 		}
+		const dateString = moment(date).format('YYYY-MM-DD h:mm');
 		return Alert.query(qb => {
-			// qb.whereRaw('last_email_sent IS NULL');
+			qb.whereRaw(`last_email_sent > '${dateString}' OR last_email_sent IS NULL`);
 		}).fetchAll({
 			columns: [
 				'address',
@@ -213,11 +218,16 @@ class Alert extends Model {
 				'radius',
 				'place',
 				'type',
-			] 
+				'id'
+			],
+			withRelated: ['person'],
 		}).then(res=>{
-			return res.models[0];
-		}).catch(err=>
-		{
+			if (!res.models[0]) return; 
+			return {
+				alert: res.models[0],
+				email: res.models[0].related('person').get('email')
+			};
+		}).catch(err=> {
 			console.log(err);
 		});
 	}

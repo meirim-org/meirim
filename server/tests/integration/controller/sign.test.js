@@ -116,7 +116,6 @@ describe('Sign Controller - Signin' , function() {
 	});
 
 	it('User can signin successfully', async function () {
-		console.log('hello world');
 		const req = {
 			body: {
 				email,

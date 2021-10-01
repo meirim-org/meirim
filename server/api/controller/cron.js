@@ -1,15 +1,17 @@
 const Bluebird = require('bluebird');
+const { map, max } = require('lodash');
+const moment = require('moment');
+const Turf = require('turf');
 const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
+const Email = require('../service/email');
 const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
-const { fetchStaticMap, drawStaticMapWithPolygon } = require('../service/staticmap');
-const Turf = require('turf');
+const { fetchStaticMap } = require('../service/staticmap');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
-const moment = require('moment');
 
 // const isNewPlan = iPlan => Plan
 //   .fetchByObjectID(iPlan.properties.OBJECTID)
@@ -146,7 +148,8 @@ const sendPlanningAlerts = () => {
 		});
 };
 
-const planToEmail = (plan, map) => {
+const planToEmail = async (plan) => {
+	const map = await plan.map();
 	return {
 		id: plan.get('id'),
 		title: plan.get('plan_display_name'),
@@ -154,13 +157,14 @@ const planToEmail = (plan, map) => {
 		text: plan.get('goals_from_mavat'),
 		status: plan.get('status'),
 		areaChange: plan.describeHousingChange(),
-		map: 'data:image/gif;base64,'+ map,
+		map,
 		link:`${this.baseUrl}plan/${plan.get('id')}`
 	};
 }; 
 
 const alertToEmail = (alert) => {
-	const alertTitle = `תוכניות חדשות בקרבת ${alert.get('address') ||  'תחומי הענין שלך'}`;
+	const addressTitle = (alert.get('address')|| '').split(',').splice(0,3).join(', ');
+	const alertTitle = `תוכניות חדשות בקרבת ${addressTitle ||  'תחומי הענין שלך'}`;
 	return {
 		alert:{
 			title: alertTitle,
@@ -174,56 +178,43 @@ const sendDigestPlanningAlerts = async () => {
 	// have been added since he last received a digest email
 	// sendPlanningAlerts(req, res, next) {id
 	Log.info('Running digest send planning alert');
-	const lastSentDifference = 150;
+	const lastSentDifference = 7; // update
 	const maxAlertsToSend = 5;
 	const timeDifference = moment.duration(lastSentDifference, 'd');
 	const date = moment().subtract(timeDifference);
 
 	try {
-		const alertToNotify =  await Alert.getAlertToNotify(date, 1);
-		const alertGeom = alertToNotify.get('geom');
+		const { alert, email } = await Alert.getAlertToNotify({}, date);
+		if(!alert || !email) {
+			Log.debug('No alerts to notify');
+		}
+		const alertGeom = alert.get('geom');
 		const alertPlans = await Plan.getPlansByGeometryThatWereUpdatedSince(alertGeom, date);
-		Log.debug(`Got ${alertPlans[0].length} for alert ${alertToNotify.id}`);
-		const maps = await Bluebird.mapSeries(alertPlans, plan => {
-			const planGeom = plan.get('geom');
-			if(!planGeom) return plan;
-			const centroid = Turf.centroid(planGeom);	
-			return drawStaticMapWithPolygon(
-				centroid.geometry.coordinates[1],
-				centroid.geometry.coordinates[0],
-				planGeom
-			);
-		});
+		console.log(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
+		Log.debug(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
 
-		const emailAlertParams = alertToEmail(alertToNotify);
-
+		const emailAlertParams = alertToEmail(alert);
 		const emailPlanParams = {
-			firstPlan: alertPlans[2] ? planToEmail(alertPlans[2], maps[2]): {},
-			secondPlan: alertPlans[3] ? planToEmail(alertPlans[3], maps[3]): {},
-			thirdPlan: alertPlans[4] ? planToEmail(alertPlans[3], maps[4]): {},
+			firstPlan: alertPlans[1] ? await planToEmail(alertPlans[1]): {},
+			secondPlan:alertPlans[2] ? await planToEmail(alertPlans[2]): {},
+			// thirdPlan: alertPlans[4] ? planToEmail(alertPlans[3], maps[4]): {},
 		// fifthPlan: planToEmail(plans[0]),
 		};
-		
-		await DigestEmail.digestPlanAlert(emailPlanParams, emailAlertParams);	
 
+		await DigestEmail.digestPlanAlert(email, emailPlanParams, emailAlertParams);	
+		const newUpdateDate = alertPlans.length < maxAlertsToSend ? max(map(alertPlans, 'created_at')): Date.now();
+		alert.set({
+			last_email_sent: moment(newUpdateDate).format('YYYY-MM-DD h:mm')
+		});
+		await alert.save();
+		Log.debug(`User ${email} alert ${alert.id} with ${alertPlans[0].length} plans`);
 	}
-	catch(e){
+	catch(e) {
+		Log.debug(`Failed digest plans for alert ${alert.id}`);
 	}
-	finally{
+	finally {
+		process.exit();
 	}
-
-
-	// })
-	// .then(successArray => {
-	// 	const idArray = [];
-	// 	successArray.reduce((pv, cv) => idArray.push(cv.plan_id), 0);
-	// 	if (idArray.length) {
-	// 		return Plan.markPlansAsSent(idArray).then(() =>
-	// 			Log.info('Processed plans', idArray)
-	// 		);
-	// 	}
-	// 	return true;
-	// });
 };
 
 const sendTreeAlerts = () => {

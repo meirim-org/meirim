@@ -1,3 +1,11 @@
+// This modules helps in parsing landuse changes as we save them in the DB.
+// An example structure of a lans use change looks like this:
+// '[[{"1":"4000807619","2":"120","3":"מגורים (יח\"ד)"
+//,"4":"יח\"ד","5":"+172","6":"","7":"172","8":"","9":""},{"1":"4000807621","2":"125",
+//"3":"מגורים (מ\"ר)","4":"מ\"ר","5":"+16,100","6":"","7":"16,100","8":"","9":""}]]'
+
+// All as one long string. Logic is clear when comparing against a MAVAT Plan page
+
 const { find, get, mapValues } = require('lodash');
 
 const LAND_USE_CHANGE_UNITS = {
@@ -34,7 +42,6 @@ const INCREASE_KEY = '+';
 const DECREASE_KEY = '-';
 
 const parseLandUses = (changes) => {
-	// const changes = JSON.parse(landUseString);
 	const mappedChanges = {};
 	changes[0].forEach(change => {
 		const { key: landUseKey } = find(LAND_USES, landUse=> change[3].includes(landUse.hebKey));
