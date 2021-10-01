@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Wrapper, Menu, InputWrapper, Input, Button } from './Autocomplete.styled';
+import { Wrapper, Menu, InputWrapper, Input, Button } from './style';
 import { colors } from 'style';
 
 const StyledMenuItem = withStyles(({

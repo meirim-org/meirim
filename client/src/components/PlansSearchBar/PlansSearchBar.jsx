@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { SearchBarWrapper, Label, Filters } from './PlansSearchBar.styled';
-import Autocomplete from "../components/Autocomplete/Autocomplete";
-import FilterBox from "../components/FilterBox/FilterBox";
-import InfoBadge from "../components/InfoBadge/InfoBadge";
+import { SearchBarWrapper, Label, Filters } from './style';
+import Autocomplete from "../Autocomplete/Autocomplete";
+import FilterBox from "../FilterBox";
+import InfoBadge from "../InfoBadge";
 import { ReactComponent as SearchIcon } from 'assets/svg/search.svg';
-import t from "../locale/he_IL";
+import t from "locale/he_IL";
 import { colors } from 'style';
 import { useEffect } from 'react';
 
