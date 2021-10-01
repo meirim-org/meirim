@@ -50,7 +50,7 @@ export const StyledLink = styled(NavLink)`
 export const DesktopHeader = withTheme(styled.header`
     position: fixed;
     z-index: 999;
-    background-color: ${props => props.theme.palette.white};
+    background-color: ${colors.white};
     padding: .75rem 4.8rem;
     border-bottom: 1px solid ${props => props.theme.palette.gray['300']};   
     top: 0;
@@ -61,7 +61,7 @@ export const DesktopHeader = withTheme(styled.header`
 export const MobileHeader = withTheme(styled.header`
     position: fixed;
     z-index: 999;
-    background-color: ${props => props.theme.palette.white};
+    background-color: ${colors.white};
     padding: .75rem 1.5rem .75rem .65rem;
     border-bottom: 1px solid ${props => props.theme.palette.gray['300']};   
     top: 0;

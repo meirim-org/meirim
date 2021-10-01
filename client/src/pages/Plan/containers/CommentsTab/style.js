@@ -120,7 +120,7 @@ export const ErrorWrapper = styled.div`
 export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
     &[disabled] {
         border-color: ${props => props.theme.palette.gray['300']} !important;
-        background-color: ${props => props.theme.palette.white} !important;
+        background-color: ${colors.white} !important;
     }
     &:focus {
         outline: 0;

@@ -519,17 +519,17 @@ export const PaymentTypeButton = withTheme(styled.div`
   padding: 0.75rem;
   margin-bottom: 1.3rem;
   cursor: pointer;
-  background-color: ${props => props.theme.palette.white};
+  background-color: ${colors.white};
 
   span {
     color: ${colors.purple[500]};
   }
 
-  ${({ selected, theme }) => selected && `
+  ${({ selected }) => selected && `
     background-color: ${colors.purple[500]};
 
     span {
-      color: ${theme.palette.white} !important;
+      color: ${colors.white} !important;
     }
   `}
 

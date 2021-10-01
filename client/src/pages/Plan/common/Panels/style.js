@@ -68,8 +68,8 @@ export const ChartWrapper = styled.div`
     margin-top: 1rem;
 `;
 
-export const SubscribeIconWrapper = withTheme(styled.div`
-    background-color: ${props => props.theme.palette.white};
+export const SubscribeIconWrapper = styled.div`
+    background-color: ${colors.white};
     position: relative;
     width: 2.5rem;
     height: 2.5rem;
@@ -81,7 +81,7 @@ export const SubscribeIconWrapper = withTheme(styled.div`
         position: absolute;
         fill: ${colors.purple[500]} !important;  
     }
-`);
+`
 
 export const SubscribeTextWrapper = styled.div`
     text-align: center;

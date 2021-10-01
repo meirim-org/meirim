@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTheme, useTheme } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import MUILinearProgress from '@material-ui/core/LinearProgress';
 import { Box } from '@material-ui/core';
 import styled from 'styled-components';
 import Typography from '../typography';
+import { colors } from 'style';
 
 const StyledProgressBar = withTheme(styled(MUILinearProgress)`
 	height: 1.75em !important;
@@ -13,8 +14,6 @@ const StyledProgressBar = withTheme(styled(MUILinearProgress)`
 `);
 
 const ProgressBar = ({ value, id, width }) => {
-	const theme = useTheme();
-
 	const progress = Math.round(value);
 	const progressValue = Math.min(progress, 100);
 
@@ -31,7 +30,7 @@ const ProgressBar = ({ value, id, width }) => {
         		alignItems="center"
         		justifyContent="center"
       		>
-				<Typography component="span" variant="title" mobileVariant="highlightedText" color={theme.palette.white}>
+				<Typography component="span" variant="title" mobileVariant="highlightedText" color={colors.white}>
 					{progress}%
 				</Typography>
       		</Box>

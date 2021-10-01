@@ -12,7 +12,7 @@ const StyledButton = withTheme(styled(MUIButton)`
 	line-height: 1.5;
 	letter-spacing: normal
 	text-align: center; 
-    color: ${props => props.theme.palette.white} !important;
+    color: ${colors.white} !important;
     background-color: ${colors.purple[500]} !important;
     min-height: 3.7em;
     border-radius: 12px !important;
@@ -32,7 +32,7 @@ const StyledButton = withTheme(styled(MUIButton)`
        outline: none;
     }
     
-    ${({ simple, theme }) => simple && `
+    ${({ simple }) => simple && `
         font-weight: 600 !important;
         color: ${colors.purple[500]} !important;
         border: none !important;
@@ -49,9 +49,9 @@ const StyledButton = withTheme(styled(MUIButton)`
        }
     `}
 
-    ${({ altcolor, theme }) => altcolor && `
+    ${({ altcolor }) => altcolor && `
         color: ${colors.purple[500]} !important;
-        background-color: ${theme.palette.white} !important;
+        background-color: ${colors.white} !important;
        &:hover {
           background-color: ${colors.purple[500]} !important;
        }
@@ -86,7 +86,7 @@ const StyledButton = withTheme(styled(MUIButton)`
         }
     `}    
     
-    ${({ active, theme }) => active && `
+    ${({ active }) => active && `
         background-color: ${colors.purple[500]} !important;
     `}    
     

@@ -71,10 +71,10 @@ export const addCommentButtonWrapper = styled.div`
     }
 `;
 
-export const SubCommentBox = withTheme(styled.div`
-    background-color: ${props => props.theme.palette.white} !important;  
+export const SubCommentBox = styled.div`
+    background-color: ${colors.white} !important;  
     padding: 2rem 3.75rem 1rem 2rem;
-`);
+`
 
 export const SubCommentHeader = styled.div`
     position: relative;
@@ -108,8 +108,8 @@ export const EntryContent = styled.div`
     color: ${colors.black} !important;  
 `
 
-export const SubscribeIconWrapper = withTheme(styled.div`
-    background-color: ${props => props.theme.palette.white};
+export const SubscribeIconWrapper = styled.div`
+    background-color: ${colors.white};
     position: relative;
     width: 2.5rem;
     height: 2.5rem;
@@ -121,10 +121,9 @@ export const SubscribeIconWrapper = withTheme(styled.div`
         position: absolute;
         fill: ${colors.purple[500]} !important;  
     }
-`);
+`
 
 export const SubscribeTextWrapper = styled.div`
     text-align: center;
     margin-bottom: 1.25rem;
 `;
-

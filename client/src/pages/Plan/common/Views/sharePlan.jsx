@@ -6,7 +6,6 @@ import { device, colors } from 'style';
 import t from 'locale/he_IL';
 import { copiedToClipboard } from 'toasts';
 import { CopyToClipboard } from  'react-copy-to-clipboard';
-import { useTheme } from '@material-ui/styles';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 
 const ShareWrapper = styled.div`
@@ -107,7 +106,6 @@ const CopyUrlArea = withTheme(styled.div`
 
 
 const SharePlanView = () => {
-	const theme = useTheme();
 	const url = encodeURI(window.location.toString());
 	const whatsappURL = `https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A${url}`; 
 
@@ -124,7 +122,7 @@ const SharePlanView = () => {
 					 target="_blank"
 					 text={t.whatsappShare} 
 					 fontWeight="600" 
-					 textcolor={theme.palette.white}
+					 textcolor={colors.white}
 					 iconBefore={<WhatsAppIcon/>} />
 				</ShareButtonWrapper>
 				<ShareTextWrapper>
