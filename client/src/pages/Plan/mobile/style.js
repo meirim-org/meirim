@@ -47,13 +47,10 @@ export const CommentIcon = styled(ChatBubbleOutlineIcon)`
     font-size: 1rem !important;
 `;
 
-export const CommentsWrapper = withTheme(styled.div`
+export const CommentsWrapper = styled.div`
     grid-area: comments; 
-    border-top: 1px solid ${props => props.theme.palette.gray['300']};
-    
-    
-    
-`);
+    border-top: 1px solid ${colors.grey[300]};
+`
 
 export const Main = withTheme(styled.main`
     background-color:  ${props => props.theme.palette.gray['bg']};
@@ -106,7 +103,7 @@ export const Like = withTheme(styled.div`
     &:after {
         content: '';
         position: absolute;
-        background-color: ${props => props.theme.palette.gray['300']};
+        background-color: ${colors.grey[300]};
         left: 0;
         top: 50%;
         height: 100%;

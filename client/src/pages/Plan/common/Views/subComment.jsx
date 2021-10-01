@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from 'shared';
 import * as SC from './style';
-import { useTheme } from '@material-ui/styles';
 import { daysPassed } from 'pages/Plan/utils';
 import { colors } from 'style';
 
 const SubCommentView = ({ subCommentData }) => {
-	const theme = useTheme();
 	const { content, created_at, person: { name } } = subCommentData;
 	
 	return (
@@ -27,7 +25,7 @@ const SubCommentView = ({ subCommentData }) => {
 						variant="light"
 						mobileVariant="light"
 						component="span"
-						color={theme.palette.gray['main']}
+						color={colors.grey[500]}
 					>
                         לפני
 						{created_at ? daysPassed(created_at) : ' הרבה '}

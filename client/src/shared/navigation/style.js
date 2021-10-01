@@ -47,27 +47,27 @@ export const StyledLink = styled(NavLink)`
     }
 `
 
-export const DesktopHeader = withTheme(styled.header`
+export const DesktopHeader = styled.header`
     position: fixed;
     z-index: 999;
     background-color: ${colors.white};
     padding: .75rem 4.8rem;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};   
+    border-bottom: 1px solid ${colors.grey[300]};   
     top: 0;
     right: 0;
     left: 0;
-`);
+`
 
-export const MobileHeader = withTheme(styled.header`
+export const MobileHeader = styled.header`
     position: fixed;
     z-index: 999;
     background-color: ${colors.white};
     padding: .75rem 1.5rem .75rem .65rem;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};   
+    border-bottom: 1px solid ${colors.grey[300]};   
     top: 0;
     right: 0;
     left: 0;
-`);
+`
 
 export const StyledContainer = styled(Container)`
     max-width: none !important;

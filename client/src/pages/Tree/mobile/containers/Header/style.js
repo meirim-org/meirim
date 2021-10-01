@@ -17,9 +17,9 @@ export const TitleWrapper = styled.div`
     margin-bottom: 2rem;
 `;
 
-export const Header = withTheme(styled.div`
-    background: ${props => props.theme.palette.gray['100']} !important;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+export const Header = styled.div`
+    background: ${colors.grey[100]} !important;
+    border-bottom: 1px solid ${colors.grey[300]};
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -42,14 +42,14 @@ export const Header = withTheme(styled.div`
     .fixed {
         position: fixed;
         top: 79px;
-        background: ${props => props.theme.palette.gray['100']} !important;
+        background: ${colors.grey[100]} !important;
         left: 0;
         padding-right: 3.425rem;
         padding-left: 2.3rem;
-        border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+        border-bottom: 1px solid ${colors.grey[300]};
         z-index: 99999;
     }
-`);
+`
 
 export const HeaderContent = styled.div`
     position: relative;

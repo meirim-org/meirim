@@ -12,14 +12,9 @@ export const muiTheme = createMuiTheme({
 		    'alt': '#b71f29',
 		},
 		gray: {
-		    '100': '#FBFBFB',
 		    '200': '#f4f4f4',
-		    '300': '#E4E4E4',
 		    '400': '#d1ccd5',
 		    '450': '#c4c4c4',
-		    'main': '#999999',
-		    '600': '#666666',
-		    '800': '#333333',
 			'bg': '#fafafabf',
 			'radio': '#f1eef2',
 			'alt': '#665d71'

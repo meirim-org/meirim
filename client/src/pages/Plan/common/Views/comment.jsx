@@ -38,7 +38,7 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 							variant="light"
 							mobileVariant="light"
 							component="span"
-							color={theme.palette.gray['main']}
+							color={colors.grey[500]}
 						>
 	                    לפני
 							{created_at ? daysPassed(created_at) : ' הרבה '}

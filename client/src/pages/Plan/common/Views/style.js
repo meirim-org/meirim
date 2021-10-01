@@ -14,25 +14,25 @@ export const Header = styled.span`
     margin: 0 -1rem .8rem;
 `;
 
-export const CommentsWrapper = withTheme(styled.div`
+export const CommentsWrapper = styled.div`
     grid-area: comments; 
-    border-top: 1px solid ${props => props.theme.palette.gray['300']};
-`);
+    border-top: 1px solid ${colors.grey[300]};
+`
 
-export const FirstSide = withTheme(styled.div`
+export const FirstSide = styled.div`
     > * {
         padding: 0 1rem;
         position: relative;
         &:not(:last-child):after {
             content: '|';
             position: absolute;
-            color: ${props => props.theme.palette.gray['300']};
+            color: ${colors.grey[300]};
             left: 0;
             top: 50%;
             transform: translate(-50%,-50%);
         }
     }
-`);
+`
 
 export const SecondSide = styled.div`
     > * {
@@ -40,18 +40,16 @@ export const SecondSide = styled.div`
     }
 `;
 
-export const Text = withTheme(styled.div`
+export const Text = styled.div`
     grid-column-start: span 2;
     padding: 0 2rem 1rem;
     margin: 0;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
-`);
-
+    border-bottom: 1px solid ${colors.grey[300]};
+`
 
 export const CommentIcon = styled(ChatBubbleOutlineIcon)`
     font-size: 1rem !important;
 `;
-
 
 export const addSubCommentWrapper = styled.div`
     padding: 2rem 3.5rem;

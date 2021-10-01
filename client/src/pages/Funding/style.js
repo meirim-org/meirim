@@ -153,9 +153,9 @@ export const TermsOfUse = styled.span`
    }
 `;
 
-export const InputsWrapper = withTheme(styled.div`
+export const InputsWrapper = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.palette.gray['100']};
+  background-color: ${colors.grey[100]};
   padding-bottom: 1.5em;
 
   @media ${device.laptop} {
@@ -166,7 +166,7 @@ export const InputsWrapper = withTheme(styled.div`
     margin-top: 5%;
     margin-bottom: 5%;
   }
-`);
+`
 
 export const MainWrapper = styled.div`
   text-align:right;
@@ -202,7 +202,7 @@ export const SectionTitleWithHorizontalDividersWrapper = styled.div`
 export const PaymentOptionsWrapper = withTheme(styled.div`
   padding: 1.5em;
   width: 100%;
-  border: 1px solid ${props => props.theme.palette.gray['main']};
+  border: 1px solid ${colors.grey[500]};
   display: grid;
   margin: auto;
   grid-template-columns: auto auto;
@@ -223,7 +223,7 @@ export const PaymentOptionsWrapper = withTheme(styled.div`
   }
 `);
 
-export const PaymentOption= withTheme(styled.div`
+export const PaymentOption= styled.div`
   border-radius: 2px;
   font-family: Assistant; !important;
   font-style: normal;
@@ -245,7 +245,7 @@ export const PaymentOption= withTheme(styled.div`
   user-select:none;
 
   &:hover, &.active {
-    background-color: ${props => props.theme.palette.gray['100']};
+    background-color: ${colors.grey[100]};
   };
 
   &.active {
@@ -273,7 +273,7 @@ export const PaymentOption= withTheme(styled.div`
   input {
     background-color: rgba(255, 255, 255, 0) !important;
   }
-`);
+`
 
 export const PaymentOtherOption = styled.span`
   &.active {

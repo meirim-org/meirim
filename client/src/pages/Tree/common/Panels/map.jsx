@@ -2,14 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
 import Mapa from 'components/Mapa';
 import { colors } from 'style';
 
 export const MapPanel = (props) => {
 	const { geom, countyName } = props;
-	const theme = useTheme();
 
 	if (geom) {
 		return (
@@ -27,7 +25,7 @@ export const MapPanel = (props) => {
 					</SC.TreeSummaryTitleWrapper>
 					<SC.TreeSummarySubtitleWrapper>
 					<Typography variant="paragraphText" mobileVariant="paragraphText"
-								component="span" color={theme.palette.gray['main']}>
+							component="span" color={colors.grey[500]}>
 							{t.estimatedLocation}
 						</Typography>
 					</SC.TreeSummarySubtitleWrapper>

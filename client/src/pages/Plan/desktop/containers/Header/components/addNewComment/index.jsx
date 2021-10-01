@@ -1,16 +1,15 @@
 import React from 'react';
-import { useTheme } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { Button } from '@material-ui/core';
 import { Text } from 'shared';
 import t from 'locale/he_IL';
 import { useHistory, useParams } from 'react-router-dom';
+import { colors } from 'style';
 
 const AddNewComment = ({ newCommentViewHandler  }) => {
 	const { id: planId } = useParams();
 	const history = useHistory();
-	const theme = useTheme();
 	
 	return (
 		<Button
@@ -22,7 +21,7 @@ const AddNewComment = ({ newCommentViewHandler  }) => {
 			}}
 			startIcon={<ChatBubbleOutlineIcon />}
 		>
-			<Text size="14px" text={t.addNewComment} component="span" color={theme.palette.gray['800']}/>
+			<Text size="14px" text={t.addNewComment} component="span" color={colors.grey[800]}/>
 		</Button>	
 	);
 };

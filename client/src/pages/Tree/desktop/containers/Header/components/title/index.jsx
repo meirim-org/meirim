@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '@material-ui/styles';
 import { Text } from 'shared';
 import * as SC from '../../style';
 import { BackButton } from 'pages/Tree/common';
@@ -10,8 +9,6 @@ import { Typography } from 'shared';
 import { colors } from 'style';
 
 const Title = ({ place, text }) => {
-	const theme = useTheme();
-
 	return (
 		<>
 			<SC.SubTitleWrapper>
@@ -21,7 +18,7 @@ const Title = ({ place, text }) => {
 			<SC.TitleWrapper>
 				<Text size="24px" lineHeight="1.17" weight="600" text={text} component="h1" color={colors.black}/>
 				<Typography variant="paragraphText" mobileVariant="paragraphText"
-							component="span" color={theme.palette.gray['main']}>
+					component="span" color={colors.grey[500]}>
 						{t.estimatedLocation}
 					</Typography>
 			</SC.TitleWrapper>

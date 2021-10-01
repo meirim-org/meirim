@@ -10,10 +10,10 @@ import {
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import { colors } from 'style';
 
-export const CommentsWrapper = withTheme(styled.div`
+export const CommentsWrapper = styled.div`
     grid-column-start: span 2;
-    border-top: 1px solid ${props => props.theme.palette.gray['300']};
-`);
+    border-top: 1px solid ${colors.grey[300]};
+`
 
 export const AddSubComment = withTheme(styled.div`
     grid-area: add-comment;
@@ -66,13 +66,13 @@ export const CommentIcon = styled(ChatBubbleOutlineIcon)`
     font-size: 1rem !important;
 `;
 
-export const NewCommentControl = withTheme(styled(MuiFormControl)`
+export const NewCommentControl = styled(MuiFormControl)`
     .MuiTypography-root {
         font-size: 0.875rem;
         color: ${colors.black} !important;
     }
     .MuiRadio-colorSecondary {
-        color: ${props => props.theme.palette.gray['main']} !important;
+        color: ${colors.grey[500]} !important;
         &.Mui-checked {
             color: ${colors.purple[700]} !important;
         }
@@ -84,7 +84,7 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
         padding: 1rem;
         margin-bottom: 1rem;
     }   
-`);
+`
 
 export const addCommentButtonWrapper = styled.div`
     margin-bottom: 2rem;
@@ -117,15 +117,15 @@ export const ErrorWrapper = styled.div`
     padding: 0 1rem;
 `;
 
-export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
+export const TextareaAutosize = styled(MuiTextareaAutosize)`
     &[disabled] {
-        border-color: ${props => props.theme.palette.gray['300']} !important;
+        border-color: ${colors.grey[300]} !important;
         background-color: ${colors.white} !important;
     }
     &:focus {
         outline: 0;
     }
-`);
+`
 
 export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
     border-radius: 4px;
@@ -176,7 +176,7 @@ export const Like = withTheme(styled.div`
     &:after {
         content: '';
         position: absolute;
-        background-color: ${props => props.theme.palette.gray['300']};
+        background-color: ${colors.grey[300]};
         left: 0;
         top: 50%;
         height: 100%;

@@ -21,12 +21,12 @@ export const TitleWrapper = styled.div`
     margin-bottom: 3rem;
 `;
 
-export const Header = withTheme(styled.header`
+export const Header = styled.header`
     padding: 2rem 4.8rem 0 2rem;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};
+    border-bottom: 1px solid ${colors.grey[300]};
     display: grid;
     grid-template-columns: 56% 1fr;
-`);
+`
 
 export const TitlesAndTabs = styled.div`
 `;
