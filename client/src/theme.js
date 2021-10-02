@@ -8,7 +8,6 @@ export const muiTheme = createMuiTheme({
 	},
 	palette: {
 		red: {
-		    'main': '#ff3a68',
 		    'alt': '#b71f29',
 		},
 		gray: {

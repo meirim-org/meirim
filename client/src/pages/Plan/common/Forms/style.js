@@ -127,7 +127,7 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
         background-color: ${props => props.theme.palette.gray['radio']} !important;
     }  
     &.error {
-        border-color: ${props => props.theme.palette.red.main} !important;;
+        border-color: ${colors.red[400]} !important;;
     }
     .MuiSvgIcon-root {
     	width: .9rem !important;
