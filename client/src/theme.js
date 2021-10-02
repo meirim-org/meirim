@@ -23,16 +23,7 @@ export const muiTheme = createMuiTheme({
 			main: colors.purple[500],
 		},
 		secondary: {
-			'100' : '#FEF2DA',
-			'200' : '#FDE3B6',
-			'300': '#F9CD90',
-			'400': '#F3B773',
-			'main': '#EB8C47',
-			'600': '#CA7433',
-			'700': '#A95623',
-			'800': '#883B16',
-			'contrastForGraphics': '#E7731E',
-			'active': '#E7731E0F'
+			main: colors.orange[500],
 		},
 		green: {
 			'text' : '#00453B',

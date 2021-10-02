@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 import { Button as MuiButton } from '@material-ui/core';
-import { withTheme } from '@material-ui/core/styles';
+import { colors } from 'style';
 
-
-export const Button = withTheme(styled(MuiButton)`
+export const Button = styled(MuiButton)`
     &.MuiButton-containedPrimary {
         transition: none !important;
         &.active {
-        border-color: ${props => props.theme.palette.secondary.main} !important;
-        background-color: ${props => props.theme.palette.secondary['active']} !important;
+        border-color: ${colors.orange[500]} !important;
+        background-color: ${colors.orange.contrast} !important;
         }    
     }
-`);
-
+`

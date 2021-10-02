@@ -55,7 +55,7 @@ export const HeaderContent = styled.div`
     position: relative;
 `;
 
-export const Buttons = withTheme(styled.div`
+export const Buttons = styled.div`
     text-align: left;
     margin: 0 -.25rem;
     .MuiButton-containedPrimary {
@@ -79,9 +79,9 @@ export const Buttons = withTheme(styled.div`
         padding: 0 .25rem;
     }
     .MuiButton-startIcon svg{
-        fill: ${props => props.theme.palette.secondary.contrastForGraphics} !important;
+        fill: ${colors.orange.contrast} !important;
     }
-`);
+`
 
 export const AppBar = styled(MuiAppBar)`
     padding: 0 3.425rem 0 1rem;    

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
 import { colors } from 'style';
@@ -83,22 +82,20 @@ export const SubCommentHeader = styled.div`
     }
 `;
 
-export const ArrowIcon = withTheme(styled(SubdirectoryArrowLeftRoundedIcon)`
+export const ArrowIcon = styled(SubdirectoryArrowLeftRoundedIcon)`
     position: absolute;
     font-size: 1rem !important;
     right: 0;
     transform: translate(100%, -50%);
     top: 50%;
-    fill: ${props => props.theme.palette.secondary['600']} !important;  
-`);
-
+    fill: ${colors.orange[600]} !important;  
+`
 
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     margin: 0 -.5rem 1rem;
-`;
-
+`
 
 export const EntryContent = styled.div`
     font-size: 16px;

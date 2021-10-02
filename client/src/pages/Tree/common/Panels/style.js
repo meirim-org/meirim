@@ -55,11 +55,11 @@ export const TypeWrapper = styled.div`
 
 export const UrlWrapper = styled.div``;
 
-export const CustomLinkIcon = withTheme(styled(LinkIcon)`
-    fill: ${props => props.theme.palette.secondary.main} !important;  
+export const CustomLinkIcon = styled(LinkIcon)`
+    fill: ${colors.orange[500]} !important;  
     vertical-align: middle;
     margin-right: .5rem;
-`);
+`
 
 export const EntryContent = styled.div`
     font-size: 16px;
