@@ -100,14 +100,12 @@ export const Drawer = styled(MUIDrawer)`
     z-index: 9999 !important;
 `;
 
-export const MenuWrapper = withTheme(styled.div`
+export const MenuWrapper = styled.div`
     .MuiButtonBase-root {
         .MuiSvgIcon-root {
-            color: ${props => props.theme.palette.blue.main};
             transition: .3s;
         }
         .MuiButton-label {
-            color: ${props => props.theme.palette.blue.main};
             font-size: 16px;      
             text-decoration: none;
             line-height: 1.5 !important;
@@ -120,12 +118,11 @@ export const MenuWrapper = withTheme(styled.div`
             margin-right: 2px;
         }
     }
-`);
+`
 
-export const MyPlansButton = withTheme(styled(Button)`
+export const MyPlansButton = styled(Button)`
     line-height: 1.5 !important;
     .MuiButton-label {
-        color: ${props => props.theme.palette.blue.main};
         font-size: 16px;      
         text-decoration: none;
     }
@@ -134,6 +131,4 @@ export const MyPlansButton = withTheme(styled(Button)`
         margin-left: 2px;
         margin-right: -4px;
     }
-`);
-
-
+`
