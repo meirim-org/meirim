@@ -29,7 +29,9 @@ export const colors = {
 		800: '#883B16',
 		contrast: '#E7731E'
 	},
-	blue: '#1976D2'
+	blue: {
+		400: '#1976D2'
+	}
 };
 
 export const font = {
