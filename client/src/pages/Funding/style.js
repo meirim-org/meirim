@@ -199,8 +199,8 @@ export const SectionTitleWithHorizontalDividersWrapper = styled.div`
   }
 `;
 
-export const PaymentOptionsWrapper = withTheme(styled.div`
-  padding: 1.5em;
+export const PaymentOptionsWrapper = styled.div`
+  padding:, 1.5em;
   width: 100%;
   border: 1px solid ${colors.grey[500]};
   display: grid;
@@ -214,14 +214,14 @@ export const PaymentOptionsWrapper = withTheme(styled.div`
   .MuiFormHelperText-root {
     text-align: center !important;
     margin-top: 0.5em;
-    color: ${props => props.theme.palette.red} !important;
+    color: ${colors.red[400]} !important;
     grid-column: 1 / span 2;
 
     @media ${device.tablet} {
       grid-column: 1 / span 3;
     }
   }
-`);
+`
 
 export const PaymentOption= styled.div`
   border-radius: 2px;
@@ -370,7 +370,7 @@ export const RoadmapItemWrapper= styled.div`
   }
 `;
 
-export const TermsOfUseWrapper= withTheme(styled.div`
+export const TermsOfUseWrapper= styled.div`
   margin: 1em 0;
   border-radius: 12px;
   font-family: Assistant !important;
@@ -386,9 +386,9 @@ export const TermsOfUseWrapper= withTheme(styled.div`
 
   .MuiFormHelperText-root {
     text-align: center !important;
-    color: ${props => props.theme.palette.red} !important;
+    color: ${colors.red[400]} !important;
   }
-`);
+`
 
 export const TermsOfUseCheckboxWrapper = styled.div`
   width: 100%;
