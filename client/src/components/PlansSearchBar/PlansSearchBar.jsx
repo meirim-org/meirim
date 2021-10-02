@@ -74,7 +74,7 @@ function PlansSearchBar({
             <FilterBox
                 selected={planStatus.has(PLAN_STATUS.APPROVED)}
                 label={t.approved}
-                chipColor={colors.blue}
+                chipColor={colors.blue[400]}
                 onToggle={handleApprovedToggle} />
         </Filters>
     </SearchBarWrapper>);
