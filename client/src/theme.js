@@ -40,10 +40,6 @@ export const muiTheme = createMuiTheme({
 			'whatsapp': '#25D366',
 			'bg' : '#DEFFEA',
 		},
-		orange: {
-			'text' : '#A95623',
-			'bg' : '#FDE3B6',
-		},
 	},
 	navigation: {
 	    desktop: '72px',

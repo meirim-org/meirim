@@ -28,16 +28,15 @@ export const TreeTermWrapper = withTheme(styled.div`
     }
 `);
 
-export const TotalTreeWrapper = withTheme(styled.div`
+export const TotalTreeWrapper = styled.div`
     padding: .25rem;
     > .MuiChip-root {
         height: auto;
         min-height: 1.875rem;
-        color: ${props => props.theme.palette.orange['text']} !important;  
-        background-color: ${props => props.theme.palette.orange['bg']} !important;  
+        color: ${colors.orange[700]} !important;  
+        background-color: ${colors.orange[200]} !important;  
     }
-`);
-
+`
 
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
