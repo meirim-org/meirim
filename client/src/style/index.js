@@ -3,6 +3,7 @@ export const colors = {
 	white: '#FFFFFF',
 	red: {
 		400: '#FF3A68',
+		600: '#AE0930',
 	},
 	grey: {
 		100: '#FBFBFB',

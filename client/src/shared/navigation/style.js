@@ -8,7 +8,7 @@ export const StyledList = styled(List)`
     padding: 0 !important;
 `;
 
-export const StyledListItem = withTheme(styled(ListItem)`
+export const StyledListItem = styled(ListItem)`
     padding: 1.2rem 3.5rem !important; 
     color: ${colors.black} !important;
     .MuiListItemText-root {
@@ -23,7 +23,7 @@ export const StyledListItem = withTheme(styled(ListItem)`
         font-size: 18px;      
     }
     &#logout-button {
-         color: ${props => props.theme.palette.red.alt} !important;
+         color: ${colors.red[600]} !important;
     }
     &#my-plans-button {
          color: ${colors.purple[500]} !important;
@@ -34,7 +34,7 @@ export const StyledListItem = withTheme(styled(ListItem)`
     &.active {
         color: ${colors.purple[500]} !important;
     }
-`);
+`
 
 export const StyledLink = styled(NavLink)`
     font-size: 16px;
@@ -73,7 +73,6 @@ export const StyledContainer = styled(Container)`
     max-width: none !important;
     padding: 0 !important;
 `;
-
 
 export const MobileNavWrapper = styled.div`
     width: 250px;
