@@ -1,4 +1,4 @@
-const populatePlanAreaChanges = require('../bin/populate_plan_area_changes');
+const populatePlanAreaChanges = require('../bin/plan_area_changes/populate_plan_area_changes');
 
 
 exports.up = async function(knex) {

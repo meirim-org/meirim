@@ -1,5 +1,5 @@
-const Plan = require('../api/model/plan');
-const PlanAreaChangesController = require('../api/controller/plan_area_changes');
+const Plan = require('../../api/model/plan');
+const PlanAreaChangesController = require('../../api/controller/plan_area_changes');
 
 const populatePlanAreaChanges = async () => {
 	try {
@@ -31,12 +31,6 @@ const populatePlanAreaChanges = async () => {
 	}
 
 };
-
-
-
-if (require.main === module) {
-	populatePlanAreaChanges().then(() => console.log('done populating plan area changes'));
-}
 
 
 module.exports = populatePlanAreaChanges;
