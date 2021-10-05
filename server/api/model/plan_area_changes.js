@@ -30,7 +30,7 @@ class PlanAreaChanges extends Model {
 		return this.collection();
 	}
 
-    	static async byPlanAndUsage (planId, usage) {
+	static async byPlanAndUsage (planId, usage) {
 		if (!planId) {
 			throw new Exception.BadRequest('Must provide planId');
 		}
@@ -39,7 +39,7 @@ class PlanAreaChanges extends Model {
 		}		
 		Log.info(`checking for planId ${planId} and usage ${usage}`);
 		const result = await this.query('where', 'plan_id', '=', planId)
-        		.query('where', 'usage', '=', usage)
+				.query('where', 'usage', '=', usage)
 			.fetchAll();
 		return result;
 	}
@@ -48,7 +48,7 @@ class PlanAreaChanges extends Model {
 		return this.query('where', 'plan_id', '=', planId)
 			.destroy({require: false})
 			.then(() => true);
-	}    
+	}	
 
 	// adds multiple changes in one transcation
 	static async createPlanAreaChanges( data) {
