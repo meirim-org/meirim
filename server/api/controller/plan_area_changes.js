@@ -4,13 +4,13 @@ const PlanAreaChanges = require('../model/plan_area_changes');
 
 class PlanAreaChangesController extends Controller {
 
-    static refreshPlanAreaChanges = async (planId, rawAreaChangesString) => {
+    static async refreshPlanAreaChanges (planId, rawAreaChangesString) {
         await PlanAreaChanges.deleteByPlan(planId);
         try {
             if (rawAreaChangesString) {
                 let areaChangesArray = JSON.parse(rawAreaChangesString)[0];
                 let areaChanges = [];
-                for (let iChanges=0; iChanges<areaChangesArray.length; iChanges++) {
+                for (let iChanges = 0; iChanges < areaChangesArray.length; iChanges++) {
                     areaChanges.push(
                         {
                             "plan_id": planId,
@@ -24,7 +24,7 @@ class PlanAreaChangesController extends Controller {
                         }
                     )
                 }
-                PlanAreaChanges.createPlanAreaChanges(areaChanges);
+                await PlanAreaChanges.createPlanAreaChanges(areaChanges);
             }
         } catch (err) {
             Log.error(err);
