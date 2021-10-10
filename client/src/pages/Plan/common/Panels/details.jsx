@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Moment from 'react-moment';
 import { TabBox, TabPanel, Typography } from 'shared';
-//import {  Chip } from '@material-ui/core';
-//import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
 
 const DetailsPanel = ({ status, type, lastUpdate, url }) => {
