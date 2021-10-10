@@ -99,7 +99,7 @@ const sendPlanningAlerts = () => {
 	// sendPlanningAlerts(req, res, next) {id
 	Log.info('Running send planning alert');
 
-	return Plan.getUnsentPlans({
+	return Alert.getAlertsToSend({
 		limit: 1
 	})
 		.then(unsentPlans => {
@@ -163,12 +163,17 @@ const planToEmail = async (plan) => {
 }; 
 
 const alertToEmail = (alert) => {
-	const addressTitle = (alert.get('address')|| '').split(',').splice(0,3).join(', ');
-	const alertTitle = `תוכניות חדשות בקרבת ${addressTitle ||  'תחומי הענין שלך'}`;
+	const nowDate = moment().format('DD-MM-YY');
+	const addressTitle = (alert.get('address')|| '').split(',').splice(0,2).join(', ');
+	const alertTitle = `תוכניות חדשות בסביבת ${addressTitle ||  'תחומי הענין שלך'}`;
+	const mailSubject = `${alertTitle} | ${nowDate} `;
 	return {
-		alert:{
+		alert: {
 			title: alertTitle,
 			unsubscribeLink: `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`
+		},
+		mail: {
+			subject: mailSubject
 		}
 	};
 };
@@ -178,7 +183,7 @@ const sendDigestPlanningAlerts = async () => {
 	// have been added since he last received a digest email
 	// sendPlanningAlerts(req, res, next) {id
 	Log.info('Running digest send planning alert');
-	const lastSentDifference = 7; // update
+	const lastSentDifference = 20; // update
 	const maxAlertsToSend = 5;
 	const timeDifference = moment.duration(lastSentDifference, 'd');
 	const date = moment().subtract(timeDifference);
@@ -204,9 +209,15 @@ const sendDigestPlanningAlerts = async () => {
 		await DigestEmail.digestPlanAlert(email, emailPlanParams, emailAlertParams);	
 		const newUpdateDate = alertPlans.length < maxAlertsToSend ? max(map(alertPlans, 'created_at')): Date.now();
 		alert.set({
-			last_email_sent: moment(newUpdateDate).format('YYYY-MM-DD h:mm')
+			last_email_sent: newUpdateDate.format('YYYY-MM-DD HH:mm:ss')
 		});
-		await alert.save();
+
+		try {
+			const res = await alert.save();	
+		}
+		catch (e) {
+			console.log(e);
+		}
 		Log.debug(`User ${email} alert ${alert.id} with ${alertPlans[0].length} plans`);
 	}
 	catch(e) {

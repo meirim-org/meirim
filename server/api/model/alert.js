@@ -17,7 +17,7 @@ class Alert extends Model {
 			person_id: ['required', 'integer'],
 			address: [ 'string'],
 			geom: [ 'object'],
-			radius: [ 'number'],
+			radius: [ 'string'],
 			place: ['string'],
 			type: ['string']
 		};
@@ -32,6 +32,10 @@ class Alert extends Model {
 
 	get geometry () {
 		return ['geom'];
+	}
+
+	get radius () {
+		return ['radius'];
 	}
 
 	get tableName () {

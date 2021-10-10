@@ -9,5 +9,4 @@ controller.sendDigestPlanningAlerts().then(() => {
 	Log.error('sendDigestPlanningAlerts error', err.message, err.stack);
 }).finally(() => {
 	process.exit();
-
 });
