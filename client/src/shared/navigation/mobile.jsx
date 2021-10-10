@@ -178,7 +178,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 												</>
 											)}
 											{
-												selectedLanguage != 'AR' && <SC.StyledListItem component={ SC.StyledLink } to="#" button
+												selectedLanguage !== 'AR' && <SC.StyledListItem component={ SC.StyledLink } to="#" button
 													onClick={ () => {
 														setMobileNavIsOpened(false);
 														changeLanguage('AR');
@@ -188,7 +188,7 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 												</SC.StyledListItem>
 											}
 											{
-												selectedLanguage != 'HE' && <SC.StyledListItem component={ SC.StyledLink } to="#" button
+												selectedLanguage !== 'HE' && <SC.StyledListItem component={ SC.StyledLink } to="#" button
 													onClick={ () => {
 														setMobileNavIsOpened(false);
 														changeLanguage('HE');
