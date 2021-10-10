@@ -9,7 +9,7 @@ import { timeToObjectionText } from '../../utils';
 import * as SC from './style';
 
 const TreeList = ({ trees_per_permit }) => {
-	const { t } = useTranslation();
+	// const { t } = useTranslation();
 	if (!trees_per_permit) return null;
 	if (Object.keys(trees_per_permit).length === 1) {
 		return (
