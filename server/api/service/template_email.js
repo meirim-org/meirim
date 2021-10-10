@@ -31,7 +31,7 @@ class DynamicTemplateEmail {
 
 	 digestPlanAlert (recipient, emailPlanParams, emailAlertParams) {
 		 const email = {
-			 from: `"${this.config.from_name}" <${this.config.from_email}>`, // sender address
+			 from: `"${this.config.from_name}" < ${this.config.from_email}>`, // sender address
 			 to: recipient,
 			unsubscribeLink: `${this.baseUrl}${emailAlertParams.unsubscribeLink}`,
 			 personalizations:[
