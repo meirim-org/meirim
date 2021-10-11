@@ -3,16 +3,16 @@ const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
+const PlanTag = require('../model/plan_tag');
 const Email = require('../service/email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
+const { getPlanTagger } = require('../lib/tags');
+const PlanAreaChangesController = require('../controller/plan_area_changes');
 
-// const isNewPlan = iPlan => Plan
-//   .fetchByObjectID(iPlan.properties.OBJECTID)
-//   .then(plan => !plan);
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -65,7 +65,9 @@ const complete_mavat_data = () =>
 							'Saving with mavat',
 							JSON.stringify(mavatData)
 						);
-						return plan.save();
+						return Promise.all([plan.save(),
+							PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges)
+						]);
 					})
 					.catch(() => {
 						// do nothing on error
@@ -81,8 +83,9 @@ const complete_jurisdiction_from_mavat = () =>
 		.then(planCollection =>
 			Bluebird.mapSeries(planCollection.models, plan => {
 				Log.debug(plan.get('plan_url'));
-				return MavatAPI.getByPlan(plan).then(mavatData => {
-					Plan.setMavatData(plan, mavatData);
+				return MavatAPI.getByPlan(plan).then(async mavatData => {
+					await Plan.setMavatData(plan, mavatData);
+					await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
 					Log.debug(
 						'saved with jurisdiction from mavat',
 						JSON.stringify(mavatData)
@@ -210,6 +213,37 @@ const sendTreeAlerts = () => {
 		});
 };
 
+const updatePlanTags = async () => {
+	const tagger = await getPlanTagger();
+	let start = Number(Date.now());
+	Log.info('Re-creating plan tags');
+	let tagCounter = 0;
+	// Re-compute the tags of a plan if the last update time of the plan is after the last update time of the tags of this plan.
+	// Before re-computing the tags of a plan, remove all previous tags for this plan.
+
+	// TODO: Loop on the plans that need to be updated
+	const plans = await Plan.getPlansToTag();
+	Log.info(`Processing ${plans.models.length} plans`);
+	for (const planOrder in plans.models) {
+		const plan = plans.models[planOrder];
+		try {
+			await PlanTag.deletePlanTags(plan.id);
+		}
+		catch(e) {
+			// if the deletion of existing tags fails, move to the next plan
+			continue;
+		}
+
+		const tags = await tagger(plan);
+		if (tags && tags.length > 0){
+			await PlanTag.createPlanTags(tags);
+			tagCounter++;
+		}
+	}
+	let end = Number(Date.now());
+	const duration = end - start;
+	Log.info(`Done. Added tags to ${tagCounter}/${plans.models.length} plans. It took ${duration/1000} seconds`);
+};
 
 /** Private */
 
@@ -254,7 +288,11 @@ const fetchIplan = iPlan =>
 const buildPlan = (iPlan, oldPlan) => {
 	return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
 		MavatAPI.getByPlan(plan)
-			.then(mavatData => Plan.setMavatData(plan, mavatData))
+			.then(async mavatData => {
+				const retPlan = await Plan.setMavatData(plan, mavatData);
+				await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
+				return retPlan;
+			})
 			.catch(e => {
 				// mavat might crash gracefully
 				Log.error('Mavat error', e.message, e.stack);
@@ -267,6 +305,8 @@ const fetchTreePermit = () =>{
 	return crawlTreesExcel();
 };
 
+
+
 module.exports = {
 	iplan,
 	complete_mavat_data,
@@ -275,5 +315,6 @@ module.exports = {
 	fix_geodata,
 	fetchIplan,
 	fetchTreePermit,
-	sendTreeAlerts
+	sendTreeAlerts,
+	updatePlanTags
 };

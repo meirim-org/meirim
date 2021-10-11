@@ -477,5 +477,19 @@ class Plan extends Model {
 		const query = 'UPDATE plan SET erosion_views = FLOOR(erosion_views/2)';
 		return Knex.raw(query);
 	}
+
+	// TODO: actually get the plans we want to tag today, for now getting all of them in dev
+	static async getPlansToTag (options) {
+		return Plan.query(qb => {
+			if (options && options.OBJECTID) {
+				qb.where('OBJECTID', '=', options.OBJECTID);
+			}
+		}).fetchAll({
+			columns: [
+				'id',
+				'geom'
+			]
+		});
+	}	
 }
 module.exports = Plan;
