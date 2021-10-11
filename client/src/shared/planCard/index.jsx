@@ -17,15 +17,27 @@ import { openModal } from '../../redux/modal/slice';
 import { useFavoritePlan } from '../../pages/Plan/hooks';
 import { UserSelectors } from '../../redux/selectors';
 import { useDispatch } from 'react-redux';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 const tagIcons = {
-    publicInstitutes: TagIcons.PublicInstitutesTagIcon,
-    commerce: TagIcons.CommerceTagIcon,
-    openField: TagIcons.OpenFieldTagIcon,
-    offices: TagIcons.OfficesTagIcon,
-    residence: TagIcons.ResidenceTagIcon,
-    transportation: TagIcons.TransportationTagIcon,
-    plus: TagIcons.PlusTagIcon
+    Public: TagIcons.PublicInstitutesTagIcon,
+    Commerce: TagIcons.CommerceTagIcon,
+    // openField: TagIcons.OpenFieldTagIcon,
+    Employment: TagIcons.OfficesTagIcon,
+    Housing: TagIcons.ResidenceTagIcon,
+    // transportation: TagIcons.TransportationTagIcon,
+    Hoteliery: null,
+    plus: TagIcons.PlusTagIcon,
+    defaultIcon: null
+}
+
+const tagDisplayNames = {
+    Public: 'מבני ציבור',
+    Commerce: 'מסחר',
+    Employment: 'תעסוקה',
+    Housing: 'דיור',
+    Hoteliery: 'מלונאות'
 }
 
 const PlanCard = ({ plan }) => {
@@ -150,10 +162,12 @@ const PlanCard = ({ plan }) => {
 						</PlanName>
 						<Tags ref={tagsWrapperRef}>
 							{tags.map((tag, i) => {
-								return <Tag key={i} ref={tagsRef.current[i]}>
-									{tagIcons[tag.type] && <TagIcon src={tagIcons[tag.type]} />}
-                                    {tag.text}
-								</Tag>;
+								return <OverlayTrigger key={tag.id} overlay={<Tooltip>{tagDisplayNames[tag.tag_name]}</Tooltip>}>
+                                    <Tag ref={tagsRef.current[i]}>
+                                        {tagIcons[tag.tag_name] && <TagIcon src={tagIcons[tag.tag_name]} />}
+                                        {tagDisplayNames[tag.tag_name]}
+                                    </Tag>
+                                </OverlayTrigger>
 							})}
 						</Tags>
 					</SC.CardContent>
@@ -218,7 +232,7 @@ const BookmarkBtn = styled.button`
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
     background: center no-repeat url(${({isBookmarked}) => isBookmarked ? BookmarkFilledIcon : BookmarkOutlinedIcon}) #FFFFFF;
     flex-shrink: 0;
-    
+
     & :focus {
         outline: none;
         background-color: #F5F5F5;
@@ -253,7 +267,7 @@ const PlanDistance = withTheme(styled.div`
     font-size: 16px;
     font-weight: 600;
     color: ${props => props.theme.palette.black};
-        
+
     &:before {
         margin-left: 14px;
         content: url(${DropPinIcon});
