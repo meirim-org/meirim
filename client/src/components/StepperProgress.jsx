@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import StepLabel from '@material-ui/core/StepLabel';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import { getStatus } from 'pages/Plan/controller';
+import { Button } from 'shared';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        // padding: '20px 0px',
+        cursor: 'pointer',
     },
     button: {
         marginRight: theme.spacing(1),
@@ -36,7 +37,6 @@ const useQontoStepIconStyles = makeStyles({
     root: {
         color: '#eaeaf0',
         display: 'flex',
-        // height: 22,
         alignItems: 'center',
     },
     active: {
@@ -62,38 +62,14 @@ const useQontoStepIconStyles = makeStyles({
     },
 });
 
-function getSteps() {
-    return [
-        'על שולחן הוועדה',
-        'הסכמה עקרונית',
-        'הערות הציבור',
-        'תוכנית מאושרת',
-    ];
-}
-
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return 'הוגש לועדה בתאריך:';
-        case 1:
-            return 'החלטה להפקדה בתאריך:';
-        case 2:
-            return 'התוכנית הופסקה בתאריך:';
-        case 3:
-            return 'התוכנית אושרה בתאריך:';
-        default:
-            return 'Unknown step';
-    }
-}
 const StepButtonStyle = styled(StepButton)`
     background: ${(props) =>
-        props.stepcomplited.has(props.index)
+        props.stepcomplited
             ? '#e6f8f3 !important'
-            : props.nextstep === props.index
-            ? props.index === 0
-                ? '#fbfbfb !important'
-                : 'linear-gradient(270deg,rgba(230, 248, 243, 1) 50%,rgba(251, 251, 251, 1) 50% ) !important'
-            : '#fbfbfb !important'};
+            : props.index === props.activestep
+            ? 'linear-gradient(270deg,rgba(230, 248, 243, 1) 50%,rgba(251, 251, 251, 1) 50% ) !important'
+            : ' #fbfbfb !important'};
+
     padding: 10px 16px !important;
     border-radius: ${(props) =>
         props.index === 3
@@ -119,86 +95,31 @@ const LabelStep = styled.div`
 
 export const StepperProgress = () => {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState(new Set());
-    const [skipped, setSkipped] = React.useState(new Set());
-    const steps = getSteps();
+    const theme = useTheme();
 
-    const totalSteps = () => {
-        return getSteps().length;
-    };
-
-    const handleSkip = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped((prevSkipped) => {
-            const newSkipped = new Set(prevSkipped.values());
-            newSkipped.add(activeStep);
-            return newSkipped;
+    const [activeStep, setActiveStep] = React.useState(null);
+    const [steps, setSteps] = useState([]);
+    const [clickedStep, setClickedSteps] = useState({});
+    useEffect(() => {
+        getStatus().then((res) => {
+            res.data.map((step, i) =>
+                step.current === true
+                    ? setActiveStep(i) || setClickedSteps(res.data[i - 1])
+                    : null
+            );
+            setSteps(res.data);
         });
-    };
-
-    const skippedSteps = () => {
-        return skipped.size;
-    };
-
-    const completedSteps = () => {
-        return completed.size;
-    };
+    }, []);
 
     const allStepsCompleted = () => {
-        return completedSteps() === totalSteps() - skippedSteps();
-    };
-
-    const isLastStep = () => {
-        return activeStep === totalSteps() - 1;
-    };
-
-    const handleNext = () => {
-        const newActiveStep =
-            isLastStep() && !allStepsCompleted()
-                ? // It's the last step, but not all steps have been completed
-                  // find the first step that has been completed
-                  steps.findIndex((step, i) => !completed.has(i))
-                : activeStep + 1;
-
-        setActiveStep(newActiveStep);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        if (steps.length > 0) {
+            return steps[steps.length - 1].completed;
+        }
     };
 
     const handleStep = (step) => () => {
         setActiveStep(step);
     };
-    const handleComplete = () => {
-        const newCompleted = new Set(completed);
-        newCompleted.add(activeStep);
-        setCompleted(newCompleted);
-
-        /**
-         * Sigh... it would be much nicer to replace the following if conditional with
-         * `if (!this.allStepsComplete())` however state is not set when we do this,
-         * thus we have to resort to not being very DRY.
-         */
-        if (completed.size !== totalSteps() - skippedSteps()) {
-            handleNext();
-        }
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-        setCompleted(new Set());
-        setSkipped(new Set());
-    };
-
-    const isStepSkipped = (step) => {
-        return skipped.has(step);
-    };
-
-    function isStepComplete(step) {
-        return completed.has(step);
-    }
 
     function QontoStepIcon(props) {
         const classes = useQontoStepIconStyles();
@@ -223,36 +144,35 @@ export const StepperProgress = () => {
             <StepperStyle
                 connector={''}
                 alternativeLabel
-                // nonLinear
                 activeStep={activeStep}
             >
-                {steps.map((label, index) => {
+                {steps.map((step, index) => {
                     const stepProps = {};
                     const buttonProps = {};
 
-                    if (isStepSkipped(index)) {
-                        stepProps.completed = false;
-                    }
                     return (
                         <Step
-                            key={label}
+                            key={index}
                             {...stepProps}
-                            onClick={() => console.log(label)}
+                            onClick={() =>
+                                steps[index].completed &&
+                                setClickedSteps(steps[index])
+                            }
                         >
                             <StepButtonStyle
                                 index={index}
                                 disabled
                                 onClick={handleStep(index)}
-                                completed={isStepComplete(index)}
-                                stepcomplited={completed}
-                                nextstep={completedSteps()}
+                                completed={steps[index].completed}
+                                activestep={activeStep}
+                                stepcomplited={steps[index].completed}
                                 {...buttonProps}
                             >
                                 <StepLabel
                                     StepIconComponent={QontoStepIcon}
                                 ></StepLabel>
                             </StepButtonStyle>
-                            <LabelStep>{label}</LabelStep>
+                            <LabelStep>{step.name}</LabelStep>
                         </Step>
                     );
                 })}
@@ -263,7 +183,6 @@ export const StepperProgress = () => {
                         <Typography className={classes.instructions}>
                             התוכנית אושרה בתאריך:
                         </Typography>
-                        <Button onClick={handleReset}>Reset</Button>
                     </div>
                 ) : (
                     <div>
@@ -280,47 +199,20 @@ export const StepperProgress = () => {
                                     padding: '12px 24px',
                                 }}
                             >
-                                <div>{getStepContent(activeStep)}</div>
-                                <div>26.11.2011</div>
+                                <div>{clickedStep.description}</div>
+                                <div>{clickedStep.date}</div>
                             </div>
                         </Typography>
-                        {/* <div>
-                            <Button
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                className={classes.button}
-                            >
-                                Back
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleNext}
-                                className={classes.button}
-                            >
-                                Next
-                            </Button>
-
-                            {activeStep !== steps.length &&
-                                (completed.has(activeStep) ? (
-                                    <Typography
-                                        variant="caption"
-                                        className={classes.completed}
-                                    >
-                                        Step {activeStep + 1} already completed
-                                    </Typography>
-                                ) : (
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleComplete}
-                                    >
-                                        {completedSteps() === totalSteps() - 1
-                                            ? 'Finish'
-                                            : 'Complete Step'}
-                                    </Button>
-                                ))}
-                        </div> */}
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <div>איך אפשר להשפיע על התהליך?</div>
+                            <Button text="מידע נוסף" altColor />
+                        </div>
                     </div>
                 )}
             </div>

@@ -28,7 +28,7 @@ Router.post("/sign/auth/email", wrap(SignUp.authenticateEmail));
 Router.get("/plan/", wrap(Plan.browse, Plan));
 Router.get("/plan/user", wrap(Subscription.getUserPlans, Plan));
 Router.get("/plan/:id", wrap(Plan.read, Plan));
-Router.get("plan/status", wrap(Plan.status, Plan));
+Router.get("/plan/status", wrap(Plan.stepeStatus, Plan));
 Router.get("/plan_county", wrap(Plan.county, Plan));
 Router.get("/plan_status", wrap(Plan.statuses, Plan));
 

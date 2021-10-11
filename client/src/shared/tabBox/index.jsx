@@ -4,14 +4,16 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 
 const StyledTabBox = withTheme(styled.div`
-    position: ${props => props.position};
-    background-color: ${props => props.bgColor};
+    position: ${(props) => props.position};
+    background-color: ${(props) => props.bgColor};
     border-radius: 12px;
-    border: solid 1px ${props => props.borderColor};
+    border: solid 1px ${(props) => props.borderColor};
     padding: 1.5rem;
     margin-bottom: 1.3rem;
-    
-    ${({ isComment }) => isComment && `
+
+    ${({ isComment }) =>
+        isComment &&
+        `
         display: grid;
         padding: 0;
         border-radius: 4px;
@@ -22,9 +24,11 @@ const StyledTabBox = withTheme(styled.div`
         //     'like add-comment'
         //     'form form'
         //     'comments comments';
-    `}  
-      
-    ${({ disabled }) => disabled && `
+    `}
+
+    ${({ disabled }) =>
+        disabled &&
+        `
         pointer-events: none;
         user-select: none;
         position: relative;
@@ -40,43 +44,42 @@ const StyledTabBox = withTheme(styled.div`
             left: 0;
         } 
     `}
-
 `);
 
 const TabBox = ({
-	isComment,
-	disabled,
-	bgColor,
-	position,
-	borderColor,
-	children
+    isComment,
+    disabled,
+    bgColor,
+    position,
+    borderColor,
+    children,
 }) => (
-	<StyledTabBox 
-		isComment={isComment}
-		disabled={disabled}
-		bgColor={bgColor}
-		borderColor={borderColor} 
-		position={position}>
-		{children}
-	</StyledTabBox>
+    <StyledTabBox
+        isComment={isComment}
+        disabled={disabled}
+        bgColor={bgColor}
+        borderColor={borderColor}
+        position={position}
+    >
+        {children}
+    </StyledTabBox>
 );
 
 TabBox.defaultProps = {
-	isComment: false,
-	disabled: false,
-	bgColor: '#ffffff',
-	borderColor: '#E4E4E4',
-	position: 'static'
+    isComment: false,
+    disabled: false,
+    bgColor: '#ffffff',
+    borderColor: '#E4E4E4',
+    position: 'static',
 };
 
-
 TabBox.propTypes = {
-	isComment: PropTypes.bool,
-	children: PropTypes.any,
-	bgColor: PropTypes.string,
-	borderColor: PropTypes.string,
-	disabled: PropTypes.bool,
-	position: PropTypes.string
+    isComment: PropTypes.bool,
+    children: PropTypes.any,
+    bgColor: PropTypes.string,
+    borderColor: PropTypes.string,
+    disabled: PropTypes.bool,
+    position: PropTypes.string,
 };
 
 export default TabBox;
