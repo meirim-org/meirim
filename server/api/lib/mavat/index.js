@@ -62,13 +62,12 @@ const getPlanInstructions = async (page) => {
 		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
 		// (flattened table)
 		for (let i = 0; i < innerTexts.length; i += 5) {
-			// before approval
 			if ((innerTexts[i] === 'הוראות התכנית' && innerTexts[i + 1] === 'הוראות התכנית') || // before approval
                 (innerTexts[i] === 'מסמכים חתומים' && innerTexts[i + 1] === 'תדפיס הוראות התכנית - חתום לאישור')) { // after approval
 				return elements[i + 4].querySelector('img').getAttribute('onclick');
 			}
 		}
-		console.log('couldn\'t find the plan details PDF link on this web page');
+		Log.info('couldn\'t find the plan details PDF link on this web page');
 		return undefined;
 	});
 
@@ -91,7 +90,7 @@ const getPlanFiles = async (page) => {
 			// elements look like this:
 			// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
 			// (flattened table)
-			let files = []
+			let files = [];
 			for (let i = 0; i < innerTexts.length; i += 5) {
 				const file = {
 					kind: innerTexts[i], 
@@ -100,8 +99,8 @@ const getPlanFiles = async (page) => {
 					date: innerTexts[i+3],
 					openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
 					fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
-				}
-				files.push(file)
+				};
+				files.push(file);
 			}
 
 			console.log(`fetched ${files.length} files`);
@@ -109,8 +108,8 @@ const getPlanFiles = async (page) => {
 		});
 
 		// cleaning and formatting the files
-		return files.map(formatFile)
-}
+		return files.map(formatFile);
+};
 
 const fetch = planUrl =>
 	new Promise((resolve, reject) => {
