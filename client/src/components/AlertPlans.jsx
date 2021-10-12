@@ -54,7 +54,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 	}
 
 	return (
-		<form className="rectangle" onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit}>
 			<h5 className="container-title">{t.newAlert}</h5>
 			{error && (
 				<div className="alert alert-danger" role="alert">

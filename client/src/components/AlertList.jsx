@@ -1,13 +1,13 @@
 import '../../node_modules/leaflet/dist/leaflet.css';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types'
-import { Map, TileLayer, Circle} from 'react-leaflet';
-import  leaflet from 'leaflet';
+import { Map, TileLayer, Circle } from 'react-leaflet';
+import leaflet from 'leaflet';
 import AlertTable from '../components/AlertTable';
 import api from 'services/api';
 
-const AlertList = ({notifyDeletedAlert, alerts}) => {
-	const [ bounds, setBounds ] = useState([{ lat: 35, lng: 35 }, { lat: 25,lng: 25 }]);
+const AlertList = ({ notifyDeletedAlert, alerts }) => {
+	const [bounds, setBounds] = useState([{ lat: 35, lng: 35 }, { lat: 25, lng: 25 }]);
 
 	React.useEffect(() => {
 		let transparentLayer = leaflet.geoJSON();
@@ -29,24 +29,17 @@ const AlertList = ({notifyDeletedAlert, alerts}) => {
 		});
 	}
 
-	return (
-		<div className="rectangle">
-			<h5 className="container-title">ההתראות שלי</h5>
-			<div className="row">
-				<div className="col col-sm-6">
-					<AlertTable
-						alerts={alerts}
-						onDelete={handleDelete}
-					/>
-				</div>
-				<div className="col col-sm-6">
-					{alerts.length > 0 && (
-						<Mapa alerts={alerts} bounds={bounds} />
-					)}
-				</div>
+	return (<div>
+		<h5 className="container-title">ההתראות שלי</h5>
+		<div className="row">
+			<div className="col col-sm-6">
+				<AlertTable alerts={alerts} onDelete={handleDelete} />
+			</div>
+			<div className="col col-sm-6">
+				{alerts.length > 0 && <Mapa alerts={alerts} bounds={bounds} />}
 			</div>
 		</div>
-	)
+	</div>);
 }
 
 AlertList.propTypes = {
@@ -76,7 +69,7 @@ function Mapa(props) {
 						.getBounds()
 						.getCenter();
 
-					const radius = alert.radius? alert.radius * 1000 : 1000;
+					const radius = alert.radius ? alert.radius * 1000 : 1000;
 
 					return (
 						<Circle
