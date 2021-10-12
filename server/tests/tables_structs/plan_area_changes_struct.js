@@ -1,14 +1,13 @@
-const PlanAreaChangesStruct = function(table) {
-	table.increments();
-	table.integer('plan_id');
-	table.text('usage');
-	table.text('measurement_unit');
-	table.text('approved_state');
-	table.text('change_to_approved_state');
-	table.text('total_in_detailed_plan');
-	table.text('total_in_mitaarit_plan');
-	table.text('remarks');
-    return table;
+const chartPlanAreaChanges = t => {
+    t.increments('id').primary();
+    t.integer('plan_id');
+    t.text('usage');
+    t.text('measurement_unit');
+    t.text('approved_state');
+    t.text('change_to_approved_state');
+    t.text('total_in_detailed_plan');
+    t.text('total_in_mitaarit_plan');
+    t.text('remarks');
 };
 
-module.exports = PlanAreaChangesStruct;
+module.exports = chartPlanAreaChanges;

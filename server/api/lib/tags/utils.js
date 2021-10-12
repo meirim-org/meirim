@@ -1,5 +1,5 @@
 const PlanAreaChanges = require('../../../api/model/plan_area_changes');
-const { tagDataRules } = require('../../constants');
+const { tagDataRules, AREA_CHANGE_TYPES } = require('../../constants');
 const PlanChartFourRow = require('../../../api/model/plan_chart_four_row');
 
 const isTagByUsageAddition = async (planId, rule) => {
@@ -7,16 +7,47 @@ const isTagByUsageAddition = async (planId, rule) => {
 		const result = await PlanAreaChanges.byPlanAndUsage(planId, rule.usage);
 		if (result && result.models && result.models[0]) {
 			const changeToApprovedState = result.models[0].attributes.change_to_approved_state;
-			if ( (changeToApprovedState.length > 1) && 
-				(changeToApprovedState.substring(0,1) === '+') ) {
-				const change = Number(changeToApprovedState.replace('+','').replace(',',''));
-				if (change >= Number(rule.minValue)) {
-					return {   
-						created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
-					}; 
-				}
-			}
-
+			const approvedState = result.models[0].attributes.approved_state;
+			switch (rule.changeType) {
+				case AREA_CHANGE_TYPES.INCREASED_USAGE:
+					// change to approved state
+					if ((changeToApprovedState.length > 1) &&
+						(changeToApprovedState.substring(0,1) === '+') ) {
+						// get change as number
+						const change = Number(changeToApprovedState.replace('+','').replace(',',''));
+						if (change >= Number(rule.minValue)) {
+							return {
+								created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
+							};
+						}
+					}
+					break;
+				case AREA_CHANGE_TYPES.NEW_USAGE:
+					// new usage that was not approved previously
+					if ((changeToApprovedState.length > 1) &&
+					(changeToApprovedState.substring(0,1) === '+') &&
+					(approvedState === '')) {
+						const change = Number(changeToApprovedState.replace('+','').replace(',',''));
+						if (change >= Number(rule.minValue)) {
+							return {
+								created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
+							};
+						}
+					}
+					break;
+				case AREA_CHANGE_TYPES.PERCENT_INCREASE:
+						// usage that grows by a certain percentage
+						if ((changeToApprovedState.length > 1) &&
+						(changeToApprovedState.substring(0,1) === '+') &&
+						(approvedState !== '')) {
+							const change = Number(changeToApprovedState.replace('+','').replace(',',''));
+							if ((change+Number(approvedState))/Number(approvedState) >= (Number(rule.minValue)+100)/100.00) {
+								return {
+									created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
+								};
+							}
+						}
+						break;			}
 		}		
 		
 	   
