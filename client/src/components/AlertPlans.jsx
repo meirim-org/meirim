@@ -13,13 +13,13 @@ _.map(new Array(sliderBounds.max), (obj, i) => {
 	sliderText[i + 1] = `${sliderBounds.max - i} ${t.km}`;
 });
 
-const AlertPlans = ({notifyAddedAlert}) => {
-	const [ error, setError ] = useState(false);
-	const [ loading, setLoading ] = useState(false);
-	const [ radius, setRadius ] = useState(5);
-	const [ address, setAddress ] = useState('');
+const AlertPlans = ({ notifyAddedAlert }) => {
+	const [error, setError] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [radius, setRadius] = useState(5);
+	const [address, setAddress] = useState('');
 
-	const handleSlide = (value)  =>{
+	const handleSlide = (value) => {
 		setRadius(value);
 		setError(false);
 	}
@@ -29,7 +29,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 		setError(false);
 	}
 
-	const handleSubmit = (e)  =>{
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		setLoading(true);
@@ -63,10 +63,7 @@ const AlertPlans = ({notifyAddedAlert}) => {
 			)}
 			<div className="selectAreaAndInterest">
 				כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס
-						<small>
-					*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת
-					שיש לכם עניין לגבי הסביבה שלה
-						</small>
+				<small>*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה</small>
 				<small>**ניתן להוסיף יותר מכתובת אחת</small>
 			</div>
 			<div className="row">
