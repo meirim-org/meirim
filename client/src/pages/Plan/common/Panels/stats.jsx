@@ -7,6 +7,7 @@ import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
 import { series, axes } from '../../utils';
 import * as SC from './style';
+import { colors } from 'style';
 
 export const StatsPanel = ({ dataArea, textArea, }) => {
 	const theme = useTheme();
@@ -20,7 +21,7 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
 						component="h2"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{t.areaUnitChanges}
 					</Typography>
@@ -29,15 +30,15 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 				{textArea.exist !== 0
 					?
 					<>
-						<Text text={`${t.thisPlanIncreases} `} color={theme.palette.black}/>
-						<Text text={`${renderMultiplier(textArea)} `} color={theme.palette.primary.main} weight="600"/>
+						<Text text={`${t.thisPlanIncreases} `} color={colors.black}/>
+						<Text text={`${renderMultiplier(textArea)} `} color={colors.purple[500]} weight="600"/>
 						<Text text={`(${t.extension} `} color={theme.palette.gray['alt']}/>
 						<Text text={`${textArea.new} ${t.meter}`} color={theme.palette.gray['alt']} weight="600"/>
 						<Text text=")" color={theme.palette.gray['alt']}/>
 					</>
 					:
 					<>
-						<Text text={`${t.thisPlanAdds} ${t.buildingLand}`} color={theme.palette.black}/>
+						<Text text={`${t.thisPlanAdds} ${t.buildingLand}`} color={colors.black}/>
 						<Text text={`${textArea.new} ${t.meter}`} color={theme.palette.gray['alt']} weight="600"/>
 					</>
 				}
@@ -45,8 +46,8 @@ export const StatsPanel = ({ dataArea, textArea, }) => {
 				<br/>
 
 				<Text text={`${renderPercent((textArea.new + textArea.exist) / textArea.area)}% `}
-					color={theme.palette.primary.main} weight="600"/>
-				<Text text={`${t.building} `} color={theme.palette.black}/>
+					color={colors.purple[500]} weight="600"/>
+				<Text text={`${t.building} `} color={colors.black}/>
 				<Text text={`${t.insteadOf} `} color={theme.palette.gray['alt']}/>
 				<Text text={`${renderPercent(textArea.exist / textArea.area)}%`} color={theme.palette.gray['alt']}
 					weight="600"/>

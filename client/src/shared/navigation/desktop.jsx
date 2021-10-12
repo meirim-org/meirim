@@ -10,10 +10,8 @@ import { Button, Row, Menu } from 'shared';
 import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
-import { useTheme } from '@material-ui/styles';
 
 const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
-	const theme = useTheme();
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [dropDownEl, setDropDownEl] = React.useState(null);
@@ -115,7 +113,6 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 											ariaControls="user-menu"
 											openHandler={handleDropDownClick}
 											closeHandler={handleDropDownClose}
-											textcolor={theme.palette.blue.main}
 											iconAfter={<ExpandMoreIcon />}
 											dropDownEl={dropDownEl}
 											menuItems={dropdownItems}

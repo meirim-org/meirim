@@ -4,6 +4,7 @@ import MUIButton from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
+import { colors } from 'style';
 
 const StyledButton = withTheme(styled(MUIButton)`
 	font-size: 16px !important;
@@ -11,12 +12,12 @@ const StyledButton = withTheme(styled(MUIButton)`
 	line-height: 1.5;
 	letter-spacing: normal
 	text-align: center; 
-    color: ${props => props.theme.palette.white} !important;
-    background-color: ${props => props.theme.palette.primary.main} !important;
+    color: ${colors.white} !important;
+    background-color: ${colors.purple[500]} !important;
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
-    border: 1px solid ${props => props.theme.palette.primary.main} !important;
+    border: 1px solid ${colors.purple[500]} !important;
     min-width: auto !important;
     
     .MuiButton-label  {
@@ -25,15 +26,15 @@ const StyledButton = withTheme(styled(MUIButton)`
     }    
     
     &:hover {
-      background-color: ${props => props.theme.palette.primary['600']} !important;
+      background-color: ${colors.purple[600]} !important;
     }
     &:focus {
        outline: none;
     }
     
-    ${({ simple, theme }) => simple && `
+    ${({ simple }) => simple && `
         font-weight: 600 !important;
-        color: ${theme.palette.primary.main} !important;
+        color: ${colors.purple[500]} !important;
         border: none !important;
         background-color: transparent !important;
         min-height: auto !important;
@@ -43,16 +44,16 @@ const StyledButton = withTheme(styled(MUIButton)`
             line-height: 1 !important;
         }
        &:hover {
-          color: ${theme.palette.primary['400']} !important;
+          color: ${colors.purple[400]} !important;
           background-color: transparent !important;
        }
     `}
 
-    ${({ altcolor, theme }) => altcolor && `
-        color: ${theme.palette.primary.main} !important;
-        background-color: ${theme.palette.white} !important;
+    ${({ altcolor }) => altcolor && `
+        color: ${colors.purple[500]} !important;
+        background-color: ${colors.white} !important;
        &:hover {
-          background-color: ${theme.palette.primary['custom']} !important;
+          background-color: ${colors.purple[500]} !important;
        }
     `}
        
@@ -85,12 +86,12 @@ const StyledButton = withTheme(styled(MUIButton)`
         }
     `}    
     
-    ${({ active, theme }) => active && `
-        background-color: ${theme.palette.primary['custom']} !important;
+    ${({ active }) => active && `
+        background-color: ${colors.purple[500]} !important;
     `}    
     
-    ${({ disabled, theme }) => disabled && `
-        color: ${theme.palette.gray.main} !important;
+    ${({ disabled }) => disabled && `
+        color: ${colors.grey[500]} !important;
     `}    
     
     ${({ textcolor }) => textcolor && `

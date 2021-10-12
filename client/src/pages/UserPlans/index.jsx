@@ -3,15 +3,15 @@ import Wrapper from 'components/Wrapper';
 import { fetchUserPlans } from './controller';
 import { PlanCard, Text } from 'shared';
 import { Grid } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
 import t from 'locale/he_IL';
 import * as SC from './style';
 import { StarIcon } from 'shared/icons';
 import { CheckIfUserCanAccessPage } from 'hooks';
+import { colors } from 'style';
 
 const UserPlans = () => {
 	CheckIfUserCanAccessPage();
-	const theme = useTheme();
+
 	const [plans, setPlans] = React.useState([]);
 
 	React.useEffect( () => {
@@ -37,7 +37,7 @@ const UserPlans = () => {
                     			size="1.5rem"
                     			weight="600"
                     			text={`${t.savedPlans} (${plans.length})`}
-                    			color={theme.palette.black}
+                    			color={colors.black}
                     			component="h2"
                     		/>
                     	</SC.TitleWrapper>

@@ -2,14 +2,15 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { withTheme } from '@material-ui/core/styles';
 import { Container, List, Drawer as MUIDrawer, ListItem, ListItemIcon, Button } from '@material-ui/core';
+import { colors } from 'style';
 
 export const StyledList = styled(List)`
     padding: 0 !important;
 `;
 
-export const StyledListItem = withTheme(styled(ListItem)`
+export const StyledListItem = styled(ListItem)`
     padding: 1.2rem 3.5rem !important; 
-    color: ${props => props.theme.palette.black} !important;
+    color: ${colors.black} !important;
     .MuiListItemText-root {
       flex: none;
     }
@@ -19,62 +20,59 @@ export const StyledListItem = withTheme(styled(ListItem)`
       color: ${props => props.color} !important;
     }
     span {
-        font-family:  ${props => props.theme.fontFamily} !important;
         font-size: 18px;      
     }
     &#logout-button {
-         color: ${props => props.theme.palette.red.alt} !important;
+         color: ${colors.red[600]} !important;
     }
     &#my-plans-button {
-         color: ${props => props.theme.palette.primary.main} !important;
+         color: ${colors.purple[500]} !important;
     }
     &#register-button {
-         color: ${props => props.theme.palette.primary.main} !important;
+         color: ${colors.purple[500]} !important;
     }
     &.active {
-        color: ${props => props.theme.palette.primary.main} !important;
+        color: ${colors.purple[500]} !important;
     }
-`);
+`
 
-export const StyledLink = withTheme(styled(NavLink)`
-    font-family:  ${props => props.theme.fontFamily} !important;
+export const StyledLink = styled(NavLink)`
     font-size: 16px;
-    color: ${props => props.theme.palette.black};
+    color: ${colors.black};
     transition: 0.3s;
 
     &:hover, &.active {
         text-decoration: none;
-        color: ${props => props.theme.palette.primary.main};
+        color: ${colors.purple[500]};
     }
-`);
+`
 
-export const DesktopHeader = withTheme(styled.header`
+export const DesktopHeader = styled.header`
     position: fixed;
     z-index: 999;
-    background-color: ${props => props.theme.palette.white};
+    background-color: ${colors.white};
     padding: .75rem 4.8rem;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};   
+    border-bottom: 1px solid ${colors.grey[300]};   
     top: 0;
     right: 0;
     left: 0;
-`);
+`
 
-export const MobileHeader = withTheme(styled.header`
+export const MobileHeader = styled.header`
     position: fixed;
     z-index: 999;
-    background-color: ${props => props.theme.palette.white};
+    background-color: ${colors.white};
     padding: .75rem 1.5rem .75rem .65rem;
-    border-bottom: 1px solid ${props => props.theme.palette.gray['300']};   
+    border-bottom: 1px solid ${colors.grey[300]};   
     top: 0;
     right: 0;
     left: 0;
-`);
+`
 
 export const StyledContainer = styled(Container)`
     max-width: none !important;
     padding: 0 !important;
 `;
-
 
 export const MobileNavWrapper = styled.div`
     width: 250px;
@@ -86,11 +84,11 @@ export const LogOutIcon = withTheme(styled(ListItemIcon)`
   }
 `);
 
-export const StyledStarIcon = withTheme(styled(ListItemIcon)`
+export const StyledStarIcon = styled(ListItemIcon)`
   path {
-    color: ${props => props.theme.palette.primary.main};
+    color: ${colors.purple[500]};
   }
-`);
+`
 
 export const Logo = styled.img`
     max-width: 53px;
@@ -101,15 +99,12 @@ export const Drawer = styled(MUIDrawer)`
     z-index: 9999 !important;
 `;
 
-export const MenuWrapper = withTheme(styled.div`
+export const MenuWrapper = styled.div`
     .MuiButtonBase-root {
         .MuiSvgIcon-root {
-            color: ${props => props.theme.palette.blue.main};
             transition: .3s;
         }
         .MuiButton-label {
-            font-family:  ${props => props.theme.fontFamily} !important;
-            color: ${props => props.theme.palette.blue.main};
             font-size: 16px;      
             text-decoration: none;
             line-height: 1.5 !important;
@@ -122,21 +117,17 @@ export const MenuWrapper = withTheme(styled.div`
             margin-right: 2px;
         }
     }
-`);
+`
 
-export const MyPlansButton = withTheme(styled(Button)`
+export const MyPlansButton = styled(Button)`
     line-height: 1.5 !important;
     .MuiButton-label {
-        font-family:  ${props => props.theme.fontFamily} !important;
-        color: ${props => props.theme.palette.blue.main};
         font-size: 16px;      
         text-decoration: none;
     }
     .MuiButton-startIcon {
-        color: ${props => props.theme.palette.primary.main};
+        color: ${colors.purple[500]};
         margin-left: 2px;
         margin-right: -4px;
     }
-`);
-
-
+`

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu as MUmenu, MenuItem, Button } from '@material-ui/core';
-// import { Button } from '../index';
 
 const Menu = ({
 	ariaControls,
@@ -42,7 +41,6 @@ Menu.propTypes = {
 	openHandler: PropTypes.func.isRequired,
 	closeHandler: PropTypes.func.isRequired,
 	text: PropTypes.string,
-	textcolor: PropTypes.string,
 	iconBefore: PropTypes.node,
 	iconAfter: PropTypes.node,
 	dropDownEl: PropTypes.object,

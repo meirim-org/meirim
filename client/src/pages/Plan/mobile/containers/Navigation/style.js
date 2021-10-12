@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
 import { BottomNavigation } from '@material-ui/core';
+import { colors } from 'style';
 
-export const Navigation = withTheme(styled(BottomNavigation)`
+export const Navigation = styled(BottomNavigation)`
     position: fixed;
     z-index: 9999;
     bottom: 0;
     width: 100vw;
-    border-top: 1px solid ${props => props.theme.palette.gray['300']};
+    border-top: 1px solid ${colors.grey[300]};
     height: 3.75rem !important;
     path {
-        color: ${props => props.theme.palette.primary.main};
+        color: ${colors.purple[500]};
     }
     .MuiButtonBase-root {
         max-width: 103px !important;
@@ -19,7 +19,6 @@ export const Navigation = withTheme(styled(BottomNavigation)`
             margin-bottom: .15rem;
         }
        .MuiBottomNavigationAction-label {
-            font-family:  ${props => props.theme.fontFamily} !important;
             opacity: 1 !important;
         }
         .MuiBottomNavigationAction-wrapper {
@@ -29,5 +28,4 @@ export const Navigation = withTheme(styled(BottomNavigation)`
             outline:  none;
         }
     }
-`);
-
+`

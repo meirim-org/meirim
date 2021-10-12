@@ -1,9 +1,8 @@
 import React from 'react';
-import { useTheme } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { openModal } from 'redux/modal/slice';
 import t from 'locale/he_IL';
-import {  TabPanel, Button } from 'shared';
+import { TabPanel, Button } from 'shared';
 import { CommentForm, CommentView, SubCommentForm, SubCommentView, AddComment } from 'pages/Plan/common';
 import { CommentSelectors, UserSelectors } from 'redux/selectors';
 import { Badge } from '@material-ui/core';
@@ -11,6 +10,7 @@ import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { withGetScreen } from 'react-getscreen';
 import { useScrollToTop } from '../../hooks';
+import { colors } from 'style';
 
 const CommentsTab = ({
 	commentState,
@@ -28,7 +28,6 @@ const CommentsTab = ({
 	const { comments } = CommentSelectors();
 	const { isOpen: isSubCommentOpen } = subCommentState;
 	const { isOpen: isCommentOpen } = commentState;
-	const theme = useTheme();
 	const showComments = comments.length > 0; 
 	const showStartDiscussionPanel = comments.length === 0 && !isCommentOpen;
 	const newCommentViewHandler = () =>{ 
@@ -70,7 +69,7 @@ const CommentsTab = ({
 							<SC.Like>
 								<Button
 									id={'like-' + commentId}
-									textcolor={theme.palette.black}
+									textcolor={colors.black}
 									text={t.iLike}
 									onClick={() => addLikeToComment(commentId)}
 									simple

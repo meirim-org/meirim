@@ -8,7 +8,7 @@ import {
 	FormControlLabel as MuiFormControlLabel,
 } from '@material-ui/core';
 import { TabPanel } from 'shared';
-import { device } from 'style';
+import { device, colors } from 'style';
 
 
 export const FormControl = withTheme(styled(MuiFormControl)`
@@ -21,20 +21,20 @@ export const FormControl = withTheme(styled(MuiFormControl)`
         
         &:focus {
              outline: none;
-             border-color: ${props => props.theme.palette.primary['600']} !important;
+             border-color: ${colors.purple[600]} !important;
         }
     }   
 `);
 
-export const addSubCommentWrapper = withTheme(styled.div`
+export const addSubCommentWrapper = styled.div`
     grid-column-start: span 2;
     padding: 2rem;
-    border-top: 1px solid ${props => props.theme.palette.gray['300']};
+    border-top: 1px solid ${colors.grey[300]};
     
 	@media ${device.tablet} {
         padding: 2rem 3.5rem;
     }
-`);
+`
 
 export const addCommentButtonWrapper = styled.div`
     margin: 0 -0.6rem 2rem;
@@ -57,14 +57,13 @@ export const ErrorWrapper = styled.div`
 
 export const NewCommentControl = withTheme(styled(MuiFormControl)`
     .MuiTypography-root {
-        font-family:  ${props => props.theme.fontFamily} !important;
         font-size: 0.875rem;
-        color: ${props => props.theme.palette.black} !important;
+        color: ${colors.black} !important;
     }
     .MuiRadio-colorSecondary {
-        color: ${props => props.theme.palette.gray['main']} !important;
+        color: ${colors.grey[500]} !important;
         &.Mui-checked {
-            color: ${props => props.theme.palette.primary['700']} !important;
+            color: ${colors.purple[700]} !important;
         }
     }
     
@@ -76,7 +75,7 @@ export const NewCommentControl = withTheme(styled(MuiFormControl)`
         
         &:focus {
             outline: none;
-            border-color: ${props => props.theme.palette.primary['600']} !important;
+            border-color: ${colors.purple[600]} !important;
         }
     }   
 
@@ -111,12 +110,12 @@ export const NewCommentLabelWrapper = withTheme(styled.div`
 
 `);
 
-export const TextareaAutosize = withTheme(styled(MuiTextareaAutosize)`
+export const TextareaAutosize = styled(MuiTextareaAutosize)`
     &[disabled] {
-        border-color: ${props => props.theme.palette.gray['300']} !important;
-        background-color: ${props => props.theme.palette.white} !important;
+        border-color: ${colors.grey[300]} !important;
+        background-color: ${colors.white} !important;
     }
-`);
+`
 
 export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
     border-radius: 4px;
@@ -128,7 +127,7 @@ export const NewCommentLabel = withTheme(styled(MuiFormControlLabel)`
         background-color: ${props => props.theme.palette.gray['radio']} !important;
     }  
     &.error {
-        border-color: ${props => props.theme.palette.red.main} !important;;
+        border-color: ${colors.red[400]} !important;;
     }
     .MuiSvgIcon-root {
     	width: .9rem !important;
@@ -147,7 +146,7 @@ export const AddSubComment = withTheme(styled.div`
     text-align: center;
     .MuiSvgIcon-root {
         font-size: 1.125rem !important;
-        fill: ${props => props.theme.palette.primary['600']} !important;  
+        fill: ${colors.purple[600]} !important;  
         margin: 0 0.75rem; 
     }
     

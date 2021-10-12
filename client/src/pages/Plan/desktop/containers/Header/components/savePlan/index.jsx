@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '@material-ui/styles';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import { Text } from 'shared';
 import t from 'locale/he_IL';
 import * as SC from './style';
+import { colors } from 'style';
 
 const SavePlan = ({ subscriptionHandler, isFavPlan }) => {
-	const theme = useTheme();
 	
 	return (				
 		<SC.Button
@@ -17,7 +16,7 @@ const SavePlan = ({ subscriptionHandler, isFavPlan }) => {
 			color="primary"
 			className={isFavPlan ? 'active' : null}
 			startIcon={isFavPlan ? <StarIcon/> :<StarBorderIcon/> }>
-			<Text size="14px" text={isFavPlan ? t.saved : t.saving} component="span" color={theme.palette.gray['800']}/>
+			<Text size="14px" text={isFavPlan ? t.saved : t.saving} component="span" color={colors.grey[800]}/>
 		</SC.Button>
 	);
 };

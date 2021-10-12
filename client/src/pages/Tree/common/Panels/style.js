@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import LinkIcon from '@material-ui/icons/Link';
 import CloseIcon from '@material-ui/icons/Close';
-import { device } from '../../../../style';
+import { device, colors } from '../../../../style';
 
 export const TreeSummaryTitleWrapper = styled.div`
     margin-bottom: .75rem;
@@ -28,16 +28,15 @@ export const TreeTermWrapper = withTheme(styled.div`
     }
 `);
 
-export const TotalTreeWrapper = withTheme(styled.div`
+export const TotalTreeWrapper = styled.div`
     padding: .25rem;
     > .MuiChip-root {
         height: auto;
         min-height: 1.875rem;
-        color: ${props => props.theme.palette.orange['text']} !important;  
-        background-color: ${props => props.theme.palette.orange['bg']} !important;  
+        color: ${colors.orange[700]} !important;  
+        background-color: ${colors.orange[200]} !important;  
     }
-`);
-
+`
 
 export const StatusAndTypeWrapper = styled.div`
     display: flex;
@@ -56,18 +55,17 @@ export const TypeWrapper = styled.div`
 
 export const UrlWrapper = styled.div``;
 
-export const CustomLinkIcon = withTheme(styled(LinkIcon)`
-    fill: ${props => props.theme.palette.secondary.main} !important;  
+export const CustomLinkIcon = styled(LinkIcon)`
+    fill: ${colors.orange[500]} !important;  
     vertical-align: middle;
     margin-right: .5rem;
-`);
+`
 
-export const EntryContent = withTheme(styled.div`
-    font-family:  ${props => props.theme.fontFamily} !important;
+export const EntryContent = styled.div`
     font-size: 16px;
     line-height: 1.5;
-    color: ${props => props.theme.palette.black} !important;  
-`);
+    color: ${colors.black} !important;  
+`
 
 
 export const ChartWrapper = styled.div`
@@ -75,8 +73,8 @@ export const ChartWrapper = styled.div`
     margin-top: 1rem;
 `;
 
-export const SubscribeIconWrapper = withTheme(styled.div`
-    background-color: ${props => props.theme.palette.white};
+export const SubscribeIconWrapper = styled.div`
+    background-color: ${colors.white};
     position: relative;
     width: 2.5rem;
     height: 2.5rem;
@@ -86,9 +84,9 @@ export const SubscribeIconWrapper = withTheme(styled.div`
     box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08);
     svg {
         position: absolute;
-        fill: ${props => props.theme.palette.primary.main} !important;  
+        fill: ${colors.purple[500]} !important;  
     }
-`);
+`
 
 export const SubscribeTextWrapper = styled.div`
     text-align: center;
@@ -107,15 +105,15 @@ export const SubscribeButtonWrapper = styled.div`
     padding: 0 .75rem;
 `;
 
-export const CloseSubscribeIcon = withTheme(styled(CloseIcon)`
+export const CloseSubscribeIcon = styled(CloseIcon)`
     position: absolute;
     top: .5rem;
     right: .5rem;
     cursor: pointer;
     font-size: 1.3rem !important;
-    fill: ${props => props.theme.palette.black} !important;  
+    fill: ${colors.black} !important;  
     opacity: .8;
-`);
+`
 
 export const MapWrapper = withTheme(styled.div`
     height: 8.875rem;

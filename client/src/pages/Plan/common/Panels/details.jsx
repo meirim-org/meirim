@@ -2,15 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import Moment from 'react-moment';
 //import {  Chip } from '@material-ui/core';
 //import { planTerms } from 'pages/Plan/utils';
 import * as SC from './style';
+import { colors } from 'style';
 
 const DetailsPanel = ({ status, type, lastUpdate, url }) => {
-	const theme = useTheme();
-	
 	return (
 		<TabPanel>
 			<TabBox>
@@ -19,7 +17,7 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
 						component="h2"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{t.planDetails}
 					</Typography>
@@ -41,14 +39,14 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 							variant="paragraphText"
 							mobileVariant="paragraphText"
 							component="span"
-							color={theme.palette.gray['main']}>
+							color={colors.grey[500]}>
 							{`${t.status}: `}
 						</Typography>
 						<Typography
 							variant="paragraphText"
 							mobileVariant="paragraphText"
 							component="span"
-							color={theme.palette.black}>
+							color={colors.black}>
 							{status}
 						</Typography>
 					</SC.StatusWrapper>
@@ -57,14 +55,14 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 							variant="paragraphText"
 							mobileVariant="paragraphText"
 							component="span"
-							color={theme.palette.gray['main']}>
+							color={colors.grey[500]}>
 							{`${t.planType}: `}
 						</Typography>
 						<Typography
 							variant="paragraphText"
 							mobileVariant="paragraphText"
 							component="span"
-							color={theme.palette.black}>
+							color={colors.black}>
 							{type}
 						</Typography>
 					</SC.TypeWrapper>
@@ -74,14 +72,14 @@ const DetailsPanel = ({ status, type, lastUpdate, url }) => {
 						variant="paragraphText"
 						mobileVariant="paragraphText"
 						component="span"
-						color={theme.palette.gray['main']}>
+						color={colors.grey[500]}>
 						{`${t.lastUpdateDate}: `}
 					</Typography>
 					<Typography
 						variant="paragraphText"
 						mobileVariant="paragraphText"
 						component="span"
-						color={theme.palette.black}>
+						color={colors.black}>
 						<Moment
 							parse="YYYYMMDDHHmm"
 							format="DD/MM/YYYY"

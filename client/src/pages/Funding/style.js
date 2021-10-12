@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Input as MuiInput } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
-import { device } from '../../style';
+import { device, colors } from '../../style';
 
 export const HeaderWrapper = styled.div`
   background-color: white;
@@ -153,9 +153,9 @@ export const TermsOfUse = styled.span`
    }
 `;
 
-export const InputsWrapper = withTheme(styled.div`
+export const InputsWrapper = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.palette.gray['100']};
+  background-color: ${colors.grey[100]};
   padding-bottom: 1.5em;
 
   @media ${device.laptop} {
@@ -166,7 +166,7 @@ export const InputsWrapper = withTheme(styled.div`
     margin-top: 5%;
     margin-bottom: 5%;
   }
-`);
+`
 
 export const MainWrapper = styled.div`
   text-align:right;
@@ -199,10 +199,10 @@ export const SectionTitleWithHorizontalDividersWrapper = styled.div`
   }
 `;
 
-export const PaymentOptionsWrapper = withTheme(styled.div`
-  padding: 1.5em;
+export const PaymentOptionsWrapper = styled.div`
+  padding:, 1.5em;
   width: 100%;
-  border: 1px solid ${props => props.theme.palette.gray['main']};
+  border: 1px solid ${colors.grey[500]};
   display: grid;
   margin: auto;
   grid-template-columns: auto auto;
@@ -214,16 +214,16 @@ export const PaymentOptionsWrapper = withTheme(styled.div`
   .MuiFormHelperText-root {
     text-align: center !important;
     margin-top: 0.5em;
-    color: ${props => props.theme.palette.red} !important;
+    color: ${colors.red[400]} !important;
     grid-column: 1 / span 2;
 
     @media ${device.tablet} {
       grid-column: 1 / span 3;
     }
   }
-`);
+`
 
-export const PaymentOption= withTheme(styled.div`
+export const PaymentOption= styled.div`
   border-radius: 2px;
   font-family: Assistant; !important;
   font-style: normal;
@@ -239,17 +239,17 @@ export const PaymentOption= withTheme(styled.div`
   float:right;
   padding-top: 10px;
   text-align: center;
-  border:1px solid ${props => props.theme.palette.primary['main']};
+  border:1px solid ${colors.purple[500]};
   overflow: hidden;
   transition: background-color 200ms;
   user-select:none;
 
   &:hover, &.active {
-    background-color: ${props => props.theme.palette.gray['100']};
+    background-color: ${colors.grey[100]};
   };
 
   &.active {
-    background-color: ${props => props.theme.palette.primary['100']};
+    background-color: ${colors.purple[100]};
     opacity:(100-12)%;
     transition: background-color 50ms;
   };
@@ -273,25 +273,25 @@ export const PaymentOption= withTheme(styled.div`
   input {
     background-color: rgba(255, 255, 255, 0) !important;
   }
-`);
+`
 
-export const PaymentOtherOption = withTheme(styled.span`
+export const PaymentOtherOption = styled.span`
   &.active {
-    background-color: ${props => props.theme.palette.primary['100']};
+    background-color: ${colors.purple[100]};
     opacity:(100-12)%;
     transition: background-color 50ms;
     input[type="number"]{
-      background-color:${props => props.theme.palette.primary['100']};
+      background-color:${colors.purple[100]};
     }
   }
-`);
+`
 
-export const Amount = withTheme(styled.span`
+export const Amount = styled.span`
   font-size:26px;
   font-weight: bold;
   line-height: 28px;
-  color: ${props => props.theme.palette.primary['700']}
-`);
+  color: ${colors.purple[700]}
+`
 
 export const Monthly =styled.span`
   font-weight: normal;
@@ -304,7 +304,7 @@ export const SectionTitle = withTheme(styled.span`
   font-size: 28px;
   line-height: 48px;
   text-align: center;
-  color: ${props => props.theme.palette.primary['800']};;
+  color: ${colors.purple[800]};
   margin-top: -50px;
   margin-bottom: 30px;
   display: block;
@@ -370,7 +370,7 @@ export const RoadmapItemWrapper= styled.div`
   }
 `;
 
-export const TermsOfUseWrapper= withTheme(styled.div`
+export const TermsOfUseWrapper= styled.div`
   margin: 1em 0;
   border-radius: 12px;
   font-family: Assistant !important;
@@ -386,9 +386,9 @@ export const TermsOfUseWrapper= withTheme(styled.div`
 
   .MuiFormHelperText-root {
     text-align: center !important;
-    color: ${props => props.theme.palette.red} !important;
+    color: ${colors.red[400]} !important;
   }
-`);
+`
 
 export const TermsOfUseCheckboxWrapper = styled.div`
   width: 100%;
@@ -462,14 +462,14 @@ export const FundingStatsNumberWrapper = styled.div`
     -webkit-box-shadow: 5px 5px 5px 5px #eaeaea;
 `;
 
-export const FundingStatsGoalBubble = withTheme(styled.div`
+export const FundingStatsGoalBubble = styled.div`
     position: relative;
     border-radius: 12px;
     padding: 0.75rem;
     margin-bottom: 0.75rem;
     width: 6.5em;
     float: left;
-    background-color: ${props => props.theme.palette.primary['100']};
+    background-color: ${colors.purple[100]};
 
     @media ${device.laptop} {
       left: -2.5em;
@@ -478,7 +478,7 @@ export const FundingStatsGoalBubble = withTheme(styled.div`
     &:after {
       content: '';
       border: 10px solid transparent;
-      border-top-color: ${props => props.theme.palette.primary['100']};
+      border-top-color: ${colors.purple[100]};
       border-bottom: 0;
       position: absolute;
       bottom: -10px;
@@ -493,7 +493,7 @@ export const FundingStatsGoalBubble = withTheme(styled.div`
     div {
       text-align: center;
     }
-`);
+`
 
 export const PaymentTypeButtonsWrapper = styled.div`
   display: flex;
@@ -519,17 +519,17 @@ export const PaymentTypeButton = withTheme(styled.div`
   padding: 0.75rem;
   margin-bottom: 1.3rem;
   cursor: pointer;
-  background-color: ${props => props.theme.palette.white};
+  background-color: ${colors.white};
 
   span {
-    color: ${props => props.theme.palette.primary['main']};
+    color: ${colors.purple[500]};
   }
 
-  ${({ selected, theme }) => selected && `
-    background-color: ${theme.palette.primary['main']};
+  ${({ selected }) => selected && `
+    background-color: ${colors.purple[500]};
 
     span {
-      color: ${theme.palette.white} !important;
+      color: ${colors.white} !important;
     }
   `}
 
@@ -556,7 +556,7 @@ export const TeamMembersWrapper = styled.div`
   padding: 1.5em 4.8em;
 `;
 
-export const OtherAmountInput = withTheme(styled(MuiInput)`
+export const OtherAmountInput = styled(MuiInput)`
   input {
     background-color: rgba(255, 255, 255, 0) !important;
     -webkit-appearance: none;
@@ -571,7 +571,7 @@ export const OtherAmountInput = withTheme(styled(MuiInput)`
     font-size: 26px;
     font-weight: bold;
     line-height: 28px;
-    color: ${props => props.theme.palette.primary['700']};
+    color: ${colors.purple[700]};
     transition: color 200ms;
     transition: font-size 300ms;
   }
@@ -579,4 +579,4 @@ export const OtherAmountInput = withTheme(styled(MuiInput)`
   .MuiInputBase-input:focus::placeholder {
     opacity: 0;
   }
-`);
+`

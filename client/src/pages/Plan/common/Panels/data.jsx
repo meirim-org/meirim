@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
-import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
 import t from 'locale/he_IL';
 import Moment from 'react-moment';
 import LandUseVocabulary from '../../../../components/LandUseVocabulary';
-
+import { colors } from 'style';
+	
 export const DataPanel = ({
 	number,
 	type, 
@@ -17,7 +17,6 @@ export const DataPanel = ({
 	notCredible,
 	originalName,
 	landUse }) => {
-	const theme = useTheme();
 
 	if (!number && !type && !stationDesc && !lastUpdate ) return null;
 
@@ -29,7 +28,7 @@ export const DataPanel = ({
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
 						component="h2"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{t.planData}
 					</Typography>

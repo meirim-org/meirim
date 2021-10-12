@@ -3,9 +3,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
+import { colors } from 'style';
 
 const StyledLink = withTheme(styled(RouterLink)`
-  font-family: ${props => props.theme.fontFamily} !important;
   font-size: 16px;
   font-weight: ${(props) => props.fontWeight};
   font-stretch: normal;
@@ -15,15 +15,11 @@ const StyledLink = withTheme(styled(RouterLink)`
   text-align: center;
   transition: 0.3s;
   text-decoration: ${(props) => props.textDecoration};
-  color: ${props => props.theme.palette.primary.main};
+  color: ${colors.purple[500]};
   cursor: pointer;
   
-  .MuiTypography-body1 {
-      font-family: ${props => props.theme.fontFamily} !important;
-  }
-
   &:hover {
-    color: ${props => props.theme.palette.primary['400']};
+    color: ${colors.purple[400]};
     text-decoration: ${(props) => props.textDecoration} !important;
   }
 

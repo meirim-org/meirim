@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import { colors } from 'style';
 
 export const MobileMainWrapper = styled.div`
     height: calc(100vh - 79px);
@@ -20,7 +21,7 @@ export const AddSubComment = withTheme(styled.div`
     text-align: center;
     .MuiSvgIcon-root {
         font-size: 1.125rem !important;
-        fill: ${props => props.theme.palette.primary['600']} !important;  
+        fill: ${colors.purple[600]} !important;  
         margin: 0 0.75rem; 
     }
     
@@ -46,13 +47,10 @@ export const CommentIcon = styled(ChatBubbleOutlineIcon)`
     font-size: 1rem !important;
 `;
 
-export const CommentsWrapper = withTheme(styled.div`
+export const CommentsWrapper = styled.div`
     grid-area: comments; 
-    border-top: 1px solid ${props => props.theme.palette.gray['300']};
-    
-    
-    
-`);
+    border-top: 1px solid ${colors.grey[300]};
+`
 
 export const Main = withTheme(styled.main`
     background-color:  ${props => props.theme.palette.gray['bg']};
@@ -86,7 +84,7 @@ export const Like = withTheme(styled.div`
         margin-right: .25rem;
         transform: none;
         font-weight: 300;
-        color: ${props => props.theme.palette.black} !important;
+        color: ${colors.black} !important;
         background-color: ${props => props.theme.palette.gray['200']} !important;
         font-size: 14px !important;
         padding: 0.6rem;
@@ -105,7 +103,7 @@ export const Like = withTheme(styled.div`
     &:after {
         content: '';
         position: absolute;
-        background-color: ${props => props.theme.palette.gray['300']};
+        background-color: ${colors.grey[300]};
         left: 0;
         top: 50%;
         height: 100%;
@@ -116,7 +114,7 @@ export const Like = withTheme(styled.div`
 `);
 
 
-export const LikeIcon = withTheme(styled(ThumbUpAltOutlinedIcon)`
+export const LikeIcon = styled(ThumbUpAltOutlinedIcon)`
     font-size: 1.15em !important;
-    fill: ${props => props.theme.palette.primary['600']} !important;  
-`);
+    fill: ${colors.purple[600]} !important;  
+`

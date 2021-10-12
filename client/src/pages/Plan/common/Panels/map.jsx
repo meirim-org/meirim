@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TabPanel, TabBox, Typography } from 'shared';
 import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import * as SC from './style';
 import Mapa from 'components/Mapa';
+import { colors } from 'style';
 
 export const MapPanel = (props) => {
 	const { geom } = props;
-	const theme = useTheme();
 
 	return (
 		<TabPanel>
@@ -18,7 +17,7 @@ export const MapPanel = (props) => {
 						variant="planDetailTitle"
 						mobileVariant="planDetailTitle"
 						component="h2"
-						color={theme.palette.black}
+						color={colors.black}
 					>
 						{t.location}
 					</Typography>

@@ -2,11 +2,10 @@ import React from 'react';
 import { Text, Button } from 'shared';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
-import { device } from 'style';
+import { device, colors } from 'style';
 import t from 'locale/he_IL';
 import { copiedToClipboard } from 'toasts';
 import { CopyToClipboard } from  'react-copy-to-clipboard';
-import { useTheme } from '@material-ui/styles';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 
 const ShareWrapper = styled.div`
@@ -34,7 +33,7 @@ const ShareTitleWrapper =  withTheme(styled.div`
     }
 `);
 
-const ShareActionWrapper =  withTheme(styled.div`
+const ShareActionWrapper =  styled.div`
     padding: 1.5rem 2.2rem;
     text-align: center;
     @media ${device.tablet} {
@@ -46,7 +45,7 @@ const ShareActionWrapper =  withTheme(styled.div`
            font-size: 14px !important;
         }
     }
-`);
+`
 
 const ShareButtonWrapper = withTheme(styled.div`
     margin-bottom: 1rem;
@@ -106,14 +105,13 @@ const CopyUrlArea = withTheme(styled.div`
 `);
 
 const ShareTreeView = () => {
-	const theme = useTheme();
 	const url = encodeURI(window.location.toString());
 	const whatsappURL = `https://wa.me/?text=היתר%20שאולי%יעניין%20אותך%3A%0A${url}`;
 
 	return (
 		<ShareWrapper>
 			<ShareTitleWrapper>
-				<Text text={t.shareTree} color={theme.palette.primary['800']}/>
+				<Text text={t.shareTree} color={colors.purple[800]}/>
 			</ShareTitleWrapper>
 			<ShareActionWrapper>
 				<ShareButtonWrapper>
@@ -123,20 +121,20 @@ const ShareTreeView = () => {
 					 target="_blank"
 					 text={t.whatsappShare} 
 					 fontWeight="600" 
-					 textcolor={theme.palette.white}
+					 textcolor={colors.white}
 					 iconBefore={<WhatsAppIcon/>} />
 				</ShareButtonWrapper>
 				<ShareTextWrapper>
-					<Text text={t.copyUrl} color={theme.palette.black}/>
+					<Text text={t.copyUrl} color={colors.black}/>
 				</ShareTextWrapper>
 				<CopyUrlArea>
-					<Text text={url} size="14px" color={theme.palette.black}/>
+					<Text text={url} size="14px" color={colors.black}/>
 					<CopyToClipboard text={url} onCopy={() => copiedToClipboard()}>
 						<Button
 						 text={t.copy} 
 						 fontSize="14px" 
 						 fontWeight="400" 
-						 textcolor={theme.palette.primary.main}
+                         textcolor={colors.purple[500]}
 						 simple={true}
 						 />
 					</CopyToClipboard>

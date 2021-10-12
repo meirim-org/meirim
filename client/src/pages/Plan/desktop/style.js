@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
+import { colors } from 'style';
 
 export const MainWrapper = withTheme(styled.div`
     display: grid;
@@ -15,7 +16,7 @@ export const Content = withTheme(styled.div`
     overflow-y: auto;
     
     header {
-        background-color:  ${props => props.theme.palette.white};
+        background-color:  ${colors.white};
     }
 `);
 

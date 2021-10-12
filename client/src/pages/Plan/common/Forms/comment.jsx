@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { Button, Typography } from 'shared';
 import { CommentSelectors } from 'redux/selectors';
 import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import { Radio } from '@material-ui/core';
 import { printRadioClass, commentTypes } from 'pages/Plan/utils';
 import * as SC from './style';
+import { colors } from 'style';
 
 const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
-	const theme = useTheme();
 	const { type, inputValue, isOpen } = commentState;
 	const { comments } = CommentSelectors();
 	const newCommentTypeError = false;
@@ -45,7 +44,7 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 									variant="chipsAndIconButtons"
 									mobileVariant="chipsAndIconButtons"
 									component="span"
-									color={theme.palette.red.main}
+									color={colors.red[400]}
 								>
 									{t.chooseType}
 								</Typography>
@@ -71,7 +70,7 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 						text={t.close}
 						simple
 						small
-						textcolor={theme.palette.black}
+						textcolor={colors.black}
 						onClick={newCommentViewHandler}
 					/>
 					<Button
