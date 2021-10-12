@@ -24,4 +24,5 @@ export const AlertSection = styled.div`
     border-radius: 10px;
     background-color: ${colors.white};
     box-shadow: 0 9px 14px 0 rgba(0, 0, 0, 0.08);
+    height: ${props => props.height};
 `
