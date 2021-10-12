@@ -14,3 +14,4 @@ exports.funding_transaction = require('./funding_transaction_struct');
 exports.file = require('./file_struct');
 exports.plan_area_changes = require('./plan_area_changes_struct');
 exports.tag = require('./tag_struct');
+exports.plan_area_changes = require('./plan_area_changes_struct');

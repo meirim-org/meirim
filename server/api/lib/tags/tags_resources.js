@@ -1,6 +1,3 @@
-const turf = require('turf');
-const fs = require('fs');
-const path = require('path');
 const Tag = require('../../model/tag');
 
 
