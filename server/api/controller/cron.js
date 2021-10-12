@@ -227,6 +227,7 @@ const updatePlanTags = async () => {
 		}
 		catch(e) {
 			// if the deletion of existing tags fails, move to the next plan
+			Log.info('failed to delete plan tags');
 			continue;
 		}
 
