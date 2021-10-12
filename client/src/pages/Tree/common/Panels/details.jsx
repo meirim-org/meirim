@@ -1,6 +1,6 @@
 import { Chip } from '@material-ui/core';
 import { useTheme } from '@material-ui/styles';
-import t, { useTranslation } from 'locale/he_IL';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { TreeSelectors } from 'redux/selectors';
@@ -9,7 +9,6 @@ import { timeToObjectionText } from '../../utils';
 import * as SC from './style';
 
 const TreeList = ({ trees_per_permit }) => {
-	// const { t } = useTranslation();
 	if (!trees_per_permit) return null;
 	if (Object.keys(trees_per_permit).length === 1) {
 		return (
@@ -41,6 +40,7 @@ const TreeList = ({ trees_per_permit }) => {
 }
 
 const TreeDetailsPanel = () => {
+	const { t } = useTranslation();
 	const theme = useTheme();
 	const { treeData: { action, start_date, permit_number, total_trees, trees_per_permit } } = TreeSelectors();
 
