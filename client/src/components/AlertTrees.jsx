@@ -6,11 +6,11 @@ import api from '../services/api';
 import t from '../locale/he_IL';
 import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
 
-const AlertTrees = ({notifyAddedAlert}) => {
-	const [ error, setError ] = useState(false);
-	const [ loading, setLoading ] = useState(false);
-	const [ treePlaces, setTreePlaces ] = useState([]);
-	const [ selectedPlaces, setSelectedPlaces ] = useState([]);
+const AlertTrees = ({ notifyAddedAlert }) => {
+	const [error, setError] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [treePlaces, setTreePlaces] = useState([]);
+	const [selectedPlaces, setSelectedPlaces] = useState([]);
 
 	function handleFilterChange(placesFromFilter) {
 		setSelectedPlaces(placesFromFilter);
@@ -51,52 +51,35 @@ const AlertTrees = ({notifyAddedAlert}) => {
 		});
 	}
 
-	return (
-		<>
-			<form className="rectangle" onSubmit={handleSubmit}>
-			{error && <div className="error-container">{error}</div>}
+	return (<form onSubmit={handleSubmit}>
+		{error && <div className="error-container">{error}</div>}
 
-				<h5 className="container-title">{t.newAlertTree}</h5>
-				{error && (
-					<div className="alert alert-danger" role="alert">
-						התרחשה תקלה, אנא נסו שוב
-					</div>
-				)}
-				<div className="selectAreaAndInterest">
-					הוסיפו את הערים עליהם תרצו לקבל התראה
-					<small>
-						**ניתן להוסיף יותר מעיר אחת
-					</small>
-				</div>
+		<h5 className="container-title">{t.newAlertTree}</h5>
+		{error && <div className="alert alert-danger" role="alert">התרחשה תקלה, אנא נסו שוב</div>}
+		<div className="selectAreaAndInterest">
+			הוסיפו את הערים עליהם תרצו לקבל התראה
+			<small>**ניתן להוסיף יותר מעיר אחת</small>
+		</div>
 
-				<FilterAutoCompleteMultiple
-					classes=""
-					placeholder="הזינו עיר, מועצה אזורית או רשות מקומית "
-					inputSuggestions={treePlaces}
-					onFilterChange={handleFilterChange}
-				/>
+		<FilterAutoCompleteMultiple
+			classes=""
+			placeholder="הזינו עיר, מועצה אזורית או רשות מקומית "
+			inputSuggestions={treePlaces}
+			onFilterChange={handleFilterChange} />
+		<br />
+
+		<div> * ישנן רשויות שלא זמינות לנו כרגע</div>
+		<div> <Link url="/support-us/" textDecoration="none" text="תמכו בנו" /> כדי שנוכל להגיע גם לעיר שלכם!</div>
+		<div className="row">
+			<div className="col">
 				<br />
-
-				<div> * ישנן רשויות שלא זמינות לנו כרגע</div>
-				<div> <Link url="/support-us/" textDecoration="none" text="תמכו בנו" /> כדי שנוכל להגיע גם לעיר שלכם!</div>
-				<div className="row">
-					<div className="col">
-						<br />
-						<button
-							id="submitButton"
-							title="הוסף התראה"
-							disabled={loading}
-						>
-							הוספה
-							{loading && (
-								<FontAwesomeIcon icon="spinner" spin />
-							)}
-						</button>
-					</div>
-				</div>
-			</form>
-		</>
-	);
+				<button id="submitButton" title="הוסף התראה" disabled={loading}>
+					הוספה
+					{loading && <FontAwesomeIcon icon="spinner" spin />}
+				</button>
+			</div>
+		</div>
+	</form>);
 }
 
 AlertTrees.propTypes = {
