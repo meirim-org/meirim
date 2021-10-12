@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography } from 'shared';
-import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import { Chip } from '@material-ui/core';
-import * as SC from './style';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { TreeSelectors } from 'redux/selectors';
+import { TabBox, TabPanel, Typography } from 'shared';
 import { timeToObjectionText } from '../../utils';
+import * as SC from './style';
 
 const TreeList = ({ trees_per_permit }) => {
-
 	if (!trees_per_permit) return null;
 	if (Object.keys(trees_per_permit).length === 1) {
 		return (
@@ -41,6 +40,7 @@ const TreeList = ({ trees_per_permit }) => {
 }
 
 const TreeDetailsPanel = () => {
+	const { t } = useTranslation();
 	const theme = useTheme();
 	const { treeData: { action, start_date, permit_number, total_trees, trees_per_permit } } = TreeSelectors();
 

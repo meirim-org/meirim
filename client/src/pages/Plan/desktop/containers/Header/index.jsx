@@ -1,15 +1,16 @@
+import { Badge } from '@material-ui/core';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import t from 'locale/he_IL';
-import PropTypes from 'prop-types';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
-import { SavePlan, SharePlan, Title, AddNewComment } from './components';
-import * as SC from './style';
-import { Badge } from '@material-ui/core';
 import { tabIsActive } from 'utils';
+import { AddNewComment, SavePlan, SharePlan, Title } from './components';
+import * as SC from './style';
 
 const Header = ({ isFavPlan, subscriptionHandler, match, newCommentViewHandler }) => {
 	const history = useHistory();
+	const { t } = useTranslation();
 	const { planData: { name, countyName } } = PlanSelectors();
 	const { commentsCount } = CommentSelectors();
 	const pathData  = {
