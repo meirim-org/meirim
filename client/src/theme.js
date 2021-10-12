@@ -8,12 +8,12 @@ export const muiTheme = createMuiTheme({
 	},
 	palette: {
 		red: {
-		    'alt': '#b71f29',
+			'alt': '#b71f29',
 		},
 		gray: {
-		    '200': '#f4f4f4',
-		    '400': '#d1ccd5',
-		    '450': '#c4c4c4',
+			'200': '#f4f4f4',
+			'400': '#d1ccd5',
+			'450': '#c4c4c4',
 			'bg': '#fafafabf',
 			'radio': '#f1eef2',
 			'alt': '#665d71'
@@ -25,17 +25,14 @@ export const muiTheme = createMuiTheme({
 			main: colors.orange[500],
 		},
 		green: {
-			'text' : '#00453B',
+			'text': '#00453B',
 			'text2': '#007e6c',
 			'whatsapp': '#25D366',
-			'bg' : '#DEFFEA',
+			'bg': '#DEFFEA',
 		},
 	},
 	navigation: {
-	    desktop: '72px',
-	    mobile: '79px',
+		desktop: '72px',
+		mobile: '79px',
 	}
 });
-
-
-
