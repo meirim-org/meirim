@@ -1,10 +1,11 @@
-import '../../node_modules/leaflet/dist/leaflet.css';
+import '../../../node_modules/leaflet/dist/leaflet.css';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types'
 import { Map, TileLayer, Circle } from 'react-leaflet';
 import leaflet from 'leaflet';
-import AlertTable from '../components/AlertTable';
+import AlertTable from '../AlertTable';
 import api from 'services/api';
+import { Message } from './style';
 
 const AlertList = ({ notifyDeletedAlert, alerts }) => {
 	const [bounds, setBounds] = useState([{ lat: 35, lng: 35 }, { lat: 25, lng: 25 }]);
@@ -29,12 +30,16 @@ const AlertList = ({ notifyDeletedAlert, alerts }) => {
 		});
 	}
 
+	const noAlertsMsg = <Message>הוסיפו התראות כדי להשאר מעודכנים!</Message>;
+
+	const alertGrid = <div>
+		<AlertTable alerts={alerts} onDelete={handleDelete} />
+		{<Mapa alerts={alerts} bounds={bounds} />}
+	</div>;
+
 	return (<div>
 		<h5 className="container-title">ההתראות שלי</h5>
-		<div>
-			<AlertTable alerts={alerts} onDelete={handleDelete} />
-			{alerts.length > 0 && <Mapa alerts={alerts} bounds={bounds} />}
-		</div>
+		{alerts.length > 0 ? alertGrid : noAlertsMsg}
 	</div>);
 }
 
