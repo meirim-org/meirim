@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { Link } from 'shared';
-import api from '../services/api';
-import t from '../locale/he_IL';
 import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple';
+import api from '../services/api';
 
-const AlertTrees = ({notifyAddedAlert}) => {
+const AlertTrees = ({ notifyAddedAlert }) => {
 	const [ error, setError ] = useState(false);
 	const [ loading, setLoading ] = useState(false);
 	const [ treePlaces, setTreePlaces ] = useState([]);
 	const [ selectedPlaces, setSelectedPlaces ] = useState([]);
+	const { t } = useTranslation();
 
 	function handleFilterChange(placesFromFilter) {
 		setSelectedPlaces(placesFromFilter);
@@ -63,9 +64,9 @@ const AlertTrees = ({notifyAddedAlert}) => {
 					</div>
 				)}
 				<div className="selectAreaAndInterest">
-					הוסיפו את הערים עליהם תרצו לקבל התראה
+					{t.addCitiesToGetNotified}
 					<small>
-						**ניתן להוסיף יותר מעיר אחת
+						{ t.youCanAddMoreThanOneCity }
 					</small>
 				</div>
 
@@ -77,7 +78,7 @@ const AlertTrees = ({notifyAddedAlert}) => {
 				/>
 				<br />
 
-				<div> * ישנן רשויות שלא זמינות לנו כרגע</div>
+				<div>{t.citiesNotAva}</div>
 				<div> <Link url="/support-us/" textDecoration="none" text="תמכו בנו" /> כדי שנוכל להגיע גם לעיר שלכם!</div>
 				<div className="row">
 					<div className="col">
@@ -87,7 +88,7 @@ const AlertTrees = ({notifyAddedAlert}) => {
 							title="הוסף התראה"
 							disabled={loading}
 						>
-							הוספה
+							{t.addition}	
 							{loading && (
 								<FontAwesomeIcon icon="spinner" spin />
 							)}

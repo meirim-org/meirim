@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from 'style';
 import supportUs from '../../assets/support-us.svg';
+import { useTranslation } from 'locale/he_IL';
 
 const Box = styled.div`
 	margin: 0 auto;
@@ -91,6 +92,7 @@ const SupportUsImage = styled.img`
 
 const WeNeedYou = () => {
 	const history = useHistory();
+	const { t } = useTranslation();
 
 	return (
 		<WeNeedYouSection onClick={() => { history.push(`/support-us/`); }}>
@@ -98,10 +100,10 @@ const WeNeedYou = () => {
 				<SupportUsImage src={supportUs} alt="support us" />
 				<Content>
 					<div>
-						<Title>אנחנו צריכים אתכם!</Title>
-						<Message>יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.</Message>
+						<Title>{t.weNeedYou}</Title>
+						<Message>{t.weNeedYouMessage}</Message>
 					</div>
-					<Button>לתמיכה</Button>
+					<Button>{t.toContribute}</Button>
 				</Content>
 			</Box>
 		</WeNeedYouSection>

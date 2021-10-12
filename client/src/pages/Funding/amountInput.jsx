@@ -1,10 +1,11 @@
-import React from 'react';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
+import React from 'react';
 import NumberFormat from 'react-number-format';
-import t from 'locale/he_IL';
 
 function AmountInput(props) {
 	const { inputRef, onChange, ...other } = props;
+	const { t } = useTranslation();
 
 	return (
 		<NumberFormat

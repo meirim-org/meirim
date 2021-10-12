@@ -1,7 +1,8 @@
+import { useTranslation } from 'locale/he_IL';
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Link } from '../../shared';
 import SucessIcon from '../../assets/svg/successIcon';
+import { Button, Link } from '../../shared';
 import { device } from '../../style';
 
 const MainWrapper = styled.div`
@@ -73,22 +74,26 @@ const FooterTitle = styled.div`
   color: #000000;
 `;
 
-const SuccessMessage = () => (
-	<MainWrapper>
-		<IconWrapper><SucessIcon /></IconWrapper>
-		<Title>ברכות על הצטרפותך למעירים!</Title>
-		<SubTitlesWrapper>
-			<SubTitle>כולם מחכים לשמוע מה יש לך לומר</SubTitle>
-			<SubTitle>על התכנון והבניה באזורך</SubTitle>
-		</SubTitlesWrapper>
-		<Footer>
-			<FooterTitle>רוצה לגדיר התראות נוספות לפי אזורים ותחומי עניין?</FooterTitle>
-			<ButtonWrapper>
-				<Button onClick="" text="להגדרות שלי" small />
-			</ButtonWrapper>
-			<Link id="success-message-close" text="סגירה" onClick=''/>
-		</Footer>
-	</MainWrapper>
-);
+const SuccessMessage = () => {
+	const { t } = useTranslation();
+
+	return (
+		<MainWrapper>
+			<IconWrapper><SucessIcon /></IconWrapper>
+			<Title>{t.congratesOnJoining}</Title>
+			<SubTitlesWrapper>
+				<SubTitle>{t.congratesOnJoining2}</SubTitle>
+				<SubTitle>על התכנון והבניה באזורך</SubTitle>
+			</SubTitlesWrapper>
+			<Footer>
+				<FooterTitle>רוצה לגדיר התראות נוספות לפי אזורים ותחומי עניין?</FooterTitle>
+				<ButtonWrapper>
+					<Button onClick="" text="להגדרות שלי" small />
+				</ButtonWrapper>
+				<Link id="success-message-close" text="סגירה" onClick='' />
+			</Footer>
+		</MainWrapper>
+	);
+};
 
 export default SuccessMessage;

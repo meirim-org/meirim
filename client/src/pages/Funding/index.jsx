@@ -1,24 +1,25 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { externalPaymentErrorToast } from 'toasts';
-import YoutubeVideo from 'react-youtube';
-import { Button, Checkbox, Divider, HelperText, Link, TabPanel, ProgressBar, Typography, TeamMembers } from '../../shared';
-import { openModal } from 'redux/modal/slice';
-import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
-import { createPaymentLink } from './controller';
-import { paymentRequestValidation, getFormErrors } from './validations';
-import { paymentAmountOptions, roadmap, fundingEndGoal, fundingYoutubeVideoId } from './constants';
-import * as SC from './style';
-import Wrapper from '../../components/Wrapper';
-import AmountInput from './amountInput';
-import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor } from './hooks';
+import { useTranslation } from 'locale/he_IL';
+import React, { useCallback, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import YoutubeVideo from 'react-youtube';
+import { openModal } from 'redux/modal/slice';
 import { FundingSelectors } from 'redux/selectors';
-import t from 'locale/he_IL';
+import { externalPaymentErrorToast } from 'toasts';
+import Wrapper from '../../components/Wrapper';
+import { Button, Checkbox, Divider, HelperText, Link, ProgressBar, TabPanel, TeamMembers, Typography } from '../../shared';
+import AmountInput from './amountInput';
+import { fundingEndGoal, fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
+import { createPaymentLink } from './controller';
+import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor } from './hooks';
+import * as SC from './style';
+import { getFormErrors, paymentRequestValidation } from './validations';
 
 const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const whoWeAreRef = useRef();
+	const { t } = useTranslation();
 
 	const [otherAmount, setOtherAmount] = useState(0);
 	const [amount, setAmount] = useState();
