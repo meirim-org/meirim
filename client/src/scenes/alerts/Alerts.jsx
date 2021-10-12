@@ -7,7 +7,7 @@ import api from 'services/api';
 import './Alerts.css';
 import AlertPlans from '../../components/AlertPlans';
 import AlertTrees from '../../components/AlertTrees';
-import AlertList from '../../components/AlertList';
+import AlertList from '../../components/AlertList/';
 import { AlertSection, AlertContainer } from './styles';
 
 const messages = {
