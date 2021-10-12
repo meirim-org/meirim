@@ -1,7 +1,6 @@
-const turf = require('turf');
+const Tag = require('../../model/tag');
 const fs = require('fs');
 const path = require('path');
-const Tag = require('../../model/tag');
 const Log = require('../../lib/log');
 
 const getTagsResources = async () => {

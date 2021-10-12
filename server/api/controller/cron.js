@@ -11,6 +11,8 @@ const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
 const { getPlanTagger } = require('../lib/tags');
+const PlanAreaChangesController = require('../controller/plan_area_changes');
+
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -63,7 +65,9 @@ const complete_mavat_data = () =>
 							'Saving with mavat',
 							JSON.stringify(mavatData)
 						);
-						return plan.save();
+						return Promise.all([plan.save(),
+							PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges)
+						]);
 					})
 					.catch(() => {
 						// do nothing on error
@@ -79,8 +83,9 @@ const complete_jurisdiction_from_mavat = () =>
 		.then(planCollection =>
 			Bluebird.mapSeries(planCollection.models, plan => {
 				Log.debug(plan.get('plan_url'));
-				return MavatAPI.getByPlan(plan).then(mavatData => {
-					Plan.setMavatData(plan, mavatData);
+				return MavatAPI.getByPlan(plan).then(async mavatData => {
+					await Plan.setMavatData(plan, mavatData);
+					await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
 					Log.debug(
 						'saved with jurisdiction from mavat',
 						JSON.stringify(mavatData)
@@ -215,13 +220,12 @@ const updatePlanTags = async () => {
 	let tagCounter = 0;
 	// Re-compute the tags of a plan if the last update time of the plan is after the last update time of the tags of this plan.
 	// Before re-computing the tags of a plan, remove all previous tags for this plan.
-	
-	// TODO: Loop on the plans that need to be updated 
+
+	// TODO: Loop on the plans that need to be updated
 	const plans = await Plan.getPlansToTag();
 	Log.info(`Processing ${plans.models.length} plans`);
 	for (const planOrder in plans.models) {
 		const plan = plans.models[planOrder];
-
 		try {
 			await PlanTag.deletePlanTags(plan.id);
 		}
@@ -284,7 +288,11 @@ const fetchIplan = iPlan =>
 const buildPlan = (iPlan, oldPlan) => {
 	return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
 		MavatAPI.getByPlan(plan)
-			.then(mavatData => Plan.setMavatData(plan, mavatData))
+			.then(async mavatData => {
+				const retPlan = await Plan.setMavatData(plan, mavatData);
+				await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
+				return retPlan;
+			})
 			.catch(e => {
 				// mavat might crash gracefully
 				Log.error('Mavat error', e.message, e.stack);
