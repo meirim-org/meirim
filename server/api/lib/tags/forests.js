@@ -7,7 +7,7 @@ const doesTagApply = async (plan, tagsResources) => {
         (fatherCategory) => fatherCategory.includes('יער'),
         TAG_NAME,
         tagsResources,
-        {rule: 'has "יער" in a father category in chart 4'}
+        {rule: `has "${TAG_NAME}" in a father category in chart 4`}
     );
 };
 
