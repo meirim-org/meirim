@@ -31,13 +31,9 @@ const AlertList = ({ notifyDeletedAlert, alerts }) => {
 
 	return (<div>
 		<h5 className="container-title">ההתראות שלי</h5>
-		<div className="row">
-			<div className="col col-sm-6">
-				<AlertTable alerts={alerts} onDelete={handleDelete} />
-			</div>
-			<div className="col col-sm-6">
-				{alerts.length > 0 && <Mapa alerts={alerts} bounds={bounds} />}
-			</div>
+		<div>
+			<AlertTable alerts={alerts} onDelete={handleDelete} />
+			{alerts.length > 0 && <Mapa alerts={alerts} bounds={bounds} />}
 		</div>
 	</div>);
 }

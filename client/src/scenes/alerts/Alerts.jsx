@@ -57,7 +57,7 @@ const Alerts = () => {
 		<AlertTrees notifyAddedAlert={handleAddedAlert} />
 	</AlertSection>;
 
-	const alertList = <AlertSection gridArea='alert-list'>
+	const alertList = <AlertSection gridArea='alert-list' height='fit-content'>
 		<AlertList notifyDeletedAlert={handleDeletedAlert} alerts={alerts} />
 	</AlertSection>;
 
