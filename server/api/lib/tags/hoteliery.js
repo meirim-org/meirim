@@ -7,7 +7,7 @@ const TAG_DISPLAY_NAME = 'מלונאות';
 
 const doesTagApply = async (planId, tagsResources) => {  
 	return doesTagApplyHelper(planId,TAG_NAME, tagsResources);
-}
+};
 
 module.exports = {
 	doesTagApply, 
