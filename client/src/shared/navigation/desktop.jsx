@@ -103,7 +103,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 								<Grid item>
 							{ 
 								selectedLanguage === 'HE'	&&	<Grid item>
-									<Button id="sign-in" text={'عربي'} 
+									<Button id="change-lang-to-ar" text={'عربي'} 
 										fontWeight="400" simple 
 										onClick={() => changeLanguage('AR')}/>
 								</Grid>
@@ -144,13 +144,13 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
 							<Row gutter={0.75}>
 							{ 
 								selectedLanguage === 'HE'	&&	<Grid item>
-									<Button id="sign-in" text={'عربي'} 
+									<Button id="change-lang-to-arab" text={'عربي'} 
 										fontWeight="400" simple 
 										onClick={() => changeLanguage('AR')}/>
 								</Grid>
 							}
 								{ selectedLanguage === 'AR' && <Grid item>
-									<Button id="sign-in" text={'עברית'} 
+									<Button id="change-lang-to-he" text={'עברית'} 
 										fontWeight="400" simple 
 										onClick={() => changeLanguage('HE')}/>
 								</Grid>}
