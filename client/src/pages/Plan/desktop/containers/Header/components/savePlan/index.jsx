@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@material-ui/styles';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Text } from 'shared';
-import t from 'locale/he_IL';
 import * as SC from './style';
 
 const SavePlan = ({ subscriptionHandler, isFavPlan }) => {
 	const theme = useTheme();
-	
+	const { t } = useTranslation();
 	return (				
 		<SC.Button
 			onClick={subscriptionHandler}

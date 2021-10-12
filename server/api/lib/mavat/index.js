@@ -67,7 +67,8 @@ const getPlanInstructions = async (page) => {
 				return elements[i + 4].querySelector('img').getAttribute('onclick');
 			}
 		}
-		Log.info('couldn\'t find the plan details PDF link on this web page');
+		// note: this is run in the headless browser context. `Log` is not available for use
+		console.log('couldn\'t find the plan details PDF link on this web page');
 		return undefined;
 	});
 
