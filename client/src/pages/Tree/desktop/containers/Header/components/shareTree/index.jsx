@@ -1,14 +1,15 @@
-import React from 'react';
-import { useTheme } from '@material-ui/styles';
-import ShareIcon from '@material-ui/icons/Share';
-import { openModal } from 'redux/modal/slice';
-import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
+import ShareIcon from '@material-ui/icons/Share';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { openModal } from 'redux/modal/slice';
 import { Text } from 'shared';
-import t from 'locale/he_IL';
 
 const ShareTree = () => {
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 	const theme = useTheme();
 	
 	return (				

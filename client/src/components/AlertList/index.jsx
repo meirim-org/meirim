@@ -1,15 +1,16 @@
-import '../../../node_modules/leaflet/dist/leaflet.css';
-import React, { useState } from 'react';
-import PropTypes from 'prop-types'
-import { Map, TileLayer, Circle } from 'react-leaflet';
 import leaflet from 'leaflet';
-import AlertTable from '../AlertTable';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { Circle, Map, TileLayer } from 'react-leaflet';
 import api from 'services/api';
+import '../../../node_modules/leaflet/dist/leaflet.css';
+import AlertTable from '../AlertTable';
 import { Message } from './style';
 
 const AlertList = ({ notifyDeletedAlert, alerts }) => {
 	const [bounds, setBounds] = useState([{ lat: 35, lng: 35 }, { lat: 25, lng: 25 }]);
-
+	const { t } = useTranslation();
 	React.useEffect(() => {
 		let transparentLayer = leaflet.geoJSON();
 		if (alerts.length > 0) {
@@ -28,17 +29,17 @@ const AlertList = ({ notifyDeletedAlert, alerts }) => {
 		api.delete('/alert/' + alertId).then(() => {
 			notifyDeletedAlert();
 		});
-	}
+	};
 
 	const noAlertsMsg = <Message>הוסיפו התראות כדי להשאר מעודכנים!</Message>;
 
 	const alertGrid = <div>
 		<AlertTable alerts={alerts} onDelete={handleDelete} />
-		{<Mapa alerts={alerts} bounds={bounds} />}
+		<Mapa alerts={alerts} bounds={bounds} />
 	</div>;
 
 	return (<div>
-		<h5 className="container-title">ההתראות שלי</h5>
+		<h5 className="container-title">{t.alert}</h5>
 		{alerts.length > 0 ? alertGrid : noAlertsMsg}
 	</div>);
 }

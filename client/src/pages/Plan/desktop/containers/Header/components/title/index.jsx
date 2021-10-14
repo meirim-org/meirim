@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/styles';
-import { Text } from 'shared';
-import * as SC from '../../style';
+import { useTranslation } from 'locale/he_IL';
 import { BackButton } from 'pages/Plan/common';
 import { goBack } from 'pages/Plan/utils';
-import t from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Text } from 'shared';
+import * as SC from '../../style';
 
 
 const Title = ({ countyName, planName }) => {
 	const theme = useTheme();
-
+	const { t } = useTranslation();
 	return (
 		<>
 			<SC.SubTitleWrapper>
