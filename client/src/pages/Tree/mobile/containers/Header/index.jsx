@@ -1,16 +1,17 @@
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { TreeSelectors } from 'redux/selectors';
-import {  Title } from './components';
-import * as SC from './style';
-import t from 'locale/he_IL';
-import { goBack } from 'pages/Plan/utils';
+import { useTranslation } from 'locale/he_IL';
 import { BackButton } from 'pages/Plan/common';
+import { goBack } from 'pages/Plan/utils';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { tabIsActive, pageTitleText } from '../../../utils';
+import { TreeSelectors } from 'redux/selectors';
+import { pageTitleText, tabIsActive } from '../../../utils';
+import { Title } from './components';
+import * as SC from './style';
 
 const Header = ({ match, handleTabsPanelRef, fixedHeader }) => {
 	const history = useHistory();
+	const { t } = useTranslation();
 	const { treeData: { place, street , street_number, total_trees } } = TreeSelectors();
 	const pathData  = {
 		pathName: history.location.pathname,

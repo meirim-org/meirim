@@ -7,11 +7,12 @@ import { authenticateEmail, registerUser  } from './controller';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
 import { firstStepValidation, formValidation, getFormErrors } from './validations';
-import { personTypes } from './constants';
+import { usePersonTypes } from './constants';
 import { useDispatch } from 'react-redux';
 
 const SignupForms = () => {
 	const dispatch = useDispatch();
+	const personTypes = usePersonTypes();
 	const [firstStepSuccess, setFirstStepSucess] = useState(false);
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
