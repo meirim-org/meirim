@@ -104,7 +104,7 @@ const getPlanFiles = async (page) => {
 			files.push(file);
 		}
 
-		Log.debug(`fetched ${files.length} files`);
+		// console.log(`fetched ${files.length} files`);
 		return files;
 	});
 
