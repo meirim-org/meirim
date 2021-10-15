@@ -2,8 +2,7 @@ import Typography from "@material-ui/core/Typography";
 import React, { Component } from "react";
 import Wrapper from "../components/Wrapper";
 import api from "../services/api";
-import "./Alerts.css";
-
+import "./alerts/Alerts.css";
 class AlertUnsubscribe extends Component {
     state = {
         loading: true,

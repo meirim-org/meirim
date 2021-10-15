@@ -33,7 +33,7 @@ html body {
     color: #3b3b3b;
     padding-top: 20px;
 }
-.selectAreaAndInterest small {
+.selectAreaAndInterest > small {
     color: #a2a2a2;
     font-size: 13px;
     display: block;
@@ -42,9 +42,6 @@ html body {
 
 .dialog {
     max-width: 400px;
-}
-.widedialog {
-    max-width: 800px;
 }
 
 .rectangle {

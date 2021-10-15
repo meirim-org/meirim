@@ -7,10 +7,10 @@ import FilterAutoCompleteMultiple from '../components/FilterAutoCompleteMultiple
 import api from '../services/api';
 
 const AlertTrees = ({ notifyAddedAlert }) => {
-	const [ error, setError ] = useState(false);
-	const [ loading, setLoading ] = useState(false);
-	const [ treePlaces, setTreePlaces ] = useState([]);
-	const [ selectedPlaces, setSelectedPlaces ] = useState([]);
+	const [error, setError] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [treePlaces, setTreePlaces] = useState([]);
+	const [selectedPlaces, setSelectedPlaces] = useState([]);
 	const { t } = useTranslation();
 
 	function handleFilterChange(placesFromFilter) {
@@ -52,52 +52,41 @@ const AlertTrees = ({ notifyAddedAlert }) => {
 		});
 	}
 
-	return (
-		<>
-			<form className="rectangle" onSubmit={handleSubmit}>
-			{error && <div className="error-container">{error}</div>}
+	return (<form onSubmit={handleSubmit}>
+		{error && <div className="error-container">{error}</div>}
 
-				<h5 className="container-title">{t.newAlertTree}</h5>
-				{error && (
-					<div className="alert alert-danger" role="alert">
-						התרחשה תקלה, אנא נסו שוב
-					</div>
-				)}
-				<div className="selectAreaAndInterest">
-					{t.addCitiesToGetNotified}
-					<small>
-						{ t.youCanAddMoreThanOneCity }
-					</small>
-				</div>
+		<h5 className="container-title">{t.newAlertTree}</h5>
+		{error && <div className="alert alert-danger" role="alert">התרחשה תקלה, אנא נסו שוב</div>}
+		<div className="selectAreaAndInterest">
+			{t.addCitiesToGetNotified}
+			<small>{t.youCanAddMoreThanOneCity}</small>
+		</div>
 
-				<FilterAutoCompleteMultiple
-					classes=""
-					placeholder="הזינו עיר, מועצה אזורית או רשות מקומית "
-					inputSuggestions={treePlaces}
-					onFilterChange={handleFilterChange}
-				/>
+		<FilterAutoCompleteMultiple
+			classes=""
+			placeholder="הזינו עיר, מועצה אזורית או רשות מקומית "
+			inputSuggestions={treePlaces}
+			onFilterChange={handleFilterChange} />
+		<br />
+
+		<div>{t.citiesNotAva}</div>
+		<div> <Link url="/support-us/" textDecoration="none" text="תמכו בנו" /> כדי שנוכל להגיע גם לעיר שלכם!</div>
+		<div className="row">
+			<div className="col">
 				<br />
-
-				<div>{t.citiesNotAva}</div>
-				<div> <Link url="/support-us/" textDecoration="none" text="תמכו בנו" /> כדי שנוכל להגיע גם לעיר שלכם!</div>
-				<div className="row">
-					<div className="col">
-						<br />
-						<button
-							id="submitButton"
-							title="הוסף התראה"
-							disabled={loading}
-						>
-							{t.addition}	
-							{loading && (
-								<FontAwesomeIcon icon="spinner" spin />
-							)}
-						</button>
-					</div>
-				</div>
-			</form>
-		</>
-	);
+				<button
+					id="submitButton"
+					title="הוסף התראה"
+					disabled={loading}
+				>
+					{t.addition}
+					{loading && (
+						<FontAwesomeIcon icon="spinner" spin />
+					)}
+				</button>
+			</div>
+		</div>
+	</form>);
 }
 
 AlertTrees.propTypes = {
