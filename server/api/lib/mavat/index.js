@@ -41,7 +41,7 @@ const init = () =>
 
 const downloadPlanPDF = async (functionCallText) => {
 
-	const downloadUrl = getFileUrl(functionCallText)
+	const downloadUrl = getFileUrl(functionCallText);
 	if (!downloadUrl) return false;
 
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
@@ -84,32 +84,32 @@ const getPlanInstructions = async (page) => {
 
 
 const getPlanFiles = async (page) => {
-		const files = await page.evaluate(() => {
-			const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
-			const innerTexts = elements.map(ele => ele.innerText.trim());
+	const files = await page.evaluate(() => {
+		const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
+		const innerTexts = elements.map(ele => ele.innerText.trim());
 
-			// elements look like this:
-			// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
-			// (flattened table)
-			let files = [];
-			for (let i = 0; i < innerTexts.length; i += 5) {
-				const file = {
-					kind: innerTexts[i], 
-					name: innerTexts[i+1],
-					description: innerTexts[i+2],
-					date: innerTexts[i+3],
-					openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
-					fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
-				};
-				files.push(file);
-			}
+		// elements look like this:
+		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
+		// (flattened table)
+		let files = [];
+		for (let i = 0; i < innerTexts.length; i += 5) {
+			const file = {
+				kind: innerTexts[i], 
+				name: innerTexts[i+1],
+				description: innerTexts[i+2],
+				date: innerTexts[i+3],
+				openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
+				fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
+			};
+			files.push(file);
+		}
 
-			console.log(`fetched ${files.length} files`);
-			return files;
-		});
+		// console.log(`fetched ${files.length} files`);
+		return files;
+	});
 
-		// cleaning and formatting the files
-		return files.map(formatFile);
+	// cleaning and formatting the files
+	return files.map(formatFile);
 };
 
 const fetch = planUrl =>
