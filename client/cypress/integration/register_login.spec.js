@@ -109,7 +109,7 @@ context('Register and login', () => {
       cy.get('div.alert-danger')
         .should('not.be.visible');
 
-      cy.get('form.rectangle > .container-title')
+      cy.get('#alert-map-container > .container-title')
         .should('be.visible');
 
       cy.url().should('include', '/alerts');

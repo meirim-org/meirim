@@ -15,12 +15,12 @@ _.map(new Array(sliderBounds.max), (obj, i) => {
 
 const AlertPlans = ({ notifyAddedAlert }) => {
 	const { t } = useTranslation();
-	const [ error, setError ] = useState(false);
-	const [ loading, setLoading ] = useState(false);
-	const [ radius, setRadius ] = useState(5);
-	const [ address, setAddress ] = useState('');
+	const [error, setError] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [radius, setRadius] = useState(5);
+	const [address, setAddress] = useState('');
 
-	const handleSlide = (value)  =>{
+	const handleSlide = (value) => {
 		setRadius(value);
 		setError(false);
 	};
@@ -30,7 +30,7 @@ const AlertPlans = ({ notifyAddedAlert }) => {
 		setError(false);
 	};
 
-	const handleSubmit = (e)  =>{
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		setLoading(true);
@@ -55,7 +55,7 @@ const AlertPlans = ({ notifyAddedAlert }) => {
 	}
 
 	return (
-		<form className="rectangle" onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit}>
 			<h5 className="container-title">{t.newAlert}</h5>
 			{error && (
 				<div className="alert alert-danger" role="alert">
@@ -63,7 +63,7 @@ const AlertPlans = ({ notifyAddedAlert }) => {
 				</div>
 			)}
 			<div className="selectAreaAndInterest">
-				 {t.alertsSubtitle}
+				{t.alertsSubtitle}
 				<small>
 					{t.alertsSubtitleInfo}
 				</small>
