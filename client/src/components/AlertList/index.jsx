@@ -38,8 +38,8 @@ const AlertList = ({ notifyDeletedAlert, alerts }) => {
 		<Mapa alerts={alerts} bounds={bounds} />
 	</div>;
 
-	return (<div>
-		<h5 className="container-title">{t.alert}</h5>
+	return (<div id="alert-map-container">
+		<h5 className="container-title">{t.alerts}</h5>
 		{alerts.length > 0 ? alertGrid : noAlertsMsg}
 	</div>);
 }
