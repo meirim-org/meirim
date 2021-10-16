@@ -8,6 +8,8 @@ const path = require('path');
 const fs = require('fs');
 const { getFileUrl, formatFile } = require('./files');
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
+const PlanStatusChange = require('../../model/plan_status_change');
+const { formatDate } = require('../date');
 const { downloadChallengedFile } = require('../challanged-file');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
@@ -245,32 +247,50 @@ const getAreaChanges = cheerioPage => {
 	return JSON.stringify(jsonTables.results);
 };
 
-// function getShapeFile(cheerioPage) {
+const getPlanStatusList = cheerioPage => {
+	const html = cheerioPage('#tblInternet tbody').html();
 
-//     shapefile.open("example.shp")
-//         .then(source => source.read()
-//             .then(function log(result) {
-//                 if (result.done) return;
-//                 console.log(result.value);
-//                 return source.read().then(log);
-//             }))
-//         .catch(error => console.error(error.stack));
-// }
+	// a library update led to this conversion using the first row as field names
+	// instead of using the field ids as their names, so create a fake first row
+	// to be used as headers. in the future we probably should stop using this
+	// library in favour of a bit of custom cheerio value extraction code
+	const jsonTables = new HtmlTableToJson(
+		`<table>
+			<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+			${html}
+		</table>`
+	);
+	return jsonTables.results;
+};
 
-// const getByUrl = planUrl =>
-//     init()
-//         .then(() => fetch(planUrl))
-//         .then(cheerioPage => {
-//             log.debug("Retrieving", planUrl);
+const getPlanStatus = (plan) => {
+	const planId = plan.id;
+	return new Promise((resolve, reject) => {
+		getByPlan(plan)
+			.then(mavatData => {
+				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
+					!mavatData['planStatusList'][0])) {
+					return null;
+				}
 
-//             return Bluebird.props({
-//                 goals: getGoalsText(cheerioPage),
-//                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
-//                 areaChanges: getAreaChanges(cheerioPage),
-//                 jurisdiction: getJurisdictionString(cheerioPage)
-//             });
-//         });
-
+				const planStatusList = mavatData['planStatusList'][0].map(statusDetails => {
+					const title = statusDetails['1']; // תיאור
+					const date = statusDetails['2']; // תאריך
+					const statusDescription = statusDetails['3']; // פירוט
+					Log.debug(`${`title: ${title}: date: ${date}`} `);
+					return new PlanStatusChange({
+						plan_id: planId,
+						status: title,
+						date: formatDate(date),
+						status_description: statusDescription,
+					});
+				});
+				resolve(planStatusList);
+			})
+			.catch(err => Log.error('plan status error:', err));
+	});
+};
+	
 const getByPlan = plan =>
 	init()
 		.then(() => {
@@ -295,6 +315,7 @@ const getByPlan = plan =>
 				mainPlanDetails: getMainPlanDetailText(cheerioPage),
 				areaChanges: getAreaChanges(cheerioPage),
 				jurisdiction: getJurisdictionString(cheerioPage),
+				planStatusList: getPlanStatusList(cheerioPage),
 				files: planFiles,
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
@@ -309,6 +330,7 @@ module.exports = {
 	getByPlan,
 	init,
 	fetch,
+	getPlanStatus,
 
 	// exported for tests
 	testOnly: {
