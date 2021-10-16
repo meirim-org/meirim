@@ -42,12 +42,13 @@ class AlertController extends Controller {
 					// it is probably already unsubscribed
 					return null;
 				}
+
 				Log.debug(
 					this.tableName,
 					'unsubscribe success id:',
 					fetchedModel.get('id')
 				);
-				return fetchedModel.destroy(req.body);
+				return fetchedModel.destroy();
 			});
 	}
 }

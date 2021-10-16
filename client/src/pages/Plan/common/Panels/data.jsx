@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography } from 'shared';
 import { useTheme } from '@material-ui/styles';
-import * as SC from './style';
-import t from 'locale/he_IL';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Moment from 'react-moment';
+import { TabBox, TabPanel, Typography } from 'shared';
 import LandUseVocabulary from '../../../../components/LandUseVocabulary';
+import * as SC from './style';
 
 export const DataPanel = ({
 	number,
@@ -15,9 +15,10 @@ export const DataPanel = ({
 	stationDesc,
 	lastUpdate, 
 	notCredible,
+	originalName,
 	landUse }) => {
 	const theme = useTheme();
-
+	const { t } = useTranslation();
 	if (!number && !type && !stationDesc && !lastUpdate ) return null;
 
 	return (
@@ -75,6 +76,12 @@ export const DataPanel = ({
 							{lastUpdate}
 						</Moment>
 					</li>
+				{originalName && (
+					<li key="originalName">
+                           שם תוכנית מקורי:{' '}
+							{originalName}
+						</li>
+					)}
 				</SC.Datalist>
 				{!!notCredible && (
 					<div className="note">
@@ -103,6 +110,7 @@ DataPanel.propTypes = {
 	landUse: PropTypes.string,
 	stationDesc: PropTypes.string,
 	lastUpdate: PropTypes.string,
+	originalName: PropTypes.string,
 	notCredible: PropTypes.any
 };
 
