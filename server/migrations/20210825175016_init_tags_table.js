@@ -39,5 +39,5 @@ exports.down = async function(knex) {
 	await tbl.where('name', hotelieryTag.TAG_NAME).del();
 	await tbl.where('name', commerceTag.TAG_NAME).del();
 	await tbl.where('name', employmentTag.TAG_NAME).del();
-	
+
 };

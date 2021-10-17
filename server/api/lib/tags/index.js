@@ -6,13 +6,17 @@ const publicBuildingsTag = require('../tags/public');
 const EmploymentTag = require('../tags/employment');
 const HotelieryTag = require('../tags/hoteliery');
 const CommerceTag = require('../tags/commerce');
+const heavyRailTag = require('../tags/heavy_rail');
+const roadsTag = require('../tags/roads');
 
 const taggingFunctions = [
 	housingTag,
 	publicBuildingsTag,
 	EmploymentTag,
 	HotelieryTag,
-	CommerceTag
+	CommerceTag,
+	heavyRailTag,
+	roadsTag,
 ];
 
 const getPlanTagger = async () => {

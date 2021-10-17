@@ -10,44 +10,44 @@ const isTagByUsageAddition = async (planId, rule) => {
 			switch (rule.changeType) {
 				case AREA_CHANGE_TYPES.INCREASED_USAGE:
 					// change to approved state
-					if ((changeToApprovedState.length > 1) && 
+					if ((changeToApprovedState.length > 1) &&
 						(changeToApprovedState.substring(0,1) === '+') ) {
-						// get change as number 
+						// get change as number
 						const change = Number(changeToApprovedState.replace('+','').replace(',',''));
 						if (change >= Number(rule.minValue)) {
-							return {   
+							return {
 								created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
-							}; 
+							};
 						}
-					}					
-					break;	
+					}
+					break;
 				case AREA_CHANGE_TYPES.NEW_USAGE:
 					// new usage that was not approved previously
-					if ((changeToApprovedState.length > 1) && 
-					(changeToApprovedState.substring(0,1) === '+') && 
+					if ((changeToApprovedState.length > 1) &&
+					(changeToApprovedState.substring(0,1) === '+') &&
 					(approvedState === '')) {
 						const change = Number(changeToApprovedState.replace('+','').replace(',',''));
 						if (change >= Number(rule.minValue)) {
-							return {   
+							return {
 								created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
-							}; 
-						}	
+							};
+						}
 					}
 					break;
 				case AREA_CHANGE_TYPES.PERCENT_INCREASE:
 						// usage that grows by a certain percentage
-						if ((changeToApprovedState.length > 1) && 
-						(changeToApprovedState.substring(0,1) === '+') && 
+						if ((changeToApprovedState.length > 1) &&
+						(changeToApprovedState.substring(0,1) === '+') &&
 						(approvedState !== '')) {
 							const change = Number(changeToApprovedState.replace('+','').replace(',',''));
 							if ((change+Number(approvedState))/Number(approvedState) >= (Number(rule.minValue)+100)/100.00) {
-								return {   
+								return {
 									created_by_data_rules: `{rule:'${rule.description}',detail:'adds ${changeToApprovedState} ${rule.usage}'}`
-								}; 
-							}	
+								};
+							}
 						}
-						break;			}			
-		}		
+						break;			}
+		}
 	} catch (error) {
 		console.log(`error ${error.message}\n`);
 		console.debug(error);

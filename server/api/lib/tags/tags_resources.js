@@ -1,5 +1,7 @@
 const Tag = require('../../model/tag');
-
+const fs = require('fs');
+const path = require('path');
+const Log = require('../../lib/log');
 
 const getTagsResources = async () => {
 
@@ -12,8 +14,20 @@ const getTagsResources = async () => {
         tagNameToTagId[model.attributes.name] = model.id;
     }
 
+    let streetNames;
+    try {
+        streetNames = fs.readFileSync('street_names.csv', 'utf8');
+        streetNames = streetNames.split('\n');
+        // remove the header
+        streetNames = new Set(streetNames.slice(1));
+    } catch (err) {
+        Log.error(err);
+        streetNames = new Set();
+    }
+
     return {
-        tagNameToTagId: tagNameToTagId
+        tagNameToTagId: tagNameToTagId,
+        streetNames: streetNames
     };
 
 };
