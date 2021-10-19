@@ -10,9 +10,8 @@ const { fetchStaticMap } = require('../service/staticmap');
 const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
-const { getPlanTagger } = require('../lib/tags');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
-
+const getPlanTagger = require('../lib/tags');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -226,11 +225,13 @@ const updatePlanTags = async () => {
 	Log.info(`Processing ${plans.models.length} plans`);
 	for (const planOrder in plans.models) {
 		const plan = plans.models[planOrder];
+
 		try {
 			await PlanTag.deletePlanTags(plan.id);
 		}
 		catch(e) {
 			// if the deletion of existing tags fails, move to the next plan
+			Log.info('failed to delete plan tags');
 			continue;
 		}
 
