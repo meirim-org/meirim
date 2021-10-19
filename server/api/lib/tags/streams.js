@@ -1,6 +1,6 @@
 const { isTagApplyTable4FatherCategory} = require('../tags/utils');
 
-const TAG_NAME = 'streams';
+const TAG_NAME = 'Streams';
 const TAG_DISPLAY_NAME = 'נחל';
 
 const doesTagApply = async (plan, tagsResources) => {

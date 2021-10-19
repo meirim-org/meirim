@@ -1,4 +1,6 @@
-const TAG_NAME = 'רכבת קלה';
+const TAG_NAME = 'Light Rail';
+const TAG_DISPLAY_NAME = 'רכבת קלה';
+
 const rakevetKala = 'רכבת קלה';
 const rakal = 'רק"ל';
 const tzomet = 'צומת';
@@ -32,5 +34,6 @@ const doesTagApply = async (plan, tagsResources) => {
 
 module.exports = {
     doesTagApply,
-    TAG_NAME
+    TAG_NAME,
+    TAG_DISPLAY_NAME
 };
