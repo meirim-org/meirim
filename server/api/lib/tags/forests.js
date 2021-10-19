@@ -1,6 +1,6 @@
 const { isTagApplyTable4FatherCategory} = require('../tags/utils');
 
-const TAG_NAME = 'forest';
+const TAG_NAME = 'Forest';
 const TAG_DISPLAY_NAME = 'יער';
 
 const doesTagApply = async (plan, tagsResources) => {
