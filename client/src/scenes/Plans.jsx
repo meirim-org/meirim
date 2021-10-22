@@ -190,7 +190,7 @@ class Plans extends Component {
                         loading={loadingAutocomplete}
                     />
                     <br />
-                    <Grid container spacing={4}>
+                    <Grid container spacing={5}>
                         {plans.map(plan => (
                             <PlanCard plan={plan} key={plan.id}/>
                         ))}

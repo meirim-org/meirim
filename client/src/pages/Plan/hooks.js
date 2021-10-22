@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import geojsonArea from '@mapbox/geojson-area';
 import { parseNumber, scrollToTop } from 'utils';
 import { setData } from 'redux/comments/slice';
 import { setPlanData } from 'redux/plan/slice';
+import { subscribedToPlan, unsubscribedFromPlan } from 'redux/user/slice';
 import * as utils from './utils';
 import { getPlanData, getCommentsByPlanId } from './controller';
 import { useDispatch } from 'react-redux';
 import { fetchUserPlans } from 'pages/UserPlans/controller';
+import { unsubscribeUserToPlan, subscribeUserToPlan } from 'pages/Plan/controller';
+
 import { UserSelectors } from 'redux/selectors';
 
 export const isFavoritePlan = async (userId, planId) => {
@@ -16,18 +19,36 @@ export const isFavoritePlan = async (userId, planId) => {
 	return Boolean(result);
 };
 
-export const useIsFavPlan = (planId) => {
-	const [isFav, setIsFav] = useState(false);
-	const { user: { id: userId } } = UserSelectors();
-	useEffect(() => {
-		const handler = async () => {
-			const result = await isFavoritePlan(userId, planId);
-			setIsFav(Boolean(result));
-		};
-		handler();
-	}, [userId, planId]);
+export const useFavoritePlan = (planId) => {
+	const { favoritePlans } = UserSelectors();
+	const dispatch = useDispatch();
+	const isSubscribed = favoritePlans.indexOf(planId)!== -1;
 
-	return isFav;
+	const subscribe = async () => {
+		try {
+			const res = await subscribeUserToPlan(planId);
+			if (res) dispatch(subscribedToPlan({planId}));
+		}
+		finally{
+
+		}
+	};
+
+	const unsubscribe = async () => {
+		try {
+			const res = await unsubscribeUserToPlan(planId)
+			if (res)  dispatch(unsubscribedFromPlan({planId}));
+		}
+		finally{
+
+		}
+	}
+
+	return {
+		isSubscribed, 
+		subscribe,
+		unsubscribe
+	};
 };
 
 export const useCommentsDataHandler = (planId, refetchComments, setRefetchComments) => {
