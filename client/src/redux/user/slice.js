@@ -4,7 +4,8 @@ const userSlice = createSlice({
 	name: 'user',
 	initialState: {
 		isAuthenticated: false,
-		user: {}
+		user: {},
+		favoritePlans: []
 	},
 	reducers: {
 		 authenticated(state, type) {
@@ -14,10 +15,19 @@ const userSlice = createSlice({
 		notAuthenticated(state) {
 			state.isAuthenticated = false;
 			state.user = {};
+		},
+		fetchedFavoritePlans(state, type) {
+			state.favoritePlans = type.payload.favoritePlans;
+		},
+		subscribedToPlan(state, type) {
+			state.favoritePlans.push(type.payload.planId);
+		},
+		unsubscribedFromPlan(state, type) {
+			state.favoritePlans = state.favoritePlans.filter(pid => pid !== type.payload.planId)
 		}
 	}
 });
 
-export const { authenticated, notAuthenticated } = userSlice.actions;
+export const { authenticated, notAuthenticated, fetchedFavoritePlans, subscribedToPlan, unsubscribedFromPlan } = userSlice.actions;
 
 export default userSlice.reducer;
