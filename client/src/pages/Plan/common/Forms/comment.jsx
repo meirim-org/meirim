@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, Typography } from 'shared';
-import { CommentSelectors } from 'redux/selectors';
-import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import { Radio } from '@material-ui/core';
-import { printRadioClass, commentTypes } from 'pages/Plan/utils';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import { commentTypes, printRadioClass } from 'pages/Plan/utils';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { CommentSelectors } from 'redux/selectors';
+import { Button, Typography } from 'shared';
 import * as SC from './style';
 
 const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
@@ -13,7 +13,7 @@ const CommentForm = ({ addNewComment, commentState, setCommentState }) => {
 	const { type, inputValue, isOpen } = commentState;
 	const { comments } = CommentSelectors();
 	const newCommentTypeError = false;
-
+	const { t } = useTranslation();
 	const handleNewCommentType = (v) => setCommentState(pv => ({ ...pv, type: v }));
 	const handleNewCommentText = (v) => setCommentState(pv => ({ ...pv , inputValue: v }));
 	const newCommentViewHandler = () => setCommentState(pv => ({ ...pv , isOpen: !isOpen }));

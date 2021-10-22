@@ -1,10 +1,11 @@
-import React from 'react';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Button } from 'shared';
-import t from 'locale/he_IL';
 import * as SC from './style';
 
 const AddComment = ({ isNewCommentOpen, newCommentViewHandler }) => {
+	const { t } = useTranslation();
 
 	return (
 		<Button

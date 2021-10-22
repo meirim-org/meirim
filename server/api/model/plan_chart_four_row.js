@@ -15,6 +15,17 @@ class PlanChartFourRow extends Model {
 	get tableName () {
 		return 'table_4_area_designation_and_usage';
 	}
+
+	static async getFatherCategoriesOfPlan (planId) {
+		return PlanChartFourRow.query(qb => {
+			qb.where('plan_id', '=', planId);
+		}).fetchAll({
+			columns: [
+				'id',
+				'father_category'
+			]
+		});
+	}
 }
 
 module.exports = PlanChartFourRow;

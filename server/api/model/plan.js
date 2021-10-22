@@ -492,7 +492,8 @@ class Plan extends Model {
 		}).fetchAll({
 			columns: [
 				'id',
-				'geom'
+				'geom',
+				'PL_NAME'
 			]
 		});
 	}	

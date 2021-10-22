@@ -1,22 +1,17 @@
-import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import geojsonArea from "@mapbox/geojson-area";
-import { Redirect, NavLink as Link } from "react-router-dom";
+import React, { Component } from "react";
 import { Chart } from "react-charts";
 import Moment from "react-moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import Wrapper from "../components/Wrapper";
-import Comments from "../components/Comments";
-import Rate from "../components/Rate";
-
-import Mapa from "../components/Mapa";
-import UnsafeRender from "../components/UnsafeRender";
-import LandUseVocabulary from "../components/LandUseVocabulary";
-
-import api from "../services/api";
+import { NavLink as Link, Redirect } from "react-router-dom";
 import "../assets/bootstrap.css";
-
-//import t from "../locale/he_IL";
+import Comments from "../components/Comments";
+import LandUseVocabulary from "../components/LandUseVocabulary";
+import Mapa from "../components/Mapa";
+import Rate from "../components/Rate";
+import UnsafeRender from "../components/UnsafeRender";
+import Wrapper from "../components/Wrapper";
+import api from "../services/api";
 import "./SinglePlan.css";
 
 const axes = [
