@@ -1,15 +1,16 @@
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import t from 'locale/he_IL';
-import PropTypes from 'prop-types';
-import {  TreeSelectors } from 'redux/selectors';
+import { TreeSelectors } from 'redux/selectors';
+import { pageTitleText, tabIsActive } from '../../../utils';
 import { ShareTree, Title } from './components';
 import * as SC from './style';
-import { tabIsActive, pageTitleText } from '../../../utils';
 
 const Header = ({ match }) => {
 	const history = useHistory();
 	const { treeData: { place, street , street_number, total_trees } } = TreeSelectors();
+	const { t } = useTranslation();
 	const pathData  = {
 		pathName: history.location.pathname,
 		treeId: match.params.id

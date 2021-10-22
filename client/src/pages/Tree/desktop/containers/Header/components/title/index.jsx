@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/styles';
-import { Text } from 'shared';
-import * as SC from '../../style';
+import { useTranslation } from 'locale/he_IL';
 import { BackButton } from 'pages/Tree/common';
 import { goBack } from 'pages/Tree/utils';
-import t from 'locale/he_IL';
-import { Typography } from 'shared';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Text, Typography } from 'shared';
+import * as SC from '../../style';
 
 const Title = ({ place, text }) => {
 	const theme = useTheme();
+	const { t } = useTranslation();
 
 	return (
 		<>

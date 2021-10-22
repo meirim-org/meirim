@@ -3,8 +3,8 @@ const { doesTagApplyHelper} = require('../tags/utils');
 const TAG_NAME = 'Housing';
 const TAG_DISPLAY_NAME = 'דיור';
 
-const doesTagApply = async (planId, tagsResources) => {
-	return doesTagApplyHelper(planId, TAG_NAME, tagsResources);
+const doesTagApply = async (plan, tagsResources) => {
+	return doesTagApplyHelper(plan.id, TAG_NAME, tagsResources);
 };
 
 module.exports = {
