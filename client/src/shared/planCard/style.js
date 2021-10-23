@@ -22,7 +22,6 @@ export const Card = withTheme(styled(MuiCard)`
         max-width: 360px;
     }
 
-
     .MuiCardContent-root:last-child {
         padding-bottom: 16px;
     }
@@ -44,6 +43,7 @@ export const CardActionArea = withTheme(styled(MuiCardActionArea)`
 
 export const CardContent = withTheme(styled(MuiCardContent)`
     height: 50%;
+    position: relative;
     font-family: ${props => props.theme.fontFamily} !important;
     display: flex;
     flex-direction: column;
