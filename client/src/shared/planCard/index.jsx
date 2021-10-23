@@ -11,34 +11,14 @@ import {
     BookmarkOutlinedIcon,
     BookmarkFilledIcon,
     DropPinIcon,
-} from '../../assets/icons'
-import TagIcons from '../icons/TagIcons'
+} from '../../assets/icons';
+import Tag from '../tag';
 import { openModal } from '../../redux/modal/slice';
 import { useFavoritePlan } from '../../pages/Plan/hooks';
 import { UserSelectors } from '../../redux/selectors';
 import { useDispatch } from 'react-redux';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 
-const tagIcons = {
-    Public: TagIcons.PublicInstitutesTagIcon,
-    Commerce: TagIcons.CommerceTagIcon,
-    // openField: TagIcons.OpenFieldTagIcon,
-    Employment: TagIcons.OfficesTagIcon,
-    Housing: TagIcons.ResidenceTagIcon,
-    // transportation: TagIcons.TransportationTagIcon,
-    Hoteliery: null,
-    plus: TagIcons.PlusTagIcon,
-    defaultIcon: null
-}
-
-const tagDisplayNames = {
-    Public: 'מבני ציבור',
-    Commerce: 'מסחר',
-    Employment: 'תעסוקה',
-    Housing: 'דיור',
-    Hoteliery: 'מלונאות'
-}
+const formatNumber = (number, maximumSignificantDigits = 2) => new Intl.NumberFormat('he-IL', { maximumSignificantDigits }).format(number);
 
 const PlanCard = ({ plan }) => {
 	const tagsWrapperRef = useRef(null);
@@ -47,6 +27,8 @@ const PlanCard = ({ plan }) => {
 	const tagsRef = useRef([...(plan?.tags || []).map(() => createRef()), createRef()]);
     const dispatch = useDispatch();
     const { isAuthenticated } = UserSelectors();
+    const areaInDunam = plan?.data?.PL_AREA_DUNAM ? formatNumber(plan?.data?.PL_AREA_DUNAM) : 0;
+    const housingUnitAddition = plan?.data?.QUANTITY_DELTA_120 > 0 ? formatNumber(plan?.data?.QUANTITY_DELTA_120, 1) : 0;
 
 	const intersectionObserverCallback = useCallback((entries) => {
         const visibleTags = entries.filter(entry => entry.isIntersecting);
@@ -109,8 +91,8 @@ const PlanCard = ({ plan }) => {
 
     const getDistanceText = (distance) => {
         const roundDistance = Math.ceil(distance / 5) * 5;
-        if(distance < 1000 ) return  `${roundDistance} מ׳ מהכתובת`;
-        return `${roundDistance/1000} ק״מ מהכתובת`;
+        if(distance < 1000 ) return  `${formatNumber(roundDistance)} מ׳ מהכתובת`;
+        return `${formatNumber(roundDistance/1000)} ק״מ מהכתובת`;
     }
 
 	return (
@@ -126,7 +108,7 @@ const PlanCard = ({ plan }) => {
                                 <StatusDot approved={plan.status === 'מאושרות'}/>
                                 <ChipText>
                                     {`${plan.status ?? ''} ${parseUpdateDate()}`}
-                                </ChipText>
+                                </ChipText> 
                             </StatusChip>
 							<BookmarkBtn isBookmarked={isSubscribed} onClick={handleBookmarkClick}/>
 						</MapTitle>
@@ -136,9 +118,9 @@ const PlanCard = ({ plan }) => {
                                     {plan.PLAN_COUNTY_NAME}
                                 </ChipText>
 							</FooterChip>
-                            {plan?.data?.PL_AREA_DUNAM ? <FooterChip>
+                            {areaInDunam > 0 ? <FooterChip>
                                 <ChipText>
-                                    {`${Math.round(plan?.data?.PL_AREA_DUNAM)} דונם`}
+                                    {`${areaInDunam} דונם`}
                                 </ChipText>
                             </FooterChip> : <div />}
 						</MapFooter>
@@ -155,21 +137,19 @@ const PlanCard = ({ plan }) => {
                             {plan.distance > 0 && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
                                 {getDistanceText(plan.distance)}
                             </PlanDistance>}
-                            {plan?.data?.QUANTITY_DELTA_120 > 0 && <span>{`${plan?.data?.QUANTITY_DELTA_120}+ דירות`}</span>}
+                            {housingUnitAddition > 0 && <span>{`${housingUnitAddition}+ יחידות דיור`}</span>}
                         </PlanDetailsHeader>
 						<PlanName>
                             {plan?.plan_display_name}
 						</PlanName>
-						<Tags ref={tagsWrapperRef}>
+                        { plan?.goals_from_mavat && <PlanGoals>
+                            {plan?.goals_from_mavat.replace(/<\/?[^>]+(>|$)/g, "")}
+                        </PlanGoals> }
+						{tags.length > 0 && <Tags ref={tagsWrapperRef}>
 							{tags.map((tag, i) => {
-								return <OverlayTrigger key={tag.id} overlay={<Tooltip>{tagDisplayNames[tag.tag_name]}</Tooltip>}>
-                                    <Tag ref={tagsRef.current[i]}>
-                                        {tagIcons[tag.tag_name] && <TagIcon src={tagIcons[tag.tag_name]} />}
-                                        {tagDisplayNames[tag.tag_name]}
-                                    </Tag>
-                                </OverlayTrigger>
+								return <Tag type={tag.tag_name} />
 							})}
-						</Tags>
+						</Tags>}
 					</SC.CardContent>
 				</Link>
 			</SC.Card>
@@ -206,6 +186,7 @@ const Chip = styled.div`
 
 const StatusChip = styled(Chip)`
     padding: 4px 7px;
+    visibility: hidden;
 `;
 
 const ChipText = withTheme(styled.span`
@@ -256,7 +237,18 @@ const PlanDetailsHeader = withTheme(styled.div`
     flex-shrink: 0;
     span {
         font-size: 16px;
-        font-weight: 600;
+        color: ${props => props.theme.palette.black};
+    }
+`);
+
+const PlanGoals = withTheme(styled.div`
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    flex-shrink: 0;
+    color: ${props => props.theme.palette.black};
+    span {
+        font-size: 16px;
         color: ${props => props.theme.palette.black};
     }
 `);
@@ -287,10 +279,9 @@ const PlanDistance = withTheme(styled.div`
 
 const PlanName = withTheme(styled.div`
     flex-shrink: 0;
-    height: 50px;
+    max-height: 50px;
     overflow: hidden;
-    margin-bottom: 27px;
-    font-weight: normal;
+    font-weight: 600;
     font-size: 18px;
     color: ${props => props.theme.palette.black};
 `);
@@ -300,23 +291,6 @@ const Tags = styled.div`
     align-items: center;
     flex-flow: wrap;
     overflow: hidden;
-`;
-
-const Tag = withTheme(styled.div`
-    display: flex;
-    align-items: center;
-    height: 26.35px;
-    background: #F5F5F5;
-    border-radius: 4px;
-    padding: 0 8px;
-    margin: 0 0 10px 10px;
-    font-size: 16px;
-    font-weight: normal;
-    color: ${props => props.theme.palette.black};
-`);
-
-const TagIcon = styled.img`
-    width: 20px;
-    height: 20px;
-    margin-left: 8px;
+    position: absolute;
+    bottom: 10px;
 `;
