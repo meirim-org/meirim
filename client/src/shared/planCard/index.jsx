@@ -20,6 +20,8 @@ import { useDispatch } from 'react-redux';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
+const formatNumber = (number, maximumSignificantDigits = 2) => new Intl.NumberFormat('he-IL', { maximumSignificantDigits }).format(number);
+
 const PlanCard = ({ plan }) => {
 	const tagsWrapperRef = useRef(null);
     const [tags, setTags] = useState(plan?.tags || []);
@@ -27,6 +29,8 @@ const PlanCard = ({ plan }) => {
 	const tagsRef = useRef([...(plan?.tags || []).map(() => createRef()), createRef()]);
     const dispatch = useDispatch();
     const { isAuthenticated } = UserSelectors();
+    const areaInDunam = plan?.data?.PL_AREA_DUNAM ? formatNumber(plan?.data?.PL_AREA_DUNAM) : 0;
+    const housingUnitAddition = plan?.data?.QUANTITY_DELTA_120 > 0 ? formatNumber(plan?.data?.QUANTITY_DELTA_120, 1) : 0;
 
 	const intersectionObserverCallback = useCallback((entries) => {
         const visibleTags = entries.filter(entry => entry.isIntersecting);
@@ -89,8 +93,8 @@ const PlanCard = ({ plan }) => {
 
     const getDistanceText = (distance) => {
         const roundDistance = Math.ceil(distance / 5) * 5;
-        if(distance < 1000 ) return  `${roundDistance} מ׳ מהכתובת`;
-        return `${roundDistance/1000} ק״מ מהכתובת`;
+        if(distance < 1000 ) return  `${formatNumber(roundDistance)} מ׳ מהכתובת`;
+        return `${formatNumber(roundDistance/1000)} ק״מ מהכתובת`;
     }
 
 	return (
@@ -116,9 +120,9 @@ const PlanCard = ({ plan }) => {
                                     {plan.PLAN_COUNTY_NAME}
                                 </ChipText>
 							</FooterChip>
-                            {plan?.data?.PL_AREA_DUNAM ? <FooterChip>
+                            {areaInDunam > 0 ? <FooterChip>
                                 <ChipText>
-                                    {`${Math.round(plan?.data?.PL_AREA_DUNAM)} דונם`}
+                                    {`${areaInDunam} דונם`}
                                 </ChipText>
                             </FooterChip> : <div />}
 						</MapFooter>
@@ -135,7 +139,7 @@ const PlanCard = ({ plan }) => {
                             {plan.distance > 0 && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
                                 {getDistanceText(plan.distance)}
                             </PlanDistance>}
-                            {plan?.data?.QUANTITY_DELTA_120 > 0 && <span>{`${plan?.data?.QUANTITY_DELTA_120}+ יחידות דיור`}</span>}
+                            {housingUnitAddition > 0 && <span>{`${housingUnitAddition}+ יחידות דיור`}</span>}
                         </PlanDetailsHeader>
 						<PlanName>
                             {plan?.plan_display_name}
@@ -231,7 +235,6 @@ const PlanDetailsHeader = withTheme(styled.div`
     flex-shrink: 0;
     span {
         font-size: 16px;
-        font-weight: 600;
         color: ${props => props.theme.palette.black};
     }
 `);
@@ -265,7 +268,7 @@ const PlanName = withTheme(styled.div`
     height: 50px;
     overflow: hidden;
     margin-bottom: 27px;
-    font-weight: normal;
+    font-weight: 600;
     font-size: 18px;
     color: ${props => props.theme.palette.black};
 `);
