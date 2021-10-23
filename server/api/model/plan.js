@@ -11,7 +11,7 @@ const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
 const File = require('./file');
-const PlanTag = require('./plan_tag');
+const Tag = require('./tag');
 
 class Plan extends Model {
 	get rules () {
@@ -56,7 +56,8 @@ class Plan extends Model {
 	}
 
 	tags() {
-		return this.hasMany(PlanTag, 'plan_id');
+		return this.belongsToMany(Tag, 'plan_tag', 'plan_id', 'tag_id');
+		// return this.hasMany(PlanTag, 'plan_id');
 	}
 
 	get hasTimestamps() {
@@ -360,14 +361,14 @@ class Plan extends Model {
 			// delete all of the plan's existing files
 			const fileRows = await File.query(qb => {
 				qb.where('plan_id', plan.id);
-			}).fetchAll({transacting: transaction});
+			}).fetchAll({ transacting: transaction });
 			for (const existingFile of fileRows.models) {
-				await existingFile.destroy({transacting: transaction});
+				await existingFile.destroy({ transacting: transaction });
 			}
 
 			// save all plan files scraped from mavat
 			mavatData.files.forEach(async (file) => {
-				await new File({ plan_id: plan.id, ...file }).save(null, {transacting: transaction});
+				await new File({ plan_id: plan.id, ...file }).save(null, { transacting: transaction });
 			});
 
 			// delete existing chart rows since we have no identifiers for the single
