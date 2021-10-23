@@ -46,9 +46,3 @@ html body {
   text-align: center;
   margin: 1em;
 }
-
-.MuiGrid-item {
-  display: flex;
-  align-items: center;
-  justify-content: center
-}

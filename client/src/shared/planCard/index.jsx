@@ -142,11 +142,14 @@ const PlanCard = ({ plan }) => {
 						<PlanName>
                             {plan?.plan_display_name}
 						</PlanName>
-						<Tags ref={tagsWrapperRef}>
+                        { plan?.goals_from_mavat && <PlanGoals>
+                            {plan?.goals_from_mavat.replace(/<\/?[^>]+(>|$)/g, "")}
+                        </PlanGoals> }
+						{tags.length > 0 && <Tags ref={tagsWrapperRef}>
 							{tags.map((tag, i) => {
 								return <Tag type={tag.tag_name} />
 							})}
-						</Tags>
+						</Tags>}
 					</SC.CardContent>
 				</Link>
 			</SC.Card>
@@ -238,6 +241,18 @@ const PlanDetailsHeader = withTheme(styled.div`
     }
 `);
 
+const PlanGoals = withTheme(styled.div`
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    flex-shrink: 0;
+    color: ${props => props.theme.palette.black};
+    span {
+        font-size: 16px;
+        color: ${props => props.theme.palette.black};
+    }
+`);
+
 const PlanDistance = withTheme(styled.div`
     display: flex;
     align-items: center;
@@ -264,9 +279,8 @@ const PlanDistance = withTheme(styled.div`
 
 const PlanName = withTheme(styled.div`
     flex-shrink: 0;
-    height: 50px;
+    max-height: 50px;
     overflow: hidden;
-    margin-bottom: 27px;
     font-weight: 600;
     font-size: 18px;
     color: ${props => props.theme.palette.black};
@@ -277,4 +291,6 @@ const Tags = styled.div`
     align-items: center;
     flex-flow: wrap;
     overflow: hidden;
+    position: absolute;
+    bottom: 10px;
 `;
