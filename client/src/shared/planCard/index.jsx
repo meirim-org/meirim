@@ -17,8 +17,6 @@ import { openModal } from '../../redux/modal/slice';
 import { useFavoritePlan } from '../../pages/Plan/hooks';
 import { UserSelectors } from '../../redux/selectors';
 import { useDispatch } from 'react-redux';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 
 const formatNumber = (number, maximumSignificantDigits = 2) => new Intl.NumberFormat('he-IL', { maximumSignificantDigits }).format(number);
 
@@ -110,7 +108,7 @@ const PlanCard = ({ plan }) => {
                                 <StatusDot approved={plan.status === 'מאושרות'}/>
                                 <ChipText>
                                     {`${plan.status ?? ''} ${parseUpdateDate()}`}
-                                </ChipText>
+                                </ChipText> 
                             </StatusChip>
 							<BookmarkBtn isBookmarked={isSubscribed} onClick={handleBookmarkClick}/>
 						</MapTitle>
@@ -185,6 +183,7 @@ const Chip = styled.div`
 
 const StatusChip = styled(Chip)`
     padding: 4px 7px;
+    visibility: hidden;
 `;
 
 const ChipText = withTheme(styled.span`
@@ -278,10 +277,4 @@ const Tags = styled.div`
     align-items: center;
     flex-flow: wrap;
     overflow: hidden;
-`;
-
-const TagIcon = styled.img`
-    width: 20px;
-    height: 20px;
-    margin-left: 8px;
 `;
