@@ -79,7 +79,7 @@ class PlanController extends Controller {
 			q.where.geo_search_filter = [false];
 		}
 
-		return super.browse(req, q, this.afterFetch);
+		return super.browse(req, q);
 	}
 
 
