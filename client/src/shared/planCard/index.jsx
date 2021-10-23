@@ -11,34 +11,14 @@ import {
     BookmarkOutlinedIcon,
     BookmarkFilledIcon,
     DropPinIcon,
-} from '../../assets/icons'
-import TagIcons from '../icons/TagIcons'
+} from '../../assets/icons';
+import Tag from '../tag';
 import { openModal } from '../../redux/modal/slice';
 import { useFavoritePlan } from '../../pages/Plan/hooks';
 import { UserSelectors } from '../../redux/selectors';
 import { useDispatch } from 'react-redux';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-
-const tagIcons = {
-    Public: TagIcons.PublicInstitutesTagIcon,
-    Commerce: TagIcons.CommerceTagIcon,
-    // openField: TagIcons.OpenFieldTagIcon,
-    Employment: TagIcons.OfficesTagIcon,
-    Housing: TagIcons.ResidenceTagIcon,
-    // transportation: TagIcons.TransportationTagIcon,
-    Hoteliery: null,
-    plus: TagIcons.PlusTagIcon,
-    defaultIcon: null
-}
-
-const tagDisplayNames = {
-    Public: 'מבני ציבור',
-    Commerce: 'מסחר',
-    Employment: 'תעסוקה',
-    Housing: 'דיור',
-    Hoteliery: 'מלונאות'
-}
 
 const PlanCard = ({ plan }) => {
 	const tagsWrapperRef = useRef(null);
@@ -155,19 +135,14 @@ const PlanCard = ({ plan }) => {
                             {plan.distance > 0 && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
                                 {getDistanceText(plan.distance)}
                             </PlanDistance>}
-                            {plan?.data?.QUANTITY_DELTA_120 > 0 && <span>{`${plan?.data?.QUANTITY_DELTA_120}+ דירות`}</span>}
+                            {plan?.data?.QUANTITY_DELTA_120 > 0 && <span>{`${plan?.data?.QUANTITY_DELTA_120}+ יחידות דיור`}</span>}
                         </PlanDetailsHeader>
 						<PlanName>
                             {plan?.plan_display_name}
 						</PlanName>
 						<Tags ref={tagsWrapperRef}>
 							{tags.map((tag, i) => {
-								return <OverlayTrigger key={tag.id} overlay={<Tooltip>{tagDisplayNames[tag.tag_name]}</Tooltip>}>
-                                    <Tag ref={tagsRef.current[i]}>
-                                        {tagIcons[tag.tag_name] && <TagIcon src={tagIcons[tag.tag_name]} />}
-                                        {tagDisplayNames[tag.tag_name]}
-                                    </Tag>
-                                </OverlayTrigger>
+								return <Tag type={tag.tag_name} />
 							})}
 						</Tags>
 					</SC.CardContent>
@@ -301,19 +276,6 @@ const Tags = styled.div`
     flex-flow: wrap;
     overflow: hidden;
 `;
-
-const Tag = withTheme(styled.div`
-    display: flex;
-    align-items: center;
-    height: 26.35px;
-    background: #F5F5F5;
-    border-radius: 4px;
-    padding: 0 8px;
-    margin: 0 0 10px 10px;
-    font-size: 16px;
-    font-weight: normal;
-    color: ${props => props.theme.palette.black};
-`);
 
 const TagIcon = styled.img`
     width: 20px;
