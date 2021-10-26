@@ -10,6 +10,7 @@ const PlanChartSixRow = require('./plan_chart_six_row');
 const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
+const File = require('./file');
 
 class Plan extends Model {
 	get rules () {
@@ -351,6 +352,19 @@ class Plan extends Model {
 
 			await plan.save(null, { transacting: transaction });
 
+			// delete all of the plan's existing files
+			const fileRows = await File.query(qb => {
+				qb.where('plan_id', plan.id);
+			}).fetchAll({transacting: transaction});
+			for (const existingFile of fileRows.models) {
+				await existingFile.destroy({transacting: transaction});
+			}
+
+			// save all plan files scraped from mavat
+			mavatData.files.forEach(async (file) => {
+				await new File({ plan_id: plan.id, ...file }).save(null, {transacting: transaction});
+			});
+
 			// delete existing chart rows since we have no identifiers for the single
 			// rows and so scrape them all again each time
 			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
@@ -463,5 +477,19 @@ class Plan extends Model {
 		const query = 'UPDATE plan SET erosion_views = FLOOR(erosion_views/2)';
 		return Knex.raw(query);
 	}
+
+	// TODO: actually get the plans we want to tag today, for now getting all of them in dev
+	static async getPlansToTag (options) {
+		return Plan.query(qb => {
+			if (options && options.OBJECTID) {
+				qb.where('OBJECTID', '=', options.OBJECTID);
+			}
+		}).fetchAll({
+			columns: [
+				'id',
+				'geom'
+			]
+		});
+	}	
 }
 module.exports = Plan;

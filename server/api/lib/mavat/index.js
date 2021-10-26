@@ -5,12 +5,12 @@ const puppeteer = require('puppeteer');
 const HtmlTableToJson = require('html-table-to-json');
 const Log = require('../../lib/log');
 const path = require('path');
-const http = require('follow-redirects').http;
 const fs = require('fs');
-
+const { getFileUrl, formatFile } = require('./files');
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
 const PlanStatusChange = require('../../model/plan_status_change');
 const { formatDate } = require('../date');
+const { downloadChallengedFile } = require('../challanged-file');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
 
@@ -41,116 +41,11 @@ const init = () =>
 		})();
 	});
 
-const downloadChallengedFile = (url, file, options) => {
-	return new Promise((resolve) => {
-		options = options || {};
-
-		http.get(url, options, (response) => {
-			if (response.statusCode !== 200) {
-				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
-				resolve(false);
-			} else {
-				const contentType = response.headers['content-type'] || '';
-
-				// if content-type is text/html this isn't the file we wish to download but one
-				// of the challenge stages
-				if (contentType.startsWith('text/html')) {
-					// if we didn't get a cookie yet this is the first part of the challenge -
-					// the page source contains the javascript code we need to run and challenge
-					// paramters for the calculation
-					if (!('set-cookie' in response.headers)) {
-						// download the entire response so we can solve the challenge
-						let responseData = '';
-						response.on('data', (chunk) => { responseData += chunk; });
-						response.on('end', () => {
-							if (responseData.indexOf('ChallengeId=') > -1) {
-								// extract challenge params
-								const challenge = parseChallenge(responseData);
-
-								// send the request again with the challenge headers
-								downloadChallengedFile(url, file, {
-									headers: {
-										'X-AA-Challenge': challenge.challenge,
-										'X-AA-Challenge-ID': challenge.challengeId,
-										'X-AA-Challenge-Result': challenge.result
-									}
-								}).then((res) => resolve(res));
-							} else {
-								Log.error(`url content type was html, but response contained no challenge: "${responseData.substr(0, 50)}..."`);
-								resolve(false);
-							}
-						});
-					} else {
-						// if we did get a cookie we completed the challenge successfuly and
-						// should use it to download the file
-						downloadChallengedFile(url, file, {
-							headers: {
-								'Cookie': response.headers['set-cookie']
-							}
-						}).then((res) => resolve(res));
-					}
-				} else {
-					// this is the actual file, so pipe the response into the supplied file
-					response.pipe(file);
-					file.on('finish', async function () {
-						await file.close();
-						resolve(true);
-					});
-				}
-			}
-		}).on('error', (err) => {
-			Log.error(err);
-			resolve(false);
-		});
-	});
-};
-
-const parseChallenge = (pageSrc) => {
-	// parse a challenge given by mavat's web servers, forcing us to solve a math
-	// challenge and send the result as a header to actually get the page.
-	// copied from https://github.com/niryariv/opentaba-server/blob/ab15e51bb1ae4733954827d51961bb72796052fd/lib/helpers.py#L109
-	const top = pageSrc.split('<script>')[1].split('\n');
-	const challenge = top[1].split(';')[0].split('=')[1];
-	const challengeId = top[2].split(';')[0].split('=')[1];
-	return { challenge, challengeId, result: solveChallenge(challenge) }
-}
-
-const solveChallenge = (challenge) => {
-	// solve mavat's page challenge.
-	// copied from the original challenge since it is javascript code to begin with
-	var var_str = '' + challenge;
-	var var_arr = var_str.split('');
-	var LastDig = var_arr.reverse()[0];
-	var minDig = var_arr.sort()[0];
-	var subvar1 = (2 * (var_arr[2])) + (var_arr[1] * 1);
-	var subvar2 = (2 * var_arr[2]) + var_arr[1];
-	var my_pow = Math.pow(((var_arr[0] * 1) + 2), var_arr[1]);
-	var x = (challenge * 3 + subvar1) * 1;
-	var y = Math.cos(Math.PI * subvar2);
-	var answer = x * y;
-	answer -= my_pow * 1;
-	answer += (minDig * 1) - (LastDig * 1);
-	answer = answer + subvar2;
-	return answer;
-}
-
 const downloadPlanPDF = async (functionCallText) => {
-	if (functionCallText === undefined) {
-		return false;
-	}
 
-	// functionCallText is in the format `openDoc(X, Y)`
-	// where X can be `'6000611696321'` for example
-	// and Y can be `'0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE'` for example
-	// we wish to find X and Y, so we look for substrings that has numbers and letters between two ' chars.
-	const matches = functionCallText.match(/'[\dA-Z]+'/g);
-	if (matches === null) {
-		return false;
-	}
+	const downloadUrl = getFileUrl(functionCallText);
+	if (!downloadUrl) return false;
 
-	const entityDocId = matches[0].slice(1, matches[0].length - 1); // without the beginning and ending quotes
-	const entityDocNumber = matches[1].slice(1, matches[1].length - 1);
-	const downloadUrl = `http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=${entityDocId}&edn=${entityDocNumber}&opener=AttachmentError.aspx`;
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
 	const downloadSuccess = await downloadChallengedFile(downloadUrl, file);
 
@@ -169,18 +64,17 @@ const getPlanInstructions = async (page) => {
 		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
 		// (flattened table)
 		for (let i = 0; i < innerTexts.length; i += 5) {
-			// before approval
 			if ((innerTexts[i] === 'הוראות התכנית' && innerTexts[i + 1] === 'הוראות התכנית') || // before approval
                 (innerTexts[i] === 'מסמכים חתומים' && innerTexts[i + 1] === 'תדפיס הוראות התכנית - חתום לאישור')) { // after approval
 				return elements[i + 4].querySelector('img').getAttribute('onclick');
 			}
 		}
+		// note: this is run in the headless browser context. `Log` is not available for use
 		console.log('couldn\'t find the plan details PDF link on this web page');
 		return undefined;
 	});
 
 	const hasDownloaded = await downloadPlanPDF(functionCallText);
-
 	if (hasDownloaded) {
 		try {
 			return processPlanInstructionsFile(PLAN_DOWNLOAD_PATH);
@@ -188,6 +82,36 @@ const getPlanInstructions = async (page) => {
 			Log.error('Fetch plan instructions error', err);
 		}
 	}
+};
+
+
+const getPlanFiles = async (page) => {
+	const files = await page.evaluate(() => {
+		const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
+		const innerTexts = elements.map(ele => ele.innerText.trim());
+
+		// elements look like this:
+		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
+		// (flattened table)
+		let files = [];
+		for (let i = 0; i < innerTexts.length; i += 5) {
+			const file = {
+				kind: innerTexts[i], 
+				name: innerTexts[i+1],
+				description: innerTexts[i+2],
+				date: innerTexts[i+3],
+				openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
+				fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
+			};
+			files.push(file);
+		}
+
+		// console.log(`fetched ${files.length} files`);
+		return files;
+	});
+
+	// cleaning and formatting the files
+	return files.map(formatFile);
 };
 
 const fetch = planUrl =>
@@ -213,6 +137,7 @@ const fetch = planUrl =>
 				);
 
 				const pageInstructions = await getPlanInstructions(page);
+				const planFiles = await getPlanFiles(page);
 
 				page.close();
 
@@ -222,7 +147,8 @@ const fetch = planUrl =>
 				if (!dom) {
 					reject('cheerio dom is null');
 				}
-				resolve({ cheerioPage: dom, pageInstructions: pageInstructions });
+				
+				resolve({ cheerioPage: dom, planFiles, pageInstructions  });
 			} catch (err) {
 				Log.error('Mavat fetch error', err);
 
@@ -373,11 +299,14 @@ const getByPlan = plan =>
 		.then(dict => {
 			const cheerioPage = dict.cheerioPage;
 			const pageInstructions = dict.pageInstructions;
+			const planFiles = dict.planFiles;
+
 			Log.debug(
 				'Retrieving',
 				plan.get('PL_NUMBER'),
 				getGoalsText(cheerioPage),
-				getAreaChanges(cheerioPage)
+				getAreaChanges(cheerioPage),
+				planFiles.length
 			);
 
 			return Bluebird.props({
@@ -387,6 +316,7 @@ const getByPlan = plan =>
 				areaChanges: getAreaChanges(cheerioPage),
 				jurisdiction: getJurisdictionString(cheerioPage),
 				planStatusList: getPlanStatusList(cheerioPage),
+				files: planFiles,
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
