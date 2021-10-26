@@ -81,10 +81,9 @@ class PlanController extends Controller {
 
 		return super.browse(req, q).then(col => {
 			col.models.forEach(planModel => {
-				if (planModel.relations.tags) {
-					planModel.tags = planModel.relations.tags.models.map(tagModel => tagModel.attributes.name);
-				}
+				planModel.tags = planModel.relations.tags.models.map(tagModel => tagModel.attributes.name);
 			});
+			return col;
 		});
 	}
 
