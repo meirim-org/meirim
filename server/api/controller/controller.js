@@ -86,14 +86,6 @@ class Controller {
 				page,
 				pageSize,
 				withRelated: options.withRelated
-			})
-			.then(collection => {
-				// return map(collection, (plan)=> ({
-				// 	...plan.attributes,
-				// 	tags: map (plan.relations.tags, (tag)=> get(tag, 'attributes.name'))
-				// }));});
-				Log.debug(this.tableName, 'browse success');
-				return collection;
 			});
 	}
 
