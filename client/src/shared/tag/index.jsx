@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import TagIcons from '../icons/TagIcons';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { useTranslation } from '../../locale/he_IL';
+import { get } from 'lodash';
 
 const tagIcons = {
     Public: TagIcons.PublicInstitutesTagIcon,
@@ -18,14 +20,15 @@ const tagIcons = {
     defaultIcon: null
 }
 
-const tagDisplayNames = {
-    Public: 'מבני ציבור',
-    Commerce: 'מסחר',
-    Employment: 'תעסוקה',
-    Housing: 'דיור',
-    Hoteliery: 'מלונאות',
-	Forest: 'שטח פתוח'
-}
+// const tagDisplayNames = {
+//     Public: t.tags.public,
+//     Commerce: t.Tags.commerce,
+//     Employment: t.tags.employment,
+//     Housing: t.tags.housing,
+//     Hoteliery: t.tags.hoteliery,
+// 	Forest: t.tags.forest,
+//     LightRail: t.tags.lightRail
+// }
 
 const TagWrapper = withTheme(styled.div`
     display: flex;
@@ -47,12 +50,15 @@ const TagIcon = styled.img`
 `;
 
 const Tag = ({ type, id, }) => {
-	return <OverlayTrigger key={id} overlay={<Tooltip>{tagDisplayNames[type]}</Tooltip>}>
-        	<TagWrapper>
-                    {tagIcons[type] && <TagIcon src={tagIcons[type]} />}
-                    {tagDisplayNames[type]}
-            </TagWrapper>
-            </OverlayTrigger>;
+    const { t } = useTranslation();
+    const displayName = get(t, `tags.${type}`, 'תגית');
+
+	return <OverlayTrigger key={id} overlay={<Tooltip>{displayName}</Tooltip>}>
+                <TagWrapper>
+                        {tagIcons[type] && <TagIcon src={tagIcons[type]} />}
+                        {displayName}
+                </TagWrapper>
+                </OverlayTrigger>;
 }
 
 export default Tag;
