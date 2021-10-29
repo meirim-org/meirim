@@ -14,21 +14,12 @@ const tagIcons = {
     Forest: TagIcons.OpenFieldTagIcon,
     Employment: TagIcons.OfficesTagIcon,
     Housing: TagIcons.ResidenceTagIcon,
-    // transportation: TagIcons.TransportationTagIcon,
+    // Transportation: TagIcons.TransportationTagIcon,
     Hoteliery: null,
+    LightRail: TagIcons.LightRailTagIcon,
     plus: TagIcons.PlusTagIcon,
     defaultIcon: null
 }
-
-// const tagDisplayNames = {
-//     Public: t.tags.public,
-//     Commerce: t.Tags.commerce,
-//     Employment: t.tags.employment,
-//     Housing: t.tags.housing,
-//     Hoteliery: t.tags.hoteliery,
-// 	Forest: t.tags.forest,
-//     LightRail: t.tags.lightRail
-// }
 
 const TagWrapper = withTheme(styled.div`
     display: flex;
@@ -37,7 +28,7 @@ const TagWrapper = withTheme(styled.div`
     background: #F5F5F5;
     border-radius: 4px;
     padding: 0 8px;
-    margin: 0 0 10px 10px;
+    margin: 0 0 5px 10px;
     font-size: 16px;
     font-weight: normal;
     color: ${props => props.theme.palette.black};
