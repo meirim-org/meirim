@@ -147,7 +147,7 @@ const PlanCard = ({ plan }) => {
                         </PlanGoals> }
 						{tags.length > 0 && <Tags ref={tagsWrapperRef}>
 							{tags.map((tag, i) => {
-								return <Tag type={tag.tag_name} />
+								return <Tag type={tag} />
 							})}
 						</Tags>}
 					</SC.CardContent>
