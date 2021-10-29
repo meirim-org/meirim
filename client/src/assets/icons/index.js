@@ -8,6 +8,8 @@ import PlusTagIcon from './plus-tag-icon.svg';
 import PublicInstitutesTagIcon from './public-institutes-tag-icon.svg';
 import ResidenceTagIcon from './residence-tag-icon.svg';
 import TransportationTagIcon from './transportation-tag-icon.svg';
+import LightRailTagIcon from './light-rail-tag-icon.svg';
+import RiverTagIcon from './river-tag-icon.svg';
 
 export {
 	BookmarkOutlinedIcon,
@@ -19,5 +21,8 @@ export {
 	PlusTagIcon,
 	PublicInstitutesTagIcon,
 	ResidenceTagIcon,
-	TransportationTagIcon
+	TransportationTagIcon,
+	LightRailTagIcon,
+	RiverTagIcon
+
 };
