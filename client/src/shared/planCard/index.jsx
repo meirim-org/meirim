@@ -242,11 +242,17 @@ const PlanDetailsHeader = withTheme(styled.div`
 `);
 
 const PlanGoals = withTheme(styled.div`
-    display: flex;
+    max-height: 70px;
     flex-flow: row;
     align-items: center;
     flex-shrink: 0;
+    text-overflow: ellipsis;
     color: ${props => props.theme.palette.black};
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    top: 77px;
     span {
         font-size: 16px;
         color: ${props => props.theme.palette.black};
@@ -292,5 +298,5 @@ const Tags = styled.div`
     flex-flow: wrap;
     overflow: hidden;
     position: absolute;
-    bottom: 10px;
+    bottom: 5px;
 `;
