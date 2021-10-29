@@ -187,7 +187,17 @@ const HEBREW_TRANSLATION = {
 	inProgress: 'בתהליך',
 	approved: 'מאושרות',
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
-תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`
+תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
+	tags: {
+		Public: 'מבני ציבור', 
+		Housing: 'דיור',
+		Commerce: 'מסחר',
+		Employment: 'תעסוקה',
+		Hoteliery: 'מלונאות',
+		Forest: 'שטח פתוח',
+		LightRail: 'רכבת קלה',
+		River: 'נחל'
+	}
 };
 
 const ARABIC_TRANSLATION =  {
@@ -373,7 +383,17 @@ const ARABIC_TRANSLATION =  {
 	inProgress: 'בתהליך',
 	approved: 'מאושרות',
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
-תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`
+תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
+	tags: {
+		Public: 'مباني عامة', 
+		Housing: 'سكن',
+		Commerce: 'تجارة',
+		Employment: 'إشغال',
+		Hoteliery: 'فندقة',
+		Forest: 'أراضي مفتوحة',
+		LightRail: 'قطار خفيف',
+		River: 'تيار مائي'
+}
 };
 
 export const LANGUAGES = {
