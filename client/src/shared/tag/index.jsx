@@ -16,7 +16,7 @@ const tagIcons = {
     Housing: TagIcons.ResidenceTagIcon,
     // Transportation: TagIcons.TransportationTagIcon,
     Hoteliery: null,
-    LightRail: TagIcons.LightRailTagIcon,
+    ['Light Rail']: TagIcons.LightRailTagIcon,
     plus: TagIcons.PlusTagIcon,
     defaultIcon: null
 }

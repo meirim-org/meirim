@@ -195,7 +195,7 @@ const HEBREW_TRANSLATION = {
 		Employment: 'תעסוקה',
 		Hoteliery: 'מלונאות',
 		Forest: 'שטח פתוח',
-		LightRail: 'רכבת קלה',
+		['Light Rail']: 'רכבת קלה',
 		River: 'נחל'
 	}
 };
@@ -391,7 +391,7 @@ const ARABIC_TRANSLATION =  {
 		Employment: 'إشغال',
 		Hoteliery: 'فندقة',
 		Forest: 'أراضي مفتوحة',
-		LightRail: 'قطار خفيف',
+		['Light Rail']: 'قطار خفيف',
 		River: 'تيار مائي'
 }
 };
