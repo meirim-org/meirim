@@ -5,7 +5,9 @@ import {
 	OfficesTagIcon,
 	ResidenceTagIcon,
 	TransportationTagIcon,
-    PlusTagIcon
+	LightRailTagIcon,
+    PlusTagIcon,
+	RiverTagIcon
 } from '../../../assets/icons/';
 
 export default {
@@ -15,5 +17,7 @@ export default {
 	OfficesTagIcon,
 	ResidenceTagIcon,
 	TransportationTagIcon,
-    PlusTagIcon
+    PlusTagIcon,
+	LightRailTagIcon,
+	RiverTagIcon
 };

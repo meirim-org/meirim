@@ -1,6 +1,7 @@
 const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
+const Tag = require('./tag');
 const { Bookshelf, Knex } = require('../service/database');
 
 class PlanTag extends Model {
@@ -13,7 +14,7 @@ class PlanTag extends Model {
 			created_by_child: ['boolean'],
 			child_is_stand_alone: ['boolean'],
 			creation_date: ['datetime']
-		}
+		};
 
 	}
 
@@ -37,12 +38,12 @@ class PlanTag extends Model {
 		return Knex('plan_tag')
 			.join('tag', 'tag.id', 'plan_tag.tag_id')
 			.select('tag.name','tag.display_name')
-			.where({ plan_id: planId })
+			.where({ plan_id: planId });
 	}
 
 	static deletePlanTags ( planId) {
 		return this.query('where', 'plan_id', '=', planId)
-			.destroy({require: false})
+			.destroy({ require: false })
 			.then(() => true);
 	}
 
@@ -52,8 +53,8 @@ class PlanTag extends Model {
 			await Bookshelf.transaction(async (transaction) => {
 				for (const datum in data) {
 					await new PlanTag(data[datum]).save(null, { transacting: transaction });
-			}
-		});
+				}
+			});
 		} catch (err) {
 			Log.error(err);
 		}
