@@ -4,6 +4,7 @@ const Success = require('../view/success');
 const Log = require('../lib/log');
 const Exception = require('../model/exception');
 const { bind } = require('lodash');
+const { map, get } = require('bluebird');
 
 class Controller {
 	constructor (model) {
@@ -44,7 +45,7 @@ class Controller {
 				});
 	}
 
-	browse (req, options = {}, afterFetch = undefined) {
+	browse (req, options = {}) {
 		const { query } = req;
 
 		let page = parseInt(query.page, 10) || 1;
@@ -85,18 +86,6 @@ class Controller {
 				page,
 				pageSize,
 				withRelated: options.withRelated
-			})
-			.then(collection => {
-				if (afterFetch) {
-					return afterFetch(collection).then(collection => {
-						Log.debug(this.tableName, 'browse success');
-						return collection;
-					});
-				}
-
-				console.log(collection.models[0].relations.tags.models);
-				Log.debug(this.tableName, 'browse success');
-				return collection;
 			});
 	}
 

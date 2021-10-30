@@ -1,6 +1,7 @@
 const Controller = require('../controller/controller');
 const Plan = require('../model/plan');
-const GJV = require('geojson-validation'); 
+const GJV = require('geojson-validation');
+const { assign } = require('lodash');
 const Config = require('../lib/config');
 const { Knex } = require('../service/database');
 const Exception = require('../model/exception');
@@ -49,9 +50,9 @@ class PlanController extends Controller {
 				type: 'Point',
 				coordinates: points
 			};
-	
+
 			if(!GJV.valid(geojson)){
-				throw new Exception.BadRequest('point is invalid'); 
+				throw new Exception.BadRequest('point is invalid');
 			}
 
 			const polygon = wkt.convert(geojson);
@@ -79,7 +80,14 @@ class PlanController extends Controller {
 			q.where.geo_search_filter = [false];
 		}
 
-		return super.browse(req, q, this.afterFetch);
+		return super.browse(req, q).then(col => {
+			col.models.forEach(planModel => {
+				planModel.attributes.tags = planModel.relations.tags.models.map(tagModel => tagModel.attributes.name);
+				delete planModel.relations;
+			});
+			
+			return col;
+		});
 	}
 
 
@@ -126,7 +134,7 @@ class PlanController extends Controller {
 	}
 
 	publicBrowse (req) {
-		
+
 		const { query } = req;
 		const response = {
 			type: 'FeatureCollection',
@@ -144,7 +152,7 @@ class PlanController extends Controller {
 			coordinates: [points]
 		};
 		if(!GJV.valid(geojson)){
-			throw new Exception.BadRequest('polygon is invalid'); 
+			throw new Exception.BadRequest('polygon is invalid');
 		}
 		const polygon = wkt.convert(geojson);
 		const whereRaw = [
