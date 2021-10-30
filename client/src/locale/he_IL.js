@@ -189,14 +189,14 @@ const HEBREW_TRANSLATION = {
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
 	tags: {
-		Public: 'מבני ציבור', 
-		Housing: 'דיור',
-		Commerce: 'מסחר',
-		Employment: 'תעסוקה',
-		Hoteliery: 'מלונאות',
-		Forest: 'שטח פתוח',
-		['Light Rail']: 'רכבת קלה',
-		River: 'נחל'
+		public: 'מבני ציבור', 
+		housing: 'דיור',
+		commerce: 'מסחר',
+		employment: 'תעסוקה',
+		hoteliery: 'מלונאות',
+		forest: 'שטח פתוח',
+		lightRail: 'רכבת קלה',
+		river: 'נחל'
 	}
 };
 
@@ -385,14 +385,14 @@ const ARABIC_TRANSLATION =  {
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
 	tags: {
-		Public: 'مباني عامة', 
-		Housing: 'سكن',
-		Commerce: 'تجارة',
-		Employment: 'إشغال',
-		Hoteliery: 'فندقة',
-		Forest: 'أراضي مفتوحة',
-		['Light Rail']: 'قطار خفيف',
-		River: 'تيار مائي'
+		public: 'مباني عامة', 
+		housing: 'سكن',
+		commerce: 'تجارة',
+		employment: 'إشغال',
+		hoteliery: 'فندقة',
+		forest: 'أراضي مفتوحة',
+		lightRail: 'قطار خفيف',
+		river: 'تيار مائي'
 }
 };
 

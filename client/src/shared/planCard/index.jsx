@@ -137,7 +137,7 @@ const PlanCard = ({ plan }) => {
                             {plan.distance > 0 && <PlanDistance showDivider={plan?.data?.QUANTITY_DELTA_120 > 0}>
                                 {getDistanceText(plan.distance)}
                             </PlanDistance>}
-                            {housingUnitAddition > 0 && <span>{`${housingUnitAddition}+ יחידות דיור`}</span>}
+                            {housingUnitAddition > 0 && <span>{`${housingUnitAddition}+ דירות`}</span>}
                         </PlanDetailsHeader>
 						<PlanName>
                             {plan?.plan_display_name}
