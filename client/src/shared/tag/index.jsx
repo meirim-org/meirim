@@ -35,7 +35,7 @@ const SUPPORTED_TAGS = {
     },
     Streams: {
         key: 'river', 
-        icon: TagIcons.RiverTagIcon,
+        icon: TagIcons.RiverTagIcon
     },
     // eslint-disable-next-line
     ['Light Rail']: {
@@ -89,7 +89,7 @@ const Tag = ({ type, id, }) => {
 
 	return <OverlayTrigger key={id} overlay={<Tooltip>{displayName}</Tooltip>}>
                 <TagWrapper>
-                        {tagIcons[type] && <TagIcon src={tag.icon} />}
+                        {tag.icon && <TagIcon src={tag.icon} />}
                         {displayName}
                 </TagWrapper>
                 </OverlayTrigger>;
