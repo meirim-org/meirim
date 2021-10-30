@@ -8,6 +8,46 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { useTranslation } from '../../locale/he_IL';
 import { get } from 'lodash';
 
+const SUPPORTED_TAGS = {
+    Public: {
+        key: 'public',
+        icon: TagIcons.PublicInstitutesTagIcon
+    },
+    Housing: {
+        key: 'housing', 
+        icon: TagIcons.ResidenceTagIcon
+    },
+    Commerce: {
+        key: 'commerce', 
+        icon: TagIcons.CommerceTagIcon
+    },
+    Employment: {
+        key: 'employment', 
+        icon: TagIcons.OfficesTagIcon
+    },
+    Hoteliery: {
+        key: 'hoteliery', 
+        icon: null
+    },
+    Forest: {
+        key: 'forest', 
+        icon: TagIcons.OpenFieldTagIcon
+    },
+    Streams: {
+        key: 'river', 
+        icon: TagIcons.RiverTagIcon,
+    },
+    // eslint-disable-next-line
+    ['Light Rail']: {
+        key: 'lightRail', 
+        icon: TagIcons.LightRailTagIcon
+    }, 
+    Default: {
+        key: 'default',
+        icon: TagIcons.LightRailTagIcon
+    }
+}
+
 const tagIcons = {
     Public: TagIcons.PublicInstitutesTagIcon,
     Commerce: TagIcons.CommerceTagIcon,
@@ -16,6 +56,7 @@ const tagIcons = {
     Housing: TagIcons.ResidenceTagIcon,
     // Transportation: TagIcons.TransportationTagIcon,
     Hoteliery: null,
+    // eslint-disable-next-line
     ['Light Rail']: TagIcons.LightRailTagIcon,
     plus: TagIcons.PlusTagIcon,
     defaultIcon: null
@@ -41,12 +82,14 @@ const TagIcon = styled.img`
 `;
 
 const Tag = ({ type, id, }) => {
+
+    const tag = SUPPORTED_TAGS[type] || SUPPORTED_TAGS.Default;
     const { t } = useTranslation();
-    const displayName = get(t, `tags.${type}`, 'תגית');
+    const displayName = get(t, `tags.${tag.key}`, 'תגית');
 
 	return <OverlayTrigger key={id} overlay={<Tooltip>{displayName}</Tooltip>}>
                 <TagWrapper>
-                        {tagIcons[type] && <TagIcon src={tagIcons[type]} />}
+                        {tagIcons[type] && <TagIcon src={tag.icon} />}
                         {displayName}
                 </TagWrapper>
                 </OverlayTrigger>;
