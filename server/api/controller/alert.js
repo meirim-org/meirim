@@ -41,13 +41,6 @@ class AlertController extends Controller {
 					// return successfully even if alert was not found since
 					// it is probably already unsubscribed
 					return null;
-				} else if (fetchedModel.get('person_id') !== req.session.person.id) {
-					Log.warn(
-						'unauthorized alert unsubscribe attempt:',
-						fetchedModel.get('id'),
-						req.session.person.id
-					);
-					return null;
 				}
 
 				Log.debug(

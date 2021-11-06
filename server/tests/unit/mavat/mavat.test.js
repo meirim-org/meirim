@@ -157,6 +157,17 @@ describe('Challenged file download', function() {
 				opener: 'AttachmentError.aspx'
 			})
 			.matchHeader('Cookie', 'BotMitigationCookie_8542922468160446851="101523001608416663q2PEpM3J8h035u5gkG6n0XjGh+4="; path=/')
+			// reply with redirect to https
+			.reply(302, undefined, {'Location': 'https://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx'});
+
+		const sslMavatScope = nock('https://mavat.moin.gov.il')
+			.get('/MavatPS/Forms/Attachment.aspx')
+			.query({
+				edid: 1,
+				edn: 'FAKEEDN',
+				opener: 'AttachmentError.aspx'
+			})
+			.matchHeader('Cookie', 'BotMitigationCookie_8542922468160446851="101523001608416663q2PEpM3J8h035u5gkG6n0XjGh+4="; path=/')
 			// reply with a fake file with pdf content-type
 			.reply(200, 'fake-file-contents', {'Content-Type': 'application/pdf'});
 
@@ -171,6 +182,7 @@ describe('Challenged file download', function() {
 
 		// make sure all mocked urls were accessed
 		mavatScope.done();
+		sslMavatScope.done();
 
 		// make sure the result was successful and the file contains the correct data
 		assert.equal(resSuccess, true, 'download should be successful');

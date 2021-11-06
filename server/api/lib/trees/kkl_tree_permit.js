@@ -47,8 +47,8 @@ exports.KKLTreePermit = {
 
 	dateFormat : 'DD/MM/YYYY',
 	urls : [
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/trees_befor.xlsx',
-		'https://www.moag.gov.il/yhidotmisrad/forest_commissioner/rishyonot_krita/Documents/trees_after.xlsx'	
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_trees_befor.xlsx',
+		'https://www.gov.il/BlobFolder/guide/pro_felling_trees/he/forestry_and_trees_falling_trees_after.xlsx'	
 	],
 	
 	getRegionalOffice (row) {

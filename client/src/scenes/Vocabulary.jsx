@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import Wrapper from '../components/Wrapper';
 import Keywords from '../assets/keywords';
-
+import Wrapper from '../components/Wrapper';
 import './Vocabulary.css';
+
 
 export default function Vocabulary() {
 	
@@ -19,7 +19,7 @@ export default function Vocabulary() {
                     של שימושי הקרקע בהם עושים שימוש בישראל המלווים בהסבר קצר.
 				</p>
 				{Keywords.map(word => (
-					<Fragment>
+					<Fragment key={word.title}>
 						<h4>{word.title}</h4>
 						<p>{word.description}</p>
 					</Fragment>

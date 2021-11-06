@@ -4,6 +4,7 @@ const Success = require('../view/success');
 const Log = require('../lib/log');
 const Exception = require('../model/exception');
 const { bind } = require('lodash');
+const { map, get } = require('bluebird');
 
 class Controller {
 	constructor (model) {
@@ -78,15 +79,13 @@ class Controller {
 				options.orderByRaw.map((w) => qb.orderBy(w))
 			);
 		}
+
 		return bsQuery
 			.fetchPage({
 				columns,
 				page,
-				pageSize
-			})
-			.then(collection => {
-				Log.debug(this.tableName, 'browse success');
-				return collection;
+				pageSize,
+				withRelated: options.withRelated
 			});
 	}
 

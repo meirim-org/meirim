@@ -1,12 +1,13 @@
-import React from 'react';
-import ShareIcon from '@material-ui/icons/Share';
-import { openModal } from 'redux/modal/slice';
-import { useDispatch } from 'react-redux';
 import { BottomNavigationAction } from '@material-ui/core';
-import t from 'locale/he_IL';
+import ShareIcon from '@material-ui/icons/Share';
+import { useTranslation } from 'locale/he_IL';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { openModal } from 'redux/modal/slice';
 
 const ShareTree = () => {
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
 	return (
 		<BottomNavigationAction

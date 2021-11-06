@@ -23,7 +23,7 @@ const planSlice = createSlice({
 			state.dataArea = [];
 			state.dataUnits = [];
 			state.responseCode = 0;
-		},
+		}
 	}
 });
 
