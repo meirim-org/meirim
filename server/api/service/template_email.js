@@ -10,6 +10,7 @@ const Juice = require('juice');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
+const { map, keys } = require('lodash');
  
 class DynamicTemplateEmail {
 	 /**
@@ -29,6 +30,19 @@ class DynamicTemplateEmail {
 		 sgMail.setApiKey('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');
 	 }
 
+	getEmailAttachements (plans) {
+		 return map(keys(plans), (key)=>{
+			 if(plans[key].map) return {
+				cid: `${key}map`,
+				content_id: `${key}map`,
+				filename: 'plan_map.png',
+				content: plans[key].map,
+				encoding: 'base64',
+				disposition: 'inline',
+			 };
+		 });
+	 }
+
 	 digestPlanAlert (recipient, emailPlanParams, emailAlertParams) {
 		 const email = {
 			 from: `"${this.config.from_name}" < ${this.config.from_email}>`, // sender address
@@ -46,34 +60,15 @@ class DynamicTemplateEmail {
 					 }
 				 }
 			  ],
-			  attachments: [
-				{
-					cid: 'planmap',
-					content_id: 'planmap',
-					filename: 'plan_map.png',
-					content: emailPlanParams.firstPlan.map,
-					encoding: 'base64',
-					disposition: 'inline',
-				},
-				{
-					cid: 'secondplanmap',
-					content_id: 'secondplanmap',
-					filename: 'second_plan_map.png',
-					content: emailPlanParams.secondPlan.map,
-					encoding: 'base64',
-					disposition: 'inline',
-				}
-			],
+			  attachments:  this.getEmailAttachements(emailPlanParams),
 			 template_id : this.dynamicTemplates.DigestPlanAlert,
-		 };
-		  return sgMail
-			 .send(email)
-			 .then((res) => {
-		   console.log('Email sent');
-			 })
-			 .catch((error) => {
-		   console.error(error);
-			 });
+		};
+		return sgMail
+			.send(email)
+			.then(() => {
+				console.log('Email sent');
+			});
+		
 	 }
  
 	 /**

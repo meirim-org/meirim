@@ -39,7 +39,7 @@ const AlertPlans = ({ notifyAddedAlert }) => {
 			address,
 			// we make the calculation as the slider is LTR, and the value
 			// is the opposite in RTL
-			radius: sliderBounds.max + sliderBounds.min - radius,
+			radius: (sliderBounds.max + sliderBounds.min - radius).toString(),
 			type: 'plan'
 		}).then(() => {
 			notifyAddedAlert();

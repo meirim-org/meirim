@@ -61,7 +61,7 @@ const parseLandUses = (changes) => {
 
 const describeChange = (mappedChanges, landUseKey, unitKey) => {
 	const changeValue = get(mappedChanges, `${landUseKey}.${unitKey}`, 0);
-	if (changeValue === 0) return;
+	if (changeValue === 0) return '';
 	const sign = changeValue >=0 ? INCREASE_KEY : DECREASE_KEY;
 	const units = LAND_USE_CHANGE_UNITS[unitKey].description;
 	return `${changeValue}${sign} ${units} ${LAND_USES[landUseKey].getDescriptionText(unitKey)}`;

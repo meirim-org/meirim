@@ -27,28 +27,22 @@ const fetchStaticMap = (lat, lon) => {
 		});
 };
 
-const drawStaticMapWithPolygon = (geoJSON) => {
+const drawStaticMapWithPolygon = async (geoJSON) => {
 	const map = new StaticMaps(Config.get('staticmap'));
-
 	var bbox = Turf.bbox(geoJSON);
-
 	const polygon = {
 		coords: geoJSON.coordinates[0],
 		color: '#8F5DE2',
 		width: 6
-	  };
-
+	};
 	map.addPolygon(polygon);
 	return map
 		.render(bbox)
-		.then(() => {
-			// map.addPolygon(polygon);
-			return map.image.image.toString('base64');
-		})
+		.then(() => map.image.image.toString('base64'))
 		.catch(err => {
 			// fail with no image
 			Log.error('Cannot generate static map for email', err);
-			return '';
+			return;
 		});
 };
 
