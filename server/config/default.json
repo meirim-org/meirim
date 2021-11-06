@@ -22,7 +22,8 @@
 	"services": {
 		"schedule": {
 			"iplan": "0 0 0 * * *",
-			"sendPlanningAlerts": "0 0 0 * * *"
+			"sendPlanningAlerts": "0 0 0 * * *",
+			"sendDigestPlanningAlerts": "*/1 * * * *"
 		}
 	},
 	"session": {
