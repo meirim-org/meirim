@@ -48,19 +48,19 @@ const SUPPORTED_TAGS = {
     }
 }
 
-const tagIcons = {
-    Public: TagIcons.PublicInstitutesTagIcon,
-    Commerce: TagIcons.CommerceTagIcon,
-    Forest: TagIcons.OpenFieldTagIcon,
-    Employment: TagIcons.OfficesTagIcon,
-    Housing: TagIcons.ResidenceTagIcon,
-    // Transportation: TagIcons.TransportationTagIcon,
-    Hoteliery: null,
-    // eslint-disable-next-line
-    ['Light Rail']: TagIcons.LightRailTagIcon,
-    plus: TagIcons.PlusTagIcon,
-    defaultIcon: null
-}
+// const tagIcons = {
+//     Public: TagIcons.PublicInstitutesTagIcon,
+//     Commerce: TagIcons.CommerceTagIcon,
+//     Forest: TagIcons.OpenFieldTagIcon,
+//     Employment: TagIcons.OfficesTagIcon,
+//     Housing: TagIcons.ResidenceTagIcon,
+//     // Transportation: TagIcons.TransportationTagIcon,
+//     Hoteliery: null,
+//     // eslint-disable-next-line
+//     ['Light Rail']: TagIcons.LightRailTagIcon,
+//     plus: TagIcons.PlusTagIcon,
+//     defaultIcon: null
+// }
 
 const TagWrapper = withTheme(styled.div`
     display: flex;
