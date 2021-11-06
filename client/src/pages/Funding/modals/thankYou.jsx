@@ -1,14 +1,15 @@
+import { useTranslation } from 'locale/he_IL';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Button, Link } from 'shared';
+import { useHistory } from 'react-router-dom';
 import { closeModal } from 'redux/modal/slice';
+import { Button, Link } from 'shared';
 import * as SC from './style';
-import t from 'locale/he_IL';
 
 const ThankYou = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const { t } = useTranslation();
 
 	return (
 		<SC.SuccessWindowWrapper>

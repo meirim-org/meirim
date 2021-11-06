@@ -1,12 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import StarIcon from '@material-ui/icons/Star';
-import t from 'locale/he_IL';
 import { BottomNavigationAction } from '@material-ui/core';
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const SavePlan = ({ subscriptionHandler, isFavPlan }) => {
-	
+	const { t } = useTranslation();
+
 	return (
 		<BottomNavigationAction
 			onClick={subscriptionHandler}

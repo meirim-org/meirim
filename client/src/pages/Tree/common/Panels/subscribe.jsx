@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Text, Button } from 'shared';
-import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import * as SC from './style';
-import { UserSelectors } from 'redux/selectors';
-import { openModal } from 'redux/modal/slice';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { openModal } from 'redux/modal/slice';
+import { UserSelectors } from 'redux/selectors';
+import { Button, TabBox, TabPanel, Text } from 'shared';
+import * as SC from './style';
 
 export const SubscribePanel = ({ subscribePanel, handleSubscribePanel }) => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const theme = useTheme();
-	const [ isOpen, setIsOpen ] = useState(true)
-	const { isAuthenticated } = UserSelectors()
-
+	const [ isOpen, setIsOpen ] = useState(true);
+	const { isAuthenticated } = UserSelectors();
+	const { t } = useTranslation();
 	if ( isAuthenticated || !isOpen ) return null;
 
 	return (

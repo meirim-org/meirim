@@ -1,5 +1,6 @@
 const Bluebird = require('bluebird');
 const moment = require('moment');
+const { get } = require('lodash');
 const Model = require('./base_model');
 const Log = require('../lib/log');
 const wkt = require('terraformer-wkt-parser');
@@ -21,6 +22,7 @@ const StaticMap = require('./staticmap');
 const File = require('./file');
 const { parseLandUses, describeChange, LAND_USES, LAND_USE_CHANGE_UNITS } = require('../service/landUseMappers');
 const { drawStaticMapWithPolygon } = require('../service/staticmap');
+const Tag = require('./tag');
 
 class Plan extends Model {
 	get rules() {
@@ -62,6 +64,11 @@ class Plan extends Model {
 			attributes.data = JSON.stringify(attributes.data);
 		}
 		return super.format(attributes);
+	}
+
+	tags() {
+		return this.belongsToMany(Tag, 'plan_tag', 'plan_id', 'tag_id');
+		// return this.hasMany(PlanTag, 'plan_id');
 	}
 
 	get hasTimestamps() {
@@ -191,8 +198,12 @@ class Plan extends Model {
 		return describeChange(mappedAreaChange, LAND_USES.housing, LAND_USE_CHANGE_UNITS.units);
 	}
 
-	async map(){
-		const existingMap = this.related('staticmap').get('base64string');
+	staticmap(){
+		return this.hasOne(StaticMap);
+	}
+
+	async getMap(){
+		const existingMap = get(this, 'relations.staticmap.attributes.base64string');
 		if (existingMap) return existingMap;
 		try {
 			const planGeom = this.get('geom');
@@ -204,15 +215,8 @@ class Plan extends Model {
 			return mapBase64;
 		}
 		catch(error){
-			Log.error('Failed creatinf a base64 staticmap');
+			Log.error('Failed creating a base64 staticmap');
 		}
-		finally{
-			return ;
-		}
-	}
-
-	staticmap () {
-		return this.hasOne(StaticMap);
 	}
 
 	canRead() {
@@ -402,13 +406,9 @@ class Plan extends Model {
 			// delete all of the plan's existing files
 			const fileRows = await File.query(qb => {
 				qb.where('plan_id', plan.id);
-			}).fetchAll({
-				transacting: transaction
-			});
+			}).fetchAll({ transacting: transaction });
 			for (const existingFile of fileRows.models) {
-				await existingFile.destroy({
-					transacting: transaction
-				});
+				await existingFile.destroy({ transacting: transaction });
 			}
 
 			// save all plan files scraped from mavat
@@ -571,5 +571,19 @@ class Plan extends Model {
 			withRelated: ['staticmap']
 		}).then(res=> res.models);
 	}
+	// TODO: actually get the plans we want to tag today, for now getting all of them in dev
+	static async getPlansToTag (options) {
+		return Plan.query(qb => {
+			if (options && options.OBJECTID) {
+				qb.where('OBJECTID', '=', options.OBJECTID);
+			}
+		}).fetchAll({
+			columns: [
+				'id',
+				'geom',
+				'PL_NAME'
+			]
+		});
+	}	
 }
 module.exports = Plan;

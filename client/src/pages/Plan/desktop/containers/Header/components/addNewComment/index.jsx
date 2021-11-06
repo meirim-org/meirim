@@ -1,16 +1,17 @@
-import React from 'react';
-import { useTheme } from '@material-ui/styles';
-import PropTypes from 'prop-types';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { Button } from '@material-ui/core';
-import { Text } from 'shared';
-import t from 'locale/he_IL';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { Text } from 'shared';
 
 const AddNewComment = ({ newCommentViewHandler  }) => {
 	const { id: planId } = useParams();
 	const history = useHistory();
 	const theme = useTheme();
+	const { t } = useTranslation();
 	
 	return (
 		<Button

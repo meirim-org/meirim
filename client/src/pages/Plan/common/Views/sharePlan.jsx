@@ -1,13 +1,13 @@
-import React from 'react';
-import { Text, Button } from 'shared';
-import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
-import { device } from 'style';
-import t from 'locale/he_IL';
-import { copiedToClipboard } from 'toasts';
-import { CopyToClipboard } from  'react-copy-to-clipboard';
-import { useTheme } from '@material-ui/styles';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import React from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Button, Text } from 'shared';
+import { device } from 'style';
+import styled from 'styled-components';
+import { copiedToClipboard } from 'toasts';
 
 const ShareWrapper = styled.div`
     max-width: 100%;
@@ -109,6 +109,7 @@ const CopyUrlArea = withTheme(styled.div`
 const SharePlanView = () => {
 	const theme = useTheme();
 	const url = encodeURI(window.location.toString());
+    const { t } = useTranslation();
 	const whatsappURL = `https://wa.me/?text=תוכנית%20שאולי%20תעניין%20אותך%3A%0A${url}`; 
 
 	return (

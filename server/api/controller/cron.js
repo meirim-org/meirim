@@ -1,21 +1,21 @@
 const Bluebird = require('bluebird');
-const { map, max } = require('lodash');
+const { map, max, take, omitBy, isNil } = require('lodash');
 const moment = require('moment');
 const Turf = require('turf');
 const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
+const PlanTag = require('../model/plan_tag');
 const Email = require('../service/email');
 const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
-
-// const isNewPlan = iPlan => Plan
-//   .fetchByObjectID(iPlan.properties.OBJECTID)
-//   .then(plan => !plan);
+const PlanAreaChangesController = require('../controller/plan_area_changes');
+const getPlanTagger = require('../lib/tags');
+const PlanStatusChange = require('../model/plan_status_change');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -68,7 +68,9 @@ const complete_mavat_data = () =>
 							'Saving with mavat',
 							JSON.stringify(mavatData)
 						);
-						return plan.save();
+						return Promise.all([plan.save(),
+							PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges)
+						]);
 					})
 					.catch(() => {
 						// do nothing on error
@@ -84,8 +86,9 @@ const complete_jurisdiction_from_mavat = () =>
 		.then(planCollection =>
 			Bluebird.mapSeries(planCollection.models, plan => {
 				Log.debug(plan.get('plan_url'));
-				return MavatAPI.getByPlan(plan).then(mavatData => {
-					Plan.setMavatData(plan, mavatData);
+				return MavatAPI.getByPlan(plan).then(async mavatData => {
+					await Plan.setMavatData(plan, mavatData);
+					await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
 					Log.debug(
 						'saved with jurisdiction from mavat',
 						JSON.stringify(mavatData)
@@ -149,22 +152,23 @@ const sendPlanningAlerts = () => {
 };
 
 const planToEmail = async (plan) => {
-	const map = await plan.map();
+	if (!plan) return;
+	const map = await plan.getMap();
 	return {
-		id: plan.get('id'),
+		id: plan.get('id') || '',
+		map,
 		title: plan.get('plan_display_name'),
 		city: plan.get('PLAN_COUNTY_NAME'),
 		text: plan.get('goals_from_mavat'),
 		status: plan.get('status'),
-		areaChange: plan.describeHousingChange(),
-		map,
-		link:`${this.baseUrl}plan/${plan.get('id')}`
+		// areaChange: plan.describeHousingChange() || '',
+		// link:`${this.baseUrl}plan/${plan.get('id')}`
 	};
 }; 
 
 const alertToEmail = (alert) => {
 	const nowDate = moment().format('DD-MM-YY');
-	const addressTitle = (alert.get('address')|| '').split(',').splice(0,2).join(', ');
+	const addressTitle = take((alert.get('address')|| '').split(','), 3).join(', ');
 	const alertTitle = `תוכניות חדשות בסביבת ${addressTitle ||  'תחומי הענין שלך'}`;
 	const mailSubject = `${alertTitle} | ${nowDate} `;
 	return {
@@ -183,7 +187,7 @@ const sendDigestPlanningAlerts = async () => {
 	// have been added since he last received a digest email
 	// sendPlanningAlerts(req, res, next) {id
 	Log.info('Running digest send planning alert');
-	const lastSentDifference = 20; // update
+	const lastSentDifference = 7; // update
 	const maxAlertsToSend = 5;
 	const timeDifference = moment.duration(lastSentDifference, 'd');
 	const date = moment().subtract(timeDifference);
@@ -199,21 +203,23 @@ const sendDigestPlanningAlerts = async () => {
 		Log.debug(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
 
 		const emailAlertParams = alertToEmail(alert);
-		const emailPlanParams = {
-			firstPlan: alertPlans[1] ? await planToEmail(alertPlans[1]): {},
-			secondPlan:alertPlans[2] ? await planToEmail(alertPlans[2]): {},
-			// thirdPlan: alertPlans[4] ? planToEmail(alertPlans[3], maps[4]): {},
-		// fifthPlan: planToEmail(plans[0]),
+		const plans = { 
+			firstPlan: await planToEmail(alertPlans[0]),
+			secondPlan: await planToEmail(alertPlans[1]),
+			thirdPlan: await planToEmail(alertPlans[2]),
+			fourthPlan: await planToEmail(alertPlans[3]),
+			fifthPlan: await planToEmail(alertPlans[4]),
 		};
-
-		await DigestEmail.digestPlanAlert(email, emailPlanParams, emailAlertParams);	
-		const newUpdateDate = alertPlans.length < maxAlertsToSend ? max(map(alertPlans, 'created_at')): Date.now();
-		alert.set({
-			last_email_sent: newUpdateDate.format('YYYY-MM-DD HH:mm:ss')
-		});
+		const emailPlanParams = omitBy(plans, isNil);
 
 		try {
-			const res = await alert.save();	
+			if (alertPlans.length > 0) await DigestEmail.digestPlanAlert(email, emailPlanParams, emailAlertParams);		
+			const newUpdateDate = alertPlans.length < maxAlertsToSend ? moment(max(map(alertPlans, 'created_at'))): moment(Date.now());
+			alert.set({
+				last_email_sent: newUpdateDate.format('YYYY-MM-DD HH:mm:ss')
+			});
+			await alert.save();	
+		
 		}
 		catch (e) {
 			console.log(e);
@@ -293,6 +299,39 @@ const sendTreeAlerts = () => {
 		});
 };
 
+const updatePlanTags = async () => {
+	const tagger = await getPlanTagger();
+	let start = Number(Date.now());
+	Log.info('Re-creating plan tags');
+	let tagCounter = 0;
+	// Re-compute the tags of a plan if the last update time of the plan is after the last update time of the tags of this plan.
+	// Before re-computing the tags of a plan, remove all previous tags for this plan.
+
+	// TODO: Loop on the plans that need to be updated
+	const plans = await Plan.getPlansToTag();
+	Log.info(`Processing ${plans.models.length} plans`);
+	for (const planOrder in plans.models) {
+		const plan = plans.models[planOrder];
+
+		try {
+			await PlanTag.deletePlanTags(plan.id);
+		}
+		catch(e) {
+			// if the deletion of existing tags fails, move to the next plan
+			Log.info('failed to delete plan tags');
+			continue;
+		}
+
+		const tags = await tagger(plan);
+		if (tags && tags.length > 0){
+			await PlanTag.createPlanTags(tags);
+			tagCounter++;
+		}
+	}
+	let end = Number(Date.now());
+	const duration = end - start;
+	Log.info(`Done. Added tags to ${tagCounter}/${plans.models.length} plans. It took ${duration/1000} seconds`);
+};
 
 /** Private */
 
@@ -337,7 +376,11 @@ const fetchIplan = iPlan =>
 const buildPlan = (iPlan, oldPlan) => {
 	return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
 		MavatAPI.getByPlan(plan)
-			.then(mavatData => Plan.setMavatData(plan, mavatData))
+			.then(async mavatData => {
+				const retPlan = await Plan.setMavatData(plan, mavatData);
+				await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
+				return retPlan;
+			})
 			.catch(e => {
 				// mavat might crash gracefully
 				Log.error('Mavat error', e.message, e.stack);
@@ -350,6 +393,38 @@ const fetchTreePermit = () =>{
 	return crawlTreesExcel();
 };
 
+const fetchPlanStatus = () => {
+
+	return Plan.query(qb => {
+		//qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
+		qb.where('id', '>', 320);
+		qb.limit(70);
+	})
+		.fetchAll()
+		.then(planCollection =>
+			Bluebird.mapSeries(planCollection.models, plan => {
+
+				Log.debug(plan.get('plan_url'));
+
+				return MavatAPI.getPlanStatus(plan).then(planStatuses => {
+					try {
+						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
+						const mostRecentDate = mostRecent[0].attributes.date;
+						const mostRecentStatus = mostRecent[0].attributes.status;
+						// update last_status_update in plan table with latest status change date
+						plan.save({ 'last_status_update': mostRecentDate, 'status': mostRecentStatus });
+
+						// save all plan statuses into plan_status_change table
+						PlanStatusChange.savePlanStatusChange(planStatuses);
+					}
+					catch (err) {
+						Log.error(err);
+					}
+				});
+			}));
+};
+
+
 module.exports = {
 	iplan,
 	complete_mavat_data,
@@ -359,5 +434,7 @@ module.exports = {
 	fetchIplan,
 	fetchTreePermit,
 	sendTreeAlerts,
-	sendDigestPlanningAlerts
+	sendDigestPlanningAlerts,
+	updatePlanTags,
+	fetchPlanStatus
 };
