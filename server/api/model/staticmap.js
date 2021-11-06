@@ -5,6 +5,7 @@ class StaticMap extends Model {
 	get rules() {
 		return {
 			plan_id: 'integer',
+			id: 'integer',
 			// tree_id: 'integer',
 			base64string: 'string',
 		};

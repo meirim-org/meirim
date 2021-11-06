@@ -17,7 +17,7 @@ class Alert extends Model {
 			person_id: ['required', 'integer'],
 			address: [ 'string'],
 			geom: [ 'object'],
-			radius: [ 'string'],
+			radius: ['string'],
 			place: ['string'],
 			type: ['string']
 		};
@@ -213,7 +213,7 @@ class Alert extends Model {
 		}
 		const dateString = moment(date).format('YYYY-MM-DD h:mm');
 		return Alert.query(qb => {
-			qb.whereRaw(`last_email_sent > '${dateString}' OR last_email_sent IS NULL`);
+			qb.whereRaw(`last_email_sent < '${dateString}' OR last_email_sent IS NULL`);
 		}).fetchAll({
 			columns: [
 				'address',
