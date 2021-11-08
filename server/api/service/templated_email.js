@@ -23,9 +23,6 @@ class DynamicTemplateEmail {
 		 this.config = Config.get(`${env}`);
 		 this.baseUrl = Config.get('general.domain');
 		 this.transporter = Nodemailer.createTransport(this.config.options);
-		 this.dynamicTemplates = {
-			 DigestPlanAlert: 'd-db0b55ab042e4ba9878715acd35c1d6c'
-		 };
  
 	 }
 
