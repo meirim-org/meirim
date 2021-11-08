@@ -14,9 +14,9 @@ describe('Plan Tag model', function() {
 	
 	it('has the right rules', function() {
 		const rules = instance.rules;
-		expect(rules.tag_id).to.eql(['required', 'integer']);
 		//TODO: REMMMMMMMMMMM
-		//expect(rules.plan_id).to.eql(['required', 'integer']);
+		//expect(rules.tag_id).to.eql(['required', 'integer']);
+		expect(rules.plan_id).to.eql(['required', 'integer']);
 		expect(rules.display_score).to.eql(['integer']);
 		expect(rules.created_by_data_rules).to.eql(['string']);
 		expect(rules.created_by_child).to.eql(['boolean']);
