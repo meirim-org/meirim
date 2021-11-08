@@ -312,8 +312,7 @@ const fetchTreePermit = () =>{
 const fetchPlanStatus = () => {
 
 	return Plan.query(qb => {
-		//qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
-		qb.where('id', '>', 320);
+		qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
 		qb.limit(70);
 	})
 		.fetchAll()
