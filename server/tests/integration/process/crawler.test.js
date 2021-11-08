@@ -34,16 +34,17 @@ describe('Crawler', function() {
 	let plans;
 
 	beforeEach(async function() {
-		await mockDatabase.createTables(tables);
+		const res = await mockDatabase.createTables(tables);
 
 		const tagsData = [];
 		for (let i = 0; i < tags; i++) {
 			tagsData.push({id: i, name: tags[i].TAG_NAME, display_name: tags[i].TAG_DISPLAY_NAME});
 		}
 
-		await mockDatabase.insertData(['tag'], {
+		const res2 = await mockDatabase.insertData(['tag'], {
 			tag: tagsData
 		});
+
 		// spy on the Log.error method so we can test if it was called during crawling
 		// (meaning an error was printed)
 		sinonSandbox = sinon.createSandbox();
