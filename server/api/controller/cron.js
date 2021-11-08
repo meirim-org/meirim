@@ -13,6 +13,9 @@ const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const PlanTagController = require('../controller/plan_tag');
 const getPlanTagger = require('../lib/tags');
+const PlanStatusChange = require('../model/plan_status_change');
+const moment = require('moment');
+
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -311,6 +314,36 @@ const fetchTreePermit = () =>{
 	return crawlTreesExcel();
 };
 
+const fetchPlanStatus = () => {
+
+	return Plan.query(qb => {
+		//qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
+		qb.where('id', '>', 320);
+		qb.limit(70);
+	})
+		.fetchAll()
+		.then(planCollection =>
+			Bluebird.mapSeries(planCollection.models, plan => {
+
+				Log.debug(plan.get('plan_url'));
+
+				return MavatAPI.getPlanStatus(plan).then(planStatuses => {
+					try {
+						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
+						const mostRecentDate = mostRecent[0].attributes.date;
+						const mostRecentStatus = mostRecent[0].attributes.status;
+						// update last_status_update in plan table with latest status change date
+						plan.save({ 'last_status_update': mostRecentDate, 'status': mostRecentStatus });
+
+						// save all plan statuses into plan_status_change table
+						PlanStatusChange.savePlanStatusChange(planStatuses);
+					}
+					catch (err) {
+						Log.error(err);
+					}
+				});
+			}));
+};
 
 
 module.exports = {
@@ -322,5 +355,6 @@ module.exports = {
 	fetchIplan,
 	fetchTreePermit,
 	sendTreeAlerts,
-	updatePlanTags
+	updatePlanTags,
+	fetchPlanStatus
 };
