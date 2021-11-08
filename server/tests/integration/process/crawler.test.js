@@ -37,7 +37,7 @@ describe('Crawler', function() {
 		const res = await mockDatabase.createTables(tables);
 
 		const tagsData = [];
-		for (let i = 0; i < tags; i++) {
+		for (let i = 0; i < tags.length; i++) {
 			tagsData.push({id: i, name: tags[i].TAG_NAME, display_name: tags[i].TAG_DISPLAY_NAME});
 		}
 
