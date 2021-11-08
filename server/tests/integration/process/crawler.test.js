@@ -9,6 +9,16 @@ const Log = require('../../../api/lib/log');
 const { mockDatabase } = require('../../mock');
 const { wait } = require('../../utils');
 
+const tags = [require('../../../api/lib/tags/commerce'),
+			  require('../../../api/lib/tags/employment'),
+	          require('../../../api/lib/tags/forests'),
+	          require('../../../api/lib/tags/hoteliery'),
+			  require('../../../api/lib/tags/housing'),
+			  require('../../../api/lib/tags/light_rail'),
+			  require('../../../api/lib/tags/public'),
+			  require('../../../api/lib/tags/streams'),
+];
+
 const tables = [
 	'plan', 'notification', 'alert', 'person', 'tables_18_interests_in_plan',
 	'table_4_area_designation_and_usage', 'table_5_building_rights',
@@ -26,6 +36,14 @@ describe('Crawler', function() {
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 
+		const tagsData = [];
+		for (let i = 0; i < tags; i++) {
+			tagsData.push({id: i, name: tags[i].TAG_NAME, display_name: tags[i].TAG_DISPLAY_NAME});
+		}
+
+		await mockDatabase.insertData(['tag'], {
+			tag: tagsData
+		});
 		// spy on the Log.error method so we can test if it was called during crawling
 		// (meaning an error was printed)
 		sinonSandbox = sinon.createSandbox();

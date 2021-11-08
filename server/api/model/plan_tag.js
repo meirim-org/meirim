@@ -7,9 +7,7 @@ const { Bookshelf, Knex } = require('../service/database');
 class PlanTag extends Model {
 	get rules () {
 		return {
-			//TODO AHHHH
-			//tag_id: ['required', 'integer'],
-			tag_id: ['integer'],
+			tag_id: ['required', 'integer'],
 			plan_id: ['required', 'integer'],
 			display_score: ['integer'],
 			created_by_data_rules: ['string'],
