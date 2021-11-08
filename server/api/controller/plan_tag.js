@@ -29,7 +29,9 @@ class PlanTagController extends Controller {
 		}
 
 		const tags = await tagger(plan);
-		if (tags && tags.length > 0){
+		if (tags && tags.length > 0) {
+			//TODO REM
+			console.log(tags);
 			await PlanTag.createPlanTags(tags);
 		}
 
