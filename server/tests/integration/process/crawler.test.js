@@ -175,7 +175,7 @@ describe('Crawler scraped data', function() {
 	});
 
 	it('should produce correct plan data', async function() {
-		this.timeout(60000);
+		this.timeout(15000);
 
 		// make sure there are currently no plans in the database
 		plans = await planController.browse({ query: { status: null, query: null } });
@@ -394,7 +394,7 @@ describe('Crawler scraped data', function() {
 	});
 
 	it('should update existing plan data', async function() {
-		this.timeout(60000);
+		this.timeout(15000);
 
 		// make sure there are currently no plans in the database
 		plans = await planController.browse({ query: { status: null, query: null } });
