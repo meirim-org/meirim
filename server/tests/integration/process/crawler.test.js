@@ -34,14 +34,14 @@ describe('Crawler', function() {
 	let plans;
 
 	beforeEach(async function() {
-		const res = await mockDatabase.createTables(tables);
+		await mockDatabase.createTables(tables);
 
-		const tagsData = [];
-		for (let i = 0; i < tags.length; i++) {
-			tagsData.push({name: tags[i].TAG_NAME, display_name: tags[i].TAG_DISPLAY_NAME});
-		}
+		const tagsData = tags.forEach(tag => {
+			return {name: tag.TAG_NAME, display_name: tag.TAG_DISPLAY_NAME}
+		});
 
-		const res2 = await mockDatabase.insertData(['tag'], {
+
+		await mockDatabase.insertData(['tag'], {
 			tag: tagsData
 		});
 
