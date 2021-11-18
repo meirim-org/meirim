@@ -16,7 +16,7 @@ const File = require('./file');
 const { parseLandUses, describeChange, LAND_USES, LAND_USE_CHANGE_UNITS } = require('../service/landUseMappers');
 const { drawStaticMapWithPolygon } = require('../service/staticmap');
 const Tag = require('./tag');
-const StaticMap = require('./StaticMap');
+const StaticMap = require('./staticmap');
 const wkt = require('terraformer-wkt-parser');
 
 class Plan extends Model {
