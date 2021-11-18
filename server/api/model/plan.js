@@ -1,4 +1,6 @@
 const Bluebird = require('bluebird');
+const moment = require('moment');
+const { get } = require('lodash');
 const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
@@ -11,7 +13,11 @@ const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
 const File = require('./file');
+const { parseLandUses, describeChange, LAND_USES, LAND_USE_CHANGE_UNITS } = require('../service/landUseMappers');
+const { drawStaticMapWithPolygon } = require('../service/staticmap');
 const Tag = require('./tag');
+const StaticMap = require('./StaticMap');
+const wkt = require('terraformer-wkt-parser');
 
 class Plan extends Model {
 	get rules () {
@@ -173,9 +179,42 @@ class Plan extends Model {
 
 		return updates;
 	}
+	
+	parseAreaChanges(areaChangesString){
+		if (!areaChangesString) return {};
+		const rawlandUse = JSON.parse(areaChangesString);
+		const changesSummary = parseLandUses(rawlandUse);
 
+		return changesSummary;
+	}
 
-	canRead () {
+	describeHousingChange(){
+		const mappedAreaChange = this.parseAreaChanges(this.get('areaChanges'));
+		return describeChange(mappedAreaChange, LAND_USES.housing, LAND_USE_CHANGE_UNITS.units);
+	}
+
+	staticmap(){
+		return this.hasOne(StaticMap);
+	}
+
+	async getMap(){
+		const existingMap = get(this, 'relations.staticmap.attributes.base64string');
+		if (existingMap) return existingMap;
+		try {
+			const planGeom = this.get('geom');
+			if(!planGeom) return;
+			const mapBase64 = await drawStaticMapWithPolygon(planGeom);
+
+			const mapModel = new StaticMap({ plan_id: this.get('id'), base64string: mapBase64 });
+			mapModel.save();
+			return mapBase64;
+		}
+		catch(error){
+			Log.error('Failed creating a base64 staticmap');
+		}
+	}
+
+	canRead() {
 		return Bluebird.resolve(this);
 	}
 
@@ -482,6 +521,32 @@ class Plan extends Model {
 	static erodeViews () {
 		const query = 'UPDATE plan SET erosion_views = FLOOR(erosion_views/2)';
 		return Knex.raw(query);
+	}
+
+	static getPlansByGeometryThatWereUpdatedSince(geometryPolygon, date, limit) {
+		const dateString = moment(date).format('YYYY-MM-DD h:mm');
+		return Plan.query(qb => {
+			qb.where('created_at', '>', dateString);
+			const polygon = wkt.convert(geometryPolygon);
+			qb.whereRaw(`ST_Intersects(geom, ST_GeomFromText("${polygon}", 4326))`);
+		}).fetchPage({
+			pageSize: limit || 5,
+			columns: [
+				'id',
+				'data',
+				'main_details_from_mavat',
+				'geom',
+				'jurisdiction',
+				'PL_NAME',
+				'plan_display_name',
+				'PLAN_COUNTY_NAME',
+				'goals_from_mavat',
+				'areaChanges', 
+				'plan_url',
+				'status'
+			],
+			withRelated: ['staticmap']
+		}).then(res=> res.models);
 	}
 
 	// TODO: actually get the plans we want to tag today, for now getting all of them in dev

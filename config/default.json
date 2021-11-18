@@ -22,8 +22,7 @@
 	"services": {
 		"schedule": {
 			"iplan": "0 0 0 * * *",
-			"sendPlanningAlerts": "0 0 0 * * *",
-			"sendDigestPlanningAlerts": "*/1 * * * *"
+			"sendPlanningAlerts": "0 0 0 * * *"
 		}
 	},
 	"session": {
@@ -89,11 +88,7 @@
 				"secure": true,
 				"auth": {
 					"user": "user",
-					"pass": "pass",
-					"templatePass":"pass"
-				},
-				"templates":{
-
+					"pass": "pass"
 				}
 			}
 		}

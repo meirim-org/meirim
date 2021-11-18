@@ -1,20 +1,22 @@
 const Bluebird = require('bluebird');
+const { map, max, take, omitBy, isNil } = require('lodash');
+const moment = require('moment');
+const Turf = require('turf');
+const Config = require('../lib/config');
 const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
 const PlanTag = require('../model/plan_tag');
 const Email = require('../service/email');
+const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
-const Turf = require('turf');
 const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
 const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
-const moment = require('moment');
-
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -101,7 +103,7 @@ const sendPlanningAlerts = () => {
 	// sendPlanningAlerts(req, res, next) {id
 	Log.info('Running send planning alert');
 
-	return Plan.getUnsentPlans({
+	return Alert.getAlertsToSend({
 		limit: 1
 	})
 		.then(unsentPlans => {
@@ -148,6 +150,88 @@ const sendPlanningAlerts = () => {
 			}
 			return true;
 		});
+};
+
+const planToEmail = async (plan) => {
+	if (!plan) return;
+	const map = await plan.getMap();
+	return {
+		id: plan.get('id') || '',
+		map,
+		title: plan.get('plan_display_name'),
+		city: plan.get('PLAN_COUNTY_NAME'),
+		text: plan.get('goals_from_mavat'),
+		status: plan.get('status'),
+		// areaChange: plan.describeHousingChange() || '',
+	};
+}; 
+
+const alertToEmail = (alert) => {
+	const nowDate = moment().format('DD-MM-YY');
+	const addressTitle = take((alert.get('address')|| '').split(','), 3).join(', ');
+	const alertTitle = `תוכניות חדשות בסביבת ${addressTitle ||  'תחומי הענין שלך'}`;
+	const mailSubject = `${alertTitle} | ${nowDate} `;
+	return {
+		alert: {
+			title: alertTitle,
+			unsubscribeLink: `${Config.get('general.domain')}alerts/unsubscribe/${alert.unsubsribeToken()}`
+		},
+		mail: {
+			subject: mailSubject
+		}
+	};
+};
+
+const sendDigestPlanningAlerts = async () => {
+	// Send emails for each user, by new plans in his area, that
+	// have been added since he last received a digest email
+	// sendPlanningAlerts(req, res, next) {id
+	Log.info('Running digest send planning alert');
+	const lastSentDifference = 7; // update
+	const maxAlertsToSend = 5;
+	const timeDifference = moment.duration(lastSentDifference, 'd');
+	const date = moment().subtract(timeDifference);
+
+	try {
+		const { alert, email } = await Alert.getAlertToNotify({}, date);
+		if(!alert || !email) {
+			Log.debug('No alerts to notify');
+		}
+		const alertGeom = alert.get('geom');
+		const alertPlans = await Plan.getPlansByGeometryThatWereUpdatedSince(alertGeom, date);
+		console.log(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
+		Log.debug(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
+
+		const emailAlertParams = alertToEmail(alert);
+		const plans = { 
+			firstPlan: await planToEmail(alertPlans[0]),
+			secondPlan: await planToEmail(alertPlans[1]),
+			thirdPlan: await planToEmail(alertPlans[2]),
+			fourthPlan: await planToEmail(alertPlans[3]),
+			fifthPlan: await planToEmail(alertPlans[4]),
+		};
+		const emailPlanParams = omitBy(plans, isNil);
+
+		try {
+			if (alertPlans.length > 0) await DigestEmail.digestPlanAlert(email, emailPlanParams, emailAlertParams);		
+			const newUpdateDate = alertPlans.length < maxAlertsToSend ? moment(max(map(alertPlans, 'created_at'))): moment(Date.now());
+			alert.set({
+				last_email_sent: newUpdateDate.format('YYYY-MM-DD HH:mm:ss')
+			});
+			await alert.save();	
+		
+		}
+		catch (e) {
+			console.log(e);
+		}
+		Log.debug(`User ${email} alert ${alert.id} with ${alertPlans[0].length} plans`);
+	}
+	catch(e) {
+		Log.debug(`Failed digest plans for alert ${alert.id}`);
+	}
+	finally {
+		process.exit();
+	}
 };
 
 const sendTreeAlerts = () => {
@@ -312,7 +396,8 @@ const fetchTreePermit = () =>{
 const fetchPlanStatus = () => {
 
 	return Plan.query(qb => {
-		qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
+		//qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
+		qb.where('id', '>', 320);
 		qb.limit(70);
 	})
 		.fetchAll()
@@ -349,6 +434,7 @@ module.exports = {
 	fetchIplan,
 	fetchTreePermit,
 	sendTreeAlerts,
+	sendDigestPlanningAlerts,
 	updatePlanTags,
 	fetchPlanStatus
 };
