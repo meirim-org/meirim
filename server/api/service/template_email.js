@@ -10,7 +10,7 @@ const Juice = require('juice');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
-const { map, keys } = require('lodash');
+const { map, keys, get } = require('lodash');
  
 class DynamicTemplateEmail {
 	 /**
@@ -25,10 +25,10 @@ class DynamicTemplateEmail {
 		 this.transporter = Nodemailer.createTransport(this.config.options);
 
 		this.dynamicTemplates = {
-			digestPlanAlert: Config.get('email.templates.digestPlans') || 'd-db0b55ab042e4ba9878715acd35c1d6c'
+			digestPlanAlert: get(Config, 'email.templates.digestPlans', 'd-db0b55ab042e4ba9878715acd35c1d6c')
 		};
 
-		sgMail.setApiKey(Config.get('email.options.auth.templatePass'));
+		sgMail.setApiKey(get(Config, 'email.options.auth.templatePass', ''));
 	 }
 
 	getEmailAttachements (plans) {
