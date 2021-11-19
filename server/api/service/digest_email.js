@@ -4,8 +4,6 @@
  */
 const Promise = require('bluebird');
 const Nodemailer = require('nodemailer');
-const Mustache = require('mustache');
-const dir = require('node-dir');
 const path = require('path');
 
 const Juice = require('juice');
@@ -13,7 +11,7 @@ const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
 
-class Email {
+class DigestEmail {
 	/**
 	 * Generate test SMTP service account from ethereal.email
 	 * Only needed if you don't have a real mail account for testing
@@ -25,76 +23,6 @@ class Email {
 		this.baseUrl = Config.get('general.domain');
 		this.transporter = Nodemailer.createTransport(this.config.options);
 		this.templates = {};
-	}
-
-	/**
-	 * Init the class and load the template files.
-	 */
-	init () {
-		const templateDir = `${__dirname}/email/`;
-		const templates = {};
-		const contents = [];
-		let mapper = [];
-		return new Promise((resolve, reject) => {
-			dir.readFiles(
-				templateDir,
-				{
-					match: /.mustache$/,
-					shortName: true
-				},
-				(err, content, next) => {
-					if (err) {
-						reject(err);
-					}
-
-					contents.push(content);
-					next();
-				},
-				(err, files) => {
-					if (err) {
-						reject(err);
-					}
-
-					mapper = files;
-					resolve();
-				}
-			);
-		}).then(() => {
-			mapper.map((file, index) => {
-				const key = file
-					.split('.')
-					.shift();
-				templates[key] = contents[index];
-			});
-
-			for (const key in templates) {
-				const title = templates[key].match(
-					/<title[^>]*>((.|[\n\r])*)<\/title>/im
-				)[1];
-				const body = templates[key].match(
-					/<body[^>]*>((.|[\n\r])*)<\/body>/im
-				)[1];
-				const html = Mustache.render(templates.wrapper, {
-					body
-				});
-
-				this.templates[key] = {
-					title,
-					body: Juice(html)
-				};
-			}
-		});
-	}
-
-	newSignUp (person) {
-		const token = person.getActivationToken();
-		const templateProperties = {
-			url: `${this.baseUrl}activate/?token=${token}`,
-			email: person.get('email'),
-			type: 'signup'
-		};
-		// setup email data with unicode symbols
-		return this.sendWithTemplate(this.templates.newSignUp, templateProperties);
 	}
 
 	newPlanAlert (user, unsentPlan, planStaticMap) {
@@ -132,52 +60,6 @@ class Email {
 	formatDate(date) {
 		const d = new Date(date);
 		return `${(d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())}/${(d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))}/${d.getFullYear()}`;
-	}
-
-	treeAlert (user, unsentTree, treeStaticMap) {
-		const alert = new Alert({
-			id: user.alert_id,
-			person_id: user.person_id
-		});
-		const data = user;
-
-		Object.assign(data, unsentTree.attributes);
-		
-		data.unsubscribeLink = `${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
-		data.link = `${this.baseUrl}tree/${unsentTree.get('id')}`;
-		data.place_text = data.place? `רשיון כריתה חדש ב${data.place}` : 'רשיון כריתה חדש באזורך';
-		data.address = data.street ? (data.street_number? `${data.street} ${data.street_number}`: `${data.street}`) : 'לא צוינה כתובת';
-		data.total_trees_text = (data.total_trees === 1)? 'עץ אחד': `${data.total_trees} עצים`;
-		data.reason_short_text = data.reason_short? data.reason_short : 'לא צוינה סיבה';
-		data.reason_detailed_text = data.reason_detailed? data.reason_detailed : 'לא צוין פירוט הסיבה';
-		data.start_date_text = this.formatDate(data.start_date);
-		data.hasMap = Boolean(treeStaticMap);
-		data.type = 'tree-alert';
-
-		if (treeStaticMap) {
-			data.attachments = [
-				{
-					cid: 'planmap',
-					filename: 'plan_map.png',
-					content: treeStaticMap,
-					encoding: 'base64'
-				}
-			];
-		}
-
-		return this.sendWithTemplate(this.templates.treeAlert, data);
-	}
-
-	digestPlanAlert (user, plans = []) {
-		
-	}
-
-	newAlertTemplateByType(type){
-		let alertTemplate = this.templates.newAlert;
-		if (type === 'tree'){
-			alertTemplate = this.templates.newTreeAlert;
-		}
-		return alertTemplate;
 	}
 
 	newAlert (person, alert) {
@@ -245,4 +127,4 @@ class Email {
 	}
 }
 
-module.exports = new Email();
+module.exports = new DigestEmail();

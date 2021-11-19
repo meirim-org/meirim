@@ -103,7 +103,7 @@ describe('Emails', function() {
 		const firstUserAlertReq = {
 			body: {
 				address: 'רימון 1 ערד',
-				radius: 1
+				radius: '1'
 			},
 			session: {
 				person: firstUserReq.session.person.attributes
@@ -122,7 +122,7 @@ describe('Emails', function() {
 		const secondUserAlertReq = {
 			body: {
 				address: 'קניון ערד',
-				radius: 1
+				radius: '1'
 			},
 			session: {
 				person: secondUserReq.session.person.attributes
