@@ -103,7 +103,7 @@ const sendPlanningAlerts = () => {
 	// sendPlanningAlerts(req, res, next) {id
 	Log.info('Running send planning alert');
 
-	return Alert.getAlertsToSend({
+	return Plan.getUnsentPlans({
 		limit: 1
 	})
 		.then(unsentPlans => {

@@ -28,7 +28,7 @@ describe('Alert model', function() {
 
 	it('has the right defaults', function() {
 		const defaults = instance.defaults();
-		expect(defaults).to.eql({ radius: 4, type: 'plan' });
+		expect(defaults).to.eql({ radius: '4', type: 'plan' });
 	});
 
 	it('has the right geometry', function() {
