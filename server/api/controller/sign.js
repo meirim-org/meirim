@@ -50,7 +50,7 @@ class SignController extends Controller {
 							// TODO: handle alert creation promise failure
 							try {
 								await alertController.create({
-									body: { address: person.attributes.address, radius: 4  },
+									body: { address: person.attributes.address, radius: '4'  },
 									session: { person }
 								});
 							} catch {};
