@@ -25,7 +25,7 @@ class DynamicTemplateEmail {
 		 this.transporter = Nodemailer.createTransport(this.config.options);
 
 		this.dynamicTemplates = {
-			digestPlanAlert: Config.get('email.options.templates.digestPlans')
+			digestPlanAlert: Config.get('email.templates.digestPlans') || 'd-db0b55ab042e4ba9878715acd35c1d6c'
 		};
 
 		sgMail.setApiKey(Config.get('email.options.auth.templatePass'));
