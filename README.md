@@ -149,6 +149,7 @@ $ crontab -e
 0 14 * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/logs/combined.log 2>&1
 * * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
 30 * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/aggregate_views >> /path_to_code/meirim/logs/combined.log 2>&1
+15 * * * * cd /home/ec2-user/meirim/server && node bin/plan_status_change >> /home/ec2-user/meirim/server/logs/combined.log 2>&1
 ```
 
 ## Further info

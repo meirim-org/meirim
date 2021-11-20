@@ -4,7 +4,7 @@ const Geocoder = require('../../service/osm_geocoder');
 const Log = require('../log');
 const aws = require('aws-sdk');
 const fs = require('fs');
-
+const { formatDate } = require('../date');
 const { TREE_PERMIT_TABLE } = require('../../model/tree_permit_constants');
 const {
 	TEL_AVIV_OFFICAL, TEL_AVIV_FORMATS, PARDES_HANA_FORMATS, PARDES_HANA_OFFICAL,
@@ -12,17 +12,11 @@ const {
 } = require('./tree_crawler_consts');
 
 
-const formatDate =(strDate, hour, inputFormat) =>{
-	if (strDate == '' || strDate == undefined) return undefined;
-	const format = inputFormat || 'DD/MM/YYYY';
-	//Date - the hours addition to resolve  tz issues
-	const isoDate = moment(strDate, format).add(4, 'hours').toISOString().split('T')[0]; 
-	return `${isoDate}T${hour}`;
-};
+const TIMEZONE_DIFF = 3;
 
 const figureStartDate = (permit_issue_date, hour, inputFormat) => {
 	const format = inputFormat || 'DD/MM/YYYY';
-	const issue_date = permit_issue_date ? moment(permit_issue_date, format).add(4, 'hours') : moment().format(format);
+	const issue_date = permit_issue_date ? moment(permit_issue_date, format).add(TIMEZONE_DIFF, 'hours') : moment().format(format);
 	const isoDate = issue_date.add(14, 'days').toISOString().split('T')[0]; 
 	return `${isoDate}T${hour}`;
 };

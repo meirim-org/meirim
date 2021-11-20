@@ -37,7 +37,8 @@ describe('Alert controller', function() {
 		this.timeout(10000);
 		const req = {
 			body: {
-				address: 'ben yehuda 32 tel aviv'
+				address: 'ben yehuda 32 tel aviv',
+				radius: '4'
 			},
 			session: {
 				person
@@ -52,7 +53,8 @@ describe('Alert controller', function() {
 		this.timeout(10000);
 		const req = {
 			body: {
-				address: 'ben yehuda 32 tel aviv'
+				address: 'ben yehuda 32 tel aviv',
+				radius: '4'
 			},
 			session: {
 				person

@@ -3,6 +3,7 @@ const Promise = require('bluebird');
 const Model = require('./base_model');
 const Person = require('./person');
 const Crypt = require('../lib/crypt');
+const moment = require('moment');
 const { Knex } = require('../service/database');
 const Geocoder = require('../service/geocoder').geocoder;
 const DegreeToMeter = require('../service/geocoder').degreeToMeter;
@@ -16,7 +17,7 @@ class Alert extends Model {
 			person_id: ['required', 'integer'],
 			address: [ 'string'],
 			geom: [ 'object'],
-			radius: [ 'number'],
+			radius: ['string'],
 			place: ['string'],
 			type: ['string']
 		};
@@ -24,13 +25,17 @@ class Alert extends Model {
 
 	defaults () {
 		return {
-			radius: 4,
+			radius: '4',
 			type: 'plan'
 		};
 	}
 
 	get geometry () {
 		return ['geom'];
+	}
+
+	get radius () {
+		return ['radius'];
 	}
 
 	get tableName () {
@@ -48,6 +53,10 @@ class Alert extends Model {
 	}
 
 	alerts () {
+		return this.belongsTo(Person);
+	}
+
+	person () {
 		return this.belongsTo(Person);
 	}
 
@@ -195,6 +204,36 @@ class Alert extends Model {
     person.status=1
     GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
+	}
+
+	static getAlertToNotify (userOptions, date) {
+		const options = userOptions || {};
+		if (!options.limit) {
+			options.limit = 1;
+		}
+		const dateString = moment(date).format('YYYY-MM-DD h:mm');
+		return Alert.query(qb => {
+			qb.whereRaw(`last_email_sent < '${dateString}' OR last_email_sent IS NULL`);
+		}).fetchAll({
+			columns: [
+				'address',
+				'person_id',
+				'geom',
+				'radius',
+				'place',
+				'type',
+				'id'
+			],
+			withRelated: ['person'],
+		}).then(res=>{
+			if (!res.models[0]) return; 
+			return {
+				alert: res.models[0],
+				email: res.models[0].related('person').get('email')
+			};
+		}).catch(err=> {
+			console.log(err);
+		});
 	}
 }
 

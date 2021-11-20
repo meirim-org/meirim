@@ -126,10 +126,8 @@ const PlanCard = ({ plan }) => {
 						</MapFooter>
 						<Mapa
 							geom={plan.geom}
-							countyName={plan.PLAN_COUNTY_NAME}
 							hideZoom={true}
 							disableInteractions={true}
-							title2={plan.distance ? getDistanceText(plan.distance) : ''}
 						/>
 					</SC.CardMedia>
 					<SC.CardContent>
