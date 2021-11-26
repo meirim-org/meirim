@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'locale/he_IL';
 import { device } from 'style';
 
 const Section = styled.section`
@@ -25,15 +26,12 @@ const P = styled.p`
 `;
 
 export default function TopSection(params) {
+    const { t } = useTranslation();
+
     return (
         <Section>
-            <H1>זה המקום שלכם ללמוד על תכנון ערים</H1>
-            <P>
-                עולם התכנון מבלבל אתכם? אנחנו כאן בשבילכם.
-                <br /> בזכות שיתוף פעולה עם עמותת מרחב, מחכה לכם כאן מגוון
-                סרטונים
-                <br /> שיסבירו לכם מושגים ועקרונות שעומדים בלב התכנון והבניה.
-            </P>
+            <H1>{t.urbanPlanningTitle}</H1>
+            <P>{t.urbanPlanningSubtitle}</P>
         </Section>
     );
 }
