@@ -2,7 +2,6 @@ import React from 'react';
 import YoutubeVideo from 'react-youtube';
 import styled from 'styled-components';
 import merchav from 'assets/merchav-logo.svg';
-import { Button } from 'shared';
 
 const VideoWrapper = styled.div`
     /* position: relative; */
@@ -36,10 +35,6 @@ const VideoBannerSection = styled.div`
     display: flex;
     flex-direction: column;
     color: #ffffff;
-`;
-
-const Title = styled.h3`
-    /* color: #FFFFFF; */
 `;
 
 const InCollaboration = styled.div`
