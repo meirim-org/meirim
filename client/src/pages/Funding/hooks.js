@@ -62,3 +62,15 @@ export const useWhoWeAreAnchor = (locationHash, whoWeAreRef) => {
 		}
 	}, [locationHash, whoWeAreRef]);
 };
+
+export const usePaymentAnchor = (locationHash, paymentRef) => {
+	useEffect(() => {
+		if (locationHash === '#payment') {
+			// scrollIntoView isn't sufficient since the header hides some of the view
+			const y = paymentRef.current.getBoundingClientRect().top - 150;
+			window.scrollBy({top: y, behavior: 'smooth'});
+		} else {
+			window.scroll({top: 0, behavior: 'smooth'});
+		}
+	}, [locationHash, paymentRef]);
+};
