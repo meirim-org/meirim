@@ -17,6 +17,7 @@ const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
+const PlanTagController = require('../controller/plan_tag');
 
 const iplan = (limit = -1) =>
 	iplanApi
