@@ -9,6 +9,16 @@ const Log = require('../../../api/lib/log');
 const { mockDatabase } = require('../../mock');
 const { wait } = require('../../utils');
 
+const tags = [require('../../../api/lib/tags/commerce'),
+			  require('../../../api/lib/tags/employment'),
+	          require('../../../api/lib/tags/forests'),
+	          require('../../../api/lib/tags/hoteliery'),
+			  require('../../../api/lib/tags/housing'),
+			  require('../../../api/lib/tags/light_rail'),
+			  require('../../../api/lib/tags/public'),
+			  require('../../../api/lib/tags/streams'),
+];
+
 const tables = [
 	'plan', 'notification', 'alert', 'person', 'tables_18_interests_in_plan',
 	'table_4_area_designation_and_usage', 'table_5_building_rights',
@@ -25,6 +35,10 @@ describe('Crawler', function() {
 
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
+
+		const tagsData = tags.forEach(tag => {
+			return {name: tag.TAG_NAME, display_name: tag.TAG_DISPLAY_NAME}
+		});
 
 		// spy on the Log.error method so we can test if it was called during crawling
 		// (meaning an error was printed)
@@ -45,7 +59,7 @@ describe('Crawler', function() {
 	});
 
 	it('should run', async function() {
-		this.timeout(60000);
+		this.timeout(150000);
 
 		// make sure there are currently no plans in the database
 		plans = await planController.browse({ query: { status: null, query: null } });
@@ -157,7 +171,7 @@ describe('Crawler scraped data', function() {
 	});
 
 	it('should produce correct plan data', async function() {
-		this.timeout(60000);
+		this.timeout(150000);
 
 		// make sure there are currently no plans in the database
 		plans = await planController.browse({ query: { status: null, query: null } });
@@ -376,7 +390,7 @@ describe('Crawler scraped data', function() {
 	});
 
 	it('should update existing plan data', async function() {
-		this.timeout(60000);
+		this.timeout(150000);
 
 		// make sure there are currently no plans in the database
 		plans = await planController.browse({ query: { status: null, query: null } });

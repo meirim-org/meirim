@@ -15,6 +15,25 @@ class PlanTagController extends Controller {
 		});
 	}
 
+	async refreshTags (plan, tagger) {
+
+		try {
+			await PlanTag.deletePlanTags(plan.id);
+		}
+		catch(e) {
+			// if the deletion of existing tags fails, move to the next plan
+			Log.info('failed to delete plan tags');
+			return [];
+		}
+
+		const tags = await tagger(plan);
+		if (tags && tags.length > 0) {
+			await PlanTag.createPlanTags(tags);
+		}
+
+		return tags;
+	}
+
 }
 
 module.exports = new PlanTagController(PlanTag);
