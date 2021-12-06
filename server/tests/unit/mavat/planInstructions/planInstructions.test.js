@@ -858,6 +858,9 @@ describe('Taba8 parsing test', async () => {
 	const TEST_PLANS_DIR = 'test_plan8';
 	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
+	it('chart 1.7 should have 5 rows', () =>
+		assert.strictEqual(data.chartOneSeven.length, 5));
+
 	it('chart 1.8.1 should have one row', () =>
 		assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
@@ -867,6 +870,21 @@ describe('Taba8 parsing test', async () => {
 	it('chart 1.8.3 should have 0 rows', () =>
 		assert.strictEqual(data.chartsOneEight.chart183.length, 0));
 
+	it('chart 1.8.4 should have 3 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 3));
+
+	it('chart 3.1 without change should have 1 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 1));
+
+	it('chart 3.1 with change should have 2 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 2));
+
+	it('chart 3.2 approved should have 1 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 1));
+
+	it('chart 3.2 with suggested should have 1 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 2));
+
 	it('chart 4 should have 3 rows', () =>
 		assert.strictEqual(data.chartFour.length, 3));
 
@@ -875,4 +893,15 @@ describe('Taba8 parsing test', async () => {
 
 	it('chart 6 should have 7 rows', () =>
 		assert.strictEqual(data.chartSix.length, 7));
+
+	it('chart 7.1 should have 1 rows', () =>
+		assert.strictEqual(data.chartSevenOne.length, 1));
 });
+
+
+
+//test_plan9 for 1.8.4 and for empty 3.1 and empty 3.2 suggested
+//test_plan10 for stripping
+//test_plan11 for pages with different orientation
+//test_plan12 for 1.8.4 over 2 pages
+//test_plan13 for 3.2 over 2 pages
