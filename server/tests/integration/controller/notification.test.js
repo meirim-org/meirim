@@ -108,7 +108,7 @@ describe('Notification model integration with different models', function() {
 		const req = {
 			body: {
 				address: 'מטלון 18 תל אביב',
-				radius: 20
+				radius: '20'
 			},
 			session: {
 				person
@@ -141,7 +141,7 @@ describe('Notification model integration with different models', function() {
 		const req = {
 			body: {
 				address: 'מטלון 18 תל אביב',
-				radius: 20
+				radius: '20'
 			},
 			session: {
 				person

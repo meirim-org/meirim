@@ -11,7 +11,7 @@ import { Button, Checkbox, Divider, HelperText, Link, ProgressBar, TabPanel, Tea
 import AmountInput from './amountInput';
 import { fundingEndGoal, fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
 import { createPaymentLink } from './controller';
-import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor } from './hooks';
+import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor, usePaymentAnchor } from './hooks';
 import * as SC from './style';
 import { getFormErrors, paymentRequestValidation } from './validations';
 
@@ -19,6 +19,7 @@ const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const whoWeAreRef = useRef();
+	const paymentRef = useRef();
 	const { t } = useTranslation();
 
 	const [otherAmount, setOtherAmount] = useState(0);
@@ -68,6 +69,7 @@ const FundingPage = ({ ...props }) => {
 	useSuccessCloseHandler(paymentSuccess);
 
 	useWhoWeAreAnchor(props.location.hash, whoWeAreRef);
+	usePaymentAnchor(props.location.hash, paymentRef);
 
 	const { statsData } = FundingSelectors();
 
@@ -141,7 +143,7 @@ const FundingPage = ({ ...props }) => {
 									</SC.FundingStatsNumberWrapper>
 								</SC.FundingStatsNumbersWrapper>
 							</SC.FundingStatsWrapper>
-							<SC.PaymentTypeButtonsWrapper>
+							<SC.PaymentTypeButtonsWrapper ref={paymentRef}>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
 									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
 										{t.monthlyPayment}
