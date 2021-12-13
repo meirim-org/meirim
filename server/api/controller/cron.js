@@ -396,7 +396,8 @@ const fetchTreePermit = () =>{
 const fetchPlanStatus = () => {
 
 	return Plan.query(qb => {
-		qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
+		qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'))
+			.andWhere('status', '!=', 'התכנית אושרה' );
 		qb.limit(70);
 	})
 		.fetchAll()
