@@ -1,6 +1,6 @@
 export const members = [
 	{
-		name:`ד"ר אד' טליה מרגלית`,
+		name:`פרופ' אד' טליה מרגלית`,
 		title:`מייסדת ויו"ר ועד מנהל`,
 		order:1,
 		photo:'talia'
@@ -21,7 +21,7 @@ export const members = [
 		
 	},
 	{
-		name:` אד' יונתן דורטהיימר`,
+		name:`ד"ר אד' יונתן דורטהיימר `,
 		title:`מייסד`,
 		order:4,
 		photo:'yonatan'
@@ -45,13 +45,6 @@ export const members = [
 		title:`מנהלת קהילה`,
 		order:7,
 		photo:'kerem'
-		
-	},
-	{
-		name:`אד' בוריס פלוטניקוב`,
-		title:`פיתוח תוכנה`,
-		order:8,
-		photo:'boris'
 		
 	},
 	{
