@@ -47,7 +47,7 @@ const App = (props) => {
 				<>
 					<Modal />
 					<Switch>
-						<Route path="/" component={Homepage} />
+						<Route path="/" exact component={Homepage} />
 						<Route path="/#login" render={props => <Homepage {...props} />} />
 						<Route path="/alerts/unsubscribe/:token" 
 							render={props => <Scenes.AlertUnsubscribe {...props} />} />
