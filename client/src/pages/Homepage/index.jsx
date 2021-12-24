@@ -19,7 +19,7 @@ const Homepage = () => {
 		if (location.hash === '#openRegister' &&  !isAuthenticated) {
 			dispatch(openModal({ modalType: 'register' }));
 		}
-	}, [location, dispatch]);
+	}, [location, isAuthenticated, dispatch]);
 
 	return (
 		<Wrapper>
