@@ -14,9 +14,11 @@ describe('Alert model', function() {
 	it('has the right rules', function() {
 		const rules = instance.rules;
 		expect(rules.person_id).to.eql(['required', 'integer']);
-		expect(rules.address).to.eql(['required', 'string']);
-		expect(rules.geom).to.eql(['required', 'object']);
-		expect(rules.radius).to.eql(['required', 'number' ]);
+		expect(rules.address).to.eql(['string']);
+		expect(rules.geom).to.eql(['object']);
+		expect(rules.radius).to.eql(['string' ]);
+		expect(rules.place).to.eql(['string']);
+		expect(rules.type).to.eql(['string']);
 	});
 
 	it('has the right table name', function() {
@@ -26,7 +28,7 @@ describe('Alert model', function() {
 
 	it('has the right defaults', function() {
 		const defaults = instance.defaults();
-		expect(defaults).to.eql({ radius: 4 });
+		expect(defaults).to.eql({ radius: '4', type: 'plan' });
 	});
 
 	it('has the right geometry', function() {

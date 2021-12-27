@@ -36,5 +36,8 @@ module.exports = {
 	},
 	error: (...args) => {
 		logger.error(args);
+	},
+	warn: (...args) => {
+		logger.warn(args);
 	}
 };

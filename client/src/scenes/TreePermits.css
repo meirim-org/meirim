@@ -1,0 +1,70 @@
+  html body {
+  direction: rtl;
+  background-color: #f8f8f8;
+}
+
+.MuiTypography-root {
+  font-family: Assistant !important ;
+}
+
+.container .btn .active {
+  background-color: #054487;
+  border-color: #054487;
+}
+
+.error-container {
+  color: '#900';
+}
+
+.centerNote {
+  text-align: center;
+}
+
+.card {
+  height: 504px;
+  display: block;
+}
+
+.card-link {
+  height: 100%;
+  width: 100%;
+}
+
+.card-action-area {
+  height: 100%;
+}
+
+.card-media {
+  height: 60%;
+}
+
+.card-content {
+  height: 40%;
+}
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 1;
+}
+
+#trees-search-input {
+  margin-top: 1em;
+  font-family: Assistant !important;
+}
+
+.trees-helper-title {
+  display: block;
+  text-align: center;
+  margin: 1em 1em 0 1em;
+}
+
+.trees-helper-text {
+  display: block;
+  text-align: center;
+  margin: 0 1em 1em 1em;
+}
+
+@media (min-width: 768px) {
+  .trees-helper-text a {
+    font-size: 20px;
+  }
+}

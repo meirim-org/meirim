@@ -1,26 +1,26 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { externalPaymentErrorToast } from 'toasts';
-import YoutubeVideo from 'react-youtube';
-import { Button, Checkbox, Divider, HelperText, Link, TabPanel, ProgressBar, Typography, TeamMembers } from '../../shared';
-import { openModal } from 'redux/modal/slice';
-import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/styles';
-import { createPaymentLink } from './controller';
-import { paymentRequestValidation, getFormErrors } from './validations';
-import { titles, paymentAmountOptions, roadmap, fundingEndGoal, fundingYoutubeVideoId } from './constants';
-import * as SC from './style';
-import Wrapper from '../../components/Wrapper';
-import DefaultIcon from '../../assets/svg/successIcon';
-import * as Icons from '../../assets/funding';
-import AmountInput from './amountInput';
-import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor } from './hooks';
+import { useTranslation } from 'locale/he_IL';
+import React, { useCallback, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import YoutubeVideo from 'react-youtube';
+import { openModal } from 'redux/modal/slice';
 import { FundingSelectors } from 'redux/selectors';
-import t from 'locale/he_IL';
+import { externalPaymentErrorToast } from 'toasts';
+import Wrapper from '../../components/Wrapper';
+import { Button, Checkbox, Divider, HelperText, Link, ProgressBar, TabPanel, TeamMembers, Typography } from '../../shared';
+import AmountInput from './amountInput';
+import { fundingEndGoal, fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
+import { createPaymentLink } from './controller';
+import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor, usePaymentAnchor } from './hooks';
+import * as SC from './style';
+import { getFormErrors, paymentRequestValidation } from './validations';
 
 const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const whoWeAreRef = useRef();
+	const paymentRef = useRef();
+	const { t } = useTranslation();
 
 	const [otherAmount, setOtherAmount] = useState(0);
 	const [amount, setAmount] = useState();
@@ -69,6 +69,7 @@ const FundingPage = ({ ...props }) => {
 	useSuccessCloseHandler(paymentSuccess);
 
 	useWhoWeAreAnchor(props.location.hash, whoWeAreRef);
+	usePaymentAnchor(props.location.hash, paymentRef);
 
 	const { statsData } = FundingSelectors();
 
@@ -78,8 +79,9 @@ const FundingPage = ({ ...props }) => {
 				<SC.HeaderWrapper>
 					<SC.Titles>
 						<SC.SubTitleWrapper>
-							<SC.MainTitle>{titles.mainTitle}</SC.MainTitle>
-							<SC.SubTitle>{titles.subTitle}</SC.SubTitle>
+							<SC.MainTitle>{t.fundingMainTitle}</SC.MainTitle>
+							<SC.SubTitle>{t.fundingSubTitle}</SC.SubTitle>
+							<SC.SubTitle fontWeight="600">{t.fundingSubTitleBold}</SC.SubTitle>
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
@@ -98,7 +100,7 @@ const FundingPage = ({ ...props }) => {
 								{roadmap.map(i => (
 									<SC.RoadmapItemWrapper key={i.id}>
 										<SC.RoadmapItemIcon>
-											{(Icons[i.fundingSVGName] || DefaultIcon)()}
+                                            {i.icon}
 										</SC.RoadmapItemIcon>
 										<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
 										<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
@@ -109,9 +111,8 @@ const FundingPage = ({ ...props }) => {
 					</SC.RoadMapWrapper>
 					<Divider orientation="vertical"/>
 					<SC.PaymentWrapper>
-						<SC.SectionTitle>הצטרפו למהפכה </SC.SectionTitle>
-						<SC.CentredSubTitle>אנחנו עוד מסדרים את חשבון הבנק שלנו. תבדקו אותנו שוב בעוד יומיים-שלושה</SC.CentredSubTitle>
-						<TabPanel id="funding-panel">
+						<SC.SectionTitle>{t.fundingSectionTitle}</SC.SectionTitle>
+						<TabPanel>
 							<SC.FundingStatsWrapper>
 								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
 								<div>
@@ -142,7 +143,7 @@ const FundingPage = ({ ...props }) => {
 									</SC.FundingStatsNumberWrapper>
 								</SC.FundingStatsNumbersWrapper>
 							</SC.FundingStatsWrapper>
-							<SC.PaymentTypeButtonsWrapper>
+							<SC.PaymentTypeButtonsWrapper ref={paymentRef}>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
 									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
 										{t.monthlyPayment}
@@ -210,13 +211,8 @@ const FundingPage = ({ ...props }) => {
 						<Divider orientation="horizontal"/>
 					</SC.SectionTitleWithHorizontalDividersWrapper>
 					<SC.AboutUsSection>
-						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.primary['main']}>
-							{t.fundingAboutUsTitle}
-						</Typography>
-						<br/>
 						<Typography component="span" variant="largeParagraphText" mobileVariant="paragraphText" color={theme.palette.black}>
-							{/* {t.fundingAboutUs} */}
-							{titles.fifth}
+							{t.fundingAboutUsText}
 						</Typography>
 					</SC.AboutUsSection>
 					<TeamMembers/>

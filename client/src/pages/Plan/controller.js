@@ -2,11 +2,13 @@ import api from 'services/api';
 import { SuccessAddComment, FailAddComment, 
 	SuccessSubscribeUserToPlan, SuccessUnsubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts';
 
+
 export const unsubscribeUserToPlan = async (planId) => {
 	try {
 		const response = await api.delete(`/plan/${planId}/subscribe`);
 		const success = response.status === 'OK';
 		if (success) SuccessUnsubscribeUserToPlan();
+		return true;
 	} catch (err){ 
 		FailSubscribeUserToPlan();
 	}
@@ -16,7 +18,8 @@ export const subscribeUserToPlan = async (planId) => {
 	try {
 		const response = await api.post(`/plan/${planId}/subscribe`);
 		const success = response.status === 'OK';
-		if (success) SuccessSubscribeUserToPlan();
+		if (success) SuccessSubscribeUserToPlan(); 
+		return true;
 	} catch (err){ 
 		FailSubscribeUserToPlan();
 	}

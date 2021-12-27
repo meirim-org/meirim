@@ -3,20 +3,20 @@
 
 <head>
   <title>
-    {{#data.PLAN_COUNTY_NAME}} תכנית חדשה ב{{data.PLAN_COUNTY_NAME}} {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}} תכנית
+    {{#data.PLAN_COUNTY_NAME}} תכנית חדשה ב{{{data.PLAN_COUNTY_NAME}}} {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}} תכנית
     חדשה באזור העניין שלך {{/data.PLAN_COUNTY_NAME}} - {{{data.PL_NAME}}}</title>
 </head>
 
 <body dir="rtl">
-  <h2 class="headline">בוקר טוב!</h2>
+  <h2 class="headline">יש לך התראה חדשה!</h2>
   {{#data.PLAN_COUNTY_NAME}}
-  <h2 class="headline">תכנית חדשה ב{{data.PLAN_COUNTY_NAME}}</h2>
+    <h2 class="headline">תכנית חדשה ב{{data.PLAN_COUNTY_NAME}}</h2>
   {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}}
-  <h2 class="headline">תכנית חדשה באזור העניין שלך</h2>
+    <h2 class="headline">תכנית חדשה באזור העניין שלך</h2>
   {{/data.PLAN_COUNTY_NAME}}
 
-  <a href="{{link}}"><h2 class="headline">{{data.PL_NAME}}</h2></a>
-  <a href="{{link}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
+  <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><h2 class="headline">{{data.PL_NAME}}</h2></a>
+  <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
 
   <div class="subSubHeadline">
     <strong>סטטוס:</strong> {{data.STATION_DESC}}
@@ -41,14 +41,14 @@
   </div>
 
   {{#data.PLAN_COUNTY_NAME}}
-  <div class="subSubHeadline">
-    <strong>ישוב:</strong> {{data.PLAN_COUNTY_NAME}}
-  </div>
+    <div class="subSubHeadline">
+      <strong>ישוב:</strong> {{data.PLAN_COUNTY_NAME}}
+    </div>
   {{/data.PLAN_COUNTY_NAME}}
   {{#jurisdiction}}
-  <div class="subSubHeadline">
-    <strong>מוסד התכנון המוסמך להפקיד את התכנית:</strong> {{jurisdiction}}
-  </div>
+    <div class="subSubHeadline">
+      <strong>מוסד התכנון המוסמך להפקיד את התכנית:</strong> {{jurisdiction}}
+    </div>
   {{/jurisdiction}}
   <div class="subSubHeadline">
     <strong>סוג תוכנית:</strong> {{data.ENTITY_SUBTYPE_DESC}}
@@ -61,17 +61,17 @@
   </div>
 
   <div class="link_wrapper">
-    <a class="link" href="{{link}}">צפייה במסמכי התכנית</a>
+    <a class="link" href="{{{link}}}?utm_medium=email&utm_source={{{type}}}">צפייה במסמכי התכנית</a>
   </div>
-  <a href="{{unsubscribeLink}}">מחיקת התראה</a>
-  </div>
-    {{#isLocalAuthority}}
-  <div class="subSubHeadline" style="color: #999; padding: 10px; margin: 10px;">
+  <a href="{{{unsubscribeLink}}}?utm_medium=email&utm_source={{{type}}}">מחיקת התראה</a>
+
+  {{#isLocalAuthority}}
+    <div class="subSubHeadline" style="color: #999; padding: 10px; margin: 10px;">
     
-     שימו לב! זוהי תכנית המופקדת בסמכות מקומית. מכיוון שהוועדות המקומיות לא מדווחות בצורה אחידה אודות הסטטוס של התכניות בסמכותן אנחנו ממליצים לא להסתמך על סטטוס התכניות (גם לא כמו שמופיע באתר "תכנון זמין") - למעט אישור. אם קיבלתם התראה על תכנית חדשה בסמכות מקומית זה אומר שהתכנית עברה "תנאי סף" וכנראה שהיא בהפקדה או תכף מופקדת. תשארו עירניים!
+      שימו לב! זוהי תכנית המופקדת בסמכות מקומית. מכיוון שהוועדות המקומיות לא מדווחות בצורה אחידה אודות הסטטוס של התכניות בסמכותן אנחנו ממליצים לא להסתמך על סטטוס התכניות (גם לא כמו שמופיע באתר "תכנון זמין") - למעט אישור. אם קיבלתם התראה על תכנית חדשה בסמכות מקומית זה אומר שהתכנית עברה "תנאי סף" וכנראה שהיא בהפקדה או תכף מופקדת. תשארו עירניים!
     
-  </div>
-   {{/isLocalAuthority}}
+    </div>
+  {{/isLocalAuthority}}
 
 </body>
 

@@ -108,7 +108,7 @@ describe('Notification model integration with different models', function() {
 		const req = {
 			body: {
 				address: 'מטלון 18 תל אביב',
-				radius: 20
+				radius: '20'
 			},
 			session: {
 				person
@@ -136,11 +136,12 @@ describe('Notification model integration with different models', function() {
 		expect(notifications[0].person_id).to.eql(1);
 		expect(notifications[0].seen).to.eql(0);
 	});
+
 	it('Adds a row in notification table for updated plan', async function() {
 		const req = {
 			body: {
 				address: 'מטלון 18 תל אביב',
-				radius: 20
+				radius: '20'
 			},
 			session: {
 				person

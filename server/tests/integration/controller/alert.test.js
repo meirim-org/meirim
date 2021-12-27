@@ -13,7 +13,7 @@ describe('Alert controller', function() {
 		email: 'test@meirim.org',
 		password: 'xxxx',
 		status: 1,
-		id: 1,	
+		id: 1
 	};
 
 	beforeEach(async function() {
@@ -37,7 +37,8 @@ describe('Alert controller', function() {
 		this.timeout(10000);
 		const req = {
 			body: {
-				address: 'ben yehuda 32 tel aviv'
+				address: 'ben yehuda 32 tel aviv',
+				radius: '4'
 			},
 			session: {
 				person
@@ -46,5 +47,38 @@ describe('Alert controller', function() {
 		const alert = await alertController.create(req);
 
 		assert.isOk(alert);
+	});
+
+	it('Alert unsubscribe should work', async function() {
+		this.timeout(10000);
+		const req = {
+			body: {
+				address: 'ben yehuda 32 tel aviv',
+				radius: '4'
+			},
+			session: {
+				person
+			}
+		};
+
+		// alert is created and has an unsubscribe token
+		const alert = await alertController.create(req);
+		assert.isOk(alert);
+		assert.isOk(alert.unsubsribeToken());
+
+		// try to unsubscribe alert using the owning user
+		const successReq = {
+			params: {
+				token: alert.unsubsribeToken()
+			},
+			session: {
+				person: person
+			}
+		};
+
+		// request should succeed and return the deleted alert
+		const successRes = await alertController.unsubscribe(successReq);
+		assert.isNotNull(successRes);
+		assert.equal(successRes.previousAttributes().id, alert.attributes.id);
 	});
 });

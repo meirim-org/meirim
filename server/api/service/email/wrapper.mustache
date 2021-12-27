@@ -3,84 +3,198 @@
 
 <head>
   <title>{{title}}</title>
-  <meta charset="utf-8" /> 
-  <link href="http://fonts.googleapis.com/css?family=Assistant" rel="stylesheet" type="text/css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Assistant" rel="stylesheet" />
   <style type="text/css">
 
-* {
-  font-family: Assistant;
-}
- .headline{
-  font-size: 24px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: -0.9px;
-  text-align: center;
-  color: #652DD0;
-}
-.logo{
-  display:block;
-  text-align: center;
-}
+    * {
+      font-family: Assistant, sans-serif;
+    }
 
-.content{
-  font-size: 13px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 150%;
-  letter-spacing: normal;
-  text-align: right;
-  color: #3b3b3b;
-  margin:5px 0;
- 
-}
-.link_wrapper {
-  text-align:center;
-  padding:15px;
-}
+    .headline {
+      font-size: 24px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: -0.9px;
+      text-align: center;
+      color: #652DD0;
+    }
 
-.link {
-  border-radius: 100px;
-  background-color: #652DD0;
-  color:#ffffff;
-  padding: 6px 20px;
-  text-decoration:none;
-}
+    .logo {
+      display: block;
+      text-align: center;
+    }
 
-.wrapper {   
-  margin: 0 auto;
-  width: 100%;
-  max-width: 600px;
-  font-size: 13px; 
-  color:#3b3b3b;
-  direction:rtl;
-  background-color: #ffffff; font-size: 13px; color:#3b3b3b; 
-}
+    .content {
+      font-size: 13px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 150%;
+      letter-spacing: normal;
+      text-align: right;
+      color: #3b3b3b;
+      margin: 5px 0;
+    }
 
-.subSubHeadline {
+    .link_wrapper {
+      text-align: center;
+      padding: 15px;
+    }
 
-}
-.subHeadline {
-font-size: 17px;
-letter-spacing: -0.7px;
-  color: #005cbf;
+    .link {
+      border-radius: 100px;
+      background-color: #652DD0;
+      color: #ffffff;
+      padding: 6px 20px;
+      text-decoration: none;
+    }
 
-}
-.blue {
-  color: #652DD0;
-}
+    .wrapper {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 600px;
+      font-size: 13px;
+      color: #3b3b3b;
+      direction: rtl;
+      background-color: #ffffff;
+      font-size: 13px;
+      color: #3b3b3b;
+    }
+
+    .subSubHeadline {
+    }
+
+    .subHeadline {
+      font-size: 17px;
+      letter-spacing: -0.7px;
+      color: #005cbf;
+    }
+
+    .blue {
+      color: #652DD0;
+    }
+
+    #support-us-box {
+      margin: 0 auto;
+      background: #F0E3FD;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15), 0px 6.91436px 8.83705px rgba(0, 0, 0, 0.025);
+      border-radius: 12px;
+      width: 100%;
+      padding-top: 14px;
+      margin-top: 16px;
+    }
+
+    #support-us-image {
+      align-self: baseline;
+    }
+
+    #support-us-wrapper {
+      padding: 0 24px 24px 24px;
+    }
+
+    #support-us-text-wrapper {
+      font-size: 12px;
+    }
+
+    #support-us-title {
+      font-weight: 600;
+      font-size: 1.3em;
+      line-height: 2em;
+      text-align: right;
+      color: #270E78;
+      margin: 0;
+    }
+
+    #support-us-text {
+      font-size: 1em;
+      line-height: 1.6875em;
+      text-align: right;
+      color: #270E78;
+      max-width: 800px;
+      margin: 0;
+    }
+
+    #support-us-button {
+      width: 120px;
+      height: 2em;
+      background: linear-gradient(0deg, #652DD0, #652DD0);
+      border-radius: 0.75em;
+      line-height: 2em;
+      text-align: center;
+      font-size: 1em;
+      color: #ffffff;
+      margin-right: auto;
+      margin-top: 10px;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+
+    @media only screen and (min-width:480px) {
+      /**
+       * !important is needed for the query declarations since non-media css
+       * declarations are rendered as inline styles by juice and so take
+       * precedence over these internal styles unless !important is used
+       */
+      #support-us-box {
+        width: 1236px !important;
+        max-width: 100% !important;
+        padding-top: 0 !important;
+        height: 123px !important;
+      }
+
+      #support-us-image {
+        float: right !important;
+        height: 100% !important;
+      }
+
+      #support-us-wrapper {
+        padding: 12px 24px 24px 24px !important;
+      }
+
+      #support-us-button {
+        margin-top: auto !important;
+      }
+    }
+
   </style>
 </head>
 
 <body dir="rtl">
   <div class="wrapper">
-    <a href="http://meirim.org/" class="logo">
-    <img src="cid:logomeirim" alt="מעירים"/>
+    {{! this forces the first render to keep inner template values as they are. they will be rendered on the second pass }}
+    {{=<% %>=}}
+    <a href="https://meirim.org/?utm_medium=email&utm_source={{{type}}}" class="logo">
+      <img src="cid:logomeirim" alt="מעירים"/>
     </a>
+    <%={{ }}=%>
+
     {{{body}}}
+
+    <div id="support-us-box">
+      <img id="support-us-image" src="cid:supportus" />
+      <div id="support-us-wrapper">
+        <div id="support-us-text-wrapper">
+          <h2 id="support-us-title">
+            אנחנו צריכים אתכם!
+          </h2>
+          <p id="support-us-text">
+            יחד איתכם נוכל להציף תוכניות, להנגיש את המידע התכנוני, לקדם דו שיח, ולהרחיב את המעורבות של כולנו במערכת התכנון.
+          </p>
+        </div>
+        {{! this forces the first render to keep inner template values as they are. they will be rendered on the second pass }}
+        {{=<% %>=}}
+        <a id="support-us-button" href="https://meirim.org/support-us/?utm_medium=email&utm_source={{{type}}}">
+          לתמיכה
+        </a>
+        <%={{ }}=%>
+      </div>
+    </div>
   </div>
 </body>
 </html>

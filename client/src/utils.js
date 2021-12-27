@@ -1,3 +1,5 @@
+import ReactGA from 'react-ga';
+
 export const renderMultiplier = areaObj =>
 	Math.round(((areaObj.new + areaObj.exist) / areaObj.exist) * 100) / 100;
 
@@ -26,4 +28,14 @@ export const scrollToTop = () => {
 	// use setTimeout since the page is not rendered when we get here and scrolls to
 	// top end up being scrolls to someplace mid-page
 	setTimeout(() => window.scroll({ top: 0, left: 0, behavior: 'smooth' }), 100);
+};
+
+export const gaPageView = (location, isAuthenticated) => {
+	const page = location.pathname + location.search + location.hash;
+
+	ReactGA.set({
+		page,
+		dimension1: isAuthenticated
+	});
+	ReactGA.pageview(page);
 };

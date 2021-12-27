@@ -19,6 +19,10 @@ export const HeaderWrapper = styled.div`
 export const Titles = styled.span`
   max-width: 40%;
   background-color: white;
+
+  h2 {
+    display: inline;
+  }
 `;
 
 export const MediaContent = styled.span`
@@ -42,12 +46,7 @@ export const PaymentWrapper = styled.div`
   @media ${device.laptop} {
     padding: 1.5em 4.8em;
     flex-grow: 1;
-  }
-
-  #funding-panel {
-    filter: blur(4px);
-    pointer-events: none;
-    user-select: none;
+    max-width: 51em;
   }
 `;
 
@@ -86,7 +85,7 @@ export const Title = styled.h1`
 export const SubTitle = styled.h2`
   font-family: Assistant !important;
   font-size: 20px;
-  font-weight: normal;
+  font-weight: ${props => props.fontWeight || 'normal'};
   font-stretch: normal;
   font-style: normal;
   letter-spacing: normal;
@@ -126,7 +125,6 @@ export const MainTitle = styled.h1`
   line-height: 1.5;
   color: #270E78;
   margin-bottom: 0.5em;
-  padding-top: 1em;
    >  span {
      font-family: Assistant !important;
    }

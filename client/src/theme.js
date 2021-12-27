@@ -1,7 +1,11 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import { font } from 'style';
 
 export const muiTheme = createMuiTheme({
 	direction: 'rtl',
+	typography: {
+		fontFamily: [font.assistant, 'sans-serif'].join(',')
+	},
 	fontFamily: [
 		'Assistant',
 	].join(','),
@@ -57,6 +61,10 @@ export const muiTheme = createMuiTheme({
 		},
 		blue: {
 			'main': '#1a2d66',
+		},
+		orange: {
+			'text' : '#A95623',
+			'bg' : '#FDE3B6',
 		},
 	},
 	navigation: {

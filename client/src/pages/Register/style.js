@@ -83,6 +83,7 @@ export const InputsWrapper = styled.div`
 `;
 
 export const MainWrapper = styled.div`
+  min-width: 40%
 `;
 
 export const InputWrapper = styled.div`

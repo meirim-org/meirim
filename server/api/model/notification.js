@@ -1,5 +1,6 @@
 const Model = require('./base_model');
 const Exception = require('./exception');
+const { Bookshelf } = require('../service/database');
 
 class Notification extends Model {
 	get rules() {
@@ -19,15 +20,17 @@ class Notification extends Model {
 		return true;
 	}
 
-	static createNotifications({ users, planId, type }) {
-		return users.map(function(user) {
-			const data = {
-				person_id: user.person_id,
-				plan_id: planId,
-				type,
-			};
-			const instance = new Notification(data);
-			return instance.save();
+	static async createNotifications({ users, planId, type }) {
+		await Bookshelf.transaction(async (transaction) => {
+			for (const user of users) {
+				const data = {
+					person_id: user.person_id,
+					plan_id: planId,
+					type
+				};
+
+				await new Notification(data).save(null, {transacting: transaction});
+			}
 		});
 	}
 

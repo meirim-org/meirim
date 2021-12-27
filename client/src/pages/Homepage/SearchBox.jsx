@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import _ from "lodash";
-import locationAutocompleteApi from '../../services/location-autocomplete';
-import Autocomplete from '../../components/AutoCompleteInput';
+import { useTranslation } from 'locale/he_IL';
+import _ from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import { device } from 'style';
+import styled from 'styled-components';
+import Autocomplete from '../../components/AutoCompleteInput';
+import locationAutocompleteApi from '../../services/location-autocomplete';
 
 const Wrapper = styled.div`
     background-color: #652DD0;
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
     padding: 23px;
     width: 100%;
     height: 200px;
-    margin: 32px auto;
+    margin: 1em auto;
     z-index: 1;
 
     @media ${device.tablet} {
@@ -96,67 +97,67 @@ const InputWrapper = styled.div`
 `;
 
 export default function SearchBox() {
-    const [addresses, setAddresses] = useState([]);
-    const [placeId, setPlaceId] = useState('');
-    const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
+	const [addresses, setAddresses] = useState([]);
+	const [placeId, setPlaceId] = useState('');
+	const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
+	const { t } = useTranslation();
 
-    const getAutocompleteSuggestions = useCallback(
-        _.debounce(async (input) => {
-            const res = await locationAutocompleteApi.autocomplete(input);
-            setloadingAutocomplete(false);
-            setAddresses(res);
-        }, process.env.CONFIG.geocode.autocompleteDelay),
-        []
-    );
+	const getAutocompleteSuggestions = useCallback(
+		_.debounce(async (input) => {
+			const res = await locationAutocompleteApi.autocomplete(input);
+			setloadingAutocomplete(false);
+			setAddresses(res);
+		}, process.env.CONFIG.geocode.autocompleteDelay),
+		[]
+	);
 
-    async function onInputChange(input) {
-        if (input) {
-            setloadingAutocomplete(true);
-            getAutocompleteSuggestions(input);
-        } else {
-            // cancel pending calls and clear results
-            getAutocompleteSuggestions.cancel();
-            setloadingAutocomplete(false);
-            setAddresses([]);
-        }
-    }
+	async function onInputChange(input) {
+		if (input) {
+			setloadingAutocomplete(true);
+			getAutocompleteSuggestions(input);
+		} else {
+			// cancel pending calls and clear results
+			getAutocompleteSuggestions.cancel();
+			setloadingAutocomplete(false);
+			setAddresses([]);
+		}
+	}
     
-    function onFilterChange(data) {
-        if (data) {
-            const place = addresses.find(address => address.label === data);
-            if (place) {
-                setPlaceId(place.id);
-            }
-        }
-    }
+	function onFilterChange(data) {
+		if (data) {
+			const place = addresses.find(address => address.label === data);
+			if (place) {
+				setPlaceId(place.id);
+			}
+		}
+	}
 
-    async function onGoToPlansClick() {
-        if (placeId) {
-            const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
-            window.location.href = `/plans?loc=${lat},${lng}`;
-        }
-    }
-
+	async function onGoToPlansClick() {
+		if (placeId) {
+			const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(placeId);
+			window.location.href = `/plans?loc=${lat},${lng}`;
+		}
+	}
 	useEffect(()=>{
 		locationAutocompleteApi.init();
 	},[]);
 
 	return (
 		<Wrapper>
-			<Title>סקרנים לדעת מה בונים לכם ליד הבית?</Title>
+			<Title>{t.searchBoxTitle}</Title>
 			<InputWrapper>
 				<AutocompleteWrapper>
 					<Autocomplete 
-						placeholder="חפשו כתובת"
+						placeholder={t.searchAddress}
 						inputSuggestions={addresses}
-                        onInputChange={onInputChange}
-                        onFilterChange={onFilterChange}
-                        classes={{inputRoot:'text'}}
-                        loading={loadingAutocomplete}
+						onInputChange={onInputChange}
+						onFilterChange={onFilterChange}
+						classes={{ inputRoot:'text' }}
+						loading={loadingAutocomplete}
 					/>
 				</AutocompleteWrapper>
-				<Button type="button" onClick={onGoToPlansClick}>צפיה בתוכניות</Button>
+				<Button type="button" onClick={onGoToPlansClick}>{t.watchPlans}</Button>
 			</InputWrapper>
 		</Wrapper>
-	)
+	);
 }

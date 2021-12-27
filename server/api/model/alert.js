@@ -3,24 +3,30 @@ const Promise = require('bluebird');
 const Model = require('./base_model');
 const Person = require('./person');
 const Crypt = require('../lib/crypt');
+const moment = require('moment');
 const { Knex } = require('../service/database');
 const Geocoder = require('../service/geocoder').geocoder;
 const DegreeToMeter = require('../service/geocoder').degreeToMeter;
 const Exception = require('./exception');
+const { fetchOrGeocodePlace } = require('../service/osm_geocoder');
+const Log = require('../lib/log');
 
 class Alert extends Model {
 	get rules () {
 		return {
 			person_id: ['required', 'integer'],
-			address: ['required', 'string'],
-			geom: ['required', 'object'],
-			radius: ['required', 'number']
+			address: [ 'string'],
+			geom: [ 'object'],
+			radius: ['string'],
+			place: ['string'],
+			type: ['string']
 		};
 	}
 
 	defaults () {
 		return {
-			radius: 4
+			radius: '4',
+			type: 'plan'
 		};
 	}
 
@@ -28,17 +34,46 @@ class Alert extends Model {
 		return ['geom'];
 	}
 
+	get radius () {
+		return ['radius'];
+	}
+
 	get tableName () {
 		return 'alert';
 	}
 
 	initialize () {
-		this.on('saving', this.geocodeAddress, this);
+		if(this.get('address')){
+			this.on('saving', this.geocodeAddress, this);
+		}
+		if(this.get('place')){
+			this.on('saving', this.geocodePlace, this);
+		}
 		super.initialize();
 	}
 
 	alerts () {
 		return this.belongsTo(Person);
+	}
+
+	person () {
+		return this.belongsTo(Person);
+	}
+
+	geocodePlace(model) {		
+		return fetchOrGeocodePlace({ db:Knex,'table':'alert','place': this.get('place') })
+			.then(geom => {
+				const partialRules = Object.assign(model.rules, {});
+				delete partialRules.geom;
+				return new Checkit(partialRules).run(model.attributes).then(() => {
+					model.set('geom', {
+						type: 'Polygon',
+						coordinates: [[ [ geom.longitude, geom.latitude],[ geom.longitude, geom.latitude],[ geom.longitude, geom.latitude],[ geom.longitude, geom.latitude]  ]]
+					});
+					return new Checkit(model.rules).run(model.attributes);
+				});
+			})
+			.catch(err => { Log.error(err); });	
 	}
 
 	geocodeAddress (model) {
@@ -155,6 +190,50 @@ class Alert extends Model {
     person.status=1
     GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
+	}
+
+	static getUsersByPlace (treeId) {
+		const sql = `SELECT 
+    person.email,
+    person.id as person_id,
+    alert.id as alert_id
+    FROM alert 
+    INNER JOIN tree_permit ON tree_permit.place=alert.place
+    INNER JOIN person ON person.id=alert.person_id
+    WHERE tree_permit.id=${treeId} AND
+    person.status=1
+    GROUP BY person.id, alert.id`;
+		return Knex.raw(sql);
+	}
+
+	static getAlertToNotify (userOptions, date) {
+		const options = userOptions || {};
+		if (!options.limit) {
+			options.limit = 1;
+		}
+		const dateString = moment(date).format('YYYY-MM-DD h:mm');
+		return Alert.query(qb => {
+			qb.whereRaw(`last_email_sent < '${dateString}' OR last_email_sent IS NULL`);
+		}).fetchAll({
+			columns: [
+				'address',
+				'person_id',
+				'geom',
+				'radius',
+				'place',
+				'type',
+				'id'
+			],
+			withRelated: ['person'],
+		}).then(res=>{
+			if (!res.models[0]) return; 
+			return {
+				alert: res.models[0],
+				email: res.models[0].related('person').get('email')
+			};
+		}).catch(err=> {
+			console.log(err);
+		});
 	}
 }
 

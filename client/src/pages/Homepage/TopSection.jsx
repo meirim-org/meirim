@@ -1,10 +1,11 @@
+import { useTranslation } from 'locale/he_IL';
 import React from 'react';
-import styled from 'styled-components';
-import SearchBox from './SearchBox';
-import homepageImage from '../../assets/homepage.svg';
-import homepageMobileImage from '../../assets/homepage-mobile.svg'
-import Typography from 'shared/typography';
+import { Link, Typography } from 'shared';
 import { device } from 'style';
+import styled from 'styled-components';
+import homepageMobileImage from '../../assets/homepage-mobile.svg';
+import homepageImage from '../../assets/homepage.svg';
+import SearchBox from './SearchBox';
 
 const Image = styled.div`
     height: 288px;
@@ -54,8 +55,9 @@ const H1 = styled.h1`
     line-height: 54px;
     padding-right: 16px;
     z-index: 1;
-    margin-top: 20px;
-    margin-bottom: 24px;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    font-weight: 600;
 
     @media ${device.tablet} {
         text-align: right;
@@ -75,34 +77,48 @@ const Paragraph = styled(Typography)`
     font-size: 16px;
     line-height: 24px;
     max-width: 328px;
-    margin: 24px auto;
+    margin: 0.1em auto;
     padding-right: 16px;
     z-index: 1;
+
+    a {
+        font-size: 16px;
+    }
 
     @media ${device.tablet} {
         text-align: right;
         margin: 24px 0 0;
-        max-width: 495px;
+        max-width: 550px;
         font-size: 20px;
         padding-right: 0;
         background-color: rgb(252 249 255 / 85%);
+
+        a {
+            font-size: 20px;
+        }
     }
 
 `;
 
 const TopSection = () => {
+	const { t } = useTranslation();
+
 	return (
 		<Section>
 			<Image/>
-            <Cover>
-                <H1>ברוכים הבאים למעירים!</H1>
-                <Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
-                קהילת מעירים מאפשרת לכם לקבל מידע תכנוני על הנעשה בסביבה הקרובה שלכם, ללמוד על תוכניות ונושאים שמעניינים אתכם ולהיות פעילים, יחד עם רבים אחרים, בתהליכי התכנון והבנייה בארץ.
-                </Paragraph>
-                <SearchBox />
-            </Cover>
+			<Cover>
+				<H1>{t.homepageMainTitle}</H1>
+				<Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
+					{t.homepageMainSubTitleA}
+					<Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
+					{t.homepageMainSubTitleB}
+					<Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
+                    .
+				</Paragraph>
+				<SearchBox />
+			</Cover>
 		</Section>
-	)
-}
+	);
+};
 
 export default TopSection;

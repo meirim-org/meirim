@@ -8,9 +8,14 @@ const Selectors = () => {
 		(state) => state.user.user
 	);
 
+	const favoritePlans = useSelector(
+		(state) => state.user.favoritePlans
+	);
+
 	return {
 		isAuthenticated,
-		user
+		user,
+		favoritePlans
 	};
 };
 

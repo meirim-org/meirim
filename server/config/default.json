@@ -2,6 +2,12 @@
 	"geocoder": {
 		"provider": "openstreetmap"
 	},
+	"osmGeocoder": {
+		"provider": "openstreetmap",
+		"headers": {
+			"User-Agent": "Meirim.org (info@meirim.org)"
+		}
+	},
 	"staticmap": {
 		"width": 600,
 		"height": 400,
@@ -16,7 +22,8 @@
 	"services": {
 		"schedule": {
 			"iplan": "0 0 0 * * *",
-			"sendPlanningAlerts": "0 0 0 * * *"
+			"sendPlanningAlerts": "0 0 0 * * *",
+			"sendDigestPlanningAlerts": "*/1 * * * *"
 		}
 	},
 	"session": {
@@ -45,7 +52,9 @@
 		"treeBucketName": "treeBucketName"
 	},
 	"trees": {
-		"rawDataDir": "/tmp/raw_trees"
+		"rawDataDir": "/tmp/raw_trees",
+		"geoCodingInterval" : 30000,
+		"maxPermits": 5
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,
@@ -67,6 +76,10 @@
 				"password": "password",
 				"database": "test_meirim",
 				"charset": "utf8"
+			},
+			"pool": {
+				"min": 2,
+				"max": 10
 			}
 		},
 		"email": {
@@ -76,8 +89,12 @@
 				"secure": true,
 				"auth": {
 					"user": "user",
-					"pass": "pass"
+					"pass": "pass",
+					"templatePass":"pass"
 				}
+			},
+			"templates": {
+				"digestPlans": "d-db0b55ab042e4ba9878715acd35c1d6c"
 			}
 		}
 	},
@@ -89,6 +106,10 @@
 			"password": "password",
 			"database": "meirim",
 			"charset": "utf8"
+		},
+		"pool": {
+			"min": 2,
+			"max": 10
 		}
 	},
 	"email": {

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import { Grid } from "@material-ui/core";
 import _ from "lodash";
-import {Grid} from "@material-ui/core";
-import {PlanCard} from 'shared';
+import React, { Component } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { PlanCard, Typography } from 'shared';
+import Autocomplete from "../components/AutoCompleteInput";
+import Wrapper from "../components/Wrapper";
+import t from "../locale/he_IL";
 import api from "../services/api";
 import locationAutocompleteApi from "../services/location-autocomplete";
-import Wrapper from "../components/Wrapper";
-import Autocomplete from "../components/AutoCompleteInput";
-import t from "../locale/he_IL";
 import "./Plans.css";
 
 class Plans extends Component {
@@ -171,17 +171,26 @@ class Plans extends Component {
 
         return (
             <Wrapper>
+                <Typography
+                    className="plans-helper-text"
+                    component="span"
+                    variant="largeParagraphText"
+                    mobileVariant="paragraphText"
+                    color="#000000"
+                >
+                    {t.plansHelperText}
+                </Typography>
                 <div className="container">
                     <Autocomplete classes=""
                         id="plans-search-input"
-                        placeholder="חדש! צפו בתוכניות בקרבת כתובת לבחירתכם "
+                        placeholder="לדוגמה: תרמ&quot;ב 6, ראשון לציון"
                         inputSuggestions={list}
                         onFilterChange={this.handleAddressSubmit.bind(this)}
                         onInputChange={this.handleInputChange.bind(this)}
                         loading={loadingAutocomplete}
                     />
                     <br />
-                    <Grid container spacing={4}>
+                    <Grid container spacing={5}>
                         {plans.map(plan => (
                             <PlanCard plan={plan} key={plan.id}/>
                         ))}

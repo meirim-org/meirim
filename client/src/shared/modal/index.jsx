@@ -1,18 +1,19 @@
-import React from 'react';
-import CloseIcon from '@material-ui/icons/Close';
 import MUIModal from '@material-ui/core/Modal';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import Login from 'pages/Login'
-import Register from 'pages/Register/'
-import EmailVerified from 'pages/Register/emailVerified'
-import Payment from 'pages/Funding/modals/payment'
+import CloseIcon from '@material-ui/icons/Close';
+import Payment from 'pages/Funding/modals/payment';
 import TermsOfPayment from 'pages/Funding/modals/termsOfPayment';
 import ThankYou from 'pages/Funding/modals/thankYou';
-import { ModalActions } from 'redux/actions'
-import { ModalSelectors } from 'redux/selectors'
-import { device } from 'style';
+import Login from 'pages/Login';
 import SharePlanView from 'pages/Plan/common/Views/sharePlan';
+import Register from 'pages/Register/';
+import EmailVerified from 'pages/Register/emailVerified';
+import ShareTreeView from 'pages/Tree/common/Views/shareTree';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { ModalActions } from 'redux/actions';
+import { ModalSelectors } from 'redux/selectors';
+import { device } from 'style';
+import styled from 'styled-components';
 
 const StyledModal = styled(MUIModal)`
 	display: flex;
@@ -32,6 +33,7 @@ const ModalContentWRapper = styled.div`
 	display:flex;
 	flex-direction: column;
 	background-color: #ffffff;
+	min-width: 35%;
 	border-radius: 15px 15px;
 	max-width: 93vw;
     @media ${device.tablet} {
@@ -51,7 +53,8 @@ const modalComponents = {
 	share: SharePlanView,
 	payment: Payment,
 	termsOfPayment: TermsOfPayment,
-	thankYou: ThankYou
+	thankYou: ThankYou,
+	shareTree: ShareTreeView
 };
 
 const Modal = ({ id }) => {

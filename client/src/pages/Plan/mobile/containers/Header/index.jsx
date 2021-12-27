@@ -1,19 +1,20 @@
-import React, { useRef, useEffect } from 'react';
+import { Badge } from '@material-ui/core';
+import { useTranslation } from 'locale/he_IL';
+import { BackButton } from 'pages/Plan/common';
+import { goBack } from 'pages/Plan/utils';
 import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { CommentSelectors, PlanSelectors } from 'redux/selectors';
+import { tabIsActive } from 'utils';
 import { Title } from './components';
 import * as SC from './style';
-import t from 'locale/he_IL';
-import { goBack } from 'pages/Plan/utils';
-import { BackButton } from 'pages/Plan/common';
-import { useHistory } from 'react-router-dom';
-import { Badge } from '@material-ui/core';
-import { tabIsActive } from 'utils';
 
 const Header = ({  match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setCommentState }) => {
 	const history = useHistory();
 	const { planData } = PlanSelectors();
 	const { name, countyName } = planData;
+	const { t } = useTranslation();
 	const { commentsCount } = CommentSelectors();
 	const pathData  = {
 		pathName: history.location.pathname,

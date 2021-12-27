@@ -4,6 +4,7 @@ const Success = require('../view/success');
 const Log = require('../lib/log');
 const Exception = require('../model/exception');
 const { bind } = require('lodash');
+const { map, get } = require('bluebird');
 
 class Controller {
 	constructor (model) {
@@ -54,11 +55,16 @@ class Controller {
 
 		const columns = options.columns || '*';
 		const where = options.where || {};
-
+		
 		let bsQuery = this.model.query(qb =>
 			Object.keys(where).map(index => qb.where(index, 'in', where[index]))
 		);
-
+		
+		if (options.whereNotIn) {
+			bsQuery = bsQuery.query((qb) =>
+				Object.keys(options.whereNotIn).map(index => qb.whereNotIn(index, options.whereNotIn[index]))
+			);
+		}
 		if (options.whereRaw) {
 			bsQuery = bsQuery.query((qb) =>
 				options.whereRaw.map((w) => qb.where(w))
@@ -73,15 +79,13 @@ class Controller {
 				options.orderByRaw.map((w) => qb.orderBy(w))
 			);
 		}
+
 		return bsQuery
 			.fetchPage({
 				columns,
 				page,
-				pageSize
-			})
-			.then(collection => {
-				Log.debug(this.tableName, 'browse success');
-				return collection;
+				pageSize,
+				withRelated: options.withRelated
 			});
 	}
 
