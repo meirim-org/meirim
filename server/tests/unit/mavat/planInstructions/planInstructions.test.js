@@ -19,6 +19,27 @@ describe('Taba1 parsing test', async () => {
 	it('should have only one row on table 1.8.1', () =>
 		assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
+	it('should have only one row on table 1.8.2', () =>
+		assert.strictEqual(data.chartsOneEight.chart182.length, 1));
+
+	it('should have only one row on table 1.8.3', () =>
+		assert.strictEqual(data.chartsOneEight.chart183.length, 1));
+
+	it('should have only one row on table 1.8.4', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 2));
+
+	it('should have 1 row on table 3.1 without change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 1));
+
+	it('should have 1 row on table 3.1 with change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 1));
+
+	it('should have only one row on table 3.2 approved state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 1));
+
+	it('should have only one row on table 3.2 suggested state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 1));
+
 	it('should have 5 rows on table 4', () =>
 		assert.strictEqual(data.chartFour.length, 5));
 
@@ -28,6 +49,8 @@ describe('Taba1 parsing test', async () => {
 	it('should have 10 rows on table 6', () =>
 		assert.strictEqual(data.chartSix.length, 10));
 
+	it('should have 0 rows on table 7.1', () =>
+		assert.strictEqual(data.chartSevenOne.length, 0));
 	//table 1.8.2 parses wrong in this pdf
 
 	describe('tables 1.8 parsing test', () => {
@@ -282,6 +305,21 @@ describe('Taba2 parsing test', async () => {
 	it('should have only no rows on table 1.8.3', () =>
 		assert.strictEqual(data.chartsOneEight.chart183.length, 0));
 
+	it('should have 4 rows on table 1.8.4', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 4));
+
+	it('should have 1 row on table 3.1 without change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 3));
+
+	it('should have 1 row on table 3.1 with change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 6));
+
+	it('should have only one row on table 3.2 approved state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 6));
+
+	it('should have only one row on table 3.2 suggested state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 3));
+
 	it('should have 8 rows on table 4', () =>
 		assert.strictEqual(data.chartFour.length, 8));
 
@@ -290,6 +328,9 @@ describe('Taba2 parsing test', async () => {
 
 	it('should have 11 rows on table 6', () =>
 		assert.strictEqual(data.chartSix.length, 11));
+
+	it('should have 0 rows on table 7.1', () =>
+		assert.strictEqual(data.chartSevenOne.length, 0));
 
 	describe('tables 1.8 parsing test', () => {
 
@@ -566,11 +607,29 @@ describe('Taba3 parsing test', async () => {
 	it('should have no rows on table 1.8.3', () =>
 		assert.strictEqual(data.chartsOneEight.chart183.length, 0));
 
+	it('should have 3 rows on table 1.8.4', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 3));
+
+	it('should have 2 rows on table 3.1 without change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 2));
+
+	it('should have 2 rows on table 3.1 with change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 2));
+
+	it('should have 2 rows on table 3.2 approved state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 2));
+
+	it('should have 2 rows on table 3.2 suggested state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 2));
+
 	it('data should have one row on table 5', () =>
 		assert.strictEqual(data.chartFive.length, 1));
 
 	it('should have 17 rows on table 6', () =>
 		assert.strictEqual(data.chartSix.length, 17));
+
+	it('should have 0 rows on table 7.1', () =>
+		assert.strictEqual(data.chartSevenOne.length, 0));
 
 	// interesting because it's ending is "הערה למגיש התכנית"
 	describe('tables 1.8 parsing test', () => {
@@ -696,12 +755,30 @@ describe('Taba4 parsing test', async () => {
 	it('data should have 1 row on table 1.8.3', () =>
 		assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
+	it('should have 7 rows on table 1.8.4', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 7));
+
+	it('should have 4 rows on table 3.1 without change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 4));
+
+	it('should have 11 rows on table 3.1 with change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 11));
+
+	it('should have 3 rows on table 3.2 approved state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 3));
+
+	it('should have 4 rows on table 3.2 suggested state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 4));
+
 	it('data should have 13 row on table 5', () =>
 		assert.strictEqual(data.chartFive.length, 13));
 
 	// note that 'עיצוב אדריכלי' and 'איכות סביבה' is appearing twice in the pdf, but appearing once in the parsed data. it's the wanted behavior.
 	it('should have 16 rows on table 6', () =>
 		assert.strictEqual(data.chartSix.length, 16));
+
+	it('should have 1 row on table 7.1', () =>
+		assert.strictEqual(data.chartSevenOne.length, 1));
 
 	describe('table 1.8.3 parsing test', () => {
 		const tbl183FirstRow = data.chartsOneEight.chart183[0];
@@ -775,6 +852,21 @@ describe('Taba6 parsing test', async () => {
 	it('should have only one row on table 1.8.3', () =>
 		assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
+	it('should have 4 rows on table 1.8.4', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 4));
+
+	it('should have 2 rows on table 3.1 without change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 2));
+
+	it('should have 7 rows on table 3.1 with change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 7));
+
+	it('should have 2 rows on table 3.2 approved state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 2));
+
+	it('should have 2 rows on table 3.2 suggested state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 2));
+
 	it('should have 3 rows on table 5', () =>
 		assert.strictEqual(data.chartFive.length, 3));
 
@@ -839,6 +931,21 @@ describe('Taba7 parsing test', async () => {
 	it('table 1.8.3 should have 1 rows', () =>
 		assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
+	it('should have 10 rows on table 1.8.4', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 10));
+
+	it('should have 9 rows on table 3.1 without change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 9));
+
+	it('should have 40 rows on table 3.1 with change', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 40));
+
+	it('should have 2 rows on table 3.2 approved state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 2));
+
+	it('should have 9 rows on table 3.2 suggested state', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 9));
+
 	// this test fails because we have no way to know that 'מסחר' at the end of page 14 is the beginning of the first row at page 15 (1-indexed)
 	// THIS TEST SHOULD FAIL, BUT PASSES TO SEE GREEN TICKS!
 	it('table 4 should have 25 rows', () =>
@@ -849,6 +956,9 @@ describe('Taba7 parsing test', async () => {
 
 	it('table 6 should have 11 rows', () =>
 		assert.strictEqual(data.chartSix.length, 11));
+
+	it('table 7.1 should have 1 rows', () =>
+		assert.strictEqual(data.chartSevenOne.length, 1));
 
 });
 
@@ -898,10 +1008,186 @@ describe('Taba8 parsing test', async () => {
 		assert.strictEqual(data.chartSevenOne.length, 1));
 });
 
-
-
 //test_plan9 for 1.8.4 and for empty 3.1 and empty 3.2 suggested
-//test_plan10 for stripping
+describe('Taba9 parsing test', async () => {
+	const TEST_PLANS_DIR = 'test_plan9';
+	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
+
+	it('chart 1.7 should have 6 rows', () =>
+		assert.strictEqual(data.chartOneSeven.length, 6));
+
+	it('chart 1.8.1 should have one row', () =>
+		assert.strictEqual(data.chartsOneEight.chart181.length, 1));
+
+	it('chart 1.8.2 should have 1 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart182.length, 1));
+
+	it('chart 1.8.3 should have 3 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart183.length, 3));
+
+	it('chart 1.8.4 should have 4 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 4));
+
+	it('chart 3.1 without change should have 0 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 0));
+
+	it('chart 3.1 with change should have 0 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 0));
+
+	it('chart 3.2 approved should have 4 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 4));
+
+	it('chart 3.2 with suggested should have 0 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 0));
+
+	it('chart 7.1 should have 0 rows', () =>
+		assert.strictEqual(data.chartSevenOne.length, 0));
+});
+
+//test_plan10 for stripping the useless crap at the end of some PDFs
+describe('Taba10 parsing test', async () => {
+	const TEST_PLANS_DIR = 'test_plan10';
+	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
+
+	it('chart 1.7 should have 7 rows', () =>
+		assert.strictEqual(data.chartOneSeven.length, 7));
+
+	it('chart 1.8.1 should have one row', () =>
+		assert.strictEqual(data.chartsOneEight.chart181.length, 1));
+
+	it('chart 1.8.2 should have 0 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart182.length, 0));
+
+	it('chart 1.8.3 should have 0 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart183.length, 0));
+
+	it('chart 1.8.4 should have 3 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 3));
+
+	it('chart 3.1 without change should have 2 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 2));
+
+	it('chart 3.1 with change should have 8 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 8));
+
+	it('chart 3.2 approved should have 2 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 2));
+
+	it('chart 3.2 with suggested should have 2 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 2));
+
+	it('chart 7.1 should have 1 rows', () =>
+		assert.strictEqual(data.chartSevenOne.length, 1));
+});
+
+
 //test_plan11 for pages with different orientation
+describe('Taba11 parsing test', async () => {
+	const TEST_PLANS_DIR = 'test_plan11';
+	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
+
+	it('chart 1.7 should have 5 rows', () =>
+		assert.strictEqual(data.chartOneSeven.length, 5));
+
+	it('chart 1.8.1 should have 1 row', () =>
+		assert.strictEqual(data.chartsOneEight.chart181.length, 1));
+
+	it('chart 1.8.2 should have 1 row', () =>
+		assert.strictEqual(data.chartsOneEight.chart182.length, 1));
+
+	it('chart 1.8.3 should have 0 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart183.length, 0));
+
+	it('chart 1.8.4 should have 3 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 3));
+
+	it('chart 3.1 without change should have 1 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 1));
+
+	it('chart 3.1 with change should have 0 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 0));
+
+	it('chart 3.2 approved should have 1 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 1));
+
+	it('chart 3.2 with suggested should have 1 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 1));
+
+	it('chart 5 should have 3 rows', () =>
+		assert.strictEqual(data.chartFive.length, 3));
+
+	it('chart 7.1 should have 0 rows', () =>
+		assert.strictEqual(data.chartSevenOne.length, 0));
+});
+
 //test_plan12 for 1.8.4 over 2 pages
+describe('Taba12 parsing test', async () => {
+	const TEST_PLANS_DIR = 'test_plan12';
+	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
+
+	it('chart 1.7 should have 25 rows', () =>
+		assert.strictEqual(data.chartOneSeven.length, 25));
+
+	it('chart 1.8.1 should have one row', () =>
+		assert.strictEqual(data.chartsOneEight.chart181.length, 1));
+
+	it('chart 1.8.2 should have 0 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart182.length, 0));
+
+	it('chart 1.8.3 should have 0 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart183.length, 0));
+
+	it('chart 1.8.4 should have 13 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 13));
+
+	it('chart 3.1 without change should have 7 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 7));
+
+	it('chart 3.1 with change should have 6 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 6));
+
+	it('chart 3.2 approved should have 2 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 2));
+
+	it('chart 3.2 with suggested should have 7 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 7));
+
+	it('chart 7.1 should have 0 rows', () =>
+		assert.strictEqual(data.chartSevenOne.length, 0));
+});
+
 //test_plan13 for 3.2 over 2 pages
+describe('Taba13 parsing test', async () => {
+	const TEST_PLANS_DIR = 'test_plan13';
+	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
+
+	it('chart 1.7 should have 15 rows', () =>
+		assert.strictEqual(data.chartOneSeven.length, 15));
+
+	it('chart 1.8.1 should have 2 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart181.length, 2));
+
+	it('chart 1.8.2 should have 1 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart182.length, 1));
+
+	it('chart 1.8.3 should have 0 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart183.length, 0));
+
+	it('chart 1.8.4 should have 8 rows', () =>
+		assert.strictEqual(data.chartsOneEight.chart184.length, 8));
+
+	it('chart 3.1 without change should have 5 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 5));
+
+	it('chart 3.1 with change should have 18 rows', () =>
+		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 18));
+
+	it('chart 3.2 approved should have 5 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 5));
+
+	it('chart 3.2 with suggested should have 5 rows', () =>
+		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 5));
+
+	it('chart 7.1 should have 0 rows', () =>
+		assert.strictEqual(data.chartSevenOne.length, 0));
+});
