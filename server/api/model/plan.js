@@ -112,7 +112,7 @@ class Plan extends Model {
 	_creating (model) {
 		return new Promise((resolve) => {
 			// set the geometry's centroid using ST_Centroid function
-			model.set('geom_centroid', Knex.raw('ST_GeomFromText(\'GEOMETRYCOLLECTION EMPTY\')'));
+			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
 			resolve();
 		});
 	}
@@ -123,7 +123,7 @@ class Plan extends Model {
 			// otherwise never update the centroid since the value is not
 			// parsed and formatted like the geometry value is
 			if (attrs.geom !== undefined) {
-				model.set('geom_centroid', Knex.raw('ST_GeomFromText(\'GEOMETRYCOLLECTION EMPTY\')'));
+				model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
 			} else {
 				model.unset('geom_centroid');
 			}
