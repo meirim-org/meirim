@@ -7,50 +7,55 @@ describe('Taba1 parsing test', async () => {
 	const TEST_PLANS_DIR = 'test_plan1';
 	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
-	it('data should not be undefined', async () =>
-		assert.notStrictEqual(data, undefined));
+	describe('Specific parsing', () => {
+		
+		it('data should not be undefined', async () =>
+			assert.notStrictEqual(data, undefined));
 
-	it('explanation', () =>
-		assert.strictEqual(data.planExplanation, 'תכנית זו מוסיפה אחוזי בנייה כללים למגרש מספר 17המאשר לפי תכנית תמ"ל1008 בחלקה מספר 216 גוש \n' +
-            '16607 באדמות טורעאן.\n' +
-            'התכנית מוספה שטח אחוזי בנייה כללים, מאחר ושטח המגרש הוא גדול בהרבה יחסית לממוצע המגרשים \n' +
-            'באותה תכנית, המאפשר שמירה על תכנית הבנוי של התכנית תמ"ל1008, חניון פיתוח וכו\'.'));
+		it('explanation', () =>
+			assert.strictEqual(data.planExplanation, 'תכנית זו מוסיפה אחוזי בנייה כללים למגרש מספר 17המאשר לפי תכנית תמ"ל1008 בחלקה מספר 216 גוש \n' +
+				'16607 באדמות טורעאן.\n' +
+				'התכנית מוספה שטח אחוזי בנייה כללים, מאחר ושטח המגרש הוא גדול בהרבה יחסית לממוצע המגרשים \n' +
+				'באותה תכנית, המאפשר שמירה על תכנית הבנוי של התכנית תמ"ל1008, חניון פיתוח וכו\'.'));
 
-	it('should have only one row on table 1.8.1', () =>
-		assert.strictEqual(data.chartsOneEight.chart181.length, 1));
+		it('should have only one row on table 1.8.1', () =>
+			assert.strictEqual(data.chartsOneEight.chart181.length, 1));
 
-	it('should have only one row on table 1.8.2', () =>
-		assert.strictEqual(data.chartsOneEight.chart182.length, 1));
+		it('should have only one row on table 1.8.2', () =>
+			assert.strictEqual(data.chartsOneEight.chart182.length, 1));
 
-	it('should have only one row on table 1.8.3', () =>
-		assert.strictEqual(data.chartsOneEight.chart183.length, 1));
+		it('should have only one row on table 1.8.3', () =>
+			assert.strictEqual(data.chartsOneEight.chart183.length, 1));
 
-	it('should have only one row on table 1.8.4', () =>
-		assert.strictEqual(data.chartsOneEight.chart184.length, 2));
+		it('should have only one row on table 1.8.4', () =>
+			assert.strictEqual(data.chartsOneEight.chart184.length, 2));
 
-	it('should have 1 row on table 3.1 without change', () =>
-		assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 1));
+		it('should have 1 row on table 3.1 without change', () =>
+			assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 1));
 
-	it('should have 1 row on table 3.1 with change', () =>
-		assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 1));
+		it('should have 1 row on table 3.1 with change', () =>
+			assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 1));
 
-	it('should have only one row on table 3.2 approved state', () =>
-		assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 1));
+		it('should have only one row on table 3.2 approved state', () =>
+			assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 1));
 
-	it('should have only one row on table 3.2 suggested state', () =>
-		assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 1));
+		it('should have only one row on table 3.2 suggested state', () =>
+			assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 1));
 
-	it('should have 5 rows on table 4', () =>
-		assert.strictEqual(data.chartFour.length, 5));
+		it('should have 5 rows on table 4', () =>
+			assert.strictEqual(data.chartFour.length, 5));
 
-	it('should have only one row on table 5', () =>
-		assert.strictEqual(data.chartFive.length, 1));
+		it('should have only one row on table 5', () =>
+			assert.strictEqual(data.chartFive.length, 1));
 
-	it('should have 10 rows on table 6', () =>
-		assert.strictEqual(data.chartSix.length, 10));
+		it('should have 10 rows on table 6', () =>
+			assert.strictEqual(data.chartSix.length, 10));
 
-	it('should have 0 rows on table 7.1', () =>
-		assert.strictEqual(data.chartSevenOne.length, 0));
+		it('should have 0 rows on table 7.1', () =>
+			assert.strictEqual(data.chartSevenOne.length, 0));
+
+	});
+
 	//table 1.8.2 parses wrong in this pdf
 
 	describe('tables 1.8 parsing test', () => {
