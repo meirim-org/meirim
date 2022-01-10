@@ -12,7 +12,7 @@ const { wait } = require('../../utils');
 const tables = [
 	'plan', 'notification', 'alert', 'person', 'table_1_6_prev_plans_relations',
 	'table_1_7_plan_docs', 'tables_18_interests_in_plan',
-	'table_3_1_with_change', 'table_3_1_without_change',
+	'table_3_1_with_change', 'table_3_1_without_change', 'table_3_2_areas_table',
 	'table_4_area_designation_and_usage', 'table_5_building_rights',
 	'table_6_additional_instructions', 'table_7_1_implementation_stages',
 	'file', 'plan_area_changes', 'tag', 'plan_tag'
