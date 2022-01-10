@@ -395,10 +395,12 @@ const fetchTreePermit = () =>{
 
 const fetchPlanStatus = () => {
 
+	const planStatusLimit = Config.get('planStatusChange.limit');
+	Log.info('plan limit:', planStatusLimit);
 	return Plan.query(qb => {
 		qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'))
 			.andWhere('status', '!=', 'התכנית אושרה' );
-		qb.limit(70);
+		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
 		.then(planCollection =>
