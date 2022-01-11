@@ -114,7 +114,7 @@ const getPlanFiles = async (page) => {
 	return files.map(formatFile);
 };
 
-const fetch = planUrl =>
+const fetch = (planUrl, fetchPlanInstruction = true) =>
 	new Promise((resolve, reject) => {
 		(async () => {
 			const page = await browser.newPage();
@@ -135,8 +135,8 @@ const fetch = planUrl =>
 				const bodyHTML = await page.evaluate(
 					() => document.body.innerHTML
 				);
-
-				const pageInstructions = await getPlanInstructions(page);
+				
+				const pageInstructions =  fetchPlanInstruction &&  await getPlanInstructions(page);
 				const planFiles = await getPlanFiles(page);
 
 				page.close();
@@ -266,7 +266,7 @@ const getPlanStatusList = cheerioPage => {
 const getPlanStatus = (plan) => {
 	const planId = plan.id;
 	return new Promise((resolve, reject) => {
-		getByPlan(plan)
+		getByPlan(plan, false)
 			.then(mavatData => {
 				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
 					!mavatData['planStatusList'][0])) {
@@ -291,10 +291,10 @@ const getPlanStatus = (plan) => {
 	});
 };
 
-const getByPlan = plan =>
+const getByPlan = (plan, fetchPlanInstructions = true) =>
 	init()
 		.then(() => {
-			return plan.get('plan_url') ? fetch(plan.get('plan_url')) : search(plan.get('PL_NUMBER'));
+			return plan.get('plan_url') ? fetch(plan.get('plan_url'), fetchPlanInstructions ) : search(plan.get('PL_NUMBER'));
 		})
 		.then(dict => {
 			const cheerioPage = dict.cheerioPage;

@@ -125,5 +125,8 @@
 				"pass": ""
 			}
 		}
+	},
+	"planStatusChange": {
+		"limit": 15
 	}
 }
