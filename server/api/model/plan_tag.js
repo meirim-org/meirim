@@ -65,4 +65,4 @@ class PlanTag extends Model {
 
 }
 
-module.exports =  PlanTag;
+module.exports = PlanTag;
