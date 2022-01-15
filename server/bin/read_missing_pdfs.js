@@ -48,8 +48,7 @@ const readMissingPdfs = async () => {
 				}
 
 
-				//TODO: debug from here
-				///1.7
+				//1.7
 				for (const row of readRes.chartOneSeven) {
 					await Knex.raw('INSERT INTO table_1_7_plan_docs (plan_id, kind, contains, scale, number_of_pages, edit_date, editor, creation_date, description, included) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 						[planId, row.kind, row.contains, row.scale, row.number_of_pages, row.edit_date, row.editor, row.creation_date, row.description, row.included]);
