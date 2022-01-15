@@ -730,7 +730,7 @@ describe('Crawler scraped data', function() {
 		assert.equal(chartOneEightRows.models[0].attributes.email, '', 'first chart 1.8 row email is correct');
 
 		// make sure all second chart one point eight row fields are correct
-		assert.equal(chartOneEightRows.models[1].id, 4, 'second chart 1.8 row id is correct');
+		assert.equal(chartOneEightRows.models[1].id, 6, 'second chart 1.8 row id is correct');
 		assert.equal(chartOneEightRows.models[1].attributes.plan_id, 1, 'second chart 1.8 row is related to the correct plan');
 		assert.equal(chartOneEightRows.models[1].attributes.origin, '1.8.2', 'second chart 1.8 row origin is correct');
 		assert.equal(chartOneEightRows.models[1].attributes.profession, null, 'second chart 1.8 row profession is correct');
