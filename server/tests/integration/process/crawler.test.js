@@ -248,7 +248,7 @@ describe('Crawler scraped data', function() {
 		// since there are no controllers for the pdf table data models, use the models directly
 		// fetch all chart one point eight rows
 		chartOneEightRows = await chartOneEightModel.fetchAll();
-		assert.equal(chartOneEightRows.length, 2, 'two chart 1.8 rows were scraped');
+		assert.equal(chartOneEightRows.length, 4, 'four chart 1.8 rows were scraped');
 
 		// make sure all first chart one point eight row fields are correct
 		assert.equal(chartOneEightRows.models[0].id, 1, 'first chart 1.8 row id is correct');
@@ -467,7 +467,7 @@ describe('Crawler scraped data', function() {
 		// since there are no controllers for the pdf table data models, use the models directly
 		// fetch all chart one point eight rows
 		chartOneEightRows = await chartOneEightModel.fetchAll();
-		assert.equal(chartOneEightRows.length, 2, 'two chart 1.8 rows were scraped');
+		assert.equal(chartOneEightRows.length, 4, 'four chart 1.8 rows were scraped');
 
 		// make sure all first chart one point eight row fields are correct
 		assert.equal(chartOneEightRows.models[0].id, 1, 'first chart 1.8 row id is correct');
