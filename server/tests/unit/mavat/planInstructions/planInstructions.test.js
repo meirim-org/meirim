@@ -33,8 +33,8 @@ describe('Taba1 parsing test', async () => {
 		it('should have 1 row on table 3.1 without change', () =>
 			assert.strictEqual(data.chartsThreeOne['3_1_without_change'].length, 1));
 
-		it('should have 1 row on table 3.1 with change', () =>
-			assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 1));
+		it('should have 0 rows on table 3.1 with change', () =>
+			assert.strictEqual(data.chartsThreeOne['3_1_with_change'].length, 0));
 
 		it('should have only one row on table 3.2 approved state', () =>
 			assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 1));
@@ -1013,7 +1013,7 @@ describe('Taba8 parsing test', async () => {
 			assert.strictEqual(data.chartsThreeTwo.chart3_2_approved.length, 1));
 
 		it('chart 3.2 with suggested should have 1 rows', () =>
-			assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 2));
+			assert.strictEqual(data.chartsThreeTwo.chart3_2_suggested.length, 1));
 
 		it('chart 4 should have 3 rows', () =>
 			assert.strictEqual(data.chartFour.length, 3));

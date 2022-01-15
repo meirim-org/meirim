@@ -59,7 +59,7 @@ const extractChartsOneEight = (pageTables) => {
 	const tbl184 = chartToArrayBuilder({
 		pageTables,
 		rowAbstractFactory: rowAbstractFactoryChartsOneEight,
-		startOfChartPred: (cell) => cell.includes('1.8.4') && !cell.includes('1.8.3'),
+		startOfChartPred: (cell) => (cell.includes('1.8.4') && !cell.includes('1.8.3'))	|| (cell.includes('\nעורך התכנית ובעלי מקצוע') && (cell.includes('בעלי עניין בקרקע'))) ,  // the second option is for empty 1.8.3
 		offsetOfRowWithDataInChart: 1,
 		chartDonePredicate: (row) => row.some(cell => cell.includes('1.9') && cell.includes('הגדרות בתכנית')),
 		getHeaderRowIndex: (page, searchFrom) => page.slice(searchFrom).findIndex(row => row.some(cell => cell.includes('סוג')) &&
