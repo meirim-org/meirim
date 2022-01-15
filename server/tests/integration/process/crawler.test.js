@@ -713,7 +713,7 @@ describe('Crawler scraped data', function() {
 		assert.equal(chartOneEightRows.length, 4, 'updated four chart 1.8 rows were scraped');
 
 		// make sure all first chart one point eight row fields are correct
-		assert.equal(chartOneEightRows.models[0].id, 3, 'first chart 1.8 row id is correct');
+		assert.equal(chartOneEightRows.models[0].id, 5, 'first chart 1.8 row id is correct');
 		assert.equal(chartOneEightRows.models[0].attributes.plan_id, 1, 'first chart 1.8 row is related to the correct plan');
 		assert.equal(chartOneEightRows.models[0].attributes.origin, '1.8.1', 'first chart 1.8 row origin is correct');
 		assert.equal(chartOneEightRows.models[0].attributes.profession, '', 'first chart 1.8 row profession is correct');
