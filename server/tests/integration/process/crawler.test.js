@@ -710,7 +710,7 @@ describe('Crawler scraped data', function() {
 
 		// fetch all chart one point eight rows - both should be updated
 		chartOneEightRows = await chartOneEightModel.fetchAll();
-		assert.equal(chartOneEightRows.length, 2, 'updated two chart 1.8 rows were scraped');
+		assert.equal(chartOneEightRows.length, 4, 'updated four chart 1.8 rows were scraped');
 
 		// make sure all first chart one point eight row fields are correct
 		assert.equal(chartOneEightRows.models[0].id, 3, 'first chart 1.8 row id is correct');
