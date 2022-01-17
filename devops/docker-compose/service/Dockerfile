@@ -1,6 +1,7 @@
 FROM node:14.17
-ADD start.sh /start.sh
-RUN chmod 755 /start.sh
-CMD ["/start.sh"]
 
+COPY ../../../server/package.json package.json
+COPY ../../../server/package-lock.json package-lock.json
+
+RUN npm install
 
