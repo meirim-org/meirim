@@ -398,29 +398,37 @@ const fetchPlanStatus = () => {
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
 	return Plan.query(qb => {
-		qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'))
-			.andWhere('status', '!=', 'התכנית אושרה' );
+		qb.where('status', '!=', 'התכנית אושרה' ).orderBy('last_visited_status','asc');
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
 		.then(planCollection =>
 			Bluebird.mapSeries(planCollection.models, plan => {
-
+				
 				Log.debug(plan.get('plan_url'));
+				Log.debug('plan visited status', plan.get('last_visited_status') );
+				Log.debug('plan current status', plan.get('status') );
 
-				return MavatAPI.getPlanStatus(plan).then(planStatuses => {
+				return MavatAPI.getPlanStatus(plan).then(async (planStatuses) => {
 					try {
 						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
-						const mostRecentDate = mostRecent[0].attributes.date;
+						const now = moment().format('YYYY-MM-DD HH:mm:ss');
+						Log.debug('updating last_visited_status to:', now );
+
+						if (! mostRecent[0]) {
+							Log.debug('No status in mavat for plan', plan.get('id'));
+							plan.save({ 'last_visited_status': now });
+							return;
+						}
 						const mostRecentStatus = mostRecent[0].attributes.status;
-						// update last_status_update in plan table with latest status change date
-						plan.save({ 'last_status_update': mostRecentDate, 'status': mostRecentStatus });
+						Log.debug('updating plan status to:', mostRecentStatus);
+						plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
 						// save all plan statuses into plan_status_change table
-						PlanStatusChange.savePlanStatusChange(planStatuses);
+						await PlanStatusChange.savePlanStatusChange(planStatuses);
 					}
 					catch (err) {
-						Log.error(err);
+						Log.error('Error:', err.message);
 					}
 				});
 			}));
