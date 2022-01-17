@@ -4,7 +4,7 @@ exports.up = function(knex) {
 		table.dropColumns(
 			'last_status_update'		
 		);
-		table.timestamp('last_visited_status');
+		table.timestamp('last_visited_status',);
 	});
 };
 
