@@ -1,18 +1,28 @@
-version: '1.1'
+version: '2.2'
+
+networks:
+  net-ladybird:
+    name: net-ladybird
+
 services:
   security:
     build: ./service
     ports:
-     - "8123:8123"
+     - "3001:3001"
     depends_on:
      - db
     environment:
      - DATABASE_HOST=db
-    volumes:
-     - ./service/api:/app/api
+    command: bash -c "sleep 10 && npm run knex migrate:latest --file knexfile.js"
   db:
     build: ./database-service
-    command: --default-authentication-plugin=mysql_native_password
+    command:
+      - '--default-authentication-plugin=mysql_native_password'
     restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=meirim
     ports:
       - 3318:3306
