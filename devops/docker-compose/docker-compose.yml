@@ -14,10 +14,12 @@ services:
     environment:
      - DATABASE_HOST=db
     command: bash -c "sleep 10 && npm run knex migrate:latest --file knexfile.js"
+    restart: always
   db:
     build: ./database-service
     command:
-      - '--default-authentication-plugin=mysql_native_password'
+      -  --default-authentication-plugin=mysql_native_password
+      -  --sql_mode="(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''))"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=password
