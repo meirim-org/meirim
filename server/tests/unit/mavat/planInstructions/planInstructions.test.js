@@ -1070,7 +1070,8 @@ describe('Taba9 parsing test', async () => {
 });
 
 //test_plan10 for stripping the useless crap at the end of some PDFs
-describe('Taba10 parsing test', async () => {
+describe('Taba10 parsing test', async function() {
+	this.timeout(60000);
 	const TEST_PLANS_DIR = 'test_plan10';
 	const data = await ParserIndex.processPlanInstructionsFile(path.join(__dirname, TEST_PLANS_DIR));
 
