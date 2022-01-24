@@ -56,11 +56,8 @@ const processPlanInstructionsFile = async (fileDir) => {
 
 				if (lastFinePage !== 0) {
 
-					const pagesToAdd = [];
 					// everything but the last page
-					for (let i = 1; i <= lastFinePage; i++) {
-						pagesToAdd.push(i);
-					}
+					const pagesToAdd = [...Array(lastFinePage).keys()];
 
 					const strippedPdfPath = path.join(fileDir, 'strippedTemp.pdf');
 					const pdfDoc = new HummusRecipe('new', strippedPdfPath);
@@ -76,12 +73,10 @@ const processPlanInstructionsFile = async (fileDir) => {
 			return data;
 		}
 
-		return undefined;
 	}
 	
 	catch(e) {
-		log.error(e);
-		return undefined;
+		log.error('processPlanInstructionsFile error:\n' + e);
 	}
 };
 
