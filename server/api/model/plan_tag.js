@@ -3,6 +3,7 @@ const Log = require('../lib/log');
 const Exception = require('./exception');
 const Tag = require('./tag');
 const { Bookshelf, Knex } = require('../service/database');
+const moment = require('moment');
 
 class PlanTag extends Model {
 	get rules () {
@@ -47,16 +48,20 @@ class PlanTag extends Model {
 			.then(() => true);
 	}
 
-	// TODO: change to get array of tags rather than just one
-	static async createPlanTags(data) {
+	static async createPlanTags(plan_id, data) {
 		try {
 			await Bookshelf.transaction(async (transaction) => {
 				for (const datum in data) {
 					await new PlanTag(data[datum]).save(null, { transacting: transaction });
 				}
+
 			});
+
+			const curr_time = moment().format('YYYY-MM-DD HH:mm:ss');
+			await Knex.raw(`UPDATE plan SET last_tags_update = ? WHERE id = ?`, [curr_time, plan_id]);
+
 		} catch (err) {
-			Log.error(err);
+			Log.error('had a problem saving tags for plan ' + plan_id + '\n' + err);
 		}
 
 	}	
