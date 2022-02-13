@@ -32,12 +32,12 @@ class DynamicTemplateEmail {
 	 }
 
 	getEmailAttachements (plans) {
-		 return map(keys(plans), (key)=>{
-			 if(plans[key].map) return {
-				cid: `${key}map`,
-				content_id: `${key}map`,
+		 return map(plans, (plan)=>{
+			 if(plan.map) return {
+				cid: `${plan.id}map`,
+				content_id: `${plan.id}map`,
 				filename: 'plan_map.png',
-				content: plans[key].map,
+				content: plan.map,
 				encoding: 'base64',
 				disposition: 'inline',
 			 };
@@ -56,12 +56,12 @@ class DynamicTemplateEmail {
 					 }
 					 ],
 					'dynamic_template_data': {
-						 ...emailPlanParams,
-						 ...emailAlertParams
+						 ...emailAlertParams,
+						 plans: emailPlanParams,
 					 }
 				 }
 			  ],
-			  attachments:  this.getEmailAttachements(emailPlanParams),
+			attachments:  this.getEmailAttachements(emailPlanParams),
 			 template_id : this.dynamicTemplates.digestPlanAlert,
 		};
 		return sgMail

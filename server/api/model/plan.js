@@ -546,7 +546,11 @@ class Plan extends Model {
 				'status'
 			],
 			withRelated: ['staticmap']
-		}).then(res=> res.models);
+		}).then(res=> {
+			return res.models;
+		}).catch(error=> {
+			console.log(error);
+		});
 	}
 
 	// TODO: actually get the plans we want to tag today, for now getting all of them in dev
