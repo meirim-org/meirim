@@ -219,7 +219,7 @@ const sendDigestPlanningAlerts = async () => {
 			alert.set({
 				last_email_sent: newUpdateDate.format('YYYY-MM-DD HH:mm:ss')
 			});
-			// await alert.save();	
+			await alert.save();	
 		
 		}
 		catch (e) {
