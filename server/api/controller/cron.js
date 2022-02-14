@@ -155,27 +155,27 @@ const sendPlanningAlerts = () => {
 const planToEmail = async (plan) => {
 	if (!plan) return;
 	const map = await plan.getMap();
+	const planId = plan.get('id');
 	return {
-		id: plan.get('id') || '',
+		id: planId,
 		map,
 		title: plan.get('plan_display_name'),
 		city: plan.get('PLAN_COUNTY_NAME'),
 		text: plan.get('goals_from_mavat'),
 		status: plan.get('status'),
-		// mapStyle: `background-image:url('data:image/png;base64, ${map}')`
-		// mapElement: `<img style="width:200px;height:100px;" src="data:image/png;base64,${map}" alt="${plan.get('plan_display_name')}">`
-		mapElement: `<img style="width:100%;height:180px;" src="cid:${plan.get('id')}map">`
+		link: `${Config.get('general.domain')}plan/${planId}`,
+		mapElement: `<img style="width:100%;height:180px;" src="cid:${planId}map">`
 		// areaChange: plan.describeHousingChange() || '',
 	};
 }; 
 
 const alertToEmail = (alert, numOfUpdates = 2) => {
 	const nowDate = moment().format('DD/MM/YY');
-	const radiusText = `ק"מ ${alert.get('radius')}`;
+	const radiusText = `${alert.get('radius')} ק״מ `;
 	const addressTitle = take((alert.get('address')|| '').split(','), 3).join(', ');
 	const alertTitle = `תוכניות חדשות בסביבת ${addressTitle ||  'תחומי הענין שלך'}`;
 	const mailSubject = `${alertTitle} | ${nowDate} `;
-	const updateTitle = `עדכונים חדשים ${numOfUpdates}`;
+	const updateTitle = `${numOfUpdates} עדכונים חדשים`;
 	return {
 		alert: {
 			title: addressTitle,
@@ -194,7 +194,7 @@ const sendDigestPlanningAlerts = async () => {
 	// have been added since he last received a digest email
 	// sendPlanningAlerts(req, res, next) {id
 	Log.info('Running digest send planning alert');
-	const lastSentDifference = 7; // update
+	const lastSentDifference = 1; // update
 	const maxAlertsToSend = 20;
 	const timeDifference = moment.duration(lastSentDifference, 'd');
 	const date = moment().subtract(timeDifference);
@@ -209,8 +209,8 @@ const sendDigestPlanningAlerts = async () => {
 		console.log(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
 		Log.debug(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
 
-		const emailAlertParams = alertToEmail(alert);
-		const plans = await Promise.all(map(alertPlans,planToEmail));
+		const emailAlertParams = alertToEmail(alert, alertPlans.length);
+		const plans = await Promise.all(map(alertPlans, planToEmail));
 
 		try {
 			// todo- change to now date rather than max

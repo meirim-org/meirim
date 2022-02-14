@@ -57,7 +57,7 @@ class DynamicTemplateEmail {
 					 ],
 					'dynamic_template_data': {
 						 ...emailAlertParams,
-						 plans: emailPlanParams,
+						 plans: emailPlanParams
 					 }
 				 }
 			  ],
