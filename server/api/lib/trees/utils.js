@@ -1,6 +1,7 @@
 const moment = require('moment');
 const path = require('path');
 const Geocoder = require('../../service/osm_geocoder');
+const NodeGeocoder = require('../../service/geocoder');
 const Log = require('../log');
 const aws = require('aws-sdk');
 const fs = require('fs');
@@ -56,7 +57,7 @@ async function uploadToS3(filename, bucketName, fullFileName) {
 	Log.info(`Successfully Uploaded to ${bucketName}/${keyName}. Status code: ${res.$response.httpResponse.statusCode}`);
 }
 
-async function generateGeomFromAddress(db, place, street) {
+async function generateGeom(db, place, street, gush, helka) {
 	
 	let res = '';
 	const address = `${place} ${street || ''}`;
@@ -64,6 +65,9 @@ async function generateGeomFromAddress(db, place, street) {
 
 	if (!place) return;
 	if (PLACES_WITHOUT_GEOM.has(place)) return;
+	Log.info(`before resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
+	const polygon = await NodeGeocoder.gushHelkaToPolygon(gush, helka);
+	Log.info(`after resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
 	if (place && street) {
 		res = await Geocoder.getGeocode( place, street);
 		if (!res) { // try geocode place only
@@ -84,12 +88,12 @@ async function generateGeomFromAddress(db, place, street) {
 			return;
 		}
 	} 
-	const polygonFromPoint = JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}]  ]] }`);
+	const polygonFromPoint = polygon || JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}]  ]] }`);
 	return polygonFromPoint;
 }
 
 module.exports = {
-	generateGeomFromAddress,
+	generateGeomFromAddress: generateGeom,
 	uploadToS3,
 	generateFilenameByTime,
 	isEmptyRow,
