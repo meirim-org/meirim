@@ -178,7 +178,7 @@ class Alert extends Model {
 		});
 	}
 
-	static getUsersByGeometry (planId) {
+	static getUsersByGeometry(planId) {
 		const sql = `SELECT 
     person.email,
     person.id as person_id,
@@ -190,6 +190,39 @@ class Alert extends Model {
     person.status=1
     GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
+	}
+
+	static async getAdminAlerts (options, date) {
+		const dateString = moment(date).format('YYYY-MM-DD h:mm');
+		const sql = `SELECT 
+			person.email,
+			person.admin,
+			person.id as person_id,
+			alert.last_email_sent as last_email_sent,
+			alert.id as alert_id
+			FROM alert
+			INNER JOIN person ON person.id=alert.person_id
+			WHERE person.admin='1' AND alert.last_email_sent < '${dateString}' OR 
+				alert.last_email_sent IS NULL
+				LIMIT 1`;
+
+		const res = await Knex.raw(sql);
+		const data = res[0][0];
+		const alertObj = await Alert.query(qb => {
+			qb.where('id', '=', data.alert_id);
+		}).fetch({ columns: [
+			'address',
+			'person_id',
+			'geom',
+			'radius',
+			'place',
+			'type',
+			'id'
+		] });
+		return {
+			email: data.email,
+			alert: alertObj
+		};
 	}
 
 	static getUsersByPlace (treeId) {
@@ -214,6 +247,7 @@ class Alert extends Model {
 		const dateString = moment(date).format('YYYY-MM-DD h:mm');
 		return Alert.query(qb => {
 			qb.whereRaw(`last_email_sent < '${dateString}' OR last_email_sent IS NULL`);
+			qb.where();
 		}).fetchAll({
 			columns: [
 				'address',

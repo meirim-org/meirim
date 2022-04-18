@@ -200,14 +200,17 @@ const sendDigestPlanningAlerts = async () => {
 	const date = moment().subtract(timeDifference);
 
 	try {
-		const { alert, email } = await Alert.getAlertToNotify({}, date);
+		// TODO: use next line to query all users, not only admin
+		// const { alert, email } = await Alert.getAlertToNotify({}, date);
+		const { alert, email }  = await Alert.getAdminAlerts({}, date);
 		if(!alert || !email) {
 			Log.debug('No alert updates to notify for user');
 		}
-		const alertGeom = alert.get('geom');
+		const alertGeom = alert.geom || alert.get('geom');
+		const alertId = alert.id || alert.get('id');
 		const alertPlans = await Plan.getPlansByGeometryThatWereUpdatedSince(alertGeom, date);
-		console.log(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
-		Log.debug(`Got ${alertPlans.length} plans for alert ${alert.get('id')}`);
+		console.log(`Got ${alertPlans.length} plans for alert ${alertId}`);
+		Log.debug(`Got ${alertPlans.length} plans for alert ${alertId}`);
 
 		const emailAlertParams = alertToEmail(alert, alertPlans.length);
 		const plans = await Promise.all(map(alertPlans, planToEmail));
@@ -225,7 +228,7 @@ const sendDigestPlanningAlerts = async () => {
 		catch (e) {
 			console.log(e);
 		}
-		Log.debug(`User ${email} alert ${alert.id} with ${alertPlans[0].length} plans`);
+		Log.debug(`User ${email} alert ${alertId} with ${alertPlans[0].length} plans`);
 	}
 	catch(e) {
 		Log.debug(`Failed digest plans for alert ${alert.id}`);

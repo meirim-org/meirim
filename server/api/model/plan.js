@@ -529,8 +529,9 @@ class Plan extends Model {
 			qb.where('created_at', '>', dateString);
 			const polygon = wkt.convert(geometryPolygon);
 			qb.whereRaw(`ST_Intersects(geom, ST_GeomFromText("${polygon}", 4326))`);
+			qb.orderBy('created_at','desc'); 
 		}).fetchPage({
-			pageSize: limit || 5,
+			pageSize: limit || 6,
 			columns: [
 				'id',
 				'data',
