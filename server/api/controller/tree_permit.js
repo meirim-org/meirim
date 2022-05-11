@@ -25,7 +25,9 @@ class TreePermitController extends Controller {
 			tpc.TOTAL_TREES,
 			tpc.TREES_PER_PERMIT,
 			tpc.ACTION,
-			tpc.GEOM
+			tpc.GEOM,
+			tpc.GUSH,
+			tpc.HELKA,
 		];
 
 		const where = {};

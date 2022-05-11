@@ -122,7 +122,7 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 		const numPermits = (newTreePermits.length > maxPermits) ? maxPermits : newTreePermits.length;
 		const savedTreePermits = [];
 		// Not using map / async on purpose, so node won't run this code snippet in parallel
-		for (const tp of newTreePermits.slice(0, numPermits)) {
+		for await (const tp of newTreePermits.slice(0, numPermits)) {
 			await new Promise(r => setTimeout(r, GEO_CODING_INTERVAL)); // max rate to query nominatim is 1 request per second
 			const polygonFromPoint = await generateGeomFromAddress(database.Knex, tp.attributes[PLACE], tp.attributes[STREET], tp.attributes[GUSH], tp.attributes[HELKA]);
 			tp.attributes[GEOM] = polygonFromPoint;
@@ -242,17 +242,22 @@ const crawlTreesExcel = async ( crawlMethod ) => {
 	let maxPermits = MAX_PERMITS;
 	const crawlMethods = chooseCrawl(crawlMethod);
 	
-	for ( const permitType of crawlMethods) {
-		try {
-			for (let i = 0; i < permitType.urls.length && maxPermits > 0; i++) {
-				const numSavedPermits = await crawTreeExcelByFile(permitType.urls[i], maxPermits, permitType);
+	for await ( const permitType of crawlMethods) {
+		
+		for await (const url of permitType.urls) {
+			try {
+				if (maxPermits <= 0) {
+					break;
+				}
+				const numSavedPermits = await crawTreeExcelByFile(url, maxPermits, permitType);
 				maxPermits = maxPermits - numSavedPermits;
 				sumPermits = sumPermits + numSavedPermits;
 			}
+			catch (err) {
+				Log.error(err.message || err);
+			}
 		}
-		catch (err) {
-			Log.error(err.message || err);
-		}
+		
 	}
 	Log.info(`Done! Total ${sumPermits} new permits`);
 	return sumPermits;
