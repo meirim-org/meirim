@@ -389,9 +389,9 @@ const buildPlan = (iPlan, oldPlan) => {
 	);
 };
 
-const fetchTreePermit = () =>{
+async function fetchTreePermit(){
 	return crawlTreesExcel();
-};
+}
 
 const fetchPlanStatus = () => {
 
