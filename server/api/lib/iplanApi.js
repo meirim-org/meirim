@@ -51,6 +51,7 @@ const fields = [
 	'LAST_UPDATE',
 	'PL_ORDER_PRINT_VERSION',
 	'PL_TASRIT_PRN_VERSION'
+	// 'AGAM_ID'
 ];
 
 // const EPSG2039 = proj4.Proj(
@@ -70,16 +71,10 @@ const getBlueLines = () => {
 	return Request(requestOptions).then(data => {
 		const geojson = GeoJSON.fromEsri(data, {});
 		Log.debug('Got', geojson.features.length, 'plans');
-		return Bluebird.reduce(
+		return Bluebird.map(
 			geojson.features,
-			(coll, datum) => {
-				// overriding geomerty with WGS84 coordinates
-				const res = Object.assign({}, datum, {
-					geometry: reproject.toWgs84(datum.geometry, EPSG3857)
-				});
-				return coll.concat(res);
-			},
-			[]
+			(datum) => Object.assign({}, datum, {
+				geometry: reproject.toWgs84(datum.geometry, EPSG3857)})
 		);
 	});
 };
