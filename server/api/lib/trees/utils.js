@@ -58,38 +58,41 @@ async function uploadToS3(filename, bucketName, fullFileName) {
 }
 
 async function generateGeom(db, place, street, gush, helka) {
-	
-	let res = '';
-	const address = `${place} ${street || ''}`;
-	Log.debug(`address: ${address} `);
+	try {	
+		let res = '';
+		const address = `${place} ${street || ''}`;
+		Log.debug(`address: ${address} `);
 
-	if (!place) return;
-	if (PLACES_WITHOUT_GEOM.has(place)) return;
-	Log.info(`before resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
-	const polygon = await NodeGeocoder.gushHelkaToPolygon(gush, helka);
-	Log.info(`after resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
-	if (place && street) {
-		res = await Geocoder.getGeocode( place, street);
-		if (!res) { // try geocode place only
-			Log.debug(`Couldn't geocode address: ${address}. try to fetch place from db.`);
+		if (!place) return;
+		if (PLACES_WITHOUT_GEOM.has(place)) return;
+		Log.info(`before resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
+		const polygon = await NodeGeocoder.gushHelkaToPolygon(gush, helka);
+		Log.info(`after resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
+		if (place && street) {
+			res = await Geocoder.getGeocode( place, street);
+			if (!res) { // try geocode place only
+				Log.debug(`Couldn't geocode address: ${address}. try to fetch place from db.`);
+				res = await Geocoder.fetchOrGeocodePlace({ 'db':db, 'table':TREE_PERMIT_TABLE, 'place': place });
+				if (!res ) {
+					Log.debug(`Failed to geocode address: ${place}`);
+					return;
+				}
+			}
+			Log.debug(`Managed to geocode address ${address} : ${res.longitude},${res.latitude} `);
+
+		}
+		else { // only place, no street
 			res = await Geocoder.fetchOrGeocodePlace({ 'db':db, 'table':TREE_PERMIT_TABLE, 'place': place });
 			if (!res ) {
 				Log.debug(`Failed to geocode address: ${place}`);
 				return;
 			}
-		}
-		Log.debug(`Managed to geocode address ${address} : ${res.longitude},${res.latitude} `);
-
+		} 
+		const polygonFromPoint = polygon || JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}]  ]] }`);
+		return polygonFromPoint;
+	} catch (err) {
+		Log.error('Error in generateGeom:', err);
 	}
-	else { // only place, no street
-		res = await Geocoder.fetchOrGeocodePlace({ 'db':db, 'table':TREE_PERMIT_TABLE, 'place': place });
-		if (!res ) {
-			Log.debug(`Failed to geocode address: ${place}`);
-			return;
-		}
-	} 
-	const polygonFromPoint = polygon || JSON.parse(`{ "type": "Polygon", "coordinates": [[ [ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}],[ ${res.longitude}, ${res.latitude}]  ]] }`);
-	return polygonFromPoint;
 }
 
 module.exports = {
