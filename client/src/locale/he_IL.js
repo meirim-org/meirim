@@ -131,7 +131,8 @@ const HEBREW_TRANSLATION = {
 	accountActivationSuccessPrefix: 'אנו ממליצים לכם לגשת לעמוד ',
 	accountActivationSuccessAlerts: 'ההתראות שלי',
 	accountActivationSuccessSuffix: ', להגדיר תחומי עניין וכתובות, ולהישאר מעודכנים על מה בונים לכם ליד הבית',
-	homepageMainTitle: 'מעירים: לדעת, להשתתף ולהשפיע!',
+	// homepageMainTitle: 'מעירים: לדעת, להשתתף ולהשפיע!',
+	homepageMainTitle: 'גלו מה מתכננים לכם ליד הבית',
 	homepageMainSubTitleA: 'אנחנו במעירים (ע"ר) פועלים להגברת השקיפות והמעורבות המקצועית והציבורית בהליכי קבלת ההחלטות הנוגעים לתכנון המרחב בו אנחנו חיים. הרשמו למערכת שלנו כדי לקבל התראות בזמן אמת, לפי כתובת מגורים או העדפה גיאוגרפית, על ',
 	homepageMainSubTitlePlansLinkText: 'תוכניות בנייה',
 	homepageMainSubTitleB: ' חדשות וקיימות ורישיונות ',
@@ -197,6 +198,12 @@ const HEBREW_TRANSLATION = {
 		forest: 'שטח פתוח',
 		lightRail: 'רכבת קלה',
 		river: 'נחל'
+	},
+	features: { 
+		createAlerts: 'לגלות מה בונים לכם ליד הבית', 
+		discoverPlanning: 'ליצור ולקבל התראות על תוכניות חדשות', 
+		treePermits: 'הראשונים לדעת על כריתת עצים', 
+		askCommunityReview: 'לבקש חוות דעת מהקהילה והתושבים' 
 	}
 };
 
@@ -393,7 +400,13 @@ const ARABIC_TRANSLATION =  {
 		forest: 'أراضي مفتوحة',
 		lightRail: 'قطار خفيف',
 		river: 'تيار مائي'
-}
+	},
+	features: { 
+		createAlerts: 'לגלות מה בונים לכם ליד הבית', 
+		discoverPlanning: 'ליצור ולקבל התראות על תוכניות חדשות', 
+		treePermits: 'הראשונים לדעת על כריתת עצים', 
+		askCommunityReview: 'לבקש חוות דעת מהקהילה והתושבים' 
+	}
 };
 
 export const LANGUAGES = {

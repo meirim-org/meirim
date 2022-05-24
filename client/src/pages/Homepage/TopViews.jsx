@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { H2, CommonSection } from './style';
 import Preview from './Preview';
+import Features from './Features';
 import topPlansImage from '../../assets/top-plans.svg';
 
 const TopViewsSection = styled(CommonSection)``;
@@ -10,9 +11,9 @@ const TopViews = () => {
 
 	return (
 		<TopViewsSection>
-			<H2>התוכניות הכי נצפות השבוע</H2>
-			<Preview src={topPlansImage}>
-			</Preview>
+			<H2>אז איך זה עובד?</H2>
+			<Features src={topPlansImage}>
+			</Features>
 		</TopViewsSection>
 	);
 };
