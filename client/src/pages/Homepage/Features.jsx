@@ -14,15 +14,15 @@ const DesktopImage = styled.img`
 	}
 `;
 
-const PreviewImageWrapper = styled.div`
+const Wrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
     position: relative;
 	flex-direction: column;
-	padding: 40px;	
 	@media ${device.tablet} {
 		flex-direction: row;
+		padding: 40px;	
 	}
 `;
 
@@ -36,16 +36,14 @@ const MobileImg = styled.div`
 	margin-bottom: 40px;
 `;
 
-const Feature = styled.div`
+const FeatureWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	padding: 32px 60px 0px 29px;
 	isolation: isolate;
 	width: 332px;
 	height: 240px;
-	border-radius: 12px;
 	flex: none;
 	order: 1;
 	align-self: stretch;
@@ -61,27 +59,73 @@ const Feature = styled.div`
 	line-height: 28px;
 	letter-spacing: 0px;
 	text-align: right;
+	border-radius: 12px;
+	@media ${device.tablet} {
+		padding-buttom: 12px;
+	}
 `;
 
-const MobileFeature = styled(Feature)`
+const DesktopMoreInfo = styled.div`
+	background-color: white;
+	height: 37px;
+	color: #652DD0;
+	width: 85%;
+	border-radius: 16px;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 21px;
+	letter-spacing: 0px;
+	text-align: center;
+	padding: 7px;
+	display: none;
+	margin: 12px;
+
+	${FeatureWrapper}:hover & {
+		display: block;
+	}
 `;
 
-const DesktopFeature = styled(Feature)`
+const MobileMoreInfo = styled.div`
+	background-color: #652DD0;
+	color: white;
+	height: 37px;
+	width: 100%;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 21px;
+	letter-spacing: 0px;
+	text-align: center;
+	padding: 7px;
+	display: block;
 `;
-	
+
+const TitleWrapper = styled.div`
+	margin: 32px 20px 0 30px;
+`;
 
 
-// background-image: url(${props => props.color});
+const Feature = ({ imgSrc, titleKey, color, isMobile }) => {
+	const { t } = useTranslation();
+	const title = get(t.features, titleKey);
+
+	return <FeatureWrapper color={color} src={imgSrc} isMobile={isMobile}> 
+		<TitleWrapper> { title } </TitleWrapper>
+		{ !isMobile && <DesktopMoreInfo> {t.moreInfo} </DesktopMoreInfo> }
+		{ isMobile && <MobileMoreInfo> {t.moreInfo}  </MobileMoreInfo> }
+
+	</FeatureWrapper>;
+};
 
 const Features = ({ isMobile, src, mobileSrc }) => {
 	const { t } = useTranslation();
+	const mobile = isMobile();
 	return (
-		<PreviewImageWrapper>
-			{ map(features, (feature) => {
-				const title = get(t, `features.${feature.titleKey}`);
-				return isMobile() ? <MobileFeature src={mobileSrc ?? src}> { title } </MobileFeature> : <DesktopFeature src={feature.image} color={feature.backgroundColor}> { title } </DesktopFeature>
+		<Wrapper>
+			{ map(features, ({ image, backgroundColor, titleKey }) => {
+				// let isMobile = isMobile() || false;
+				return <Feature imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
 			})}
-		</PreviewImageWrapper>
+		</Wrapper>
 	);
 };
 
