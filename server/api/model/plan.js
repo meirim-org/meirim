@@ -27,6 +27,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
+			AGAM_ID: 'integer',
 			plan_display_name: 'string',
 			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
@@ -38,6 +39,7 @@ class Plan extends Model {
 			// numeric indicator of interestingness. It is update like the views field, but also eroded over time
 			erosion_views: ['required', 'number'],
 			plan_url: 'string',
+			plan_new_mavat_url: 'string',
 			status: 'string',
 			goals_from_mavat: 'string',
 			main_details_from_mavat: 'string',
@@ -370,7 +372,9 @@ class Plan extends Model {
 			geom: iPlan.geometry,
 			PLAN_CHARACTOR_NAME: '',
 			plan_url: iPlan.properties.PL_URL,
-			status: iPlan.properties.STATION_DESC
+			status: iPlan.properties.STATION_DESC,
+			AGAM_ID: iPlan.properties.AGAM_ID,
+			plan_new_mavat_url: iPlan.properties.plan_new_mavat_url
 		};
 		if (oldPlan) {
 			oldPlan.set(data);
