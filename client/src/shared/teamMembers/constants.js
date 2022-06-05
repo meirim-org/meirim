@@ -41,17 +41,17 @@ export const members = [
 		
 	},
 	{
-		name:`כרם ואן מיל`,
-		title:`מנהלת קהילה`,
+		name:`גל גנדלר`,
+		title:`פיתוח תוכנה`,
 		order:7,
-		photo:'kerem'
+		photo:'gal'
 		
 	},
 	{
-		name:`גל גנדלר`,
-		title:`פיתוח תוכנה`,
+		name:`כרם ואן מיל`,
+		title:`מנהלת קהילה`,
 		order:9,
-		photo:'gal'
+		photo:'kerem'
 		
 	},
 	{
