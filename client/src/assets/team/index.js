@@ -12,6 +12,7 @@ import ron from './ron.png'
 import noa from './noa.png'
 import idit from './idit.png'
 import marina from './marina.png'
+import lishay from './lishay.png'
 import ruth from './ruth.png'
 import sarah from './sarah.png'
 import dor from './dor.png'
@@ -28,6 +29,7 @@ export {
     tomerL,
     boris,
     kerem,
+    lishay,
     galia,
     dror,
     ron,
