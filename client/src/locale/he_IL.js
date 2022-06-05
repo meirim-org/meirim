@@ -93,7 +93,8 @@ const HEBREW_TRANSLATION = {
 	general: 'חוות דעת כללית',
 	savedPlans: 'תוכניות שמורות',
 	noPlansSavedTitle: 'טרם שמרת תוכניות',
-	ourFacebook: 'פייסבוק',
+	ourFacebook: 'Facebook',
+	ourTwitter: 'Twitter',
 	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ',
 	areaUnitChanges: 'שינוי שטח',
 	housingUnitChanges: 'שינוי יחידות דיור',
@@ -276,6 +277,7 @@ const ARABIC_TRANSLATION =  {
 	callToAction: 'انضموا لطاقمنا',
 	whatToRegister: 'רוצים השכמה?',
 	ourFacebook: 'فيسبوك',
+	ourTwitter: 'Twitter',
 	privacyPolicy: 'سياسة الخصوصية',
 	whyRegister: (
 		<div>
