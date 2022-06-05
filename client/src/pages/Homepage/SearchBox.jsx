@@ -11,13 +11,13 @@ const Wrapper = styled.div`
     box-shadow: 0px 29.6621px 147.057px rgba(0, 0, 0, 0.0503198), 0px 15.8588px 78.6238px rgba(0, 0, 0, 0.0417275), 0px 8.8903px 44.0759px rgba(0, 0, 0, 0.035), 0px 4.72157px 23.4084px rgba(0, 0, 0, 0.0282725);
     padding: 23px;
     width: 100%;
-    height: 200px;
+    height: 148px;
     margin: 1em auto;
     z-index: 1;
 
     @media ${device.tablet} {
         width: 512px;
-        height: 160px;
+        height: 100px;
         padding: 32px;
         margin: 32px 0 0 0;  
         border-radius: 12px;
@@ -144,7 +144,7 @@ export default function SearchBox() {
 
 	return (
 		<Wrapper>
-			<Title>{t.searchBoxTitle}</Title>
+			{/* <Title>{t.searchBoxTitle}</Title> */}
 			<InputWrapper>
 				<AutocompleteWrapper>
 					<Autocomplete 

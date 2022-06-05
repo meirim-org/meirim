@@ -2,10 +2,11 @@ import Wrapper from 'components/Wrapper';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { WeNeedYou } from 'shared';
-import CommunityDiscussions from './CommunityDiscussions';
+import Vision from './Vision';
+import Features from './Features';
+import Achievements from './Achievements';
+import Testimony from './Testimony';
 import TopSection from './TopSection';
-import TopViews from './TopViews';
 import { openModal } from 'redux/modal/slice';
 import { UserSelectors } from 'redux/selectors';
 
@@ -24,9 +25,12 @@ const Homepage = () => {
 	return (
 		<Wrapper>
 			<TopSection />
-			<TopViews />
-			<WeNeedYou />
-			<CommunityDiscussions />
+			{/* <TopViews /> */}
+			<Features />
+			<Vision />
+			<Achievements/>
+			<Testimony />
+			{/* <CommunityDiscussions /> */}
 		</Wrapper>
 	);
 };

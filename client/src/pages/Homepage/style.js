@@ -8,7 +8,7 @@ export const H2 = styled(Typography).attrs(() => ({
     color: '',
 }))`
     padding-right: 16px;
-    color: #999999;
+    color: black;
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
@@ -18,4 +18,5 @@ export const H2 = styled(Typography).attrs(() => ({
     }
 `;
 
-export const CommonSection = styled.section``;
+export const CommonSection = styled.section`
+`;

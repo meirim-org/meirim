@@ -73,7 +73,7 @@ const NewspaperContainer = styled.div`
 	display: none;
 	@media ${device.tablet} {
 		position: absolute;
-		top: -250px;
+		top: -210px;
 		display: flex;
 		justify-content: center;
 		width: 100%;

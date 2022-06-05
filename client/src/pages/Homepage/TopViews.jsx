@@ -6,9 +6,6 @@ import Features from './Features';
 import topPlansImage from '../../assets/top-plans.svg';
 
 const TopViewsSection = styled(CommonSection)`
-@media ${device.tablet} {
-	padding-right: 80px;
-}
 `;
 
 const TopViews = () => {

@@ -2,21 +2,29 @@ import React from 'react';
 import { withGetScreen } from 'react-getscreen';
 import PropTypes from 'prop-types';
 import { map, get } from 'lodash';
+import { device } from 'style';
 import styled from 'styled-components';
 import features from '../../assets/features';
-import { device } from 'style';
+import { H2, CommonSection } from './style';
 import { useTranslation } from '../../locale/he_IL';
 
+const FeatureSection = styled(CommonSection)`
+	margin-top: 60px;
+	justify-content: center;
+	@media ${device.tablet} {
+		padding-right: 80px;
+		justify-content: unset;
+	}
+`; 
 
 const Wrapper = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    position: relative;
-	flex-direction: column;
-	@media ${device.tablet} {
-		flex-direction: row;
-	}
+width: 100%;
+padding: 20px;
+@media ${device.tablet} {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+}
 `;
 
 const FeatureWrapper = styled.div`
@@ -24,8 +32,7 @@ const FeatureWrapper = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	isolation: isolate;
-	width: 100%px;
+	width: 100%;
 	height: 240px;
 	flex: none;
 	order: 1;
@@ -42,6 +49,7 @@ const FeatureWrapper = styled.div`
 	line-height: 28px;
 	letter-spacing: 0px;
 	text-align: right;
+	align-self: center;
 	border-radius: 12px;
 	max-width: 332px;
 	@media ${device.tablet} {
@@ -116,12 +124,14 @@ const Features = ({ isMobile, src, mobileSrc }) => {
 	};
 
 	return (
+		<FeatureSection>
+			<H2> איך זה עובד</H2>
 		<Wrapper>
 			{ map(features, ({ image, backgroundColor, titleKey }) => {
-				// let isMobile = isMobile() || false;
 				return <Feature onClick={()=>setFeatureHash(titleKey)} imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
 			})}
 		</Wrapper>
+		</FeatureSection>
 	);
 };
 
