@@ -4,7 +4,6 @@ import { map } from 'lodash';
 import styled from 'styled-components';
 import { H2, CommonSection } from './style';
 import { device } from 'style';
-import { useTranslation } from '../../locale/he_IL';
 
 const achievements = [{
 	title: 'משתמשים רשומים',
@@ -54,45 +53,6 @@ font-weight: 600;
 	align-self: right;
 `;
 
-const FeatureWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	isolation: isolate;
-	width: 100%px;
-	height: 240px;
-	flex: none;
-	order: 1;
-	align-self: stretch;
-	flex-grow: 1;
-	margin: 12px;
-	background-color: ${props => props.color};
-	background-image: url(${props => props.src});
-	background-repeat: no-repeat;
-  	background-size: auto;
-	background-position: center bottom;
-	font-size: 24px;
-	font-weight: 600;
-	line-height: 28px;
-	letter-spacing: 0px;
-	text-align: right;
-	border-radius: 12px;
-	max-width: 332px;
-	@media ${device.tablet} {
-		padding-buttom: 12px;
-		width: 332px;
-		height: 240px;
-	}
-`;
-
-const TitleWrapper = styled.div`
-	margin: 24px 20px 0 30px;
-	@media ${device.tablet} {
-		margin: 32px 20px 0 30px;
-	}
-`;
-
 const StatContainer = styled.div`
 	width: 332px;
 	display: flex;
@@ -108,14 +68,12 @@ const Stat = ({ title, value }) => {
 	</StatContainer>;
 };
 
-const Achievements = ({ }) => {
+const Achievements = () => {
 	return (
 		<AchievementSection>
 			<H2>מה השגנו יחד</H2>
 		<Wrapper>
-			{ map(achievements, ({ title, value }) => {
-				return <Stat title={title} value={value} />;
-			})}
+			{ map(achievements, ({ title, value }) => <Stat title={title} value={value} />)}
 		</Wrapper>
 		</AchievementSection>
 	);

@@ -93,7 +93,7 @@ const Testimony = ({ text, person, personTitle }) => {
 	</TestimonyContainer>;
 };
 
-const Achievements = ({ }) => {
+const Achievements = () => {
 	return (<>
 		<TestimonySection>
 			<NewspaperContainer><Newspaper /></NewspaperContainer>

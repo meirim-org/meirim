@@ -24,19 +24,19 @@ const Wrapper = styled.div`
     }
 `;
 
-const Title = styled.p`
-    color: #ffffff;
-    text-align: right;
-    font-size: 22px;
-    line-height: 22px;
-    margin-bottom: 22px;
+// const Title = styled.p`
+//     color: #ffffff;
+//     text-align: right;
+//     font-size: 22px;
+//     line-height: 22px;
+//     margin-bottom: 22px;
 
-    @media ${device.tablet} {
-        font-size: 28px;
-        line-height: 28px;
-        margin-bottom: 28px;
-    }
-`;
+//     @media ${device.tablet} {
+//         font-size: 28px;
+//         line-height: 28px;
+//         margin-bottom: 28px;
+//     }
+// `;
 
 const Button = styled.button`
     margin-right: auto;

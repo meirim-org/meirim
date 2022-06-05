@@ -116,7 +116,6 @@ const Feature = ({ imgSrc, titleKey, color, isMobile, onClick }) => {
 };
 
 const Features = ({ isMobile, src, mobileSrc }) => {
-	const { t } = useTranslation();
 	const mobile = isMobile();
 
 	const setFeatureHash = (featureKey) => {
