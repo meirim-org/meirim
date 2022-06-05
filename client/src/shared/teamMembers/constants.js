@@ -61,27 +61,34 @@ export const members = [
 		photo:'galia'
 		
 	},
+	// {
+	// 	name:`דור זומר`,
+	// 	title:`שיווק ואסטרטגיה`,
+	// 	order:11,
+	// 	photo:'dor'
+		
+	// },
 	{
-		name:`דור זומר`,
-		title:`שיווק ואסטרטגיה`,
+		name:`לישי סוקול`,
+		title:`מעצב מוצר וברנד`,
 		order:11,
-		photo:'dor'
+		photo:'lishay'
 		
 	},
-	{
-		name:`היבה בוארדי`,
-		title:`מחקר וייעוץ תכנוני`,
-		order:12,
-		photo:'hiba'
+	// {
+	// 	name:`היבה בוארדי`,
+	// 	title:`מחקר וייעוץ תכנוני`,
+	// 	order:12,
+	// 	photo:'hiba'
 		
-	},
-	{
-		name:`יואב בן שלום`,
-		title:`צוות מוצר`,
-		order:13,
-		photo:'yoav'
+	// },
+	// {
+	// 	name:`יואב בן שלום`,
+	// 	title:`צוות מוצר`,
+	// 	order:13,
+	// 	photo:'yoav'
 		
-	},
+	// },
 	{
 		name:`אד' מרינה ירמוננוק`,
 		title:`מחקר וייעוץ תכנוני`,
@@ -103,20 +110,20 @@ export const members = [
 		photo:'idit'
 		
 	},
-	{
-		name:`רות אברהם `,
-		title:`מחקר וייעוץ תכנוני`,
-		order:17,
-		photo:'ruth'
+	// {
+	// 	name:`רות אברהם `,
+	// 	title:`מחקר וייעוץ תכנוני`,
+	// 	order:17,
+	// 	photo:'ruth'
 		
-	},
-	{
-		name:`שרה גדז'`,
-		title:`מעצבת UI / UX`,
-		order:18,
-		photo:'sarah'
+	// },
+	// {
+	// 	name:`שרה גדז'`,
+	// 	title:`מעצבת UI / UX`,
+	// 	order:18,
+	// 	photo:'sarah'
 		
-	},
+	// },
 	{
 		name:`תומר לאור`,
 		title:`מנהל נתונים`,
