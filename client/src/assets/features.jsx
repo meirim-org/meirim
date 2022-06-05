@@ -5,24 +5,24 @@ import UnderConstruction from './homepage/features/UnderConstructions.svg'
 
 var features = [{
     titleKey: 'discoverPlanning',
-    image: UnderConstruction,
+    image: GetAlerts,
     id: '',
     backgroundColor: '#FFFAE9'
 }, {
     titleKey: 'createAlerts',
-    image: GetAlerts,
+    image: UnderConstruction,
     id: '',
     backgroundColor: '#E4FAFF'
+}, {
+    titleKey: 'savePlans',
+    image: AskCommunity,
+    id: '',
+    backgroundColor: ' #F7F2FF'
 }, {
     titleKey: 'treePermits',
     image: TreePermits,
     id: '',
     backgroundColor: '#E7FFF9'
-}, {
-    titleKey: 'askCommunityReview',
-    image: AskCommunity,
-    id: '',
-    backgroundColor: ' #F7F2FF'
 }];
 
 export default features;

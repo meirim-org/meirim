@@ -14,7 +14,6 @@ export const H2 = styled(Typography).attrs(() => ({
     line-height: 28px;
 
     @media ${device.tablet} {
-        padding-right: 80px;
         margin-bottom: 0;
     }
 `;

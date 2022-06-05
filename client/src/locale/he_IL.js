@@ -201,10 +201,10 @@ const HEBREW_TRANSLATION = {
 		river: 'נחל'
 	},
 	features: { 
-		createAlerts: 'לגלות מה בונים לכם ליד הבית', 
-		discoverPlanning: 'ליצור ולקבל התראות על תוכניות חדשות', 
-		treePermits: 'הראשונים לדעת על כריתת עצים', 
-		askCommunityReview: 'לבקש חוות דעת מהקהילה והתושבים' 
+		createAlerts: 'נרשמים בחינם לקבלת התראות', 
+		discoverPlanning: 'מחפשים את הכתובת שלכם', 
+		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!', 
+		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם' 
 	}
 };
 
@@ -403,10 +403,10 @@ const ARABIC_TRANSLATION =  {
 		river: 'تيار مائي'
 	},
 	features: { 
-		createAlerts: 'לגלות מה בונים לכם ליד הבית', 
-		discoverPlanning: 'ליצור ולקבל התראות על תוכניות חדשות', 
-		treePermits: 'הראשונים לדעת על כריתת עצים', 
-		askCommunityReview: 'לבקש חוות דעת מהקהילה והתושבים' 
+		createAlerts: 'נרשמים בחינם לקבלת התראות', 
+		discoverPlanning: 'מחפשים את הכתובת שלכם', 
+		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!', 
+		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם' 
 	}
 };
 

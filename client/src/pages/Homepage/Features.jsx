@@ -4,15 +4,9 @@ import PropTypes from 'prop-types';
 import { map, get } from 'lodash';
 import styled from 'styled-components';
 import features from '../../assets/features';
-import purpleLogo from '../../assets/meirim-logo-purple.png';
 import { device } from 'style';
 import { useTranslation } from '../../locale/he_IL';
 
-const DesktopImage = styled.img`
-	@media ${device.tablet} {
-		max-width: 100%; 
-	}
-`;
 
 const Wrapper = styled.div`
     width: 100%;
@@ -22,18 +16,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	@media ${device.tablet} {
 		flex-direction: row;
-		padding: 40px;	
 	}
-`;
-
-const MobileImg = styled.div`
-	width: 100vw; 
-	height: 420px;
-	background-image: url(${props => props.src});
-	background-repeat: no-repeat;
-	background-position-x: right;
-	background-size: cover;
-	margin-bottom: 40px;
 `;
 
 const FeatureWrapper = styled.div`
@@ -42,7 +25,7 @@ const FeatureWrapper = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	isolation: isolate;
-	width: 332px;
+	width: 100%px;
 	height: 240px;
 	flex: none;
 	order: 1;
@@ -60,8 +43,11 @@ const FeatureWrapper = styled.div`
 	letter-spacing: 0px;
 	text-align: right;
 	border-radius: 12px;
+	max-width: 332px;
 	@media ${device.tablet} {
 		padding-buttom: 12px;
+		width: 332px;
+		height: 240px;
 	}
 `;
 
@@ -79,6 +65,7 @@ const DesktopMoreInfo = styled.div`
 	padding: 7px;
 	display: none;
 	margin: 12px;
+	cursor: pointer;
 
 	${FeatureWrapper}:hover & {
 		display: block;
@@ -97,18 +84,22 @@ const MobileMoreInfo = styled.div`
 	text-align: center;
 	padding: 7px;
 	display: block;
+	cursor: pointer;
 `;
 
 const TitleWrapper = styled.div`
-	margin: 32px 20px 0 30px;
+	margin: 24px 20px 0 30px;
+	@media ${device.tablet} {
+		margin: 32px 20px 0 30px;
+	}
 `;
 
 
-const Feature = ({ imgSrc, titleKey, color, isMobile }) => {
+const Feature = ({ imgSrc, titleKey, color, isMobile, onClick }) => {
 	const { t } = useTranslation();
 	const title = get(t.features, titleKey);
 
-	return <FeatureWrapper color={color} src={imgSrc} isMobile={isMobile}> 
+	return <FeatureWrapper onClick={onClick} color={color} src={imgSrc} isMobile={isMobile}> 
 		<TitleWrapper> { title } </TitleWrapper>
 		{ !isMobile && <DesktopMoreInfo> {t.moreInfo} </DesktopMoreInfo> }
 		{ isMobile && <MobileMoreInfo> {t.moreInfo}  </MobileMoreInfo> }
@@ -119,11 +110,16 @@ const Feature = ({ imgSrc, titleKey, color, isMobile }) => {
 const Features = ({ isMobile, src, mobileSrc }) => {
 	const { t } = useTranslation();
 	const mobile = isMobile();
+
+	const setFeatureHash = (featureKey) => {
+		window.location.hash = `campaign-feature-${featureKey}`;
+	};
+
 	return (
 		<Wrapper>
 			{ map(features, ({ image, backgroundColor, titleKey }) => {
 				// let isMobile = isMobile() || false;
-				return <Feature imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
+				return <Feature onClick={()=>setFeatureHash(titleKey)} imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
 			})}
 		</Wrapper>
 	);
