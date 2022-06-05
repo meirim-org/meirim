@@ -1,6 +1,6 @@
 import { useTranslation } from 'locale/he_IL';
 import React from 'react';
-import { Link, Typography } from 'shared';
+import { Link, Typography, Chip } from 'shared';
 import { device } from 'style';
 import styled from 'styled-components';
 import homepageMobileImage from '../../assets/homepage-mobile.svg';
@@ -52,7 +52,7 @@ const H1 = styled.h1`
     text-align: center;
     color: #270E78;
     font-size: 36px;
-    line-height: 54px;
+    line-height: 42px;
     padding-right: 16px;
     z-index: 1;
     margin-top: 0.1em;
@@ -61,8 +61,8 @@ const H1 = styled.h1`
 
     @media ${device.tablet} {
         text-align: right;
-        font-size: 48px;
-        line-height: 60px;
+        font-size: 56px;
+        line-height: 64.5px;
         padding-right: 0;
         margin-top: 0;
         margin-bottom: 16px;
@@ -109,13 +109,16 @@ const TopSection = () => {
 			<Cover>
 				<H1>{t.homepageMainTitle}</H1>
 				<Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
-					{t.homepageMainSubTitleA}
-					<Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
+					{/* {t.homepageMainSubTitleA} */}
+					{/* <Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
 					{t.homepageMainSubTitleB}
-					<Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
+					<Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/> */}
                     .
 				</Paragraph>
 				<SearchBox />
+                <Chip text='מידע על כריתות עצים' />
+                <Chip text='מידע למתכננים' />
+                <Chip text='מידע ליזמים' />
 			</Cover>
 		</Section>
 	);
