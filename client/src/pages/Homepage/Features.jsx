@@ -18,13 +18,13 @@ const FeatureSection = styled(CommonSection)`
 `; 
 
 const Wrapper = styled.div`
-width: 100%;
-padding: 20px;
-@media ${device.tablet} {
-	display: flex;
-	flex-flow: row;
-	justify-content: center;
-}
+	width: 100%;
+	padding: 20px;
+	@media ${device.tablet} {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;	
+	}
 `;
 
 const FeatureWrapper = styled.div`
@@ -56,6 +56,10 @@ const FeatureWrapper = styled.div`
 		padding-buttom: 12px;
 		width: 332px;
 		height: 240px;
+	}
+
+	@media ${device.laptop} {
+		width: 200px;
 	}
 `;
 
