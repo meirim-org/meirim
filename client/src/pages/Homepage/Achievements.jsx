@@ -21,6 +21,10 @@ const achievements = [{
 
 const AchievementSection = styled(CommonSection)`
 	background-color: #FCF9FF;
+	padding-bottom: 30px;
+	@media ${device.tablet} {
+		padding-bottom: 200px;
+	}
 `;
 
 
@@ -33,9 +37,7 @@ const Wrapper = styled.div`
 	align-items: center;
 	@media ${device.tablet} {
 		flex-direction: row;
-		padding-bottom: 210px;
 		flex-flow: row no-wrap;
-
 	}
 `;
 
@@ -65,7 +67,8 @@ const StatContainer = styled.div`
     flex-direction: column;
     align-items: center;
 	@media ${device.tablet} {
-		width: 300px;
+		width: 190px;
+		margin: 0px 20px;
 	}
 `;
 
