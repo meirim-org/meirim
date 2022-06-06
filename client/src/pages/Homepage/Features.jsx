@@ -54,7 +54,6 @@ const FeatureWrapper = styled.div`
 	max-width: 332px;
 	@media ${device.tablet} {
 		padding-buttom: 12px;
-		width: 332px;
 		height: 240px;
 	}
 

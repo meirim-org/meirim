@@ -10,7 +10,7 @@ const achievements = [{
 	value: 6500
 }, {
 	title: 'מבקרים חדשים בחודש',
-	value: 4500
+	value: 7000
 }, {
 	title: 'התראות שנשלחו',
 	value: 150000
@@ -26,14 +26,16 @@ const AchievementSection = styled(CommonSection)`
 
 const Wrapper = styled.div`
     width: 100%;
-    display: flex;
+	display: flex;
+    flex-flow: row wrap;
     justify-content: center;
     position: relative;
-	flex-direction: column;
 	align-items: center;
 	@media ${device.tablet} {
 		flex-direction: row;
 		padding-bottom: 210px;
+		flex-flow: row no-wrap;
+
 	}
 `;
 
@@ -46,18 +48,25 @@ const StatTitle = styled.div`
 `;
 
 const StatValue = styled.div`
-font-weight: 600;
-	font-size: 64px;
-	line-height: 90px;
+	font-weight: 600;
+	font-size: 36px;
+	line-height: 48px;
 	color: #652DD0;
 	align-self: right;
+	@media ${device.tablet} {
+		font-size: 64px;
+		line-height: 90px;
+	}
 `;
 
 const StatContainer = styled.div`
-	width: 332px;
+	width: 50%;
 	display: flex;
     flex-direction: column;
     align-items: center;
+	@media ${device.tablet} {
+		width: 300px;
+	}
 `;
 
 
