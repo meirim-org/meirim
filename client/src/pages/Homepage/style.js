@@ -12,11 +12,13 @@ export const H2 = styled(Typography).attrs(() => ({
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
-
+    align-self: center;
     @media ${device.tablet} {
         margin-bottom: 0;
     }
 `;
 
 export const CommonSection = styled.section`
+    display: flex;
+    flex-direction: column;
 `;
