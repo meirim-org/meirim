@@ -9,11 +9,11 @@ const AlertTableRow = (props) => {
 	let address = '';
 	let radius = '';
 	if (alert.type === 'plan') {
-		address = alert.address;
+		address = `🏠 ${alert.address} `;
 		radius = `${alert.radius} ${t.km}`;
 	}
 	if (alert.type === 'tree') {
-		address = alert.place;
+		address = `🌳 ${alert.place} `;
 	}
 	return (
 		<tr key={alert.id}>
