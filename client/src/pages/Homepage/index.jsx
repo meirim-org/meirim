@@ -26,13 +26,11 @@ const Homepage = () => {
 	return (
 		<Wrapper>
 			<TopSection />
-			{/* <TopViews /> */}
 			<Features />
 			<Vision />
 			<Achievements/>
 			<Testimony />
 			<CallToActionFooter />
-			{/* <CommunityDiscussions /> */}
 		</Wrapper>
 	);
 };

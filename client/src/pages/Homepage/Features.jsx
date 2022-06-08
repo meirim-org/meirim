@@ -9,7 +9,7 @@ import { H2, CommonSection } from './style';
 import { useTranslation } from '../../locale/he_IL';
 
 const FeatureSection = styled(CommonSection)`
-	margin-top: 60px;
+	margin-top: 20px;
 	justify-content: center;
 	@media ${device.tablet} {
 		padding-right: 80px;
