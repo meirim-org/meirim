@@ -6,6 +6,7 @@ import Vision from './Vision';
 import Features from './Features';
 import Achievements from './Achievements';
 import Testimony from './Testimony';
+import CallToActionFooter from './CallToActionFooter';
 import TopSection from './TopSection';
 import { openModal } from 'redux/modal/slice';
 import { UserSelectors } from 'redux/selectors';
@@ -30,6 +31,7 @@ const Homepage = () => {
 			<Vision />
 			<Achievements/>
 			<Testimony />
+			<CallToActionFooter />
 			{/* <CommunityDiscussions /> */}
 		</Wrapper>
 	);
