@@ -1,7 +1,6 @@
 import { useTranslation } from 'locale/he_IL';
 import React from 'react';
 // import { Link, Typography } from 'shared';
-import { Typography } from 'shared';
 import { device } from 'style';
 import styled from 'styled-components';
 import homepageMobileImage from '../../assets/homepage-mobile.svg';
