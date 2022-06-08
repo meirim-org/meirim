@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import homepageMobileImage from '../../assets/homepage-mobile.svg';
 import homepageImage from '../../assets/homepage.svg';
 import SearchBox from './SearchBox';
+import Banner from './Banner';
 
 const Image = styled.div`
     height: 288px;
@@ -39,7 +40,6 @@ const Cover = styled.div`
 
 const Section = styled.section`
     width: 100%;
-    margin-bottom: 20px;
     position: relative;
 
     @media ${device.tablet} {
@@ -128,7 +128,7 @@ const Paragraph = styled(Typography)`
 const TopSection = () => {
 	const { t } = useTranslation();
 
-	return (
+	return (<>
 		<Section>
 			<Image/>
 			<Cover>
@@ -137,6 +137,8 @@ const TopSection = () => {
 				<SearchBox />
 			</Cover>
 		</Section>
+        <Banner/>
+        </>
 	);
 };
 
