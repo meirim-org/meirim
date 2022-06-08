@@ -96,34 +96,33 @@ const H3 = styled.h3`
     }
 `;
 
-const Paragraph = styled(Typography)`
-    width: 100%;
-    text-align: center;
-    font-size: 16px;
-    line-height: 24px;
-    max-width: 328px;
-    margin: 0.1em auto;
-    padding-right: 16px;
-    z-index: 1;
+// const Paragraph = styled(Typography)`
+//     width: 100%;
+//     text-align: center;
+//     font-size: 16px;
+//     line-height: 24px;
+//     max-width: 328px;
+//     margin: 0.1em auto;
+//     padding-right: 16px;
+//     z-index: 1;
 
-    a {
-        font-size: 16px;
-    }
+//     a {
+//         font-size: 16px;
+//     }
 
-    @media ${device.tablet} {
-        text-align: right;
-        margin: 24px 0 0;
-        max-width: 550px;
-        font-size: 20px;
-        padding-right: 0;
-        background-color: rgb(252 249 255 / 85%);
+//     @media ${device.tablet} {
+//         text-align: right;
+//         margin: 24px 0 0;
+//         max-width: 550px;
+//         font-size: 20px;
+//         padding-right: 0;
+//         background-color: rgb(252 249 255 / 85%);
 
-        a {
-            font-size: 20px;
-        }
-    }
-
-`;
+//         a {
+//             font-size: 20px;
+//         }
+//     }
+// `;
 
 const TopSection = () => {
 	const { t } = useTranslation();
