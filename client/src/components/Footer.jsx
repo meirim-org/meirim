@@ -23,9 +23,9 @@ const Footer = () => {
 			<Link to="/support-us/#who-we-are">{t.whoWeAre}</Link> |&nbsp;
 			<a href="https://github.com/meirim-org/meirim/">{t.callToAction}</a>
 			<br />
-			<a href="https://www.facebook.com/meirim.city/">{t.ourFacebook}</a>{' '}|&nbsp;
+			<a href="https://linkedin.com/company/35602639">LinkedIn</a>{' '}|&nbsp;
 			<a href="https://twitter.com/meirimORG">{t.ourTwitter}</a>{' '}|&nbsp;
-			<a href="https://linkedin.com/company/35602639">LinkedIn</a>{' '}
+			<a href="https://www.facebook.com/meirim.city/">{t.ourFacebook}</a>{' '}
 			<br />
 	
 			Ⓒ {t.allRightsReserved} 2022 
