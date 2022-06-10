@@ -8,8 +8,16 @@ import { openModal } from 'redux/modal/slice';
 import { Button } from '../../shared';
 import { H2, CenteredCommonSection } from './style';
 import { useTranslation } from 'locale/he_IL';
+import Tick from '../../assets/svg/tick';
 
 const fundingYoutubeVideoId = 'e1Q7zj_2f0I';
+
+const StyledH2 = styled(H2)`
+	align-self: center;
+	@media ${device.tablet} {
+		align-self: unset;
+	}
+`;
 
 
 const VisionSection = styled(CenteredCommonSection)`
@@ -19,14 +27,17 @@ const VisionSection = styled(CenteredCommonSection)`
 		display: flex;
 	}
 	padding-bottom: 45px;
-`; 
+`;
 
 const Wrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	width: 100%;
-	max-width: 1368px;
-	padding: 0 80px;
+	padding: 0 10px;
+	@media ${device.tablet} {
+		max-width: 1368px;
+		padding: 0 80px;
+	}
 `;
 
 const VideoContainer = styled.div`
@@ -38,6 +49,8 @@ const VideoContainer = styled.div`
 const VisionItemContainer = styled.div`
 	width: 100%;
 	padding: 20px;
+	max-width: calc(50%-10px);
+	overflow: hidden;
 	@media ${device.tablet} {
 		display: flex;
 		flex-flow: row;
@@ -49,7 +62,7 @@ const VisionItem = styled.div`
 	@media ${device.tablet} {
 		width: 100%;
 	}
-`; 
+`;
 
 const RegisterNowContainer = styled.div`
 	font-size: 24px;
@@ -59,7 +72,7 @@ const RegisterNowContainer = styled.div`
 	position: relative;
 	min-height 300px;
 	@media ${device.tablet} {
-		width: 300px;
+		width:100%;
 	}
 `;
 
@@ -69,28 +82,10 @@ const RegisterNowTextLine = styled.div`
 	line-height: 27px;
 	display: flex;
 	padding: 8px;
-`;
 
-const TickIcon = styled.span`
-	display: inline-block;
-	transform: rotate(45deg);
-	height: 12px;
-	width: 6px;
-	border-bottom: 2.5px solid white;
-	border-right: 2.5px solid white;
-`;
-
-const TickIconWrapper = styled.div`
-	display: inline-block;
-	background-color: #8F5CE2;
-	width: 24px;
-	border: 2px solid #AE7FF0;
-	border-radius: 50%;
-	display: flex;
-    justify-content: center;
-	align-items: center;
-	margin-left: 14px;
-	overflow: hidden;
+	& > p {
+		margin-right: 10px;
+	}
 `;
 
 const RegisterButtonContainer = styled.div`
@@ -99,16 +94,10 @@ const RegisterButtonContainer = styled.div`
 	position: absolute;
 `;
 
-const TickCircle = () => {
-	return <TickIconWrapper>
-		<TickIcon/>
-	</TickIconWrapper>
-}; 
-
 const VisionTextItem = ({text}) => {
 	return <RegisterNowTextLine>
-		< TickCircle/>
-		{text}
+		< Tick/>
+		<p>{text}</p>
 	</RegisterNowTextLine>
 }
 
@@ -123,7 +112,7 @@ const Vision = () => {
 	return (
 	<VisionSection>
 		<Wrapper>
-		<H2>החזון שלנו</H2>
+		<StyledH2>החזון שלנו</StyledH2>
 			<VisionItemContainer>
 				<VisionItem>
 					<VideoContainer>

@@ -19,8 +19,11 @@ const FeatureSection = styled(CenteredCommonSection)`
 const Wrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
-	max-width: 1368px;
-	padding: 0 80px;
+	padding: 0 10px;
+	@media ${device.tablet} {
+		max-width: 1368px;
+		padding: 0 80px;
+	}
 `;
 
 const FeaturesWrapper = styled.div`
