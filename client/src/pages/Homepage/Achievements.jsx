@@ -22,8 +22,10 @@ const achievements = [{
 const AchievementSection = styled(CommonSection)`
 	background-color: #FCF9FF;
 	padding-bottom: 30px;
+	padding-top: 30px;
 	@media ${device.tablet} {
 		padding-bottom: 200px;
+		padding-top: 50px;
 	}
 `;
 
@@ -35,9 +37,11 @@ const Wrapper = styled.div`
     justify-content: center;
     position: relative;
 	align-items: center;
+	padding-top: 10px;
 	@media ${device.tablet} {
 		flex-direction: row;
 		flex-flow: row no-wrap;
+		padding-top: 20px;
 	}
 `;
 

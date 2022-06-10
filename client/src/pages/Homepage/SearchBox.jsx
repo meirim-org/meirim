@@ -14,6 +14,7 @@ const Wrapper = styled.div`
     height: 148px;
     margin: 1em auto;
     z-index: 1;
+	margin-bottom: 5px;
 
     @media ${device.tablet} {
         width: 512px;

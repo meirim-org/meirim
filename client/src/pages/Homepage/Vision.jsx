@@ -6,19 +6,29 @@ import { map } from 'lodash';
 import { device } from 'style';
 import { openModal } from 'redux/modal/slice';
 import { Button } from '../../shared';
-import { H2, CommonSection } from './style';
+import { H2, CenteredCommonSection } from './style';
 import { useTranslation } from 'locale/he_IL';
-
 
 const fundingYoutubeVideoId = 'e1Q7zj_2f0I';
 
 
-const VisionSection = styled(CommonSection)`
-	margin-top: 60px;
+const VisionSection = styled(CenteredCommonSection)`
+	padding-top: 60px;
+	background-color: #FFFFFF;
 	@media ${device.tablet} {
-        padding-right: 80px;
-    }
+		display: flex;
+	}
+	padding-bottom: 45px;
 `; 
+
+const Wrapper = styled.div`
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	max-width: 1368px;
+	padding: 0 80px;
+`;
+
 const VideoContainer = styled.div`
 	overflow: hidden;
 	@media ${device.tablet} {
@@ -32,6 +42,7 @@ const VisionItemContainer = styled.div`
 		display: flex;
 		flex-flow: row;
 		justify-content: space-evenly;
+		max-width: 1248px;
 	}
 `;
 const VisionItem = styled.div`
@@ -111,6 +122,7 @@ const Vision = () => {
 
 	return (
 	<VisionSection>
+		<Wrapper>
 		<H2>החזון שלנו</H2>
 			<VisionItemContainer>
 				<VisionItem>
@@ -137,6 +149,7 @@ const Vision = () => {
 					</RegisterNowContainer>
 				</VisionItem>
 			</VisionItemContainer>
+			</Wrapper>
 		</VisionSection>
 	);
 };

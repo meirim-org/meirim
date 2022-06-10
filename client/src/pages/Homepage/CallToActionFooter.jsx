@@ -10,6 +10,7 @@ const Section = styled(CommonSection)`
 	background-color: #391695;
 	position: relative;
 	display: flex;
+	border-top: 2px solid rgba(255, 255, 255, 0.16);
 `;
 
 const CustomButton = styled.div`
@@ -32,7 +33,7 @@ const ActionWrapper = styled.div`
 	text-align: center;
 	height: 100px;
 	margin: 10px 30px;
-	padding: 20px 0;
+	padding: 10px 0;
 	cursor: pointer;
 `;
 

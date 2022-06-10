@@ -5,26 +5,34 @@ import { map, get } from 'lodash';
 import { device } from 'style';
 import styled from 'styled-components';
 import features from '../../assets/features';
-import { H2, CommonSection } from './style';
+import { H2, CenteredCommonSection } from './style';
 import { useTranslation } from '../../locale/he_IL';
 
-const FeatureSection = styled(CommonSection)`
-	margin-top: 20px;
-	justify-content: center;
+const FeatureSection = styled(CenteredCommonSection)`
+	padding-top: 20px;
+	background-color: #FFFFFF;
 	@media ${device.tablet} {
-		padding-right: 80px;
-		justify-content: unset;
+		display: flex;
 	}
 `; 
 
 const Wrapper = styled.div`
-	width: 100%;
-	padding: 20px;
+	align-items: center;
+	flex-direction: column;
+	max-width: 1368px;
+	padding: 0 80px;
+`;
+
+const FeaturesWrapper = styled.div`
 	@media ${device.tablet} {
 		display: flex;
 		flex-flow: row wrap;
-		justify-content: center;	
+
+		&:first-child {
+			margin-right: 0px;
+		}
 	}
+
 `;
 
 const FeatureWrapper = styled.div`
@@ -53,12 +61,11 @@ const FeatureWrapper = styled.div`
 	border-radius: 12px;
 	max-width: 332px;
 	@media ${device.tablet} {
-		padding-buttom: 12px;
 		height: 240px;
 	}
 
 	@media ${device.laptop} {
-		width: 200px;
+		width: 20%;
 	}
 `;
 
@@ -127,11 +134,13 @@ const Features = ({ isMobile, src, mobileSrc }) => {
 
 	return (
 		<FeatureSection>
-			<H2> איך זה עובד</H2>
 		<Wrapper>
-			{ map(features, ({ image, backgroundColor, titleKey }) => {
-				return <Feature onClick={()=>setFeatureHash(titleKey)} imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
-			})}
+			<H2> איך זה עובד</H2>
+			<FeaturesWrapper>
+				{ map(features, ({ image, backgroundColor, titleKey }) => {
+					return <Feature onClick={()=>setFeatureHash(titleKey)} imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
+				})}
+			</FeaturesWrapper>
 		</Wrapper>
 		</FeatureSection>
 	);

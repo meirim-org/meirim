@@ -15,10 +15,17 @@ export const H2 = styled(Typography).attrs(() => ({
     align-self: center;
     @media ${device.tablet} {
         margin-bottom: 0;
+        align-self: right;
     }
 `;
 
 export const CommonSection = styled.section`
     display: flex;
     flex-direction: column;
+    background-color: #FFFFFF;
+`;
+
+export const CenteredCommonSection = styled(CommonSection)`
+    align-items: center;
+    justify-content: center;
 `;
