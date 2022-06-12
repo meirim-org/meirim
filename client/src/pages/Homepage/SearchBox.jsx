@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     ${({background})=> !background && `box-shadow: 0px 29.6621px 147.057px rgba(0, 0, 0, 0.0503198), 0px 15.8588px 78.6238px rgba(0, 0, 0, 0.0417275), 0px 8.8903px 44.0759px rgba(0, 0, 0, 0.035), 0px 4.72157px 23.4084px rgba(0, 0, 0, 0.0282725);`}
     padding: 23px;
     width: 100%;
-    height: 148px;
+    height: ${({ height })=> height || '148px'};
     margin: 1em auto;
     z-index: 1;
 	margin-bottom: 5px;
@@ -19,36 +19,36 @@ const Wrapper = styled.div`
     @media ${device.tablet} {
         width: 512px;
         height: 100px;
-        padding: 32px;
-        margin: 32px 0 0 0;  
+		padding: ${({ wrapperPadding })=> wrapperPadding || '32px' };
+        margin: ${({ wrapperMargin })=> wrapperMargin || "32px 0px 0px 0px" };
         border-radius: 12px;
     }
 `;
 
-// const Title = styled.p`
-//     color: #ffffff;
-//     text-align: right;
-//     font-size: 22px;
-//     line-height: 22px;
-//     margin-bottom: 22px;
+const Title = styled.p`
+    color: ${({ color })=> color || '#ffffff' };
+    text-align: right;
+    font-size: 22px;
+    line-height: 22px;
+    margin-bottom: 22px;
 
-//     @media ${device.tablet} {
-//         font-size: 28px;
-//         line-height: 28px;
-//         margin-bottom: 28px;
-//     }
-// `;
+    @media ${device.tablet} {
+        font-size: 24px;
+        line-height: 24px;
+        margin-bottom: 28px;
+    }
+`;
 
 const Button = styled.button`
     margin-right: auto;
     background: transparent;
     width: 120px;
     height: 32px;
-    border: 1px solid #FFFFFF;
+    border: 1px solid ${({color})=> color || '#FFFFFF'};
     border-radius: 4px;
     text-align: center;
     padding: 5px 0;
-    color: #FFFFFF;
+    color: ${({color})=> color || '#FFFFFF'};
     line-height: 1;
     cursor: pointer;
 
@@ -67,7 +67,7 @@ const AutocompleteWrapper = styled.div`
     }
 
     input[type="text"] {
-        color: #FFFFFF;
+        color: ${({color})=> color || '#FFFFFF'};
         font-size: 14px;
         line-height: 18px;
 
@@ -97,7 +97,7 @@ const InputWrapper = styled.div`
     }
 `;
 
-export default function SearchBox({ backgroundColor }) {
+export default function SearchBox({ backgroundColor, color, showTitle, wrapperMargin, wrapperPadding, height }) {
 	const [addresses, setAddresses] = useState([]);
 	const [placeId, setPlaceId] = useState('');
 	const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
@@ -144,10 +144,10 @@ export default function SearchBox({ backgroundColor }) {
 	},[]);
 
 	return (
-		<Wrapper background={backgroundColor}>
-			{/* <Title>{t.searchBoxTitle}</Title> */}
+		<Wrapper background={backgroundColor} height={height} wrapperMargin={wrapperMargin} wrapperPadding={wrapperPadding}>
+			{showTitle && <Title color={color}>{t.searchBoxTitle}</Title>}
 			<InputWrapper>
-				<AutocompleteWrapper>
+				<AutocompleteWrapper color={color}>
 					<Autocomplete 
 						placeholder={t.searchAddress}
 						inputSuggestions={addresses}
@@ -157,7 +157,7 @@ export default function SearchBox({ backgroundColor }) {
 						loading={loadingAutocomplete}
 					/>
 				</AutocompleteWrapper>
-				<Button type="button" onClick={onGoToPlansClick}>{t.watchPlans}</Button>
+				<Button type="button" onClick={onGoToPlansClick} color={color} >{t.watchPlans}</Button>
 			</InputWrapper>
 		</Wrapper>
 	);

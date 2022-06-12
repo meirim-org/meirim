@@ -70,7 +70,7 @@ export const members = [
 	// },
 	{
 		name:`לישי סוקול`,
-		title:`מעצב מוצר וברנד`,
+		title:`מעצב מוצר`,
 		order:11,
 		photo:'lishay'
 		

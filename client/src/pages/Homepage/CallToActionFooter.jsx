@@ -10,7 +10,9 @@ const Section = styled(CommonSection)`
 	background-color: #391695;
 	position: relative;
 	display: flex;
-	border-top: 2px solid rgba(255, 255, 255, 0.16);
+	@media ${device.tablet} {
+		border-top: 2px solid rgba(255, 255, 255, 0.16);
+	}
 `;
 
 const CustomButton = styled.div`
@@ -44,10 +46,11 @@ const Wrapper = styled.div`
     position: relative;
 	flex-direction: column;
 	align-items: center;
-	padding: 70px 0px ;
+	padding: 0px 0px 30px 0px;
 
 	@media ${device.tablet} {
 		flex-direction: row; 
+		padding: 70px 0px;
 	}
 `;
 
@@ -56,6 +59,7 @@ const Footer = ({isMobile}) => {
 	return (<>
 		<Section>
 		<Wrapper>
+		{isMobile() && <SearchBox backgroundColor="white" color="#391695" showTitle wrapperMargin="0px" wrapperPadding='10px 20px' height='190px'/>}
 			<ActionWrapper>
 				רוצים להישאר מעודכנים?
 				<CustomButton> הרשמו עכשיו </CustomButton>
@@ -64,7 +68,7 @@ const Footer = ({isMobile}) => {
 				מגינים על הסביבה?
 				<CustomButton> מנעו כריתת עצים </CustomButton>
 			</ActionWrapper>
-			{!isMobile() && <SearchBox backgroundColor="#391695" />}
+			{!isMobile() && <SearchBox backgroundColor="#391695"  showTitle wrapperMargin="0px" wrapperPadding='10px 20px' />}
 			</Wrapper>
 		</Section>
 		</>
