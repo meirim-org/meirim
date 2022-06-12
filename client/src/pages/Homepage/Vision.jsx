@@ -85,6 +85,7 @@ const RegisterNowTextLine = styled.div`
 
 	& > p {
 		margin-right: 10px;
+		margin-bottom: 10px;
 	}
 `;
 
