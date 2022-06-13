@@ -103,7 +103,7 @@ const FundingPage = ({ ...props }) => {
                                             {i.icon}
 										</SC.RoadmapItemIcon>
 										<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
-										<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
+										<SC.RoadmapItemDescription> {i.description} </SC.RoadmapItemDescription>
 									</SC.RoadmapItemWrapper>
 								))}
 							</SC.RoadmapDetails>
@@ -143,7 +143,7 @@ const FundingPage = ({ ...props }) => {
 									</SC.FundingStatsNumberWrapper>
 								</SC.FundingStatsNumbersWrapper>
 							</SC.FundingStatsWrapper>
-							<SC.PaymentTypeButtonsWrapper ref={paymentRef}>
+							{/* <SC.PaymentTypeButtonsWrapper ref={paymentRef}>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
 									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
 										{t.monthlyPayment}
@@ -154,7 +154,7 @@ const FundingPage = ({ ...props }) => {
 										{t.singleTimePayment}
 									</Typography>
 								</SC.PaymentTypeButton>
-							</SC.PaymentTypeButtonsWrapper>
+							</SC.PaymentTypeButtonsWrapper> */}
 							<SC.PaymentOptionsWrapper>
 								{paymentAmountOptions.map(o => (
 									<SC.PaymentOption key={`amount-option-${o}`} className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
