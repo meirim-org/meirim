@@ -31,7 +31,7 @@ const FundingPage = ({ ...props }) => {
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
 	});
-	const [monthlyPayment, setMonthlyPayment] = useState(true);
+	const [monthlyPayment] = useState(true);
 
 	const validateFormInput = useCallback(() => {
 		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted });
