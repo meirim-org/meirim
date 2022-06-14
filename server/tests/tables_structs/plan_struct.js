@@ -22,6 +22,11 @@ const PlanStruct = function(table) {
 	table.specificType('geom_centroid', 'GEOMETRY');
 	table.boolean('geo_search_filter');
 	table.string('plan_display_name', 256);
+	table.text('kind_of_plan', 65535);
+	table.text('laws', 65535);
+	table.text('permit', 65535);
+	table.text('union_and_division', 65535);
+
 	return table;
 };
 

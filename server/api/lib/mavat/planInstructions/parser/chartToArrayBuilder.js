@@ -5,6 +5,7 @@
  *
  * @param pageTables                            all the tables of all the pages of the pdf
  * @param rowAbstractFactory                    given the first page of a table, construct a factory that builds a datum from a row in the table
+ * @param shouldHappenBeforeTbl 				@nullable given a cell, returns true if you can start to search the table after this cell was found
  * @param startOfChartText                      this should be the text at the beginning of the chart we're interested in - this is how we determine on which page the chart starts
  * @param offsetOfRowWithDataInChart            the offset to the row where data that is interesting for us starts
  * @param chartDonePredicate                    predicate that take row as input as return true if we are outside of the chart
@@ -16,15 +17,20 @@
 const pageTablesToDataArray = ({
 	pageTables,
 	rowAbstractFactory,
+	shouldHappenBeforeTbl,
 	startOfChartPred,
 	offsetOfRowWithDataInChart,
 	chartDonePredicate,
 	getHeaderRowIndex,
 	rowTrimmer,
+	identifier,
 }) => {
 	const chartRows = [];
+	if (shouldHappenBeforeTbl === undefined) {
+		shouldHappenBeforeTbl = (cell) => true;
+	}
 
-	const indexObj = findPageWithStartOfChart(pageTables, startOfChartPred);
+	const indexObj = findPageWithStartOfChart(pageTables, startOfChartPred, shouldHappenBeforeTbl);
 	let currentPageIndex = indexObj.pageIndex;
 	const titleIndexInFirstPage = indexObj.indexOfTitleInPage;
 	if (currentPageIndex === -1) {
@@ -66,7 +72,12 @@ const pageTablesToDataArray = ({
 			}
 			if (dataRowPredicateFn(newDataRows[i])) {
 				const rowTrimmed = rowTrimmer(newDataRows[i]);
-				chartRows.push(rowFactory(rowTrimmed));
+				if (!rowTrimmed.every(val => val === undefined && val === '')) {
+					const row = rowFactory(rowTrimmed);
+					if (Object.values(row).some(val => val !== undefined)) {
+						chartRows.push(row);
+					}
+				}
 			}
 		}
 
@@ -77,7 +88,8 @@ const pageTablesToDataArray = ({
 };
 
 // find the page that the chart is starting at
-const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
+const findPageWithStartOfChart = (pageTables, startOfChartPred, shouldHappenBeforeTbl) => {
+	let hasHappened = false;
 	for (let pageIndex = 0; pageIndex < pageTables.length; pageIndex++) {
 		const page = pageTables[pageIndex].tables;
 
@@ -85,7 +97,10 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
 			const row = page[rowIndex];
 
 			for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
-				if (startOfChartPred(row[cellIndex])) {
+				if (!hasHappened && shouldHappenBeforeTbl(row[cellIndex])) {
+					hasHappened = true;
+				}
+				if (hasHappened && startOfChartPred(row[cellIndex])) {
 					return {
 						pageIndex: pageIndex,
 						indexOfTitleInPage: rowIndex
@@ -102,7 +117,7 @@ const findPageWithStartOfChart = (pageTables, startOfChartPred) => {
 
 // returns true if the row is not empty
 const dataRowPredicateFn = (row) => {
-	return row.some((cell) => cell !== '');
+	return row.some((cell) => cell !== undefined && cell.trim() !== '');
 };
 
 // returns true if the row in the given index is the first row that is not a noise row (noise row is a row with empty cells only)

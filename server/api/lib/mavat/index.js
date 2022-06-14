@@ -317,11 +317,21 @@ const getByPlan = (plan, fetchPlanInstructions = true) =>
 				jurisdiction: getJurisdictionString(cheerioPage),
 				files: planFiles,
 				planStatusList: getPlanStatusList(cheerioPage),
-				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
-				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
-				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
-				chartFive: pageInstructions ? pageInstructions.chartFive : undefined,
-				chartSix: pageInstructions ? pageInstructions.chartSix : undefined
+				kindOfPlan: pageInstructions?.textOneFour?.kindOfPlan,
+				isContainsDetailed: pageInstructions?.textOneFour?.isContainsDetailed,
+				laws: pageInstructions?.textOneFour?.laws,
+				permit: pageInstructions?.textOneFour?.permit,
+				unionAndDivision: pageInstructions?.textOneFour?.unionAndDivision,
+				planExplanation: pageInstructions?.planExplanation,
+				chartOneSix: pageInstructions?.chartOneSix,
+				chartOneSeven: pageInstructions?.chartOneSeven,
+				chartsOneEight: pageInstructions?.chartsOneEight,
+				chartsThreeOne: pageInstructions?.chartsThreeOne,
+				chartsThreeTwo: pageInstructions?.chartsThreeTwo,
+				chartFour: pageInstructions?.chartFour,
+				chartFive: pageInstructions?.chartFive,
+				chartSix: pageInstructions?.chartSix,
+				chartSevenOne: pageInstructions?.chartSevenOne
 			});
 		});
 

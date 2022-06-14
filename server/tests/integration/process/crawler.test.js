@@ -10,9 +10,12 @@ const { mockDatabase } = require('../../mock');
 const { wait } = require('../../utils');
 
 const tables = [
-	'plan', 'notification', 'alert', 'person', 'tables_18_interests_in_plan',
+	'plan', 'notification', 'alert', 'person', 'table_1_6_prev_plans_relations',
+	'table_1_7_plan_docs', 'tables_18_interests_in_plan',
+	'table_3_1_with_change', 'table_3_1_without_change', 'table_3_2_areas_table',
 	'table_4_area_designation_and_usage', 'table_5_building_rights',
-	'table_6_additional_instructions', 'file', 'plan_area_changes', 'tag', 'plan_tag'
+	'table_6_additional_instructions', 'table_7_1_implementation_stages',
+	'file', 'plan_area_changes', 'tag', 'plan_tag'
 ];
 
 describe('Crawler', function() {
@@ -245,7 +248,7 @@ describe('Crawler scraped data', function() {
 		// since there are no controllers for the pdf table data models, use the models directly
 		// fetch all chart one point eight rows
 		chartOneEightRows = await chartOneEightModel.fetchAll();
-		assert.equal(chartOneEightRows.length, 2, 'two chart 1.8 rows were scraped');
+		assert.equal(chartOneEightRows.length, 4, 'four chart 1.8 rows were scraped');
 
 		// make sure all first chart one point eight row fields are correct
 		assert.equal(chartOneEightRows.models[0].id, 1, 'first chart 1.8 row id is correct');
@@ -464,7 +467,7 @@ describe('Crawler scraped data', function() {
 		// since there are no controllers for the pdf table data models, use the models directly
 		// fetch all chart one point eight rows
 		chartOneEightRows = await chartOneEightModel.fetchAll();
-		assert.equal(chartOneEightRows.length, 2, 'two chart 1.8 rows were scraped');
+		assert.equal(chartOneEightRows.length, 4, 'four chart 1.8 rows were scraped');
 
 		// make sure all first chart one point eight row fields are correct
 		assert.equal(chartOneEightRows.models[0].id, 1, 'first chart 1.8 row id is correct');
@@ -707,10 +710,10 @@ describe('Crawler scraped data', function() {
 
 		// fetch all chart one point eight rows - both should be updated
 		chartOneEightRows = await chartOneEightModel.fetchAll();
-		assert.equal(chartOneEightRows.length, 2, 'updated two chart 1.8 rows were scraped');
+		assert.equal(chartOneEightRows.length, 4, 'updated four chart 1.8 rows were scraped');
 
 		// make sure all first chart one point eight row fields are correct
-		assert.equal(chartOneEightRows.models[0].id, 3, 'first chart 1.8 row id is correct');
+		assert.equal(chartOneEightRows.models[0].id, 5, 'first chart 1.8 row id is correct');
 		assert.equal(chartOneEightRows.models[0].attributes.plan_id, 1, 'first chart 1.8 row is related to the correct plan');
 		assert.equal(chartOneEightRows.models[0].attributes.origin, '1.8.1', 'first chart 1.8 row origin is correct');
 		assert.equal(chartOneEightRows.models[0].attributes.profession, '', 'first chart 1.8 row profession is correct');
@@ -727,7 +730,7 @@ describe('Crawler scraped data', function() {
 		assert.equal(chartOneEightRows.models[0].attributes.email, '', 'first chart 1.8 row email is correct');
 
 		// make sure all second chart one point eight row fields are correct
-		assert.equal(chartOneEightRows.models[1].id, 4, 'second chart 1.8 row id is correct');
+		assert.equal(chartOneEightRows.models[1].id, 6, 'second chart 1.8 row id is correct');
 		assert.equal(chartOneEightRows.models[1].attributes.plan_id, 1, 'second chart 1.8 row is related to the correct plan');
 		assert.equal(chartOneEightRows.models[1].attributes.origin, '1.8.2', 'second chart 1.8 row origin is correct');
 		assert.equal(chartOneEightRows.models[1].attributes.profession, null, 'second chart 1.8 row profession is correct');
