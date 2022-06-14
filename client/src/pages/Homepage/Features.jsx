@@ -131,8 +131,10 @@ const Feature = ({ imgSrc, titleKey, color, isMobile, onClick }) => {
 const Features = ({ isMobile, src, mobileSrc }) => {
 	const mobile = isMobile();
 
-	const setFeatureHash = (featureKey) => {
-		window.location.hash = `campaign-feature-${featureKey}`;
+	const openPopup = (id) => {
+		if(window.poptin_display) {
+			window.poptin_display(id);
+		}
 	};
 
 	return (
@@ -140,8 +142,8 @@ const Features = ({ isMobile, src, mobileSrc }) => {
 		<Wrapper>
 			<H2> איך זה עובד</H2>
 			<FeaturesWrapper>
-				{ map(features, ({ image, backgroundColor, titleKey }) => {
-					return <Feature onClick={()=>setFeatureHash(titleKey)} imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
+				{ map(features, ({ image, backgroundColor, id, titleKey }) => {
+					return <Feature onClick={()=>openPopup(id)} imgSrc={image} color={backgroundColor} titleKey={titleKey} isMobile={mobile}/>;
 				})}
 			</FeaturesWrapper>
 		</Wrapper>
