@@ -46,7 +46,7 @@ const Wrapper = styled.div`
 `;
 
 const StatTitle = styled.div`
-	font-weight: 700;
+	font-weight: 600;
 	font-size: 20px;
 	line-height: 26px;
 	color: #918899;
@@ -55,7 +55,7 @@ const StatTitle = styled.div`
 
 const StatValue = styled.div`
 	font-weight: 600;
-	font-size: 36px;
+	font-size: 34px;
 	line-height: 48px;
 	color: #652DD0;
 	align-self: right;

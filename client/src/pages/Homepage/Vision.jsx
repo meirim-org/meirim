@@ -25,6 +25,7 @@ const VisionSection = styled(CenteredCommonSection)`
 	background-color: #FFFFFF;
 	@media ${device.tablet} {
 		display: flex;
+		min-height: 400px;
 	}
 	padding-bottom: 45px;
 `;
@@ -71,17 +72,24 @@ const RegisterNowContainer = styled.div`
 	height: 100%;
 	position: relative;
 	min-height 300px;
+	display: flex;
+	flex-direction: column;
 	@media ${device.tablet} {
 		width:100%;
+		min-width: 500px;
 	}
 `;
 
 const RegisterNowTextLine = styled.div`
-	font-size: 18px;
+	font-size: 16px;
+	line-height: 20px;
 	font-weight: 400;
-	line-height: 27px;
 	display: flex;
 	padding: 8px;
+	@media ${device.tablet} {
+		font-size: 18px;
+		line-height: 27px;
+	}
 
 	& > p {
 		margin-right: 10px;
@@ -91,8 +99,15 @@ const RegisterNowTextLine = styled.div`
 
 const RegisterButtonContainer = styled.div`
 	bottom: 5px;
-	width: 100%;
+	width: 90%;
+	align-self: center;
 	position: absolute;
+	margin-top:200px;
+	@media ${device.tablet} {
+		margin-top:0px;
+		width: 180px;
+		align-self: self-start
+	}
 `;
 
 const VisionTextItem = ({text}) => {
@@ -103,7 +118,7 @@ const VisionTextItem = ({text}) => {
 }
 
 
-const RegisterNowTexts = ['קבלו התראות בזמן אמת', 'תוכניות עירוניות חדשות', 'מדויק לכתובת שלכם', 'העדפות גיאוגרפיות נוספות'];
+const RegisterNowTexts = ['קבלו התראות בזמן אמת', 'כל סוגי התוכניות', 'מדויק לכתובת שלכם', 'והשפיעו כשעוד ניתן!'];
 
 const Vision = () => {
 
