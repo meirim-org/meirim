@@ -7,13 +7,14 @@ import { openModal } from 'redux/modal/slice';
 import { FundingSelectors } from 'redux/selectors';
 import { externalPaymentErrorToast } from 'toasts';
 import Wrapper from '../../components/Wrapper';
-import { Button, Checkbox, Divider, HelperText, Link, /*ProgressBar, */ TabPanel, TeamMembers, Typography } from '../../shared';
+import { Button, Checkbox, Divider, HelperText, Link, Chip,/*ProgressBar, */ TabPanel, TeamMembers, Typography } from '../../shared';
 import AmountInput from './amountInput';
-import { fundingEndGoal, fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
+import { fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
 import { createPaymentLink } from './controller';
 import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor, usePaymentAnchor } from './hooks';
 import * as SC from './style';
 import { getFormErrors, paymentRequestValidation } from './validations';
+import { openSuccessModal } from './helpers';
 
 const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
@@ -82,8 +83,10 @@ const FundingPage = ({ ...props }) => {
 							<SC.MainTitle>{t.fundingMainTitle}</SC.MainTitle>
 							<SC.SubTitle>{t.fundingSubTitle}</SC.SubTitle>
 							<SC.SubTitle fontWeight="600">{t.fundingSubTitleBold}</SC.SubTitle>
-							<br/>
+							<br/><br/>
 							<SC.SubTitle>{t.fundingExplanation}</SC.SubTitle>
+							<br/><br/>
+							<Chip text={t.readMoreAboutAchievements} onClick={openSuccessModal}/>
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
