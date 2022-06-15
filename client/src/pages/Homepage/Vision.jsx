@@ -15,7 +15,7 @@ const fundingYoutubeVideoId = 'e1Q7zj_2f0I';
 const StyledH2 = styled(H2)`
 	align-self: center;
 	@media ${device.tablet} {
-		align-self: unset;
+		align-self: baseline;
 	}
 `;
 
@@ -35,6 +35,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	width: 100%;
 	padding: 0 10px;
+	display: flex;
 	@media ${device.tablet} {
 		max-width: 1368px;
 		padding: 0 80px;

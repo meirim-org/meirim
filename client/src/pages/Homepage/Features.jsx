@@ -20,9 +20,18 @@ const Wrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	padding: 0 10px;
+	display: flex;
+	${H2} {
+		align-self: center;
+	}
+
 	@media ${device.tablet} {
 		max-width: 1368px;
 		padding: 0 80px;
+	
+		${H2} {
+			align-self: baseline;
+		}
 	}
 `;
 

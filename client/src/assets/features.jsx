@@ -7,7 +7,7 @@ var features = [{
     titleKey: 'discoverPlanning',
     image: GetAlerts,
     id: 'a532f58b6641e',
-    backgroundColor: '#FFFAE9'
+    backgroundColor: '#F7F2FF'
 }, {
     titleKey: 'createAlerts',
     image: UnderConstruction,
@@ -17,7 +17,7 @@ var features = [{
     titleKey: 'savePlans',
     image: AskCommunity,
     id: '6a9c258217207',
-    backgroundColor: ' #F7F2FF'
+    backgroundColor: ' #FFFAE9'
 }, {
     titleKey: 'treePermits',
     image: TreePermits,
