@@ -1,8 +1,10 @@
 import React from 'react';
 import { withGetScreen } from 'react-getscreen';
-import styled from 'styled-components';
-import { CommonSection } from './style';
 import { device } from 'style';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { openModal } from 'redux/modal/slice';
+import { CommonSection } from './style';
 import SearchBox from './SearchBox';
 
 
@@ -56,13 +58,15 @@ const Wrapper = styled.div`
 
 
 const Footer = ({isMobile}) => {
+	const dispatch = useDispatch();
+
 	return (<>
 		<Section>
 		<Wrapper>
 		{isMobile() && <SearchBox backgroundColor="white" color="#391695" showTitle wrapperMargin="0px" wrapperPadding='10px 20px' height='190px'/>}
 			<ActionWrapper>
 				רוצים להישאר מעודכנים?
-				<CustomButton> הרשמו עכשיו </CustomButton>
+				<CustomButton onClick={() => dispatch(openModal({ modalType: 'register' }))}>הרשמה</CustomButton>
 			</ActionWrapper>
 			<ActionWrapper>
 				מגינים על הסביבה?

@@ -288,7 +288,7 @@ export const PaymentOtherOption = withTheme(styled.span`
 
 export const Amount = withTheme(styled.span`
   font-size:26px;
-  font-weight: bold;
+  font-weight: 400;
   line-height: 28px;
   color: ${props => props.theme.palette.primary['700']}
 `);
@@ -569,7 +569,7 @@ export const OtherAmountInput = withTheme(styled(MuiInput)`
     font-style: normal;
     text-align: center;
     font-size: 26px;
-    font-weight: bold;
+    font-weight: 400;
     line-height: 28px;
     color: ${props => props.theme.palette.primary['700']};
     transition: color 200ms;

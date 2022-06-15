@@ -30,6 +30,7 @@ const FeaturesWrapper = styled.div`
 	@media ${device.tablet} {
 		display: flex;
 		flex-flow: row wrap;
+		cursor: pointer;
 
 		&:first-child {
 			margin-right: 0px;
