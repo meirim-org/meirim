@@ -17,6 +17,10 @@ import ruth from './ruth.png'
 import sarah from './sarah.png'
 import dor from './dor.png'
 import yoav from './yoav.png'
+import sun from './sun.png'
+import daniel from './daniel.png'
+import ori from './ori.png'
+import tal from './tal.png'
 import hiba from './hiba.png'
 
 
@@ -40,5 +44,9 @@ export {
     sarah,
     dor,
     yoav,
-    hiba
+    hiba,
+    sun,
+    daniel,
+    ori,
+    tal
 }

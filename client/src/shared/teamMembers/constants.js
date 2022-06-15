@@ -131,6 +131,34 @@ export const members = [
 		photo:'tomerL'
 		
 	},
+	{
+		name:`סאן דרי`,
+		title: 'DevOps',
+		order:20,
+		photo:'sun'
+		
+	},
+	{
+		name:`טל ישי`,
+		title:`קידום מדיניות`,
+		order:21,
+		photo:'tal'
+		
+	},
+	{
+		name:`אורי הירש`,
+		title:`מאפין UX`,
+		order:22,
+		photo:'ori'
+		
+	},
+	{
+		name:`דניאל גל`,
+		title:`תיאום פרויקטים`,
+		order:23,
+		photo:'daniel'
+		
+	},
 ];
 
 // // template
