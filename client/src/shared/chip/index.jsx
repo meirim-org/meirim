@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { noop } from 'lodash';
 
 const StyledChip = styled.div`
   display: inline-block;
@@ -14,8 +15,8 @@ const StyledChip = styled.div`
   cursor: pointer;
 `;
 
-const Chip = ({ text }) => (
-	<StyledChip> {text} </StyledChip>
+const Chip = ({ text, onClick = noop }) => (
+	<StyledChip onClick={onClick}> {text} </StyledChip>
 );
 
 export default Chip;
