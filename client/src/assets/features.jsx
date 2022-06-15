@@ -6,22 +6,22 @@ import UnderConstruction from './homepage/features/UnderConstructions.svg'
 var features = [{
     titleKey: 'discoverPlanning',
     image: GetAlerts,
-    id: 'a532f58b6641e',
-    backgroundColor: '#F7F2FF'
+    id: '5960526241a5a',
+    backgroundColor: '#E4FAFF'
 }, {
     titleKey: 'createAlerts',
     image: UnderConstruction,
-    id: '9a757a64dde2f',
-    backgroundColor: '#E4FAFF'
+    id: 'a924af4248469',
+    backgroundColor: '#F7F2FF'
 }, {
     titleKey: 'savePlans',
     image: AskCommunity,
-    id: '6a9c258217207',
+    id: '52a94356d662a',
     backgroundColor: ' #FFFAE9'
 }, {
     titleKey: 'treePermits',
     image: TreePermits,
-    id: '275469923fa4d',
+    id: '12a43c3c66da9',
     backgroundColor: '#E7FFF9'
 }];
 
