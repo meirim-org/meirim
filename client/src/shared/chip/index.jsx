@@ -4,7 +4,7 @@ import { noop } from 'lodash';
 
 const StyledChip = styled.div`
   display: inline-block;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 16px;
   line-height: 21px;
   text-align: center;
