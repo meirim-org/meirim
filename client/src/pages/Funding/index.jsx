@@ -7,13 +7,14 @@ import { openModal } from 'redux/modal/slice';
 import { FundingSelectors } from 'redux/selectors';
 import { externalPaymentErrorToast } from 'toasts';
 import Wrapper from '../../components/Wrapper';
-import { Button, Checkbox, Divider, HelperText, Link, ProgressBar, TabPanel, TeamMembers, Typography } from '../../shared';
+import { Button, Checkbox, Divider, HelperText, Link, Chip,/*ProgressBar, */ TabPanel, TeamMembers, Typography } from '../../shared';
 import AmountInput from './amountInput';
-import { fundingEndGoal, fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
+import { fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
 import { createPaymentLink } from './controller';
 import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor, usePaymentAnchor } from './hooks';
 import * as SC from './style';
 import { getFormErrors, paymentRequestValidation } from './validations';
+import { openSuccessModal } from './helpers';
 
 const FundingPage = ({ ...props }) => {
 	const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const FundingPage = ({ ...props }) => {
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
 	});
-	const [monthlyPayment, setMonthlyPayment] = useState(true);
+	const [monthlyPayment] = useState(true);
 
 	const validateFormInput = useCallback(() => {
 		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted });
@@ -82,6 +83,10 @@ const FundingPage = ({ ...props }) => {
 							<SC.MainTitle>{t.fundingMainTitle}</SC.MainTitle>
 							<SC.SubTitle>{t.fundingSubTitle}</SC.SubTitle>
 							<SC.SubTitle fontWeight="600">{t.fundingSubTitleBold}</SC.SubTitle>
+							<br/><br/>
+							<SC.SubTitle>{t.fundingExplanation}</SC.SubTitle>
+							<br/><br/>
+							<Chip text={t.readMoreAboutAchievements} onClick={openSuccessModal}/>
 						</SC.SubTitleWrapper>
 					</SC.Titles>
 					<SC.MediaContent>
@@ -103,7 +108,7 @@ const FundingPage = ({ ...props }) => {
                                             {i.icon}
 										</SC.RoadmapItemIcon>
 										<SC.RoadmapItemTitle> {i.title} </SC.RoadmapItemTitle>
-										<SC.RoadmapItemDescription> {i.desciption} </SC.RoadmapItemDescription>
+										<SC.RoadmapItemDescription> {i.description} </SC.RoadmapItemDescription>
 									</SC.RoadmapItemWrapper>
 								))}
 							</SC.RoadmapDetails>
@@ -114,11 +119,11 @@ const FundingPage = ({ ...props }) => {
 						<SC.SectionTitle>{t.fundingSectionTitle}</SC.SectionTitle>
 						<TabPanel>
 							<SC.FundingStatsWrapper>
-								<SC.CentredSubTitle>{t.fundingStatsTitle}</SC.CentredSubTitle>
-								<div>
+								<SC.CentredSubTitle> <bold>{statsData.count.toLocaleString('en')} </bold>תומכים כבר עוזרים לזה לקרות</SC.CentredSubTitle>
+								{/* <div>
 									<ProgressBar id="funding-stats-progressbar" value={statsData.totalAmount / fundingEndGoal * 100} width="100%"/>
-								</div>
-								<SC.FundingStatsNumbersWrapper>
+								</div> */}
+								{/* <SC.FundingStatsNumbersWrapper>
 									<SC.FundingStatsNumberWrapper>
 										<SC.SubTitle>{statsData.totalAmount.toLocaleString('en')} {t.fundingShekel}</SC.SubTitle>
 										<Typography
@@ -141,9 +146,9 @@ const FundingPage = ({ ...props }) => {
 											{t.fundingSupporters}
 										</Typography>
 									</SC.FundingStatsNumberWrapper>
-								</SC.FundingStatsNumbersWrapper>
+								</SC.FundingStatsNumbersWrapper> */}
 							</SC.FundingStatsWrapper>
-							<SC.PaymentTypeButtonsWrapper ref={paymentRef}>
+							{/* <SC.PaymentTypeButtonsWrapper ref={paymentRef}>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
 									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
 										{t.monthlyPayment}
@@ -154,7 +159,7 @@ const FundingPage = ({ ...props }) => {
 										{t.singleTimePayment}
 									</Typography>
 								</SC.PaymentTypeButton>
-							</SC.PaymentTypeButtonsWrapper>
+							</SC.PaymentTypeButtonsWrapper> */}
 							<SC.PaymentOptionsWrapper>
 								{paymentAmountOptions.map(o => (
 									<SC.PaymentOption key={`amount-option-${o}`} className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
@@ -199,7 +204,7 @@ const FundingPage = ({ ...props }) => {
 								<HelperText id="terms-of-paymeny-error-helper-text" text="" error={triedSubmit ? formErrors.termsAcceptedError.message : ''}/>
 							</SC.TermsOfUseWrapper>
 							<SC.ButtonWrapper>
-								<Button id="payment-button" text="תמכו במעירים" onClick={ handlePaymentRequest }/>
+								<Button id="payment-button" text={t.startMonthlyPayment} onClick={ handlePaymentRequest }/>
 							</SC.ButtonWrapper>
 						</TabPanel>
 					</SC.PaymentWrapper>
