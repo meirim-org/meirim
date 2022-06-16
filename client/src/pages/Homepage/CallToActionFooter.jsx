@@ -26,6 +26,11 @@ const CustomButton = styled.div`
 	border: 1px solid #F0E3FD;
 	padding: 10px 20px;
 	margin-top: 20px;
+
+	& > a {
+		color: #F0E3FD;
+		text-decoration: none;
+	}
 `;
 
 const ActionWrapper = styled.div`
@@ -70,7 +75,7 @@ const Footer = ({isMobile}) => {
 			</ActionWrapper>
 			<ActionWrapper>
 				מגינים על הסביבה?
-				<CustomButton> מנעו כריתת עצים </CustomButton>
+				<CustomButton><a href="/trees"> מנעו כריתת עצים </a></CustomButton>
 			</ActionWrapper>
 			{!isMobile() && <SearchBox backgroundColor="#391695"  showTitle wrapperMargin="0px" wrapperPadding='10px 20px' />}
 			</Wrapper>
