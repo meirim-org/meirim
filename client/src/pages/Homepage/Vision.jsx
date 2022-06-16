@@ -9,6 +9,7 @@ import { Button } from '../../shared';
 import { H2, CenteredCommonSection } from './style';
 import { useTranslation } from 'locale/he_IL';
 import Tick from '../../assets/svg/tick';
+import Man from '../../assets/svg/cleaningMan.svg';
 
 const fundingYoutubeVideoId = 'e1Q7zj_2f0I';
 
@@ -25,7 +26,7 @@ const VisionSection = styled(CenteredCommonSection)`
 	background-color: #FFFFFF;
 	@media ${device.tablet} {
 		display: flex;
-		min-height: 400px;
+		min-height: 350px;
 	}
 	padding-bottom: 45px;
 `;
@@ -55,14 +56,15 @@ const VisionItemContainer = styled.div`
 	overflow: hidden;
 	@media ${device.tablet} {
 		display: flex;
-		flex-flow: row;
 		justify-content: space-evenly;
 		max-width: 1248px;
 	}
 `;
 const VisionItem = styled.div`
 	@media ${device.tablet} {
-		width: 100%;
+		width: 50%;
+		display: flex;
+		justify-content: space-between;
 	}
 `;
 
@@ -76,8 +78,7 @@ const RegisterNowContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	@media ${device.tablet} {
-		width:100%;
-		min-width: 500px;
+		min-width: 300px;
 	}
 `;
 
@@ -106,9 +107,26 @@ const RegisterButtonContainer = styled.div`
 	margin-top:200px;
 	@media ${device.tablet} {
 		margin-top:0px;
-		width: 180px;
+		width: 100%;
+		max-width: 250px;
 		align-self: self-start
 	}
+`;
+
+const ManGraphic = styled.div`
+  background-image: url(${Man});
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 10%;
+
+  display: none;
+
+  @media ${device.laptop} {
+    height: 350px;
+    width: 200px;
+	display: block;
+  }
 `;
 
 const VisionTextItem = ({text}) => {
@@ -133,7 +151,7 @@ const Vision = () => {
 			<VisionItemContainer>
 				<VisionItem>
 					<VideoContainer>
-						<YoutubeVideo videoId={fundingYoutubeVideoId}/>
+						<YoutubeVideo videoId={fundingYoutubeVideoId} opts={{width: '100%'}}/>
 					</VideoContainer>
 				</VisionItem>
 				<VisionItem>
@@ -153,6 +171,7 @@ const Vision = () => {
 						/>
 					</RegisterButtonContainer>
 					</RegisterNowContainer>
+					<ManGraphic/>
 				</VisionItem>
 			</VisionItemContainer>
 			</Wrapper>
