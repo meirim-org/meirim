@@ -139,7 +139,7 @@ export const members = [
 		
 	},
 	{
-		name:`טל ישי`,
+		name:`אד׳ טל ישי`,
 		title:`קידום מדיניות`,
 		order:21,
 		photo:'tal'
