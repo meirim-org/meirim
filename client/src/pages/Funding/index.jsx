@@ -11,7 +11,7 @@ import { Button, Checkbox, Divider, HelperText, Link, Chip,/*ProgressBar, */ Tab
 import AmountInput from './amountInput';
 import { fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
 import { createPaymentLink } from './controller';
-import { useStatsDataHandler, useSuccessCloseHandler, useWhoWeAreAnchor, usePaymentAnchor } from './hooks';
+import { useStatsDataHandler, useSuccessCloseHandler, useSectionAnchor } from './hooks';
 import * as SC from './style';
 import { getFormErrors, paymentRequestValidation } from './validations';
 import { openSuccessModal } from './helpers';
@@ -69,8 +69,7 @@ const FundingPage = ({ ...props }) => {
 	}
 	useSuccessCloseHandler(paymentSuccess);
 
-	useWhoWeAreAnchor(props.location.hash, whoWeAreRef);
-	usePaymentAnchor(props.location.hash, paymentRef);
+	useSectionAnchor(props.location.hash, paymentRef, whoWeAreRef);
 
 	const { statsData } = FundingSelectors();
 
@@ -115,7 +114,7 @@ const FundingPage = ({ ...props }) => {
 						</TabPanel>
 					</SC.RoadMapWrapper>
 					<Divider orientation="vertical"/>
-					<SC.PaymentWrapper>
+					<SC.PaymentWrapper ref={paymentRef}>
 						<SC.SectionTitle>{t.fundingSectionTitle}</SC.SectionTitle>
 						<TabPanel>
 							<SC.FundingStatsWrapper>
