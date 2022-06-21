@@ -28,6 +28,9 @@ const iplan = (limit = -1) =>
 			}
 
 			return Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan));
+		}).catch(e => {
+			Log.error(e);
+			console.log(e);
 		});
 
 const fix_geodata = () => {
@@ -48,7 +51,10 @@ const fix_geodata = () => {
 					return Bluebird.resolve();
 				});
 		})
-	);
+	).catch(err => {
+		Log.error('Failed getting iplan Blue line plans', err);
+		console.log(err);
+	});
 };
 
 const complete_mavat_data = () =>
@@ -378,7 +384,7 @@ const buildPlan = (iPlan, oldPlan) => {
 		MavatAPI.getByPlan(plan)
 			.then(async mavatData => {
 				const retPlan = await Plan.setMavatData(plan, mavatData);
-				await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
+				// await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
 				return retPlan;
 			})
 			.catch(e => {
