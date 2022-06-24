@@ -22,6 +22,8 @@ const PlanStruct = function(table) {
 	table.specificType('geom_centroid', 'GEOMETRY');
 	table.boolean('geo_search_filter');
 	table.string('plan_display_name', 256);
+	table.string('AGAM_ID', 256);
+	table.string('plan_new_mavat_url', 256);
 	return table;
 };
 
