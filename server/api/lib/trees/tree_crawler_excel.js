@@ -102,7 +102,7 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 	await database.Knex(TREE_PERMIT_TABLE).where('updated_at', '>', time_ago.toString())
 		.andWhere(REGIONAL_OFFICE, regionalOffice)
 		.then(rows => {
-			rows.map(row => {
+			rows.forEach(row => {
 				const key_as_string = `${row[REGIONAL_OFFICE]}_${row[PERMIT_NUMBER]}_${formatDate(row[START_DATE], MORNING, 'YYYY-MM-DD')}`;
 				existingPermitsCompact.add(key_as_string);
 			});
@@ -188,7 +188,7 @@ function processPermits(rawTreePermits) {
 	// Add sum of all trees in the permit
 	// Keep the details per tree kind / number of trees into a tree table
 	const treePermits = {};
-	rawTreePermits.map(rtp => {
+	rawTreePermits.forEach(rtp => {
 		const key = `${rtp.core[REGIONAL_OFFICE]}_${rtp.core[PERMIT_NUMBER]}_${rtp.core[START_DATE]}}`;
 		if (treePermits[key] && treePermits[key].attributes[TOTAL_TREES]) { //exist
 			treePermits[key].attributes[TOTAL_TREES] = treePermits[key].attributes[TOTAL_TREES] + Number(rtp.extra[NUMBER_OF_TREES]);

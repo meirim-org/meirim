@@ -60,7 +60,7 @@ class Email {
 				}
 			);
 		}).then(() => {
-			mapper.map((file, index) => {
+			mapper.forEach((file, index) => {
 				const key = file
 					.split('.')
 					.shift();
