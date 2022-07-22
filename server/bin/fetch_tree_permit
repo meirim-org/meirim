@@ -7,14 +7,4 @@ controller
 	.fetchTreePermit()
 	.then((res) => { Log.info(`Found ${res} new permits`); })
 	.catch(e => Log.error(e))
-	.finally(async () => {
-		// we give each new permit a timeout of 1 sec dur to nominatim usage policy
-		try {
-			await new Promise(r => setTimeout(r, 1000 * 600));
-			process.exit();
-		}
-		catch (err) {
-			console.log(err);
-			process.exit();
-		}
-	});
+	.finally(async () => { process.exit(); });

@@ -8,6 +8,7 @@ import Link from './link';
 import Navigation from './navigation';
 import Row from './row';
 import Divider from './divider';
+import Chip from './chip';
 import { default as IconButton } from './icon';
 import Menu from './menu';
 import TabPanel from './tabPanel';
@@ -43,5 +44,6 @@ export {
 	HelperText,
 	ProgressBar,
 	TeamMembers,
-	WeNeedYou
+	WeNeedYou,
+	Chip
 };
