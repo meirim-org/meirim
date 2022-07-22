@@ -27,7 +27,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
-			AGAM_ID: 'integer',
+			MP_ID: 'integer',
 			plan_display_name: 'string',
 			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
@@ -373,7 +373,7 @@ class Plan extends Model {
 			PLAN_CHARACTOR_NAME: '',
 			plan_url: iPlan.properties.PL_URL,
 			status: iPlan.properties.STATION_DESC,
-			AGAM_ID: iPlan.properties.AGAM_ID,
+			MP_ID: iPlan.properties.MP_ID,
 			plan_new_mavat_url: iPlan.properties.plan_new_mavat_url
 		};
 		if (oldPlan) {

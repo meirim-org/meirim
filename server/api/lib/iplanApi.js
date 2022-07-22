@@ -5,6 +5,7 @@ const { wrapper } = require('axios-cookiejar-support');
 const GeoJSON = require('esri-to-geojson');
 const Bluebird = require('bluebird');
 const _ = require('lodash');
+const { map, chunk, reduce, extend, get } = require('lodash');
 // const proj4 = require('proj4');
 const reproject = require('reproject');
 const Config = require('../lib/config');
@@ -14,6 +15,9 @@ const BASE_AGS_URL =
     'https://ags.iplan.gov.il/arcgisiplan/rest/services/PlanningPublic/Xplan/MapServer';
 // "https://ags.iplan.gov.il/arcgis/rest/services/" +
 // "PlanningPublic/Xplan_2039/MapServer";
+
+const MAVAT_SERVICE_ID = 0;
+const MAVAT_SERVICE_ID_WITH_AGAM = 1;
 
 const options = {
 	rejectUnauthorized: false,
@@ -63,51 +67,78 @@ const fields = [
 const EPSG3857 =
 	'+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs';
 
+// retain a concept of session with cookies. Otherwise Mavat fails on us.
+const client = wrapper(axios.create({ jar: new CookieJar() }));
 
 // TODO: save the links of the new website and the old website
-const fillUrl = (serviceId, fieldsToFill, whereClause, return_geom) => {
+const buildMavatURL = (serviceId, fieldsToFill, whereClause, return_geom) => {
 	return `${BASE_AGS_URL}/${serviceId}/query?f=json&outFields=${fieldsToFill.join(
 		','
 	)}&returnGeometry=${return_geom}&where=${whereClause}&orderByFields=LAST_UPDATE DESC&outSR=3857`;
 };
 
-const getBlueLines = async () => {
-	// we need AGAM_ID field to know the id in the new mavat website.
-	// xplan doesn't have AGAM_ID in the polygons API (service id of 0)
-	// so we query the centroid API (service id of 1) as well in order to get AGAM_ID.
-	const urlWithPolygons = fillUrl(0, fields, 'OBJECTID > 0', 'true');
+const getAgamIdReuqestForBatch = async (planIds = []) => {
+	const whereClause = planIds.length > 0 ? `PL_NUMBER IN (${planIds.join(',')})` : '';
+	const getAgamIDURL = buildMavatURL(MAVAT_SERVICE_ID_WITH_AGAM, ['MP_ID', 'PL_NUMBER'], whereClause, 'false');
 
-	// retain a concept of session with cookies. Otherwise Mavat fails on us.
-	const jar = new CookieJar();
-	const client = wrapper(axios.create({ jar }));
-
-	const responseWithPolygons = await client.get(urlWithPolygons, options);
-	const geojson = GeoJSON.fromEsri(responseWithPolygons.data, {});
-	Log.debug('Got', geojson.features.length, 'plans');
-	
-	for await (const datum of geojson.features) {
-		// add '' to make it a string in the SQL-like query to the arcgis of xplan
-		const planNumber = `'${encodeURIComponent(datum.properties.PL_NUMBER)}'`;
-		const urlWithAgamId = fillUrl(1, ['AGAM_ID'], `PL_NUMBER = ${planNumber}`, 'false');
-		Log.debug(urlWithAgamId);
-
-		const responseWithAgamId = await client.get(urlWithAgamId);
-		const planDataWithAgamId = responseWithAgamId.data.features;
-		Log.debug('Got', planDataWithAgamId.length, 'entries in request for agam ids on plan', planNumber);
-
-		if (planDataWithAgamId.length > 0) {
-			const agamId = planDataWithAgamId[0].attributes.AGAM_ID;
-			datum.properties.AGAM_ID = agamId;
-			datum.properties.plan_new_mavat_url = `https://mavat.iplan.gov.il/SV4/1/${agamId}/310`;
-		}
-
+	try {
+		return client.get(getAgamIDURL).then((response) => {
+			const planDataWithAgamId = response.data.features;
+			const map = {};
+			planDataWithAgamId.forEach((plan) => {
+				map[plan.attributes.PL_NUMBER] = plan.attributes.MP_ID;
+			});
+			return map;
+		});
 	}
+	catch (err) {
+		Log.error('Error getting agam ids for batch', err);
+		return {};
+	}
+};
 
-	return Bluebird.map(
-		geojson.features,
-		(datum) => Object.assign({}, datum, {
-			geometry: reproject.toWgs84(datum.geometry, EPSG3857)})
-	);
+const getPlansAgamIds = async (planIds = []) => {
+	const chunkSize = 50;
+	const res = await Bluebird.all( map(chunk(planIds, chunkSize), (chunk) => getAgamIdReuqestForBatch(chunk)));
+	const unifiedIds = reduce(res, extend);
+	Log.debug('Got', Object.keys(unifiedIds).length, 'entries in request for agam ids on plans');
+	return unifiedIds;
+};
+
+const getBlueLines = async () => {
+	// we need MP_ID field to know the id in the new mavat website.
+	// xplan doesn't have MP_ID in the polygons API (service id of 0)
+	// so we query the centroid API (service id of 1) as well in order to get MP_ID.
+	const urlWithPolygons = buildMavatURL(MAVAT_SERVICE_ID, fields, 'OBJECTID > 0', 'true');
+
+	try {
+		const responseWithPolygons = await client.get(urlWithPolygons, options);
+		const geojson = GeoJSON.fromEsri(responseWithPolygons.data, {});
+		Log.debug('Got', geojson.features.length, 'plans');
+
+		// Need to populate all plans with their MP_ID
+		const planIds = map(geojson.features, (datum)=> `'${encodeURIComponent(datum.properties.PL_NUMBER)}'`);
+		const agamIds = await getPlansAgamIds(planIds);
+
+		// TODO- export to a mapping function
+		for (const datum of geojson.features) {
+			const planNumber = get(datum, 'properties.PL_NUMBER');
+			const agamId = agamIds[planNumber];
+			if (agamId) {
+				datum.properties.MP_ID = agamId;
+				datum.properties.plan_new_mavat_url = `https://mavat.iplan.gov.il/SV4/1/${agamId}/310`;
+			}
+		}
+		return Bluebird.map(
+			geojson.features,
+			(datum) => Object.assign({}, datum, {
+				geometry: reproject.toWgs84(datum.geometry, EPSG3857) })
+		);
+
+	} catch (error) {
+		Log.error('Failed getting blue lines plans with Agam ID', error);
+		// TODO: need to return something
+	}
 
 };
 

@@ -384,7 +384,7 @@ const buildPlan = (iPlan, oldPlan) => {
 		MavatAPI.getByPlan(plan)
 			.then(async mavatData => {
 				const retPlan = await Plan.setMavatData(plan, mavatData);
-				// await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
+				await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
 				return retPlan;
 			})
 			.catch(e => {
