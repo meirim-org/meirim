@@ -6,6 +6,8 @@ export const renderMultiplier = areaObj =>
 export const renderPercent = number => Math.round(number * 100);
 
 export const parseNumber = string => {
+	if(!string) return 0;
+	
 	string = string.replace(',', '');
 	if (parseInt(string)) {
 		return parseInt(string.replace(',', ''));
