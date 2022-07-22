@@ -337,7 +337,7 @@ const getByPlan = (plan, fetchPlanInstructions = true) => {
 		.then(async ({ data }) => {
 			let pageInstructions;
 			if(fetchPlanInstructions){
-				pageInstructions = await getPlanInstructionsNewMavat([...data.rsPlanDocs, ...data.rsPlanDocsAdd] );
+				pageInstructions = await getPlanInstructionsNewMavat([...get(data, 'rsPlanDocs', []), ...get(data, 'rsPlanDocsAdd', [])] );
 			}
 			const planFiles = getPlanFilesNewMavat(data);
 
