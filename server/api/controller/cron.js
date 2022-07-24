@@ -29,8 +29,8 @@ const iplan = (limit = -1) =>
 
 			return Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan));
 		}).catch(e => {
-			Log.error(e);
-			console.log(e);
+			Log.error(`Error fetching new plans ${e}`);
+			console.log(`Error fetching new plans ${e}`);
 		});
 
 const fix_geodata = () => {

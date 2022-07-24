@@ -76,33 +76,6 @@ const buildMavatURL = (serviceId, fieldsToFill, whereClause, return_geom) => {
 	)}&returnGeometry=${return_geom}&where=${whereClause}&orderByFields=LAST_UPDATE DESC&outSR=3857`;
 };
 
-// const getAgamIdReuqestForBatch = async (planIds = []) => {
-// 	const whereClause = planIds.length > 0 ? `PL_NUMBER IN (${planIds.join(',')})` : '';
-// 	const getAgamIDURL = buildMavatURL(MAVAT_SERVICE_ID_WITH_AGAM, ['MP_ID', 'PL_NUMBER'], whereClause, 'false');
-
-// 	try {
-// 		return client.get(getAgamIDURL).then((response) => {
-// 			const planDataWithAgamId = response.data.features;
-// 			const map = {};
-// 			planDataWithAgamId.forEach((plan) => {
-// 				map[plan.attributes.PL_NUMBER] = plan.attributes.MP_ID;
-// 			});
-// 			return map;
-// 		});
-// 	}
-// 	catch (err) {
-// 		Log.error('Error getting agam ids for batch', err);
-// 		return {};
-// 	}
-// };
-
-// const getPlansAgamIds = async (planIds = []) => {
-// 	const chunkSize = 50;
-// 	const res = await Bluebird.all( map(chunk(planIds, chunkSize), (chunk) => getAgamIdReuqestForBatch(chunk)));
-// 	const unifiedIds = reduce(res, extend);
-// 	Log.debug('Got', Object.keys(unifiedIds).length, 'entries in request for agam ids on plans');
-// 	return unifiedIds;
-// };
 
 const getPlanMPID = (planUrl) => {
 	var regex = 'https://mavat.iplan.gov.il/SV4/1/(.+)/310';
@@ -128,7 +101,7 @@ const getBlueLines = async () => {
 			const agamId = getPlanMPID(datum.properties.PL_URL);
 			if (agamId) {
 				datum.properties.MP_ID = agamId;
-				datum.properties.plan_new_mavat_url = `https://mavat.iplan.gov.il/SV4/1/${agamId}/310`;
+				datum.properties.plan_new_mavat_url = datum.properties.PL_URL;
 			}
 		}
 		return Bluebird.map(
@@ -138,8 +111,8 @@ const getBlueLines = async () => {
 		);
 
 	} catch (error) {
-		Log.error('Failed getting blue lines plans with Agam ID', error);
-		// TODO: need to return something
+		Log.error('Failed getting blue lines plans', error);
+		return {};
 	}
 
 };
