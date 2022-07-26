@@ -334,7 +334,8 @@ const getByPlan = (plan, fetchPlanInstructions = true) => {
 			Log.error('Mavat fetch error', er);
 		})
 	// return planId ? fetch(plan.get('plan_url'), fetchPlanInstructions ) : search(plan.get('PL_NUMBER'));
-		.then(async ({ data }) => {
+		.then(async (response) => {
+			const { data } = response;
 			let pageInstructions;
 			if(fetchPlanInstructions){
 				pageInstructions = await getPlanInstructionsNewMavat([...get(data, 'rsPlanDocs', []), ...get(data, 'rsPlanDocsAdd', [])] );
@@ -351,7 +352,7 @@ const getByPlan = (plan, fetchPlanInstructions = true) => {
 				'Fetched mavat plan data',
 				plan.get('PL_NUMBER'),
 				plan.get('MP_ID'),
-				JSON.stringify(data)
+				JSON.stringify(response)
 			);
 			return Bluebird.props({
 				plan_url: getDirectUrl(planId),
