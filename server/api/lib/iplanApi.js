@@ -81,7 +81,6 @@ const getPlanMPID = (planUrl) => {
 	var regex = 'https://mavat.iplan.gov.il/SV4/1/(.+)/310';
 	const res = new RegExp(regex).exec(planUrl);
 	return res[1];
-
 };
 
 const getBlueLines = async () => {
