@@ -152,7 +152,7 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 				);
 				
 				const pageInstructions =  fetchPlanInstruction &&  await getPlanInstructions(page);
-				const planFiles = await getPlanFiles(page);
+				const planFiles = await getPlanFilesNewMavat(page);
 
 				page.close();
 
@@ -180,6 +180,40 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 			}
 		})();
 	});
+
+const fetchPlanData = (planUrl) =>
+	new Promise((resolve, reject) => {
+		(async () => {
+			const page = await browser.newPage();
+
+			try {
+				Log.debug('Loading plan page', planUrl);
+				try {
+					await page.goto(planUrl);
+					await page.waitForSelector('body > pre');
+					const jsonContent = await page.evaluate(
+						() => document.getElementsByTagName('pre')[0].innerText
+					);
+
+					resolve({ data: JSON.parse(jsonContent) });
+					
+				} catch (e) {
+					page.close();
+					Log.error(e);
+					reject(e);
+				}
+
+				page.close();
+
+			} catch (err) {
+				Log.error('Mavat fetch error', err);
+				reject(err);
+			}
+		})();
+	});
+
+
+	
 
 const search = planNumber =>
 	new Promise((resolve, reject) => {
@@ -320,16 +354,16 @@ const getPlanStatus = (plan) => {
 	});
 };
 
-const getByPlan = (plan, fetchPlanInstructions = true) => {
-
+const getByPlan = async (plan, fetchPlanInstructions = true) => {
+	await init();
 	const planId = plan.get('MP_ID');
 	if (!planId) {
 		// maybe here, we can populate agam id from a search service
 		return new Promise((resolve, reject)=>{ reject(new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`));});
 	}
-	const url = `?mid=${planId}`;
+	const url = `${newMavatURL}/?mid=${planId}`;
 	// Performing the new MAVAT API call
-	return instance.get(url)
+	return fetchPlanData(url)
 		.catch(er=> {
 			Log.error('Mavat fetch error', er);
 		})
