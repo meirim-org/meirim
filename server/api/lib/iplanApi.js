@@ -90,7 +90,7 @@ const getBlueLines = async () => {
 	const urlWithPolygons = buildMavatURL(MAVAT_SERVICE_ID, fields, 'OBJECTID > 0', 'true');
 
 	try {
-		const responseWithPolygons = await client.get(urlWithPolygons, options);
+		const responseWithPolygons = await axios.get(urlWithPolygons, options);
 		const geojson = GeoJSON.fromEsri(responseWithPolygons.data, {});
 		Log.debug('Got', geojson.features.length, 'plans');
 
@@ -111,7 +111,7 @@ const getBlueLines = async () => {
 
 	} catch (error) {
 		Log.error('Failed getting blue lines plans', error);
-		return {};
+		return [];
 	}
 
 };
