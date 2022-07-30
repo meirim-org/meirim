@@ -1,7 +1,4 @@
 const axios = require('axios');
-const { CookieJar } = require('tough-cookie');
-const { wrapper } = require('axios-cookiejar-support');
-
 const GeoJSON = require('esri-to-geojson');
 const Bluebird = require('bluebird');
 const _ = require('lodash');
@@ -65,9 +62,6 @@ const fields = [
 
 const EPSG3857 =
 	'+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs';
-
-// retain a concept of session with cookies. Otherwise Mavat fails on us.
-const client = wrapper(axios.create({ jar: new CookieJar() }));
 
 // TODO: save the links of the new website and the old website
 const buildMavatURL = (serviceId, fieldsToFill, whereClause, return_geom) => {
