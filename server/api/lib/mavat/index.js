@@ -8,7 +8,6 @@ const https = require('follow-redirects').https;
 const Log = require('../../lib/log');
 const path = require('path');
 const fs = require('fs');
-const axios = require('axios');
 const { getFileUrl, formatFile } = require('./files');
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
 const { downloadChallengedFile } = require('../challanged-file');
@@ -19,11 +18,6 @@ const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
 const newMavatURL = 'https://mavat.iplan.gov.il/rest/api/SV4/1';
 
 let browser = false;
-
-const instance = axios.create({
-	baseURL: `${newMavatURL}`
-});
-
 
 const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -65,7 +59,7 @@ const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 
 	return downloadSuccess;
 };
-const isInstructionsFile = ({ DOC_NAME, FILE_TYPE }) => (DOC_NAME.indexOf('הוראות התכנית') !== -1 && FILE_TYPE === 'pdf'); 
+const isInstructionsFile = ({ DOC_NAME, FILE_TYPE }) =>  (DOC_NAME.indexOf('הוראות התכנית') !== -1 && FILE_TYPE.indexOf('pdf')!== -1);
 
 const getPlanInstructionsNewMavat = async (planFiles) => {
 	const planInstructionsFiles = planFiles.filter(isInstructionsFile);
@@ -181,6 +175,9 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 		})();
 	});
 
+// This function opens a pup browser to perform an API request to MAVAT.
+// This is because the API is blocked from outside of Israel. The response is JSON
+// and the pup browser waits for the auto HTML rendering of the response
 const fetchPlanData = (planUrl) =>
 	new Promise((resolve, reject) => {
 		(async () => {
