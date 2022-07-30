@@ -8,7 +8,6 @@ const Log = require('../../../api/lib/log');
 
 const { mockDatabase } = require('../../mock');
 const { wait } = require('../../utils');
-const planJson = require('./files/new_mavat_plan.json');
 
 const tables = [
 	'plan', 'notification', 'alert', 'person', 'tables_18_interests_in_plan',
