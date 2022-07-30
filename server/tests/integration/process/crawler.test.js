@@ -581,7 +581,7 @@ describe('Crawler scraped data', function() {
 		await cronController.iplan(1);
 
 		iPlanScope.done();
-		mavatScope.done();
+		newMavatScope.done();
 
 		// there should still be only one plan
 		plans = await planController.browse({ query: { status: null, query: null } });
@@ -631,7 +631,7 @@ describe('Crawler scraped data', function() {
 		await cronController.iplan(1);
 
 		iPlanScope.done();
-		mavatScope.done();
+		newMavatScope.done();
 
 		// there should still be only one plan
 		plans = await planController.browse({ query: { status: null, query: null } });
