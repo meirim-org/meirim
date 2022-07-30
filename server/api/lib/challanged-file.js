@@ -11,6 +11,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 		protocol.get(url, options, (response) => {
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
+				Log.info(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				resolve(false);
 			} else {
 				const contentType = response.headers['content-type'] || '';
@@ -29,6 +30,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 							if (responseData.indexOf('ChallengeId=') > -1) {
 								// extract challenge params
 								const challenge = parseChallenge(responseData);
+								Log.info(`parsed challenge for url ${url}. ${challenge.challenge} = ${challenge.result}`);
 								// send the request again with the challenge headers
 								
 								downloadChallengedFile(url, file, {
@@ -65,7 +67,6 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 				}
 			}
 		}).on('error', (err) => {
-			Log.error('error in challanged file:');
 			Log.error(err);
 			resolve(false);
 		});
