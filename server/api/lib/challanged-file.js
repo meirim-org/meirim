@@ -59,6 +59,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 					response.pipe(file);
 					file.on('finish', async function () {
 						await file.close();
+						Log.info(`downloaded ${url} to ${file.path}`);
 						resolve(true);
 					});
 				}
