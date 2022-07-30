@@ -50,13 +50,13 @@ const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 	const downloadUrl = getFileUrl(entityDocId, entityDocNumber);
 	if (!downloadUrl) return false;
 
-	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
+	const file = fs.createWriteStream(path.join(__dirname, 'tmp', `${entityDocId}tmpPDF.pdf`));
 	const downloadSuccess = await downloadChallengedFile(downloadUrl, file, {}, https);
 
 	if (!downloadSuccess) {
 		Log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
 	}
-
+	Log.error(`success downloading file for ${entityDocId}, ${entityDocNumber}`);
 	return downloadSuccess;
 };
 const isInstructionsFile = ({ DOC_NAME, FILE_TYPE }) =>  (DOC_NAME.indexOf('הוראות התכנית') !== -1 && FILE_TYPE.indexOf('pdf')!== -1);

@@ -379,6 +379,7 @@ describe('Crawler scraped data', function() {
 			// actual reply copied from iplan of a single plan
 			.reply(200, { 'displayFieldName':'PLAN_NAME','fieldAliases':{ 'OBJECTID':'OBJECTID','PLAN_AREA_CODE':'קוד מרחב תכנון','JURSTICTION_CODE':'קוד גבול שיפוט','PLAN_COUNTY_NAME':'ישוב','PLAN_COUNTY_CODE':'קוד ישוב','ENTITY_SUBTYPE_DESC':'סוג תכנית','PL_NUMBER':'מספר תכנית','PL_NAME':'שם תכנית','PL_AREA_DUNAM':'שטח תכנית בדונם','DEPOSITING_DATE':'הפקדה','PL_DATE_8':'פרסום לאישור ברשומות','מטרות':'מטרות','PL_LANDUSE_STRING':'PL_LANDUSE_STRING','STATION':'תחנה','STATION_DESC':'STATION_DESC','PL_BY_AUTH_OF':'סמכות','PL_URL':'PL_URL','Shape_Area':'SHAPE_Area','QUANTITY_DELTA_120':'QUANTITY_DELTA_120','QUANTITY_DELTA_60':'תעסוקה','QUANTITY_DELTA_75':'מסחר','QUANTITY_DELTA_80':'מבני ציבור','QUANTITY_DELTA_105':'תירות','QUANTITY_DELTA_125':'מגורים','LAYER_ID':'LAYER_ID','DEFQ':'DEFQ','MAVAT_CODE':'MAVAT_CODE','REMARKS':'REMARKS','LAST_UPDATE':'LAST_UPDATE','PL_ORDER_PRINT_VERSION':'PL_ORDER_PRINT_VERSION','PL_TASRIT_PRN_VERSION':'PL_TASRIT_PRN_VERSION','pa_concat':'pa_concat','ja_concat':'ja_concat','en_concat':'en_concat' },'geometryType':'esriGeometryPolygon','spatialReference':{ 'wkid':102100,'latestWkid':3857 },'fields':[{ 'name':'OBJECTID','type':'esriFieldTypeOID','alias':'OBJECTID' },{ 'name':'PLAN_AREA_CODE','type':'esriFieldTypeDouble','alias':'קוד מרחב תכנון' },{ 'name':'JURSTICTION_CODE','type':'esriFieldTypeDouble','alias':'קוד גבול שיפוט' },{ 'name':'PLAN_COUNTY_NAME','type':'esriFieldTypeString','alias':'ישוב','length':78 },{ 'name':'PLAN_COUNTY_CODE','type':'esriFieldTypeDouble','alias':'קוד ישוב' },{ 'name':'ENTITY_SUBTYPE_DESC','type':'esriFieldTypeString','alias':'סוג תכנית','length':78 },{ 'name':'PL_NUMBER','type':'esriFieldTypeString','alias':'מספר תכנית','length':78 },{ 'name':'PL_NAME','type':'esriFieldTypeString','alias':'שם תכנית','length':78 },{ 'name':'PL_AREA_DUNAM','type':'esriFieldTypeDouble','alias':'שטח תכנית בדונם' },{ 'name':'DEPOSITING_DATE','type':'esriFieldTypeDate','alias':'הפקדה','length':8 },{ 'name':'PL_DATE_8','type':'esriFieldTypeDate','alias':'פרסום לאישור ברשומות','length':8 },{ 'name':'מטרות','type':'esriFieldTypeString','alias':'מטרות','length':250 },{ 'name':'PL_LANDUSE_STRING','type':'esriFieldTypeString','alias':'PL_LANDUSE_STRING','length':4000 },{ 'name':'STATION','type':'esriFieldTypeDouble','alias':'תחנה' },{ 'name':'STATION_DESC','type':'esriFieldTypeString','alias':'STATION_DESC','length':26 },{ 'name':'PL_BY_AUTH_OF','type':'esriFieldTypeDouble','alias':'סמכות' },{ 'name':'PL_URL','type':'esriFieldTypeString','alias':'PL_URL','length':255 },{ 'name':'Shape_Area','type':'esriFieldTypeDouble','alias':'SHAPE_Area' },{ 'name':'QUANTITY_DELTA_120','type':'esriFieldTypeDouble','alias':'QUANTITY_DELTA_120' },{ 'name':'QUANTITY_DELTA_60','type':'esriFieldTypeDouble','alias':'תעסוקה' },{ 'name':'QUANTITY_DELTA_75','type':'esriFieldTypeDouble','alias':'מסחר' },{ 'name':'QUANTITY_DELTA_80','type':'esriFieldTypeDouble','alias':'מבני ציבור' },{ 'name':'QUANTITY_DELTA_105','type':'esriFieldTypeDouble','alias':'תירות' },{ 'name':'QUANTITY_DELTA_125','type':'esriFieldTypeDouble','alias':'מגורים' },{ 'name':'LAYER_ID','type':'esriFieldTypeInteger','alias':'LAYER_ID' },{ 'name':'DEFQ','type':'esriFieldTypeInteger','alias':'DEFQ' },{ 'name':'MAVAT_CODE','type':'esriFieldTypeInteger','alias':'MAVAT_CODE' },{ 'name':'REMARKS','type':'esriFieldTypeString','alias':'REMARKS','length':200 },{ 'name':'LAST_UPDATE','type':'esriFieldTypeString','alias':'LAST_UPDATE','length':20 },{ 'name':'PL_ORDER_PRINT_VERSION','type':'esriFieldTypeDouble','alias':'PL_ORDER_PRINT_VERSION' },{ 'name':'PL_TASRIT_PRN_VERSION','type':'esriFieldTypeDouble','alias':'PL_TASRIT_PRN_VERSION' },{ 'name':'pa_concat','type':'esriFieldTypeString','alias':'pa_concat','length':500 },{ 'name':'ja_concat','type':'esriFieldTypeString','alias':'ja_concat','length':500 },{ 'name':'en_concat','type':'esriFieldTypeString','alias':'en_concat','length':500 }],'features':[{ 'attributes':{ 'OBJECTID':17737,'PLAN_AREA_CODE':262,'JURSTICTION_CODE':7500,'PLAN_COUNTY_NAME':'סח\'נין','PLAN_COUNTY_CODE':7500,'ENTITY_SUBTYPE_DESC':'תכנית מתאר מקומית','PL_NUMBER':'262-0907907','PL_NAME':'שינוי בהוראות וזכויות הבניה בית עטיה אבו סאלח - סכנין','PL_AREA_DUNAM':0.65600000000000003,'DEPOSITING_DATE':null,'PL_DATE_8':null,'מטרות':'שינוי בהוראות וזכויות הבניה בית עטיה אבו סאלח - סכנין ^ שינוי בהוראות וזכויות הבניה במגרש בנוי בשכונה המזרחית בסכנין ^ הסדרת קוי בניין\r\nהגדלת תכסית קרקע\r\nהגדלת אחוזי בניה\r\nקביעת תנאים להריסת סככה חורגת בתוואי דרך\r\nקביעת תנאים למתן היתר בניה','PL_LANDUSE_STRING':'מגורים ב','STATION':70,'STATION_DESC':'סמכות מקומית בתהליך','PL_BY_AUTH_OF':3,'PL_URL':'https://mavat.iplan.gov.il/SV4/1/2005099108/310','Shape_Area':656.2206166598944,'QUANTITY_DELTA_120':0,'QUANTITY_DELTA_60':0,'QUANTITY_DELTA_75':0,'QUANTITY_DELTA_80':0,'QUANTITY_DELTA_105':0,'QUANTITY_DELTA_125':0,'LAYER_ID':4058837,'DEFQ':null,'MAVAT_CODE':20010,'REMARKS':null,'LAST_UPDATE':'20201003092718      ','PL_ORDER_PRINT_VERSION':1,'PL_TASRIT_PRN_VERSION':1,'pa_concat':'לב הגליל','ja_concat':'סח\'נין','en_concat':null },'geometry':{ 'rings':[[[3930053.80647879,3876669.3068521186],[3930064.968131646,3876668.5508384234],[3930070.2667117235,3876669.4035235811],[3930070.9940953101,3876649.9953845385],[3930038.6509795687,3876649.3163289493],[3930036.3711044192,3876650.5552507825],[3930033.3768539387,3876650.9356909227],[3930021.2490044674,3876652.6631158828],[3930023.3139998987,3876665.7636409458],[3930027.2544126092,3876670.919169195],[3930034.105045598,3876670.5496508735],[3930042.8205890162,3876670.0507389829],[3930053.80647879,3876669.3068521186]]] } }] });
 
+		// mock mavat single plan page
 		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
 			.get('/rest/api/SV4/1/?mid=2005099108')
 			// actual reply copied from a browser performing the API response
@@ -393,41 +394,12 @@ describe('Crawler scraped data', function() {
 				`${__dirname}/files/mavat_plan_instructions.pdf`,
 				{ 'Content-Type': 'application/pdf' }
 			);
-
-			
-		// mock mavat single plan page
-		const mavatScope = nock('http://mavat.moin.gov.il', { allowUnmocked: true });
-		// .get('/MavatPS/Forms/SV4.aspx')
-		// // query string will be exactly as provided by the iplan mocked response
-		// .query({
-		// 	tid: 4,
-		// 	mp_id: '6oPTq5cInWPLIDZGBgm/Snfalx/Vwm9UcvmKLvTYaL/uYZolDZ5tUxUpY3ytnoDHbxhrz2lPI+yU/9tTjWKx2ulXWKLPLb4PmLuaqSOPt7Y=',
-		// 	et: 1
-		// })
-		// actual reply copied from mavat of a single plan page
-		// .replyWithFile(
-		// 	200,
-		// 	`${__dirname}/files/mavat_plan.html.gz`,
-		// 	{ 'Content-Type': 'text/html', 'Content-Encoding': 'gzip' }
-		// );
-		// .get('/MavatPS/Forms/Attachment.aspx');
-		// .query({
-		// 	edid: 6000611696321,
-		// 	edn: '0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE',
-		// 	opener: 'AttachmentError.aspx'
-		// })
-		// // reply is a modified pdf file from mavat (personal details removed)
-		// .replyWithFile(
-		// 	200,
-		// 	`${__dirname}/files/mavat_plan_instructions.pdf`,
-		// 	{ 'Content-Type': 'application/pdf' }
-		// );
-
+	
 		// run crawler cron with limit of 1 plan
 		await cronController.iplan(1);
 
 		iPlanScope.done();
-		// mavatScope.done();
+		newMavatScope.done();
 
 		// now there should be a single plan
 		plans = await planController.browse({ query: { status: null, query: null } });
@@ -820,6 +792,6 @@ describe('Crawler scraped data', function() {
 		assert.equal(fileRows.models[0].attributes.extension, 'pdf', 'first file row extension is correct');
 		assert.equal(fileRows.models[0].attributes.link, 'https://mavat.iplan.gov.il/rest/api/Attacments/?eid=77000661941773&edn=7A5902AE1493843AE0D9F82C89CE7F879827799F5BEF228F96E04936E0A26016', 'first file row link is correct');
 		assert.equal(fileRows.models[0].attributes.source, 'MAVAT', 'first file row source is correct');
-		 assert.equal(fileRows.models[0].attributes.name, 'מצב מאושר', 'first file row name is correct');
+		assert.equal(fileRows.models[0].attributes.name, 'מצב מאושר', 'first file row name is correct');
 	});
 });
