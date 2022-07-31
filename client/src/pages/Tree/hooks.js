@@ -12,13 +12,13 @@ export const useDataHandler = (treeId) => {
 			const { 
 				place, street , street_number, action, trees_per_permit, permit_number,
 				start_date, end_date, total_trees, url , reason_short, reason_detailed, 
-				 geom, gush, helka, regional_office, person_request_name } = response.data;
+				 geom, gush, helka, regional_office, person_request_name, last_date_to_objection } = response.data;
 			
 			dispatch(setTreeData({
 				treeData: { 
 					place, street , street_number, action, trees_per_permit, permit_number,
 					start_date, end_date, total_trees, url , reason_short, reason_detailed, 
-					 geom, gush, helka, regional_office, person_request_name }
+					 geom, gush, helka, regional_office, person_request_name, last_date_to_objection }
 			}));
 		};	
 

@@ -22,6 +22,13 @@ const figureStartDate = (permit_issue_date, hour, inputFormat) => {
 	return `${isoDate}T${hour}`;
 };
 
+const calculateLastDateToObject = (start_date, hour, inputFormat) => {
+	const format = inputFormat || 'DD/MM/YYYY';
+	const last_date = start_date ? moment(start_date, format).subtract(1, 'days') : moment().add(12, 'days').format(format);
+	const isoDate = last_date.toISOString().split('T')[0]; 
+	return `${isoDate}T${hour}`;
+};
+
 const generateFilenameByTime =(url, localTreesDir) =>{
 	const parsedFile = path.parse(url);
 	const filenameNoDate = parsedFile.base;
@@ -100,4 +107,5 @@ module.exports = {
 	unifyPlaceFormat,
 	formatDate,
 	figureStartDate,
+	calculateLastDateToObject
 };

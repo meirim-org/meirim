@@ -16,6 +16,7 @@ class TreePermit extends Model {
 			[tpc.START_DATE]: ['required', 'string'],
 			[tpc.END_DATE]: 'string',
 			[tpc.LAST_DATE]: 'string',
+			[tpc.LAST_DATE_TO_OBJECTION] : 'string',
 			[tpc.APPROVER_NAME]: 'string',
 			[tpc.APPROVER_TITLE]: 'string',
 
@@ -109,7 +110,8 @@ class TreePermit extends Model {
 				tpc.START_DATE,
 				tpc.PERMIT_NUMBER,
 				tpc.GEOM,
-				tpc.ACTION
+				tpc.ACTION,
+				tpc.LAST_DATE_TO_OBJECTION,
 			]
 		});
 	}

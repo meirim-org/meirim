@@ -42,7 +42,7 @@ const TreeList = ({ trees_per_permit }) => {
 const TreeDetailsPanel = () => {
 	const { t } = useTranslation();
 	const theme = useTheme();
-	const { treeData: { action, start_date, permit_number, total_trees, trees_per_permit } } = TreeSelectors();
+	const { treeData: { action, permit_number, total_trees, trees_per_permit, last_date_to_objection } } = TreeSelectors();
 
 	let treeText = (total_trees === 1) ? 'עץ אחד' : `${total_trees} עצים`;
 	if (total_trees === 0) { treeText = 'לא צוין מספר העצים'};
@@ -74,8 +74,8 @@ const TreeDetailsPanel = () => {
 						</Typography>
 						<Typography variant="paragraphText" mobileVariant="paragraphText"
 							component="span" color={theme.palette.black}>
-							{start_date && new Intl.DateTimeFormat('he-IL').format(new Date(start_date))}
-							{ ` (${timeToObjectionText(start_date)})`}
+							{last_date_to_objection && new Intl.DateTimeFormat('he-IL').format(new Date(last_date_to_objection))}
+							{ ` (${timeToObjectionText(last_date_to_objection)})`}
 						</Typography>
 					</SC.StatusWrapper>
 				</SC.StatusAndTypeWrapper>
