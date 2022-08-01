@@ -28,11 +28,12 @@ class TreePermitController extends Controller {
 			tpc.GEOM,
 			tpc.GUSH,
 			tpc.HELKA,
+			tpc.LAST_DATE_TO_OBJECTION,
 		];
 
 		const where = {};
 		// First order by days to permit start date for permits that are still applyable for public objection, then all the rest
-		const orderByRaw = [Knex.raw('case when datediff(current_date(), tree_permit.start_date) > -1 then datediff(current_date(), tree_permit.start_date) else -1 end asc, start_date asc, id ')];
+		const orderByRaw = [Knex.raw('case when datediff(current_date(), tree_permit.last_date_to_objection) > -1 then datediff(current_date(), tree_permit.last_date_to_objection) else -1 end asc, last_date_to_objection asc, id ')];
 
 		if (query.PLACE) {
 			where.PLACE = query.PLACE.split(',');

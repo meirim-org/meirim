@@ -30,6 +30,7 @@ const {
 	generateFilenameByTime,
 	formatDate,
 	figureStartDate,
+	calculateLastDateToObject,
 	unifyPlaceFormat,
 	isEmptyRow, 
 	generateGeomFromAddress, 
@@ -144,36 +145,42 @@ const parseTreesXLS = async (filename, permit) => {
 	const sheet_json =permit.convertSheetToRows(sheet);
 	const rawTreePermits = sheet_json.map(row => {
 		try {
-			if (!isEmptyRow(row)) return {
-				'core': {
-					// Beurocracy
-					[REGIONAL_OFFICE]: permit.getRegionalOffice(row),
-					[PERMIT_NUMBER]: row[permit[PERMIT_NUMBER]],
-					[PERSON_REQUEST_NAME]: row[permit[PERSON_REQUEST_NAME]],
-					[APPROVER_NAME]: row[permit[APPROVER_NAME]],
-					[APPROVER_TITLE]: row[permit[APPROVER_TITLE]],
-					// Dates
-					[PERMIT_ISSUE_DATE]: formatDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),			
-					[START_DATE]: formatDate(row[permit[START_DATE]], MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]],MORNING, permit.dateFormat),
-					[END_DATE]: formatDate(row[permit[END_DATE]], EVENING, permit.dateFormat),
-					[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ? formatDate(row[permit[LAST_DATE_TO_OBJECTION]], EVENING, permit.dateFormat) : undefined,
-					// Location
-					[PLACE]: row[permit[PLACE]],
-					[STREET]: row[permit[STREET]],
-					[STREET_NUMBER]: row[permit[STREET_NUMBER]],
-					[GUSH]: row[permit[GUSH]],
-					[HELKA]: row[permit[HELKA]],
-					// Action
-					[ACTION]: row[permit[ACTION]], // cutting , copying
-					[REASON_SHORT]: row[permit[REASON_SHORT]],
-					[REASON_DETAILED]: row[permit[REASON_DETAILED]],
-					[COMMENTS_IN_DOC]: row[permit[COMMENTS_IN_DOC]],
-				},
-				'extra': { // goes into tree_per_permit and total trees
-					[TREE_NAME]: row[permit[TREE_NAME]],
-					[NUMBER_OF_TREES]: row[permit[NUMBER_OF_TREES]],
-				}
-			};
+			if (!isEmptyRow(row)) {
+				
+				const start_date = row[permit[START_DATE]];
+				return {
+					'core': {
+						// Beurocracy
+						[REGIONAL_OFFICE]: permit.getRegionalOffice(row),
+						[PERMIT_NUMBER]: row[permit[PERMIT_NUMBER]],
+						[PERSON_REQUEST_NAME]: row[permit[PERSON_REQUEST_NAME]],
+						[APPROVER_NAME]: row[permit[APPROVER_NAME]],
+						[APPROVER_TITLE]: row[permit[APPROVER_TITLE]],
+						// Dates
+						[PERMIT_ISSUE_DATE]: formatDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),
+						[START_DATE]: formatDate(start_date, MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),
+						[END_DATE]: formatDate(row[permit[END_DATE]], EVENING, permit.dateFormat),
+						[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ? 
+							formatDate(row[permit[LAST_DATE_TO_OBJECTION]], EVENING, permit.dateFormat) :
+							calculateLastDateToObject(start_date, EVENING, permit.dateFormat),
+						// Location
+						[PLACE]: row[permit[PLACE]],
+						[STREET]: row[permit[STREET]],
+						[STREET_NUMBER]: row[permit[STREET_NUMBER]],
+						[GUSH]: row[permit[GUSH]],
+						[HELKA]: row[permit[HELKA]],
+						// Action
+						[ACTION]: row[permit[ACTION]], // cutting , copying
+						[REASON_SHORT]: row[permit[REASON_SHORT]],
+						[REASON_DETAILED]: row[permit[REASON_DETAILED]],
+						[COMMENTS_IN_DOC]: row[permit[COMMENTS_IN_DOC]],
+					},
+					'extra': { // goes into tree_per_permit and total trees
+						[TREE_NAME]: row[permit[TREE_NAME]],
+						[NUMBER_OF_TREES]: row[permit[NUMBER_OF_TREES]],
+					}
+				};
+			}
 		}
 		catch (err) {
 			Log.error(`Error reading line ${row[permit[PERMIT_NUMBER]]}-${row[permit[TREE_NAME]]} from file ${filename}`);
