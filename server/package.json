@@ -36,7 +36,7 @@
         "express": "^4.17.1",
         "express-handlebars": "^5.1.0",
         "express-session": "^1.17.1",
-        "follow-redirects": "^1.13.0",
+        "follow-redirects": "^1.14.8",
         "geojson-validation": "^1.0.2",
         "handlebars": "^4.7.7",
         "handlebars-loader": "^1.7.1",
