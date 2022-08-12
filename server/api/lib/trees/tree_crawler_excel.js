@@ -30,6 +30,7 @@ const {
 	generateFilenameByTime,
 	formatDate,
 	figureStartDate,
+	calculateLastDateToObject,
 	unifyPlaceFormat,
 	isEmptyRow, 
 	generateGeomFromAddress, 
@@ -122,9 +123,9 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 		const numPermits = (newTreePermits.length > maxPermits) ? maxPermits : newTreePermits.length;
 		const savedTreePermits = [];
 		// Not using map / async on purpose, so node won't run this code snippet in parallel
-		for (const tp of newTreePermits.slice(0, numPermits)) {
+		for await (const tp of newTreePermits.slice(0, numPermits)) {
 			await new Promise(r => setTimeout(r, GEO_CODING_INTERVAL)); // max rate to query nominatim is 1 request per second
-			const polygonFromPoint = await generateGeomFromAddress(database.Knex, tp.attributes[PLACE], tp.attributes[STREET]);
+			const polygonFromPoint = await generateGeomFromAddress(database.Knex, tp.attributes[PLACE], tp.attributes[STREET], tp.attributes[GUSH], tp.attributes[HELKA]);
 			tp.attributes[GEOM] = polygonFromPoint;
 			Log.info(`Saving new tree permit: ${tp.attributes[REGIONAL_OFFICE]} ${tp.attributes[PERMIT_NUMBER]} with ${tp.attributes[TOTAL_TREES]} trees.`);
 			tp.attributes[PLACE] = unifyPlaceFormat(tp.attributes[PLACE]);
@@ -144,36 +145,42 @@ const parseTreesXLS = async (filename, permit) => {
 	const sheet_json =permit.convertSheetToRows(sheet);
 	const rawTreePermits = sheet_json.map(row => {
 		try {
-			if (!isEmptyRow(row)) return {
-				'core': {
-					// Beurocracy
-					[REGIONAL_OFFICE]: permit.getRegionalOffice(row),
-					[PERMIT_NUMBER]: row[permit[PERMIT_NUMBER]],
-					[PERSON_REQUEST_NAME]: row[permit[PERSON_REQUEST_NAME]],
-					[APPROVER_NAME]: row[permit[APPROVER_NAME]],
-					[APPROVER_TITLE]: row[permit[APPROVER_TITLE]],
-					// Dates
-					[PERMIT_ISSUE_DATE]: formatDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),			
-					[START_DATE]: formatDate(row[permit[START_DATE]], MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]],MORNING, permit.dateFormat),
-					[END_DATE]: formatDate(row[permit[END_DATE]], EVENING, permit.dateFormat),
-					[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ? formatDate(row[permit[LAST_DATE_TO_OBJECTION]], EVENING, permit.dateFormat) : undefined,
-					// Location
-					[PLACE]: row[permit[PLACE]],
-					[STREET]: row[permit[STREET]],
-					[STREET_NUMBER]: row[permit[STREET_NUMBER]],
-					[GUSH]: row[permit[GUSH]],
-					[HELKA]: row[permit[HELKA]],
-					// Action
-					[ACTION]: row[permit[ACTION]], // cutting , copying
-					[REASON_SHORT]: row[permit[REASON_SHORT]],
-					[REASON_DETAILED]: row[permit[REASON_DETAILED]],
-					[COMMENTS_IN_DOC]: row[permit[COMMENTS_IN_DOC]],
-				},
-				'extra': { // goes into tree_per_permit and total trees
-					[TREE_NAME]: row[permit[TREE_NAME]],
-					[NUMBER_OF_TREES]: row[permit[NUMBER_OF_TREES]],
-				}
-			};
+			if (!isEmptyRow(row)) {
+				
+				const start_date = row[permit[START_DATE]];
+				return {
+					'core': {
+						// Beurocracy
+						[REGIONAL_OFFICE]: permit.getRegionalOffice(row),
+						[PERMIT_NUMBER]: row[permit[PERMIT_NUMBER]],
+						[PERSON_REQUEST_NAME]: row[permit[PERSON_REQUEST_NAME]],
+						[APPROVER_NAME]: row[permit[APPROVER_NAME]],
+						[APPROVER_TITLE]: row[permit[APPROVER_TITLE]],
+						// Dates
+						[PERMIT_ISSUE_DATE]: formatDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),
+						[START_DATE]: formatDate(start_date, MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),
+						[END_DATE]: formatDate(row[permit[END_DATE]], EVENING, permit.dateFormat),
+						[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ? 
+							formatDate(row[permit[LAST_DATE_TO_OBJECTION]], EVENING, permit.dateFormat) :
+							calculateLastDateToObject(start_date, EVENING, permit.dateFormat),
+						// Location
+						[PLACE]: row[permit[PLACE]],
+						[STREET]: row[permit[STREET]],
+						[STREET_NUMBER]: row[permit[STREET_NUMBER]],
+						[GUSH]: row[permit[GUSH]],
+						[HELKA]: row[permit[HELKA]],
+						// Action
+						[ACTION]: row[permit[ACTION]], // cutting , copying
+						[REASON_SHORT]: row[permit[REASON_SHORT]],
+						[REASON_DETAILED]: row[permit[REASON_DETAILED]],
+						[COMMENTS_IN_DOC]: row[permit[COMMENTS_IN_DOC]],
+					},
+					'extra': { // goes into tree_per_permit and total trees
+						[TREE_NAME]: row[permit[TREE_NAME]],
+						[NUMBER_OF_TREES]: row[permit[NUMBER_OF_TREES]],
+					}
+				};
+			}
 		}
 		catch (err) {
 			Log.error(`Error reading line ${row[permit[PERMIT_NUMBER]]}-${row[permit[TREE_NAME]]} from file ${filename}`);
@@ -242,17 +249,22 @@ const crawlTreesExcel = async ( crawlMethod ) => {
 	let maxPermits = MAX_PERMITS;
 	const crawlMethods = chooseCrawl(crawlMethod);
 	
-	for ( const permitType of crawlMethods) {
-		try {
-			for (let i = 0; i < permitType.urls.length && maxPermits > 0; i++) {
-				const numSavedPermits = await crawTreeExcelByFile(permitType.urls[i], maxPermits, permitType);
+	for await ( const permitType of crawlMethods) {
+		
+		for await (const url of permitType.urls) {
+			try {
+				if (maxPermits <= 0) {
+					break;
+				}
+				const numSavedPermits = await crawTreeExcelByFile(url, maxPermits, permitType);
 				maxPermits = maxPermits - numSavedPermits;
 				sumPermits = sumPermits + numSavedPermits;
 			}
+			catch (err) {
+				Log.error(err.message || err);
+			}
 		}
-		catch (err) {
-			Log.error(err.message || err);
-		}
+		
 	}
 	Log.info(`Done! Total ${sumPermits} new permits`);
 	return sumPermits;

@@ -28,6 +28,9 @@ const iplan = (limit = -1) =>
 			}
 
 			return Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan));
+		}).catch(e => {
+			Log.error(`Error fetching new plans ${e}`);
+			console.log(`Error fetching new plans ${e}`);
 		});
 
 const fix_geodata = () => {
@@ -48,7 +51,10 @@ const fix_geodata = () => {
 					return Bluebird.resolve();
 				});
 		})
-	);
+	).catch(err => {
+		Log.error('Failed getting iplan Blue line plans', err);
+		console.log(err);
+	});
 };
 
 const complete_mavat_data = () =>
@@ -393,9 +399,9 @@ const buildPlan = (iPlan, oldPlan) => {
 	);
 };
 
-const fetchTreePermit = () =>{
+async function fetchTreePermit(){
 	return crawlTreesExcel();
-};
+}
 
 const fetchPlanStatus = () => {
 

@@ -67,10 +67,26 @@ export const usePaymentAnchor = (locationHash, paymentRef) => {
 	useEffect(() => {
 		if (locationHash === '#payment') {
 			// scrollIntoView isn't sufficient since the header hides some of the view
-			const y = paymentRef.current.getBoundingClientRect().top - 150;
+			const y = paymentRef.current.getBoundingClientRect().top - 100;
 			window.scrollBy({top: y, behavior: 'smooth'});
 		} else {
 			window.scroll({top: 0, behavior: 'smooth'});
 		}
 	}, [locationHash, paymentRef]);
+};
+
+export const useSectionAnchor = (locationHash, paymentRef, whoWeAreRef) => {
+	useEffect(() => {
+		if (locationHash === '#payment') {
+			// scrollIntoView isn't sufficient since the header hides some of the view
+			const y = paymentRef.current.getBoundingClientRect().top - 100;
+			window.scrollBy({top: y, behavior: 'smooth'});
+		} else if (locationHash === '#who-we-are') {
+			const y = whoWeAreRef.current.getBoundingClientRect().top - 100;
+			window.scrollBy({top: y, behavior: 'smooth'});
+		}
+		else {
+			window.scroll({top: 0, behavior: 'smooth'});
+		}
+	}, [locationHash, paymentRef, whoWeAreRef]);
 };

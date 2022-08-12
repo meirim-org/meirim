@@ -2,7 +2,9 @@
 const cheerio = require('cheerio');
 const Bluebird = require('bluebird');
 const puppeteer = require('puppeteer');
+const { map, get } = require('lodash');
 const HtmlTableToJson = require('html-table-to-json');
+const https = require('follow-redirects').https;
 const Log = require('../../lib/log');
 const path = require('path');
 const fs = require('fs');
@@ -13,6 +15,7 @@ const PlanStatusChange = require('../../model/plan_status_change');
 const { formatDate } = require('../date');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
+const newMavatURL = 'https://mavat.iplan.gov.il/rest/api/SV4/1';
 
 let browser = false;
 
@@ -20,6 +23,7 @@ const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const PLAN_DOWNLOAD_PATH = path.join(__dirname, './tmp');
 
+// TODO: remove this function
 const init = () =>
 	new Promise((resolve, reject) => {
 		(async () => {
@@ -41,21 +45,40 @@ const init = () =>
 		})();
 	});
 
-const downloadPlanPDF = async (functionCallText) => {
+const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 
-	const downloadUrl = getFileUrl(functionCallText);
+	const downloadUrl = getFileUrl(entityDocId, entityDocNumber);
 	if (!downloadUrl) return false;
 
+	Log.info(`Trying download file for eid=${entityDocId}&enum=${entityDocNumber}`);
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
-	const downloadSuccess = await downloadChallengedFile(downloadUrl, file);
+	const downloadSuccess = await downloadChallengedFile(downloadUrl, file, {}, https);
 
 	if (!downloadSuccess) {
-		Log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
+		Log.info(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
 	}
-
+	Log.info(`success downloading file for ${entityDocId}, ${entityDocNumber}`);
 	return downloadSuccess;
 };
+const isInstructionsFile = ({ DOC_NAME, FILE_TYPE }) =>  (DOC_NAME.indexOf('הוראות התכנית') !== -1 && FILE_TYPE.indexOf('pdf')!== -1);
 
+const getPlanInstructionsNewMavat = async (planFiles) => {
+	const planInstructionsFiles = planFiles.filter(isInstructionsFile);
+
+	if(planInstructionsFiles.length === 0) return undefined;
+
+	const planFileData = planInstructionsFiles[0];
+
+	const hasDownloaded = await downloadPlanPDF(planFileData.ID, planFileData.PLAN_ENTITY_DOC_NUM);
+	if (hasDownloaded) {
+		try {
+			return processPlanInstructionsFile(PLAN_DOWNLOAD_PATH);
+		} catch (err) {
+			Log.error('Fetch plan instructions error', err);
+		}
+	}
+};
+// TODO: remove this function, old mavat
 const getPlanInstructions = async (page) => {
 	const functionCallText = await page.evaluate(() => {
 		const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
@@ -84,30 +107,17 @@ const getPlanInstructions = async (page) => {
 	}
 };
 
-
-const getPlanFiles = async (page) => {
-	const files = await page.evaluate(() => {
-		const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
-		const innerTexts = elements.map(ele => ele.innerText.trim());
-
-		// elements look like this:
-		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
-		// (flattened table)
-		let files = [];
-		for (let i = 0; i < innerTexts.length; i += 5) {
-			const file = {
-				kind: innerTexts[i],
-				name: innerTexts[i+1],
-				description: innerTexts[i+2],
-				date: innerTexts[i+3],
-				openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
-				fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
-			};
-			files.push(file);
-		}
-
-		// console.log(`fetched ${files.length} files`);
-		return files;
+const getPlanFilesNewMavat = (data) => {
+	const files = map(data.rsPlanDocsAdd, (file)=> {
+		return {
+			kind: file.FILE_TYPE,
+			name: file.DOC_NAME,
+			description: file.RUB_DESC,
+			date: file.EDITING_DATE,
+			id: file.ID,
+			fileIcon: file.FILE_DATA.ficon,
+			num: file.PLAN_ENTITY_DOC_NUM
+		};
 	});
 
 	// cleaning and formatting the files
@@ -137,7 +147,7 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 				);
 				
 				const pageInstructions =  fetchPlanInstruction &&  await getPlanInstructions(page);
-				const planFiles = await getPlanFiles(page);
+				const planFiles = await getPlanFilesNewMavat(page);
 
 				page.close();
 
@@ -165,6 +175,43 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 			}
 		})();
 	});
+
+// This function opens a pup browser to perform an API request to MAVAT.
+// This is because the API is blocked from outside of Israel. The response is JSON
+// and the pup browser waits for the auto HTML rendering of the response
+const fetchPlanData = (planUrl) =>
+	new Promise((resolve, reject) => {
+		(async () => {
+			const page = await browser.newPage();
+
+			try {
+				Log.debug('Loading plan page', planUrl);
+				try {
+					await page.goto(planUrl);
+					await page.waitForSelector('body > pre');
+					const jsonContent = await page.evaluate(
+						() => document.getElementsByTagName('pre')[0].innerText
+					);
+
+					resolve({ data: JSON.parse(jsonContent) });
+					
+				} catch (e) {
+					page.close();
+					Log.error(e);
+					reject(e);
+				}
+
+				page.close();
+
+			} catch (err) {
+				Log.error('Mavat fetch error', err);
+				reject(err);
+			}
+		})();
+	});
+
+
+	
 
 const search = planNumber =>
 	new Promise((resolve, reject) => {
@@ -219,18 +266,11 @@ const search = planNumber =>
 			}
 		})();
 	});
-const getGoalsText = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_tdGOALS').html();
 
-const getMainPlanDetailText = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_tdINSTRACTIONS').html();
-
-const getJurisdictionString = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_AUTH').val();
-
-const getDirectUrl = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_PlanLink').attr('href');
-
+const getDirectUrl = planId =>
+	`${newMavatURL}/${planId}/310`;
+	
+// TODO: remove this function, old mavat
 const getAreaChanges = cheerioPage => {
 	const html = cheerioPage('#tblQuantities tbody').html();
 
@@ -247,6 +287,23 @@ const getAreaChanges = cheerioPage => {
 	return JSON.stringify(jsonTables.results);
 };
 
+const getAreaChangesNewMavat = (quantities = []) => {
+	if (!quantities) return '';
+	const areaChanges = quantities.map((quantity) => ({
+		1: `${quantity.ID}`,
+		2: `${quantity.QUANTITY_CODE}`,
+		3: quantity.QUANTITY_DESC,
+		4: quantity.UNIT_DESC,
+		5: quantity.AUTHORISED_QUANTITY,
+		6: quantity.AUTHORISED_QUANTITY_ADD || '',
+		7: quantity.IMPLEMENTATION,
+		8: quantity.DETAILED_PLAN || '',
+		9: quantity.REMARK
+	}));
+	return JSON.stringify([areaChanges]);
+};
+
+// TODO: remove this function, old mavat
 const getPlanStatusList = cheerioPage => {
 	const html = cheerioPage('#tblInternet tbody').html();
 
@@ -263,26 +320,30 @@ const getPlanStatusList = cheerioPage => {
 	return jsonTables.results;
 };
 
+const getPlanStatusListNewMavat = statusList => {
+	return map(statusList, (statusDetails => ({
+		title: statusDetails.LIS_DESC,
+		date: formatDate(statusDetails.EIS_DATE),
+		statusDescription: statusDetails.DETAILS
+	})));
+};
+
+
 const getPlanStatus = (plan) => {
 	const planId = plan.id;
 	return new Promise((resolve, reject) => {
 		getByPlan(plan, false)
 			.then(mavatData => {
 				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
-					!mavatData['planStatusList'][0])) {
+					!mavatData.planStatusList)) {
 					return null;
 				}
 
-				const planStatusList = mavatData['planStatusList'][0].map(statusDetails => {
-					const title = statusDetails['1']; // תיאור
-					const date = statusDetails['2']; // תאריך
-					const statusDescription = statusDetails['3']; // פירוט
-					Log.debug(`${`title: ${title}: date: ${date}`} `);
+				const planStatusList = mavatData.planStatusList.map(status => {
+					Log.debug(`${`title: ${status.title}: date: ${status.date}`} `);
 					return new PlanStatusChange({
 						plan_id: planId,
-						status: title,
-						date: formatDate(date),
-						status_description: statusDescription,
+						...status
 					});
 				});
 				resolve(planStatusList);
@@ -291,32 +352,48 @@ const getPlanStatus = (plan) => {
 	});
 };
 
-const getByPlan = (plan, fetchPlanInstructions = true) =>
-	init()
-		.then(() => {
-			return plan.get('plan_url') ? fetch(plan.get('plan_url'), fetchPlanInstructions ) : search(plan.get('PL_NUMBER'));
+const getByPlan = async (plan, fetchPlanInstructions = true) => {
+	await init();
+	const planId = plan.get('MP_ID');
+	if (!planId) {
+		// maybe here, we can populate agam id from a search service
+		return new Promise((resolve, reject)=>{ reject(new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`));});
+	}
+	const url = `${newMavatURL}/?mid=${planId}`;
+	// Performing the new MAVAT API call
+	return fetchPlanData(url)
+		.catch(er=> {
+			Log.error('Mavat fetch error', er);
 		})
-		.then(dict => {
-			const cheerioPage = dict.cheerioPage;
-			const pageInstructions = dict.pageInstructions;
-			const planFiles = dict.planFiles;
+	// return planId ? fetch(plan.get('plan_url'), fetchPlanInstructions ) : search(plan.get('PL_NUMBER'));
+		.then(async (response) => {
+			const { data } = response;
+			let pageInstructions;
+			if(false){
+				pageInstructions = await getPlanInstructionsNewMavat([...get(data, 'rsPlanDocs', []), ...get(data, 'rsPlanDocsAdd', [])] );
+			}
+			const planFiles = getPlanFilesNewMavat(data);
 
 			Log.debug(
 				'Retrieving',
 				plan.get('PL_NUMBER'),
-				getGoalsText(cheerioPage),
-				getAreaChanges(cheerioPage),
 				planFiles.length
 			);
 
+			Log.debug(
+				'Fetched mavat plan data',
+				plan.get('PL_NUMBER'),
+				plan.get('MP_ID'),
+				response
+			);
 			return Bluebird.props({
-				plan_url: getDirectUrl(cheerioPage),
-				goals: getGoalsText(cheerioPage),
-				mainPlanDetails: getMainPlanDetailText(cheerioPage),
-				areaChanges: getAreaChanges(cheerioPage),
-				jurisdiction: getJurisdictionString(cheerioPage),
+				plan_url: getDirectUrl(planId),
+				goals: get(data, 'planDetails.GOALS'),
+				mainPlanDetails: get(data, 'planDetails.INSTRACTIONS'),
+				areaChanges: getAreaChangesNewMavat(get(data, 'rsQuantities'),),
+				jurisdiction: get(data, 'planDetails.AUTH'),
 				files: planFiles,
-				planStatusList: getPlanStatusList(cheerioPage),
+				planStatusList: getPlanStatusListNewMavat(get(data, 'rsInternet', [])),
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
@@ -324,6 +401,7 @@ const getByPlan = (plan, fetchPlanInstructions = true) =>
 				chartSix: pageInstructions ? pageInstructions.chartSix : undefined
 			});
 		});
+};
 
 module.exports = {
 	// getByUrl,

@@ -12,12 +12,12 @@ export const HeaderWrapper = styled.div`
   @media ${device.laptop} {
     display: inline-flex;
     justify-content: space-between;
-    padding: 3em 4.8em;
+    padding: 3em 4.8em 1em;
   }
 `;
 
 export const Titles = styled.span`
-  max-width: 40%;
+  max-width: 50%;
   background-color: white;
 
   h2 {
@@ -133,7 +133,7 @@ export const MainTitle = styled.h1`
 export const SubTitleWrapper = styled.div`
     padding-bottom: 3em;
     @media ${device.tablet} {
-     padding-bottom: 2.5em;
+     padding-bottom: 1em;
     }
 `;
 
@@ -288,7 +288,7 @@ export const PaymentOtherOption = withTheme(styled.span`
 
 export const Amount = withTheme(styled.span`
   font-size:26px;
-  font-weight: bold;
+  font-weight: 400;
   line-height: 28px;
   color: ${props => props.theme.palette.primary['700']}
 `);
@@ -569,7 +569,7 @@ export const OtherAmountInput = withTheme(styled(MuiInput)`
     font-style: normal;
     text-align: center;
     font-size: 26px;
-    font-weight: bold;
+    font-weight: 400;
     line-height: 28px;
     color: ${props => props.theme.palette.primary['700']};
     transition: color 200ms;
