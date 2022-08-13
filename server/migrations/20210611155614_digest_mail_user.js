@@ -5,13 +5,13 @@ exports.up = async function(knex) {
 	});
 
 	await knex.schema.createTableIfNotExists('staticmap', t => {
-        t.increments('id').primary();
-        t.integer('plan_id');
+		t.increments('id').primary();
+		t.integer('plan_id');
 		t.text('base64string', 'longtext');
-    });
+	});
 };
 
-exports.down = function(knex) {
+exports.down = async function(knex) {
 	await knex.schema.table('alert', table => {
 		table.dropColumns('last_email_sent');
 	});
