@@ -15,7 +15,7 @@ Things you need to install:
 
 * Git
 * Node.js (we support and run on version 14.x)
-* MySQL (required only for the backend & crawler)
+* MySQL (required only for the backend & crawler) Version 5.7
 
 Once you have these you can clone the code:
 
