@@ -41,3 +41,11 @@ export const gaPageView = (location, isAuthenticated) => {
 	});
 	ReactGA.pageview(page);
 };
+
+export const reportToAnalytics = (params) => {
+	//eslint-disable-next-line
+	if (dataLayer && dataLayer.push) {
+	//eslint-disable-next-line
+		dataLayer.push(params);
+	};
+};

@@ -7,6 +7,7 @@ import { openModal } from 'redux/modal/slice';
 import { FundingSelectors } from 'redux/selectors';
 import { externalPaymentErrorToast } from 'toasts';
 import Wrapper from '../../components/Wrapper';
+import { reportToAnalytics } from 'utils';
 import { Button, Checkbox, Divider, HelperText, Link, Chip,/*ProgressBar, */ TabPanel, TeamMembers, Typography } from '../../shared';
 import AmountInput from './amountInput';
 import { fundingYoutubeVideoId, paymentAmountOptions, roadmap } from './constants';
@@ -61,6 +62,11 @@ const FundingPage = ({ ...props }) => {
 	useStatsDataHandler(paymentDone);
 
 	function paymentSuccess() {
+		reportToAnalytics({
+			event: 'donation-complete',
+			d_type: 'monthly',
+			d_value: amount
+		});
 		setAmount(null);
 		setOtherAmount(0);
 		setTermsAccepted(false);

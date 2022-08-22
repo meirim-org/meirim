@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
+import { reportToAnalytics } from 'utils';
 import '../../assets/bootstrap.css';
 import logoSmall from '../../assets/logo_small.png';
 import traktor from '../../assets/traktor_op.png';
@@ -17,7 +18,13 @@ const Home = (props) => {
 	const { t } = useTranslation();
 
 	useEffect(() => {
-		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }));
+		if (state === 'openRegister') {
+			reportToAnalytics({
+				event: 'registration-start',
+				ref: 'menu'
+			});
+			dispatch(openModal({ modalType: 'register' }));
+		};
 	}, [state, dispatch]);
 
 	return (
