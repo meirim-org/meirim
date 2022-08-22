@@ -2,6 +2,7 @@ import Wrapper from 'components/Wrapper';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { reportToAnalytics } from 'utils';
 import Vision from './Vision';
 import Features from './Features';
 import Achievements from './Achievements';
@@ -19,6 +20,10 @@ const Homepage = () => {
 
 	useEffect(() => {
 		if (location.hash === '#openRegister' &&  !isAuthenticated) {
+			reportToAnalytics({
+				event: 'registration-start',
+				ref: 'popup'
+			});
 			dispatch(openModal({ modalType: 'register' }));
 		}
 	}, [location, isAuthenticated, dispatch]);

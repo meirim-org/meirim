@@ -4,6 +4,7 @@ import Wrapper from 'components/Wrapper';
 import { useTranslation } from 'locale/he_IL';
 import React from 'react';
 import { device } from 'style';
+import { reportToAnalytics } from 'utils';
 import styled from 'styled-components';
 import { resendActivationLinkToEmail } from './controller';
 
@@ -162,6 +163,10 @@ const EmailSent = ({ fullPage = true , ...props }) => {
 	if (props && props.location && props.location.state){
 		email = props.location.state.email;
 	}
+
+    reportToAnalytics({
+        event: 'registration-form-complete',
+    });
 	
 	return (
 		<Wrapper fullPage={fullPage}>
