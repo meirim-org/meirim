@@ -128,5 +128,8 @@
 	},
 	"planStatusChange": {
 		"limit": 15
+	},
+	"proxy": {
+		"apiKey": ""
 	}
 }
