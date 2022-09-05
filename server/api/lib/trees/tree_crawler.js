@@ -9,6 +9,7 @@ const MAX_PERMITS = Config.get('trees.maxPermits');
 
 const { RegionalTreePermit } = require('./regional_tree_permit');
 const { KKLTreePermit } = require('./kkl_tree_permit');
+const { crawlTreesHTML , JERTreePermit } = require('./jerusalem_tree_permit');
 
 const {
 	formatDate,
@@ -69,17 +70,19 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 	}
 }
 
-const chooseCrawl = (permitType) => {
-	if (permitType == '' || permitType == 'all' || permitType == undefined) {
-		return [RegionalTreePermit, KKLTreePermit];
-	}
-	if (permitType == 'kkl') {
-		return [KKLTreePermit];
-	}
-	if (permitType == 'regional') {
-		return [RegionalTreePermit];
-	}
-	return [];
+const chooseCrawl = (crawlType) => {
+	
+	const kkl = { crawler: crawTreeExcelByFile, 'permitType': KKLTreePermit };
+	const jer = { crawler: crawlTreesHTML , 'permitType': JERTreePermit };
+	const regional = { crawler: crawTreeExcelByFile, 'permitType': RegionalTreePermit };
+	const crawlMap = {
+		'jer': [jer],
+		'kkl': [kkl],
+		'regional': [regional],
+		'all': [jer, kkl, regional]
+	};
+	
+	return crawlMap[crawlType] || crawlMap['all'];
 };
 
 const crawlTrees = async (crawlMethod) => {
@@ -87,13 +90,13 @@ const crawlTrees = async (crawlMethod) => {
 	let maxPermits = MAX_PERMITS;
 	const crawlMethods = chooseCrawl(crawlMethod);
 
-	for await (const permitType of crawlMethods) {
-		for await (const url of permitType.urls) {
+	for await (const method of crawlMethods) {
+		for await (const url of  method.permitType.urls) {
 			try {
 				if (maxPermits <= 0) {
 					break;
 				}
-				const treePermits = await crawTreeExcelByFile(url, permitType);
+				const treePermits = await method.crawler(url, method.permitType);
 				const newTreePermits = await saveNewTreePermits(treePermits, maxPermits);
 				maxPermits = maxPermits - newTreePermits.length;
 				sumPermits = sumPermits + newTreePermits.length;
