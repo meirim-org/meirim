@@ -18,7 +18,7 @@ const {
 } = require('./utils');
 const { REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, TOTAL_TREES, GUSH, HELKA, GEOM, PLACE, STREET, TREE_PERMIT_TABLE } = require('../../model/tree_permit_constants');
 const MORNING = '08:00';
-const { crawTreeExcelByFile } = require('./tree_crawler_excel');
+const { crawlTreeExcelByFile } = require('./tree_crawler_excel');
 async function saveNewTreePermits(treePermits, maxPermits) {
 	// Tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
 	// buffer should be enough for human to remove those lines from the excel sheet.
@@ -72,14 +72,14 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 
 const chooseCrawl = (crawlType) => {
 	
-	const kkl = { crawler: crawTreeExcelByFile, 'permitType': KKLTreePermit };
-	const jer = { crawler: crawlTreesHTML , 'permitType': JERTreePermit };
-	const regional = { crawler: crawTreeExcelByFile, 'permitType': RegionalTreePermit };
+	const kkl = { 'crawler': crawlTreeExcelByFile, 'permitType': KKLTreePermit };
+	const jer = { 'crawler': crawlTreesHTML , 'permitType': JERTreePermit };
+	const regional = { 'crawler': crawlTreeExcelByFile, 'permitType': RegionalTreePermit };
 	const crawlMap = {
 		'jer': [jer],
 		'kkl': [kkl],
 		'regional': [regional],
-		'all': [jer, kkl, regional]
+		'all': [jer, regional, kkl]
 	};
 	
 	return crawlMap[crawlType] || crawlMap['all'];
@@ -90,8 +90,8 @@ const crawlTrees = async (crawlMethod) => {
 	let maxPermits = MAX_PERMITS;
 	const crawlMethods = chooseCrawl(crawlMethod);
 
-	for await (const method of crawlMethods) {
-		for await (const url of  method.permitType.urls) {
+	for  (const method of crawlMethods) {
+		for  (const url of  method.permitType.urls) {
 			try {
 				if (maxPermits <= 0) {
 					break;

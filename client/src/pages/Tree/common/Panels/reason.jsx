@@ -15,7 +15,7 @@ const TreeReasonPanel = () => {
 				<SC.TreeSummaryTitleWrapper>
 					<Typography variant="planDetailTitle" mobileVariant="planDetailTitle"
 						component="h2" color={theme.palette.black}	>
-						{`סיבה: ${reason_short}`}
+						{`סיבה: ${reason_short || ''}`}
 					</Typography>
 				<Typography variant="paragraphText" mobileVariant="paragraphText"
 					component="span" color={theme.palette.black}>
