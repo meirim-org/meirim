@@ -12,7 +12,7 @@ const Email = require('../service/email');
 const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
-const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
+const { crawlTrees } = require('../lib/trees/tree_crawler');
 const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
@@ -395,8 +395,8 @@ const buildPlan = (iPlan, oldPlan) => {
 	);
 };
 
-async function fetchTreePermit(){
-	return crawlTreesExcel();
+async function fetchTreePermit(crawlMethod){
+	return crawlTrees(crawlMethod);
 }
 
 const fetchPlanStatus = () => {

@@ -3,10 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
 const https = require('follow-redirects').https;
-const moment = require('moment');
 const AbortController = require('abort-controller');
 const TreePermit = require('../../model/tree_permit');
-const database = require('../../service/database');
 const Config = require('../../lib/config');
 const { downloadChallengedFile } = require('../challanged-file');
 
@@ -16,14 +14,12 @@ const EVENING = '20:00';
 
 const { treeBucketName: bucketName, useS3ForTreeFiles: useS3 } = Config.get('aws');
 const localTrees = path.resolve(Config.get('trees.rawDataDir'));
-const GEO_CODING_INTERVAL = Config.get('trees.geoCodingInterval');
-const MAX_PERMITS = Config.get('trees.maxPermits');
 
 const {
 	REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, APPROVER_TITLE, ACTION, APPROVER_NAME,
 	END_DATE, LAST_DATE_TO_OBJECTION, TREE_NAME, TOTAL_TREES, REASON_DETAILED,
-	REASON_SHORT, GUSH, HELKA, GEOM, PLACE, STREET, STREET_NUMBER, COMMENTS_IN_DOC,
-	TREES_PER_PERMIT, PERSON_REQUEST_NAME, PERMIT_ISSUE_DATE, TREE_PERMIT_TABLE, NUMBER_OF_TREES
+	REASON_SHORT, GUSH, HELKA, PLACE, STREET, STREET_NUMBER, COMMENTS_IN_DOC,
+	TREES_PER_PERMIT, PERSON_REQUEST_NAME, PERMIT_ISSUE_DATE, NUMBER_OF_TREES
 } = require('../../model/tree_permit_constants');
 
 const {
@@ -31,13 +27,10 @@ const {
 	formatDate,
 	figureStartDate,
 	calculateLastDateToObject,
-	unifyPlaceFormat,
 	isEmptyRow, 
-	generateGeomFromAddress, 
 	uploadToS3
 } = require('./utils');
-const { RegionalTreePermit } = require( './regional_tree_permit');
-const { KKLTreePermit } = require ('./kkl_tree_permit');
+
 
 async function getTreePermitsFromFile(url, pathname, permitType) {
 	try {
@@ -65,12 +58,6 @@ async function getTreePermitsFromFile(url, pathname, permitType) {
 					Log.error('Couldnt read tree files. exit :(');
 					resolve(null);
 				}
-				// stream.on('open', () => {
-				// 	res.body.pipe(stream);
-				// });
-				// stream.on('close', async function () {
-				// 	Log.info(`Successfully Downloaded trees file: ${url}. File Could be found here: ${pathname}`);
-
 				const treePermits = await parseTreesXLS(pathname, permitType);
 				resolve(treePermits);
 			}
@@ -89,56 +76,6 @@ async function getTreePermitsFromFile(url, pathname, permitType) {
 	}
 }
 
-async function saveNewTreePermits(treePermits, maxPermits) {
-	// Tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
-	// buffer should be enough for human to remove those lines from the excel sheet.
-	//We're reading a the rows as a bulk and match them at compute time for performance.
-
-	if (treePermits.length == 0) return [];
-	// all tree permits in a chunk should be from the same regional office
-	const regionalOffice = treePermits[0].attributes[REGIONAL_OFFICE];
-	// this is the only timestamp format knex correcrtly work with 
-	const time_ago = moment().subtract(1, 'year').format('YYYY-MM-DDTHH:mm:ssZ');
-	const existingPermitsCompact = new Set();
-	await database.Knex(TREE_PERMIT_TABLE).where('updated_at', '>', time_ago.toString())
-		.andWhere(REGIONAL_OFFICE, regionalOffice)
-		.then(rows => {
-			rows.map(row => {
-				const key_as_string = `${row[REGIONAL_OFFICE]}_${row[PERMIT_NUMBER]}_${formatDate(row[START_DATE], MORNING, 'YYYY-MM-DD')}`;
-				existingPermitsCompact.add(key_as_string);
-			});
-		})
-		.catch(function (error) { Log.error(error); });
-
-	const newTreePermits = treePermits.map(tp => {
-		//if tp is not in the hash map of the existing one - add to the new ones
-		const compact_tp = `${tp.attributes[REGIONAL_OFFICE]}_${tp.attributes[PERMIT_NUMBER]}_${formatDate(tp.attributes[START_DATE], MORNING, 'YYYY-MM-DD')}`;
-		if (tp.attributes[REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
-			Log.debug(`A new tree liecence! queued for saving ${compact_tp}`);
-			return tp; //original one, not compact
-		}
-	}).filter(Boolean); // remove undefined values
-	//save only the new ones
-	try {
-		const numPermits = (newTreePermits.length > maxPermits) ? maxPermits : newTreePermits.length;
-		const savedTreePermits = [];
-		// Not using map / async on purpose, so node won't run this code snippet in parallel
-		for await (const tp of newTreePermits.slice(0, numPermits)) {
-			await new Promise(r => setTimeout(r, GEO_CODING_INTERVAL)); // max rate to query nominatim is 1 request per second
-			const polygonFromPoint = await generateGeomFromAddress(database.Knex, tp.attributes[PLACE], tp.attributes[STREET], tp.attributes[GUSH], tp.attributes[HELKA]);
-			tp.attributes[GEOM] = polygonFromPoint;
-			Log.info(`Saving new tree permit: ${tp.attributes[REGIONAL_OFFICE]} ${tp.attributes[PERMIT_NUMBER]} with ${tp.attributes[TOTAL_TREES]} trees.`);
-			tp.attributes[PLACE] = unifyPlaceFormat(tp.attributes[PLACE]);
-			await tp.save();
-			savedTreePermits.push(tp);
-		}
-		return savedTreePermits;
-	}
-	catch (err) {
-		Log.error(err.message || err);
-		return [];
-	}
-}
 const parseTreesXLS = async (filename, permit) => {
 	const workbook = xlsx.readFile(filename);
 	const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -215,61 +152,20 @@ function processPermits(rawTreePermits) {
 	return Object.values(treePermits);
 }
 
-async function crawTreeExcelByFile(url, maxPermits, permitType) {
+async function crawlTreeExcelByFile(url, permitType) {
 	try {
 		const { s3filename, localFilename } = generateFilenameByTime(url, localTrees);
 		const treePermits = await getTreePermitsFromFile(url, localFilename, permitType);
-		const newTreePermits = await saveNewTreePermits(treePermits, maxPermits);
-		Log.info('Extracted ' + newTreePermits.length + ' new permits from: ' + s3filename);
 		if (useS3) {
 			await uploadToS3(s3filename, bucketName, localFilename);
 		}
-		return newTreePermits.length;
+		return treePermits;
 	} catch (err) {
 		Log.error(err.message || err);
 		return false;
 	}
 }
 
-const chooseCrawl = (permitType) => {
-	if (permitType == ''|| permitType == 'all' || permitType == undefined) {
-		return [RegionalTreePermit, KKLTreePermit];
-	}
-	if (permitType == 'kkl') {
-		return [KKLTreePermit];
-	}
-	if (permitType == 'regional') {
-		return [RegionalTreePermit];
-	}
-	return [];
-};
-
-const crawlTreesExcel = async ( crawlMethod ) => {
-	let sumPermits = 0;
-	let maxPermits = MAX_PERMITS;
-	const crawlMethods = chooseCrawl(crawlMethod);
-	
-	for await ( const permitType of crawlMethods) {
-		
-		for await (const url of permitType.urls) {
-			try {
-				if (maxPermits <= 0) {
-					break;
-				}
-				const numSavedPermits = await crawTreeExcelByFile(url, maxPermits, permitType);
-				maxPermits = maxPermits - numSavedPermits;
-				sumPermits = sumPermits + numSavedPermits;
-			}
-			catch (err) {
-				Log.error(err.message || err);
-			}
-		}
-		
-	}
-	Log.info(`Done! Total ${sumPermits} new permits`);
-	return sumPermits;
-};
-
 module.exports = {
-	crawlTreesExcel: crawlTreesExcel,
+	crawlTreeExcelByFile
 };
