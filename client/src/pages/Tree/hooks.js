@@ -17,7 +17,7 @@ export const useDataHandler = (treeId) => {
 				start_date, end_date, total_trees, reason_short, reason_detailed,
 				geom, gush, helka, regional_office, person_request_name, last_date_to_objection } = response.data;
 
-			const url = (place == 'ירושלים') ? JERUSALEM_OFFICER_WEBSITE : NATIONAL_OFFICER_WEBSITE;
+			const url = (place === 'ירושלים') ? JERUSALEM_OFFICER_WEBSITE : NATIONAL_OFFICER_WEBSITE;
 
 			dispatch(setTreeData({
 				treeData: {
