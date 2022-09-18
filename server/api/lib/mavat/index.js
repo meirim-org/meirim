@@ -322,9 +322,9 @@ const getPlanStatusList = cheerioPage => {
 
 const getPlanStatusListNewMavat = statusList => {
 	return map(statusList, (statusDetails => ({
-		title: statusDetails.LIS_DESC,
+		status: statusDetails.LIS_DESC,
 		date: formatDate(statusDetails.EIS_DATE),
-		statusDescription: statusDetails.DETAILS
+		status_description: statusDetails.DETAILS
 	})));
 };
 
