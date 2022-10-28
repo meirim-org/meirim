@@ -400,6 +400,9 @@ const getByPlan = async (plan, fetchPlanInstructions = true) => {
 				chartFive: pageInstructions ? pageInstructions.chartFive : undefined,
 				chartSix: pageInstructions ? pageInstructions.chartSix : undefined
 			});
+		}).catch(e => {
+			Log.error(`error getByPlan: ${e.message}`, e.stack);
+			return Promise.resolve();
 		});
 };
 

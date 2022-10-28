@@ -228,7 +228,7 @@ const sendDigestPlanningAlerts = async () => {
 		
 		}
 		catch (e) {
-			console.log(e);
+			Log.error("error save alert", e);
 		}
 		Log.debug(`User ${email} alert ${alert.id} with ${alertPlans[0].length} plans`);
 	}
@@ -366,12 +366,12 @@ const fetchIplan = iPlan =>
 					) {
 						plan.set('sent', oldPlan ? 1 : 0);
 					}
-					return plan;
-				})
-				.then(plan => {
 					if (plan !== undefined) {
 						plan.save();
 					}
+				}).catch(e => {
+					console.log('iplan exception\n' + e.message + '\n' + e.stack);
+					return Promise.resolve();
 				});
 		})
 		.catch(e => {
@@ -379,20 +379,18 @@ const fetchIplan = iPlan =>
 			return Bluebird.resolve();
 		});
 
-const buildPlan = (iPlan, oldPlan) => {
-	return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
-		MavatAPI.getByPlan(plan)
-			.then(async mavatData => {
-				const retPlan = await Plan.setMavatData(plan, mavatData);
-				await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
-				return retPlan;
-			})
-			.catch(e => {
-				// mavat might crash gracefully
-				Log.error('Mavat error', e.message, e.stack);
-				return plan;
-			})
-	);
+const buildPlan = async (iPlan, oldPlan) => {
+	try {
+		const plan = await Plan.buildFromIPlan(iPlan, oldPlan);
+		const mavatData = await	MavatAPI.getByPlan(plan);
+		const retPlan = await Plan.setMavatData(plan, mavatData);
+		await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
+		return retPlan;
+	} catch (e) {
+		// mavat might crash gracefully
+		Log.error('Mavat error', e.message, e.stack);
+		return plan;
+	}
 };
 
 async function fetchTreePermit(crawlMethod){
