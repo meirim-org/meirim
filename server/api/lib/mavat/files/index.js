@@ -12,7 +12,7 @@ const isSHPZip = ({ name, fileIcon }) => {
 };
 
 const isMSG = ({ kind, fileIcon }) => {
-	return kind === 'תכתובת' && fileIcon.includes('file.gif');
+	return (kind === 'תכתובת' || kind.trim() === 'msg') && fileIcon.includes('file.gif');
 };
 
 const getFileType = (file) => {

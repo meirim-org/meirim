@@ -422,8 +422,8 @@ class Plan extends Model {
 					mavatData.files.forEach(async (file) => {
 						try {
 							if (!file.extension || file.extension.length === 0) {
-								file.extension = 'msg';
-								Log.info(`plan ${plan.id} set file extension to msg, link: ${file.link}`);
+								file.extension = 'txt';
+								Log.info(`plan ${plan.id} set file extension to txt, link: ${file.link}`);
 							}
 							await new File({ plan_id: plan.id, ...file }).save(null, { transacting: transaction });
 						} catch (e) {
