@@ -13,8 +13,6 @@ controller
     const iplanHeartbeatUrl = Config.get('uptimeRobot.iplanHeartbeatUrl');
     try {
       const response = await axios.get(iplanHeartbeatUrl);
-      Log.debug("iplan monitor status result: " + response.status);
-      Log.debug("iplan monitor msg result: " + response.data.msg);
     } catch (error) {
       Log.error("iplan monitor error msg: " + error.response.body);
     }
