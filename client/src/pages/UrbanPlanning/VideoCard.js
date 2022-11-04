@@ -51,7 +51,7 @@ const Duration = styled.div`
 
 export default function VideoCard({ videoData }) {
     const dispatch = useDispatch();
-    const { title, subTitle, paragraph, duration } = videoData;
+    const { title, subTitle, paragraph, duration, youtubeId } = videoData;
 
     function parseDuration(duration) {
         if (duration && moment.duration(duration).isValid()) {
@@ -63,7 +63,7 @@ export default function VideoCard({ videoData }) {
 
     return (
         <Grid item md={4}>
-            <VideoCardMedia onClick={() => dispatch(openModal({ modalType: 'video', modalProps: {wrapperClass: 'videoModal'} }))}>
+            <VideoCardMedia onClick={() => dispatch(openModal({ modalType: 'video', modalProps: {wrapperClass: 'videoModal', youtubeId} }))}>
                 <Duration>{parseDuration(duration)}</Duration>
             </VideoCardMedia>
             <VideoCardContent>
