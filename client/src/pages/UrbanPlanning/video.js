@@ -65,7 +65,7 @@ export default function video({ youtubeId }) {
                 opts={{ width: '100%' }}
                 videoId={youtubeId}
             />
-            <VideoBanner>
+            {/* <VideoBanner>
                 <VideoBannerSection className="right">
                     <h3>רוצים להיות מומחים?</h3>
                     <span>הכנו עבורכם קורס מעמיק שיתן לכם</span>
@@ -78,7 +78,7 @@ export default function video({ youtubeId }) {
                     </InCollaboration>
                     <CourseButton>לקורס המלא</CourseButton>
                 </VideoBannerSection>
-            </VideoBanner>
+            </VideoBanner> */}
         </VideoWrapper>
     );
 }
