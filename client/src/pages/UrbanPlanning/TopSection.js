@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'locale/he_IL';
-import { device } from 'style';
 
 const Section = styled.section`
     display: flex;
