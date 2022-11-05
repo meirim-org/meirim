@@ -36,9 +36,10 @@ const ModalContentWRapper = styled.div`
 	background-color: #ffffff;
 	min-width: 35%;
 	border-radius: 15px 15px;
-	max-width: 93vw;
+	width: 100%;
     @media ${device.tablet} {
       max-width: initial;
+	  width: unset;
     }
 
 	&.videoModal {

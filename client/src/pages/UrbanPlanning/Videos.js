@@ -2,16 +2,23 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import VideoCard from './VideoCard';
+import { device } from 'style';
 import videos from '../../shared/videos/videos.json';
 
 const Container = styled.div`
-    padding: 60px;
-    margin-left: 80px;
-    margin-right: 80px;
+    padding: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
     box-shadow: 0px -2px 20px rgba(0, 0, 0, 0.08);
     border-radius: 12px;
-    max-width: calc(100% - 160px);
+    max-width: calc(100% - 40px);
     background: #fff;
+    @media ${device.tablet} {
+      margin-left: 80px;
+      margin-right: 80px;
+      max-width: calc(100% - 160px);
+      padding: 60px;
+    }
 `;
 
 export default function Videos(props) {
