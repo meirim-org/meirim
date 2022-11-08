@@ -77,7 +77,6 @@ const gushHelkaToPolygon = async (gush, helka) => {
 			})
 		)).filter(Boolean)
 
-		// 
 		if (features.length === 0) {
 			return null
 		}
