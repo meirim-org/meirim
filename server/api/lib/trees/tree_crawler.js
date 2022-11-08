@@ -65,7 +65,7 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 		return savedTreePermits;
 	}
 	catch (err) {
-		Log.error(err.message || err);
+		Log.error("failed to ingest a message", err.message || err);
 		return [];
 	}
 }
