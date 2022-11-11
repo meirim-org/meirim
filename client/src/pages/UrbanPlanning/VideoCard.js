@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
-import { CircledPlayIcon } from '../../assets/icons';
+import { CircledPlayIcon, CircledPlayIconDark  } from '../../assets/icons';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
 import moment from 'moment';
@@ -21,6 +21,11 @@ const VideoCardMedia = styled.div`
     &:after {
         position: absolute;
         content: url(${CircledPlayIcon});
+    }
+    &:hover:after {
+        position: absolute;
+        content: unset;
+        content: url(${CircledPlayIconDark});
     }
 `;
 
