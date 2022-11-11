@@ -14,6 +14,8 @@ const VideoCardMedia = styled.div`
     width: 100%;
     height: 292px;
     background: #ecf2df;
+    background-image: url(${({thumbnail})=> thumbnail});
+    background-size: cover;
     margin-bottom: 24px;
     cursor: pointer;
     &:after {
@@ -49,7 +51,7 @@ const Duration = styled.div`
     color: #ffffff;
 `;
 
-export default function VideoCard({ videoData }) {
+export default function VideoCard({ videoData, thumbnail }) {
     const dispatch = useDispatch();
     const { title, subTitle, paragraph, duration, youtubeId } = videoData;
 
@@ -63,7 +65,7 @@ export default function VideoCard({ videoData }) {
 
     return (
         <Grid item md={4}>
-            <VideoCardMedia onClick={() => dispatch(openModal({ modalType: 'video', modalProps: {wrapperClass: 'videoModal', youtubeId} }))}>
+            <VideoCardMedia thumbnail={thumbnail} onClick={() => dispatch(openModal({ modalType: 'video', modalProps: {wrapperClass: 'videoModal', youtubeId} }))}>
                 <Duration>{parseDuration(duration)}</Duration>
             </VideoCardMedia>
             <VideoCardContent>

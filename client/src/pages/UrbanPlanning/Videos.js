@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import VideoCard from './VideoCard';
 import { device } from 'style';
 import videos from '../../shared/videos/videos.json';
+import * as VideoThumbnails from '../../assets/videos';
 
 const Container = styled.div`
     padding: 30px;
@@ -26,7 +27,7 @@ export default function Videos(props) {
         <Container className="container">
             <Grid container spacing={5}>
                 {videos.map((video, i) => (
-                    <VideoCard key={i} videoData={video}/>
+                    <VideoCard key={i} videoData={video} thumbnail={VideoThumbnails[video.youtubeId]}/>
                 ))}
             </Grid>
         </Container>
