@@ -108,7 +108,7 @@ function parsePermitDates(treeDatesStr) {
 }
 
 function sum(treeArray) {
-	const amount = treeArray.map( (item) => {return parseInt(Object.values(item)[0]) || 0; });
+	const amount = treeArray.map( (item) => { return parseInt((item)) || 0; });
 	return amount.reduce((total, current) => {
 		return total + current;
 	});
