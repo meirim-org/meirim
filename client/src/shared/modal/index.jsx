@@ -46,11 +46,25 @@ const ModalContentWRapper = styled.div`
 		background-color: unset;
 		position: relative;
 
-		.iconWrapper > * {
-			color: #918899;
-			position: absolute;
-			right: -25px;
-			top: -25px;
+		@media ${device.mobile} {
+
+			.iconWrapper > * {
+				color: #918899;
+				right: -25px;
+				top: -25px;
+			}
+		}
+
+		@media ${device.tablet} {
+			max-width: initial;
+			width: unset;
+
+			.iconWrapper > * {
+				color: #918899;
+				position: absolute;
+				right: -25px;
+				top: -25px;
+			}
 		}
 	}
 `;

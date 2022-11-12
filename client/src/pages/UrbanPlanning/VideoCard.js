@@ -51,6 +51,8 @@ const Duration = styled.div`
     position: absolute;
     right: 0;
     bottom: 12px;
+    font-size: 18px;
+    font-weight: semibold;
     padding: 8px 12px;
     background: #918899;
     color: #ffffff;
