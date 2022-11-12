@@ -93,6 +93,14 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
                                     </Box>
                                     <Box px={2}>
                                         <SC.StyledLink
+                                            id="nav-bar-content"
+                                            to="/content/"
+                                        >
+                                            {t.urbanPlanning}
+                                        </SC.StyledLink>
+                                    </Box>
+                                    <Box px={2}>
+                                        <SC.StyledLink
                                             id="nav-bar-about"
                                             to={{
                                                 pathname: '/support-us/',
@@ -108,14 +116,6 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
                                             }
                                         >
                                             {t.whoWeAre}
-                                        </SC.StyledLink>
-                                    </Box>
-                                    <Box px={2}>
-                                        <SC.StyledLink
-                                            id="nav-bar-urban-planning"
-                                            to="/urban-planning/"
-                                        >
-                                            {t.urbanPlanning}
                                         </SC.StyledLink>
                                     </Box>
                                     <Box px={2}>

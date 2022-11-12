@@ -104,6 +104,18 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										<SC.StyledList>
 											<SC.StyledListItem
 												component={SC.StyledLink}
+												to="/content/"
+												isActive={(match, location) =>
+													['/content'].indexOf(location.pathname) > -1
+												}
+												button
+											>
+												<ListItemText primary={t.urbanPlanning}/>
+											</SC.StyledListItem>
+										</SC.StyledList>
+										<SC.StyledList>
+											<SC.StyledListItem
+												component={SC.StyledLink}
 												to="/support-us/"
 												isActive={(match, location) =>
 													['/support-us', '/support-us/'].indexOf(location.pathname) > -1 &&

@@ -53,7 +53,7 @@ const HEBREW_TRANSLATION = {
     saved: 'שמור',
     addNewComment: 'הוספת חוות דעת',
     supportUs: 'תמכו בנו',
-    urbanPlanning: 'תכנון עירוני',
+    urbanPlanning: 'סרטונים',
     review: 'ביקורת',
     iLike: 'אהבתי',
     addAResponse: 'הוספת תגובה',
@@ -380,6 +380,7 @@ const ARABIC_TRANSLATION = {
     fundingSuccessText:
         'יאללה, כנסו לעמוד התוכניות שלנו, גלו מה בונים לכם ליד הבית, שתפו עם החברים והחברות באזור והשפיעו על עתיד השכונה והעיר שלכם!',
     whoAmI: 'من انا؟',
+    urbanPlanning: 'סרטונים',
     fundingSuccessPlans: 'לעמוד התוכניות',
     fundingSuccessHome: 'لصفحة الرئيسية',
     fundingSuccessClose: 'اغلاق',

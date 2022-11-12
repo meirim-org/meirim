@@ -67,7 +67,7 @@ const App = (props) => {
 						<Route path="/privacy-policy" render={props => <Scenes.PrivacyPolicy {...props} />} />
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />
 						<Route path="/email-sent" render={props => <EmailSent {...props} />} />
-						<Route path="/urban-planning" render={props => <UrbanPlanning {...props}/>} />
+						<Route path="/content" render={props => <UrbanPlanning {...props}/>} />
 						<Route component={Scenes.NotFound} />
 					</Switch>
 				</>
