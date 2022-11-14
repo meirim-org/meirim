@@ -31,11 +31,12 @@ const init = () =>
 				if (!browser) {
 					Log.debug('Launching chrome');
 					browser = await puppeteer.launch({
-						headless: true,
-						args: ['--no-sandbox', '--disable-setuid-sandbox']
+						headless: true,		
+						timeout: 1000000,		
+						args: ['--no-sandbox', '--disable-setuid-sandbox', '--proxy-server=83.229.73.175:80']
 					});
 					Log.debug('Success launching chrome');
-				}
+				}//, '--proxy-server=83.229.73.175:80'
 
 				resolve(browser);
 			} catch (err) {
@@ -55,9 +56,9 @@ const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 	const downloadSuccess = await downloadChallengedFile(downloadUrl, file, {}, https);
 
 	if (!downloadSuccess) {
-		Log.info(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
+		Log.info(`had a problem downloading plan PDF file for ${entityDocId}, ${entityDocNumber} at ${downloadUrl}`);
 	}
-	Log.info(`success downloading file for ${entityDocId}, ${entityDocNumber}`);
+	Log.info(`success downloading plan PDF file for ${entityDocId}, ${entityDocNumber}`);
 	return downloadSuccess;
 };
 const isInstructionsFile = ({ DOC_NAME, FILE_TYPE }) =>  (DOC_NAME.indexOf('הוראות התכנית') !== -1 && FILE_TYPE.indexOf('pdf')!== -1);
@@ -124,11 +125,18 @@ const getPlanFilesNewMavat = (data) => {
 	return files.map(formatFile);
 };
 
+async function  getNewPage() {
+	const page = await browser.newPage();
+	page.setDefaultNavigationTimeout(1000000);
+	page.setDefaultTimeout(1000000);
+	return page;
+}
+
 const fetch = (planUrl, fetchPlanInstruction = true) =>
 	new Promise((resolve, reject) => {
 		(async () => {
-			const page = await browser.newPage();
-
+			const page = await getNewPage();
+		
 			try {
 				Log.debug('Loading plan page', planUrl);
 				await clearOldPlanFiles(PLAN_DOWNLOAD_PATH);
@@ -182,7 +190,7 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 const fetchPlanData = (planUrl) =>
 	new Promise((resolve, reject) => {
 		(async () => {
-			const page = await browser.newPage();
+			const page = await getNewPage();
 
 			try {
 				Log.debug('Loading plan page', planUrl);
@@ -216,7 +224,8 @@ const fetchPlanData = (planUrl) =>
 const search = planNumber =>
 	new Promise((resolve, reject) => {
 		(async () => {
-			const page = await browser.newPage();
+			const page = await getNewPage();
+
 			try {
 				Log.debug('Loading search page', planNumber);
 
@@ -369,7 +378,7 @@ const getByPlan = async (plan, fetchPlanInstructions = true) => {
 		.then(async (response) => {
 			const { data } = response;
 			let pageInstructions;
-			if(false){
+			if(fetchPlanInstructions){
 				pageInstructions = await getPlanInstructionsNewMavat([...get(data, 'rsPlanDocs', []), ...get(data, 'rsPlanDocsAdd', [])] );
 			}
 			const planFiles = getPlanFilesNewMavat(data);

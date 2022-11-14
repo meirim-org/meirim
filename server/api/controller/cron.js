@@ -349,12 +349,12 @@ const fetchIplan = iPlan =>
 		.then(oldPlan => {
 			// check if there was an update
 
-			if (
+			/*if (
 				oldPlan &&
 				oldPlan.get('data').LAST_UPDATE === iPlan.properties.LAST_UPDATE
 			) {
 				return Bluebird.resolve(oldPlan);
-			}
+			}*/
 
 			return buildPlan(iPlan, oldPlan)
 				// check if there is an update in the status of the plan and mark it for email update
