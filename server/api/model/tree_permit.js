@@ -4,7 +4,6 @@ const Log = require('../lib/log');
 const { Knex } = require('../service/database');
 
 class TreePermit extends Model {
-
 	get rules() {
 		return {
 
@@ -40,6 +39,12 @@ class TreePermit extends Model {
 		};
 	}
 
+	get geometry() {
+		return [
+			tpc.GEOM
+		]
+	}
+	
 	get tableName () {
 		return `${tpc.TREE_PERMIT_TABLE}`;
 	}
@@ -52,11 +57,7 @@ class TreePermit extends Model {
 		if (attributes[tpc.TREES_PER_PERMIT]) {
 			attributes[tpc.TREES_PER_PERMIT] = JSON.stringify(attributes[tpc.TREES_PER_PERMIT]);
 		}
-		if (attributes[tpc.GEOM]) {
-			attributes[tpc.GEOM] = Knex.raw('ST_GeomFromGeoJSON(?)', [
-				JSON.stringify(attributes[tpc.GEOM])
-			]);
-		}
+	
 		return super.format(attributes);
 	}
 
@@ -66,14 +67,11 @@ class TreePermit extends Model {
 			if (attributes[tpc.TREES_PER_PERMIT]) {
 				attributes[tpc.TREES_PER_PERMIT] = JSON.parse(attributes[tpc.TREES_PER_PERMIT]);
 			}
-			if (attributes[tpc.GEOM]) {
-				attributes[tpc.GEOM] = { type: 'Polygon',
-					coordinates: [attributes[tpc.GEOM][0].map(r => [r.x, r.y])]
-				};
-			}
+			
 		} catch (e) {
-			Log.error('Json parse error', attributes[tpc.TREES_PER_PERMIT]);
+			Log.error('Json parse error', e);
 		}
+
 		return super.parse(attributes);
 	}
 
