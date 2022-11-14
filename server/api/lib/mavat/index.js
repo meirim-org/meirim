@@ -13,6 +13,7 @@ const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstru
 const { downloadChallengedFile } = require('../challanged-file');
 const PlanStatusChange = require('../../model/plan_status_change');
 const { formatDate } = require('../date');
+const proxyBee = require('../proxy');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
 const newMavatURL = 'https://mavat.iplan.gov.il/rest/api/SV4/1';
@@ -22,6 +23,8 @@ let browser = false;
 const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const PLAN_DOWNLOAD_PATH = path.join(__dirname, './tmp');
+
+var counterFiles = 0;
 
 // TODO: remove this function
 const init = () =>
@@ -33,10 +36,10 @@ const init = () =>
 					browser = await puppeteer.launch({
 						headless: true,		
 						timeout: 1000000,		
-						args: ['--no-sandbox', '--disable-setuid-sandbox', '--proxy-server=83.229.73.175:80']
+						args: ['--no-sandbox', '--disable-setuid-sandbox']
 					});
 					Log.debug('Success launching chrome');
-				}//, '--proxy-server=83.229.73.175:80'
+				}
 
 				resolve(browser);
 			} catch (err) {
@@ -53,7 +56,15 @@ const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 
 	Log.info(`Trying download file for eid=${entityDocId}&enum=${entityDocNumber}`);
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
-	const downloadSuccess = await downloadChallengedFile(downloadUrl, file, {}, https);
+	var downloadSuccess = false;
+
+	if (counterFiles < 3) {
+		downloadSuccess = await proxyBee.getFile(downloadUrl, file);
+	} else {
+		downloadSuccess = await downloadChallengedFile(downloadUrl, file, {}, https);
+	}
+
+	counterFiles += 1;
 
 	if (!downloadSuccess) {
 		Log.info(`had a problem downloading plan PDF file for ${entityDocId}, ${entityDocNumber} at ${downloadUrl}`);
