@@ -5,11 +5,14 @@ import { Button, Dropdown, Link, TextArea, TextInput } from '../../shared';
 import { usePersonTypes } from './constants';
 import * as SC from './style';
 
-const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
+const SecondStepSignup = ({ handleSubmit, values, setValues, typeError }) => {
 	const personTypes = usePersonTypes();
+	const dropdownOptions = [{
+		value: "",
+		text: "-"
+	}, ...personTypes]
 	const { address, type, aboutme } = values;
 	const { t } = useTranslation();
-
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
@@ -31,8 +34,11 @@ const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
 						id="register-type-input"
 						value={type}
 						onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) }
-						options={personTypes}
-						label={t.whoAmI} />
+						options={dropdownOptions}
+						label={t.whoAmI}
+						helperText={typeError ?? undefined}
+						error={typeError !== null}
+					/>
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<TextArea

@@ -12,13 +12,13 @@ import { useDispatch } from 'react-redux';
 
 const SignupForms = () => {
 	const dispatch = useDispatch();
-	const personTypes = usePersonTypes();
 	const [firstStepSuccess, setFirstStepSucess] = useState(false);
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
-	const [secondStepValues, setSecondStepValues] = useState({ type: personTypes[0].value, aboutme: '', address: '' });
+	const [secondStepValues, setSecondStepValues] = useState({ type: '', aboutme: '', address: '' });
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false });
 	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false });
+	const [typeError, setTypeError] = useState(null)
 	const [formErrors, setFormErrors] = useState({
 		emailError:{ isValid: true, message:'' },
 		nameError:{ isValid: true, message:'' },
@@ -40,7 +40,7 @@ const SignupForms = () => {
 
 	useEffect(() => {
 		const { email , name, password } = firstStepValues;
-		const { isValidEmail, isValidName, isValidPassword } = 
+		const { isValidEmail, isValidName, isValidPassword } =
 			formValidation({ name ,email, password, onFocusInput, dirtyInputs });
 		const { emailError, nameError, passwordError } =
 			getFormErrors({
@@ -52,6 +52,10 @@ const SignupForms = () => {
 
 	const handleSecondFormSubmit = async () => {
 		const { aboutme, type, address } = secondStepValues;
+		if (type === "") {
+			setTypeError("אנא הוסיפו סוג משתמש")
+			return
+		}
 		const { name, password, email } = firstStepValues;
 		const requestData = {
 			name,
@@ -77,6 +81,11 @@ const SignupForms = () => {
 				draggable: true,
 			});
 		}
+	};
+
+	const onSecondStepValuesChanged = (values) => {
+		setSecondStepValues(values);
+		setTypeError(values.type === "" ? "אנא הוסיפו סוג משתמש" : null);
 	};
 
 	const handleFirstFormSubmit = async () => {
@@ -115,9 +124,9 @@ const SignupForms = () => {
 		<Redirect to={{ pathname: EMAIL_SENT_PAGE, state: { email: firstStepValues.email } }} /> : firstStepSuccess
 			? (
 				<SecondStepSignup
-					errors={formErrors}
+					typeError={typeError}
 					values={secondStepValues}
-					setValues={setSecondStepValues}
+					setValues={onSecondStepValuesChanged}
 					handleSubmit={handleSecondFormSubmit}
 				/>
 			)
