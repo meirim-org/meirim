@@ -8,7 +8,13 @@ export const firstStepValidation = ({ name, email, password }) => {
 	return { isValidEmail, isValidName, isValidPassword }
 }
 
-export const formValidation = ({ name, email, password, dirtyInputs, onFocusInput }) => {
+export const secondStepValidation = ({ type }) => {
+	const isTypeValid = type!== undefined && type !==''
+
+	return { isTypeValid }
+};
+
+export const formValidation = ({ name, email, password, type, dirtyInputs, onFocusInput }, isSecondStep) => {
 	const isValidEmail = 
 		onFocusInput.email  || validateEmail(email)? true : !dirtyInputs.email
 	const isValidName = 
@@ -16,7 +22,12 @@ export const formValidation = ({ name, email, password, dirtyInputs, onFocusInpu
 	const isValidPassword = 
 		onFocusInput.password  || password.length >= 6 ? true : !dirtyInputs.password
 
-	return { isValidEmail, isValidName, isValidPassword }
+	if(!isSecondStep) return { isValidEmail, isValidName, isValidPassword }
+
+	const isValidType = 
+		onFocusInput.type  || type!== '' ? true : !dirtyInputs.type
+
+	return  { isValidType }
 }
 
 const inValidEmailMessage = 'מייל לא תקין'

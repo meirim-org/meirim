@@ -6,8 +6,7 @@ import { closeModal } from 'redux/modal/slice';
 import { authenticateEmail, registerUser  } from './controller';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
-import { firstStepValidation, formValidation, getFormErrors } from './validations';
-import { usePersonTypes } from './constants';
+import { firstStepValidation, secondStepValidation, formValidation, getFormErrors } from './validations';
 import { useDispatch } from 'react-redux';
 
 const SignupForms = () => {
@@ -17,7 +16,7 @@ const SignupForms = () => {
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
 	const [secondStepValues, setSecondStepValues] = useState({ type: '', aboutme: '', address: '' });
 	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false });
-	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false });
+	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false, type: false });
 	const [typeError, setTypeError] = useState(null)
 	const [formErrors, setFormErrors] = useState({
 		emailError:{ isValid: true, message:'' },
@@ -41,7 +40,7 @@ const SignupForms = () => {
 	useEffect(() => {
 		const { email , name, password } = firstStepValues;
 		const { isValidEmail, isValidName, isValidPassword } =
-			formValidation({ name ,email, password, onFocusInput, dirtyInputs });
+			formValidation({ name ,email, password, onFocusInput, dirtyInputs }, firstStepSuccess);
 		const { emailError, nameError, passwordError } =
 			getFormErrors({
 				validations: { isValidEmail, isValidName, isValidPassword },
@@ -128,6 +127,8 @@ const SignupForms = () => {
 					values={secondStepValues}
 					setValues={onSecondStepValuesChanged}
 					handleSubmit={handleSecondFormSubmit}
+					inputFocus={onInputFocus}
+					inputBlur={onInputBlur}
 				/>
 			)
 			: (
