@@ -89,7 +89,9 @@ class SignController extends Controller {
 				if (!person) {
 					throw new Exception.NotAllowed('Password mismatch');
 				}
-
+				if (person.get('status') === '0') {
+					throw new Exception.Unauthorized('Account not activated');
+				}
 				Log.debug('user was found:', person.get('id'));
 				return person;
 			})
