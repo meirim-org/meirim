@@ -1,5 +1,6 @@
 import { withTheme } from '@material-ui/core/styles';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import FacebookIcon from '@material-ui/icons/Facebook';
 import { useTheme } from '@material-ui/styles';
 import { useTranslation } from 'locale/he_IL';
 import React from 'react';
@@ -70,6 +71,28 @@ const ShareButtonWrapper = withTheme(styled.div`
 
 `);
 
+const FacebookShareButtonWrapper = withTheme(styled.div`
+    margin-bottom: 1rem;
+    .MuiButton-root {
+        width: 100%;
+        border: transparent!important;
+        background-color: ${props => props.theme.palette.green['facebook']} !important;
+        &:hover, &:focus {
+            background-color: ${props => props.theme.palette.green['facebook']} !important;
+            outline: 0 !important;
+        }
+        min-height: 3rem;
+        @media ${device.tablet} {
+            min-height: 3.7em;
+        }
+    }
+
+    .MuiButton-label {
+        text-transform: capitalize;
+    }
+
+`);
+
 const ShareTextWrapper = styled.div`
     margin-bottom: 1rem;
     text-align: center;
@@ -109,6 +132,7 @@ const ShareTreeView = () => {
 	const theme = useTheme();
 	const url = encodeURI(window.location.toString());
 	const whatsappURL = `https://wa.me/?text=רשיון%20כריתת%20עצים%20שאולי%20יעניין%20אותך%3A%0A${url}`;
+    const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
     const { t } = useTranslation();
 
 	return (
@@ -127,6 +151,16 @@ const ShareTreeView = () => {
 					 textcolor={theme.palette.white}
 					 iconBefore={<WhatsAppIcon/>} />
 				</ShareButtonWrapper>
+                <FacebookShareButtonWrapper>
+					<Button
+					 component="a"
+					 href={facebookURL}
+					 target="_blank"
+					 text={t.facebookShare} 
+					 fontWeight="600" 
+					 textcolor={theme.palette.white}
+					 iconBefore={<FacebookIcon/>} />
+				</FacebookShareButtonWrapper>
 				<ShareTextWrapper>
 					<Text text={t.copyUrl} color={theme.palette.black}/>
 				</ShareTextWrapper>
