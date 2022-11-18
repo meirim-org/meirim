@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import VideoCard from './VideoCard';
 import { device } from 'style';
 import videos from '../../shared/videos/videos.json';
-import * as VideoThumbnails from '../../assets/videos';
+import VideoThumbnails from '../../assets/videos';
 
 const Container = styled.div`
     padding: 30px;
