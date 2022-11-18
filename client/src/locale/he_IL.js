@@ -53,7 +53,7 @@ const HEBREW_TRANSLATION = {
     saved: 'שמור',
     addNewComment: 'הוספת חוות דעת',
     supportUs: 'תמכו בנו',
-    urbanPlanning: 'סרטונים',
+    urbanPlanning: 'ידע',
     review: 'ביקורת',
     iLike: 'אהבתי',
     addAResponse: 'הוספת תגובה',
@@ -202,10 +202,10 @@ const HEBREW_TRANSLATION = {
     approved: 'מאושרות',
     showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
-    urbanPlanningTitle: 'זה המקום שלכם ללמוד על תכנון ערים',
+    urbanPlanningTitle: 'מרכז הידע',
     urbanPlanningSubtitle: (
         <span>
-            עולם התכנון מבלבל אתכם? אנחנו כאן בשבילכם. <br /> בזכות שיתוף פעולה עם עמותת מרחב, מחכה לכם כאן מגוון סרטונים <br /> שיסבירו לכם מושגים ועקרונות שעומדים בלב התכנון והבניה.
+           אנחנו מנגישים ידע ויוצרים תוכן כדי שתוכלו גם לדעת, גם להבין וגם להשפיע על המערכת שהכי משפיעה על החיים שלנו, מערכת התכנון והבניה.
         </span>
     ),
     tags: {
@@ -380,7 +380,7 @@ const ARABIC_TRANSLATION = {
     fundingSuccessText:
         'יאללה, כנסו לעמוד התוכניות שלנו, גלו מה בונים לכם ליד הבית, שתפו עם החברים והחברות באזור והשפיעו על עתיד השכונה והעיר שלכם!',
     whoAmI: 'من انا؟',
-    urbanPlanning: 'סרטונים',
+    urbanPlanning: 'ידע',
     fundingSuccessPlans: 'לעמוד התוכניות',
     fundingSuccessHome: 'لصفحة الرئيسية',
     fundingSuccessClose: 'اغلاق',
@@ -398,6 +398,12 @@ const ARABIC_TRANSLATION = {
     accountActivationLoading: 'אנחנו מפעילים את החשבון שלך...',
     accountActivationSuccessPrefix: 'אנו ממליצים לכם לגשת לעמוד ',
     accountActivationSuccessAlerts: 'ההתראות שלי',
+    urbanPlanningTitle: 'מרכז הידע',
+    urbanPlanningSubtitle: (
+        <span>
+           אנחנו מנגישים ידע ויוצרים תוכן כדי שתוכלו גם לדעת, גם להבין וגם להשפיע על המערכת שהכי משפיעה על החיים שלנו, מערכת התכנון והבניה. <br />
+        </span>
+    ),
     accountActivationSuccessSuffix:
         ', להגדיר תחומי עניין וכתובות, ולהישאר מעודכנים על מה בונים לכם ליד הבית',
     homepageMainTitle: 'معيريم | معلومات تخطيطية ونشاط بلدي',
