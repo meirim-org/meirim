@@ -16,6 +16,9 @@ const HEBREW_TRANSLATION = {
 	treePermits: 'עצים',
 	vocabulary: 'מילון',
 	whoWeAre: 'מי אנחנו',
+    urbanPlanning: 'ידע',
+    urbanPlanningTitle:'מרכז הידע',
+    urbanPlanningSubtitle: 'אנחנו מנגישים ידע ויוצרים תוכן כדי שתוכלו גם לדעת, גם להבין וגם להשפיע על המערכת שהכי משפיעה על החיים שלנו, מערכת התכנון והבניה.',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
 	newAlert: '🏠 תוכניות בניה',
 	newAlertTree: '🌳 רשיונות כריתה של עצים', 
@@ -401,6 +404,9 @@ const ARABIC_TRANSLATION =  {
 	showPlans: 'הצג תוכניות:',
 	inProgress: 'בתהליך',
 	approved: 'מאושרות',
+    urbanPlanning: 'ידע',
+    urbanPlanningTitle:'מרכז הידע',
+    urbanPlanningSubtitle: 'אנחנו מנגישים ידע ויוצרים תוכן כדי שתוכלו גם לדעת, גם להבין וגם להשפיע על המערכת שהכי משפיעה על החיים שלנו, מערכת התכנון והבניה.',
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
 	tags: {
@@ -422,63 +428,65 @@ const ARABIC_TRANSLATION =  {
 };
 
 export const LANGUAGES = {
-	'AR': ARABIC_TRANSLATION,
-	'HE': HEBREW_TRANSLATION,
+    AR: ARABIC_TRANSLATION,
+    HE: HEBREW_TRANSLATION,
 };
 
-export const localeStore = createStore(LOCALE_STORE, { 
-	selectedLanguage: defaultLanguage, 
-	translate: LANGUAGES[defaultLanguage]
+export const localeStore = createStore(LOCALE_STORE, {
+    selectedLanguage: defaultLanguage,
+    translate: LANGUAGES[defaultLanguage],
 });
 
 export const useTranslation = () => {
-	const [localeState, setLocalState] = useStore(LOCALE_STORE);
-	const changeLanguage = (newLanguage) => {
-		setLocalState({ selectedLanguage: newLanguage, translate: LANGUAGES[newLanguage] });
-	};
+    const [localeState, setLocalState] = useStore(LOCALE_STORE);
+    const changeLanguage = (newLanguage) => {
+        setLocalState({
+            selectedLanguage: newLanguage,
+            translate: LANGUAGES[newLanguage],
+        });
+    };
 
-	return {
-		t: localeState.translate,
-		selectedLanguage: localeState.selectedLanguage,
-		changeLanguage,
-	};
+    return {
+        t: localeState.translate,
+        selectedLanguage: localeState.selectedLanguage,
+        changeLanguage,
+    };
 };
 
 export default {
-	alerts: 'إشعارات',
-	signin: 'تسجيل الدخول',
-	signout: 'התנתקות',
-	name: 'מעירים',
-	myPlans: 'התוכניות שלי',
-	plans: 'مخططات',
-	treePermits: 'اشجار',
-	vocabulary: 'قاموس',
-	whoWeAre: 'من نحن',
-	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
-	newAlert: 'תוכניות בניה',
-	newAlertTree: 'רשיונות כריתה של עצים', 
-	emailAddress: 'כתובת דוא"ל',
-	fullName: 'שם מלא',
-	password: 'סיסמה',
-	signup: 'تسجيل',
-	signupNow: 'הרשמו עכשיו',
-	alreadyGotAccount: 'יש לכם כבר חשבון?',
-	km: 'ק"מ',
-	emailExists: 'כתובת דוא"ל כבר רשומה',
-	error: 'שגיאה',
-	forgotPassword: 'שכחתם את הסיסמה?',
-	forgotMyPassword: 'שכחתי סיסמה',
-	loading: 'טוען',
-	seenAllPlans: 'זה הכל!',
-	callToAction: 'הצטרפו למעירים',
-	whatToRegister: 'רוצים השכמה?',
-	whyRegister: (
-		<div>
-            רוצים לדעת מה בונים לכם{' '}
-			<strong>ליד הבית?</strong>
-		</div>
-	),
-	howItWorks: `
+    alerts: 'إشعارات',
+    signin: 'تسجيل الدخول',
+    signout: 'התנתקות',
+    name: 'מעירים',
+    myPlans: 'התוכניות שלי',
+    plans: 'مخططات',
+    treePermits: 'اشجار',
+    vocabulary: 'قاموس',
+    whoWeAre: 'من نحن',
+    meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
+    newAlert: 'תוכניות בניה',
+    newAlertTree: 'רשיונות כריתה של עצים',
+    emailAddress: 'כתובת דוא"ל',
+    fullName: 'שם מלא',
+    password: 'סיסמה',
+    signup: 'تسجيل',
+    signupNow: 'הרשמו עכשיו',
+    alreadyGotAccount: 'יש לכם כבר חשבון?',
+    km: 'ק"מ',
+    emailExists: 'כתובת דוא"ל כבר רשומה',
+    error: 'שגיאה',
+    forgotPassword: 'שכחתם את הסיסמה?',
+    forgotMyPassword: 'שכחתי סיסמה',
+    loading: 'טוען',
+    seenAllPlans: 'זה הכל!',
+    callToAction: 'הצטרפו למעירים',
+    whatToRegister: 'רוצים השכמה?',
+    whyRegister: (
+        <div>
+            רוצים לדעת מה בונים לכם <strong>ליד הבית?</strong>
+        </div>
+    ),
+    howItWorks: `
          מערכת ההתראות שלנו מאגדת במקום אחד את כל התוכניות מכל
          ועדות התכנון ותשלח לכם התראה למייל לפי העדפה
         גיאוגרפית ובזמן אמת בכל פעם שסטטוס התכנית ישתנה.
@@ -557,28 +565,33 @@ export default {
 	treeAppealExplained: 
 `לפי החוק כריתה או העתקה של עץ בוגר בישראל נדרשת לאישור מפקיד היערות. ניתן להגיש ערר על ההחלטה לכרות או להעתיק עץ בוגר, תוך 14 ימים מפרסום ההחלטה.
 ערר ניתן להגיש מטעמים שונים, בין היתר, בשל פגיעה אקולוגית, ערך היסטורי, חברתי או עירוני הקשור בעץ.`,
-	shareTree: 'שיתוף רשיון כריתה',
-	estimatedLocation: '*המפה מציגה מיקום כללי של הכתובת',
-	treeAppealButton: 'למידע נוסף על הגשת ערר',
-	accountActivationTitle: 'נרשמתם בהצלחה למעירים! עתה תוכלו להתחבר באמצעות הדוא"ל והסיסמה שהגדרתם',
-	accountActivationLoading: 'אנחנו מפעילים את החשבון שלך...',
-	accountActivationSuccessPrefix: 'אנו ממליצים לכם לגשת לעמוד ',
-	accountActivationSuccessAlerts: 'ההתראות שלי',
-	accountActivationSuccessSuffix: ', להגדיר תחומי עניין וכתובות, ולהישאר מעודכנים על מה בונים לכם ליד הבית',
-	homepageMainTitle: 'מעירים: לדעת, להשתתף ולהשפיע!',
-	homepageMainSubTitleA: 'אנחנו במעירים (ע"ר) פועלים להגברת השקיפות והמעורבות המקצועית והציבורית בהליכי קבלת ההחלטות הנוגעים לתכנון המרחב בו אנחנו חיים. הרשמו למערכת שלנו כדי לקבל התראות בזמן אמת, לפי כתובת מגורים או העדפה גיאוגרפית, על ',
-	homepageMainSubTitlePlansLinkText: 'תוכניות בנייה',
-	homepageMainSubTitleB: ' חדשות וקיימות ורישיונות ',
-	homepageMainSubTitleTreesLinkText: 'לכריתת עצים',
-	treesHelperTitle: 'רשיונות כריתה של עצים - חדש באתר!',
-	treesHelperTextA: 'כדי לכרות עץ בוגר בישראל - בשטח ציבורי או פרטי - יש להוציא רישיון כריתה. מיום פרסום הרישיון יש לציבור 14 יום ',
-	treesHelperTextLink: 'להגיש ערר',
-	treesHelperTextB: '.\nהכניסו שם יישוב וצפו ברישיונות הכריתה:',
-	plansHelperText: 'שינויים במרחב שלנו, כגון בניית שכונה חדשה, הקמת מפעל או פיתוח פארק, מחייבים עריכת תוכנית.\nועדות התכנון והבנייה אמונות על פיקוח, אישור או דחיית התוכניות.\nהכניסו כתובת וגלו את התוכניות שלידכם:',
-	searchAddressOrCity: 'חפש כתובת או עיר',
-	showPlans: 'הצג תוכניות:',
-	inProgress: 'בתהליך',
-	approved: 'מאושרות',
-	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
-תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`
+    shareTree: 'שיתוף רשיון כריתה',
+    estimatedLocation: '*המפה מציגה מיקום כללי של הכתובת',
+    treeAppealButton: 'למידע נוסף על הגשת ערר',
+    accountActivationTitle:
+        'נרשמתם בהצלחה למעירים! עתה תוכלו להתחבר באמצעות הדוא"ל והסיסמה שהגדרתם',
+    accountActivationLoading: 'אנחנו מפעילים את החשבון שלך...',
+    accountActivationSuccessPrefix: 'אנו ממליצים לכם לגשת לעמוד ',
+    accountActivationSuccessAlerts: 'ההתראות שלי',
+    accountActivationSuccessSuffix:
+        ', להגדיר תחומי עניין וכתובות, ולהישאר מעודכנים על מה בונים לכם ליד הבית',
+    homepageMainTitle: 'מעירים: לדעת, להשתתף ולהשפיע!',
+    homepageMainSubTitleA:
+        'אנחנו במעירים (ע"ר) פועלים להגברת השקיפות והמעורבות המקצועית והציבורית בהליכי קבלת ההחלטות הנוגעים לתכנון המרחב בו אנחנו חיים. הרשמו למערכת שלנו כדי לקבל התראות בזמן אמת, לפי כתובת מגורים או העדפה גיאוגרפית, על ',
+    homepageMainSubTitlePlansLinkText: 'תוכניות בנייה',
+    homepageMainSubTitleB: ' חדשות וקיימות ורישיונות ',
+    homepageMainSubTitleTreesLinkText: 'לכריתת עצים',
+    treesHelperTitle: 'רשיונות כריתה של עצים - חדש באתר!',
+    treesHelperTextA:
+        'כדי לכרות עץ בוגר בישראל - בשטח ציבורי או פרטי - יש להוציא רישיון כריתה. מיום פרסום הרישיון יש לציבור 14 יום ',
+    treesHelperTextLink: 'להגיש ערר',
+    treesHelperTextB: '.\nהכניסו שם יישוב וצפו ברישיונות הכריתה:',
+    plansHelperText:
+        'שינויים במרחב שלנו, כגון בניית שכונה חדשה, הקמת מפעל או פיתוח פארק, מחייבים עריכת תוכנית.\nועדות התכנון והבנייה אמונות על פיקוח, אישור או דחיית התוכניות.\nהכניסו כתובת וגלו את התוכניות שלידכם:',
+    searchAddressOrCity: 'חפש כתובת או עיר',
+    showPlans: 'הצג תוכניות:',
+    inProgress: 'בתהליך',
+    approved: 'מאושרות',
+    showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
+תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
 };
