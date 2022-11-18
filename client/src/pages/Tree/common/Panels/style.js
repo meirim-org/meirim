@@ -40,17 +40,32 @@ export const TotalTreeWrapper = withTheme(styled.div`
 
 
 export const StatusAndTypeWrapper = styled.div`
-    display: flex;
+display: flex;
     flex-wrap: wrap;
 	margin: 0 -.5rem 1rem;
+    alignItems: 'center';	
+`;
+
+export const TypeWrapper = styled.div`
+    padding: 0 0.5rem
+`;
+
+export const GushHelkaWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+	margin: .5rem -.5rem 1rem;
     alignItems: 'center';
 `;
 
 export const StatusWrapper = styled.div`
+	padding: 0 0.5rem
+`;
+
+export const GushWrapper = styled.div`
     padding: 0 0.5rem
 `;
 
-export const TypeWrapper = styled.div`
+export const HelkaWrapper = styled.div`
     padding: 0 0.5rem
 `;
 

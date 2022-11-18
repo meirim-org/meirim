@@ -10,7 +10,7 @@ import * as SC from './style';
 export const AreaUnitPanel = ({ dataArea }) => {
 	const theme = useTheme();
 	const { t } = useTranslation();
-	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
+	if (!dataArea || !dataArea[0] || !dataArea[0].data.length || (dataArea[0].data[0].y === 0 && dataArea[1].data[0].y === 0 )) return null;
 
 	return (
 		<TabPanel>

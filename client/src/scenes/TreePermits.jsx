@@ -173,7 +173,7 @@ class TreePermits extends Component {
 													hideZoom={true}
 													disableInteractions={true}
 													countyName={tree.place}
-													title2={timeToObjectionText(tree.start_date)}
+													title2={timeToObjectionText(tree.last_date_to_objection )}
 													maxZoom={16}
 													showPlaceholder={true}
 												/>

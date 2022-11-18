@@ -16,7 +16,7 @@ describe('Challenged file download', function() {
 
 	afterEach(async function() {
 		// restore unmocked networking
-		nock.restore()
+		nock.restore();
 	});
 
 	it('should handle errors properly', async function() {
@@ -64,7 +64,7 @@ describe('Challenged file download', function() {
 			.reply(
 				200,
 				'<html><body>no challenge here</body></html>',
-				{'Content-Type': 'text/html'}
+				{ 'Content-Type': 'text/html' }
 			);
 
 		// create a temporary file for the result to be written to
@@ -97,7 +97,7 @@ describe('Challenged file download', function() {
 				opener: 'AttachmentError.aspx'
 			})
 			// reply with a fake file with pdf content-type
-			.reply(200, 'fake-file-contents', {'Content-Type': 'application/pdf'});
+			.reply(200, 'fake-file-contents', { 'Content-Type': 'application/pdf' });
 
 		// create a temporary file for the result to be written to
 		const resFile = await createTempFile(`${crypto.randomBytes(8).toString('hex')}.pdf`);
@@ -132,7 +132,7 @@ describe('Challenged file download', function() {
 			.replyWithFile(
 				200,
 				`${__dirname}/files/challenge.html`,
-				{'Content-Type': 'text/html'}
+				{ 'Content-Type': 'text/html' }
 			)
 			.get('/MavatPS/Forms/Attachment.aspx')
 			.query({
@@ -158,7 +158,7 @@ describe('Challenged file download', function() {
 			})
 			.matchHeader('Cookie', 'BotMitigationCookie_8542922468160446851="101523001608416663q2PEpM3J8h035u5gkG6n0XjGh+4="; path=/')
 			// reply with redirect to https
-			.reply(302, undefined, {'Location': 'https://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx'});
+			.reply(302, undefined, { 'Location': 'https://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx' });
 
 		const sslMavatScope = nock('https://mavat.moin.gov.il')
 			.get('/MavatPS/Forms/Attachment.aspx')
@@ -169,7 +169,7 @@ describe('Challenged file download', function() {
 			})
 			.matchHeader('Cookie', 'BotMitigationCookie_8542922468160446851="101523001608416663q2PEpM3J8h035u5gkG6n0XjGh+4="; path=/')
 			// reply with a fake file with pdf content-type
-			.reply(200, 'fake-file-contents', {'Content-Type': 'application/pdf'});
+			.reply(200, 'fake-file-contents', { 'Content-Type': 'application/pdf' });
 
 		// create a temporary file for the result to be written to
 		const resFile = await createTempFile(`${crypto.randomBytes(8).toString('hex')}.pdf`);

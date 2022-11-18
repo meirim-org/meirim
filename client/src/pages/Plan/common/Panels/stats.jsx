@@ -8,10 +8,10 @@ import { renderMultiplier, renderPercent } from 'utils';
 import { axes, series } from '../../utils';
 import * as SC from './style';
 
-export const StatsPanel = ({ dataArea, textArea, }) => {
+export const StatsPanel = ({ dataArea, textArea }) => {
 	const { t } = useTranslation();
 	const theme = useTheme();
-	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
+	if (!dataArea || !dataArea[0] || !dataArea[0].data.length || (dataArea[0].data[0].y ===0 && dataArea[1].data[0].y ===0 )) return null;
 
 	return (
 		<TabPanel>

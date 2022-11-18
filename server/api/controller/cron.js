@@ -12,7 +12,7 @@ const Email = require('../service/email');
 const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
 const { fetchStaticMap } = require('../service/staticmap');
-const { crawlTreesExcel } = require('../lib/trees/tree_crawler_excel');
+const { crawlTrees } = require('../lib/trees/tree_crawler');
 const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
@@ -28,6 +28,9 @@ const iplan = (limit = -1) =>
 			}
 
 			return Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan));
+		}).catch(e => {
+			Log.error(`Error fetching new plans ${e}`);
+			console.log(`Error fetching new plans ${e}`);
 		});
 
 const fix_geodata = () => {
@@ -48,7 +51,10 @@ const fix_geodata = () => {
 					return Bluebird.resolve();
 				});
 		})
-	);
+	).catch(err => {
+		Log.error('Failed getting iplan Blue line plans', err);
+		console.log(err);
+	});
 };
 
 const complete_mavat_data = () =>
@@ -222,7 +228,7 @@ const sendDigestPlanningAlerts = async () => {
 		
 		}
 		catch (e) {
-			console.log(e);
+			Log.error("error save alert", e);
 		}
 		Log.debug(`User ${email} alert ${alert.id} with ${alertPlans[0].length} plans`);
 	}
@@ -360,12 +366,12 @@ const fetchIplan = iPlan =>
 					) {
 						plan.set('sent', oldPlan ? 1 : 0);
 					}
-					return plan;
-				})
-				.then(plan => {
 					if (plan !== undefined) {
 						plan.save();
 					}
+				}).catch(e => {
+					console.log('iplan exception\n' + e.message + '\n' + e.stack);
+					return Promise.resolve();
 				});
 		})
 		.catch(e => {
@@ -373,52 +379,60 @@ const fetchIplan = iPlan =>
 			return Bluebird.resolve();
 		});
 
-const buildPlan = (iPlan, oldPlan) => {
-	return Plan.buildFromIPlan(iPlan, oldPlan).then(plan =>
-		MavatAPI.getByPlan(plan)
-			.then(async mavatData => {
-				const retPlan = await Plan.setMavatData(plan, mavatData);
-				await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
-				return retPlan;
-			})
-			.catch(e => {
-				// mavat might crash gracefully
-				Log.error('Mavat error', e.message, e.stack);
-				return plan;
-			})
-	);
+const buildPlan = async (iPlan, oldPlan) => {
+	try {
+		const plan = await Plan.buildFromIPlan(iPlan, oldPlan);
+		const mavatData = await	MavatAPI.getByPlan(plan);
+		const retPlan = await Plan.setMavatData(plan, mavatData);
+		await PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges);
+		return retPlan;
+	} catch (e) {
+		// mavat might crash gracefully
+		Log.error('Mavat error', e.message, e.stack);
+		return plan;
+	}
 };
 
-const fetchTreePermit = () =>{
-	return crawlTreesExcel();
-};
+async function fetchTreePermit(crawlMethod){
+	return crawlTrees(crawlMethod);
+}
 
 const fetchPlanStatus = () => {
 
+	const planStatusLimit = Config.get('planStatusChange.limit');
+	Log.info('plan limit:', planStatusLimit);
 	return Plan.query(qb => {
-		//qb.where('updated_at', '<', moment().subtract(2, 'weeks').format('YYYY-MM-DD HH:mm:ss'));
-		qb.where('id', '>', 320);
-		qb.limit(70);
+		qb.where('status', '!=', 'התכנית אושרה' ).orderBy('last_visited_status','asc');
+		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
 		.then(planCollection =>
 			Bluebird.mapSeries(planCollection.models, plan => {
-
+				
 				Log.debug(plan.get('plan_url'));
+				Log.debug('plan visited status', plan.get('last_visited_status') );
+				Log.debug('plan current status', plan.get('status') );
 
-				return MavatAPI.getPlanStatus(plan).then(planStatuses => {
+				return MavatAPI.getPlanStatus(plan).then(async (planStatuses) => {
 					try {
 						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
-						const mostRecentDate = mostRecent[0].attributes.date;
+						const now = moment().format('YYYY-MM-DD HH:mm:ss');
+						Log.debug('updating last_visited_status to:', now );
+
+						if (! mostRecent[0]) {
+							Log.debug('No status in mavat for plan', plan.get('id'));
+							plan.save({ 'last_visited_status': now });
+							return;
+						}
 						const mostRecentStatus = mostRecent[0].attributes.status;
-						// update last_status_update in plan table with latest status change date
-						plan.save({ 'last_status_update': mostRecentDate, 'status': mostRecentStatus });
+						Log.debug('updating plan status to:', mostRecentStatus);
+						plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
 						// save all plan statuses into plan_status_change table
-						PlanStatusChange.savePlanStatusChange(planStatuses);
+						await PlanStatusChange.savePlanStatusChange(planStatuses);
 					}
 					catch (err) {
-						Log.error(err);
+						Log.error('Error:', err.message);
 					}
 				});
 			}));

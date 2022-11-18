@@ -4,7 +4,7 @@
 context('Register and login', () => {
   // emails won't actually be sent since we are using ethereal as the
   // smtp service when running these tests
-  const userEmail = `kl2x5pwgrbhyps4s+${Date.now()}@ethereal.email`;
+  const userEmail = `shanelle97+${Date.now()}@ethereal.email`;
 
   beforeEach(() => {
     cy.viewport('macbook-13');
@@ -64,8 +64,10 @@ context('Register and login', () => {
       cy.get('#register-send-form-button')
         .click();
 
-      cy.get("#register-emailsent-sucess")
-        .should('be.visible');
+      cy.wait('@signup').then(xhr => {
+        cy.get("#register-emailsent-sucess")
+        .should('be.visible');  
+      });
     });
   });
 

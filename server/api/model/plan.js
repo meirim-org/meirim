@@ -27,6 +27,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
+			MP_ID: 'integer',
 			plan_display_name: 'string',
 			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
@@ -38,6 +39,7 @@ class Plan extends Model {
 			// numeric indicator of interestingness. It is update like the views field, but also eroded over time
 			erosion_views: ['required', 'number'],
 			plan_url: 'string',
+			plan_new_mavat_url: 'string',
 			status: 'string',
 			goals_from_mavat: 'string',
 			main_details_from_mavat: 'string',
@@ -370,7 +372,9 @@ class Plan extends Model {
 			geom: iPlan.geometry,
 			PLAN_CHARACTOR_NAME: '',
 			plan_url: iPlan.properties.PL_URL,
-			status: iPlan.properties.STATION_DESC
+			status: iPlan.properties.STATION_DESC,
+			MP_ID: iPlan.properties.MP_ID,
+			plan_new_mavat_url: iPlan.properties.plan_new_mavat_url
 		};
 		if (oldPlan) {
 			oldPlan.set(data);
@@ -385,112 +389,138 @@ class Plan extends Model {
 		const addPlanIdToArray = (chart) => {
 			chart.forEach(row => { row.plan_id = plan.id; });
 		};
-
-		await Bookshelf.transaction(async (transaction) => {
-			await plan.set({
-				goals_from_mavat: mavatData.goals,
-				main_details_from_mavat: mavatData.mainPlanDetails,
-				jurisdiction: mavatData.jurisdiction,
-				areaChanges: mavatData.areaChanges,
-				explanation: mavatData.planExplanation
+		
+		try {
+			await Bookshelf.transaction(async (transaction) => {
+				try{
+					await plan.set({
+						goals_from_mavat: mavatData.goals,
+						main_details_from_mavat: mavatData.mainPlanDetails,
+						jurisdiction: mavatData.jurisdiction,
+						areaChanges: mavatData.areaChanges,
+						explanation: mavatData.planExplanation
+					});
+					
+					await plan.save(null, { transacting: transaction });
+					
+					// delete all of the plan's existing files
+					const fileRows = await File.query(qb => {
+						qb.where('plan_id', plan.id);
+					}).fetchAll({ transacting: transaction }).catch(e => {
+						Log.error(`error fetch plan ${plan.id} file: ${e.message}`, e.trace);
+					});
+					
+					for (const existingFile of fileRows.models) {
+						try {
+							await existingFile.destroy({ transacting: transaction });
+						} catch (e) {
+							Log.error(`error destroy file: ${e.message}`, e.trace);
+						}
+					}
+		
+					// save all plan files scraped from mavat
+					mavatData.files.forEach(async (file) => {
+						try {
+							if (!file.extension || file.extension.length === 0) {
+								file.extension = 'txt';
+								Log.info(`plan ${plan.id} set file extension to txt, link: ${file.link}`);
+							}
+							await new File({ plan_id: plan.id, ...file }).save(null, { transacting: transaction });
+						} catch (e) {
+							Log.error(`error save plan ${plan.id} file: ${file.link}`, e.message, e.errors);
+						}
+					});
+		
+					// delete existing chart rows since we have no identifiers for the single
+					// rows and so scrape them all again each time
+					for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
+						const chartRows = await modelClass.query(qb => {
+							qb.where('plan_id', plan.id);
+						}).fetchAll({ transacting: transaction }).catch(e => {
+							Log.error(`error fetch plan ${plan.id} chart: ${e.message}`, e.trace());
+						});
+		
+						for (const chartModel of chartRows.models) {
+							await chartModel.destroy({ transacting: transaction });
+						}
+					}
+					
+					if (mavatData.chartsOneEight !== undefined) {
+						const chart181 = mavatData.chartsOneEight.chart181;
+						// add plan_id and origin
+						chart181.forEach(row => {
+							row.plan_id = plan.id;
+							row.origin = '1.8.1';
+						});
+		
+						const chart182 = mavatData.chartsOneEight.chart182;
+						chart182.forEach(row => {
+							row.plan_id = plan.id;
+							row.origin = '1.8.2';
+						});
+		
+						const chart183 = mavatData.chartsOneEight.chart183;
+						chart183.forEach(row => {
+							row.plan_id = plan.id;
+							row.origin = '1.8.3';
+						});
+		
+						const chartsOneEight = chart181.concat(chart182, chart183);
+						for (let i = 0; i < chartsOneEight.length; i++) {
+							try {
+								await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error("error save chart 18", e);
+							}
+						}
+					}
+					
+					const chartFourData = mavatData.chartFour;
+					if (chartFourData !== undefined) {
+						addPlanIdToArray(chartFourData);
+		
+						for (let i = 0; i < chartFourData.length; i++) {
+							try {
+								await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error("error save chart 4", e);
+							}
+						}
+					}
+					
+					const chartFiveData = mavatData.chartFive;
+					if (chartFiveData !== undefined) {
+						addPlanIdToArray(chartFiveData);
+		
+						for (let i = 0; i < chartFiveData.length; i++) {
+							try {
+								await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error("error save chart 5", e);
+							}
+						}
+					}
+					
+					const chartSixData = mavatData.chartSix;
+					if (chartSixData !== undefined) {
+						addPlanIdToArray(chartSixData);
+		
+						for (let i = 0; i < chartSixData.length; i++) {
+							try {
+								await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error("error save chart 6", e);
+							}
+						}
+					}
+				} catch (e) {
+					Log.error(`error setMavatData tx for plan: ${e.message}`, e.trace());
+				}
+			
 			});
-
-			await plan.save(null, { transacting: transaction });
-
-			// delete all of the plan's existing files
-			const fileRows = await File.query(qb => {
-				qb.where('plan_id', plan.id);
-			}).fetchAll({ transacting: transaction });
-			for (const existingFile of fileRows.models) {
-				await existingFile.destroy({ transacting: transaction });
-			}
-
-			// save all plan files scraped from mavat
-			mavatData.files.forEach(async (file) => {
-				await new File({ plan_id: plan.id, ...file }).save(null, { transacting: transaction });
-			});
-
-			// delete existing chart rows since we have no identifiers for the single
-			// rows and so scrape them all again each time
-			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
-				const chartRows = await modelClass.query(qb => {
-					qb.where('plan_id', plan.id);
-				}).fetchAll({ transacting: transaction });
-
-				for (const chartModel of chartRows.models) {
-					await chartModel.destroy({ transacting: transaction });
-				}
-			}
-
-			if (mavatData.chartsOneEight !== undefined) {
-				const chart181 = mavatData.chartsOneEight.chart181;
-				// add plan_id and origin
-				chart181.forEach(row => {
-					row.plan_id = plan.id;
-					row.origin = '1.8.1';
-				});
-
-				const chart182 = mavatData.chartsOneEight.chart182;
-				chart182.forEach(row => {
-					row.plan_id = plan.id;
-					row.origin = '1.8.2';
-				});
-
-				const chart183 = mavatData.chartsOneEight.chart183;
-				chart183.forEach(row => {
-					row.plan_id = plan.id;
-					row.origin = '1.8.3';
-				});
-
-				const chartsOneEight = chart181.concat(chart182, chart183);
-				for (let i = 0; i < chartsOneEight.length; i++) {
-					try {
-						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-
-			const chartFourData = mavatData.chartFour;
-			if (chartFourData !== undefined) {
-				addPlanIdToArray(chartFourData);
-
-				for (let i = 0; i < chartFourData.length; i++) {
-					try {
-						await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-
-			const chartFiveData = mavatData.chartFive;
-			if (chartFiveData !== undefined) {
-				addPlanIdToArray(chartFiveData);
-
-				for (let i = 0; i < chartFiveData.length; i++) {
-					try {
-						await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-
-			const chartSixData = mavatData.chartSix;
-			if (chartSixData !== undefined) {
-				addPlanIdToArray(chartSixData);
-
-				for (let i = 0; i < chartSixData.length; i++) {
-					try {
-						await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-		});
+	    } catch (e) {
+			Log.error(`error setMavatData for plan: ${e.message}`, e.trace());
+		}
 
 		return plan;
 	}
