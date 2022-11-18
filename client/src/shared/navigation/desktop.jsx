@@ -94,7 +94,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
                                     <Box px={2}>
                                         <SC.StyledLink
                                             id="nav-bar-content"
-                                            to="/content/"
+                                            to="/hub/"
                                         >
                                             {t.urbanPlanning}
                                         </SC.StyledLink>

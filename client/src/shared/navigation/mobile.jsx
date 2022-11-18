@@ -104,9 +104,9 @@ const MobileNavBar = ({ logoutHandler, isAuthenticated }) => {
 										<SC.StyledList>
 											<SC.StyledListItem
 												component={SC.StyledLink}
-												to="/content/"
+												to="/hub/"
 												isActive={(match, location) =>
-													['/content'].indexOf(location.pathname) > -1
+													['hub'].indexOf(location.pathname) > -1
 												}
 												button
 											>
