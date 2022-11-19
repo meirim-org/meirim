@@ -108,7 +108,7 @@ const CopyUrlArea = withTheme(styled.div`
 const ShareTreeView = () => {
 	const theme = useTheme();
 	const url = encodeURI(window.location.toString());
-	const whatsappURL = `https://wa.me/?text=רשיון%20כריתת%20עצים%20שאולי%20יעניין%20אותך%3A%0A${url}`;
+	const whatsappURL = `https://wa.me/?text=היתר%20שאולי%יעניין%20אותך%3A%0A${url}`;
     const { t } = useTranslation();
 
 	return (
