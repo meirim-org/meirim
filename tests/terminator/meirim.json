@@ -1,0 +1,35 @@
+{
+  "layout": {
+    "vertical": false,
+    "docker logs": [
+      {
+        "command": "docker-compose down && docker system prune -f && docker-compose up --build; kill -STOP \"$$\";"
+      },
+      {
+        "children": [
+          {
+            "command": "while true; do reset; docker logs -f client; sleep 2; done"
+          },
+          {
+            "command": "while true; do reset; docker logs -f server; sleep 2; done"
+          },
+          {
+            "command": "while true; do reset; docker logs -f db; sleep 2; done"
+          },
+          {
+            "command": "while true; do reset; docker exec -it server mycli mysql://root:password@db/meirim; sleep 2; done"
+          }
+        ]
+      }
+    ],
+    "shells": [
+      {
+        "children": [
+          {
+            "command": "while true; do reset; sleep 2; done"
+          }
+        ]
+      }
+    ]
+  }
+}

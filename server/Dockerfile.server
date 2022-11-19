@@ -1,0 +1,23 @@
+FROM node:19
+
+EXPOSE 3001
+
+ARG apt_deps=" \
+    jq \
+    mycli \
+    "
+RUN apt-get update \
+    && apt-get -qy install ${apt_deps} \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /code
+ADD . /code
+
+RUN rm -f package-lock.json && yarn
+
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
+COPY config/default.json config/local.json
+
+ENTRYPOINT [ "/code/entrypoint.sh" ]
