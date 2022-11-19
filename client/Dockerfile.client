@@ -1,0 +1,12 @@
+FROM node:14
+
+ENV CI=true
+
+COPY package.json package-lock.json ./
+RUN npm install
+
+COPY . .
+RUN sed -i 's|http://localhost:3001|http://server:3001|' src/setupProxy.js
+RUN npm install
+
+ENTRYPOINT [ "npm", "run", "start" ]
