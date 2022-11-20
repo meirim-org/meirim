@@ -14,8 +14,27 @@ echo "DB is ready"
 # Migrate database
 
 # Change test database host in configuration
+jq_filter=$(cat  << EOF
+    .database.connection.host = \$database_host
+    | .email.options.auth.pass = "pass"
+    | .email.options.auth.templatePass = "pass"
+    | .email.options.auth.user = "user"
+    | .email.options.host = \$smtp_host
+    | .email.options.port = \$smtp_port
+    | .email.options.secure = false
+    | .general.domain = "http://localhost:3000/"
+    | .test.database.connection.host = \$database_host
+    | .test.email.options.host = \$smtp_host
+    | .test.email.options.port = \$smtp_port
+    | .test.email.options.secure = false
+EOF
+); jq_filter=${jq_filter%a}
 tmp=$(mktemp)
-jq '.test.database.connection.host = "db" | .database.connection.host = "db"' \
+jq \
+    --arg database_host db \
+    --arg smtp_host mailhog \
+    --arg smtp_port 1025 \
+    "$jq_filter" \
     config/local.json > $tmp
 mv $tmp config/local.json
 
