@@ -1,0 +1,66 @@
+# ./.tmuxinator.yml
+
+name: meirim
+# root: ~/
+
+# Optional tmux socket
+# socket_name: foo
+
+# Note that the pre and post options have been deprecated and will be replaced by
+# project hooks.
+
+# Project hooks
+
+# Runs on project start, always
+# on_project_start: command
+
+# Run on project start, the first time
+# on_project_first_start: command
+
+# Run on project start, after the first time
+# on_project_restart: command
+
+# Run on project exit ( detaching from tmux session )
+# on_project_exit: command
+
+# Run on project stop
+# on_project_stop: command
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+# tmux_options: -f ~/.tmux.mac.conf
+tmux_options: -f .tmux.meirim.conf
+
+# Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
+# tmux_command: byobu
+
+# Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
+# startup_window: editor
+
+# Specifies (by index) which pane of the specified window will be selected on project startup. If not set, the first pane is used.
+# startup_pane: 1
+
+# Controls whether the tmux session should be attached to automatically. Defaults to true.
+# attach: false
+
+windows:
+  - meirim:
+      layout: main-vertical
+      panes:
+        - docker_compose:
+          - printf '\033]2;%s\033\\' 'Docker Compose'
+          - docker-compose down && docker system prune -f && docker-compose up --build
+        - client:
+          - printf '\033]2;%s\033\\' 'Client'
+          - while true; do reset; docker logs -f client; sleep 2; done
+        - server:
+          - printf '\033]2;%s\033\\' 'Server'
+          - while true; do reset; docker logs -f server; sleep 2; done
+        - db:
+          - printf '\033]2;%s\033\\' 'DB'
+          - while true; do reset; docker logs -f db; sleep 2; done
+        - db_shell:
+          - printf '\033]2;%s\033\\' 'DB Shell'
+          - while true; do reset; docker exec -it server mycli mysql://root:password@db/meirim; sleep 2; done

@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 
-if ! command -v terminator &> /dev/null
+if ! command -v tmuxinator &> /dev/null
 then
-    echo "Error: Terminator could not be found. Go here https://command-not-found.com/terminator"
+    echo "Error: Tmuxinator could not be found. Go here https://command-not-found.com/tmuxinator"
     exit
 fi
 
-# Launch Terminator with docker-compose command, to spawn all dockers
-terminator --config-json ./terminator/meirim.json &
+./_open_browser.sh &
 
-# Launch Meirim development portal
-until curl --output /dev/null --silent --head --fail "http://localhost"; do
-    sleep 1
-done
-xdg-open http://localhost
+# Launch Terminator with docker-compose command, to spawn all dockers
+tmuxinator
