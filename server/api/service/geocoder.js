@@ -44,10 +44,8 @@ const gushHelkaToPolygon = async (gush, helka) => {
 
 	// filter the raw string into a single numeric value 
 	// e.g - "194,194" => 194
-	const filteredGush = (gush.match(/\d+/i) || [])[0]
+	const filteredGush = (gush.match(/\d+/i) || [])[0];
 	
-	
-	console.log('filtered gush and helka', 'helkaArr', helkaArr, 'filteredGush', filteredGush)
 	try {
 
 		const features = (await Promise.all(
@@ -67,12 +65,13 @@ const gushHelkaToPolygon = async (gush, helka) => {
 					}
 					
 					if (geoJsonRes['features'].length === 0) {
+						Log.warn('geoJsonRes feature is blank:', geoJsonRes);
 						return null;
 					}
 	
 					return geoJsonRes['features'][0]
 				} catch(e) {
-					return null
+					return null;
 				}
 			})
 		)).filter(Boolean)
