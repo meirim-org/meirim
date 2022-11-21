@@ -8,6 +8,7 @@ import SharePlanView from 'pages/Plan/common/Views/sharePlan';
 import Register from 'pages/Register/';
 import EmailVerified from 'pages/Register/emailVerified';
 import ShareTreeView from 'pages/Tree/common/Views/shareTree';
+import Video from 'pages/UrbanPlanning/video';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ModalActions } from 'redux/actions';
@@ -35,10 +36,37 @@ const ModalContentWRapper = styled.div`
 	background-color: #ffffff;
 	min-width: 35%;
 	border-radius: 15px 15px;
-	max-width: 93vw;
+	width: 100%;
     @media ${device.tablet} {
       max-width: initial;
+	  width: unset;
     }
+
+	&.videoModal {
+		background-color: unset;
+		position: relative;
+
+		@media ${device.mobile} {
+
+			.iconWrapper > * {
+				color: #918899;
+				right: -25px;
+				top: -25px;
+			}
+		}
+
+		@media ${device.tablet} {
+			max-width: initial;
+			width: unset;
+
+			.iconWrapper > * {
+				color: #918899;
+				position: absolute;
+				right: -25px;
+				top: -25px;
+			}
+		}
+	}
 `;
 
 const IconWrapper = styled.div`
@@ -54,7 +82,8 @@ const modalComponents = {
 	payment: Payment,
 	termsOfPayment: TermsOfPayment,
 	thankYou: ThankYou,
-	shareTree: ShareTreeView
+	shareTree: ShareTreeView,
+	video: Video
 };
 
 const Modal = ({ id }) => {
@@ -64,8 +93,8 @@ const Modal = ({ id }) => {
 	return (
 		<ModalWrapper id={`wrapper-${id}`}>
 			<StyledModal id={id} open={open}>
-				<ModalContentWRapper>
-					<IconWrapper>
+				<ModalContentWRapper className={modalProps?.wrapperClass}>
+					<IconWrapper className='iconWrapper'>
 						<StyledIcon onClick={ModalActions().close} />
 					</IconWrapper>
 					{modalType && <ModalChildren {...modalProps}/>}

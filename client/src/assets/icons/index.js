@@ -10,6 +10,8 @@ import ResidenceTagIcon from './residence-tag-icon.svg';
 import TransportationTagIcon from './transportation-tag-icon.svg';
 import LightRailTagIcon from './light-rail-tag-icon.svg';
 import RiverTagIcon from './river-tag-icon.svg';
+import CircledPlayIcon from './circled-play-icon.svg';
+import CircledPlayIconDark from './circled-play-icon-dark.svg';
 
 export {
 	BookmarkOutlinedIcon,
@@ -23,6 +25,7 @@ export {
 	ResidenceTagIcon,
 	TransportationTagIcon,
 	LightRailTagIcon,
-	RiverTagIcon
-
+	RiverTagIcon,
+	CircledPlayIcon,
+	CircledPlayIconDark
 };
