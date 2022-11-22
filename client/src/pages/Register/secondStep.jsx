@@ -40,6 +40,7 @@ const SecondStepSignup = ({ handleSubmit, values, setValues, typeError, inputFoc
 						helperText={typeError ?? undefined}
 						error={typeError !== null}
 						onFocus={inputFocus}
+						required
 					/>
 				</SC.InputWrapper>
 				<SC.InputWrapper>

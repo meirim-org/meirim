@@ -32,11 +32,11 @@ const StyledSelect = styled(Select)`
     }
 `;
 
-const Dropdown = ({ onChange, value, id, options, label, helperText, error }) => {
+const Dropdown = ({ onChange, value, id, options, label, helperText, error, required = false }) => {
 
 	return (
 		<>
-			{label && <Label text={label} id={`${id}-label`}/>}
+			{label && <Label text={label} id={`${id}-label`} required={required} />}
 			<StyledSelect
 				variant="outlined"
 				value={value}
@@ -65,7 +65,8 @@ Dropdown.propTypes = {
 	id: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
 	helperText: PropTypes.string,
-	error: PropTypes.bool
+	error: PropTypes.bool,
+	required: PropTypes.bool
 };
 
 export default Dropdown;
