@@ -39,7 +39,7 @@ const gushHelkaToPolygon = async (gush, helka) => {
     //  - "123,123" => [123]
 	//  - "1-2" => [1,2]
 	//  - "helka 4 and 5" => [4,5]  
-	const helkaArr = [...new Set(helka.match(/\d+/gi))]
+	const helkaArr = [...new Set(helka.match(/\d+/gi))];
 
 
 	// filter the raw string into a single numeric value 
@@ -69,28 +69,28 @@ const gushHelkaToPolygon = async (gush, helka) => {
 						return null;
 					}
 	
-					return geoJsonRes['features'][0]
+					return geoJsonRes['features'][0];
 				} catch(e) {
 					return null;
 				}
 			})
-		)).filter(Boolean)
+		)).filter(Boolean);
 
 		if (features.length === 0) {
-			return null
+			return null;
 		}
 		else if (features.length === 1) {
-			return features[0] 
+			return features[0];
 		} else {
 			const geometry = features.reduce((prev, current) => {
 				if (!prev) {
-					return current
+					return current;
 				}
 
-				return turf.union(prev, current)
-			}, null)
+				return turf.union(prev, current);
+			}, null);
 		
-			return geometry
+			return geometry;
 		}
 	}
 	catch (err) {
