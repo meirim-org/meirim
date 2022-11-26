@@ -7,11 +7,14 @@ const Nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
  
 const Juice = require('juice');
+const crypto = require('crypto');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
 const { map, keys, get } = require('lodash');
- 
+const { emailBucketName: bucketName, useS3ForEmails: useS3 } = Config.get('aws');
+const { uploadToS3 } = require('./aws');
+
 class DynamicTemplateEmail {
 	 /**
 	  * Generate test SMTP service account from ethereal.email
@@ -44,6 +47,30 @@ class DynamicTemplateEmail {
 		 });
 	 }
 
+	 
+	 /**
+	  * send mail with defined transport object
+	  * @param {*} mailOptions
+	  */
+	  send (mailOptions) {
+		return this.transporter
+			.sendMail(mailOptions)
+			.then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
+	}
+
+	 async uploadToS3 (mailOptions) {
+	   if (useS3) {
+		try {
+			const s3filename = crypto.randomBytes(8).toString('hex') + '.json';
+		   	await uploadToS3(s3filename, bucketName, mailOptions);
+		   	return s3filename;
+		} catch (err) {
+			Log.error(`failed s3 upload for ${mailOptions.to}`, err)
+		}		 
+	   }
+	   return undefined;
+	}
+
 	 digestPlanAlert (recipient, emailPlanParams, emailAlertParams) {
 		 const email = {
 			 from: `"${this.config.from_name}" < ${this.config.from_email}>`, // sender address
@@ -66,20 +93,12 @@ class DynamicTemplateEmail {
 		};
 		return sgMail
 			.send(email)
+			.then(this.uploadToS3(email))
 			.then(() => {
 				console.log('Digest Email sent');
-			});
+			})
+			.catch((err) => console.log(err));
 		
-	 }
- 
-	 /**
-	  * send mail with defined transport object
-	  * @param {*} mailOptions
-	  */
-	 send (mailOptions) {
-		 return this.transporter
-			 .sendMail(mailOptions)
-			 .then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
 	 }
 }
  
