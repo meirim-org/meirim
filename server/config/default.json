@@ -122,8 +122,12 @@
 			"secure": true,
 			"auth": {
 				"user": "",
-				"pass": ""
-			}
+				"pass": "",
+				"templatePass":""
+			},
+			"templates": {
+				"digestPlans": ""
+			} 
 		}
 	},
 	"uptimeRobot": {
