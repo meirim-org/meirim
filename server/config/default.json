@@ -49,7 +49,9 @@
 	},
 	"aws": {
 		"useS3ForTreeFiles": false,
-		"treeBucketName": "treeBucketName"
+		"treeBucketName": "treeBucketName",
+		"useS3ForEmails": false,
+		"emailBucketName": "emailBucketName"
 	},
 	"trees": {
 		"rawDataDir": "/tmp/raw_trees",
