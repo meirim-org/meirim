@@ -25,10 +25,7 @@ const degreeToMeter = (lon, lat, dn, de) => {
 // Some parcels (Gushim) are malformed (usually in the Golan Heights) and should be ignored.
 const BAD_PARCELS = ['203000', '202011', '202000', '201000', '200000', '200001'];
 
-const gushHelkaToPolygon = async (gush, helka) => {		
-	gush = '30540';
-	helka = '19';
-
+const gushHelkaToPolygon = async (gush, helka) => {
 	if (!gush || !helka) {
 		return;
 	}
