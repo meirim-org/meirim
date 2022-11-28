@@ -5,8 +5,6 @@ import commentsReducer from './comments/slice';
 import planReducer from './plan/slice';
 import fundingReducer from './funding/slice';
 import treeReducer from './tree/slice';
-import keplerGlReducer from 'kepler.gl/reducers';
-
 
 const rootReducer = combineReducers({
 	modal: modalReducer,
@@ -14,8 +12,7 @@ const rootReducer = combineReducers({
 	comments: commentsReducer,
 	plan: planReducer,
 	funding: fundingReducer,
-	tree: treeReducer,
-    keplerGl: keplerGlReducer,
+	tree: treeReducer
 });
 
 export default rootReducer;
