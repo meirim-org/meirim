@@ -3,6 +3,7 @@ const turf = require('turf');
 const Config = require('../lib/config');
 const axios = require('axios');
 const Log = require('../lib/log');
+const simplify = require('simplify-geojson')
 
 const geocoder = NodeGeocoder(Config.get('geocoder'));
 
@@ -25,6 +26,9 @@ const degreeToMeter = (lon, lat, dn, de) => {
 const BAD_PARCELS = ['203000', '202011', '202000', '201000', '200000', '200001'];
 
 const gushHelkaToPolygon = async (gush, helka) => {		
+	gush = '30540';
+	helka = '19';
+
 	if (!gush || !helka) {
 		return;
 	}
@@ -80,6 +84,7 @@ const gushHelkaToPolygon = async (gush, helka) => {
 			return null;
 		}
 		else if (features.length === 1) {
+			simplify(features[0],  0.01);
 			return features[0];
 		} else {
 			const geometry = features.reduce((prev, current) => {
@@ -89,7 +94,8 @@ const gushHelkaToPolygon = async (gush, helka) => {
 
 				return turf.union(prev, current);
 			}, null);
-		
+
+			simplify(geometry,  0.01);
 			return geometry;
 		}
 	}

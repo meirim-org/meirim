@@ -75,7 +75,7 @@ async function generateGeom(db, place, street, gush, helka) {
 	Log.info(`before resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
 	const polygon = await NodeGeocoder.gushHelkaToPolygon(gush, helka);
 	Log.info(`after resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
-	if (place && street) {
+	if (!polygon && (place && street)) {
 		res = await Geocoder.getGeocode( place, street);
 		if (!res) { // try geocode place only
 			Log.debug(`Couldn't geocode address: ${address}. try to fetch place from db.`);
