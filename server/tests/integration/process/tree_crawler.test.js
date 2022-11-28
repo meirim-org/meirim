@@ -127,6 +127,8 @@ describe('the tree felling permit extractor', () => {
   })
 })
 
+const countDefinedProperties = (o) => Object.values(o).filter(Boolean).length / Object.keys(o).length;
+
 describe('the tree felling list crawler', () => {
   it('fetches live list and parses data to expected success rate', async () => {
     const res = await fetchFellingLicensesForTelAviv();
@@ -137,9 +139,11 @@ describe('the tree felling list crawler', () => {
 
     const pdfs = await Promise.all(fellingLicenseFileNames.map(downloadAndParse));
 
-    const parsedLicenses = pdfs.filter(({ licenseNumber }) => !!licenseNumber);
+    const parsedPermits = pdfs.reduce((score, permit) => score + countDefinedProperties(permit), 0);
+    const score = parsedPermits / pdfs.length;
 
-    console.log(`read ${pdfs.length} petitions and managed to parse ${parsedLicenses.length}`);
-    expect(parsedLicenses.length).to.be.greaterThan(pdfs.length * 0.8);
+    console.log(`read ${pdfs.length} petitions and got score of ${score}`);
+    expect(score).to.be.greaterThan(0.7);
+
   })
 })
