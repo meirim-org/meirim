@@ -5,12 +5,12 @@ import { Button, Dropdown, Link, TextArea, TextInput } from '../../shared';
 import { usePersonTypes } from './constants';
 import * as SC from './style';
 
-const SecondStepSignup = ({ handleSubmit, values, setValues, typeError, inputFocus }) => {
+const SecondStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const personTypes = usePersonTypes();
 	const dropdownOptions = [{
-		value: "",
-		text: "-"
-	}, ...personTypes]
+		value: '',
+		text: '-'
+	}, ...personTypes];
 	const { address, type, aboutme } = values;
 	const { t } = useTranslation();
 
@@ -37,9 +37,10 @@ const SecondStepSignup = ({ handleSubmit, values, setValues, typeError, inputFoc
 						onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) }
 						options={dropdownOptions}
 						label={t.whoAmI}
-						helperText={typeError ?? undefined}
-						error={typeError !== null}
-						onFocus={inputFocus}
+						error={errors.type !== ''}
+						helperText={errors.type}
+						onFocus={() => inputFocus('type')}
+						onBlur={() => inputBlur('type')}
 						required
 					/>
 				</SC.InputWrapper>
@@ -72,6 +73,11 @@ SecondStepSignup.propTypes = {
 		aboutme: PropTypes.string,
 	}).isRequired,
 	setValues: PropTypes.func.isRequired,
+	errors: PropTypes.shape({
+		type: PropTypes.string.isRequired
+	}).isRequired,
+	inputFocus: PropTypes.func,
+	inputBlur: PropTypes.func,
 	handleSubmit: PropTypes.func.isRequired,
 };
 

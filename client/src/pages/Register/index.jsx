@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { EMAIL_SENT_PAGE } from 'router/contants';
@@ -6,7 +6,7 @@ import { closeModal } from 'redux/modal/slice';
 import { authenticateEmail, registerUser  } from './controller';
 import FirstStepSignup from './firstStep';
 import SecondStepSignup from './secondStep';
-import { firstStepValidation, secondStepValidation, formValidation, getFormErrors } from './validations';
+import { formValidation, fieldError } from './validations';
 import { useDispatch } from 'react-redux';
 
 const SignupForms = () => {
@@ -15,46 +15,39 @@ const SignupForms = () => {
 	const [secondStepSuccess, setSecondStepSucess] = useState(false);
 	const [firstStepValues, setFirstStepValues] = useState({ name: '', password: '', email: '' });
 	const [secondStepValues, setSecondStepValues] = useState({ type: '', aboutme: '', address: '' });
-	const [onFocusInput, setOnFocusInput] = useState({ name: false, password: false, email: false });
-	const [dirtyInputs, setDirtyInputs] = useState({ name: false, email: false, password: false, type: false });
-	const [typeError, setTypeError] = useState(null)
-	const [formErrors, setFormErrors] = useState({
-		emailError:{ isValid: true, message:'' },
-		nameError:{ isValid: true, message:'' },
-		passwordError:{ isValid: true, message:'' }
+	const [focusedInput, setFocusedInput] = useState('');
+	const [touchedInputs, setTouchedInputs] = useState({
+		name: false,
+		password: false,
+		email: false,
+		type: false
 	});
+	const [fieldValidations, setFieldValidations] = useState({ name: '', password: '', email: '', type: '' });
 
-	const onInputFocus = (inputName) => {
-		const newState = {};
-		newState[inputName] = true;
-		setDirtyInputs(ps => ({ ...ps, ...newState }));
-		setOnFocusInput(ps => ({ ...ps, ...newState }));
-	};
-
-	const onInputBlur = (inputName) => {
-		const newState = {};
-		newState[inputName] = false;
-		setOnFocusInput(ps => ({ ...ps, ...newState }));
+	const onInputBlur = (inputName) =>{
+		if (focusedInput === inputName) {
+			setFocusedInput('');
+		}
+		setTouchedInputs(inputs => ({ ...inputs, [inputName]: true }));
 	};
 
 	useEffect(() => {
-		const { email , name, password } = firstStepValues;
-		const { isValidEmail, isValidName, isValidPassword } =
-			formValidation({ name ,email, password, onFocusInput, dirtyInputs }, firstStepSuccess);
-		const { emailError, nameError, passwordError } =
-			getFormErrors({
-				validations: { isValidEmail, isValidName, isValidPassword },
-				values: { password, email }
-			});
-		setFormErrors(fe => ({ ...fe, emailError, nameError, passwordError }));
-	}, [firstStepValues, onFocusInput, dirtyInputs]);
+		setFieldValidations(formValidation({ ...firstStepValues, ...secondStepValues }));
+	}, [firstStepValues, secondStepValues]);
+
+	const errors = useMemo(() => ({
+		name: fieldError('name', fieldValidations, touchedInputs, focusedInput),
+		password: fieldError('password', fieldValidations, touchedInputs, focusedInput),
+		email: fieldError('email', fieldValidations, touchedInputs, focusedInput),
+		type: fieldError('type', fieldValidations, touchedInputs, focusedInput),
+	}), [fieldValidations, touchedInputs, focusedInput]);
 
 	const handleSecondFormSubmit = async () => {
-		const { aboutme, type, address } = secondStepValues;
-		if (type === "") {
-			setTypeError("אנא הוסיפו סוג משתמש")
-			return
+		setTouchedInputs({ ...touchedInputs, type: true });
+		if (fieldValidations.type) {
+			return;
 		}
+		const { aboutme, type, address } = secondStepValues;
 		const { name, password, email } = firstStepValues;
 		const requestData = {
 			name,
@@ -82,25 +75,12 @@ const SignupForms = () => {
 		}
 	};
 
-	const onSecondStepValuesChanged = (values) => {
-		setSecondStepValues(values);
-		setTypeError(values.type === "" ? "אנא הוסיפו סוג משתמש" : null);
-	};
-
 	const handleFirstFormSubmit = async () => {
-		const { email , name, password } = firstStepValues;
-		const { isValidEmail, isValidName, isValidPassword } =
-			firstStepValidation({ name ,email, password, onFocusInput, dirtyInputs });
-		if (!isValidEmail || !isValidName || !isValidPassword){
-			const { emailError, nameError, passwordError } =
-				getFormErrors({
-					validations: { isValidEmail, isValidName, isValidPassword },
-					values: { email, name, password }
-				});
-			setFormErrors({ ...formErrors, emailError, nameError, passwordError });
-
+		setTouchedInputs({ ...touchedInputs, name: true, password: true, email: true });
+		if (fieldValidations.name || fieldValidations.password || fieldValidations.email) {
 			return;
 		}
+		const { email } = firstStepValues;
 		try {
 			const response = await authenticateEmail(email);
 			const { status, data: { isUserRegistered } } = response;
@@ -108,13 +88,11 @@ const SignupForms = () => {
 			if (successResponse) {
 				setFirstStepSucess(true);
 			} else if (isUserRegistered) {
-				const emailError = { isValid: false, message: 'המייל קיים במערכת' };
-				setFormErrors({ ...formErrors, emailError });
+				setFieldValidations({ ...fieldValidations, email: 'המייל קיים במערכת' });
 			}
 		} catch (err) {
 			if (err.message === 'Error: Request failed with status code 400'){
-				const emailError = { isValid: false, message: 'המייל לא תקין' };
-				setFormErrors({ ...formErrors, emailError });
+				setFieldValidations({ ...fieldValidations, email: 'המייל לא תקין' });
 			}
 		}
 	};
@@ -123,21 +101,21 @@ const SignupForms = () => {
 		<Redirect to={{ pathname: EMAIL_SENT_PAGE, state: { email: firstStepValues.email } }} /> : firstStepSuccess
 			? (
 				<SecondStepSignup
-					typeError={typeError}
 					values={secondStepValues}
-					setValues={onSecondStepValuesChanged}
-					handleSubmit={handleSecondFormSubmit}
-					inputFocus={onInputFocus}
+					setValues={setSecondStepValues}
+					errors={errors}
+					inputFocus={field => setFocusedInput(field)}
 					inputBlur={onInputBlur}
+					handleSubmit={handleSecondFormSubmit}
 				/>
 			)
 			: (
 				<FirstStepSignup
-					errors={formErrors}
-					inputFocus={onInputFocus}
-					inputBlur={onInputBlur}
 					values={firstStepValues}
 					setValues={setFirstStepValues}
+					errors={errors}
+					inputFocus={field => setFocusedInput(field)}
+					inputBlur={onInputBlur}
 					handleSubmit={handleFirstFormSubmit}
 				/>
 			);

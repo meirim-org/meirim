@@ -32,7 +32,7 @@ const StyledSelect = styled(Select)`
     }
 `;
 
-const Dropdown = ({ onChange, value, id, options, label, helperText, error, required = false }) => {
+const Dropdown = ({ onChange, value, id, options, label, helperText, error, required = false, onBlur, onFocus }) => {
 
 	return (
 		<>
@@ -43,6 +43,8 @@ const Dropdown = ({ onChange, value, id, options, label, helperText, error, requ
 				id={id}
 				onChange={onChange}
 				error={error}
+				onFocus={onFocus}
+				onBlur={onBlur}
 			>
 				{
 					options.map((optn) => <MenuItem key={optn.value} value={optn.value}>{optn.text}</MenuItem>)
@@ -66,6 +68,8 @@ Dropdown.propTypes = {
 	value: PropTypes.string.isRequired,
 	helperText: PropTypes.string,
 	error: PropTypes.bool,
+	onFocus: PropTypes.func,
+	onBlur: PropTypes.func,
 	required: PropTypes.bool
 };
 
