@@ -407,7 +407,7 @@ class Plan extends Model {
 					const fileRows = await File.query(qb => {
 						qb.where('plan_id', plan.id);
 					}).fetchAll({ transacting: transaction }).catch(e => {
-						Log.error(`error fetch plan ${plan.id} file: ${e.message}`, e.trace);
+						Log.error(`error fetch plan ${plan.id} file: ${e.message}`);
 					});
 					
 					for (const existingFile of fileRows.models) {
@@ -470,7 +470,7 @@ class Plan extends Model {
 							try {
 								await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
 							} catch (e) {
-								Log.error("error save chart 18", e);
+								Log.error('error save chart 18', e);
 							}
 						}
 					}
@@ -483,7 +483,7 @@ class Plan extends Model {
 							try {
 								await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
 							} catch (e) {
-								Log.error("error save chart 4", e);
+								Log.error('error save chart 4', e);
 							}
 						}
 					}
@@ -496,7 +496,7 @@ class Plan extends Model {
 							try {
 								await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
 							} catch (e) {
-								Log.error("error save chart 5", e);
+								Log.error('error save chart 5', e);
 							}
 						}
 					}
@@ -509,7 +509,7 @@ class Plan extends Model {
 							try {
 								await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
 							} catch (e) {
-								Log.error("error save chart 6", e);
+								Log.error('error save chart 6', e);
 							}
 						}
 					}

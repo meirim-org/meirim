@@ -228,7 +228,7 @@ const sendDigestPlanningAlerts = async () => {
 		
 		}
 		catch (e) {
-			Log.error("error save alert", e);
+			Log.error('error save alert', e);
 		}
 		Log.debug(`User ${email} alert ${alert.id} with ${alertPlans[0].length} plans`);
 	}
@@ -389,7 +389,7 @@ const buildPlan = async (iPlan, oldPlan) => {
 	} catch (e) {
 		// mavat might crash gracefully
 		Log.error('Mavat error', e.message, e.stack);
-		return plan;
+		// return plan;
 	}
 };
 
