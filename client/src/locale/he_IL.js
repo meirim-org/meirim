@@ -485,7 +485,7 @@ export const useTranslation = () => {
 };
 
 export const Translation = () => {
-    return LANGUAGES[localStorage.getItem('Lang')];
+    return LANGUAGES[localStorage.getItem('Lang') || 'HE'];
 };
 
 export default {
