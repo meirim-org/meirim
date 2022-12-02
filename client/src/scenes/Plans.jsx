@@ -682,7 +682,6 @@ class Plans extends Component {
             isDisable,
             t,
         } = this.state;
-        console.log({ t });
         return (
             <Wrapper>
                 <InnerWrapper>
