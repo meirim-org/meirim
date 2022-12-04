@@ -13,3 +13,4 @@ server/config/local.json
 server/api/lib/mavat/tmp/tmpPDF.pdf
 build
 .vscode
+package-lock.json
