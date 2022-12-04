@@ -40,11 +40,16 @@ mv $tmp config/local.json
 
 # needed by fetchTreePermit()
 mkdir -p $(jq -r .trees.rawDataDir config/local.json)
+
+echo "Installing dependencies..."
+npm install
+echo "Done installing dependencies"
+
 echo "Migrating DB..."
-yarn run knex migrate:latest
+./node_modules/.bin/knex migrate:latest
 echo "Done migrating DB"
 
 # Run application
 echo "Starting application"
-yarn start
+npm start
 echo "Application exited"

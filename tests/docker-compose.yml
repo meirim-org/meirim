@@ -19,7 +19,12 @@ services:
     build:
       context: ../server
       dockerfile: Dockerfile.server
+      args:
+        - UID=1001
+        - GID=128
     container_name: server
+    volumes:
+      - ../server/:/code/
     depends_on:
       - db
       - mailhog

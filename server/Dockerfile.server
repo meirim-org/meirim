@@ -1,6 +1,12 @@
 FROM node:19
 
+ARG UNAME=testuser
+ARG UID=1000
+ARG GID=1000
+
 EXPOSE 3001
+
+VOLUME "/code"
 
 ARG apt_deps=" \
     jq \
@@ -10,14 +16,10 @@ RUN apt-get update \
     && apt-get -qy install ${apt_deps} \
     && rm -rf /var/lib/apt/lists/*
 
+RUN groupadd -g $GID -o $UNAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME
+USER $UNAME
+
 WORKDIR /code
-ADD . /code
-
-RUN rm -f package-lock.json && yarn
-
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
-
-COPY config/default.json config/local.json
 
 ENTRYPOINT [ "/code/entrypoint.sh" ]

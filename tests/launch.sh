@@ -6,6 +6,10 @@ then
     exit
 fi
 
+if [ ! -f ../server/config/local.json ]; then
+    ln -s default.json ../server/config/local.json
+fi
+
 ./_open_browser.sh &
 
 # Launch Terminator with docker-compose command, to spawn all dockers
