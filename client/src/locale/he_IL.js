@@ -13,6 +13,7 @@ const HEBREW_TRANSLATION = {
 	name: 'מעירים',
 	myPlans: 'התוכניות שלי',
 	plans: 'תוכניות',
+	permits: 'היתרים',
 	treePermits: 'עצים',
 	vocabulary: 'מילון',
 	whoWeAre: 'מי אנחנו',
