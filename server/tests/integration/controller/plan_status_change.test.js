@@ -128,4 +128,127 @@ describe('plan status change controller', function() {
 		expect(statusjson.steps[3].current,' step 4 is not current').to.eql(false);		
 	});
 
+	it('marks the first step as being current, if it is the only status', async function () {
+		const planStatusChange = {
+			plan_id: 2,
+			status: 'בדיקת תנאי סף-קיום תנאי סף',
+			date: '2021-11-08T09:00'
+
+		};
+		
+		await mockDatabase.insertData(['plan_status_change'], { 'plan_status_change': [planStatusChange] });
+
+		const req = {
+			params: {
+				id: 2 
+			},
+		};
+		statusjson = await PlanStatusChangeController.byPlan(req);
+
+		expect(statusjson.steps.length,' 4 steps').to.eql(4);
+		// check step 1
+		expect(statusjson.steps[0].stepId).to.eql(1);
+		expect(statusjson.steps[0].completed,' step 1 is completed').to.eql(true);
+		expect(statusjson.steps[0].current,' step 1 is current').to.eql(true);
+		// check step 2
+		expect(statusjson.steps[1].stepId).to.eql(2);
+		expect(statusjson.steps[1].completed,' step 2 is not completed').to.eql(false);
+		expect(statusjson.steps[1].current,' step 2 is not current').to.eql(false);
+		// check step 3
+		expect(statusjson.steps[2].stepId).to.eql(3);
+		expect(statusjson.steps[2].completed,' step 3 is not completed').to.eql(false);
+		expect(statusjson.steps[2].current,' step 3 is not current').to.eql(false);
+		// check step 4
+		expect(statusjson.steps[3].stepId).to.eql(4);
+		expect(statusjson.steps[3].completed,' step 4 is not completed').to.eql(false);
+		expect(statusjson.steps[3].current,' step 4 is not current').to.eql(false);		
+	});
+
+	it('marks previous steps as complete, if the plan is approved', async function () {
+		const planStatusChange = [{
+			plan_id: 3,
+			status: 'בדיקת תנאי סף-קיום תנאי סף',
+			date: '2021-11-08T09:00'
+
+		},{
+			plan_id: 3,
+			status: 'התכנית אושרה',
+			date: '2022-11-08T09:00'
+
+		}];
+		
+		await mockDatabase.insertData(['plan_status_change'], { 'plan_status_change': [planStatusChange] });
+
+		const req = {
+			params: {
+				id: 3 
+			},
+		};
+		statusjson = await PlanStatusChangeController.byPlan(req);
+
+		expect(statusjson.steps.length,' 4 steps').to.eql(4);
+		// check step 1
+		expect(statusjson.steps[0].stepId).to.eql(1);
+		expect(statusjson.steps[0].completed,' step 1 is completed').to.eql(true);
+		expect(statusjson.steps[0].current,' step 1 is not current').to.eql(false);
+		// check step 2
+		expect(statusjson.steps[1].stepId).to.eql(2);
+		expect(statusjson.steps[1].completed,' step 2 is completed').to.eql(true);
+		expect(statusjson.steps[1].current,' step 2 is not current').to.eql(false);
+		// check step 3
+		expect(statusjson.steps[2].stepId).to.eql(3);
+		expect(statusjson.steps[2].completed,' step 3 is completed').to.eql(true);
+		expect(statusjson.steps[2].current,' step 3 is not current').to.eql(false);
+		// check step 4
+		expect(statusjson.steps[3].stepId).to.eql(4);
+		expect(statusjson.steps[3].completed,' step 4 is completed').to.eql(true);
+		expect(statusjson.steps[3].current,' step 4 is current').to.eql(true);		
+	});
+
+	it('adds 5th step and marks it current, if plan is canceled', async function () {
+		const planStatusChange = [{
+			plan_id: 4,
+			status: 'בדיקת תנאי סף-קיום תנאי סף',
+			date: '2021-11-08T09:00'
+
+		},{
+			plan_id: 4,
+			status: 'התכנית נדחתה',
+			date: '2022-11-08T09:00'
+
+		}];
+		
+		await mockDatabase.insertData(['plan_status_change'], { 'plan_status_change': [planStatusChange] });
+
+		const req = {
+			params: {
+				id: 4 
+			},
+		};
+		statusjson = await PlanStatusChangeController.byPlan(req);
+
+		expect(statusjson.steps.length,' 5 steps').to.eql(5);
+		// check step 1
+		expect(statusjson.steps[0].stepId).to.eql(1);
+		expect(statusjson.steps[0].completed,' step 1 is completed').to.eql(true);
+		expect(statusjson.steps[0].current,' step 1 is not current').to.eql(false);
+		// check step 2
+		expect(statusjson.steps[1].stepId).to.eql(2);
+		expect(statusjson.steps[1].completed,' step 2 is completed').to.eql(true);
+		expect(statusjson.steps[1].current,' step 2 is not current').to.eql(false);
+		// check step 3
+		expect(statusjson.steps[2].stepId).to.eql(3);
+		expect(statusjson.steps[2].completed,' step 3 is completed').to.eql(true);
+		expect(statusjson.steps[2].current,' step 3 is not current').to.eql(false);
+		// check step 4
+		expect(statusjson.steps[3].stepId).to.eql(4);
+		expect(statusjson.steps[3].completed,' step 4 is completed').to.eql(false);
+		expect(statusjson.steps[3].current,' step 4 is current').to.eql(false);	
+		// check step 5
+		expect(statusjson.steps[4].stepId).to.eql(5);
+		expect(statusjson.steps[4].completed,' step 5 is completed').to.eql(true);
+		expect(statusjson.steps[4].current,' step 5 is current').to.eql(true);				
+	});	
+
+
 });
