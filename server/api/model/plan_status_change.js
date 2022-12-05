@@ -1,5 +1,7 @@
 const Model = require('./base_model');
 const Log = require('../lib/log');
+const { Knex } = require('../service/database');
+
 
 class PlanStatusChange extends Model {
 	get rules () {
@@ -42,6 +44,31 @@ class PlanStatusChange extends Model {
 		Log.debug('newStatuses:', newStatues);
 		await this.saveBulk(newStatues);
 	}
+
+	/**
+	 * Return plan's status list
+	 * @param {planID} integer
+	 */
+	 static async byPlan (planID) {
+		const res = await Knex.raw(
+			`SELECT name,explanation AS description ,step_id AS stepId,date FROM status 
+			LEFT JOIN  
+			( 
+				SELECT c.plan_id,min(c.date) as date,m.meirim_status
+				FROM status_mapping m 
+				JOIN plan_status_change c  on m.mavat_status = c.status 
+				 WHERE plan_id=? 
+				 GROUP BY c.plan_id,m.meirim_status
+				 ORDER BY MIN(c.date) ASC
+			 ) AS plan_status_log
+			ON status.name = plan_status_log.meirim_status 
+			WHERE ((step_id>=1 AND step_id<=4) OR (plan_id=?))`
+			, [planID, planID]
+		);
+		return res[0];
+	}	
+	
+
 }
 
 module.exports = PlanStatusChange;
