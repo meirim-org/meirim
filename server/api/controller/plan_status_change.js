@@ -26,12 +26,17 @@ class PlanStatusChangeController extends Controller {
 			/* If there is no plan_status table, set stepId: 1 to completed:True and Current:True, and the rest of the steps to completed:false and current:false 
 			*/
 			steps = steps.map(function(element){
-				const x = null;
+				element.current = false;
 				if ((element.stepId===maxStep) || (maxStep===-1 && element.stepId===1)) {
 					element.current = true;
 					element.completed = true;
-				} else {
-					element.current = false;
+				} 	// some status changes are missing, so if a status was reached, assume the previous ones were completed
+					else if (element.stepId<maxStep) {
+					// the only excpetion is that if the plan is canceled, the previous step (approval) shouldn't be completed
+					if ((maxStep===5)&&(element.stepId===maxStep-1)){
+						return element;	
+					}
+					element.completed = true;
 				}
 				return element;
 			});	
