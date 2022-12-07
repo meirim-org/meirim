@@ -1,82 +1,78 @@
-const { Knex } = require('../service/database');
+const { Knex } = require("../service/database");
+const Controller = require("./controller");
+const Exception = require("../model/exception");
 
-exports.getCentroid = (req, res, next) => {
-    // blockNum is mandatory to fetch the data (parcelNum optional)
-    const { blockNum, parcelNum } = req.query;
+class ShapeController extends Controller {
+	topfive(req) {
+		let { blockNum, parcelNum, limit } = req.query;
 
-    // if blockNum is not passed as a query param
-    if (!blockNum) {
-        return res.status(422).json({
-            status: 'failed',
-            msg: 'Please insert at least block number as a query param',
-        });
-    }
+		blockNum = parseInt(blockNum);
+		parcelNum = parseInt(parcelNum);
+		limit = parseInt(limit);
 
-    let sql;
+		// blockNum is mandatory
+		if (!blockNum) {
+			throw new Exception.BadRequest("No block number provided, provide it as a query param");
+		}
 
-    // if both blockNum and parcelNum are passed as query param then this query will get selected and fetch from parcel_details table
-    // blockNum is being matched with gush_num(column name) and parcelNum with parcel(column name)
-    if (blockNum && parcelNum) {
-        sql = `SELECT id, ST_AsGeoJSON(centroid) as centroid, gush_num, parcel from parcel_details WHERE gush_num=${blockNum} and parcel=${parcelNum}`;
-    }
-    // if only blockNum is passed then it will fetch from block table
-    else if (blockNum) {
-        sql = `SELECT id, gush_num, ST_AsGeoJSON(centroid) AS centroid from block where gush_num=${blockNum}`;
-    }
+		if (!limit) {
+			limit = 5;
+		}
+		let query;
 
-    // fetching data
-    Knex.raw(sql)
-        .then((result) => {
-            if (result[0].length === 0) {
-                return res.status(404).json({
-                    status: 'failed',
-                    msg: 'No data found',
-                    data: result[0],
-                });
-            }
-            res.status(200).json({ status: 'OK', data: result[0] });
-        })
-        .catch((err) => {
-            req.error = err;
-            next();
-        });
-};
+		// if both blockNum and parcelNum are passed then the following query query will get selected
+		if (blockNum && parcelNum) {
+			query = `SELECT id,gush_num, parcel,ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from parcel_details where gush_num LIKE '${blockNum}%' and parcel LIKE '${parcelNum}%' limit ${limit}`;
+		}
+		// if only blockNum is passed then following query query will get selected
+		else if (blockNum) {
+			query = `SELECT id,gush_num, ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from block WHERE gush_num LIKE '${blockNum}%' limit ${limit}`;
+		}
 
-// get the top five result for autosuggestion based on blockNum or parcelNum or both
-exports.getTopFive = (req, res, next) => {
-    const { blockNum, parcelNum } = req.query;
+		return Knex.raw(query).then((results) => {
+			if (results[0].length == 0) {
+				throw new Exception.NotFound({
+					status: "failed",
+					msg: "No data found",
+					data: results[0],
+				});
+			}
+			return results[0];
+		});
+	}
 
-    // blockNum is mandatory
-    if (!blockNum) {
-        return res.status(422).json({
-            msg: 'Please insert at least block number as a query param',
-        });
-    }
-    let sql;
+	centroid(req) {
+		// blockNum is mandatory to fetch the data (parcelNum optional)
+		let { blockNum, parcelNum } = req.query;
 
-    // if both blockNum and parcelNum are passed then the following sql query will get selected
-    if (blockNum && parcelNum) {
-        sql = `SELECT id,gush_num, parcel,ST_AsGeoJSON(centroid) AS centroid from parcel_details where gush_num LIKE '${blockNum}%' and parcel LIKE '${parcelNum}%' limit 5`;
-    }
-    // if only blockNum is passed then following sql query will get selected
-    else if (blockNum) {
-        sql = `SELECT id,gush_num, ST_AsGeoJSON(centroid) AS centroid from block WHERE gush_num LIKE '${blockNum}%' limit 5`;
-    }
+		blockNum = parseInt(blockNum);
+		parcelNum = parseInt(parcelNum);
 
-    // fetching data with the selected query(sql)
-    Knex.raw(sql)
-        .then((result) => {
-            if (result[0].length === 0) {
-                return res.status(404).json({
-                    status: 'failed',
-                    msg: 'No data found',
-                    data: result[0],
-                });
-            }
-            res.status(200).json({ status: 'OK', data: result[0] });
-        })
-        .catch((err) => {
-            req.error = err;
-            next();
-        });
-};
+		// if blockNum is not passed as a query param
+		if (!blockNum) {
+			throw new Exception.BadRequest("No block number provided, provide it as a query param");
+		}
+		let query;
+		// if both blockNum and parcelNum are passed as query param then this query will get selected and fetch from parcel_details table
+		// blockNum is being matched with gush_num(column name) and parcelNum with parcel(column name)
+		if (blockNum && parcelNum) {
+			query = `SELECT id, ST_AsGeoJSON(centroid) as centroid, gush_num, parcel, county_name, region_name from parcel_details WHERE gush_num=${blockNum} and parcel=${parcelNum}`;
+		}
+		// if only blockNum is passed then it will fetch from block table
+		else if (blockNum) {
+			query = `SELECT id, gush_num, ST_AsGeoJSON(centroid) AS centroid, county_name, region_name from block where gush_num=${blockNum}`;
+		}
+		return Knex.raw(query).then((results) => {
+			if (results[0].length == 0) {
+				throw new Exception.NotFound({
+					status: "failed",
+					msg: "No data found",
+					data: results[0],
+				});
+			}
+			return results[0];
+		});
+	}
+}
+
+module.exports = new ShapeController();

@@ -10,7 +10,7 @@ const Impression = require('./controller/impression');
 const Funding = require('./controller/funding');
 const TreePermit = require('./controller/tree_permit');
 const Subscription = require('./controller/subscription');
-const shapesControllers = require('./controller/shape');
+const Shape = require("./controller/shape");
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
@@ -42,9 +42,9 @@ Router.get('/tree/:id', wrap(TreePermit.read, TreePermit));
 
 Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
 
-// shapes: autosuggest
-Router.get('/topfive', shapesControllers.getTopFive);
-Router.get('/centroid', shapesControllers.getCentroid);
+// shapes
+Router.get("/topfive", wrap(Shape.topfive, Shape));
+Router.get("/centroid", wrap(Shape.centroid, Shape));
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
