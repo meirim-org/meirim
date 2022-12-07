@@ -4,7 +4,7 @@ const structs = require('../../tables_structs');
 const { PlanStatusChangeController } = require('../../../api/controller');
 
 describe('plan status change controller', function() {
-	const tables = ['status','status_mapping','plan_status_change'];
+	const tables = ['status','status_mapping','plan_status_change','plan'];
 	status1 = [{
 		id: '1',
 		name: 'הכנת תכנית',
@@ -91,17 +91,42 @@ describe('plan status change controller', function() {
 	{mavat_status:'תיקון התכנית לקראת פרסום לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
 	{mavat_status:'בבדיקה תכנונית', meirim_status: 'על שולחן הוועדה'}];
 
+	plan1 = {
+		id: 1, 
+		OBJECTID: 15325,
+		PL_NUMBER: '210-1099191',
+		data: '{ "ENTITY_SUBTYPE_DESC": "שולחן"}',
+		created_at: new Date(Date.now()), 
+		updated_at: new Date(Date.now()), 
+		}
+	;
+
+
+	
+	plan2 = {
+		id: 2, 
+		OBJECTID: 24307,
+		PL_NUMBER: 'תמל/ 2051/ סעיף-77-78',	
+		data: '{"ENTITY_SUBTYPE_DESC":"הודעה לפי סעיף 77 ו 78 לחוק התכנון והבניה"}',
+		created_at: new Date(Date.now()), 
+		updated_at: new Date(Date.now()), 
+		}
+	;
+
 	beforeEach(async function() {
+		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
 		await mockDatabase.insertData(['status'], { 'status': [status1] });
 		await mockDatabase.insertData(['status_mapping'], { 'status_mapping': [status_mapping1] });
+		await mockDatabase.insertData(['plan'], { 'plan': [plan1,plan2] });
+
 	});
 
 	afterEach(async function() {
 		await mockDatabase.dropTables(tables);
 	});
 
-	it('returns all 4 status steps, with the first one being current and complete, if the plan does not have any status changes', async function () {
+	it('returns all 4 status steps, with the first one being current, if the plan does not have any status changes', async function () {
 	
 		const req = {
 			params: {
@@ -109,6 +134,7 @@ describe('plan status change controller', function() {
 			},
 		};
 		statusjson = await PlanStatusChangeController.byPlan(req);
+
 		expect(statusjson.steps.length,' 4 steps').to.eql(4);
 		// check step 1
 		expect(statusjson.steps[0].stepId).to.eql(1);
@@ -130,7 +156,7 @@ describe('plan status change controller', function() {
 
 	it('marks the first step as being current, if it is the only status', async function () {
 		const planStatusChange = {
-			plan_id: 2,
+			plan_id: 1,
 			status: 'בדיקת תנאי סף-קיום תנאי סף',
 			date: '2021-11-08T09:00'
 
@@ -140,11 +166,11 @@ describe('plan status change controller', function() {
 
 		const req = {
 			params: {
-				id: 2 
+				id: 1
 			},
 		};
 		statusjson = await PlanStatusChangeController.byPlan(req);
-
+		
 		expect(statusjson.steps.length,' 4 steps').to.eql(4);
 		// check step 1
 		expect(statusjson.steps[0].stepId).to.eql(1);
@@ -166,12 +192,12 @@ describe('plan status change controller', function() {
 
 	it('marks previous steps as complete, if the plan is approved', async function () {
 		const planStatusChange = [{
-			plan_id: 3,
+			plan_id: 1,
 			status: 'בדיקת תנאי סף-קיום תנאי סף',
 			date: '2021-11-08T09:00'
 
 		},{
-			plan_id: 3,
+			plan_id: 1,
 			status: 'התכנית אושרה',
 			date: '2022-11-08T09:00'
 
@@ -181,7 +207,7 @@ describe('plan status change controller', function() {
 
 		const req = {
 			params: {
-				id: 3 
+				id: 1 
 			},
 		};
 		statusjson = await PlanStatusChangeController.byPlan(req);
@@ -207,12 +233,12 @@ describe('plan status change controller', function() {
 
 	it('adds 5th step and marks it current, if plan is canceled', async function () {
 		const planStatusChange = [{
-			plan_id: 4,
+			plan_id: 1,
 			status: 'בדיקת תנאי סף-קיום תנאי סף',
 			date: '2021-11-08T09:00'
 
 		},{
-			plan_id: 4,
+			plan_id: 1,
 			status: 'התכנית נדחתה',
 			date: '2022-11-08T09:00'
 
@@ -222,7 +248,7 @@ describe('plan status change controller', function() {
 
 		const req = {
 			params: {
-				id: 4 
+				id: 1 
 			},
 		};
 		statusjson = await PlanStatusChangeController.byPlan(req);
@@ -242,13 +268,55 @@ describe('plan status change controller', function() {
 		expect(statusjson.steps[2].current,' step 3 is not current').to.eql(false);
 		// check step 4
 		expect(statusjson.steps[3].stepId).to.eql(4);
-		expect(statusjson.steps[3].completed,' step 4 is completed').to.eql(false);
-		expect(statusjson.steps[3].current,' step 4 is current').to.eql(false);	
+		expect(statusjson.steps[3].completed,' step 4 is not completed').to.eql(false);
+		expect(statusjson.steps[3].current,' step 4 is not current').to.eql(false);	
 		// check step 5
 		expect(statusjson.steps[4].stepId).to.eql(5);
 		expect(statusjson.steps[4].completed,' step 5 is completed').to.eql(true);
 		expect(statusjson.steps[4].current,' step 5 is current').to.eql(true);				
 	});	
 
+	it('appends step zero and makes it the current step, if the plan type is "הודעה לפי סעיף 77 ו 78 לחוק התכנון והבניה"', async function () {
+		const req = {
+			params: {
+				id: 2
+			},
+		};
+		statusjson = await PlanStatusChangeController.byPlan(req);
+		
+		expect(statusjson.steps.length,' 5 steps').to.eql(5);
+		// check step 1
+		expect(statusjson.steps[0].stepId).to.eql(0);
+		expect(statusjson.steps[0].completed,' step 0 is completed').to.eql(true);
+		expect(statusjson.steps[0].current,' step 0 is current').to.eql(true);
+		// check step 2
+		expect(statusjson.steps[1].stepId).to.eql(1);
+		expect(statusjson.steps[1].completed,' step 1 is not completed').to.eql(false);
+		expect(statusjson.steps[1].current,' step 1 is not current').to.eql(false);
+		// check step 3
+		expect(statusjson.steps[2].stepId).to.eql(2);
+		expect(statusjson.steps[2].completed,' step 2 is not completed').to.eql(false);
+		expect(statusjson.steps[2].current,' step 2 is not current').to.eql(false);
+		// check step 4
+		expect(statusjson.steps[3].stepId).to.eql(3);
+		expect(statusjson.steps[3].completed,' step 3 is not completed').to.eql(false);
+		expect(statusjson.steps[3].current,' step 3 is not current').to.eql(false);		
+		// check step 4
+		expect(statusjson.steps[4].stepId).to.eql(4);
+		expect(statusjson.steps[4].completed,' step 4 is not completed').to.eql(false);
+		expect(statusjson.steps[4].current,' step 4 is not current').to.eql(false);			
+	});
+
+	it('returns no step, if the plan record is not found', async function () {
+
+		const req = {
+			params: {
+				id: 100 
+			},
+		};
+		statusjson = await PlanStatusChangeController.byPlan(req);
+		
+		expect(statusjson.steps.length,' no steps').to.eql(0);
+	});
 
 });
