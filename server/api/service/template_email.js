@@ -14,6 +14,7 @@ const Alert = require('../model/alert');
 const { map, keys, get } = require('lodash');
 const { emailBucketName: bucketName, useS3ForEmails: useS3 } = Config.get('aws');
 const { uploadToS3 } = require('./aws');
+const utils = require('./email_utils');
 
 class DynamicTemplateEmail {
 	 /**
@@ -46,7 +47,6 @@ class DynamicTemplateEmail {
 			 };
 		 });
 	 }
-
 	 
 	 /**
 	  * send mail with defined transport object
@@ -89,7 +89,8 @@ class DynamicTemplateEmail {
 				 }
 			  ],
 			attachments:  this.getEmailAttachements(emailPlanParams),
-			 template_id : this.dynamicTemplates.digestPlanAlert,
+			template_id : this.dynamicTemplates.digestPlanAlert,
+			send_at: utils.getUnixTime(utils.calcBussinessDate(new Date())),		
 		};
 		return sgMail
 			.send(email)
