@@ -21,7 +21,7 @@ class PlanStatusChangeController extends Controller {
 			if (plan) {
 				planType = (plan.attributes.data.ENTITY_SUBTYPE_DESC);
 				planCreatedAt = plan.attributes.created_at;
-				Log.debug('planType ', planType), 'planCreatedAt ', planCreatedAt;
+				Log.debug('planType ', planType, 'planCreatedAt ', planCreatedAt);
 		}})
 		.catch(error => {
 			Log.error('Plan.fetchByPlanID failed to fetch plan details');
@@ -41,7 +41,7 @@ class PlanStatusChangeController extends Controller {
 			/* If the plan type (סוג תוכנית) = הודעה לפי סעיף 77 ו 78 לחוק התכנון והבניה, add a stepId:0, 
 			set to date: plan.createddate, completed:true, current:true, and all other steps to false for both. */
 			if (planType===PLAN_TYPE_77_78) {
-				steps = [{name:'',description:'',stepId: 0, completed: true, current: true, date: '01/01/2000'}];
+				steps = [{name:'פרסום על הכנת תוכנית',description:'הודעה לפי סעיף 77 ו 78 לחוק התכנון והבניה',stepId: 0, completed: true, current: true, date: planCreatedAt}];
 				Log.debug(`Plan type is '${PLAN_TYPE_77_78}' so setting step zero as `, steps);
 			}
 
