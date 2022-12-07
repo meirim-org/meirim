@@ -81,7 +81,7 @@ renderSuggestion.propTypes = {
     itemProps: PropTypes.object,
     selectedItem: PropTypes.string,
     suggestion: PropTypes.shape({ id: PropTypes.string }).isRequired,
-    isParcle: PropTypes.string,
+    isParcel: PropTypes.string,
 };
 
 class AutocompleteInput extends Component {

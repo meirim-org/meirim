@@ -6,11 +6,10 @@ import { device } from 'style';
 import styled from 'styled-components';
 import Autocomplete from '../../components/AutoCompleteInput';
 import AutocompleteBlock from '../../components/AutoCompleteBlockInput';
-import AutocompleteParcle from '../../components/AutoCompleteParcleInput';
+import AutocompleteParcel from '../../components/AutoCompleteParcelInput';
 import locationAutocompleteApi from '../../services/location-autocomplete';
 import SearchIcon from '@material-ui/icons/Search';
 
-///////////////////////////////////////
 import api from 'services/api';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -36,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
         margin: '3rem 1rem',
     },
 }));
-//////////////////////////////////////
 
 const Wrapper = styled.div`
     display: flex;
@@ -175,13 +173,13 @@ const AutocompleteWrapperItem = styled.div`
         }
     }
 
-    #parcles-search-input {
+    #parcels-search-input {
         input[type='number'] {
             padding-right: 54px;
         }
     }
 
-    #parcles-search-input-error {
+    #parcels-search-input-error {
         input[type='number'] {
             border: 2px solid #e21243;
             background: #fef4f6;
@@ -275,37 +273,24 @@ export default function SearchBox({
     const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
     const { t } = useTranslation();
 
-    ////////////////////////////////////////////////////
     const history = useHistory();
     // Making a logic to change the input types using dropdown
     const classes = useStyles();
     const [block, setBlock] = useState('');
-    const [parcles, setParcles] = useState('');
+    const [parcels, setParcels] = useState('');
     const [blockinputerror, setBlockinputerror] = useState(false);
     const [parcelinputerror, setParcelinputerror] = useState(false);
     const [isDisable, setIsDisable] = useState(true);
 
     // making the State to get the plans list
     const [blockList, setblockList] = useState([]);
-    const [parcleList, setparcleList] = useState([]);
+    const [parcelList, setparcelList] = useState([]);
     const [loadingAutocompleteBlock, setloadingAutocompleteBlock] =
         useState(false);
-    const [loadingAutocompleteParcle, setloadingAutocompleteParcle] =
+    const [loadingAutocompleteParcel, setloadingAutocompleteParcel] =
         useState(false);
 
     const [selected, setSelected] = React.useState('textbox');
-    const [state, setState] = React.useState(false);
-
-    const handleChange = (event) => {
-        setSelected(event.target.value);
-        if (event.target.value === 'inputbox') {
-            setState(true);
-        } else {
-            setState(false);
-        }
-    };
-
-    //////////////////////////////
 
     const getAutocompleteSuggestions = useCallback(
         _.debounce(async (input) => {
@@ -346,11 +331,10 @@ export default function SearchBox({
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Making the function to make a backend call and fetch the Block and parcles Data
-    async function onEnteringBlockParcles() {
-        if (block && parcles) {
-            history.push(`/plans?block=${block},parcel=${parcles}`);
+    // Making the function to make a backend call and fetch the Block and parcels Data
+    async function onEnteringBlockParcels() {
+        if (block && parcels) {
+            history.push(`/plans?block=${block},parcel=${parcels}`);
         } else if (block) {
             history.push(`/plans?block=${block}`);
         } else {
@@ -384,34 +368,32 @@ export default function SearchBox({
         setIsDisable(false);
     }
 
-    ///////////////////////////////////////////////////
-    function handleSubmitParcleDetails(parcleNum) {
-        setParcles(parcleNum);
+    function handleSubmitParcelDetails(parcelNum) {
+        setParcels(parcelNum);
     }
 
-    async function handleInputChangeParcle(text) {
+    async function handleInputChangeParcel(text) {
         if (text) {
-            // setParcles(text);
+            // setParcels(text);
             setParcelinputerror(false);
-            setloadingAutocompleteParcle(true);
+            setloadingAutocompleteParcel(true);
 
             await api
                 .get(`/topfive?blockNum=${block}&parcelNum=${text}`)
                 .then((result) => {
-                    setparcleList(result.data);
-                    setloadingAutocompleteParcle(false);
+                    setparcelList(result.data);
+                    setloadingAutocompleteParcel(false);
                 })
                 .catch((error) => {
-                    setloadingAutocompleteParcle(true);
+                    setloadingAutocompleteParcel(true);
                     setParcelinputerror(true);
                 });
         } else {
-            setloadingAutocompleteParcle(false);
-            setparcleList([]);
+            setloadingAutocompleteParcel(false);
+            setparcelList([]);
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
     useEffect(() => {
         locationAutocompleteApi.init();
     }, []);
@@ -434,7 +416,9 @@ export default function SearchBox({
                             labelId="demo-simple-select-outlined-label"
                             id="demo-simple-select-outlined"
                             value={selected}
-                            onChange={handleChange}
+                            onChange={(event) =>
+                                setSelected(event.target.value)
+                            }
                             label=""
                             className={classes.selectControl}
                             MenuProps={{ classes: { paper: classes.select } }}
@@ -447,7 +431,7 @@ export default function SearchBox({
                 </SelectWrapper>
 
                 {/* // making a State to Show the Input or Selected Icons //  */}
-                {state ? (
+                {selected === 'inputbox' ? (
                     <>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <AutocompleteWrapperItem color={color}>
@@ -472,30 +456,30 @@ export default function SearchBox({
                             </AutocompleteWrapperItem>
                             <AutocompleteWrapperItem color={color}>
                                 <b>{t.parcel}</b>
-                                <AutocompleteParcle
+                                <AutocompleteParcel
                                     placeholder={'554'}
                                     id={
                                         parcelinputerror
-                                            ? 'parcles-search-input-error'
-                                            : 'parcles-search-input'
+                                            ? 'parcels-search-input-error'
+                                            : 'parcels-search-input'
                                     }
-                                    inputSuggestions={parcleList}
+                                    inputSuggestions={parcelList}
                                     onInputChange={(input) => {
-                                        handleInputChangeParcle(input);
+                                        handleInputChangeParcel(input);
                                     }}
-                                    onFilterChange={(parcle) =>
-                                        handleSubmitParcleDetails(parcle)
+                                    onFilterChange={(parcel) =>
+                                        handleSubmitParcelDetails(parcel)
                                     }
                                     classes={{ inputRoot: 'text' }}
-                                    loading={loadingAutocompleteParcle}
+                                    loading={loadingAutocompleteParcel}
                                     disable={isDisable}
                                 />
                             </AutocompleteWrapperItem>
                         </div>
-                        {/* // Button To Handle the Inputs and function of Block and Parcles //  */}
+                        {/* // Button To Handle the Inputs and function of Block and Parcels //  */}
                         <Button
                             type="button"
-                            onClick={onEnteringBlockParcles}
+                            onClick={onEnteringBlockParcels}
                             color={color}
                         >
                             <SearchIcon style={{ fontSize: 24 }} />

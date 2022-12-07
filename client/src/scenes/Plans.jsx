@@ -3,11 +3,9 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlanCard, Typography } from 'shared';
-////////////////////////////////////////////////////////////////////////
 import Autocomplete from '../components/AutoCompleteInput';
 import AutocompleteBlock from '../components/AutoCompleteBlockInput';
-import AutocompleteParcle from '../components/AutoCompleteParcleInput';
-////////////////////////////////////////////////////////////////////////
+import AutocompleteParcel from '../components/AutoCompleteParcelInput';
 import Wrapper from '../components/Wrapper';
 import { Translation } from '../locale/he_IL';
 // import  t from '../locale/he_IL';
@@ -16,7 +14,6 @@ import locationAutocompleteApi from '../services/location-autocomplete';
 import styled from 'styled-components';
 import './Plans.css';
 
-///////////////////////////////////////
 import SearchIcon from '@material-ui/icons/Search';
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -25,8 +22,6 @@ import Select from '@material-ui/core/Select';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Variants from './skeleton';
-
-//////////////////////////////////////
 
 const InnerWrapper = styled.div`
     background: white;
@@ -150,13 +145,13 @@ const AutocompleteWrapperItems = styled.div`
         }
     }
 
-    #parcles-search-input {
+    #parcels-search-input {
         input[type='number'] {
             padding-right: 52px;
         }
     }
 
-    #parcles-search-input-error,
+    #parcels-search-input-error,
     #block-search-input-error {
         input[type='number'] {
             border: 2px solid #e21243;
@@ -260,20 +255,16 @@ class Plans extends Component {
         list: [],
         searchPoint: false,
         loadingAutocomplete: false,
-
-        ////////////////////////////
         selected: 'textbox',
         state: false,
         block: '',
-        parcle: '',
+        parcel: '',
         blockinputerror: false,
         parcelinputerror: false,
-
-        /// Making a state to store the response given by block ///
         blockList: [],
-        parcleList: [],
+        parcelList: [],
         loadingAutocompleteBlock: false,
-        loadingAutocompleteParcle: false,
+        loadingAutocompleteParcel: false,
         isDisable: true,
         t: Translation(),
     };
@@ -285,7 +276,6 @@ class Plans extends Component {
         this.loadNextPage = this.loadNextPage.bind(this);
     }
 
-    /////////////////////////////////////
     handleSelectBox(event) {
         this.setState({
             selected: event.target.value,
@@ -302,15 +292,15 @@ class Plans extends Component {
         }
     }
 
-    onEnteringBlockParcles() {
-        if (this.state.block && this.state.parcle) {
+    onEnteringBlockParcels() {
+        if (this.state.block && this.state.parcel) {
             this.setState({
                 loadingPlans: true,
                 plans: [],
             });
-            this.loadPlansBlock(this.state.block, this.state.parcle);
+            this.loadPlansBlock(this.state.block, this.state.parcel);
             this.props.history.push(
-                `/plans?block=${this.state.block},parcle=${this.state.parcle}`
+                `/plans?block=${this.state.block},parcel=${this.state.parcel}`
             );
         } else if (this.state.block) {
             this.setState({
@@ -327,7 +317,6 @@ class Plans extends Component {
         }
     }
 
-    ///////////////////////////////////
     handleAddressSubmit(address) {
         // reset current displayed plans
         this.setState({
@@ -469,64 +458,46 @@ class Plans extends Component {
         }
     }
 
-    ////////////---------------------------------------------------------/////////////
-
-    // Making a function to make a API Call to the backend and fetch the Data of block and parcles
-    async loadPlansBlock(blockNum, parcleNum = 0) {
+    // Making a function to make a API Call to the backend and fetch the Data of block and parcels
+    async loadPlansBlock(blockNum, parcelNum = 0) {
         this.setState({
             noData: false,
             loadingPlans: true,
         });
 
-        if (blockNum && parcleNum) {
-            await api
-                .get(`/centroid?blockNum=${blockNum}&?parcelNum=${parcleNum}`)
-                .then((result) => {
-                    // Run the Above Query When Data is Comming From Other API
-                    const obj = JSON.parse(result.data[0].centroid);
-                    const searchLocation = {
-                        lat: obj.coordinates[0],
-                        lng: obj.coordinates[1],
-                    };
-                    this.setState({
-                        searchPoint: searchLocation,
-                    });
-                    // this.loadPlans(this.state.pageNumber);
+        await api
+            .get(
+                `/centroid?blockNum=${blockNum}${
+                    parcelNum ? `&parcelNum=${parcelNum}` : ''
+                }`
+            )
+            .then((result) => {
+                // Run the Above Query When Data is Comming From Other API
+                const obj = JSON.parse(result.data[0].centroid);
+                const searchLocation = {
+                    lat: obj.coordinates[0],
+                    lng: obj.coordinates[1],
+                };
+                this.setState({
+                    searchPoint: searchLocation,
+                });
+                // this.loadPlans(this.state.pageNumber);
 
-                    this.loadPlans(this.state.pageNumber, searchLocation);
-                })
-                .catch((error) => this.setState({ error: '' }));
-        } else {
-            await api
-                .get(`/centroid?blockNum=${blockNum}`)
-                .then((result) => {
-                    const obj = JSON.parse(result.data[0].centroid);
-                    const searchLocation = {
-                        lat: obj.coordinates[1],
-                        lng: obj.coordinates[0],
-                    };
-                    this.setState({
-                        searchPoint: searchLocation,
-                    });
-
-                    this.loadPlans(this.state.pageNumber, searchLocation);
-                    // Run the Above Query When Data is Comming From Other API
-                    // this.loadPlans(this.state.pageNumber);
-                })
-                .catch((error) => this.setState({ error: '' }));
-        }
+                this.loadPlans(this.state.pageNumber, searchLocation);
+            })
+            .catch((error) => this.setState({ error: '' }));
     }
 
-    async handleInputChangeBlock(text) {
-        if (text) {
+    async handleInputChangeBlock(blockNum) {
+        if (blockNum) {
             this.setState({
                 loadingAutocompleteBlock: true,
                 blockinputerror: false,
-                // block: text,
+                // block: blockNum,
             });
 
             await api
-                .get(`/topfive?blockNum=${text}`)
+                .get(`/topfive?blockNum=${blockNum}`)
                 .then((result) => {
                     this.setState({
                         blockList: result.data,
@@ -547,32 +518,34 @@ class Plans extends Component {
         }
     }
 
-    async handleInputChangeParcle(text) {
-        if (text) {
+    async handleInputChangeParcel(parcelNum) {
+        if (parcelNum) {
             this.setState({
-                loadingAutocompleteParcle: true,
+                loadingAutocompleteParcel: true,
                 parcelinputerror: false,
-                // parcle: text,
+                // parcel: parcelNum,
             });
 
             await api
-                .get(`/topfive?blockNum=${this.state.block}&parcelNum=${text}`)
+                .get(
+                    `/topfive?blockNum=${this.state.block}&parcelNum=${parcelNum}`
+                )
                 .then((result) => {
                     this.setState({
-                        parcleList: result.data,
-                        loadingAutocompleteParcle: false,
+                        parcelList: result.data,
+                        loadingAutocompleteParcel: false,
                     });
                 })
                 .catch((error) => {
                     this.setState({
-                        loadingAutocompleteParcle: true,
+                        loadingAutocompleteParcel: true,
                         parcelinputerror: true,
                     });
                 });
         } else {
             this.setState({
                 blockList: [],
-                loadingAutocompleteParcle: false,
+                loadingAutocompleteParcel: false,
             });
         }
     }
@@ -591,20 +564,18 @@ class Plans extends Component {
         });
     }
 
-    handleSubmitParcleDetails(parcleNum) {
+    handleSubmitParcelDetails(parcelNum) {
         this.setState({
             loadingAutocomplete: false,
-            loadingAutocompleteParcle: false,
+            loadingAutocompleteParcel: false,
             hasMore: true,
             noData: false,
             pageNumber: 1,
             searchPoint: false,
             searchType: 'כתובת', //גוש חלקה
-            parcle: parcleNum,
+            parcel: parcelNum,
         });
     }
-    ////////////////////////////////////////////////////////////////////////////////////
-    /////////// ------------------------------------------------------------- //////////
 
     componentDidMount() {
         // For
@@ -617,28 +588,28 @@ class Plans extends Component {
         // init location service
         locationAutocompleteApi.init();
 
-        // is the query string contain the block and parcle number the fetch them and store in a state
+        // is the query string contain the block and parcel number the fetch them and store in a state
         if (this.props.location.search.includes('block')) {
             const arr = this.props.location.search.split(',');
 
             var match_block = '';
-            var match_parcle = '';
+            var match_parcel = '';
 
-            // Checking the condition that the parcle is provided or not
+            // Checking the condition that the parcel is provided or not
             if (arr.length > 1) {
                 match_block = arr[0].match(/(\d+)/);
-                match_parcle = arr[1].match(/(\d+)/);
+                match_parcel = arr[1].match(/(\d+)/);
             } else {
                 match_block = arr[0].match(/(\d+)/);
             }
 
             // Saving the value to the state
-            if (match_block && match_parcle) {
+            if (match_block && match_parcel) {
                 this.setState({
                     state: true,
                     selected: 'inputbox',
                 });
-                this.loadPlansBlock(match_block[0], match_parcle[0]);
+                this.loadPlansBlock(match_block[0], match_parcel[0]);
             } else if (match_block) {
                 this.setState({
                     state: true,
@@ -671,17 +642,18 @@ class Plans extends Component {
             selected,
             state,
             block,
-            parcle,
+            parcel,
             blockinputerror,
             parcelinputerror,
             blockList,
-            parcleList,
+            parcelList,
             loadingAutocompleteBlock,
-            loadingAutocompleteParcle,
+            loadingAutocompleteParcel,
             loadingPlans,
             isDisable,
             t,
         } = this.state;
+
         return (
             <Wrapper>
                 <InnerWrapper>
@@ -698,7 +670,6 @@ class Plans extends Component {
                         </Box>
                     </Box>
 
-                    {/* ///////////////////////////////////////////////////////////////////////  */}
                     <Box>
                         {/* <DropDown Box /> */}
                         <SelectWrapper>
@@ -784,22 +755,22 @@ class Plans extends Component {
                                 </AutocompleteWrapperItems>
                                 <AutocompleteWrapperItems>
                                     <b>{t.parcel}</b>
-                                    <AutocompleteParcle
+                                    <AutocompleteParcel
                                         classes=""
                                         id={
                                             parcelinputerror
-                                                ? 'parcles-search-input-error'
-                                                : 'parcles-search-input'
+                                                ? 'parcels-search-input-error'
+                                                : 'parcels-search-input'
                                         }
-                                        placeholder={parcle ? parcle : '554'}
-                                        inputSuggestions={parcleList}
-                                        onFilterChange={this.handleSubmitParcleDetails.bind(
+                                        placeholder={parcel ? parcel : '554'}
+                                        inputSuggestions={parcelList}
+                                        onFilterChange={this.handleSubmitParcelDetails.bind(
                                             this
                                         )}
-                                        onInputChange={this.handleInputChangeParcle.bind(
+                                        onInputChange={this.handleInputChangeParcel.bind(
                                             this
                                         )}
-                                        loading={loadingAutocompleteParcle}
+                                        loading={loadingAutocompleteParcel}
                                         disable={isDisable}
                                     />
                                 </AutocompleteWrapperItems>
@@ -807,7 +778,7 @@ class Plans extends Component {
                             <Button
                                 type="button"
                                 color={'#652dd0'}
-                                onClick={this.onEnteringBlockParcles.bind(this)}
+                                onClick={this.onEnteringBlockParcels.bind(this)}
                             >
                                 <SearchIcon style={{ fontSize: 24 }} />
                             </Button>

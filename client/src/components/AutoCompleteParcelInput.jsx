@@ -71,7 +71,6 @@ function renderSuggestion({
                 fontFamily: 'Assistant',
             }}
         >
-            {/* {console.log(suggestion)} */}
             {suggestion.parcel}
         </MenuItem>
     );
