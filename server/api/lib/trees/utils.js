@@ -71,10 +71,10 @@ async function uploadToS3(filename, bucketName, fullFileName) {
 	Log.info(`Successfully Uploaded to ${bucketName}/${keyName}. Status code: ${res.$response.httpResponse.statusCode}`);
 }
 
-async function generateGeom(db, place, street, home_number, gush, helka) {
+async function generateGeom(db, place, street, house_number, gush, helka) {
 
 	let res = '';
-	const address = street ? `${place} ${street} ${home_number || ''}` : place;
+	const address = street ? `${place} ${street} ${house_number || ''}` : place;
 	Log.debug(`address: ${address} `);
 
 	if (!place) return;
@@ -109,7 +109,7 @@ async function generateGeom(db, place, street, home_number, gush, helka) {
 }
 
 module.exports = {
-	generateGeomFromAddress: generateGeom,
+	generateGeom,
 	uploadToS3,
 	generateFilenameByTime,
 	isEmptyRow,
