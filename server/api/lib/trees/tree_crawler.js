@@ -7,6 +7,7 @@ const Log = require('../log');
 const GEO_CODING_INTERVAL = Config.get('trees.geoCodingInterval');
 const MAX_PERMITS = Config.get('trees.maxPermits');
 
+const { HaifaTreePermit } = require('./haifa_tree_permit');
 const { RegionalTreePermit } = require('./regional_tree_permit');
 const { KKLTreePermit } = require('./kkl_tree_permit');
 const { crawlTreesHTML , JERTreePermit } = require('./jerusalem_tree_permit');
@@ -72,14 +73,16 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 
 const chooseCrawl = (crawlType) => {
 
+	const haifa = { 'crawler': crawlTreeExcelByFile, 'permitType': HaifaTreePermit };
 	const kkl = { 'crawler': crawlTreeExcelByFile, 'permitType': KKLTreePermit };
 	const jer = { 'crawler': crawlTreesHTML , 'permitType': JERTreePermit };
 	const regional = { 'crawler': crawlTreeExcelByFile, 'permitType': RegionalTreePermit };
 	const crawlMap = {
+		'haifa': [haifa],
 		'jer': [jer],
 		'kkl': [kkl],
 		'regional': [regional],
-		'all': [jer, regional, kkl]
+		'all': [haifa, jer, regional, kkl]
 	};
 
 	return crawlMap[crawlType] || crawlMap['all'];
