@@ -18,14 +18,14 @@ const TIMEZONE_DIFF = 3;
 const figureStartDate = (permit_issue_date, hour, inputFormat) => {
 	const format = inputFormat || 'DD/MM/YYYY';
 	const issue_date = permit_issue_date ? moment(permit_issue_date, format).add(TIMEZONE_DIFF, 'hours') : moment().format(format);
-	const isoDate = issue_date.add(14, 'days').toISOString().split('T')[0]; 
+	const isoDate = issue_date.add(14, 'days').toISOString().split('T')[0];
 	return `${isoDate}T${hour}`;
 };
 
 const calculateLastDateToObject = (start_date, hour, inputFormat) => {
 	const format = inputFormat || 'DD/MM/YYYY';
 	const last_date = start_date ? moment(start_date, format).subtract(1, 'days') : moment().add(12, 'days').format(format);
-	const isoDate = last_date.toISOString().split('T')[0]; 
+	const isoDate = last_date.toISOString().split('T')[0];
 	return `${isoDate}T${hour}`;
 };
 
@@ -64,20 +64,20 @@ async function uploadToS3(filename, bucketName, fullFileName) {
 	Log.info(`Successfully Uploaded to ${bucketName}/${keyName}. Status code: ${res.$response.httpResponse.statusCode}`);
 }
 
-async function generateGeom(db, place, street, gush, helka) {
-	
+async function generateGeom(db, place, street, home_number, gush, helka) {
+
 	let res = '';
-	const address = `${place} ${street || ''}`;
+	const address = street ? `${place} ${street} ${home_number || ''}` : place;
 	Log.debug(`address: ${address} `);
 
 	if (!place) return;
 	if (PLACES_WITHOUT_GEOM.has(place)) return;
 	Log.info(`before resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
-	const polygon = await NodeGeocoder.gushHelkaToPolygon(gush, helka);
+	const polygon = (gush && helka) ? await NodeGeocoder.gushHelkaToPolygon(gush, helka) : undefined;
 	Log.info(`after resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
 	if (!polygon) {
 		if (place && street) {
-			res = await Geocoder.getGeocode( place, street);
+			res = await Geocoder.getGeocode( place, address);
 			if (!res) { // try geocode place only
 				Log.debug(`Couldn't geocode address: ${address}. try to fetch place from db.`);
 				res = await Geocoder.fetchOrGeocodePlace({ 'db':db, 'table':TREE_PERMIT_TABLE, 'place': place });
