@@ -6,19 +6,26 @@ const Log = require('../log');
 const aws = require('aws-sdk');
 const fs = require('fs');
 const { formatDate } = require('../date');
-const { TREE_PERMIT_TABLE } = require('../../model/tree_permit_constants');
+const { TREE_PERMIT_TABLE, REGIONAL_OFFICE } = require('../../model/tree_permit_constants');
 const {
 	TEL_AVIV_OFFICAL, TEL_AVIV_FORMATS, PARDES_HANA_FORMATS, PARDES_HANA_OFFICAL,
 	PLACES_WITHOUT_GEOM
 } = require('./tree_crawler_consts');
-
+const { HaifaTreePermit } = require('./haifa_tree_permit');
 
 const TIMEZONE_DIFF = 3;
 
-const figureStartDate = (permit_issue_date, hour, inputFormat) => {
+const figureStartDate = (permit_issue_date, last_day_to_objection, hour, inputFormat, regional_office) => {
+	let start_day;
 	const format = inputFormat || 'DD/MM/YYYY';
-	const issue_date = permit_issue_date ? moment(permit_issue_date, format).add(TIMEZONE_DIFF, 'hours') : moment().format(format);
-	const isoDate = issue_date.add(14, 'days').toISOString().split('T')[0];
+	if (regional_office == HaifaTreePermit[REGIONAL_OFFICE]) {
+		// in Haifa, start date is absent, so we simply take one day after last day to objection
+		start_day = moment(last_day_to_objection, format).add(1, 'days');
+	} else {
+		const issue_date = permit_issue_date ? moment(permit_issue_date, format).add(TIMEZONE_DIFF, 'hours') : moment().format(format);
+		start_day = issue_date.add(14, 'days');
+	}
+	const isoDate = start_day.toISOString().split('T')[0];
 	return `${isoDate}T${hour}`;
 };
 
