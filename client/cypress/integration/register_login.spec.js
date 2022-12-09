@@ -4,7 +4,9 @@
 context('Register and login', () => {
   // emails won't actually be sent since we are using ethereal as the
   // smtp service when running these tests
-  const userEmail = `shanelle97+${Date.now()}@ethereal.email`;
+  // const userEmail = `shanelle97+${Date.now()}@ethereal.email`;
+
+  const userEmail = `ceo+${Date.now()}@meirim.org`;
 
   beforeEach(() => {
     cy.viewport('macbook-13');
@@ -58,7 +60,15 @@ context('Register and login', () => {
 
       cy.get('#register-address-input')
         .type('myaddres')
-        .get('#register-aboutme-input')
+      
+      cy.get('#register-type-input').click();
+
+      cy.wait(100);
+
+      cy.get('.MuiMenuItem-root').eq(1).click()
+
+        
+      cy.get('#register-aboutme-input')
         .type('aboutmeee');
 
       cy.get('#register-send-form-button')

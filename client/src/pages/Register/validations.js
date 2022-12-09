@@ -1,47 +1,59 @@
-import { validateEmail } from '../../validations' 
+import { validateEmail } from '../../validations';
 
-export const firstStepValidation = ({ name, email, password }) => {
-	const isValidEmail =  email ? validateEmail(email) : false
-	const isValidName =  Boolean(name)
-	const isValidPassword = password.length >= 6 
+const inValidEmailMessage = 'מייל לא תקין';
+const emptyInputMessage = 'שדה חובה';
+const shortPasswordMessage = 'לפחות ששה תווים';
+const emptyTypeMessage = 'אנא הוסיפו סוג משתמש';
 
-	return { isValidEmail, isValidName, isValidPassword }
+export function formValidation(values) {
+	return {
+		name: nameError(values.name),
+		password: passwordError(values.password),
+		email: emailError(values.email),
+		type: typeError(values.type),
+	};
 }
 
-export const formValidation = ({ name, email, password, dirtyInputs, onFocusInput }) => {
-	const isValidEmail = 
-		onFocusInput.email  || validateEmail(email)? true : !dirtyInputs.email
-	const isValidName = 
-		onFocusInput.name  || Boolean(name) ? true : !dirtyInputs.name
-	const isValidPassword = 
-		onFocusInput.password  || password.length >= 6 ? true : !dirtyInputs.password
+function nameError(name) {
+	if (!name) {
+		return emptyInputMessage;
+	}
 
-	return { isValidEmail, isValidName, isValidPassword }
+	return '';
 }
 
-const inValidEmailMessage = 'מייל לא תקין'
-const emptyInputMessage = 'שדה חובה'
-const shortPasswordMessage = 'לפחות ששה תווים'
-const emptyString = ''
-
-export const getFormErrors = ({ 
-	validations: { isValidEmail, isValidName, isValidPassword }, 
-	values: { email, password } }) => {
-	const emailError = { 
-		isValid: isValidEmail,
-		message: isValidEmail ? emptyString : email ? inValidEmailMessage : emptyInputMessage
-	}
-	const nameError = { 
-		isValid: isValidName, 
-		message: isValidName ? emptyString : emptyInputMessage
-	}
-	const passwordError = { 
-		isValid: isValidPassword, 
-		message: isValidPassword ? emptyString : password ? shortPasswordMessage : emptyInputMessage
+function passwordError(password) {
+	if (!password) {
+		return emptyInputMessage;
+	} else if (password.length < 6) {
+		return shortPasswordMessage;
 	}
 
-	return { emailError, nameError, passwordError }
+	return '';
 }
 
+function emailError(email) {
+	if (!email) {
+		return emptyInputMessage;
+	} else if (!validateEmail(email)) {
+		return inValidEmailMessage;
+	}
 
+	return '';
+}
 
+function typeError(type) {
+	if (!type) {
+		return emptyTypeMessage;
+	}
+
+	return '';
+}
+
+export function fieldError(field, validations, touchedInputs, focusedInput) {
+	if (touchedInputs[field] && focusedInput !== field) {
+		return validations[field];
+	} else {
+		return '';
+	}
+}
