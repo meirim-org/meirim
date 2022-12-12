@@ -30,6 +30,7 @@
         "config": "^3.3.1",
         "connect-session-knex": "^1.7.3",
         "cors": "^2.8.5",
+        "cron-schedule": "^3.0.6",
         "customize-cra": "^1.0.0",
         "email-verify": "^0.2.1",
         "esri-to-geojson": "^1.0.4",

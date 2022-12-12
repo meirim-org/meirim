@@ -7,14 +7,12 @@ const Nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
  
 const Juice = require('juice');
-const crypto = require('crypto');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
 const { map, keys, get } = require('lodash');
-const { emailBucketName: bucketName, useS3ForEmails: useS3 } = Config.get('aws');
-const { uploadToS3 } = require('./aws');
-const utils = require('./email_utils');
+const { parseCronExpression } = require('cron-schedule')
+const cron = parseCronExpression('20 7,16 * * SUN-THU')
 
 class DynamicTemplateEmail {
 	 /**
@@ -58,19 +56,6 @@ class DynamicTemplateEmail {
 			.then(info => Log.info('Message sent: %s', info.messageId, mailOptions.to));
 	}
 
-	 async uploadToS3 (mailOptions) {
-	   if (useS3) {
-		try {
-			const s3filename = crypto.randomBytes(8).toString('hex') + '.json';
-		   	await uploadToS3(s3filename, bucketName, mailOptions);
-		   	return s3filename;
-		} catch (err) {
-			Log.error(`failed s3 upload for ${mailOptions.to}`, err)
-		}		 
-	   }
-	   return undefined;
-	}
-
 	 digestPlanAlert (recipient, emailPlanParams, emailAlertParams) {
 		 const email = {
 			 from: `"${this.config.from_name}" < ${this.config.from_email}>`, // sender address
@@ -90,11 +75,10 @@ class DynamicTemplateEmail {
 			  ],
 			attachments:  this.getEmailAttachements(emailPlanParams),
 			template_id : this.dynamicTemplates.digestPlanAlert,
-			send_at: utils.getUnixTime(utils.calcBussinessDate(new Date())),		
+			send_at: cron.getNextDate(new Date()).getTime()/1000,		
 		};
 		return sgMail
 			.send(email)
-			.then(this.uploadToS3(email))
 			.then(() => {
 				console.log('Digest Email sent');
 			})
