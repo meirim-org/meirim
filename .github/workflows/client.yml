@@ -81,11 +81,11 @@ jobs:
                   npm run serve &
                   sleep 3
 
-            - name: e2e test
-              working-directory: client
-              run: |
-                  $(npm bin)/cypress run --browser chrome --headless &&
-                  $(npm bin)/cypress run --browser firefox --headless
+            # - name: e2e test
+            #   working-directory: client
+            #   run: |
+            #       $(npm bin)/cypress run --browser chrome --headless &&
+            #       $(npm bin)/cypress run --browser firefox --headless
             
             - name: cache client
               uses: actions/cache@v3
