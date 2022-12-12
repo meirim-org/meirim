@@ -88,7 +88,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
                             <Box component="nav">
                                 <Box display="flex" alignItems="center">
                                     {navLinks.map(navLink => !navLink.hide && (
-                                        <Box px={2}>
+                                        <Box px={2} key={navLink.id}>
                                         <SC.StyledLink
                                                 id={navLink.id}
                                                 to={navLink.path + '/'}

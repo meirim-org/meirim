@@ -215,7 +215,18 @@ const HEBREW_TRANSLATION = {
 		discoverPlanning: 'מחפשים את הכתובת שלכם', 
 		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!', 
 		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם' 
-	}
+	},
+
+
+	// Permits table columns
+	permitSubject: 'נושא ההיתר',
+	permitCreatedAt: 'תאריך פתיחת היתר',
+	permitRegion: 'ועדה איזורית',
+	permitRealEstate: 'מקרקעין',
+	permitAuthor: 'שם המבקש.ת',
+	permitStatus: 'סטטוס',
+	permitTimeline: 'זמן להגשת ערר',
+	permitImportance: 'חשיבות ההיתר בשבילי',
 };
 
 const ARABIC_TRANSLATION =  {
