@@ -3,6 +3,7 @@ const turf = require('turf');
 const Config = require('../lib/config');
 const axios = require('axios');
 const Log = require('../lib/log');
+const simplify = require('simplify-geojson');
 
 const geocoder = NodeGeocoder(Config.get('geocoder'));
 
@@ -24,28 +25,28 @@ const degreeToMeter = (lon, lat, dn, de) => {
 // Some parcels (Gushim) are malformed (usually in the Golan Heights) and should be ignored.
 const BAD_PARCELS = ['203000', '202011', '202000', '201000', '200000', '200001'];
 
-const gushHelkaToPolygon = async (gush, helka) => {		
+const gushHelkaToPolygon = async (gush, helka) => {
 	if (!gush || !helka) {
 		return;
 	}
-	
+
 	if (BAD_PARCELS[gush]) {
 		return;
 	}
 
 
-	// parse the raw string into a unique array of numbers 
+	// parse the raw string into a unique array of numbers
 	// e.g -
-    //  - "123,123" => [123]
+	//  - "123,123" => [123]
 	//  - "1-2" => [1,2]
-	//  - "helka 4 and 5" => [4,5]  
+	//  - "helka 4 and 5" => [4,5]
 	const helkaArr = [...new Set(helka.match(/\d+/gi))];
 
 
-	// filter the raw string into a single numeric value 
+	// filter the raw string into a single numeric value
 	// e.g - "194,194" => 194
 	const filteredGush = (gush.match(/\d+/i) || [])[0];
-	
+
 	try {
 
 		const features = (await Promise.all(
@@ -58,17 +59,17 @@ const gushHelkaToPolygon = async (gush, helka) => {
 							timeout: 20000,
 						});
 					const geoJsonRes = res.data;
-					
+
 					if (!geoJsonRes || !geoJsonRes['features']) {
 						Log.error('Error in geoJson:', geoJsonRes);
 						return;
 					}
-					
+
 					if (geoJsonRes['features'].length === 0) {
 						Log.warn('geoJsonRes feature is blank:', geoJsonRes);
 						return null;
 					}
-	
+
 					return geoJsonRes['features'][0];
 				} catch(e) {
 					return null;
@@ -80,6 +81,7 @@ const gushHelkaToPolygon = async (gush, helka) => {
 			return null;
 		}
 		else if (features.length === 1) {
+			simplify(features[0],  0.01);
 			return features[0];
 		} else {
 			const geometry = features.reduce((prev, current) => {
@@ -89,7 +91,8 @@ const gushHelkaToPolygon = async (gush, helka) => {
 
 				return turf.union(prev, current);
 			}, null);
-		
+
+			simplify(geometry,  0.01);
 			return geometry;
 		}
 	}
