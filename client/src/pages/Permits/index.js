@@ -9,7 +9,8 @@ const Homepage = () => {
 
 	const data = [
 		{
-			permitSubject: 'בנייה חדשה',
+			permitId: 1,
+			permitSubject: 'בנייה חדשה א',
 			permitCreatedAt: '23/11/2022',
 			permitRegion: 'גזר',
 			permitRealEstate: 'גוש: 4628, חלקה: 16',
@@ -19,7 +20,8 @@ const Homepage = () => {
 			permitImportance: 'לא מעניין',
 		},
 		{
-			permitSubject: 'בנייה חדשה',
+			permitId: 2,
+			permitSubject: 'בנייה חדשה ב',
 			permitCreatedAt: '23/11/2022',
 			permitRegion: 'גזר',
 			permitRealEstate: 'גוש: 4628, חלקה: 16',
@@ -29,14 +31,15 @@ const Homepage = () => {
 			permitImportance: 'לא מעניין',
 		},
 		{
-			permitSubject: 'בנייה חדשה',
+			permitId: 3,
+			permitSubject: 'בנייה חדשה ג',
 			permitCreatedAt: '23/11/2022',
 			permitRegion: 'גזר',
 			permitRealEstate: 'גוש: 4628, חלקה: 16',
 			permitAuthor: 'חברת חשמל לישראל בע״מ',
 			permitStatus: 'פתיחה',
 			permitTimeline: '31 יום',
-			permitImportance: 'לא מעניין',
+			permitImportance: 'מעניין',
 		},
 	]
 
@@ -46,26 +49,26 @@ const Homepage = () => {
 		columnHelper.accessor('permitSubject', {
 			header: () => t.permitSubject
 		}),
-	columnHelper.accessor('permitCreatedAt', {
-		header: () => t.permitCreatedAt
+		columnHelper.accessor('permitCreatedAt', {
+			header: () => t.permitCreatedAt
 		}),
-columnHelper.accessor('permitRegion', {
-	header: () => t.permitRegion
+		columnHelper.accessor('permitRegion', {
+			header: () => t.permitRegion
 		}),
-	columnHelper.accessor('permitRealEstate', {
-		header: () => t.permitRealEstate
+		columnHelper.accessor('permitRealEstate', {
+			header: () => t.permitRealEstate
 		}),
-	columnHelper.accessor('permitAuthor', {
-		header: () => t.permitAuthor
+		columnHelper.accessor('permitAuthor', {
+			header: () => t.permitAuthor
 		}),
-	columnHelper.accessor('permitStatus', {
-		header: () => t.permitStatus
+		columnHelper.accessor('permitStatus', {
+			header: () => t.permitStatus
 		}),
-	columnHelper.accessor('permitTimeline', {
-		header: () => t.permitTimeline
+		columnHelper.accessor('permitTimeline', {
+			header: () => t.permitTimeline
 		}),
-	columnHelper.accessor('permitImportance', {
-		header: () => t.permitImportance
+		columnHelper.accessor('permitImportance', {
+			header: () => t.permitImportance
 		}),
 	]
 

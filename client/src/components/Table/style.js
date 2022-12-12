@@ -9,29 +9,40 @@ export const Table = styled.table`
 
    border-collapse: separate;
    border-spacing: 0;
-`;
 
-export const TableBody = styled.tbody`
-    margin-top:100px;
-`;
-
-export const Row = styled.tr`
-`;
-
-export const Cell = styled.td`
-    text-align: center;
-    padding:20px;
+   width: 80%;
 `;
 
 export const TableHead = styled.thead`
-    
 `;
 
 export const HeaderRow = styled.tr`
 `;
 
+export const HeaderCellSortable = styled.div`
+    cursor: ${props => props.sortable ? 'pointer' : 'initial'};
+    text-align: center;
+    user-select: none;
+
+    display: flex;
+    flex-direction: row;
+`;
+
+export const CellContent = styled.div`
+    text-align: center;
+    flex-grow: 1;
+    
+`;
+
+export const CellSep = styled.div`
+    display: flex;
+    align-self: flex-end;
+    color:#652DD0;
+`;
+
 export const HeaderCell = styled.th`
-    padding:10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 
     border-top: 1px solid #D0D0D0;
     border-bottom: 1px solid #D0D0D0;
@@ -51,9 +62,23 @@ export const HeaderCell = styled.th`
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
     }
-   
-    &:not(:last-child) {
-        border-left: 1px solid #652DD0;
-    }
+`;
 
+export const TableBody = styled.tbody`
+    background-color: #FFFFFF;
+    width: 100%;
+`;
+
+export const RowSpacer = styled.tr`
+    height: 30px;
+`;
+
+export const Row = styled.tr`
+    background-color: #FCFAFF;
+`;
+
+export const Cell = styled.td`
+    text-align: center;
+    padding:24px;
+    
 `;
