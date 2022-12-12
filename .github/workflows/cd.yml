@@ -1,0 +1,22 @@
+name: CD app to stg server
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    uses: ./.github/workflows/client.yml
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to EC2
+      uses: actions/cache@v3
+      id: get-cache
+      with: 
+        path: client
+        key: client-key
+    - name: check cache
+      run: ls client
+      
+    
+
+

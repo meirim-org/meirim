@@ -7,6 +7,7 @@ on:
     pull_request:
         branches:
             - master
+    workflow_call:
 
 jobs:
     test:
@@ -85,3 +86,11 @@ jobs:
               run: |
                   $(npm bin)/cypress run --browser chrome --headless &&
                   $(npm bin)/cypress run --browser firefox --headless
+            
+            - name: cache client
+              uses: actions/cache@v3
+              env:
+                cache-name: client-compiled-code
+              with:
+                path: client
+                key: client-key
