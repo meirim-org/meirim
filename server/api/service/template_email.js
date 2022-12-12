@@ -12,7 +12,7 @@ const Config = require('../lib/config');
 const Alert = require('../model/alert');
 const { map, keys, get } = require('lodash');
 const { parseCronExpression } = require('cron-schedule')
-const cron = parseCronExpression('20 7,16 * * SUN-THU')
+const cron = parseCronExpression('*/2 9-20 * * SUN-THU')
 
 class DynamicTemplateEmail {
 	 /**
