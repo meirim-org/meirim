@@ -39,7 +39,7 @@ const InnerWrapper = styled.div`
 `;
 
 const AutocompleteWrapper = styled.div`
-    width: 280px;
+    width: 300px;
     border-radius: 8px;
     background: #f5f5f5;
 
