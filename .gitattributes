@@ -1,0 +1,2 @@
+server/migrations/202212 filter=lfs diff=lfs merge=lfs -text
+server/migrations/20221207155213_parcel_table.js filter=lfs diff=lfs merge=lfs -text

@@ -1,16 +1,3 @@
-exports.up = function (knex) {
-  return knex.schema.createTable("parcel_details", function (table) {
-    table.increments("id").primary();
-    table.integer("gush_num").notNullable();
-    table.integer("parcel");
-    // table.geometry("centroid");
-    table.specificType("centroid", "GEOMETRY");
-
-    table.string("county_name");
-    table.string("region_name");
-  });
-};
-
-exports.down = function (knex) {
-  return knex.schema.dropTable("parcel_details");
-};
+version https://git-lfs.github.com/spec/v1
+oid sha256:d2d0224dec05431cfa2f8e10a8a4fb14d52114e4fb6547a16ecd38bcc135e6c9
+size 284974891
