@@ -189,6 +189,7 @@ class Person extends BaseModel {
 				(err, info) => {
 					Log.debug('Email verifier', info, err);
 					if (err) {
+						console.log('USER NOT VERIFIED ERROR' + JSON.stringify(err));
 						reject(err);
 					} else if (info.success) {
 						resolve(true);
