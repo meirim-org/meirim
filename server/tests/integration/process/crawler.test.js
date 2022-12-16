@@ -668,8 +668,8 @@ describe('Crawler scraped data', function() {
 
 		// creation date should be less than current date minus 5 seconds and update should be
 		// above it. creation date should not equal update date
-		assert.isBelow(plan.attributes.created_at.getTime(), new Date().getTime() - 5000, 'plan created_at value earlier than current time minus 5 seconds');
-		assert.isAbove(plan.attributes.updated_at.getTime(), new Date().getTime() - 5000, 'plan updated_at value later than current time minus 5 seconds');
+		assert.isBelow(plan.attributes.created_at.getTime(), new Date().getTime() - 3000, 'plan created_at value earlier than current time minus 3 seconds');
+		assert.isAbove(plan.attributes.updated_at.getTime(), new Date().getTime() - 3000, 'plan updated_at value later than current time minus 3 seconds');
 		assert.isAbove(plan.attributes.updated_at.getTime() - plan.attributes.created_at.getTime(), 500, 'plan created_at and updated_at differ by more than 5 seconds of each other (since the plan is actually created with iplan data and then updated with mavat data)');
 
 		// // fetch all chart one point eight rows - both should be updated

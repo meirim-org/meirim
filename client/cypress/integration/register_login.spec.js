@@ -6,7 +6,7 @@ context('Register and login', () => {
   // smtp service when running these tests
   // const userEmail = `shanelle97+${Date.now()}@ethereal.email`;
 
-  const userEmail = `ceo+${Date.now()}@meirim.org`;
+  const userEmail = `rnd@meirim.org`;
 
   beforeEach(() => {
     cy.viewport('macbook-13');
