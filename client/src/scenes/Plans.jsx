@@ -43,10 +43,6 @@ const AutocompleteWrapper = styled.div`
     border-radius: 8px;
     background: #f5f5f5;
 
-    @media (max-width: 763px) {
-        width: 320px;
-    }
-
     input[type='text'] {
         text-align: right;
         color: #918899;
@@ -493,7 +489,8 @@ class Plans extends Component {
             this.setState({
                 loadingAutocompleteBlock: true,
                 blockinputerror: false,
-                // block: blockNum,
+                blockList: [],
+                parcel: 0,
             });
 
             await api
@@ -506,7 +503,7 @@ class Plans extends Component {
                 })
                 .catch((error) =>
                     this.setState({
-                        loadingAutocompleteBlock: true,
+                        loadingAutocompleteBlock: false,
                         blockinputerror: true,
                     })
                 );
@@ -523,7 +520,7 @@ class Plans extends Component {
             this.setState({
                 loadingAutocompleteParcel: true,
                 parcelinputerror: false,
-                // parcel: parcelNum,
+                parcelList: [],
             });
 
             await api
@@ -538,7 +535,7 @@ class Plans extends Component {
                 })
                 .catch((error) => {
                     this.setState({
-                        loadingAutocompleteParcel: true,
+                        loadingAutocompleteParcel: false,
                         parcelinputerror: true,
                     });
                 });
@@ -561,6 +558,7 @@ class Plans extends Component {
             searchType: 'כתובת', //גוש חלקה
             block: blockNum,
             isDisable: false,
+            blockList: [],
         });
     }
 
@@ -574,6 +572,7 @@ class Plans extends Component {
             searchPoint: false,
             searchType: 'כתובת', //גוש חלקה
             parcel: parcelNum,
+            parcelList: [],
         });
     }
 
@@ -608,12 +607,15 @@ class Plans extends Component {
                 this.setState({
                     state: true,
                     selected: 'inputbox',
+                    block: match_block[0],
+                    parcel: match_parcel[0],
                 });
                 this.loadPlansBlock(match_block[0], match_parcel[0]);
             } else if (match_block) {
                 this.setState({
                     state: true,
                     selected: 'inputbox',
+                    block: match_block[0],
                 });
                 this.loadPlansBlock(match_block[0]);
             }
@@ -742,7 +744,8 @@ class Plans extends Component {
                                                 ? 'block-search-input-error'
                                                 : 'block-search-input'
                                         }
-                                        placeholder={block ? block : '5463'}
+                                        placeholder={'5463'}
+                                        value={block}
                                         inputSuggestions={blockList}
                                         onFilterChange={this.handleSubmitBlockDetails.bind(
                                             this
@@ -762,7 +765,8 @@ class Plans extends Component {
                                                 ? 'parcels-search-input-error'
                                                 : 'parcels-search-input'
                                         }
-                                        placeholder={parcel ? parcel : '554'}
+                                        placeholder={'554'}
+                                        value={parcel}
                                         inputSuggestions={parcelList}
                                         onFilterChange={this.handleSubmitParcelDetails.bind(
                                             this

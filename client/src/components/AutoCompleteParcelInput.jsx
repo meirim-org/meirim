@@ -86,9 +86,17 @@ renderSuggestion.propTypes = {
 
 class AutocompleteInput extends Component {
     state = {
-        inputValue: '',
+        inputValue: this.props.value,
         selectedItem: [],
     };
+
+    componentDidUpdate(prevProps) {
+        if (this.props.value === 0 && prevProps.value > 0) {
+            this.setState({
+                inputValue: '',
+            });
+        }
+    }
 
     handleKeyDown = (event) => {
         const { onFilterChange } = this.props;

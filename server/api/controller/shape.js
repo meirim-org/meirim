@@ -22,11 +22,11 @@ class ShapeController extends Controller {
 
 		// if both blockNum and parcelNum are passed then the following query query will get selected
 		if (blockNum && parcelNum) {
-			query = `SELECT id,gush_num, parcel,ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from parcel_details where gush_num LIKE '${blockNum}%' and parcel LIKE '${parcelNum}%' limit ${limit}`;
+			query = `SELECT id,gush_num, parcel,ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from parcel_details where gush_num LIKE '${blockNum}%' and parcel LIKE '${parcelNum}%' order by gush_num asc,parcel asc limit ${limit}`;
 		}
 		// if only blockNum is passed then following query query will get selected
 		else if (blockNum) {
-			query = `SELECT id,gush_num, ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from block WHERE gush_num LIKE '${blockNum}%' limit ${limit}`;
+			query = `SELECT id,gush_num, ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from block WHERE gush_num LIKE '${blockNum}%' order by gush_num limit ${limit}`;
 		}
 
 		return Knex.raw(query).then((results) => {
