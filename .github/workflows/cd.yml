@@ -23,7 +23,7 @@ jobs:
         path: client
         key: client-key
     - name: check cache
-      run: echo $HOST_NAME
+      run: env
       
     
 
