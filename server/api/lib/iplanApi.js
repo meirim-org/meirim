@@ -120,5 +120,6 @@ const getPlanningCouncils = () => {
 
 module.exports = {
 	getBlueLines,
-	getPlanningCouncils
+	getPlanningCouncils,
+	buildMavatURL
 };
