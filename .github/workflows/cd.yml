@@ -1,6 +1,9 @@
 name: CD app to stg server
 on:
   workflow_dispatch: {}
+  push:
+    branches:
+      - "feature/add"
 
 jobs:
   build:
@@ -8,6 +11,10 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment: staging
+    env: # Or as an environment variable
+      EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+      HOST_NAME: ${{ secrets.HOST_NAME }}
     steps:
     - name: Deploy to EC2
       uses: actions/cache@v3
@@ -16,7 +23,7 @@ jobs:
         path: client
         key: client-key
     - name: check cache
-      run: ls client
+      run: echo $HOST_NAME
       
     
 
