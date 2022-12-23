@@ -22,7 +22,7 @@ class ShapeController extends Controller {
 
 		// if both blockNum and parcelNum are passed then the following query query will get selected
 		if (blockNum && parcelNum) {
-			query = `SELECT id,gush_num, parcel,ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from parcel_details where gush_num LIKE '${blockNum}%' and parcel LIKE '${parcelNum}%' order by gush_num asc,parcel asc limit ${limit}`;
+			query = `SELECT id,gush_num, parcel,ST_AsGeoJSON(centroid) AS centroid, county_name, region_name  from parcel_details where gush_num = '${blockNum}' and parcel LIKE '${parcelNum}%' order by parcel limit ${limit}`;
 		}
 		// if only blockNum is passed then following query query will get selected
 		else if (blockNum) {
