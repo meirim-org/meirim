@@ -21,7 +21,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import Variants from './skeleton';
+// import Variants from './skeleton';
 
 const InnerWrapper = styled.div`
     background: white;
@@ -30,7 +30,7 @@ const InnerWrapper = styled.div`
     flex-wrap: wrap;
     gap: 24px;
     padding: 12px 6%;
-    margin: 1rem 0;
+    // margin: 1rem 0;
     width: 100%;
 
     @media (max-width: 380px) {
@@ -243,7 +243,7 @@ class Plans extends Component {
         error: false,
         hasMore: true,
         noData: false,
-        loadingPlans: false,
+        // loadingPlans: false,
         pageNumber: 1,
         plans: [],
         address: '',
@@ -291,7 +291,7 @@ class Plans extends Component {
     onEnteringBlockParcels() {
         if (this.state.block && this.state.parcel) {
             this.setState({
-                loadingPlans: true,
+                // loadingPlans: true,
                 plans: [],
             });
             this.loadPlansBlock(this.state.block, this.state.parcel);
@@ -300,7 +300,7 @@ class Plans extends Component {
             );
         } else if (this.state.block) {
             this.setState({
-                loadingPlans: true,
+                // loadingPlans: true,
                 plans: [],
             });
             this.loadPlansBlock(this.state.block);
@@ -316,7 +316,7 @@ class Plans extends Component {
     handleAddressSubmit(address) {
         // reset current displayed plans
         this.setState({
-            loadingPlans: true,
+            // loadingPlans: true,
             hasMore: true,
             noData: false,
             plans: [],
@@ -386,7 +386,7 @@ class Plans extends Component {
     loadPlans(pageNumber, point) {
         this.setState({
             noData: false,
-            loadingPlans: true,
+            // loadingPlans: true,
         });
 
         api.get(
@@ -398,22 +398,25 @@ class Plans extends Component {
                     hasMore:
                         result.pagination.page < result.pagination.pageCount,
                     noData: this.state.plans.length + result.data.length === 0,
-                    loadingPlans: false,
+                    // loadingPlans: false,
                     pageNumber,
                     plans: [...this.state.plans, ...result.data],
                 });
             })
 
             .catch((error) =>
-                this.setState({ error: '', loadingPlans: false })
+                this.setState({
+                    error: '',
+                    // loadingPlans: false
+                })
             );
         // .catch((error) => this.setState({ error: 'שגיאה בשליפת תוכניות' }));
     }
 
     loadNextPage() {
-        if (!this.state.loadingPlans) {
-            this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
-        }
+        // if (!this.state.loadingPlans) {
+        this.loadPlans(this.state.pageNumber + 1, this.state.searchPoint);
+        // }
     }
 
     loadQsSearchParams() {
@@ -799,19 +802,17 @@ class Plans extends Component {
                         ))}
                     </Grid>
 
-                    {/* Showing the skeleton at loading time  */}
-                    {loadingPlans && <Variants />}
+                    {/* Showing the skeleton at loading time 
+                    // {loadingPlans && <Variants />} */}
 
                     {error && <div className="error-container">{error}</div>}
                     {noData && <div>אין כאן כלום</div>}
                 </div>
-
-                {/* // Removing theLoading Text Written in the Bottom //  */}
                 <InfiniteScroll
                     dataLength={plans.length}
                     next={this.loadNextPage}
                     hasMore={hasMore}
-                    // loader={<h4 className="centerNote">{t.loading}</h4>}
+                    loader={<h4 className="centerNote">{t.loading}</h4>}
                     endMessage={
                         <p className="centerNote">
                             <b>{t.seenAllPlans}</b>
