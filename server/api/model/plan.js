@@ -415,7 +415,7 @@ class Plan extends Model {
 						try {
 							await existingFile.destroy({ transacting: transaction });
 						} catch (e) {
-							Log.error(`error destroy file: ${e.message}`, e.trace);
+							Log.error(`error destroy file: ${e.message}`, e.trace());
 						}
 					}
 		
