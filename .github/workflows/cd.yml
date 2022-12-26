@@ -15,15 +15,23 @@ jobs:
     env: # Or as an environment variable
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
       HOST_NAME: ${{ secrets.HOST_NAME }}
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
     steps:
-    - name: Deploy to EC2
+    - name: Get compiled code
       uses: actions/cache@v3
       id: get-cache
       with: 
         path: client
         key: client-key
-    - name: check cache
-      run: env
+    - name: Deploy code
+      run: |
+          echo "$EC2_SSH_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${EC2_USERNAME}@${HOST_NAME} '
+          
+            #Now we have got the access of EC2 and we will start the deploy .
+            ls
+            '
+
       
     
 
