@@ -227,7 +227,7 @@ describe('Crawler scraped data', function() {
 		assert.equal(plan.attributes.erosion_views, 0, 'read plan erosion views are the default value');
 		// assert.isTrue(plan.attributes.explanation.startsWith('התכנית שייכת למגרש מאושר מס'), 'pdf-read plan explanation is correct');
 		// creation date should be less than current date and should equal update date
-		assert.isBelow(plan.attributes.created_at.getTime(), new Date().getTime(), 'plan created_at value earlier than current time');
+		assert.isBelow(plan.attributes.created_at.getTime(), (new Date().getTime() + 1000), 'plan created_at value earlier than current time');
 		assert.approximately(plan.attributes.created_at.getTime(), plan.attributes.updated_at.getTime(), 5000, 'plan created_at and updated_at times are within 5 seconds of each other (since the plan is actually created with iplan data and then updated with mavat data)');
 
 		// since there are no controllers for the pdf table data models, use the models directly
