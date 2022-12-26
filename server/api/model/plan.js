@@ -105,7 +105,7 @@ class Plan extends Model {
 		return new Promise((resolve) => {
 			// set the geometry's centroid using ST_Centroid function
 			//TODO: return this after the MP_ID migration
-			// model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
+			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
 			resolve();
 		});
 	}
