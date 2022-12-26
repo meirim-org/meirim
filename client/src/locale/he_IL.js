@@ -220,7 +220,7 @@ const HEBREW_TRANSLATION = {
 
 	// Permits table columns
 	permitSubject: 'נושא ההיתר',
-	permitCreatedAt: 'תאריך פתיחת היתר',
+	permitPermitCreatedAt: 'תאריך פתיחת היתר',
 	permitRegion: 'ועדה איזורית',
 	permitRealEstate: 'מקרקעין',
 	permitAuthor: 'שם המבקש.ת',

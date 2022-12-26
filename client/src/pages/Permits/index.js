@@ -1,47 +1,22 @@
+import { useState, useEffect } from 'react';
 import Table from 'components/Table/Table';
 import Wrapper from 'components/Wrapper';
 import React from 'react';
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTranslation } from 'locale/he_IL';
+import { fetchPermits } from './controller';
 
 const Homepage = () => {
 	const { t } = useTranslation();
+	const [ data, setData ] = useState([]);
 
-	const data = [
-		{
-			permitId: 1,
-			permitSubject: 'בנייה חדשה א',
-			permitCreatedAt: '23/11/2022',
-			permitRegion: 'גזר',
-			permitRealEstate: 'גוש: 4628, חלקה: 16',
-			permitAuthor: 'חברת חשמל לישראל בע״מ',
-			permitStatus: 'פתיחה',
-			permitTimeline: '31 יום',
-			permitImportance: 'לא מעניין',
-		},
-		{
-			permitId: 2,
-			permitSubject: 'בנייה חדשה ב',
-			permitCreatedAt: '23/11/2022',
-			permitRegion: 'גזר',
-			permitRealEstate: 'גוש: 4628, חלקה: 16',
-			permitAuthor: 'חברת חשמל לישראל בע״מ',
-			permitStatus: 'פתיחה',
-			permitTimeline: '31 יום',
-			permitImportance: 'לא מעניין',
-		},
-		{
-			permitId: 3,
-			permitSubject: 'בנייה חדשה ג',
-			permitCreatedAt: '23/11/2022',
-			permitRegion: 'גזר',
-			permitRealEstate: 'גוש: 4628, חלקה: 16',
-			permitAuthor: 'חברת חשמל לישראל בע״מ',
-			permitStatus: 'פתיחה',
-			permitTimeline: '31 יום',
-			permitImportance: 'מעניין',
-		},
-	]
+	useEffect(() => {
+		const fetchData = async () => {
+			const res = await fetchPermits();
+			setData(res.data);
+		}
+		fetchData();
+	}, []);
 
 	const columnHelper = createColumnHelper()
 
@@ -49,8 +24,8 @@ const Homepage = () => {
 		columnHelper.accessor('permitSubject', {
 			header: () => t.permitSubject
 		}),
-		columnHelper.accessor('permitCreatedAt', {
-			header: () => t.permitCreatedAt
+		columnHelper.accessor('permitPermitCreatedAt', {
+			header: () => t.permitPermitCreatedAt
 		}),
 		columnHelper.accessor('permitRegion', {
 			header: () => t.permitRegion
