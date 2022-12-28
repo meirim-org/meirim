@@ -26,15 +26,16 @@ const options = {
 const fields = [
 	'objectid',
 	'shape',
-//	'plan_area_code',
-//	'jurstiction_code',
+	//	'plan_area_code',
+	//	'jurstiction_code',
 	'plan_county_name',
-//	'plan_county_code',
+	//	'plan_county_code',
 	'entity_subtype_desc',
 	'pl_number',
 	'pl_name',
 	'pl_area_dunam',
 	'depositing_date',
+	'mp_id',
 	// 'DATE_SAF',
 	// 'PL_LAST_DEPOSIT_DATE',
 	// 'PL_REJECTION_DATE',
@@ -44,7 +45,7 @@ const fields = [
 	// 'PQ_AUTHORISED_QUANTITY_120',
 	'pl_date_8',
 	'pl_landuse_string',
-//	'station',
+	//	'station',
 	'station_desc',
 	'pl_by_auth_of',
 	'pl_url',
@@ -91,11 +92,11 @@ const getBlueLines = async () => {
 		// Need to populate all plans with their MP_ID
 		// TODO- export to a mapping function
 		for (const datum of geojson.features) {
-			const agamId = getPlanMPID(datum.properties.pl_url);
 			for (let prop in datum.properties) {
 				datum.properties[prop.toUpperCase()] = datum.properties[prop];
 				delete datum.properties[prop];
 			}
+			const agamId = datum.properties.MP_ID || getPlanMPID(datum.properties.PL_URL);
 			if (agamId) {
 				datum.properties.MP_ID = agamId;
 				datum.properties.plan_new_mavat_url = datum.properties.PL_URL;
