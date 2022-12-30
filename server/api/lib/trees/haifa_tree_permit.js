@@ -22,6 +22,8 @@ const {
 	NUMBER_OF_TREES
 } = require ('../../model/tree_permit_constants');
 
+const Config = require('../../lib/config');
+
 exports.HaifaTreePermit = {
 
 	[REGIONAL_OFFICE] : 'חיפה',
@@ -47,7 +49,7 @@ exports.HaifaTreePermit = {
 
 	dateFormat : 'DD/MM/YYYY',
 	urls : [
-		'https://haifa-tree-felling-permits.s3.eu-central-1.amazonaws.com/rptPirsum.xlsx'
+		Config.get('trees.haifaUrl'),
 	],
 
 	getRegionalOffice (row) {
