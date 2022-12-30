@@ -105,7 +105,7 @@ class Plan extends Model {
 		return new Promise((resolve) => {
 			// set the geometry's centroid using ST_Centroid function
 			//TODO: return this after the MP_ID migration
-			// model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
+			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
 			resolve();
 		});
 	}
@@ -415,7 +415,7 @@ class Plan extends Model {
 						try {
 							await existingFile.destroy({ transacting: transaction });
 						} catch (e) {
-							Log.error(`error destroy file: ${e.message}`, e.trace);
+							Log.error(`error destroy file: ${e.message}`, e.trace());
 						}
 					}
 		
