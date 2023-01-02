@@ -25,7 +25,8 @@ const Homepage = () => {
 			header: () => t.permitSubject
 		}),
 		columnHelper.accessor('permitPermitCreatedAt', {
-			header: () => t.permitPermitCreatedAt
+			header: () => t.permitPermitCreatedAt,
+			cell: (context) => new Date(context.getValue()).toLocaleDateString()
 		}),
 		columnHelper.accessor('permitRegion', {
 			header: () => t.permitRegion
