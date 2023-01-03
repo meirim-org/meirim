@@ -13,6 +13,7 @@ const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstru
 const { downloadChallengedFile } = require('../challanged-file');
 const PlanStatusChange = require('../../model/plan_status_change');
 const { formatDate } = require('../date');
+const proxy = require('../proxy');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
 const newMavatURL = 'https://mavat.iplan.gov.il/rest/api/SV4/1';
@@ -182,26 +183,18 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 const fetchPlanData = (planUrl) =>
 	new Promise((resolve, reject) => {
 		(async () => {
-			const page = await browser.newPage();
+			
 
 			try {
 				Log.debug('Loading plan page', planUrl);
 				try {
-					await page.goto(planUrl);
-					await page.waitForSelector('body > pre');
-					const jsonContent = await page.evaluate(
-						() => document.getElementsByTagName('pre')[0].innerText
-					);
-
+					const jsonContent = await proxy.get(planUrl);
 					resolve({ data: JSON.parse(jsonContent) });
 					
 				} catch (e) {
-					page.close();
 					Log.error(e);
 					reject(e);
 				}
-
-				page.close();
 
 			} catch (err) {
 				Log.error('Mavat fetch error', err);
