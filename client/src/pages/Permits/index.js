@@ -4,16 +4,22 @@ import Wrapper from 'components/Wrapper';
 import React from 'react';
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTranslation } from 'locale/he_IL';
-import { fetchPermits } from './controller';
+import { CheckIfUserCanAccessPage } from 'hooks';
+import api from 'services/api';
 
 const Homepage = () => {
+	CheckIfUserCanAccessPage();
+
 	const { t } = useTranslation();
 	const [ data, setData ] = useState([]);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const res = await fetchPermits();
-			setData(res.data);
+		const fetchData = () => {
+			return api.get('/permit')
+				.then(result => {
+					setData(result.data);
+				})
+				.catch(error => console.error(error));
 		}
 		fetchData();
 	}, []);
