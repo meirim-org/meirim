@@ -1,7 +1,6 @@
 import { useReactTable, getCoreRowModel, flexRender, getSortedRowModel } from "@tanstack/react-table"
-import { head } from "lodash";
 import React from "react"
-import { useCallback } from "react";
+// import { useCallback } from "react";
 import * as SC from './style';
 
 const Table = ({ columns, data }) => {
