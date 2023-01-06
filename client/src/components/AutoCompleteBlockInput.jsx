@@ -86,7 +86,7 @@ renderSuggestion.propTypes = {
 
 class AutocompleteInput extends Component {
     state = {
-        inputValue: '',
+        inputValue: this.props.value,
         selectedItem: [],
     };
 

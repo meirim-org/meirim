@@ -10,6 +10,24 @@ import Downshift from 'downshift';
 
 import './FilterAutoCompleteMultiple.css';
 
+import styled from 'styled-components';
+
+const AutocompleteWrapper = styled.div`
+  .MuiPaper-elevation1 {
+    display: block !important;
+    position: absolute;
+    min-width: 300px;
+    border: 1px solid #652dd0;
+    border-radius: 0px 0px 8px 8px;
+    z-index: 10000;
+  }
+  @media (max-width: 767px) {
+    .MuiPaper-elevation1 {
+      min-width: 120px !important;
+    }
+  }
+`;
+
 function renderInput(inputProps) {
   const { InputProps, classes, ref, loading, ...other } = inputProps;
 
@@ -26,9 +44,7 @@ function renderInput(inputProps) {
         }}
         {...other}
       />
-      {loading && (
-        <LinearProgress/>
-      )}
+      {loading && <LinearProgress />}
     </>
   );
 }
@@ -51,7 +67,7 @@ function renderSuggestion({
       component="div"
       style={{
         fontWeight: isSelected ? 500 : 400,
-        fontFamily:'Assistant'
+        fontFamily: 'Assistant',
       }}
     >
       {suggestion.label}
@@ -96,7 +112,7 @@ class AutocompleteInput extends Component {
     this.setState({ inputValue: event.target.value });
     const { onInputChange } = this.props;
 
-    onInputChange(event.target.value)
+    onInputChange(event.target.value);
   };
 
   handleChange = (item) => {
@@ -108,8 +124,8 @@ class AutocompleteInput extends Component {
     }
 
     this.setState({
-      inputValue:selectedItem[0]
-    })
+      inputValue: selectedItem[0],
+    });
 
     onFilterChange(selectedItem[0]);
   };
@@ -117,7 +133,7 @@ class AutocompleteInput extends Component {
   getSuggestions(value) {
     const { inputSuggestions } = this.props;
 
-    return inputSuggestions
+    return inputSuggestions;
   }
 
   render() {
@@ -144,27 +160,29 @@ class AutocompleteInput extends Component {
               fullWidth: true,
               classes,
               InputProps: getInputProps({
-                startAdornment: selectedItem.map((item) => (
-                 <div>{item}</div>
-                )),
+                startAdornment: selectedItem.map((item) => <div>{item}</div>),
                 onChange: this.handleInputChange,
                 onKeyDown: this.handleKeyDown,
                 placeholder,
               }),
-              loading
+              loading,
             })}
             {isOpen ? (
-              <Paper className={classes.paper} square>
-                {this.getSuggestions(inputValue2).map((suggestion, index) =>
-                  renderSuggestion({
-                    suggestion,
-                    index,
-                    itemProps: getItemProps({ item: suggestion.label }),
-                    highlightedIndex,
-                    selectedItem: selectedItem2,
-                  })
-                )}
-              </Paper>
+              <AutocompleteWrapper>
+                <Paper className={classes.paper} square>
+                  {this.getSuggestions(inputValue2).map((suggestion, index) =>
+                    renderSuggestion({
+                      suggestion,
+                      index,
+                      itemProps: getItemProps({
+                        item: suggestion.label,
+                      }),
+                      highlightedIndex,
+                      selectedItem: selectedItem2,
+                    })
+                  )}
+                </Paper>
+              </AutocompleteWrapper>
             ) : null}
           </div>
         )}
