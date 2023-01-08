@@ -183,22 +183,26 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 const fetchPlanData = (planUrl) =>
 	new Promise((resolve, reject) => {
 		(async () => {
-			
-
+			const page = await browser.newPage();
+			Log.debug('Loading plan page', planUrl);
 			try {
-				Log.debug('Loading plan page', planUrl);
+				await page.goto(planUrl);
+				await page.waitForSelector('body > pre');
+				const jsonContent = await page.evaluate(
+					() => document.getElementsByTagName('pre')[0].innerText
+				);
+				resolve({ data: JSON.parse(jsonContent) });
+			} catch (e) {
+				Log.error('Mavat fetch error with puppeteer', e.message);
 				try {
 					const jsonContent = await proxy.get(planUrl);
 					resolve({ data: JSON.parse(jsonContent) });
 					
 				} catch (e) {
+					Log.error('Mavat fetch error with puppeteer', e.message);
 					Log.error(e);
 					reject(e);
 				}
-
-			} catch (err) {
-				Log.error('Mavat fetch error', err);
-				reject(err);
 			}
 		})();
 	});
