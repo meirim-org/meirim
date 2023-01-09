@@ -47,6 +47,38 @@ class TreePermitController extends Controller {
 		});
 	}
 
+	geojson (req) {
+		const columns = [
+			'id',
+			tpc.PLACE,
+			tpc.STREET,
+			tpc.STREET_NUMBER,
+			tpc.REASON_SHORT,
+			tpc.REASON_DETAILED,
+			tpc.PERSON_REQUEST_NAME,
+			tpc.APPROVER_NAME,
+			tpc.APPROVER_TITLE,
+			tpc.PERMIT_ISSUE_DATE,
+			tpc.PERMIT_NUMBER,
+			tpc.REGIONAL_OFFICE,
+			tpc.START_DATE,
+			tpc.TOTAL_TREES,
+			tpc.TREES_PER_PERMIT,
+			tpc.ACTION,
+			tpc.GEOM,
+			tpc.GUSH,
+			tpc.HELKA,
+			tpc.LAST_DATE_TO_OBJECTION,
+		];
+
+		// First order by days to permit start date for permits that are still applyable for public objection, then all the rest
+		const orderByRaw = [Knex.raw('case when datediff(current_date(), tree_permit.last_date_to_objection) > -1 then datediff(current_date(), tree_permit.last_date_to_objection) else -1 end asc, last_date_to_objection asc, id ')];
+
+		return super.browse(req, {
+			columns,
+			orderByRaw,
+		});
+	}
 	place() {
 		return Knex.raw(
 			`SELECT ${tpc.PLACE}, COUNT(*) as num FROM ${tpc.TREE_PERMIT_TABLE} WHERE ${tpc.PLACE} NOT IN (${tpc.UNSUPPORTED_PLACES.map(p => `'${p}'`).join(',')}) GROUP BY ${tpc.PLACE}`
