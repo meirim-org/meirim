@@ -47,7 +47,7 @@ class TreePermitController extends Controller {
 		});
 	}
 
-	geojson (req) {
+	async geojson (req) {
 		const columns = [
 			'id',
 			tpc.PLACE,
@@ -74,10 +74,27 @@ class TreePermitController extends Controller {
 		// First order by days to permit start date for permits that are still applyable for public objection, then all the rest
 		const orderByRaw = [Knex.raw('case when datediff(current_date(), tree_permit.last_date_to_objection) > -1 then datediff(current_date(), tree_permit.last_date_to_objection) else -1 end asc, last_date_to_objection asc, id ')];
 
-		return super.browse(req, {
+		const response = await super.browse(req, {
 			columns,
 			orderByRaw,
+			pageSize: 10000000,
 		});
+
+		return {
+			type: "FeatureCollection",
+			features: response.map(i => {
+				const geom = i.attributes.geom
+
+				if (!geom) {
+					return null
+				}
+				return {
+					"type": "Feature",
+					"properties": {...i.attributes, geom: null},
+					"geometry": geom
+				}
+			}).filter(Boolean)
+		}
 	}
 	place() {
 		return Knex.raw(
