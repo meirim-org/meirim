@@ -29,7 +29,7 @@ async function parseTreesHtml(url) {
         dom('.table_content_regular_wrap').find('TABLE').find('TR').each((row, elem) => {
             if (row === 0) {
                 dom(elem).find('TH').each((idx, elem) => {
-                    const key = dom(elem).text().trim();//.replace('<P>', '').replace('</P>', '');
+                    const key = dom(elem).text().trim();
                     keys.push(key);
                 });
                 return;
@@ -37,10 +37,6 @@ async function parseTreesHtml(url) {
             const treePermit = {};
             dom(elem).find('TD,TH').each((idx, elem) => {
                 const value = dom(elem).text().trim();
-                //value = value.replace('<P>', '');
-                //value = value.replace('</P>', '');
-                //value = value.replace('<STRONG>', '');
-                //value = value.replace('</STRONG>', '');
                 if (value.length > 0) {
                     const key = keys[idx];
                     treePermit[key] = value;
