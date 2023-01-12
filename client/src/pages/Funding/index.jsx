@@ -209,7 +209,7 @@ const FundingPage = ({ ...props }) => {
 								<HelperText id="terms-of-paymeny-error-helper-text" text="" error={triedSubmit ? formErrors.termsAcceptedError.message : ''}/>
 							</SC.TermsOfUseWrapper>
 							<SC.ButtonWrapper>
-								<Button id="payment-button" text={t.startMonthlyPayment} onClick={ handlePaymentRequest }/>
+								<Button id="payment-button" text={monthlyPayment? t.startMonthlyPayment: t.singleTimePayment} onClick={ handlePaymentRequest }/>
 							</SC.ButtonWrapper>
 						</TabPanel>
 					</SC.PaymentWrapper>
