@@ -10,7 +10,7 @@ const {
 const { formatDate } = require('./utils');
 const Log = require('../log');
 
-const TREES_RAMAT_GAN_URL = 'https://www.ramat-gan.muni.il/tashtiot/view/forest_commissioner/license/2022/';
+const TREES_RAMAT_GAN_URL = `https://www.ramat-gan.muni.il/tashtiot/view/forest_commissioner/license/${new Date().getFullYear()}/`;
 const RGTreePermit = {
 	urls:[TREES_RAMAT_GAN_URL]
 };
@@ -62,7 +62,7 @@ function processRawPermits(rawPermits) {
                 const treesPerPermit = raw['סוג העצים'] !== undefined ? parseTreesPerPermit(raw['סוג העצים']) : {};
                 const totalTrees = raw['סוג העצים'] !== undefined ? sum(Object.values(treesPerPermit)) : 0;
                 const dates = parsePermitDates(raw['מתאריך – עד תאריך']);
-                const permitNumber = `meirim-rg-${street}`;
+                const permitNumber = `meirim-rg-${street}-${dates[0]}`;
                 
                 const attributes = {
                     [REGIONAL_OFFICE]: 'רמת גן',
