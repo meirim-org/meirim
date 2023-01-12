@@ -25,30 +25,28 @@ async function parseTreesHtml(url) {
 	}
 	const keys = [];
 	const result = [];
-    try {
-        dom('.table_content_regular_wrap').find('TABLE').find('TR').each((row, elem) => {
-            if (row === 0) {
-                dom(elem).find('TH').each((idx, elem) => {
-                    const key = dom(elem).text().trim();
-                    keys.push(key);
-                });
-                return;
-            }
-            const treePermit = {};
-            dom(elem).find('TD,TH').each((idx, elem) => {
-                const value = dom(elem).text().trim();
-                if (value.length > 0) {
-                    const key = keys[idx];
-                    treePermit[key] = value;
-                }
+    
+    dom('.table_content_regular_wrap').find('TABLE').find('TR').each((row, elem) => {
+        if (row === 0) {
+            dom(elem).find('TH').each((idx, elem) => {
+                const key = dom(elem).text().trim();
+                keys.push(key);
             });
-            if (Object.keys(treePermit).length > 0) {
-                result.push(treePermit);
+            return;
+        }
+        const treePermit = {};
+        dom(elem).find('TD,TH').each((idx, elem) => {
+            const value = dom(elem).text().trim();
+            if (value.length > 0) {
+                const key = keys[idx];
+                treePermit[key] = value;
             }
-        });     
-    } catch (ex) {
-        Log.error(ex);
-    }
+        });
+        if (Object.keys(treePermit).length > 0) {
+            result.push(treePermit);
+        }
+    });     
+    
 	Log.info(`number of ramat gan permits: ${result.length}`);
 	return result;
 }
@@ -56,7 +54,7 @@ async function parseTreesHtml(url) {
 function processRawPermits(rawPermits) {
 	try {
 		const treePermits = rawPermits.map(raw => {
-            try{
+            try {
                 const parts = raw['שם הרחוב'].split('\n'); // captures (כריתה), (העתקה)
                 const street = parts[0];
                 const action = parts.length > 1 ? parts[1] : 'כריתה';
@@ -83,7 +81,8 @@ function processRawPermits(rawPermits) {
                 const permit = new TreePermit(attributes);
                 return permit;
             } catch (e) {
-                Log.error('error in ramat gan parse row:' + e);
+                Log.error(`error in ramat gan parse row: ${raw}`, e);
+                throw e;
             }
 		});
 		return treePermits.filter(Boolean); // remove undefined values;

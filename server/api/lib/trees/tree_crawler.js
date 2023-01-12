@@ -51,7 +51,8 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 				return tp; //original one, not compact
 			}
 		} catch (err) {
-			Log.error(err.message || err);
+			Log.error(`failed on tree permit ${tp}`, err);
+			throw err;
 		}
 	  } 
 	}).filter(Boolean); // remove undefined values
