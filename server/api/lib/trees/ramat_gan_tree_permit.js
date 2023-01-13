@@ -3,9 +3,9 @@ const cheerio = require('cheerio');
 const TreePermit = require('../../model/tree_permit');
 const {
 	REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, APPROVER_TITLE, ACTION, 
-	END_DATE, LAST_DATE_TO_OBJECTION, TOTAL_TREES, REASON_DETAILED,
-	GUSH, HELKA, PLACE, STREET,
-	TREES_PER_PERMIT, PERMIT_ISSUE_DATE,
+	END_DATE, LAST_DATE_TO_OBJECTION, TOTAL_TREES, 
+	REASON_SHORT, PLACE, STREET,
+	TREES_PER_PERMIT, PERSON_REQUEST_NAME
 } = require('../../model/tree_permit_constants');
 const { formatDate } = require('./utils');
 const Log = require('../log');
@@ -69,10 +69,11 @@ function processRawPermits(rawPermits) {
                     [PLACE]: 'רמת גן',
                     [APPROVER_TITLE]: 'פקיד יערות עירוני רמת גן',
                     [PERMIT_NUMBER]: permitNumber,
+                    [PERSON_REQUEST_NAME]: raw['שם בעל הרשיון'],
                     [STREET]: street,
                     [ACTION]: action,
                     [LAST_DATE_TO_OBJECTION]: last_date_to_objection,
-                    [REASON_DETAILED]: raw['סיבת הכריתה'],
+                    [REASON_SHORT]: raw['סיבת הכריתה'],
                     [TREES_PER_PERMIT]: treesPerPermit,
                     [TOTAL_TREES]: totalTrees,
                     [START_DATE]: dates[0],
