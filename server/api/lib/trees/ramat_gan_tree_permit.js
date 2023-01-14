@@ -5,7 +5,7 @@ const {
 	REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, APPROVER_TITLE, ACTION, 
 	END_DATE, LAST_DATE_TO_OBJECTION, TOTAL_TREES, 
 	REASON_SHORT, PLACE, STREET,
-	TREES_PER_PERMIT, PERSON_REQUEST_NAME
+	TREES_PER_PERMIT, PERSON_REQUEST_NAME, TREE_PERMIT
 } = require('../../model/tree_permit_constants');
 const { formatDate } = require('./utils');
 const Log = require('../log');
@@ -37,7 +37,7 @@ async function parseTreesHtml(url) {
         }
         const treePermit = {};
         dom(elem).find('TD,TH').each((idx, elem) => {
-            const value = dom(elem).text().trim();
+            const value = idx === 6 ? dom(elem).find('a').attr('href') : dom(elem).text().trim();
             if (value.length > 0) {
                 const key = keys[idx];
                 treePermit[key] = value;
@@ -79,6 +79,7 @@ function processRawPermits(rawPermits) {
                     [TOTAL_TREES]: totalTrees,
                     [START_DATE]: dates[0],
                     [END_DATE]: dates[1],
+                    [TREE_PERMIT]: 'https://www.ramat-gan.muni.il/' + raw['הבקשה'],
                 };
                 const permit = new TreePermit(attributes);
                 return permit;
