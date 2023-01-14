@@ -17,7 +17,8 @@ const RGTreePermit = {
 
 async function parseTreesHtml(url) {
 	const treesHtml = await proxy.get(url);
-	const dom = cheerio.load(treesHtml, {
+
+	const dom = cheerio.load(treesHtml.toString().replaceAll('<BR>', '\n').replaceAll('<br>', '\n'), {
 		decodeEntities: false
 	});
 	if (!dom) {
@@ -93,15 +94,46 @@ function processRawPermits(rawPermits) {
 	}
 }
 
+function removeTags(line) { // remove data on tree id
+    const place = line.startsWith('מס\' ') ? 0 : line.indexOf(' מס\' ');
+    if (place >= 0) {
+        return line.substring(0, place).trim();
+    }
+    return line;
+}
+
+function isDigit(c) {
+    return (c >= '0' && c <= '9');
+}
+
+function fixAmount(treeItem) { // amount not at the end - move it
+    var amount = treeItem.pop();
+    var parts = [];
+    while (isNaN(amount) && treeItem.length > 0) {
+        const part = treeItem.pop();
+        parts.push(amount);
+        amount = part;       
+    }
+
+    while(parts.length > 0) {
+        treeItem.push(parts.pop());
+    }
+
+    return {
+        [treeItem.join(' ')]: amount,
+    };
+}
+
 function parseTreesPerPermit(treesInPermitStr) {
 	const lines = treesInPermitStr.split('\n');
 	const treesInPermit = lines.map(line => {
-		const treeItem = line.split(' ');
-        const amount = treeItem.pop();
-		return {
-			[treeItem.join(' ')]: amount,
-		};
-	});
+        line = line.replaceAll(',', ' ');
+        line = line.trim();   
+        line = removeTags(line); 
+        line = line.replaceAll('-', ' ');
+        line = line.replaceAll('  ', ' ');
+        return fixAmount(line.split(' '))
+	}).filter(Boolean);
 	return Object.assign({}, ...treesInPermit);
 }
 
