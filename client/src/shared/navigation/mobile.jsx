@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { openModal } from 'redux/modal/slice';
-import { PLANS, PERMITS, TREE_PERMITS } from 'router/contants';
+import {PLANS, PERMITS, TREE_PERMITS, TREE_PERMITS_MAP} from 'router/contants';
 import { Button, IconButton, Row } from 'shared';
 import { StarIcon } from 'shared/icons';
 import * as SC from './style';
@@ -110,6 +110,10 @@ const MobileNavBar = ({ logoutHandler, user, isAuthenticated }) => {
 											<SC.StyledListItem component={RouterLink} to={TREE_PERMITS} button key={t.treePermits}>
 												<ListItemText primary={t.treePermits}/>
 											</SC.StyledListItem>
+
+                                            <SC.StyledListItem component={RouterLink} to={TREE_PERMITS_MAP} button key={t.treePermitsMap}>
+                                                <ListItemText primary={t.treePermitsMap}/>
+                                            </SC.StyledListItem>
 										</SC.StyledList>
 										<Divider/>
 										<SC.StyledList>

@@ -11,6 +11,7 @@ import Terms from './Terms';
 import PrivacyPolicy from './PrivacyPolicy';
 import Vocabulary from './Vocabulary';
 import NotFound from './NotFound';
+import TreePermitsMap from './TreePermitsMap'
 
 export {
 	Home,
@@ -25,5 +26,6 @@ export {
 	Terms,
 	PrivacyPolicy,
 	Vocabulary,
-	NotFound
+	NotFound,
+    TreePermitsMap
 }
