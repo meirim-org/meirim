@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Input as MuiInput } from '@material-ui/core';
-import { withTheme } from '@material-ui/core/styles';
-import { device } from '../../style';
+// import { Input as MuiInput } from '@material-ui/core';
+// import { withTheme } from '@material-ui/core/styles';
+// import { device } from '../../style';
 
 export const Table = styled.table`
    margin: 0 auto;

@@ -9,7 +9,6 @@ import * as SC from './style';
 const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const dispatch = useDispatch();
 	const { name, email, password } = values;
-	const { nameError, emailError, passwordError } = errors;
 	const { t } = useTranslation();
 
 	return (
@@ -32,7 +31,8 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 						name="name"
 						onFocus={inputFocus}
 						onBlur={inputBlur}
-						error={!nameError.isValid}
+						error={errors.name !== ''}
+						helperText={errors.name}
 						label={t.fullName}
 						type="text"
 						value={name}
@@ -43,10 +43,10 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<TextInput
 						id="register-email-input"
 						name="email"
-						helperText={!emailError.isValid && emailError.message ? emailError.message : ''}
 						onFocus={inputFocus}
 						onBlur={inputBlur}
-						error={!emailError.isValid}
+						error={errors.email !== ''}
+						helperText={errors.email}
 						label={t.emailAddress}
 						type="email"
 						value={email}
@@ -56,10 +56,10 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<TextInput
 						id="register-password-input"
 						name="password"
-						helperText={!passwordError.isValid && passwordError.message ? passwordError.message : ''}
 						onFocus={inputFocus}
 						onBlur={inputBlur}
-						error={!passwordError.isValid}
+						error={errors.password !== ''}
+						helperText={errors.password}
 						label={t.password}
 						type="password"
 						value={password}
@@ -81,10 +81,14 @@ FirstStepSignup.propTypes = {
 		password: PropTypes.string.isRequired,
 	}).isRequired,
 	setValues: PropTypes.func.isRequired,
-	handleSubmit: PropTypes.func.isRequired,
-	errors: PropTypes.object.isRequired,
+	errors: PropTypes.shape({
+		name: PropTypes.string.isRequired,
+		password: PropTypes.string.isRequired,
+		email: PropTypes.string.isRequired
+	}).isRequired,
 	inputFocus: PropTypes.func,
 	inputBlur: PropTypes.func,
+	handleSubmit: PropTypes.func.isRequired,
 };
 
 export default FirstStepSignup;
