@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   comments: commentsReducer,
   plan: planReducer,
   funding: fundingReducer,
-  tree: treeReducer,
+  tree: treeReducer
 });
 
 export default rootReducer;
