@@ -7,11 +7,10 @@ import TreeSelectors from './tree/selectors';
 
 
 export {
-    PlanSelectors,
-    CommentSelectors,
-    UserSelectors,
-    ModalSelectors,
-    FundingSelectors,
-    TreeSelectors,
+	PlanSelectors,
+	CommentSelectors,
+	UserSelectors,
+	ModalSelectors,
+	FundingSelectors,
+	TreeSelectors,
 };
-
