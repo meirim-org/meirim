@@ -1,6 +1,6 @@
-const { Knex } = require("../service/database");
-const Controller = require("./controller");
-const Exception = require("../model/exception");
+const { Knex } = require('../service/database');
+const Controller = require('./controller');
+const Exception = require('../model/exception');
 
 class ShapeController extends Controller {
 	topfive(req) {
@@ -12,7 +12,7 @@ class ShapeController extends Controller {
 
 		// blockNum is mandatory
 		if (!blockNum) {
-			throw new Exception.BadRequest("No block number provided, provide it as a query param");
+			throw new Exception.BadRequest('No block number provided, provide it as a query param');
 		}
 
 		if (!limit) {
@@ -32,8 +32,8 @@ class ShapeController extends Controller {
 		return Knex.raw(query).then((results) => {
 			if (results[0].length == 0) {
 				throw new Exception.NotFound({
-					status: "failed",
-					msg: "No data found",
+					status: 'failed',
+					msg: 'No data found',
 					data: results[0],
 				});
 			}
@@ -50,7 +50,7 @@ class ShapeController extends Controller {
 
 		// if blockNum is not passed as a query param
 		if (!blockNum) {
-			throw new Exception.BadRequest("No block number provided, provide it as a query param");
+			throw new Exception.BadRequest('No block number provided, provide it as a query param');
 		}
 		let query;
 		// if both blockNum and parcelNum are passed as query param then this query will get selected and fetch from parcel_details table
@@ -65,8 +65,8 @@ class ShapeController extends Controller {
 		return Knex.raw(query).then((results) => {
 			if (results[0].length == 0) {
 				throw new Exception.NotFound({
-					status: "failed",
-					msg: "No data found",
+					status: 'failed',
+					msg: 'No data found',
 					data: results[0],
 				});
 			}
