@@ -1,7 +1,8 @@
 const Bluebird = require('bluebird');
-const { map, max, take, omitBy, isNil } = require('lodash');
+const { map, max, take, omitBy, isNil, size, forEach, reverse } = require('lodash');
 const moment = require('moment');
 const Turf = require('turf');
+const axios = require('axios');
 const Config = require('../lib/config');
 const Log = require('../lib/log');
 const iplanApi = require('../lib/iplanApi');
@@ -440,6 +441,57 @@ const fetchPlanStatus = () => {
 			}));
 };
 
+const fillMPIDForMissingPlans = async () => {
+
+	try {
+		const columnsToFetch = [
+			'PL_NUMBER',
+			'MP_ID',
+		];
+		const limit = 20;
+		// Getting 20 plans with missing MP_ID
+		const { models } = await Plan.query(qb => {
+			qb.whereRaw('MP_ID  IS  NULL AND PL_NUMBER NOT LIKE \'%_dup%\'');
+			qb.limit(limit);
+		}).fetchAll();
+		if (!models || size(models) === 0)
+			return;
+		// Now querying the BlueLines API to see if there are MP_ID
+		const planNumbers = models.map((p)=>encodeURIComponent(p.attributes.PL_NUMBER));
+		const seperateWithDelimiter = `'${planNumbers.join('\', \'')}'`;
+		const blueLinesQuery = iplanApi.buildMavatURL(1, columnsToFetch, `PL_NUMBER in (${seperateWithDelimiter})`, 'true');
+		const { data }= await axios.get(blueLinesQuery);
+		const plNumberToMpIDMap =  reverse(data.features).reduce((acc, curr)=>({ ...acc, [curr.attributes.PL_NUMBER]: curr.attributes.MP_ID }), {});
+		console.log(`Filling MP_ID found ${size(plNumberToMpIDMap)} ids out of ${limit}`);
+		
+		
+		forEach(models, planModel=> {
+			const planMPID = plNumberToMpIDMap[planModel.attributes.PL_NUMBER];
+			if(planMPID){
+				const planURL = `https://mavat.iplan.gov.il/SV4/1/${planMPID}/310`;
+				planModel.set({
+					MP_ID: planMPID,
+					plan_new_mavat_url: planURL,
+					plan_url: planURL
+				});
+			}
+			else {
+				planModel.set({
+					MP_ID: 'NOT_FOUND',
+				});
+			}
+		});
+
+		await Promise.all(models.map((planModel)=> planModel.save()));
+
+		// const planNumberToQuery = _.map(plans, (plan) => plan.attributes);
+	} catch(e){
+		console.log('Error scrapping new MP_ID', e.message);
+	}
+	finally{
+	}
+
+};
 
 module.exports = {
 	iplan,
@@ -452,5 +504,6 @@ module.exports = {
 	sendTreeAlerts,
 	sendDigestPlanningAlerts,
 	updatePlanTags,
-	fetchPlanStatus
+	fetchPlanStatus,
+	fillMPIDForMissingPlans
 };

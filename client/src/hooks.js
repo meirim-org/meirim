@@ -32,9 +32,9 @@ export const CookieHook = () => {
 	const [ error, setError ] = useState({});
 	useEffect(() => {
 		api.get('/me').then((response) => {
-			const { name, id } = response.me;
+			const { name, id, admin } = response.me;
 			setSuccess(true);
-			dispatch(authenticated({ user: { name, id } }));
+			dispatch(authenticated({ user: { name, id, admin } }));
 			setLoading(false);
 			setResponse(response);
 			return fetchUserPlans(id).then(({ data })=>{

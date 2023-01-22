@@ -104,6 +104,7 @@ class Plan extends Model {
 	_creating (model) {
 		return new Promise((resolve) => {
 			// set the geometry's centroid using ST_Centroid function
+			//TODO: return this after the MP_ID migration
 			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
 			resolve();
 		});
@@ -414,7 +415,7 @@ class Plan extends Model {
 						try {
 							await existingFile.destroy({ transacting: transaction });
 						} catch (e) {
-							Log.error(`error destroy file: ${e.message}`, e.trace);
+							Log.error(`error destroy file: ${e.message}`, e.trace());
 						}
 					}
 		
@@ -593,5 +594,53 @@ class Plan extends Model {
 			]
 		});
 	}	
+
+	static getStatusChanges (collection, steps) {
+		// if date is not null, set completed to true
+		steps = steps.concat(collection.map(function(element){
+			element.completed = element.date===null ? false : true;
+			return element;
+		}));
+
+		// find the latest step this plan has reached
+		const maxStep= Math.max(...[-1],...steps.filter(step => step.completed===true ).map(step => step.stepId));
+		Log.debug('Max Step', maxStep);
+
+		/* mark latest step as the current one 
+		/* If there is no plan_status table, set stepId: 1 to completed:True and Current:True, and the rest of the steps to completed:false and current:false 
+		*/
+		steps = steps.map(function(element){
+			element.current = false;
+			if ( (maxStep===-1 && element.stepId===1)) {
+				Log.debug('max step is -1 and current step is 1 so setting current to true, and complete to true for step 1');
+				element.current = true;
+				element.completed = true;
+			} else if (element.stepId===maxStep) {
+				Log.debug('Max step reached so setting current to true for step', maxStep);
+				element.current = true;					
+			} else if (element.stepId<maxStep) {
+				Log.debug(`element.stepId is ${element.stepId} and maxStep is ${maxStep}`);
+				// some status changes are missing, so if a status was reached, assume the previous ones were completed
+				// excpetion: if the plan is canceled, the previous step (approval) shouldn't be completed
+				if ((maxStep===5)&&(element.stepId===maxStep-1)){
+					Log.debug(`Skipping because reaching step 5 does not mean that step 4 happened`);
+					return element;	
+				}
+				Log.debug(`Setting completed to true`);
+				element.completed = true;
+			}
+			return element;
+		});	
+		
+		// if the plan was canceled, set the cancelation date
+		const cancellationDate = maxStep!==5 ? null : steps.find(element => element.stepId === 5).date;
+
+		// remove the RowDataPacket 
+		steps = steps.map((result) => ({
+			...result,
+		})); 	
+		const ret = {"cancellationDate": cancellationDate, "steps": steps};		
+		return ret;
+	}
 }
 module.exports = Plan;

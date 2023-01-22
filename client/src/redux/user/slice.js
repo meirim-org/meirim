@@ -4,6 +4,7 @@ const userSlice = createSlice({
 	name: 'user',
 	initialState: {
 		isAuthenticated: false,
+		isAdmin: false,
 		user: {},
 		favoritePlans: []
 	},
@@ -11,9 +12,11 @@ const userSlice = createSlice({
 		 authenticated(state, type) {
 			state.user = type.payload.user;
 			state.isAuthenticated = true;
+			state.isAdmin = type.payload.user.admin && type.payload.user.admin !== '0';
 		},
 		notAuthenticated(state) {
 			state.isAuthenticated = false;
+			state.isAdmin = false;
 			state.user = {};
 		},
 		fetchedFavoritePlans(state, type) {

@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+const controller = require('../api/controller/cron');
+const Log = require('../api/lib/log');
+
+const run = async () => {
+	try {
+		Log.info('running scrap_mp_id');
+		await controller.fillMPIDForMissingPlans();
+	}
+	catch(e){
+		Log.error('Running scrap_mp_id' + e);
+	}
+	finally{ 
+		process.exit();
+	}
+};
+
+
+run();

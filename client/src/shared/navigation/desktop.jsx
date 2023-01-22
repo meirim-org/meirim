@@ -12,8 +12,7 @@ import { Button, Menu, Row } from 'shared';
 import { StarIcon } from 'shared/icons';
 import * as SC from './style';
 
-const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
-    const { admin } = user;
+const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
     const theme = useTheme();
     const { t, changeLanguage, selectedLanguage } = useTranslation();
     const dispatch = useDispatch();
@@ -49,7 +48,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
             path: '/permits',
             title: t.permits,
             isActive: activeLink,
-            hide: !admin
+            hide: !isAdmin
         },
         {
             id: 'nav-bar-trees',

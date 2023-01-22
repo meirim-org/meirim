@@ -1,6 +1,5 @@
 const Model = require('./base_model');
 const consts = require('./permit_constants');
-const Log = require('../lib/log');
 const { mapKeys, camelCase } = require('lodash');
 
 class Permit extends Model {
@@ -23,7 +22,7 @@ class Permit extends Model {
 
 	parse (attributes) {
 		return mapKeys(attributes, function(_, key) {
-			return camelCase("permit_" + key);
+			return camelCase('permit_' + key);
 		  });
 	}
 
