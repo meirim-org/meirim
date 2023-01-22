@@ -1,7 +1,5 @@
 import { useReactTable, getCoreRowModel, flexRender, getSortedRowModel } from "@tanstack/react-table"
-import { head } from "lodash";
 import React from "react"
-import { useCallback } from "react";
 import * as SC from './style';
 
 const Table = ({ columns, data }) => {
@@ -47,7 +45,7 @@ const Table = ({ columns, data }) => {
             </SC.TableHead>
             <SC.TableBody>
                 {table.getRowModel().rows.map((row, index) => (
-                    <>
+                    <React.Fragment key={row.id}>
                         {index === 0 && <SC.RowSpacer />}
                         <SC.Row key={row.id}>
                             {row.getVisibleCells().map(cell => (
@@ -57,7 +55,7 @@ const Table = ({ columns, data }) => {
                             ))}
                         </SC.Row>
                         <SC.RowSpacer />
-                    </>
+                    </React.Fragment>
                 ))}
             </SC.TableBody>
         </SC.Table>
