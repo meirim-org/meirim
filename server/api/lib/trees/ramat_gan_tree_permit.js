@@ -18,7 +18,9 @@ const RGTreePermit = {
 async function parseTreesHtml(url) {
 	const treesHtml = await proxy.get(url);
 
-	const dom = cheerio.load(treesHtml.toString().replaceAll('<BR>', '\n').replaceAll('<br>', '\n'), {
+    const treesHtmlStr = replaceAll(replaceAll(treesHtml.toString(), '<br>', '\n'), '<BR>', '\n');
+
+	const dom = cheerio.load(treesHtmlStr, {
 		decodeEntities: false
 	});
 	if (!dom) {
@@ -128,11 +130,11 @@ function fixAmount(treeItem) { // amount not at the end - move it
 function parseTreesPerPermit(treesInPermitStr) {
 	const lines = treesInPermitStr.split('\n');
 	const treesInPermit = lines.map(line => {
-        line = line.replaceAll(',', ' ');
+        line = replaceAll(line, ',', ' ');
         line = line.trim();   
         line = removeTags(line); 
-        line = line.replaceAll('-', ' ');
-        line = line.replaceAll('  ', ' ');
+        line = replaceAll(line, '-', ' ');
+        line = replaceAll(line, '  ', ' ');
         return fixAmount(line.split(' '))
 	}).filter(Boolean);
 	return Object.assign({}, ...treesInPermit);
@@ -153,6 +155,11 @@ function sum(treeArray) {
 		return total + current;
 	});
 }
+
+function replaceAll(str, from, to) {
+    return str.replace(new RegExp(from, 'g'), to);
+  }
+
 /**
  * Scrape Ramat Gan Tree page, and return the results as a TreePermit[].
  */
