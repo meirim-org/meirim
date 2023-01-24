@@ -19,7 +19,8 @@ const SummaryTab = ({
     isMobile,
     isTablet,
 }) => {
-    const { planData, dataArea, dataUnits, textArea } = PlanSelectors();
+    const { planData, dataArea, dataUnits, textArea, planLinks } =
+        PlanSelectors();
     const { type, status, lastUpdate, url, goalsFromMavat, countyName } =
         planData;
     useScrollToTop();
@@ -36,7 +37,7 @@ const SummaryTab = ({
             {isMobile() || isTablet() ? (
                 <MapPanel geom={planData.geom} countyName={countyName} />
             ) : null}
-            <LinksPanel />
+            {planLinks && <LinksPanel links={planLinks} />}
             <StatsPanel dataArea={dataArea} textArea={textArea} />
             <HousingUnitPanel dataUnits={dataUnits} />
             <SubscribePanel
