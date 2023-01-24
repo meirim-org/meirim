@@ -5,7 +5,7 @@ const {
 	REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, APPROVER_TITLE, ACTION, 
 	END_DATE, LAST_DATE_TO_OBJECTION, TOTAL_TREES, REASON_DETAILED,
 	GUSH, HELKA, PLACE, STREET,
-	TREES_PER_PERMIT, PERMIT_ISSUE_DATE, TREE_PERMIT,
+	TREES_PER_PERMIT, PERMIT_ISSUE_DATE, TREE_PERMIT_URL,
 } = require('../../model/tree_permit_constants');
 const { formatDate } = require('./utils');
 const Log = require('../log');
@@ -76,7 +76,7 @@ function processRawPermits(rawPermits) {
 				[PERMIT_ISSUE_DATE]: dates[0],
 				[START_DATE]: dates[1],
 				[END_DATE]: dates[2],
-				[TREE_PERMIT]: 'https://www.jerusalem.muni.il/he/residents/environment/improvingcity/trees-conservation/',
+				[TREE_PERMIT_URL]: 'https://www.jerusalem.muni.il/he/residents/environment/improvingcity/trees-conservation/',
 			};
 			const permit = new TreePermit(attributes);
 			return permit;

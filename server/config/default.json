@@ -54,7 +54,8 @@
 	"trees": {
 		"rawDataDir": "/tmp/raw_trees",
 		"geoCodingInterval" : 30000,
-		"maxPermits": 5
+		"maxPermits": 5,
+		"haifaUrl" : "https://stg-service-tree-6b3da185.s3.eu-west-1.amazonaws.com/haifa/rptPirsum.xlsx"
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,

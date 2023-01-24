@@ -25,7 +25,7 @@ exports.NUMBER_OF_TREES = 'number_of_trees';
 exports.REASON_SHORT = 'reason_short';
 exports.REASON_DETAILED = 'reason_detailed';
 exports.COMMENTS_IN_DOC = 'comments_in_doc';
-exports.TREE_PERMIT = 'tree_permit_url';
+exports.TREE_PERMIT_URL = 'tree_permit_url';
 
 //Enriched data
 exports.TOTAL_TREES = 'total_trees';
@@ -40,7 +40,6 @@ exports.UNSUPPORTED_PLACES = [
 	'גבעתיים',
 	'גבעת שמואל',
 	'הוד השרון',
-	'חיפה',
 	'יבנה',
 	'יפו',
 	'נתניה',
