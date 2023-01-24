@@ -18,6 +18,7 @@ import Homepage from 'pages/Homepage';
 import Funding from 'pages/Funding';
 import FundingSuccess from 'pages/Funding/success';
 import UrbanPlanning from 'pages/UrbanPlanning';
+import Permits from 'pages/Permits'
 import { Modal, CircularProgress } from 'shared';
 import 'App.css';
 import { muiTheme } from 'theme';
@@ -69,6 +70,7 @@ const App = (props) => {
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />
 						<Route path="/email-sent" render={props => <EmailSent {...props} />} />
 						<Route path="/hub" render={props => <UrbanPlanning {...props}/>} />
+						<Route path="/permits" render={props => <Permits {...props} />} />
 						<Route component={Scenes.NotFound} />
 					</Switch>
 				</>

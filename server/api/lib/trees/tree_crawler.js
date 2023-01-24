@@ -11,6 +11,7 @@ const MAX_PERMITS = Config.get('trees.maxPermits');
 const { RegionalTreePermit } = require('./regional_tree_permit');
 const { KKLTreePermit } = require('./kkl_tree_permit');
 const { crawlTreesHTML , JERTreePermit } = require('./jerusalem_tree_permit');
+const { crawlRGTreesHTML , RGTreePermit } = require('./ramat_gan_tree_permit');
 
 const {
 	formatDate,
@@ -42,12 +43,19 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 		.catch(function (error) { Log.error(error); });
 
 	const newTreePermits = treePermits.map(tp => {
-		//if tp is not in the hash map of the existing one - add to the new ones
-		const compact_tp = `${tp.attributes[REGIONAL_OFFICE]}_${tp.attributes[PERMIT_NUMBER]}_${formatDate(tp.attributes[START_DATE], MORNING, 'YYYY-MM-DD')}`;
-		if (tp.attributes[REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
-			Log.debug(`A new tree license! queued for saving ${compact_tp}`);
-			return tp; //original one, not compact
+		if (tp !== undefined) {
+		try {
+			//if tp is not in the hash map of the existing one - add to the new ones
+			const compact_tp = `${tp.attributes[REGIONAL_OFFICE]}_${tp.attributes[PERMIT_NUMBER]}_${formatDate(tp.attributes[START_DATE], MORNING, 'YYYY-MM-DD')}`;
+			if (tp.attributes[REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
+				Log.debug(`A new tree license! queued for saving ${compact_tp}`);
+				return tp; //original one, not compact
+			}
+		} catch (err) {
+			Log.error(`failed on tree permit ${tp}`, err);
+			throw err;
 		}
+	  }
 	}).filter(Boolean); // remove undefined values
 	//save only the new ones
 	try {
@@ -75,12 +83,14 @@ const chooseCrawl = (crawlType) => {
 	
 	const kkl = { 'crawler': crawlTreeExcelByFile, 'permitType': KKLTreePermit };
 	const jer = { 'crawler': crawlTreesHTML , 'permitType': JERTreePermit };
+	const rg  = { 'crawler': crawlRGTreesHTML , 'permitType': RGTreePermit};
 	const regional = { 'crawler': crawlTreeExcelByFile, 'permitType': RegionalTreePermit };
 	const crawlMap = {
+		'rg': [rg],
 		'jer': [jer],
 		'kkl': [kkl],
 		'regional': [regional],
-		'all': [jer, regional, kkl]
+		'all': [rg, jer, regional, kkl]
 	};
 	
 	return crawlMap[crawlType] || crawlMap['all'];
@@ -111,7 +121,7 @@ const crawlTrees = async (crawlMethod) => {
 
 	}
 	Log.info(`Done! Total ${sumPermits} new permits`);
-	
+
     if (failures === 0) {
 		// report to monitor that ended successfuly
 		const treeFetchingHeartbeatUrl = Config.get('uptimeRobot.treeFetchingHeartbeatUrl');

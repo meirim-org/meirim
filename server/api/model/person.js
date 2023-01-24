@@ -31,7 +31,7 @@ class Person extends BaseModel {
 	}
 
 	get hidden () {
-		return ['password', 'admin', 'status'];
+		return ['password', 'status'];
 	}
 
 	get hasTimestamps() {

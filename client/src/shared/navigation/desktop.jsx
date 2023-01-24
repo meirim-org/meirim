@@ -12,7 +12,7 @@ import { Button, Menu, Row } from 'shared';
 import { StarIcon } from 'shared/icons';
 import * as SC from './style';
 
-const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
+const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
     const theme = useTheme();
     const { t, changeLanguage, selectedLanguage } = useTranslation();
     const dispatch = useDispatch();
@@ -25,6 +25,53 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
         setDropDownEl(null);
     };
     const dropdownItems = [{ text: t.signout, onClick: logoutHandler }];
+
+    const openModalByName = (name) => {
+        dispatch(
+            openModal({
+                modalType: name,
+            })
+        )
+    }
+
+    const activeLink = (path) => (match, location) => location.pathname.includes(path)
+
+    const navLinks = [
+        {
+            id: 'nav-bar-plans',
+            path: '/plans',
+            title: t.plans,
+            isActive: activeLink
+        },
+        {
+            id: 'nav-bar-permits',
+            path: '/permits',
+            title: t.permits,
+            isActive: activeLink,
+            hide: !isAdmin
+        },
+        {
+            id: 'nav-bar-trees',
+            path: '/trees',
+            title: t.treePermits,
+            isActive: activeLink
+        },
+        {
+            id: 'nav-bar-alerts',
+            path: isAuthenticated ? '/alerts' : '#',
+            title: t.alerts,
+            isActive: activeLink,
+            onClick: () => {
+                !isAuthenticated && openModalByName('login')
+            }
+        },
+        {
+            id: 'nav-bar-content',
+            path: '/hub',
+            title: t.urbanPlanning,
+            isActive: activeLink,
+        }
+    ]
 
     return (
         <SC.DesktopHeader>
@@ -39,66 +86,17 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
                             </Box>
                             <Box component="nav">
                                 <Box display="flex" alignItems="center">
-                                    <Box px={2}>
+                                    {navLinks.map(navLink => !navLink.hide && (
+                                        <Box px={2} key={navLink.id}>
                                         <SC.StyledLink
-                                            id="nav-bar-plans"
-                                            to="/plans/"
-                                            isActive={(match, location) =>
-                                                location.pathname.includes(
-                                                    '/plans'
-                                                )
-                                            }
-                                        >
-                                            {t.plans}
-                                        </SC.StyledLink>
-                                    </Box>
-                                    <Box px={2}>
-                                        <SC.StyledLink
-                                            id="nav-bar-plans"
-                                            to="/trees/"
-                                            isActive={(match, location) =>
-                                                location.pathname.includes(
-                                                    '/trees'
-                                                )
-                                            }
-                                        >
-                                            {t.treePermits}
-                                        </SC.StyledLink>
-                                    </Box>
-                                    <Box px={2}>
-                                        {isAuthenticated && (
-                                            <SC.StyledLink
-                                                id="nav-bar-alerts"
-                                                to="/alerts/"
-                                            >
-                                                {t.alerts}
+                                                id={navLink.id}
+                                                to={navLink.path + '/'}
+                                                isActive={navLink.isActive(navLink.path)}
+                                                onClick={navLink.onClick}>
+                                                {navLink.title}
                                             </SC.StyledLink>
-                                        )}
-                                        {!isAuthenticated && (
-                                            <SC.StyledLink
-                                                id="nav-bar-alerts"
-                                                to="#"
-                                                isActive={() => false}
-                                                onClick={() => {
-                                                    dispatch(
-                                                        openModal({
-                                                            modalType: 'login',
-                                                        })
-                                                    );
-                                                }}
-                                            >
-                                                {t.alerts}
-                                            </SC.StyledLink>
-                                        )}
-                                    </Box>
-                                    <Box px={2}>
-                                        <SC.StyledLink
-                                            id="nav-bar-content"
-                                            to="/hub/"
-                                        >
-                                            {t.urbanPlanning}
-                                        </SC.StyledLink>
-                                    </Box>
+                                        </Box>
+                                    ))}
                                     <Box px={2}>
                                         <SC.StyledLink
                                             id="nav-bar-about"
@@ -220,13 +218,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
                                         text={t.signin}
                                         fontWeight="400"
                                         simple
-                                        onClick={() =>
-                                            dispatch(
-                                                openModal({
-                                                    modalType: 'login',
-                                                })
-                                            )
-                                        }
+                                        onClick={() => openModalByName('login')}
                                     />
                                 </Grid>
                                 <Grid item>
@@ -235,13 +227,7 @@ const DesktopNavBar = ({ user, isAuthenticated, logoutHandler }) => {
                                         text={t.signup}
                                         small
                                         altColor
-                                        onClick={() =>
-                                            dispatch(
-                                                openModal({
-                                                    modalType: 'register',
-                                                })
-                                            )
-                                        }
+                                        onClick={() => openModalByName('register')}
                                     />
                                 </Grid>
                             </Row>
