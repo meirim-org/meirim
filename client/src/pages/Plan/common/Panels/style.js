@@ -130,9 +130,3 @@ export const Datalist = styled.ul`
         height: 26px;
     }
 `;
-
-export const LinksWrapper = styled.div`
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-`;

@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { TabBox, TabPanel, Typography } from 'shared';
 import * as SC from './style';
-import LinkItem from '../../../../components/LinkItem';
-import { LinksWrapper } from './style';
+import Links from '../../../../components/Links';
 
-export const LinksPanel = () => {
+export const LinksPanel = ({ links }) => {
     const theme = useTheme();
     const { t } = useTranslation();
 
@@ -25,11 +24,7 @@ export const LinksPanel = () => {
                     </Typography>
                 </SC.PlanSummaryTitleWrapper>
                 <SC.EntryContent>
-                    <LinksWrapper>
-                        <LinkItem />
-                        <LinkItem />
-                        <LinkItem />
-                    </LinksWrapper>
+                    <Links columns={2} links={links} />
                 </SC.EntryContent>
             </TabBox>
         </TabPanel>
@@ -37,7 +32,7 @@ export const LinksPanel = () => {
 };
 
 LinksPanel.propTypes = {
-    mainDetailsFromMavat: PropTypes.string,
+    links: PropTypes.array,
 };
 
 export default LinksPanel;
