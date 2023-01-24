@@ -61,7 +61,7 @@
         "request-promise": "^4.2.6",
         "scrapingbee": "^1.6.1",
         "simplify-geojson": "^1.0.5",
-        "staticmaps": "^1.4.1",
+        "staticmaps": "^1.11.0",
         "terraformer-wkt-parser": "^1.2.1",
         "turf": "^3.0.14",
         "winston": "^3.3.3",
