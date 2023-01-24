@@ -3,6 +3,7 @@ const database = require('../../service/database');
 const moment = require('moment');
 const Config = require('../../lib/config');
 const Log = require('../log');
+const axios = require('axios');
 
 const GEO_CODING_INTERVAL = Config.get('trees.geoCodingInterval');
 const MAX_PERMITS = Config.get('trees.maxPermits');
@@ -47,14 +48,14 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 			//if tp is not in the hash map of the existing one - add to the new ones
 			const compact_tp = `${tp.attributes[REGIONAL_OFFICE]}_${tp.attributes[PERMIT_NUMBER]}_${formatDate(tp.attributes[START_DATE], MORNING, 'YYYY-MM-DD')}`;
 			if (tp.attributes[REGIONAL_OFFICE] == regionalOffice && !existingPermitsCompact.has(compact_tp)) {
-				Log.debug(`A new tree liecence! queued for saving ${compact_tp}`);
+				Log.debug(`A new tree license! queued for saving ${compact_tp}`);
 				return tp; //original one, not compact
 			}
 		} catch (err) {
 			Log.error(`failed on tree permit ${tp}`, err);
 			throw err;
 		}
-	  } 
+	  }
 	}).filter(Boolean); // remove undefined values
 	//save only the new ones
 	try {
@@ -98,6 +99,7 @@ const chooseCrawl = (crawlType) => {
 const crawlTrees = async (crawlMethod) => {
 	let sumPermits = 0;
 	let maxPermits = MAX_PERMITS;
+	let failures = 0;
 	const crawlMethods = chooseCrawl(crawlMethod);
 
 	for  (const method of crawlMethods) {
@@ -113,11 +115,25 @@ const crawlTrees = async (crawlMethod) => {
 			}
 			catch (err) {
 				Log.error(err.message || err);
+				failures++;
 			}
 		}
 
 	}
 	Log.info(`Done! Total ${sumPermits} new permits`);
+
+    if (failures === 0) {
+		// report to monitor that ended successfuly
+		const treeFetchingHeartbeatUrl = Config.get('uptimeRobot.treeFetchingHeartbeatUrl');
+		try {
+			Log.info('reporting to monitor on success'+ treeFetchingHeartbeatUrl);
+			const response = await axios.get(treeFetchingHeartbeatUrl);
+			Log.info('tree fetching monitor success');
+		} catch (error) {
+			Log.error('tree fetching monitor error msg: ' + error.response.body);
+		}
+	}
+
 	return sumPermits;
 };
 
