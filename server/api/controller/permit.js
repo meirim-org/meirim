@@ -32,7 +32,6 @@ class PermitController extends Controller {
 		return super.browse(req, {
 			where,
 			withRelated,
-			debug: true,
 			// orderByRaw,
 		}).then(permit_persons => {
 			// Returning only the permit objects relevant to the current Person

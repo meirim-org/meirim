@@ -6,6 +6,7 @@ class PermitAoiPerson extends Model {
 		return {
 			[consts.PERMIT_AOI_ID]: 'integer',
 			[consts.PERSON_ID]: 'integer',
+			[consts.NAME]: 'string',
 		};
 	}
 

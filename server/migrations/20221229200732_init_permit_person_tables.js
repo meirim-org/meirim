@@ -5,9 +5,9 @@ exports.up = async function(knex) {
     .createTable('permit_person', table => {
         table.increments('id').primary();
         table.integer('permit_id').notNullable().unsigned();
-        table.foreign('permit_id').references('permit.id')
+        table.foreign('permit_id').references('permit.id');
         table.integer('person_id').notNullable().unsigned();
-        table.foreign('person_id').references('person.id')
+        table.foreign('person_id').references('person.id');
         table.timestamps(true, true, false);
     })
     .catch((error) => {
@@ -18,9 +18,10 @@ exports.up = async function(knex) {
     .createTable('permit_aoi_person', table => {    
         table.increments('id').primary();
         table.integer('permit_aoi_id').notNullable().unsigned();
-        table.foreign('permit_aoi_id').references('permit_aoi.id')
+        table.foreign('permit_aoi_id').references('permit_aoi.id');
         table.integer('person_id').notNullable().unsigned();
-        table.foreign('person_id').references('person.id')
+        table.foreign('person_id').references('person.id');
+        table.string('name').notNullable();
         table.timestamps(true, true, false);
     })
     .catch((error) => {
