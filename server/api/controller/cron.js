@@ -9,6 +9,7 @@ const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
 const PlanTag = require('../model/plan_tag');
+const PlanPerson = require('../model/plan_person');
 const Email = require('../service/email');
 const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
@@ -401,7 +402,7 @@ async function fetchTreePermit(crawlMethod){
 }
 
 const fetchPlanStatus = () => {
-
+	var mavatStatus = null;
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
 	return Plan.query(qb => {
@@ -409,7 +410,7 @@ const fetchPlanStatus = () => {
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
-		.then(planCollection =>
+		.then(planCollection => 
 			Bluebird.mapSeries(planCollection.models, plan => {
 				
 				Log.debug(plan.get('plan_url'));
@@ -433,6 +434,12 @@ const fetchPlanStatus = () => {
 
 						// save all plan statuses into plan_status_change table
 						await PlanStatusChange.savePlanStatusChange(planStatuses);
+
+						if (mavatStatus === null) {
+							const res = await PlanStatusChange.byMeirimStatus('התנגדויות והערות הציבור');
+							mavatStatus = res[0].map(rec => rec.mavat_status);
+						}
+						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
 					}
 					catch (err) {
 						Log.error('Error:', err.message);
@@ -440,6 +447,35 @@ const fetchPlanStatus = () => {
 				});
 			}));
 };
+
+async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
+	var sendEmail = false;
+	if (!plan.attributes.was_deposited) {
+		planStatuses 
+		for (var i = 0; i < planStatuses.length; ++i)	{
+			const status = planStatuses[i];
+			if (Boolean(status.attributes.status) && mavatStatus.indexOf(status.attributes.status) >= 0) {
+				sendEmail = true;
+			}		
+		}		
+	}
+	if (sendEmail) {
+		PlanPerson.getUsersForPlan(plan.get('id'))
+		.then(users => {
+			if (!users[0] || !users[0].length) {
+				return sendEmail;
+			}
+			return Bluebird.mapSeries(users[0], user =>
+				Email.planDepositAlert(user, plan)
+			) 
+		})
+		.then(plan.save({ 'was_deposited': true }))
+		.then(a => {return sendEmail;})
+		.catch(err => Log.error('Error:', err.message))
+		;
+	}
+	return sendEmail;
+}
 
 const fillMPIDForMissingPlans = async () => {
 

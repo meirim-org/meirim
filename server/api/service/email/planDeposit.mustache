@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+  <title>
+    {{#data.PLAN_COUNTY_NAME}} תכנית הופקדה ב{{{data.PLAN_COUNTY_NAME}}} {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}} תכנית
+    הופקדה באזור העניין שלך {{/data.PLAN_COUNTY_NAME}} - {{{data.PL_NAME}}}</title>
+</head>
+
+<body dir="rtl">
+  <h2 class="headline">יש לך התראה חדשה!</h2>
+  {{#data.PLAN_COUNTY_NAME}}
+    <h2 class="headline">תכנית הופקדה ב{{data.PLAN_COUNTY_NAME}}</h2>
+  {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}}
+    <h2 class="headline">תכנית הופקדה באזור העניין שלך</h2>
+  {{/data.PLAN_COUNTY_NAME}}
+
+  <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><h2 class="headline">{{data.PL_NAME}}</h2></a>
+  <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
+
+  <div class="subSubHeadline">
+    <strong>סטטוס:</strong> {{data.STATION_DESC}}
+    <br> {{#data.DEPOSITING_DATE}} <strong>תאריך הפקדה:</strong> {{data.DEPOSITING_DATE}} {{/data.DEPOSITING_DATE}}
+  </div>
+  <h3>
+    מטרת התוכנית:
+  </h3>
+  <div class="content">
+    {{{goals_from_mavat}}}
+  </div>
+
+  <h3>תיאור התוכנית:</h3>
+  <div class="content">
+    {{{main_details_from_mavat}}}
+  </div>
+  <h3>
+    פרטים נוספים:
+  </h3>
+  <div class="subSubHeadline">
+    <strong>מספר התוכנית:</strong> {{data.PL_NUMBER}}
+  </div>
+
+  {{#data.PLAN_COUNTY_NAME}}
+    <div class="subSubHeadline">
+      <strong>ישוב:</strong> {{data.PLAN_COUNTY_NAME}}
+    </div>
+  {{/data.PLAN_COUNTY_NAME}}
+  {{#jurisdiction}}
+    <div class="subSubHeadline">
+      <strong>מוסד התכנון המוסמך להפקיד את התכנית:</strong> {{jurisdiction}}
+    </div>
+  {{/jurisdiction}}
+  <div class="subSubHeadline">
+    <strong>סוג תוכנית:</strong> {{data.ENTITY_SUBTYPE_DESC}}
+  </div>
+  <div class="subSubHeadline">
+    <strong>
+      שימושי קרקע:
+    </strong>
+    {{data.PL_LANDUSE_STRING}}
+  </div>
+
+  <div class="link_wrapper">
+    <a class="link" href="{{{link}}}?utm_medium=email&utm_source={{{type}}}">צפייה במסמכי התכנית</a>
+  </div>
+
+  {{#isLocalAuthority}}
+    <div class="subSubHeadline" style="color: #999; padding: 10px; margin: 10px;">
+    
+      שימו לב! זוהי תכנית המופקדת בסמכות מקומית. מכיוון שהוועדות המקומיות לא מדווחות בצורה אחידה אודות הסטטוס של התכניות בסמכותן אנחנו ממליצים לא להסתמך על סטטוס התכניות (גם לא כמו שמופיע באתר "תכנון זמין") - למעט אישור. אם קיבלתם התראה על תכנית חדשה בסמכות מקומית זה אומר שהתכנית עברה "תנאי סף" וכנראה שהיא בהפקדה או תכף מופקדת. תשארו עירניים!
+    
+    </div>
+  {{/isLocalAuthority}}
+
+</body>
+
+</html>
