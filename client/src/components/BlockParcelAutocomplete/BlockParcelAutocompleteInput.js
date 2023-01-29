@@ -70,7 +70,7 @@ function renderSuggestion({
         fontFamily: 'Assistant',
       }}
     >
-      {suggestion.parcel}
+      {suggestion.label}
     </MenuItem>
   );
 }
@@ -183,7 +183,7 @@ class AutocompleteInput extends Component {
                       suggestion,
                       index,
                       itemProps: getItemProps({
-                        item: suggestion.parcel,
+                        item: suggestion.label,
                       }),
                       highlightedIndex,
                       selectedItem: selectedItem2,
