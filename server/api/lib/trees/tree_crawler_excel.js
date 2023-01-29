@@ -27,7 +27,7 @@ const {
 	formatDate,
 	figureStartDate,
 	calculateLastDateToObject,
-	isEmptyRow, 
+	isEmptyRow,
 	uploadToS3
 } = require('./utils');
 
@@ -47,10 +47,10 @@ async function getTreePermitsFromFile(url, pathname, permitType) {
 				// url is added there needs to be a condition here to use the correct agent
 				const stream = fs.createWriteStream(pathname);
 				let res = await downloadChallengedFile(url, stream, { signal: controller.signal, agent: new https.Agent() }, https );
-				
+
 				if (! res) {
 					// Failed to download - try again. gov.il servers have the tendancy to fail the first time
-					Log.info('Failed to reach gov.il on the first time. try again...') 
+					Log.info('Failed to reach gov.il on the first time. try again...')
 					res = await downloadChallengedFile(url, stream, { signal: controller.signal, agent: new https.Agent() }, https );
 				}
 
@@ -83,7 +83,7 @@ const parseTreesXLS = async (filename, permit) => {
 	const rawTreePermits = sheet_json.map(row => {
 		try {
 			if (!isEmptyRow(row)) {
-				
+
 				const start_date = row[permit[START_DATE]];
 				return {
 					'core': {
@@ -95,9 +95,9 @@ const parseTreesXLS = async (filename, permit) => {
 						[APPROVER_TITLE]: row[permit[APPROVER_TITLE]],
 						// Dates
 						[PERMIT_ISSUE_DATE]: formatDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),
-						[START_DATE]: formatDate(start_date, MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),
+						[START_DATE]: formatDate(start_date, MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]], row[permit[LAST_DATE_TO_OBJECTION]], MORNING, permit.dateFormat, row[permit[REGIONAL_OFFICE]]),
 						[END_DATE]: formatDate(row[permit[END_DATE]], EVENING, permit.dateFormat),
-						[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ? 
+						[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ?
 							formatDate(row[permit[LAST_DATE_TO_OBJECTION]], EVENING, permit.dateFormat) :
 							calculateLastDateToObject(start_date, EVENING, permit.dateFormat),
 						// Location
