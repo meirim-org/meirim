@@ -308,7 +308,7 @@ export default function SearchBox({
       // history.push(`/plans?block=${block}&parcel=${parcels}`);
           // getting the block and parcel lat lon 
       const currentParcel= parcelList.find((parcel)=> parcel.label === parcels );
-      const [ lat, lng ] = JSON.parse(currentParcel.centroid)?.coordinates;
+      const [ lng, lat ] = JSON.parse(currentParcel.centroid)?.coordinates;
       if(lat && lng) window.location.href = `/plans?loc=${lat},${lng}`;
     }
     else {

@@ -2,8 +2,14 @@
 const bluebird = require('bluebird');
 const { chunk } = require('lodash');
 exports.up = function (knex) {
-	const parcels = require('../seeds/static-data/parcel.json');
-	if(parcels && parcels.length > 0) {
+	let parcels = []; 
+	try {
+		parcels = require('../seeds/static-data/parcel.json');	
+	}
+	catch(e){
+		console.log('No parcel data found, skipping');
+	}
+	if(parcels.length > 0) {
 		return knex.schema
 			.createTableIfNotExists('parcel', function (table) {
 				table.increments('id').primary();
