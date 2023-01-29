@@ -422,7 +422,7 @@ const ARABIC_TRANSLATION =  {
 	showPlans: 'הצג תוכניות:',
 	inProgress: 'בתהליך',
 	approved: 'מאושרות',
-    urbanPlanning: 'ידע',
+    urbanPlanning: 'معرفة',
     urbanPlanningTitle:'بنك المعرفة	',
     urbanPlanningSubtitle: 'نحن نجعل المعرفة متاحة وننشئ المحتوى حتى تتمكنوا من المعرفة، الفهم وكذلك التأثير على النظام الأكثر تأثيرًا على حياتنا، نظام "التخطيط والبناء"',
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.

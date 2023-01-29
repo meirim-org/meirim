@@ -32,9 +32,7 @@ const useStyles = makeStyles((theme) => ({
     select: {
       margin: '3rem 1rem',
     },
-  }));
-
-  
+}));
 
 const Wrapper = styled.div`
 display: flex;
@@ -91,6 +89,7 @@ const Button = styled.button`
     margin-top: 0;
 }
 `;
+
 const AutocompleteWrapper = styled.div`
   margin-bottom: 35px;
   width: 220px;
@@ -150,7 +149,7 @@ const AutocompleteWrapperItem = styled.div`
   }
   #block-search-input {
     input[type='number'] {
-      padding-right: 40px;
+      padding-right: 48px;
     }
   }
   #parcels-search-input {
@@ -304,11 +303,15 @@ export default function SearchBox({
 
   // Making the function to make a backend call and fetch the Block and parcels Data
   async function onEnteringBlockParcels() {
+
     if (block && parcels) {
-      history.push(`/plans?block=${block},parcel=${parcels}`);
-    } else if (block) {
-      history.push(`/plans?block=${block}`);
-    } else {
+      // history.push(`/plans?block=${block}&parcel=${parcels}`);
+          // getting the block and parcel lat lon 
+      const currentParcel= parcelList.find((parcel)=> parcel.label === parcels );
+      const [ lat, lng ] = JSON.parse(currentParcel.centroid)?.coordinates;
+      if(lat && lng) window.location.href = `/plans?loc=${lat},${lng}`;
+    }
+    else {
       setBlockinputerror(true);
     }
   }
@@ -403,7 +406,7 @@ export default function SearchBox({
               <AutocompleteWrapperItem color={color}>
                 <b>{t.block}</b>
                 <AutocompleteBlock
-                  placeholder={`5643`}
+                  placeholder={`16501`}
                   id={
                     blockinputerror
                       ? 'block-search-input-error'
@@ -421,7 +424,7 @@ export default function SearchBox({
               <AutocompleteWrapperItem color={color}>
                 <b>{t.parcel}</b>
                 <AutocompleteParcel
-                  placeholder={'554'}
+                  placeholder={'26'}
                   id={
                     parcelinputerror
                       ? 'parcels-search-input-error'
