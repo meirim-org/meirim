@@ -425,12 +425,12 @@ const fetchPlanStatus = () => {
 
 						if (! mostRecent[0]) {
 							Log.debug('No status in mavat for plan', plan.get('id'));
-							plan.save({ 'last_visited_status': now });
+							await plan.save({ 'last_visited_status': now });
 							return;
 						}
 						const mostRecentStatus = mostRecent[0].attributes.status;
 						Log.debug('updating plan status to:', mostRecentStatus);
-						plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
+						await plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
 						// save all plan statuses into plan_status_change table
 						await PlanStatusChange.savePlanStatusChange(planStatuses);
