@@ -3,20 +3,19 @@
 
 <head>
   <title>
-    {{#data.PLAN_COUNTY_NAME}} תכנית הופקדה ב{{{data.PLAN_COUNTY_NAME}}} {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}} תכנית
-    הופקדה באזור העניין שלך {{/data.PLAN_COUNTY_NAME}} - {{{data.PL_NAME}}}</title>
+    {{#data.PLAN_COUNTY_NAME}} תכנית הופקדה להתנגדויות ב{{{data.PLAN_COUNTY_NAME}}} {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}} תכנית
+    הופקדה להתנגדויות באזור העניין שלך {{/data.PLAN_COUNTY_NAME}} - {{{data.PL_NAME}}}</title>
 </head>
 
 <body dir="rtl">
   <h2 class="headline">יש לך התראה חדשה!</h2>
   {{#data.PLAN_COUNTY_NAME}}
-    <h2 class="headline">תכנית הופקדה ב{{data.PLAN_COUNTY_NAME}}</h2>
+    <h2 class="headline">תכנית הופקדה להתנגדויות ב{{data.PLAN_COUNTY_NAME}}</h2>
   {{/data.PLAN_COUNTY_NAME}} {{^data.PLAN_COUNTY_NAME}}
-    <h2 class="headline">תכנית הופקדה באזור העניין שלך</h2>
+    <h2 class="headline">תכנית הופקדה להתנגדויות באזור העניין שלך</h2>
   {{/data.PLAN_COUNTY_NAME}}
 
   <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><h2 class="headline">{{data.PL_NAME}}</h2></a>
-  <a href="{{{link}}}?utm_medium=email&utm_source={{{type}}}"><img src="cid:planmap" alt="Plan Map" border="0" align="center" style="width:100%; max-width: 600px; margin-bottom: 20px; height: auto; background: #dddddd;" /></a>
 
   <div class="subSubHeadline">
     <strong>סטטוס:</strong> {{data.STATION_DESC}}
