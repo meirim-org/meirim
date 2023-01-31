@@ -19,7 +19,6 @@ const Homepage = () => {
 				.then(result => {
 					setData(result.data);
 				})
-				.catch(error => console.error(error));
 		}
 		fetchData();
 	}, []);
