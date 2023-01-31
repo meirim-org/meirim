@@ -419,6 +419,13 @@ const fetchPlanStatus = () => {
 
 				return MavatAPI.getPlanStatus(plan).then(async (planStatuses) => {
 					try {
+
+						// cut description to match db field length
+						planStatuses.forEach(ps => {
+							if (Boolean(ps.attributes.status_description) && ps.attributes.status_description.length > 255) {
+								ps.attributes.status_description = ps.attributes.status_description.substr(0, 254);
+							}
+						});
 						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						Log.debug('updating last_visited_status to:', now );
@@ -435,6 +442,7 @@ const fetchPlanStatus = () => {
 						// save all plan statuses into plan_status_change table
 						await PlanStatusChange.savePlanStatusChange(planStatuses);
 
+						// get all relevant mavat status for deposited plan
 						if (mavatStatus === null) {
 							const res = await PlanStatusChange.byMeirimStatus('התנגדויות והערות הציבור');
 							mavatStatus = res[0].map(rec => rec.mavat_status);
@@ -448,6 +456,12 @@ const fetchPlanStatus = () => {
 			}));
 };
 
+/**
+ * Check if plan is now in deposited status and send email to watching users
+ * @param {*} plan 
+ * @param {*} planStatuses - plan statuses
+ * @param {*} mavatStatus - all mavat status for deposited plan
+ */
 async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
 	var sendEmail = false;
 	if (!plan.attributes.was_deposited) {
