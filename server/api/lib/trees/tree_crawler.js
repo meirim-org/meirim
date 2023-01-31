@@ -129,7 +129,7 @@ const crawlTrees = async (crawlMethod) => {
 		// report to monitor that ended successfuly
 		const treeFetchingHeartbeatUrl = Config.get('uptimeRobot.treeFetchingHeartbeatUrl');
 		try {
-			Log.info('reporting to monitor on success'+ treeFetchingHeartbeatUrl);
+			Log.info('reporting to tree fetching monitor on success '+ treeFetchingHeartbeatUrl);
 			const response = await axios.get(treeFetchingHeartbeatUrl);
 			Log.info('tree fetching monitor success');
 		} catch (error) {
