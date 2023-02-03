@@ -3,7 +3,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTheme } from '@material-ui/styles';
 import logo from 'assets/logo.png';
 import { useTranslation } from 'locale/he_IL';
-import PermitsNav from 'pages/Permits/nav';
+import PermitsNav from 'pages/Permits/PermitsNav';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch } from 'react-redux';

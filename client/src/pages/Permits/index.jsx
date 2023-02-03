@@ -8,7 +8,7 @@ import { CheckIfUserCanAccessPage } from 'hooks';
 import api from 'services/api';
 
 const Permits = () => {
-	//CheckIfUserCanAccessPage();
+	CheckIfUserCanAccessPage();
 
 	const { t } = useTranslation();
 	const [data, setData] = useState([]);

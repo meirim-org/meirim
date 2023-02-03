@@ -60,7 +60,7 @@ export const DesktopHeader = withTheme(styled.header`
 
 
     ${({ subMenu }) => subMenu && `
-		padding: 0;
+		padding-bottom: 0;
         border-bottom: 0;
 	`}
     
