@@ -7,11 +7,11 @@ import { useTranslation } from 'locale/he_IL';
 import { CheckIfUserCanAccessPage } from 'hooks';
 import api from 'services/api';
 
-const Homepage = () => {
-	CheckIfUserCanAccessPage();
+const Permits = () => {
+	//CheckIfUserCanAccessPage();
 
 	const { t } = useTranslation();
-	const [ data, setData ] = useState([]);
+	const [data, setData] = useState([]);
 
 	useEffect(() => {
 		const fetchData = () => {
@@ -61,4 +61,4 @@ const Homepage = () => {
 	);
 };
 
-export default Homepage;
+export default Permits;

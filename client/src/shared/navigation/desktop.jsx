@@ -3,6 +3,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTheme } from '@material-ui/styles';
 import logo from 'assets/logo.png';
 import { useTranslation } from 'locale/he_IL';
+import PermitsNav from 'pages/Permits/nav';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -73,8 +74,9 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
         }
     ]
 
+    const permitPath = window.location.pathname.includes(navLinks.find(navLink => navLink.id === 'nav-bar-permits').path)
     return (
-        <SC.DesktopHeader>
+        <SC.DesktopHeader subMenu={permitPath}>
             <SC.StyledContainer>
                 <Row justify="space-between">
                     <Box>
@@ -235,6 +237,7 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
                     </Box>
                 </Row>
             </SC.StyledContainer>
+            {permitPath && <PermitsNav />}
         </SC.DesktopHeader>
     );
 };

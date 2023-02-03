@@ -227,6 +227,8 @@ const HEBREW_TRANSLATION = {
 	permitStatus: 'סטטוס',
 	permitTimeline: 'זמן להגשת ערר',
 	permitImportance: 'חשיבות ההיתר בשבילי',
+
+	addAOI: '+ הוספת איזור עניין'
 };
 
 const ARABIC_TRANSLATION =  {
