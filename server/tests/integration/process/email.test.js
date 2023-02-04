@@ -1,5 +1,6 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
+const nock = require('nock');
 const Mailer = require('nodemailer/lib/mailer');
 const verifier = require('email-verify');
 const { mockDatabase } = require('../../mock');
@@ -9,11 +10,13 @@ const	alertController = require('../../../api/controller/alert');
 const cronController = require('../../../api/controller/cron');
 const planModel = require('../../../api/model/plan');
 const { fakeEmailVerification } = require('../../utils');
-
+const planPersonModel = require('../../../api/model/plan_person');
+const puppeteerBrowser = require('puppeteer/lib/cjs/puppeteer/common/Browser').Browser;
+const requestPromise = require('request-promise');
 let sinonSandbox = sinon.createSandbox();
 
 describe('Emails', function() {
-	const tables = ['alert', 'person', 'plan', 'notification'];
+	const tables = ['alert', 'person', 'plan', 'notification', 'plan_person', 'plan_status_change'];
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 		const fakeVerifyEmail = fakeEmailVerification; 
@@ -21,6 +24,44 @@ describe('Emails', function() {
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 		await Email.init();
+		const newPageStub = sinonSandbox.stub(puppeteerBrowser.prototype, 'newPage').callsFake(
+			sinonSandbox.fake(async () => {
+				// create a new page using the original function
+				const newPage = await newPageStub.wrappedMethod.call(newPageStub.thisValues[0]);
+
+				// this is required for us to be able to respond with custom responses
+				await newPage.setRequestInterception(true);
+
+				// register the event handler
+				newPage.on('request', (request) => {
+					const options = {
+						gzip: true,  // allow both gzipped and non-gzipped responses
+						url: request.url(),
+						method: request.method(),
+						headers: request.headers(),
+						body: request.postData()
+					};
+
+					// use request-promise (which uses the http/https modules) to actually
+					// make the request. if the request matches a nock rule the response
+					// will be mocked
+					requestPromise(options, (err, response, body) => {
+						if (err) {
+							request.abort(500);
+						} else {
+							request.respond({
+								status: response.statusCode,
+								headers: response.headers,
+								body: body
+							});
+						}
+					});
+				});
+
+				// return the new page with the registered event handler
+				return newPage;
+			})
+		);
 	});
 
 	afterEach(async function() {
@@ -146,7 +187,7 @@ describe('Emails', function() {
 				OBJECTID: 1,
 				PLAN_COUNTY_NAME: 'ערד',
 				PL_NUMBER: '1-1',
-				MP_ID: '123132',
+				MP_ID: '456456',
 				PL_NAME: 'תוכנית 1',
 				PL_URL: 'http://url',
 				STATION_DESC: 'מאושרות'
@@ -179,7 +220,7 @@ describe('Emails', function() {
 				]
 			}
 		};
-		await planModel.buildFromIPlan(firstIPlan);
+		const firstIPlanDb = await planModel.buildFromIPlan(firstIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
@@ -195,7 +236,7 @@ describe('Emails', function() {
 				PL_NUMBER: '2-1',
 				PL_NAME: 'תוכנית 2',
 				PL_URL: 'http://url',
-				MP_ID: '456456',
+				MP_ID: '123123',
 				STATION_DESC: 'מאושרות'
 			},
 			geometry: {
@@ -226,7 +267,7 @@ describe('Emails', function() {
 				]
 			}
 		};
-		await planModel.buildFromIPlan(secondIPlan);
+		const secondIPlanDb = await planModel.buildFromIPlan(secondIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
@@ -243,6 +284,7 @@ describe('Emails', function() {
 				PL_NUMBER: '3-1',
 				PL_NAME: 'תוכנית 3',
 				PL_URL: 'http://url',
+				MP_ID: '456456',
 				STATION_DESC: 'מאושרות'
 			},
 			geometry: {
@@ -290,7 +332,8 @@ describe('Emails', function() {
 				PL_NUMBER: '4-1',
 				PL_NAME: 'תוכנית 4',
 				PL_URL: 'http://url',
-				STATION_DESC: 'מאושרות'
+				STATION_DESC: 'מאושרות',
+				MP_ID: '456456'
 			},
 			geometry: {
 				type: 'Polygon',
@@ -334,6 +377,40 @@ describe('Emails', function() {
 		assert.isTrue(
 			(seventhCallTo === firstUserEmail && eighthCallTo === secondUserEmail) || 
       (seventhCallTo === secondUserEmail && eighthCallTo === firstUserEmail),
+			'sendMail should have been called to send to the user\'s email'
+		);
+
+		planPersonModel.subscribe (secondPerson.id, firstIPlanDb.id);
+		planPersonModel.subscribe (secondPerson.id, secondIPlanDb.id);
+	
+		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
+		.persist()
+		.get('/rest/api/SV4/1/?mid=456456')
+		// actual reply copied from a browser performing the API response
+		.replyWithFile(
+			200,
+			`${__dirname}/files/new_mavat_plan_json_page.html`,
+			{ 'Content-Type': 'text/html' }
+		);
+
+		const newMavatScopeNotDone = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
+		.get('/rest/api/SV4/1/?mid=123123')
+		// actual reply copied from a browser performing the API response
+		.replyWithFile(
+			200,
+			`${__dirname}/files/new_mavat_plan_json_page_start.html`,
+			{ 'Content-Type': 'text/html' }
+		);
+
+		await cronController.fetchPlanStatus();
+
+		newMavatScope.done();
+		newMavatScopeNotDone.done();
+
+		assert.equal(Mailer.prototype.sendMail.callCount, 9, 'sendMail should have been called once to notify user of a new plan status');
+		const ninthCallTo = Mailer.prototype.sendMail.getCall(8).args[0].to;
+		assert.isTrue(
+			(ninthCallTo === secondUserEmail),
 			'sendMail should have been called to send to the user\'s email'
 		);
 	});
