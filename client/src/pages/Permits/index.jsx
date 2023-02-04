@@ -6,6 +6,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { useTranslation } from 'locale/he_IL';
 import { CheckIfUserCanAccessPage } from 'hooks';
 import api from 'services/api';
+import * as SC from './style'
 
 const Permits = () => {
 	CheckIfUserCanAccessPage();
@@ -55,7 +56,9 @@ const Permits = () => {
 
 	return (
 		<Wrapper>
+			<SC.PageWrapper>
 			<Table columns={columns} data={data} />
+			</SC.PageWrapper>
 		</Wrapper>
 	);
 };

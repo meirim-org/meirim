@@ -1,4 +1,5 @@
 import Wrapper from "components/Wrapper";
+import { CheckIfUserCanAccessPage } from "hooks";
 import { useTranslation } from "locale/he_IL";
 import React, { useState } from "react";
 import { useCallback } from "react";
@@ -6,6 +7,7 @@ import { Button } from "shared";
 import * as SC from "./style";
 
 const AOI = () => {
+    CheckIfUserCanAccessPage();
 
     const items = [
         { id: 1, label: 'my label 1' },

@@ -228,6 +228,11 @@ const HEBREW_TRANSLATION = {
 	permitTimeline: 'זמן להגשת ערר',
 	permitImportance: 'חשיבות ההיתר בשבילי',
 
+	permitNav: {
+		mainTable: 'טבלה ראשית',
+		AOI: 'איזור אישי'
+	},
+
 	addAOI: '+ הוספת איזור עניין'
 };
 

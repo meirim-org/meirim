@@ -4,6 +4,7 @@ import TrashCanIcon from 'shared/icons/TrashCanIcon';
 import { IconButton, Button } from 'shared';
 
 export const Layout = styled.div`
+margin-top: 50px;
     display: grid;
 `
 
