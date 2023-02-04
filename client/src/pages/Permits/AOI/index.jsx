@@ -11,7 +11,7 @@ import * as SC from "./style";
 const MAX_AOI = 5;
 
 const AOI = () => {
-    //CheckIfUserCanAccessPage();
+    CheckIfUserCanAccessPage();
 
     const { t } = useTranslation();
     const [items, setItems] = useState([])
