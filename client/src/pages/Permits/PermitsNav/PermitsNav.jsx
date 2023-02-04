@@ -28,7 +28,7 @@ const PermitsNav = () => {
     return <SC.Layout>
         <Box display="flex" alignItems="center">
             {links.map(link => (
-                <Box px={2}>
+                <Box px={2} key={link.id}>
                     <SC.StyledLink
                         isActive={() => link.isActive(link.path)}
                         id={link.id}

@@ -1,18 +1,19 @@
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import TrashCanIcon from 'shared/icons/TrashCanIcon';
-import { IconButton, Button } from 'shared';
+import { IconButton } from 'shared';
 
 export const Layout = styled.div`
-margin-top: 50px;
-    display: grid;
+    margin-top: 70px;
+    display: flex;
+    flex-direction: row;
 `
 
 export const Sidebar = styled.div`
     width: 310px;
     background-color: #FFFFFF;
     padding-top: 46px;
-    height: 100vh;
+    min-height: 100vh;
     box-shadow: -2px 0px 13px rgba(0, 0, 0, 0.08);
     padding: 16px;
 `
@@ -33,7 +34,7 @@ export const Item = withTheme(styled.li`
     font-weight: 600;
     line-height: 26px;
     margin-bottom: 25px;
-    padding: 16px;
+    padding: 27px;
     padding-right: 25px;
 
     &:hover{
@@ -47,7 +48,12 @@ export const Item = withTheme(styled.li`
         &.${StyledTrashCanIcon}{
             color: red;
         }
+
+        padding: 16px;
+        padding-right: 25px;
     }
+
+    
 `)
 
 export const ItemLabel = withTheme(styled.p`
@@ -67,3 +73,7 @@ export const DeleteButton = withTheme(styled(IconButton)`
 export const StyledTrashCanIcon = withTheme(styled(TrashCanIcon)`
     color: ${props => props.theme.palette.white};
 `)
+
+export const Content = styled.section`
+    padding: 32px;
+`

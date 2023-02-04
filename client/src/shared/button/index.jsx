@@ -6,9 +6,9 @@ import { withTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 
 const StyledButton = withTheme(styled(MUIButton)`
-	${({ color, theme }) => `
-		background-color: ${color || theme.palette.primary.main} !important;
-		border: 1px solid ${color || theme.palette.primary.main} !important;
+	${({ backgroundcolor, theme }) => `
+		background-color: ${backgroundcolor || theme.palette.primary.main} !important;
+		border: 1px solid ${backgroundcolor || theme.palette.primary.main} !important;
 	`}
 
 	font-size: 16px !important;
@@ -128,15 +128,14 @@ const Button = ({
 	simple,
 	fontWeight,
 	textcolor,
-	color,
+	backgroundcolor,
 	textDecoration,
 	fontSize,
 	iconBefore,
 	iconAfter,
 	active,
 	disabled,
-	width,
-
+	width
 }) => {
 	const theme = useTheme();
 
@@ -155,7 +154,7 @@ const Button = ({
 			fontWeight={fontWeight}
 			disableRipple={simple}
 			textcolor={textcolor}
-			color={color}
+			backgroundcolor={backgroundcolor}
 			fontSize={fontSize}
 			textDecoration={textDecoration}
 			iconbefore={iconBefore}
@@ -195,6 +194,7 @@ Button.propTypes = {
 	simple: PropTypes.bool,
 	fontWeight: PropTypes.string,
 	textcolor: PropTypes.string,
+	backgroundcolor: PropTypes.string,
 	fontSize: PropTypes.string,
 	textDecoration: PropTypes.string,
 	iconBefore: PropTypes.object,

@@ -233,7 +233,8 @@ const HEBREW_TRANSLATION = {
 		AOI: 'איזור אישי'
 	},
 
-	addAOI: '+ הוספת איזור עניין'
+	addAOI: '+ הוספת איזור עניין',
+	remove: 'הסרה'
 };
 
 const ARABIC_TRANSLATION =  {
