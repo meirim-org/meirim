@@ -24,7 +24,7 @@ async function parseTreesHtml(url) {
 		decodeEntities: false
 	});
 	if (!dom) {
-		console.error('cheerio dom is null');
+		Log.error('cheerio dom is null');
 	}
 	const keys = [];
 	const result = [];
@@ -49,46 +49,51 @@ async function parseTreesHtml(url) {
             result.push(treePermit);
         }
     });     
-    
+
 	Log.info(`number of ramat gan permits: ${result.length}`);
 	return result;
 }
 
 function processRawPermits(rawPermits) {
 	try {
-		const treePermits = rawPermits.map(raw => {
-            try {
-                const parts = raw['שם הרחוב'].split('\n'); // captures (כריתה), (העתקה)
-                const street = parts[0];
-                const action = parts.length > 1 ? parts[1] : 'כריתה';
-                const last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערעור עד'])[0];
-                const treesPerPermit = raw['סוג העצים'] !== undefined ? parseTreesPerPermit(raw['סוג העצים']) : {};
-                const totalTrees = raw['סוג העצים'] !== undefined ? sum(Object.values(treesPerPermit)) : 0;
-                const dates = parsePermitDates(raw['מתאריך – עד תאריך']);
-                const permitNumber = `meirim-rg-${street}-${dates[0]}`;
-                
-                const attributes = {
-                    [REGIONAL_OFFICE]: 'רמת גן',
-                    [PLACE]: 'רמת גן',
-                    [APPROVER_TITLE]: 'פקיד יערות עירוני רמת גן',
-                    [PERMIT_NUMBER]: permitNumber,
-                    [PERSON_REQUEST_NAME]: raw['שם בעל הרשיון'],
-                    [STREET]: street,
-                    [ACTION]: action,
-                    [LAST_DATE_TO_OBJECTION]: last_date_to_objection,
-                    [REASON_SHORT]: raw['סיבת הכריתה'],
-                    [TREES_PER_PERMIT]: treesPerPermit,
-                    [TOTAL_TREES]: totalTrees,
-                    [START_DATE]: dates[0],
-                    [END_DATE]: dates[1],
-                    [TREE_PERMIT_URL]: 'https://www.ramat-gan.muni.il/' + raw['הבקשה'],
-                };
-                const permit = new TreePermit(attributes);
-                return permit;
-            } catch (e) {
-                Log.error(`error in ramat gan parse row: ${raw}`, e);
-                throw e;
-            }
+		const treePermits = rawPermits.map((raw) => {
+			try {
+				const parts = raw['שם הרחוב'].split('\n'); // captures (כריתה), (העתקה)
+				const street = parts[0];
+				const action = parts.length > 1 ? parts[1] : 'כריתה';
+				const last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערעור עד'])[0];
+				if (!last_date_to_objection) {
+					Log.error(`No / Bad dates format, ignore this license: Ramat Gan, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
+					return null;
+				}
+				const treesPerPermit = raw['סוג העצים'] !== undefined ? parseTreesPerPermit(raw['סוג העצים']) : {};
+				const totalTrees = raw['סוג העצים'] !== undefined ? sum(Object.values(treesPerPermit)) : 0;
+				const dates = parsePermitDates(raw['מתאריך – עד תאריך']);
+
+				const permitNumber = `meirim-rg-${street}-${dates[0]}`;
+
+				const attributes = {
+					[REGIONAL_OFFICE]: 'רמת גן',
+					[PLACE]: 'רמת גן',
+					[APPROVER_TITLE]: 'פקיד יערות עירוני רמת גן',
+					[PERMIT_NUMBER]: permitNumber,
+					[PERSON_REQUEST_NAME]: raw['שם בעל הרשיון'],
+					[STREET]: street,
+					[ACTION]: action,
+					[LAST_DATE_TO_OBJECTION]: last_date_to_objection,
+					[REASON_SHORT]: raw['סיבת הכריתה'],
+					[TREES_PER_PERMIT]: treesPerPermit,
+					[TOTAL_TREES]: totalTrees,
+					[START_DATE]: dates[0],
+					[END_DATE]: dates[1],
+					[TREE_PERMIT_URL]: 'https://www.ramat-gan.muni.il/' + raw['הבקשה'],
+				};
+				const permit = new TreePermit(attributes);
+				return permit;
+			} catch (e) {
+				Log.error(`error in ramat gan parse row: ${raw}`, e.message);
+				return null;
+			}
 		});
 		return treePermits.filter(Boolean); // remove undefined values;
 	}
@@ -106,7 +111,7 @@ function removeTags(line) { // remove data on tree id
 }
 
 function isDigit(c) {
-    return (c >= '0' && c <= '9');
+	return (c >= '0' && c <= '9');
 }
 
 function fixAmount(treeItem) { // amount not at the end - move it
@@ -130,12 +135,12 @@ function fixAmount(treeItem) { // amount not at the end - move it
 function parseTreesPerPermit(treesInPermitStr) {
 	const lines = treesInPermitStr.split('\n');
 	const treesInPermit = lines.map(line => {
-        line = replaceAll(line, ',', ' ');
+		line = replaceAll(line, ',', ' ');
         line = line.trim();   
         line = removeTags(line); 
         line = replaceAll(line, '-', ' ');
         line = replaceAll(line, '  ', ' ');
-        return fixAmount(line.split(' '))
+        return fixAmount(line.split(' '));
 	}).filter(Boolean);
 	return Object.assign({}, ...treesInPermit);
 }
@@ -145,8 +150,8 @@ function parseGushHelka(gushHelkaStr) {
 }
 
 function parsePermitDates(treeDatesStr) {
-	const dates = treeDatesStr.split('-');
-	return dates.map(date => formatDate(date,'09:00', 'DD.MM.YY' ));
+	const dates = treeDatesStr ? treeDatesStr.split('-') : [];
+	return dates.map(date => formatDate(date, '09:00', 'DD.MM.YY'));
 }
 
 function sum(treeArray) {
@@ -158,15 +163,20 @@ function sum(treeArray) {
 
 function replaceAll(str, from, to) {
     return str.replace(new RegExp(from, 'g'), to);
-  }
+}
 
 /**
  * Scrape Ramat Gan Tree page, and return the results as a TreePermit[].
  */
 async function crawlRGTreesHTML(url, permitType ) {
-	const raw = await parseTreesHtml(url);
-	const treePermits = processRawPermits(raw);
-	return treePermits;
+	try {
+		const raw = await parseTreesHtml(url);
+		const treePermits = processRawPermits(raw);
+		return treePermits;
+	}
+	catch (e) {
+		Log.error(e.message);
+	}
 }
 
 module.exports = { crawlRGTreesHTML, RGTreePermit };

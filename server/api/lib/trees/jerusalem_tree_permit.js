@@ -48,40 +48,51 @@ async function parseTreesHtml(url) {
 function processRawPermits(rawPermits) {
 	try {
 		const treePermits = rawPermits.map(raw => {
-			const actionDirty = raw['שם רחוב'].match(/\(.*\)/g) ? raw['שם רחוב'].match(/\(.*\)/g)[0] : 'לא צוין'; // captures (כריתה), (העתקה)
-			const street = raw['שם רחוב'].slice(0, raw['שם רחוב'].indexOf(actionDirty));
-			const action = actionDirty.replace('(', '').replace(')', '');
-			const last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערר עד ליום'])[0];
-			const gushHelka = parseGushHelka(raw['גוש / חלקה']);
-			const gush = gushHelka[0] ? gushHelka[0] : '';
-			const helka = gushHelka[1] ? gushHelka[1] : '';
-			const treesPerPermit = parseTreesPerPermit(raw['מספר עצים/סוג עץ']);
-			const totalTrees = sum(Object.values(treesPerPermit));
-			const dates = parsePermitDates(raw['תאריך הוצאת הרשיון - תוקף הרשיון']);
-			const permitNumber = `meirim-jer-${street}-${dates[0]}`;
+			try{
+				const actionDirty = raw['שם רחוב'].match(/\(.*\)/g) ? raw['שם רחוב'].match(/\(.*\)/g)[0] : 'לא צוין'; // captures (כריתה), (העתקה)
+				const street = raw['שם רחוב'].slice(0, raw['שם רחוב'].indexOf(actionDirty));
+				const action = actionDirty.replace('(', '').replace(')', '');
+				const last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערר עד ליום'])[0];
+				if (!last_date_to_objection) {
+					Log.error(`No / Bad dates format, ignore this license: Jerusalem, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
+					return null;
+				}
+				const gushHelka =  parseGushHelka(raw['גוש / חלקה']);
+				const gush = gushHelka[0] ? gushHelka[0] : '';
+				const helka = gushHelka[1] ? gushHelka[1] : '';
+				const treesPerPermit = parseTreesPerPermit(raw['מספר עצים/סוג עץ']);
+				const totalTrees = sum(Object.values(treesPerPermit));
+				const dates = parsePermitDates(raw['תאריך הוצאת הרשיון - תוקף הרשיון']);
+				const permitNumber = `meirim-jer-${street}-${dates[0]}`;
 
-			const attributes = {
-				[REGIONAL_OFFICE]: 'ירושלים',
-				[PLACE]: 'ירושלים',
-				[APPROVER_TITLE]: 'פקיד יערות עירוני ירושלים',
-				[PERMIT_NUMBER]: permitNumber,
-				[STREET]: street,
-				[ACTION]: action,
-				[LAST_DATE_TO_OBJECTION]: last_date_to_objection,
-				[GUSH]: gush,
-				[HELKA]: helka,
-				[REASON_DETAILED]: raw['סיבת העקירה / העתקה'],
-				[TREES_PER_PERMIT]: treesPerPermit,
-				[TOTAL_TREES]: totalTrees,
-				[PERMIT_ISSUE_DATE]: dates[0],
-				[START_DATE]: dates[1],
-				[END_DATE]: dates[2],
-				[TREE_PERMIT_URL]: 'https://www.jerusalem.muni.il/he/residents/environment/improvingcity/trees-conservation/',
-			};
-			const permit = new TreePermit(attributes);
-			return permit;
-		});
-		return treePermits;
+				const attributes = {
+					[REGIONAL_OFFICE]: 'ירושלים',
+					[PLACE]: 'ירושלים',
+					[APPROVER_TITLE]: 'פקיד יערות עירוני ירושלים',
+					[PERMIT_NUMBER]: permitNumber,
+					[STREET]: street,
+					[ACTION]: action,
+					[LAST_DATE_TO_OBJECTION]: last_date_to_objection,
+					[GUSH]: gush,
+					[HELKA]: helka,
+					[REASON_DETAILED]: raw['סיבת העקירה / העתקה'],
+					[TREES_PER_PERMIT]: treesPerPermit,
+					[TOTAL_TREES]: totalTrees,
+					[PERMIT_ISSUE_DATE]: dates[0],
+					[START_DATE]: dates[1],
+					[END_DATE]: dates[2],
+					[TREE_PERMIT_URL]: 'https://www.jerusalem.muni.il/he/residents/environment/improvingcity/trees-conservation/',
+				};
+				const permit = new TreePermit(attributes);
+				return permit;
+			}
+			catch (e) {
+				Log.error(`error in Jerusalem parse row, ignoring: ${raw['שם רחוב']}`, e.message);
+				return null;
+			}
+		}
+		);
+		return treePermits.filter(Boolean); // remove undefined values;
 	}
 	catch (e) {
 		Log.error('error in jerusalem parse rows:' + e);
@@ -104,8 +115,8 @@ function parseGushHelka(gushHelkaStr) {
 }
 
 function parsePermitDates(treeDatesStr) {
-	const dates = treeDatesStr.split('\n');
-	return dates.map(date => formatDate(date, '09:00', 'DD.MM.YYYY'));
+	const dates = treeDatesStr? treeDatesStr.split('\n'): [];
+	return dates.map(date => formatDate(date,'09:00', 'DD.MM.YYYY' ));
 }
 
 function sum(treeArray) {
@@ -119,9 +130,14 @@ function sum(treeArray) {
  * An input example could be found in server/tests/jerusalem_trees_example.js
  */
 async function crawlTreesHTML(url, permitType) {
-	const raw = await parseTreesHtml(url);
-	const treePermits = processRawPermits(raw);
-	return treePermits;
+	try {
+		const raw = await parseTreesHtml(url);
+		const treePermits = processRawPermits(raw);
+		return treePermits;
+	}
+	catch (e) {
+		Log.error(e.message);
+	}
 }
 
 module.exports = { crawlTreesHTML, JERTreePermit };
