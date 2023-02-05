@@ -7,8 +7,8 @@ const testLinks = [
         description:
             'קבוצת וואצאפ של תושבי השכונה אשר מביעים את דעתם על התכנון העתידי.',
         link: 'https://google.com',
-        actionText: 'הצטרפות לקבוצה',
-        color: '#ADEBD6',
+        // actionText: 'הצטרפות לקבוצה',
+        // color: '#ADEBD6',
     },
     {
         type: 'facebook',
@@ -16,8 +16,8 @@ const testLinks = [
         description:
             'הדף הרשמי לתושבי שכונת הפרחים שאכפת להם מתוכניות הבניה בעיר ובשכונה בפרט ורוצים לעשות שינוי!',
         link: 'https://google.com',
-        actionText: 'מעבר לדף',
-        color: '#90C0F0',
+        // actionText: 'מעבר לדף',
+        // color: '#90C0F0',
     },
     {
         type: 'web',
@@ -25,8 +25,8 @@ const testLinks = [
         description:
             'קבוצת וואצאפ של תושבי השכונה אשר מביעים את דעתם על התכנון העתידי.',
         link: 'https://google.com',
-        actionText: 'לצפייה בקישור',
-        color: '#CFABFA',
+        // actionText: 'לצפייה בקישור',
+        // color: '#CFABFA',
     },
 ];
 

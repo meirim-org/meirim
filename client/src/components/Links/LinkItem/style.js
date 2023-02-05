@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, device, font, size } from '../../../style';
+import { colors, device, font } from '../../../style';
 
 export const LinkItemWrapper = styled.div`
     padding: 16px;
@@ -72,12 +72,9 @@ export const LinkItemText = styled.div`
 `;
 
 export const LinkItemIcon = styled.div`
-    padding: 10px;
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: ${(props) => props.color};
     max-width: 48px;
     max-height: 48px;
     width: 100%;

@@ -29,7 +29,21 @@ const getLinkIcon = (type) => {
     }
 };
 
-const LinkItem = ({ type, link, title, description, actionText, color }) => {
+const getLinkActionText = (type) => {
+    switch (type) {
+        case 'whatsapp':
+            return 'הצטרפות לקבוצה';
+        case 'facebook':
+            return 'מעבר לדף';
+        case 'web':
+            return 'לצפייה בקישור';
+
+        default:
+            return 'לצפייה בקישור';
+    }
+};
+
+const LinkItem = ({ type, link, title, description }) => {
     return (
         <LinkItemWrapper>
             <LinkItemGeneral>
@@ -37,13 +51,13 @@ const LinkItem = ({ type, link, title, description, actionText, color }) => {
                     <LinkItemTitle>{title}</LinkItemTitle>
                     <LinkItemText>{description}</LinkItemText>
                 </div>
-                <LinkItemIcon color={color}>
+                <LinkItemIcon>
                     <img src={getLinkIcon(type)} alt="" />
                 </LinkItemIcon>
             </LinkItemGeneral>
             <LinkItemAction>
                 <a target="_blank" href={link} rel="noreferrer">
-                    {actionText}
+                    {getLinkActionText(type)}
                 </a>
             </LinkItemAction>
         </LinkItemWrapper>
