@@ -44,6 +44,8 @@ Router.get('/plan/:id/status', wrap(PlanStatusChange.byPlan, PlanStatusChange));
 // Tree
 Router.get('/tree/', wrap(TreePermit.browse, TreePermit));
 Router.get('/tree/:id', wrap(TreePermit.read, TreePermit));
+Router.get('/trees/geojson/', wrap(TreePermit.geojson, TreePermit));
+
 
 Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
 
