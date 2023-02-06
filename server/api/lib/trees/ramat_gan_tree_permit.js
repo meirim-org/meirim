@@ -63,7 +63,7 @@ function processRawPermits(rawPermits) {
 				const action = parts.length > 1 ? parts[1] : 'כריתה';
 				const last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערעור עד'])[0];
 				if (!last_date_to_objection) {
-					Log.error(`No / Bad dates format, ignore this liecense: Ramat Gan, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
+					Log.error(`No / Bad dates format, ignore this license: Ramat Gan, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
 					return null;
 				}
 				const treesPerPermit = raw['סוג העצים'] !== undefined ? parseTreesPerPermit(raw['סוג העצים']) : {};

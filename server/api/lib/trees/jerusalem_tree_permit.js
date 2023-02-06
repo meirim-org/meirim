@@ -54,7 +54,7 @@ function processRawPermits(rawPermits) {
 				const action = actionDirty.replace('(', '').replace(')', '');
 				const last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערר עד ליום'])[0];
 				if (!last_date_to_objection) {
-					Log.error(`No / Bad dates format, ignore this liecense: Jerusalem, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
+					Log.error(`No / Bad dates format, ignore this license: Jerusalem, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
 					return null;
 				}
 				const gushHelka =  parseGushHelka(raw['גוש / חלקה']);
