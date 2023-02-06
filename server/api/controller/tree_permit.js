@@ -87,7 +87,7 @@ class TreePermitController extends Controller {
 				}
 				return {
 					'type': 'Feature',
-					'properties': { ...i.attributes, geom: null },
+					'properties': { ...item.attributes, geom: null },
 					'geometry': geom
 				};
 			}).filter(Boolean)
