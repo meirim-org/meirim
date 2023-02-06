@@ -3,10 +3,11 @@
 		"provider": "openstreetmap"
 	},
 	"osmGeocoder": {
-		"provider": "openstreetmap",
+		"provider": "google",
 		"headers": {
 			"User-Agent": "Meirim.org (info@meirim.org)"
-		}
+		},
+		"apiKey": "GCP_API_KEY=AIzaSyCNxlivWk09_0vXg3s9NwEP7i2H_pMrR4o"
 	},
 	"staticmap": {
 		"width": 600,
