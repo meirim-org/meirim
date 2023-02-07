@@ -1,6 +1,7 @@
 const Controller = require('./controller');
 const PermitPerson = require('../model/permit_person');
 const consts = require('../model/permit_constants');
+const Exception = require('../model/exception');
 
 class PermitController extends Controller {
 	/**
@@ -26,13 +27,12 @@ class PermitController extends Controller {
 
 		const where = { [consts.PERSON_ID]: [req.session.person.id] };
 		const withRelated = { [consts.PERMIT_TABLE]: qb => qb.columns(columns)};
-		// First order by days to permit start date for permits that are still applyable for public objection, then all the rest
-		// const orderByRaw = [Knex.raw('case when datediff(current_date(), permit.last_date_to_objection) > -1 then datediff(current_date(), permit.last_date_to_objection) else -1 end asc, last_date_to_objection asc, id ')];
+		const order = `-${consts.CREATED_AT}`
 
 		return super.browse(req, {
 			where,
 			withRelated,
-			// orderByRaw,
+			order,
 		}).then(permit_persons => {
 			// Returning only the permit objects relevant to the current Person
 			return permit_persons.map(permit_person => permit_person.related(consts.PERMIT_TABLE));

@@ -234,7 +234,8 @@ const HEBREW_TRANSLATION = {
 	},
 
 	addAOI: '+ הוספת איזור עניין',
-	remove: 'הסרה'
+	remove: 'הסרה',
+	choosePermitRegion: 'בחרו וועדה אזורית'
 };
 
 const ARABIC_TRANSLATION =  {

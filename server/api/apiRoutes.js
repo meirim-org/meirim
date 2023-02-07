@@ -10,6 +10,8 @@ const Impression = require('./controller/impression');
 const Funding = require('./controller/funding');
 const TreePermit = require('./controller/tree_permit');
 const Permit = require('./controller/permit');
+const PermitAoi = require('./controller/permit_aoi');
+const PermitAoiPerson = require('./controller/permit_aoi_person');
 const Subscription = require('./controller/subscription');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
@@ -48,6 +50,10 @@ Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
 
 // Permit
 Router.get('/permit/', wrap(Permit.browse, Permit))
+Router.get('/permit/aoi', wrap(PermitAoi.browse, PermitAoi))
+Router.get('/permit/aoi/:id/preview', wrap(PermitAoi.preview, PermitAoi))
+Router.get('/permit/aoi/person', wrap(PermitAoiPerson.browse, PermitAoiPerson))
+Router.post('/permit/aoi/person', wrap(PermitAoiPerson.create, PermitAoiPerson))
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
