@@ -1,34 +1,15 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Link as SharedLink, Typography as SharedTypography } from 'shared';
-
-import api from "../services/api";
-
-import Wrapper from "../components/Wrapper";
-import Mapa from "../components/Mapa";
-import FilterAutoCompleteMultiple from "../components/FilterAutoCompleteMultiple";
-
-import { treeAppealGuideUrl } from '../pages/Tree/constants';
-import t from "../locale/he_IL";
-import "./TreePermits.css";
-import { timeToObjectionText } from '../pages/Tree/utils';
-import TreeMap from "../pages/TreeMap";
+import React, { Component } from 'react';
+import api from '../services/api';
+import Wrapper from '../components/Wrapper';
+import TreeMap from '../pages/TreeMap';
 
 class TreePermitsMap extends Component {
-	state = {
-        geojson: null,
-    };
-
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			geojson: null,
+		};
 		this.loadTrees = this.loadTrees.bind(this);
 	}
 
@@ -39,7 +20,7 @@ class TreePermitsMap extends Component {
 		});
 
 		api.get(
-			"/trees/geojson"
+			'/trees/geojson'
 		)
 			.then(result => {
 				this.setState({
@@ -56,10 +37,10 @@ class TreePermitsMap extends Component {
 
 	render() {
 		const { geojson } = this.state;
+        
 		return (
 			<Wrapper>
-                <h1>TEST</h1>
-                <TreeMap geojson={geojson}/>
+				<TreeMap geojson={geojson}/>
 			</Wrapper>
 		);
 	}
