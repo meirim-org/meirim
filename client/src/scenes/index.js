@@ -27,5 +27,5 @@ export {
 	PrivacyPolicy,
 	Vocabulary,
 	NotFound,
-    TreePermitsMap
-}
+	TreePermitsMap
+};

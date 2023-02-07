@@ -104,7 +104,7 @@
 		"connection": {
 			"host": "localhost",
 			"user": "root",
-			"password": "123456",
+			"password": "password",
 			"database": "meirim",
 			"charset": "utf8"
 		},
