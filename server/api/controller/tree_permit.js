@@ -87,11 +87,11 @@ class TreePermitController extends Controller {
 				}
 				return {
 					'type': 'Feature',
-					'properties': { ...item.attributes, geom: null},
+					'properties': { ...item.attributes, geom: null },
 					'geometry': geom
 				};
 			}).filter(Boolean)
-		}
+		};
 	}
 	place() {
 		return Knex.raw(

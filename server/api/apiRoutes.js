@@ -11,6 +11,7 @@ const Funding = require('./controller/funding');
 const TreePermit = require('./controller/tree_permit');
 const Permit = require('./controller/permit');
 const Subscription = require('./controller/subscription');
+const BlockParcel = require('./controller/block_parcel');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
@@ -49,7 +50,7 @@ Router.get('/trees/geojson/', wrap(TreePermit.geojson, TreePermit));
 Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
 
 // Permit
-Router.get('/permit/', wrap(Permit.browse, Permit))
+Router.get('/permit/', wrap(Permit.browse, Permit));
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
@@ -91,6 +92,11 @@ Router.get('/public/plan', publicWrapper(Plan.publicBrowse, Plan));
 
 // Status
 // Router.get('/', wrap(Status.browse));
+
+// Block Parcel
+
+Router.get('/topfive', wrap(BlockParcel.topfive, BlockParcel));
+Router.get('/centroid', wrap(BlockParcel.centroid, BlockParcel));
 
 // Health
 Router.get('/health', wrap(() => true));

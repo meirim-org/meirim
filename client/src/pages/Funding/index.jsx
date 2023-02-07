@@ -33,7 +33,7 @@ const FundingPage = ({ ...props }) => {
 		amountError:{ isValid: true, message:'' },
 		termsAcceptedError:{ isValid: true, message:'' },
 	});
-	const [monthlyPayment] = useState(true);
+	const [monthlyPayment, setMonthlyPayment] = useState(true);
 
 	const validateFormInput = useCallback(() => {
 		const { isValidAmount, isValidAcceptedTerms} = paymentRequestValidation({ amount, termsAccepted });
@@ -153,7 +153,7 @@ const FundingPage = ({ ...props }) => {
 									</SC.FundingStatsNumberWrapper>
 								</SC.FundingStatsNumbersWrapper> */}
 							</SC.FundingStatsWrapper>
-							{/* <SC.PaymentTypeButtonsWrapper ref={paymentRef}>
+							<SC.PaymentTypeButtonsWrapper ref={paymentRef}>
 								<SC.PaymentTypeButton side="right" selected={monthlyPayment} onClick={() => { setMonthlyPayment(true); }}>
 									<Typography component="span" variant="planTitle" mobileVariant="cardTitle" color={theme.palette.primary['main']}>
 										{t.monthlyPayment}
@@ -164,7 +164,7 @@ const FundingPage = ({ ...props }) => {
 										{t.singleTimePayment}
 									</Typography>
 								</SC.PaymentTypeButton>
-							</SC.PaymentTypeButtonsWrapper> */}
+							</SC.PaymentTypeButtonsWrapper>
 							<SC.PaymentOptionsWrapper>
 								{paymentAmountOptions.map(o => (
 									<SC.PaymentOption key={`amount-option-${o}`} className={amount===o?'active':''} onClick={ () => { setAmount(o) } }>
@@ -209,7 +209,7 @@ const FundingPage = ({ ...props }) => {
 								<HelperText id="terms-of-paymeny-error-helper-text" text="" error={triedSubmit ? formErrors.termsAcceptedError.message : ''}/>
 							</SC.TermsOfUseWrapper>
 							<SC.ButtonWrapper>
-								<Button id="payment-button" text={t.startMonthlyPayment} onClick={ handlePaymentRequest }/>
+								<Button id="payment-button" text={monthlyPayment? t.startMonthlyPayment: t.singleTimePayment} onClick={ handlePaymentRequest }/>
 							</SC.ButtonWrapper>
 						</TabPanel>
 					</SC.PaymentWrapper>
