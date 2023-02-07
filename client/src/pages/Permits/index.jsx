@@ -9,7 +9,7 @@ import api from 'services/api';
 import * as SC from './style'
 
 const Permits = () => {
-	CheckIfUserCanAccessPage();
+//CheckIfUserCanAccessPage();
 
 	const { t } = useTranslation();
 	const [data, setData] = useState([]);

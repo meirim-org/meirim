@@ -11,10 +11,11 @@ import * as SC from "./style";
 const MAX_AOI = 5;
 
 const AOI = () => {
-    CheckIfUserCanAccessPage();
+    //CheckIfUserCanAccessPage();
 
     const { t } = useTranslation();
     const [items, setItems] = useState([])
+    const [activeItemIndex, setActiveItemIndex] = useState(1)
 
     const addItem = (item) => {
         // just a temp limit...
@@ -35,24 +36,19 @@ const AOI = () => {
                 }
             ])
         })
-
     }
 
-    const [activeItemIndex, setActiveItemIndex] = useState(0)
+
 
     const onClickItem = useCallback((index) => {
         setActiveItemIndex(index)
     }, [])
 
-    const onClickTrash = useCallback((item, index) => {
-
-        const newItems = [...items]
-
-        if (index > -1) {
-            newItems.splice(index, 1);
-        }
-
+    const onClickTrash = useCallback((item) => {
+        const newItems = items.filter(i => i.id !== item.id)
         setItems(newItems)
+
+        setActiveItemIndex(0)
     }, [items])
 
     useEffect(() => {
@@ -69,7 +65,7 @@ const AOI = () => {
                             <SC.Item key={item.id} onClick={() => onClickItem(index)} className={activeItemIndex === index && 'active'}>
                                 <SC.ItemLabel >{item.label}</SC.ItemLabel>
                                 {activeItemIndex === index &&
-                                    <SC.DeleteButton ariaLabel={t.remove} onClick={() => onClickTrash(item, index)}>
+                                    <SC.DeleteButton ariaLabel={t.remove} onClick={() => onClickTrash(item)}>
                                     <SC.StyledTrashCanIcon />
                                 </SC.DeleteButton>
                                 }
