@@ -18,6 +18,13 @@ class PermitAoiPerson extends Model {
 	permit_aoi () {
 		return this.belongsTo(PermitAoi);
 	}
+
+	static canCreate(session) {
+		if (!session.person) {
+			throw new Exception.NotAllowed('Must be logged in');
+		}
+		return Promise.resolve(this);
+	}
 }
 
 module.exports = PermitAoiPerson;

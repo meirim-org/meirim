@@ -35,7 +35,7 @@ class PermitAoiController extends Controller {
 		if (!req.session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}
-		return PermitAoi.where({ id: req.params.id, type: consts.REGION }).fetch({ columns: consts.NAME })
+		return this.model.where({ id: req.params.id, type: consts.REGION }).fetch({ columns: consts.NAME })
 			.then((permitAoi) => {
 				if (!permitAoi) {
 					throw new Exception.NotFound('Missing Permit AOI, or not of region type')

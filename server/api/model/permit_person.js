@@ -11,18 +11,24 @@ class PermitPerson extends Model {
 		};
 	}
 
-	get tableName () {
+	get tableName() {
 		return `${consts.PERMIT_PERSON_TABLE}`;
 	}
 
-	person () {
+	person() {
 		return this.belongsTo(Person);
 	}
 
-	permit () {
+	permit() {
 		return this.belongsTo(Permit)
 	}
 
+	static canCreate(session) {
+		if (!session.person) {
+			throw new Exception.NotAllowed('Must be logged in');
+		}
+		return Promise.resolve(this);
+	}
 }
 
 module.exports = PermitPerson;

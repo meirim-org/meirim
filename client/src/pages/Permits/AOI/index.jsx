@@ -20,6 +20,7 @@ const AOI = () => {
 
     useEffect(() => {
         const fetchData = () => {
+            // Response sample: "data":[{"id":2,"type":"region","name":"גזר"},{"id":3,"type":"region","name":"חוף הכרמל"},{"id":4,"type":"region","name":"רמת הנגב"}]
             return api.get('/permit/aoi')
                 .then(result => {
                     setAllAois(result.data);
@@ -30,6 +31,7 @@ const AOI = () => {
 
     useEffect(() => {
         const fetchData = () => {
+            // Response sample: "data":[{"id":1,"permit_aoi_id":2,"person_id":1,"name":"testing","permit_aoi":{"id":2,"type":"region","name":"גזר","geom":{"x":1,"y":1},"visibility":"public","url":"","created_at":"2023-02-07T14:16:46.000Z","updated_at":"2023-02-07T14:16:46.000Z"}}]
             return api.get('/permit/aoi/person')
                 .then(result => {
                     setAois(result.data);
@@ -64,7 +66,9 @@ const AOI = () => {
     }
 
     const savePermit = () => {
-
+        api.post('/permit/aoi/person', {
+            permit_aoi_id: aois[activeItemIndex].permit_aoi.id
+        })
     }
 
     const [activeItemIndex, setActiveItemIndex] = useState(0)
@@ -89,8 +93,9 @@ const AOI = () => {
     }, [activeItemIndex])
 
     const [previewResults, setPreviewResults] = useState([])
-    
+
     const previewAoi = () => {
+        // Response sample: "data":[{"permitId":5490,"permitSubject":"תוספת למבנה קיים","permitPermitCreatedAt":"2022-11-16T22:00:00.000Z","permitRegion":"גזר","permitRealEstate":"גוש: 4877, חלקה: 33, מגרש: 213, תוכנית: גז/157","permitAuthor":"דוד תמיר","permitStatus":"תשלום פקדון","permitTimeline":"31 יום","permitImportance":"לא מעניין","permitUrl":null,"permitStatusUpdatedAt":"2023-01-05T23:32:43.000Z","permitCreatedAt":"2023-01-05T23:32:43.000Z","permitUpdatedAt":"2023-01-05T23:32:43.000Z"},{"permitId":5491,"permitSubject":"הסבת מבנה למגורים","permitPermitCreatedAt":"2022-11-16T22:00:00.000Z","permitRegion":"גזר","permitRealEstate":"גוש: 4732, חלקה: 10, מגרש: 10, תוכנית: גז/3/16","permitAuthor":"יעקב מוריס","permitStatus":"פתיחה","permitTimeline":"31 יום","permitImportance":"לא מעניין","permitUrl":null,"permitStatusUpdatedAt":"2023-01-05T23:32:43.000Z","permitCreatedAt":"2023-01-05T23:32:43.000Z","permitUpdatedAt":"2023-01-05T23:32:43.000Z"},{"permitId":5489,"permitSubject":"שינוי שימוש","permitPermitCreatedAt":"2022-11-14T22:00:00.000Z","permitRegion":"גזר","permitRealEstate":"גוש: 4732, חלקה: 10, מגרש: 10, תוכנית: גז/3/16","permitAuthor":"יעקב מוריס","permitStatus":"פתיחה","permitTimeline":"31 יום","permitImportance":"לא מעניין","permitUrl":null,"permitStatusUpdatedAt":"2023-01-05T23:32:43.000Z","permitCreatedAt":"2023-01-05T23:32:43.000Z","permitUpdatedAt":"2023-01-05T23:32:43.000Z"}]
         api.get(`/permit/aoi/${aois[activeItemIndex].permit_aoi.id}/preview`)
             .then(result => {
                 setPreviewResults(result.data);
@@ -152,7 +157,7 @@ const AOI = () => {
                             />
                         </>
                     )}
-                    {previewResults}
+                    {JSON.stringify(previewResults)}
                 </SC.Content>
             </SC.Layout>
         </Wrapper>
