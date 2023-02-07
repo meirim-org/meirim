@@ -4,13 +4,11 @@ import { withGetScreen } from 'react-getscreen';
 import Wrapper from "../../components/Wrapper";
 import {Map} from "../../components/Map/map";
 
-const TreeMap = ({ isMobile, isTablet, match, geojson }) => {
-
+const TreeMap = ({ isMobile, geojson }) => {
     if (isMobile()) {return null}
 
 	return (
 		<>
-            <h2>Rendered</h2>
             <Map geojson={geojson}/>
 		</>
 	);
@@ -18,8 +16,6 @@ const TreeMap = ({ isMobile, isTablet, match, geojson }) => {
 
 TreeMap.propTypes = {
 	isMobile: PropTypes.func.isRequired,
-	isTablet: PropTypes.func.isRequired,
-	match: PropTypes.object.isRequired,
     geojson: PropTypes.object.isRequired,
 };
 
