@@ -42,26 +42,27 @@ class PermitAoiPersonController extends Controller {
 	 * @param {IncomingRequest} req
 	 */
 	create(req) {
-		Bookshelf.transaction((t) => {
-			PermitAoi.where({ id: req.body.permit_aoi_id, type: consts.REGION }).fetch({ columns: consts.NAME })
-				.then((permitAoi) => {
-					if (!permitAoi) {
-						throw new Exception.NotFound('Missing Permit AOI, or not of region type')
-					}
+		super.create(req)
+		// Bookshelf.transaction((t) => {
+		// 	PermitAoi.where({ id: req.body.permit_aoi_id, type: consts.REGION }).fetch({ columns: consts.NAME })
+		// 		.then((permitAoi) => {
+		// 			if (!permitAoi) {
+		// 				throw new Exception.NotFound('Missing Permit AOI, or not of region type')
+		// 			}
 
-					const PermitPersons = Bookshelf.Collection.extend({ model: PermitPerson })
-					super.create(req, t)
+		// 			const PermitPersons = Bookshelf.Collection.extend({ model: PermitPerson })
+		// 			super.create(req, t)
 
-					return Permit.where({ region: permitAoi.get('name') }).fetchAll({ columns: 'id' })
-				}).then((permits) => {
-					const pps = PermitPerson.collection(
-						permits.map(permit => ({ permit_id: permit.id, person_id: req.session.person.id }))
-					)
-					console.log(pps)
-					return pps.invokeThen('save', null, { method: 'insert', transacting: t })
-				})
-				.catch((err) => console.error(err))
-		})
+		// 			return Permit.where({ region: permitAoi.get('name') }).fetchAll({ columns: 'id' })
+		// 		}).then((permits) => {
+		// 			const pps = PermitPerson.collection(
+		// 				permits.map(permit => ({ permit_id: permit.id, person_id: req.session.person.id }))
+		// 			)
+		// 			console.log(pps)
+		// 			return pps.invokeThen('save', null, { method: 'insert', transacting: t })
+		// 		})
+		// 		.catch((err) => console.error(err))
+		// })
 	}
 }
 

@@ -67,7 +67,8 @@ const AOI = () => {
 
     const savePermit = () => {
         api.post('/permit/aoi/person', {
-            permit_aoi_id: aois[activeItemIndex].permit_aoi.id
+            permit_aoi_id: aois[activeItemIndex].permit_aoi.id,
+            name: aois[activeItemIndex].name
         })
     }
 
