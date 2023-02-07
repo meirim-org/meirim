@@ -53,16 +53,19 @@ const TreeMap = ({ isMobile, geojson }) => {
 
 	return (
 		<>
-			<Map geojson={geojson} onClick={onClick} initialViewState={{
-				longitude:  34.82341235969558,
-				latitude: 31.812881942711954,
-				zoom: 7
-			}}>
+			<Map interactiveLayerIds={['high-tree', 'low-tree', 'mid-tree']} 
+				onClick={onClick}
+				style={{ width: '100vw', height: '100vh' }}
+				initialViewState={{
+					longitude:  34.82341235969558,
+					latitude: 31.812881942711954,
+					zoom: 7
+				}}>
 				<MapImage/>
-				{ geojson &&  <Source id="my-data" type="geojson" data={geojson}>
+				{ geojson &&  <Source id="trees-data" type="geojson" data={geojson}>
 					<Layer {...polygonStyle} />
 					<Layer  id='high-tree' {...symbolStyle({ image: 'large-tree-pin', size: 0.2 })}  filter={['>', ['get', 'total_trees'], 50]}/>
-					<Layer   id='low-tree' {...symbolStyle({ image: 'medium-tree-pin', size: 0.3 })}  minzoom={12} filter={['<', ['get', 'total_trees'], 10]}/>
+					<Layer  id='low-tree' {...symbolStyle({ image: 'medium-tree-pin', size: 0.3 })}  minzoom={12} filter={['<', ['get', 'total_trees'], 10]}/>
 					<Layer  id='mid-tree' {...symbolStyle({ image: 'medium-tree-pin', size: 0.3 })}  minzoom={10} filter={['all', ['>=', ['get', 'total_trees'], 10], ['<=', ['get', 'total_trees'], 49]]}/>
 				</Source>}
 
@@ -85,9 +88,9 @@ const TreeMap = ({ isMobile, geojson }) => {
 								>
 									{`מספר העצים: ${selectedLocationProps.total_trees}`}
 								</Typography>
-								<CardContentAddress tree={selectedLocationProps} />
-								<CardContentField field={selectedLocationProps.action} fieldBold='פעולה:'/>
-								<CardContentField field={selectedLocationProps.reason_short} fieldBold='סיבה:' />
+								<Address tree={selectedLocationProps} />
+								<ContentField field={selectedLocationProps.action} fieldBold='פעולה:'/>
+								<ContentField field={selectedLocationProps.reason_short} fieldBold='סיבה:' />
 
 								<Link
 									className="card-link"
@@ -125,7 +128,7 @@ function MapImage() {
 	return null;
 }
 
-function CardContentAddress(props) {
+function Address(props) {
 	// eslint-disable-next-line react/prop-types
 	const { street, street_number } = props.tree;
 	let address = 'לא מצוין';
@@ -141,7 +144,7 @@ function CardContentAddress(props) {
 	);
 };
 
-function CardContentField(props) {
+function ContentField(props) {
 	// eslint-disable-next-line react/prop-types
 	const { field, fieldBold } = props;
 	const text = field || 'לא מצוין';
@@ -154,4 +157,4 @@ TreeMap.propTypes = {
 	geojson: PropTypes.object.isRequired,
 };
 
-export default withGetScreen(TreeMap, { mobileLimit: 768, tabletLimit: 1024, shouldListenOnResize: true });
+export default withGetScreen(TreeMap, { mobileLimit: 768 });
