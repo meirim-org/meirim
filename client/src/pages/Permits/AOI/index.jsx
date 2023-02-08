@@ -1,13 +1,16 @@
 import Wrapper from "components/Wrapper";
-import { CheckIfUserCanAccessPage } from "hooks";
 import { useTranslation } from "locale/he_IL";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useCallback } from "react";
-import { Button } from "shared";
+import { Button, Divider, Row, Text } from "shared";
 import api from 'services/api';
 import * as SC from "./style";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Box, Checkbox, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import Table from 'components/Table/Table';
+import usePermitTableColumns from "../usePermitTableColumns";
+import { CheckIfUserCanAccessPage } from "hooks";
+import { toast } from "react-toastify";
 
 const MAX_AOI = 5;
 
@@ -15,12 +18,16 @@ const AOI = () => {
     CheckIfUserCanAccessPage();
 
     const { t } = useTranslation();
+    const columns = usePermitTableColumns();
+
     const [aois, setAois] = useState([]);
     const [allAois, setAllAois] = useState([]);
 
     useEffect(() => {
         const fetchData = () => {
-            // Response sample: "data":[{"id":2,"type":"region","name":"גזר"},{"id":3,"type":"region","name":"חוף הכרמל"},{"id":4,"type":"region","name":"רמת הנגב"}]
+            //const result = { data: [{ "id": 2, "type": "region", "name": "גזר" }, { "id": 3, "type": "region", "name": "חוף הכרמל" }, { "id": 4, "type": "region", "name": "רמת הנגב" }] }
+            //return setAllAois(result.data)
+
             return api.get('/permit/aoi')
                 .then(result => {
                     setAllAois(result.data);
@@ -31,7 +38,9 @@ const AOI = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            // Response sample: "data":[{"id":1,"permit_aoi_id":2,"person_id":1,"name":"testing","permit_aoi":{"id":2,"type":"region","name":"גזר","geom":{"x":1,"y":1},"visibility":"public","url":"","created_at":"2023-02-07T14:16:46.000Z","updated_at":"2023-02-07T14:16:46.000Z"}}]
+            //const result = { data: [{ "id": 1, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }] }
+            //return setAois(result.data)
+
             return api.get('/permit/aoi/person')
                 .then(result => {
                     setAois(result.data);
@@ -43,8 +52,14 @@ const AOI = () => {
     const addItem = () => {
         // just a temp limit...
         if (aois.length > MAX_AOI) {
-            return
-        }
+            return toast.error('מצטערים, לא ניתן להוסיף יותר מ 5 איזורי עניין.', {
+                position: 'bottom-center',
+                autoClose: true,
+                hideProgressBar: true,
+                closeOnClick: true,
+                draggable: true,
+            });
+        }       
 
         setAois(currentState => {
             const nextId = aois.length + 1;
@@ -90,19 +105,21 @@ const AOI = () => {
     }, [aois])
 
     useEffect(() => {
-        console.log('activeItem changed:', activeItemIndex)
     }, [activeItemIndex])
 
-    const [previewResults, setPreviewResults] = useState([])
-
     const previewAoi = () => {
-        // Response sample: "data":[{"permitId":5490,"permitSubject":"תוספת למבנה קיים","permitPermitCreatedAt":"2022-11-16T22:00:00.000Z","permitRegion":"גזר","permitRealEstate":"גוש: 4877, חלקה: 33, מגרש: 213, תוכנית: גז/157","permitAuthor":"דוד תמיר","permitStatus":"תשלום פקדון","permitTimeline":"31 יום","permitImportance":"לא מעניין","permitUrl":null,"permitStatusUpdatedAt":"2023-01-05T23:32:43.000Z","permitCreatedAt":"2023-01-05T23:32:43.000Z","permitUpdatedAt":"2023-01-05T23:32:43.000Z"},{"permitId":5491,"permitSubject":"הסבת מבנה למגורים","permitPermitCreatedAt":"2022-11-16T22:00:00.000Z","permitRegion":"גזר","permitRealEstate":"גוש: 4732, חלקה: 10, מגרש: 10, תוכנית: גז/3/16","permitAuthor":"יעקב מוריס","permitStatus":"פתיחה","permitTimeline":"31 יום","permitImportance":"לא מעניין","permitUrl":null,"permitStatusUpdatedAt":"2023-01-05T23:32:43.000Z","permitCreatedAt":"2023-01-05T23:32:43.000Z","permitUpdatedAt":"2023-01-05T23:32:43.000Z"},{"permitId":5489,"permitSubject":"שינוי שימוש","permitPermitCreatedAt":"2022-11-14T22:00:00.000Z","permitRegion":"גזר","permitRealEstate":"גוש: 4732, חלקה: 10, מגרש: 10, תוכנית: גז/3/16","permitAuthor":"יעקב מוריס","permitStatus":"פתיחה","permitTimeline":"31 יום","permitImportance":"לא מעניין","permitUrl":null,"permitStatusUpdatedAt":"2023-01-05T23:32:43.000Z","permitCreatedAt":"2023-01-05T23:32:43.000Z","permitUpdatedAt":"2023-01-05T23:32:43.000Z"}]
+        //const result = { data: [{ "permitId": 5490, "permitSubject": "תוספת למבנה קיים", "permitPermitCreatedAt": "2022-11-16T22:00:00.000Z", "permitRegion": "גזר", "permitRealEstate": "גוש: 4877, חלקה: 33, מגרש: 213, תוכנית: גז/157", "permitAuthor": "דוד תמיר", "permitStatus": "תשלום פקדון", "permitTimeline": "31 יום", "permitImportance": "לא מעניין", "permitUrl": null, "permitStatusUpdatedAt": "2023-01-05T23:32:43.000Z", "permitCreatedAt": "2023-01-05T23:32:43.000Z", "permitUpdatedAt": "2023-01-05T23:32:43.000Z" }, { "permitId": 5491, "permitSubject": "הסבת מבנה למגורים", "permitPermitCreatedAt": "2022-11-16T22:00:00.000Z", "permitRegion": "גזר", "permitRealEstate": "גוש: 4732, חלקה: 10, מגרש: 10, תוכנית: גז/3/16", "permitAuthor": "יעקב מוריס", "permitStatus": "פתיחה", "permitTimeline": "31 יום", "permitImportance": "לא מעניין", "permitUrl": null, "permitStatusUpdatedAt": "2023-01-05T23:32:43.000Z", "permitCreatedAt": "2023-01-05T23:32:43.000Z", "permitUpdatedAt": "2023-01-05T23:32:43.000Z" }, { "permitId": 5489, "permitSubject": "שינוי שימוש", "permitPermitCreatedAt": "2022-11-14T22:00:00.000Z", "permitRegion": "גזר", "permitRealEstate": "גוש: 4732, חלקה: 10, מגרש: 10, תוכנית: גז/3/16", "permitAuthor": "יעקב מוריס", "permitStatus": "פתיחה", "permitTimeline": "31 יום", "permitImportance": "לא מעניין", "permitUrl": null, "permitStatusUpdatedAt": "2023-01-05T23:32:43.000Z", "permitCreatedAt": "2023-01-05T23:32:43.000Z", "permitUpdatedAt": "2023-01-05T23:32:43.000Z" }] }
+        //return setAois(aois.map((aoi, index) => index === activeItemIndex ? { ...aoi, previewResults: result.data } : aoi))
+
         api.get(`/permit/aoi/${aois[activeItemIndex].permit_aoi.id}/preview`)
             .then(result => {
-                setPreviewResults(result.data);
+                setAois(aois.map((aoi, index) => index === activeItemIndex ? { ...aoi, previewResults: result.data } : aoi))
             })
     }
 
+    const activeAoi = aois[activeItemIndex];
+    const previewResults = activeAoi?.previewResults;
+    const permitAoiId = activeAoi?.permit_aoi?.id;
     return (
         <Wrapper>
             <SC.Layout>
@@ -128,37 +145,56 @@ const AOI = () => {
                     />
                 </SC.Sidebar>
                 <SC.Content>
-                    {aois[activeItemIndex] && (
-                        <>
-                            <FormControl>
-                                <InputLabel id="region-aoi-selection-label">{t.permitRegion}</InputLabel>
-                                <Select
-                                    id="region-aoi-selection"
-                                    labelId="region-aoi-selection-label"
-                                    value={aois[activeItemIndex].permit_aoi?.id || ''}
-                                    onChange={({ target: { value } }) => handleRegionChoice(value)}
-                                    label={t.permitRegion}
-                                >
-                                    {allAois.map(aoi => <MenuItem key={aoi.id} value={aoi.id}>{aoi.name}</MenuItem>)}
-                                </Select>
-                            </FormControl>
-                            <Button
-                                backgroundcolor='#FCFAFF'
-                                id="run-preview"
-                                text="תצוגה מקדימה"
-                                onClick={previewAoi}
-                                width="100%"
+                    {activeAoi
+                        ? (
+                            <Box>
+                                <Row alignItems="baseline" justify="right">
+                                    <InputLabel id="region-aoi-selection-label"><Checkbox disabled checked={permitAoiId} />{t.choosePermitRegion}</InputLabel>
+                                    <Select
+                                        id="region-aoi-selection"
+                                        labelId="region-aoi-selection-label"
+                                        value={permitAoiId || ''}
+                                        onChange={({ target: { value } }) => handleRegionChoice(value)}
+                                    >
+                                        {allAois.map(aoi => <MenuItem key={aoi.id} value={aoi.id}>{aoi.name}</MenuItem>)}
+                                    </Select>
+                                </Row>
+                                <Row justify="flex-end" alignItems="center">
+                                    <Box px={2} minWidth={150}>
+                                        <Button
+                                            backgroundcolor={!permitAoiId && "white"}
+                                            disabled={!permitAoiId}
+                                            id="run-preview"
+                                            text="תצוגה מקדימה"
+                                            onClick={previewAoi}
+                                            width="100%"
+                                        />
+                                    </Box>
+                                    <Box px={2} minWidth={150}>
+                                        <Button
+                                            backgroundcolor={!previewResults && "white"}
+                                            disabled={!previewResults}
+                                            id="save-permit-aoi"
+                                            text={t.saved}
+                                            onClick={savePermit}
+                                            width="100%"
+                                        />
+                                    </Box>
+                                </Row>
+                                {previewResults &&
+                                    <SC.TableContainer>
+                                        <Table columns={columns} data={previewResults} />
+                                    </SC.TableContainer>
+                                }
+                            </Box>
+                        )
+                        : <SC.NoContent>
+                            <Text
+                                size="1.5rem"
+                                text={t.noAOISavedTitle}
+                                component="p"
                             />
-                            <Button
-                                backgroundcolor='#FCFAFF'
-                                id="save-permit-aoi"
-                                text={t.saved}
-                                onClick={savePermit}
-                                width="100%"
-                            />
-                        </>
-                    )}
-                    {JSON.stringify(previewResults)}
+                        </SC.NoContent>}
                 </SC.Content>
             </SC.Layout>
         </Wrapper>

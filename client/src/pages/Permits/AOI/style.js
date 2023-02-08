@@ -61,6 +61,7 @@ export const ItemLabel = withTheme(styled.p`
     padding: 0;
     display: flex;
     flex-grow: 1;
+    width: 100px;
 `)
 
 export const DeleteButton = withTheme(styled(IconButton)`
@@ -75,5 +76,19 @@ export const StyledTrashCanIcon = withTheme(styled(TrashCanIcon)`
 `)
 
 export const Content = styled.section`
+    width: 100%;
     padding: 32px;
+`
+export const NoContent = withTheme(styled.div`
+    text-align: center;
+    > * {
+        text-align: center;
+    }
+`)
+
+export const TableContainer = styled.div`
+    > Table {
+        width: 100%;
+    }
+    padding-top: 32px;
 `
