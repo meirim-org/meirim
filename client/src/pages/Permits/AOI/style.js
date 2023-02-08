@@ -22,6 +22,10 @@ export const List = styled.ul`
     padding: 16px 0 0 0;
 `
 
+export const StyledTrashCanIcon = withTheme(styled(TrashCanIcon)`
+    color: ${props => props.theme.palette.white};
+`)
+
 export const Item = withTheme(styled.li`
     display: flex;
     flex-direction: row;
@@ -69,10 +73,6 @@ export const DeleteButton = withTheme(styled(IconButton)`
     background: none;
     padding:0;
     display: flex;
-`)
-
-export const StyledTrashCanIcon = withTheme(styled(TrashCanIcon)`
-    color: ${props => props.theme.palette.white};
 `)
 
 export const Content = styled.section`

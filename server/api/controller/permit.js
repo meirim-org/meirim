@@ -2,6 +2,7 @@ const Controller = require('./controller');
 const PermitPerson = require('../model/permit_person');
 const consts = require('../model/permit_constants');
 const Exception = require('../model/exception');
+const Permit = require('../model/permit');
 
 class PermitController extends Controller {
 	/**
@@ -26,8 +27,11 @@ class PermitController extends Controller {
 		];
 
 		const where = { [consts.PERSON_ID]: [req.session.person.id] };
-		const withRelated = { [consts.PERMIT_TABLE]: qb => qb.columns(columns)};
-		const order = `-${consts.CREATED_AT}`
+		const order = `-id`
+		const withRelated = { [consts.PERMIT_TABLE]: qb => {
+			qb.columns(columns);
+			qb.orderBy(consts.CREATED_AT, 'DESC');
+		}};
 
 		return super.browse(req, {
 			where,

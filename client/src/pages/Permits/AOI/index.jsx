@@ -3,10 +3,10 @@ import { useTranslation } from "locale/he_IL";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useCallback } from "react";
-import { Button, Divider, Row, Text } from "shared";
+import { Button, Row, Text } from "shared";
 import api from 'services/api';
 import * as SC from "./style";
-import { Box, Checkbox, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Box, Checkbox, InputLabel, MenuItem, Select } from "@material-ui/core";
 import Table from 'components/Table/Table';
 import usePermitTableColumns from "../usePermitTableColumns";
 import { CheckIfUserCanAccessPage } from "hooks";
@@ -30,7 +30,7 @@ const AOI = () => {
 
             return api.get('/permit/aoi')
                 .then(result => {
-                    setAllAois(result.data);
+                    setAllAois(result.data.map((aoi) => ({ ...aoi, draft: false })));
                 })
         }
         fetchData();
@@ -59,7 +59,7 @@ const AOI = () => {
                 closeOnClick: true,
                 draggable: true,
             });
-        }       
+        }
 
         setAois(currentState => {
             const nextId = aois.length + 1;
@@ -68,7 +68,8 @@ const AOI = () => {
                 ...currentState,
                 {
                     id: nextId,
-                    name: `אזור עניין ${nextId}`
+                    name: `אזור עניין ${nextId}`,
+                    draft: true
                 }
             ])
         })
@@ -84,6 +85,10 @@ const AOI = () => {
         api.post('/permit/aoi/person', {
             permit_aoi_id: aois[activeItemIndex].permit_aoi.id,
             name: aois[activeItemIndex].name
+        }).then((permitPersonAoi) => {
+            setAois(aois.map((aoi, index) =>
+                index === activeItemIndex ? { ...aoi, id: permitPersonAoi.data.id, draft: false } : aoi
+            ))
         })
     }
 
@@ -91,7 +96,7 @@ const AOI = () => {
 
     const onClickItem = useCallback((index) => {
         setActiveItemIndex(index)
-    }, [])
+    }, [activeItemIndex])
 
     const onClickTrash = useCallback((item, index) => {
 
@@ -99,10 +104,16 @@ const AOI = () => {
 
         if (index > -1) {
             newItems.splice(index, 1);
+            if (!item.draft) {
+                api.delete(`/permit/aoi/person/${item.id}`)
+            }
+            if (activeItemIndex >= newItems.length) {
+                setActiveItemIndex(0);
+            }
         }
 
         setAois(newItems)
-    }, [aois])
+    }, [aois, activeItemIndex])
 
     useEffect(() => {
     }, [activeItemIndex])

@@ -37,26 +37,52 @@ class PermitAoiPersonController extends Controller {
 	}
 
 	/**
-	 * Create a permit AOI person record, and add the relevant permit person records.
+	 * Create a permit AOI person record, and add the relevant permit person records. Must be logged in.
 	 * Currently works only for region type AOI
 	 * @param {IncomingRequest} req
 	 */
 	create(req) {
-		Bookshelf.transaction((t) => {
+		return Bookshelf.transaction((t) => {
 			return PermitAoi.where({ id: req.body.permit_aoi_id, type: consts.REGION }).fetch({ columns: consts.NAME })
 				.then((permitAoi) => {
 					if (!permitAoi) {
 						throw new Exception.NotFound('Missing Permit AOI, or not of region type')
 					}
 
-					super.create(req, t)
 					const insertPermitPersonSql = `
 						INSERT INTO permit_person (permit_id, person_id) 
 						SELECT id, ${req.session.person.id} from permit where region = '${permitAoi.get('name')}'
 					`.trim()
 					return Bookshelf.knex.raw(insertPermitPersonSql)
+						.then(() => super.create(req, t))
 				})
-		}).catch((err) => console.error(err))
+		})
+	}
+
+	/**
+	 * Delete a permit AOI person record - removes all relevant permit person records as well. Must be logged in.
+	 * @param {IncomingRequest} req
+	 */
+	delete(req) {
+		return Bookshelf.transaction((t) => {
+			return this.model.where({ id: req.params.id }).fetch()
+				.then((permitAoiPerson) =>
+					PermitAoi.where({ id: permitAoiPerson.get(consts.PERMIT_AOI_ID), type: consts.REGION }).fetch({ columns: consts.NAME })
+				)
+				.then((permitAoi) => {
+					if (!permitAoi) {
+						throw new Exception.NotFound('Missing Permit AOI, or not of region type')
+					}
+
+					const deletePermitPersonSql = `
+						DELETE permit_person FROM permit_person 
+						JOIN permit ON permit_person.permit_id = permit.id
+						WHERE person_id = ${req.session.person.id} AND region = '${permitAoi.get('name')}'
+					`
+					return Bookshelf.knex.raw(deletePermitPersonSql)
+						.then(() => super.delete(req, t))
+				})
+		})
 	}
 }
 

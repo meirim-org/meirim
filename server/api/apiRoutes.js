@@ -54,6 +54,7 @@ Router.get('/permit/aoi', wrap(PermitAoi.browse, PermitAoi))
 Router.get('/permit/aoi/:id/preview', wrap(PermitAoi.preview, PermitAoi))
 Router.get('/permit/aoi/person', wrap(PermitAoiPerson.browse, PermitAoiPerson))
 Router.post('/permit/aoi/person', wrap(PermitAoiPerson.create, PermitAoiPerson))
+Router.delete('/permit/aoi/person/:id', wrap(PermitAoiPerson.delete, PermitAoiPerson))
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));

@@ -25,6 +25,13 @@ class PermitAoiPerson extends Model {
 		}
 		return Promise.resolve(this);
 	}
+
+	canEdit (session) {
+		if (session.person.id !== this.get('person_id')) {
+			throw new Exception.NotAllowed('You cannot edit this permit AOI');
+		}
+		return Promise.resolve(this);
+	}
 }
 
 module.exports = PermitAoiPerson;
