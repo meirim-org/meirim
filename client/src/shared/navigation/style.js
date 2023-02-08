@@ -57,6 +57,13 @@ export const DesktopHeader = withTheme(styled.header`
     top: 0;
     right: 0;
     left: 0;
+
+
+    ${({ subMenu }) => subMenu && `
+		padding-bottom: 0;
+        border-bottom: 0;
+	`}
+    
 `);
 
 export const MobileHeader = withTheme(styled.header`

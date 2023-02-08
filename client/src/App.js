@@ -23,6 +23,7 @@ import { Modal, CircularProgress } from 'shared';
 import 'App.css';
 import { muiTheme } from 'theme';
 import { CookieHook, useInitGA, useInitHotjar } from 'hooks';
+import AOI from 'pages/Permits/AOI';
 
 library.add(
     faSpinner,
@@ -70,6 +71,7 @@ const App = (props) => {
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />
 						<Route path="/email-sent" render={props => <EmailSent {...props} />} />
 						<Route path="/hub" render={props => <UrbanPlanning {...props}/>} />
+						<Route path="/permits/aoi" render={props => <AOI {...props} />} />
 						<Route path="/permits" render={props => <Permits {...props} />} />
 						<Route component={Scenes.NotFound} />
 					</Switch>

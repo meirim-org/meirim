@@ -17,7 +17,7 @@ const StyledRow = styled(MUIGrid)`
 
 const Row = ({ gutter, children, alignItems, justify }) => {
 	return (
-		<StyledRow container gutter={gutter} alignItems={alignItems} justify={justify}>
+		<StyledRow container gutter={gutter} alignItems={alignItems} justifyContent={justify}>
 			{children}
 		</StyledRow>
 	);
