@@ -47,6 +47,52 @@ class TreePermitController extends Controller {
 		});
 	}
 
+	async geojson (req) {
+		const columns = [
+			'id',
+			tpc.PLACE,
+			tpc.STREET,
+			tpc.STREET_NUMBER,
+			tpc.REASON_SHORT,
+			tpc.REASON_DETAILED,
+			tpc.PERSON_REQUEST_NAME,
+			tpc.APPROVER_NAME,
+			tpc.APPROVER_TITLE,
+			tpc.PERMIT_ISSUE_DATE,
+			tpc.PERMIT_NUMBER,
+			tpc.REGIONAL_OFFICE,
+			tpc.START_DATE,
+			tpc.TOTAL_TREES,
+			tpc.TREES_PER_PERMIT,
+			tpc.ACTION,
+			tpc.GEOM,
+			tpc.GUSH,
+			tpc.HELKA,
+			tpc.LAST_DATE_TO_OBJECTION,
+		];
+
+		const response = await super.browse(req, {
+			columns,
+			whereRaw: [Knex.raw('current_date() < DATE_ADD(tree_permit.start_date, INTERVAL 28 DAY)')],
+			pageSize: 10000000,
+		});
+
+		return {
+			type: 'FeatureCollection',
+			features: response.map(item => {
+				const geom = item.attributes.geom;
+
+				if (!geom) {
+					return null;
+				}
+				return {
+					'type': 'Feature',
+					'properties': { ...item.attributes, geom: null },
+					'geometry': geom
+				};
+			}).filter(Boolean)
+		};
+	}
 	place() {
 		return Knex.raw(
 			`SELECT ${tpc.PLACE}, COUNT(*) as num FROM ${tpc.TREE_PERMIT_TABLE} WHERE ${tpc.PLACE} NOT IN (${tpc.UNSUPPORTED_PLACES.map(p => `'${p}'`).join(',')}) GROUP BY ${tpc.PLACE}`

@@ -230,6 +230,17 @@ const HEBREW_TRANSLATION = {
 	permitStatus: 'סטטוס',
 	permitTimeline: 'זמן להגשת ערר',
 	permitImportance: 'חשיבות ההיתר בשבילי',
+
+	permitNav: {
+		mainTable: 'טבלה ראשית',
+		AOI: 'איזור אישי'
+	},
+
+	addAOI: '+ הוספת איזור עניין',
+	remove: 'הסרה',
+	choosePermitRegion: 'בחרו וועדה אזורית',
+	noAOISavedTitle: 'טרם נוספו איזורי עניין',
+	addAOILinkTitle: 'מעבר להוספת איזורי עניין'
 };
 
 const ARABIC_TRANSLATION =  {

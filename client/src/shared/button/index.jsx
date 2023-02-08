@@ -6,17 +6,20 @@ import { withTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 
 const StyledButton = withTheme(styled(MUIButton)`
+	${({ backgroundcolor, theme }) => `
+		background-color: ${backgroundcolor || theme.palette.primary.main} !important;
+		border: 1px solid ${backgroundcolor || theme.palette.primary.main} !important;
+	`}
+
 	font-size: 16px !important;
 	font-stretch: normal;
 	line-height: 1.5;
 	letter-spacing: normal
 	text-align: center; 
     color: ${props => props.theme.palette.white} !important;
-    background-color: ${props => props.theme.palette.primary.main} !important;
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
-    border: 1px solid ${props => props.theme.palette.primary.main} !important;
     min-width: auto !important;
     
     .MuiButton-label  {
@@ -125,6 +128,7 @@ const Button = ({
 	simple,
 	fontWeight,
 	textcolor,
+	backgroundcolor,
 	textDecoration,
 	fontSize,
 	iconBefore,
@@ -150,6 +154,7 @@ const Button = ({
 			fontWeight={fontWeight}
 			disableRipple={simple}
 			textcolor={textcolor}
+			backgroundcolor={backgroundcolor}
 			fontSize={fontSize}
 			textDecoration={textDecoration}
 			iconbefore={iconBefore}
@@ -189,6 +194,7 @@ Button.propTypes = {
 	simple: PropTypes.bool,
 	fontWeight: PropTypes.string,
 	textcolor: PropTypes.string,
+	backgroundcolor: PropTypes.string,
 	fontSize: PropTypes.string,
 	textDecoration: PropTypes.string,
 	iconBefore: PropTypes.object,
