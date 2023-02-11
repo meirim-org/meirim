@@ -242,6 +242,9 @@ const HEBREW_TRANSLATION = {
     permitStatus: 'סטטוס',
     permitTimeline: 'זמן להגשת ערר',
     permitImportance: 'חשיבות ההיתר בשבילי',
+    whatsappLinkAction: 'הצטרפות לקבוצה',
+    facebookLinkAction: 'מעבר לדף',
+    webLinkAction: 'לצפייה בקישור',
 };
 
 const ARABIC_TRANSLATION = {
@@ -468,6 +471,9 @@ const ARABIC_TRANSLATION = {
         treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!',
         savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם',
     },
+    whatsappLinkAction: 'الانضمام للمجموعة',
+    facebookLinKAction: 'فوق الصفحة',
+    webLinkAction: 'لعرض الارتباط',
 };
 
 export const LANGUAGES = {

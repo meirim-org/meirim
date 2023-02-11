@@ -14,6 +14,7 @@ import {
     LinkItemWrapper,
 } from './style';
 import PropTypes from 'prop-types';
+import { useTranslation } from '../../../locale/he_IL';
 
 const getLinkIcon = (type) => {
     switch (type) {
@@ -32,18 +33,20 @@ const getLinkIcon = (type) => {
 const getLinkActionText = (type) => {
     switch (type) {
         case 'whatsapp':
-            return 'הצטרפות לקבוצה';
+            return 'whatsappLinkAction';
         case 'facebook':
-            return 'מעבר לדף';
+            return 'facebookLinkAction';
         case 'web':
-            return 'לצפייה בקישור';
+            return 'webLinkAction';
 
         default:
-            return 'לצפייה בקישור';
+            return 'webLinkAction';
     }
 };
 
 const LinkItem = ({ type, link, title, description }) => {
+    const { t } = useTranslation();
+
     return (
         <LinkItemWrapper>
             <LinkItemGeneral>
@@ -57,7 +60,7 @@ const LinkItem = ({ type, link, title, description }) => {
             </LinkItemGeneral>
             <LinkItemAction>
                 <a target="_blank" href={link} rel="noreferrer">
-                    {getLinkActionText(type)}
+                    {t[getLinkActionText(type)]}
                 </a>
             </LinkItemAction>
         </LinkItemWrapper>
