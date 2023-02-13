@@ -46,7 +46,7 @@ class PlanPerson extends Model {
 
 	static async getUsersForPlan(plan_id) {
 		const res = await Knex.raw(
-			`select id, email as person_id, email from person where id in 
+			`select id, email as person_id, email from person where status=1 and id in 
 			(select person_id from plan_person where plan_id = ?)`
 			, [plan_id]
 		);

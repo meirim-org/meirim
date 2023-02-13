@@ -77,16 +77,7 @@ describe('Emails', function() {
 		const secondUserEmail = 'testseconduser@meirim.org';
 
 		// create the first user
-		const firstUserReq = {
-			body: {
-				email: firstUserEmail,
-				password: '1234',
-				status: 0,
-				name: 'my name',
-				type: '0'
-			},
-			session: {}
-		};
+		const firstUserReq = createUser(firstUserEmail);
 		const firstPerson = await signController.signup(firstUserReq);
 
 		assert.equal(firstPerson.attributes.email, firstUserEmail, 'person email should match provided value');
@@ -98,25 +89,10 @@ describe('Emails', function() {
 		assert.equal(Mailer.prototype.sendMail.lastCall.args[0].to, firstUserEmail, 'sendMail should have been called to send to the new user\'s email');
 
 		// activate the first user so it can recieve plan notifications
-		const firstUserActivationReq = {
-			body: {
-				token: firstUserReq.session.person.getActivationToken()
-			},
-			session: {}
-		};
-		await signController.activate(firstUserActivationReq);
+		await activateUser(firstUserReq);
 
 		// create the second user
-		const secondUserReq = {
-			body: {
-				email: secondUserEmail,
-				password: '1234',
-				status: 0,
-				name: 'my name',
-				type: '0'
-			},
-			session: {}
-		};
+		const secondUserReq = createUser(secondUserEmail);
 		const secondPerson = await signController.signup(secondUserReq);
 
 		assert.equal(secondPerson.attributes.email, secondUserEmail, 'person email should match provided value');
@@ -128,29 +104,15 @@ describe('Emails', function() {
 		assert.equal(Mailer.prototype.sendMail.lastCall.args[0].to, secondUserEmail, 'sendMail should have been called to send to the new user\'s email');
 
 		// activate the second user so it can recieve plan notifications
-		const secondUserActivationReq = {
-			body: {
-				token: secondUserReq.session.person.getActivationToken()
-			},
-			session: {}
-		};
-		await signController.activate(secondUserActivationReq);
+		await activateUser(secondUserReq);
 
 		// NOTE: geocoder responses are not mocked for now. if in the 
 		// future the service returns inconsistent responses or becomes 
 		// unreliable this can be changed
 
 		// set up an alert for the first user
-		const firstUserAlertReq = {
-			body: {
-				address: 'מואב 59 ערד',
-				radius: '1'
-			},
-			session: {
-				person: firstUserReq.session.person.attributes
-			}
-		};
-		const	firstAlert = await alertController.create(firstUserAlertReq);
+		const firstUserAlertReq = createUserAlertReq('מואב 59 ערד', firstUserReq.session.person.attributes);
+		const firstAlert = await alertController.create(firstUserAlertReq);
 
 		assert.equal(firstAlert.attributes.person_id, firstPerson.id, 'alert person id should match created person id');
 		assert.isAtLeast(firstAlert.id, 0, 'an alert id should have been generated');
@@ -160,15 +122,7 @@ describe('Emails', function() {
 		assert.equal(Mailer.prototype.sendMail.lastCall.args[0].to, firstUserEmail, 'sendMail should have been called to send to the user\'s email');
 
 		// set up an alert for the second user
-		const secondUserAlertReq = {
-			body: {
-				address: 'קניון ערד',
-				radius: '1'
-			},
-			session: {
-				person: secondUserReq.session.person.attributes
-			}
-		};
+		const secondUserAlertReq = createUserAlertReq('קניון ערד', secondUserReq.session.person.attributes);
 		const secondAlert = await alertController.create(secondUserAlertReq);
 
 		assert.equal(secondAlert.attributes.person_id, secondPerson.id, 'alert person id should match created person id');
@@ -182,45 +136,8 @@ describe('Emails', function() {
 		// use buildFromIPlan instead of just creating and instance and 
 		// saving it to utilize as many used functions as possible. can be 
 		// changed in the future
-		const firstIPlan = {
-			properties: {
-				OBJECTID: 1,
-				PLAN_COUNTY_NAME: 'ערד',
-				PL_NUMBER: '1-1',
-				MP_ID: '456456',
-				PL_NAME: 'תוכנית 1',
-				PL_URL: 'http://url',
-				STATION_DESC: 'מאושרות'
-			},
-			geometry: {
-				type: 'Polygon',
-				coordinates: [
-					[
-						[
-							35.221261,
-							31.247297
-						],
-						[
-							35.221261,
-							31.247298
-						],
-						[
-							35.221262,
-							31.247298
-						],
-						[
-							35.221262,
-							31.247297
-						],
-						[
-							35.221261,
-							31.247297
-						]
-					]
-				]
-			}
-		};
-		const firstIPlanDb = await planModel.buildFromIPlan(firstIPlan);
+		const firstIPlan = createPlan(1, 'תוכנית 1', '1-1', '456456', getCoordP1());
+		await planModel.buildFromIPlan(firstIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
@@ -229,45 +146,8 @@ describe('Emails', function() {
 		assert.equal(Mailer.prototype.sendMail.callCount, 4, 'sendMail should not have been called since no user is subscribed to this location');
 
 		// create a new plan which intersects with the first user's alert
-		const secondIPlan = {
-			properties: {
-				OBJECTID: 2,
-				PLAN_COUNTY_NAME: 'ערד',
-				PL_NUMBER: '2-1',
-				PL_NAME: 'תוכנית 2',
-				PL_URL: 'http://url',
-				MP_ID: '123123',
-				STATION_DESC: 'מאושרות'
-			},
-			geometry: {
-				type: 'Polygon',
-				coordinates: [
-					[
-						[
-							35.225633,
-							31.261314
-						],
-						[
-							35.225633,
-							31.261315
-						],
-						[
-							35.225634,
-							31.261315
-						],
-						[
-							35.225634,
-							31.261314
-						],
-						[
-							35.225633,
-							31.261314
-						]
-					]
-				]
-			}
-		};
-		const secondIPlanDb = await planModel.buildFromIPlan(secondIPlan);
+		const secondIPlan = createPlan(2, 'תוכנית 2', '2-1', '123123', getCoordP2());
+		await planModel.buildFromIPlan(secondIPlan);
 
 		// run send planning alerts cron job
 		await cronController.sendPlanningAlerts();
@@ -277,44 +157,7 @@ describe('Emails', function() {
 		assert.equal(Mailer.prototype.sendMail.lastCall.args[0].to, firstUserEmail, 'sendMail should have been called to send to the user\'s email');
 
 		// create a new plan which intersects with the second user's alert
-		const thirdIPlan = {
-			properties: {
-				OBJECTID: 3,
-				PLAN_COUNTY_NAME: 'ערד',
-				PL_NUMBER: '3-1',
-				PL_NAME: 'תוכנית 3',
-				PL_URL: 'http://url',
-				MP_ID: '456456',
-				STATION_DESC: 'מאושרות'
-			},
-			geometry: {
-				type: 'Polygon',
-				coordinates: [
-					[
-						[
-							35.203587,
-							31.258455
-						],
-						[
-							35.203588,
-							31.258455
-						],
-						[
-							35.203588,
-							31.258456
-						],
-						[
-							35.203587,
-							31.258456
-						],
-						[
-							35.203587,
-							31.258455
-						]
-					]
-				]
-			}
-		};
+		const thirdIPlan = createPlan(3, 'תוכנית 3', '3-1', '456456', getCoordP3());
 		await planModel.buildFromIPlan(thirdIPlan);
 
 		// run send planning alerts cron job
@@ -325,44 +168,7 @@ describe('Emails', function() {
 		assert.equal(Mailer.prototype.sendMail.lastCall.args[0].to, secondUserEmail, 'sendMail should have been called to send to the user\'s email');
 
 		// create a new plan which intersects with the both users' alerts
-		const fourthIPlan = {
-			properties: {
-				OBJECTID: 4,
-				PLAN_COUNTY_NAME: 'ערד',
-				PL_NUMBER: '4-1',
-				PL_NAME: 'תוכנית 4',
-				PL_URL: 'http://url',
-				STATION_DESC: 'מאושרות',
-				MP_ID: '456456'
-			},
-			geometry: {
-				type: 'Polygon',
-				coordinates: [
-					[
-						[
-							35.217876,
-							31.261879
-						],
-						[
-							35.217877,
-							31.261879
-						],
-						[
-							35.217877,
-							31.261880
-						],
-						[
-							35.217876,
-							31.261880
-						],
-						[
-							35.217876,
-							31.261879
-						]
-					]
-				]
-			}
-		};
+		const fourthIPlan = createPlan(4, 'תוכנית 4', '4-1', '456456', getCoordP4());
 		await planModel.buildFromIPlan(fourthIPlan);
 
 		// run send planning alerts cron job
@@ -379,10 +185,48 @@ describe('Emails', function() {
       (seventhCallTo === secondUserEmail && eighthCallTo === firstUserEmail),
 			'sendMail should have been called to send to the user\'s email'
 		);
+	});
 
+	it('should send notifications to users on plan deposit', async function() {
+		this.timeout(60000);
+
+		// user emails for our two test users
+		const firstUserEmail = 'testfirstuser@meirim.org';
+		const secondUserEmail = 'testseconduser@meirim.org';
+
+		// create the first user
+		const firstUserReq = createUser(firstUserEmail);
+		await signController.signup(firstUserReq);
+
+		// activation email was "sent"
+		assert.equal(Mailer.prototype.sendMail.callCount, 1, 'sendMail should have been called once to activate the new user');
+		assert.equal(Mailer.prototype.sendMail.lastCall.args[0].to, firstUserEmail, 'sendMail should have been called to send to the new user\'s email');
+
+
+		// create the second user
+		const secondUserReq = createUser(secondUserEmail);
+		const secondPerson = await signController.signup(secondUserReq);
+
+		// activation email was "sent"
+		assert.equal(Mailer.prototype.sendMail.callCount, 2, 'sendMail should have been called again to activate the new user');
+		assert.equal(Mailer.prototype.sendMail.lastCall.args[0].to, secondUserEmail, 'sendMail should have been called to send to the new user\'s email');
+
+		// activate second user
+		await activateUser(secondUserReq);
+
+		// create first plan
+		const firstIPlan = createPlan(1, 'תוכנית 1', '1-1', '456456', getCoordP1());
+		const firstIPlanDb = await planModel.buildFromIPlan(firstIPlan);
+
+		// create second plan
+		const secondIPlan = createPlan(2, 'תוכנית 2', '2-1', '123123', getCoordP2());
+		const secondIPlanDb = await planModel.buildFromIPlan(secondIPlan);
+
+		// subscribe to both plans for second user
 		planPersonModel.subscribe (secondPerson.id, firstIPlanDb.id);
 		planPersonModel.subscribe (secondPerson.id, secondIPlanDb.id);
 	
+		// first plan return status data
 		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
 		.persist()
 		.get('/rest/api/SV4/1/?mid=456456')
@@ -393,6 +237,7 @@ describe('Emails', function() {
 			{ 'Content-Type': 'text/html' }
 		);
 
+		// second plan return status data
 		const newMavatScopeNotDone = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
 		.get('/rest/api/SV4/1/?mid=123123')
 		// actual reply copied from a browser performing the API response
@@ -402,16 +247,123 @@ describe('Emails', function() {
 			{ 'Content-Type': 'text/html' }
 		);
 
+		// run get plan status
 		await cronController.fetchPlanStatus();
 
+		// stop nock
 		newMavatScope.done();
 		newMavatScopeNotDone.done();
 
-		assert.equal(Mailer.prototype.sendMail.callCount, 9, 'sendMail should have been called once to notify user of a new plan status');
-		const ninthCallTo = Mailer.prototype.sendMail.getCall(8).args[0].to;
+		// test 2nd user notify on plan status - only 1 email sent
+		assert.equal(Mailer.prototype.sendMail.callCount, 3, 'sendMail should have been called once to notify user of a new plan status');
+		const thirdCallTo = Mailer.prototype.sendMail.getCall(2).args[0].to;
 		assert.isTrue(
-			(ninthCallTo === secondUserEmail),
+			(thirdCallTo === secondUserEmail),
 			'sendMail should have been called to send to the user\'s email'
 		);
 	});
+
+	function createPlan(planId, planName, planNumber, mpId, coord) {
+		return {
+			properties: {
+				OBJECTID: planId,
+				PLAN_COUNTY_NAME: 'ערד',
+				PL_NUMBER: planNumber,
+				MP_ID: mpId,
+				PL_NAME: planName,
+				PL_URL: 'http://url',
+				STATION_DESC: 'מאושרות'
+			},
+			geometry: {
+				type: 'Polygon',
+				coordinates: coord
+			}
+		};
+	}
+
+	function getCoordP1() {
+		return [
+			[
+				[35.221261,31.247297],
+				[35.221261,31.247298],
+				[35.221262,31.247298],
+				[35.221262,31.247297],
+				[35.221261,31.247297]
+			]
+		];
+	}
+
+	function getCoordP2() {
+		return [
+			[
+				[35.225633,31.261314],
+				[35.225633,31.261315],
+				[35.225634,31.261315],
+				[35.225634,31.261314],
+				[35.225633,31.261314]
+			]
+		]
+		;
+	}
+
+	function getCoordP3() {
+		return [
+			[
+				[35.203587,31.258455],
+				[35.203588,31.258455],
+				[35.203588,31.258456],
+				[35.203587,31.258456],
+				[35.203587,31.258455]
+			]
+		]
+		;
+	}
+
+	function getCoordP4() {
+		return [
+			[
+				[35.217876,31.261879],
+				[35.217877,31.261879],
+				[35.217877,31.261880],
+				[35.217876,31.261880],
+				[35.217876,31.261879]
+			]
+		]
+		;
+	}
+
+	function createUser(userEmail) {
+		return {
+			body: {
+				email: userEmail,
+				password: '1234',
+				status: 0,
+				name: 'my name',
+				type: '0'
+			},
+			session: {}
+		};
+	}
+
+	async function activateUser(userReq) {
+		const secondUserActivationReq = {
+			body: {
+				token: userReq.session.person.getActivationToken()
+			},
+			session: {}
+		};
+		await signController.activate(secondUserActivationReq);
+	}
+
+	function createUserAlertReq (addressStr, personAttr) {
+		return { 
+			body: {
+				address: addressStr,
+				radius: '1'
+			},
+			session: {
+				person: personAttr
+			}
+		};
+	}
 });

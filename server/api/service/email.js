@@ -140,7 +140,6 @@ class Email {
 
 		data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}`;
 		data.jurisdiction = unsentPlan.get('jurisdiction');
-		data.isLocalAuthority = data.jurisdiction === 'מקומית';
 		data.type = 'plan-alert';
 
 		return this.sendWithTemplate(this.templates.planDeposit, data);

@@ -402,6 +402,7 @@ async function fetchTreePermit(crawlMethod){
 }
 
 const fetchPlanStatus = () => {
+	const planDepositMeirimStatus = 'התנגדויות והערות הציבור';
 	var mavatStatus = null;
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
@@ -444,7 +445,7 @@ const fetchPlanStatus = () => {
 
 						// get all relevant mavat status for deposited plan
 						if (mavatStatus === null) {
-							const res = await PlanStatusChange.byMeirimStatus('התנגדויות והערות הציבור');
+							const res = await PlanStatusChange.byMeirimStatus(planDepositMeirimStatus);
 							mavatStatus = res[0].map(rec => rec.mavat_status);
 						}
 						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
@@ -463,16 +464,7 @@ const fetchPlanStatus = () => {
  * @param {*} mavatStatus - all mavat status for deposited plan
  */
 async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
-	var sendEmail = false;
-	if (!plan.attributes.was_deposited) {
-		planStatuses 
-		for (var i = 0; i < planStatuses.length; ++i)	{
-			const status = planStatuses[i];
-			if (Boolean(status.attributes.status) && mavatStatus.indexOf(status.attributes.status) >= 0) {
-				sendEmail = true;
-			}		
-		}		
-	}
+	var sendEmail = shouldSendEmail(plan, planStatuses, mavatStatus);
 	if (sendEmail) {
 		PlanPerson.getUsersForPlan(plan.get('id'))
 		.then(users => {
@@ -487,6 +479,19 @@ async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
 		.then(a => {return sendEmail;})
 		.catch(err => Log.error('Error:', err.message))
 		;
+	}
+	return sendEmail;
+}
+
+function shouldSendEmail(plan, planStatuses, mavatStatus) {
+	var sendEmail = false;
+	if (!plan.attributes.was_deposited) { 
+		for (var i = 0; i < planStatuses.length; ++i)	{
+			const status = planStatuses[i];
+			if (Boolean(status.attributes.status) && mavatStatus.indexOf(status.attributes.status) >= 0) {
+				sendEmail = true;
+			}		
+		}		
 	}
 	return sendEmail;
 }
