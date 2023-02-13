@@ -12,20 +12,26 @@ import LightRailTagIcon from './light-rail-tag-icon.svg';
 import RiverTagIcon from './river-tag-icon.svg';
 import CircledPlayIcon from './circled-play-icon.svg';
 import CircledPlayIconDark from './circled-play-icon-dark.svg';
+import WhatsappLinkIcon from './whatsapp-link.svg';
+import FacebookLinkIcon from './facebook-link.svg';
+import WebLinKIcon from './web-link.svg';
 
 export {
-	BookmarkOutlinedIcon,
-	BookmarkFilledIcon,
-	DropPinIcon,
-	CommerceTagIcon,
-	OfficesTagIcon,
-	OpenFieldTagIcon,
-	PlusTagIcon,
-	PublicInstitutesTagIcon,
-	ResidenceTagIcon,
-	TransportationTagIcon,
-	LightRailTagIcon,
-	RiverTagIcon,
-	CircledPlayIcon,
-	CircledPlayIconDark
+    BookmarkOutlinedIcon,
+    BookmarkFilledIcon,
+    DropPinIcon,
+    CommerceTagIcon,
+    OfficesTagIcon,
+    OpenFieldTagIcon,
+    PlusTagIcon,
+    PublicInstitutesTagIcon,
+    ResidenceTagIcon,
+    TransportationTagIcon,
+    LightRailTagIcon,
+    RiverTagIcon,
+    CircledPlayIcon,
+    CircledPlayIconDark,
+    WhatsappLinkIcon,
+    FacebookLinkIcon,
+    WebLinKIcon,
 };
