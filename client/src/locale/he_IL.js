@@ -100,6 +100,8 @@ const HEBREW_TRANSLATION = {
 	noPlansSavedTitle: 'טרם שמרת תוכניות',
 	ourFacebook: 'Facebook',
 	ourTwitter: 'Twitter',
+	ourInstagram: 'Instagram',
+	ourGithub: 'Github',
 	noPlansSavedContent: 'ניתן לשמור תוכניות כדי לקבל עידכונים שוטפים על כל תוכנית בארץ',
 	areaUnitChanges: 'שינוי שטח',
 	housingUnitChanges: 'שינוי יחידות דיור',
