@@ -30,7 +30,7 @@ const Footer = () => {
 			<a href="https://github.com/meirim-org/meirim">{t.ourGithub}</a>{' '}
 			<br />
 	
-			Ⓒ {t.allRightsReserved} 2022 
+			Ⓒ {t.allRightsReserved} 2023 
 		</StyledFooter>
 	);
 };

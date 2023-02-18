@@ -317,6 +317,8 @@ const ARABIC_TRANSLATION =  {
 	whatToRegister: 'רוצים השכמה?',
 	ourFacebook: 'فيسبوك',
 	ourTwitter: 'Twitter',
+	ourInstagram: 'Instagram',
+	ourGithub: 'Github',
 	privacyPolicy: 'سياسة الخصوصية',
 	whyRegister: (
 		<div>
