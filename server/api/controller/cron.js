@@ -19,6 +19,7 @@ const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
+const {	meirimStatuses } = require('../constants');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -402,12 +403,11 @@ async function fetchTreePermit(crawlMethod){
 }
 
 const fetchPlanStatus = () => {
-	const planDepositMeirimStatus = 'התנגדויות והערות הציבור';
 	var mavatStatus = null;
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
 	return Plan.query(qb => {
-		qb.where('status', '!=', 'התכנית אושרה' ).orderBy('last_visited_status','asc');
+		qb.where('status', '!=', meirimStatuses.APPROVED ).orderBy('last_visited_status','asc');
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
@@ -445,7 +445,7 @@ const fetchPlanStatus = () => {
 
 						// get all relevant mavat status for deposited plan
 						if (mavatStatus === null) {
-							const res = await PlanStatusChange.byMeirimStatus(planDepositMeirimStatus);
+							const res = await PlanStatusChange.byMeirimStatus(meirimStatuses.PUBLIC_OBJECTION);
 							mavatStatus = res[0].map(rec => rec.mavat_status);
 						}
 						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);

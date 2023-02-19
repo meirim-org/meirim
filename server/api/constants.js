@@ -14,6 +14,13 @@ exports.personTypes = {
 	'6': 'אחר'
 };
 
+exports.meirimStatuses = {
+	DEPOSIT: 'הפקדה',
+	PUBLIC_OBJECTION: 'התנגדויות והערות הציבור',
+	APPROVED: 'התוכנית אושרה',
+	CANCELLED: 'תכנית מבוטלת'
+	};
+
 const AREA_CHANGE_TYPES =  {
 	NEW_USAGE: 'NEW_USAGE',
 	INCREASED_USAGE: 'INCREASED_USAGE',
