@@ -464,6 +464,9 @@ const fetchPlanStatus = () => {
  * @param {*} mavatStatus - all mavat status for deposited plan
  */
 async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
+	if (Config.get('email.send_plan_deposit_email') !== true) {
+		return false;
+	}
 	var sendEmail = shouldSendEmail(plan, planStatuses, mavatStatus);
 	if (sendEmail) {
 		PlanPerson.getUsersForPlan(plan.get('id'))
