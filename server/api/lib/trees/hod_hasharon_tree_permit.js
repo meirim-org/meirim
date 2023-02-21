@@ -124,10 +124,6 @@ function sum(treeArray) {
 	});
 }
 
-/*(function sum(treeArray) {
-	*return treeArray.reduce(function (acc, obj) { return acc + parseInt(Object.values(obj)); }, 0);      
-}*/
-
 /**
  * Scrape hod hasharon Tree page, and return the results as a TreePermit[].
  */
