@@ -12,14 +12,14 @@ import PropTypes from 'prop-types';
 mapboxgl.workerClass = MapboxWorker;
 
 
-export const Map = ({ onMouseMove, id, children, onClick, initialViewState, interactiveLayerIds, style, mapStyle = 'mapbox://styles/mapbox/light-v11'}) => {
+export const Map = ({ onMouseMove, id, children, onClick, initialViewState, interactiveLayerIds, style, mapStyle = 'mapbox://styles/mapbox/light-v11' }) => {
 	return (
 		<Mapbox
 			mapboxAccessToken="pk.eyJ1IjoibWVpcmltIiwiYSI6ImNrbWNjYmlwYjJhYzYycW42NTYzcmdpYWcifQ.lCBjl1gWMI6UxySOCCBUHg"
 			initialViewState={initialViewState}
 			interactive={true}
-            id={id}
-            onMouseMove={onMouseMove}
+			id={id}
+			onMouseMove={onMouseMove}
 			interactiveLayerIds={interactiveLayerIds}
 			style={style}
 			onClick={onClick}
@@ -31,11 +31,10 @@ export const Map = ({ onMouseMove, id, children, onClick, initialViewState, inte
 
 Map.propTypes = {
 	onClick: PropTypes.func,
-    onMouseMove: PropTypes.func,
-    ref: PropTypes.object,
-    mapStyle: PropTypes.string,
-    id: PropTypes.string,
-	children: PropTypes.object,
+	onMouseMove: PropTypes.func,
+	mapStyle: PropTypes.string,
+	id: PropTypes.string,
+	children: PropTypes.array,
 	initialViewState: PropTypes.object,
 	interactiveLayerIds: PropTypes.arrayOf(PropTypes.string),
 	style: PropTypes.object,

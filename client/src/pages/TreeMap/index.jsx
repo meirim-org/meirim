@@ -167,7 +167,6 @@ function ContentField(props) {
 }
 
 TreeMap.propTypes = {
-	isMobile: PropTypes.func.isRequired,
 	geojson: PropTypes.object.isRequired,
 };
 
