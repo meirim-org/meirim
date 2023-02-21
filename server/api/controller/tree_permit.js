@@ -87,9 +87,10 @@ class TreePermitController extends Controller {
 					return null;
 				}
 
+				const is_active = moment(item.attributes.start_date).add(14, 'days').isBefore(now);
 				return {
 					'type': 'Feature',
-					'properties': { ...item.attributes, geom: null, is_active: moment(item.attributes.start_date).add(14, "days").isBefore(now)},
+					'properties': { ...item.attributes, geom: null, is_active },
 					'id': item.attributes.id,
 					'geometry': geom
 				};
