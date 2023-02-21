@@ -7,7 +7,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { Button } from '../../shared';
-import { timeToObjectionText } from '../Tree/utils';
 import './styles.css';
 
 const polygonStyle = {
@@ -24,43 +23,29 @@ const polygonStyle = {
 
 const symbolStyle = ({ image, size }) => ({
 	type:'symbol',
-    sourceIde: "geojson",
-    paint: {
-        'icon-opacity': [
-            'case',
-            ['==', ['get', 'is_active'], true],
-            1,
-            0.7
-        ]
-    },
+	sourceIde: 'geojson',
+	paint: {
+		'icon-opacity': [
+			'case',
+			['==', ['get', 'is_active'], true],
+			1,
+			0.7
+		]
+	},
 	layout:{
 		'icon-image': image,
 		'icon-size': size,
 		'icon-allow-overlap': true,
-        'icon-ignore-placement': true,
-        'text-field': "{total_trees} עצים",
-        "text-size": 14,
-        'icon-anchor': "bottom",
-        'text-anchor': "top"
-        // 'text-field': "lala",
-        // "symbol-placement": "line-center",
-        // "text-font": ["Open Sans Regular"],
-
-
-        // 'text-field': ['coalesce', ['get', 'total_trees'], "unknown"],
-        // 'text-font': [
-        //     'Open Sans Bold',
-        //     'Arial Unicode MS Bold'
-        // ],
-        // 'text-size': 11,
-        // 'text-transform': 'uppercase',
-        // 'text-letter-spacing': 0.05,
-        // 'text-offset': [0, 1.5]
-    },
+		'icon-ignore-placement': true,
+		'text-field': '{total_trees} עצים',
+		'text-size': 14,
+		'icon-anchor': 'bottom',
+		'text-anchor': 'top'
+	},
 });
 
 const TreeMap = ({ geojson }) => {
-    const [locationInfo, setLocationInfo] = useState(null);
+	const [locationInfo, setLocationInfo] = useState(null);
 
 	const onClick = useCallback(event => {
 		const location = event.features && event.features[0];
@@ -75,13 +60,13 @@ const TreeMap = ({ geojson }) => {
 
 	const selectedLocationProps = (locationInfo && locationInfo.properties) || '';
 
-	const timeToObjection = selectedLocationProps.is_active ? "בתוקף": 'לא בתוקף'
+	const timeToObjection = selectedLocationProps.is_active ? 'בתוקף': 'לא בתוקף';
 	const place = selectedLocationProps.place;
 
 
 	return (
 		<>
-            <Map interactiveLayerIds={['high-tree', 'low-tree', 'mid-tree']}
+			<Map interactiveLayerIds={['high-tree', 'low-tree', 'mid-tree']}
 				onClick={onClick}
 				mapStyle="mapbox://styles/meirim/cle36p24n003a01mtwtj1czve"
 				style={{ width: '100vw', height: '100vh' }}
@@ -93,13 +78,13 @@ const TreeMap = ({ geojson }) => {
 				<MapImage/>
 				{ geojson &&  <Source id="trees-data" type="geojson" data={geojson}>
 					<Layer {...polygonStyle} />
-                    <Layer  id='high-tree' {...symbolStyle({ image: 'large-tree-pin', size: 0.35 })}  filter={['>', ['get', 'total_trees'], 50]}/>
+					<Layer  id='high-tree' {...symbolStyle({ image: 'large-tree-pin', size: 0.35 })}  filter={['>', ['get', 'total_trees'], 50]}/>
 					<Layer  id='low-tree' {...symbolStyle({ image: 'medium-tree-pin', size: 0.2 })}  minzoom={12} filter={['<', ['get', 'total_trees'], 10]}/>
 					<Layer  id='mid-tree' {...symbolStyle({ image: 'medium-tree-pin', size: 0.2 })}  minzoom={10} filter={['all', ['>=', ['get', 'total_trees'], 10], ['<=', ['get', 'total_trees'], 49]]}/>
 				</Source>}
 
 				{locationInfo && (
-					<Popup longitude={locationInfo.longitude} latitude={locationInfo.latitude} style={{ minWidth: 250}}
+					<Popup longitude={locationInfo.longitude} latitude={locationInfo.latitude} style={{ minWidth: 250 }}
 						anchor="bottom"
 						closeButton={false}
 						onClose={() => setLocationInfo(false)}>
@@ -186,4 +171,4 @@ TreeMap.propTypes = {
 	geojson: PropTypes.object.isRequired,
 };
 
-export default TreeMap
+export default TreeMap;
