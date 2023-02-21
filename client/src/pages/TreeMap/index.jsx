@@ -75,7 +75,7 @@ const TreeMap = ({ geojson }) => {
 
 	const selectedLocationProps = (locationInfo && locationInfo.properties) || '';
 
-	const timeToObjection = selectedLocationProps.is_active ? "בתוקף": "לא בתוקף"
+	const timeToObjection = selectedLocationProps.is_active ? "בתוקף": 'לא בתוקף'
 	const place = selectedLocationProps.place;
 
 
