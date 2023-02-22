@@ -85,18 +85,18 @@ const chooseCrawl = (crawlType) => {
 
 	const haifa = { 'crawler': crawlTreeExcelByFile, 'permitType': HaifaTreePermit };
 	const kkl = { 'crawler': crawlTreeExcelByFile, 'permitType': KKLTreePermit };
-	const jer = { 'crawler': crawlTreesHTML , 'permitType': JERTreePermit };
-	const rg  = { 'crawler': crawlRGTreesHTML , 'permitType': RGTreePermit};
-	const hh  = { 'crawler': crawlHHTreesHTML , 'permitType': HHTreePermit};
+	const jerusalem = { 'crawler': crawlTreesHTML , 'permitType': JERTreePermit };
+	const ramatGan  = { 'crawler': crawlRGTreesHTML , 'permitType': RGTreePermit};
+	const hodHasharon  = { 'crawler': crawlHHTreesHTML , 'permitType': HHTreePermit};
 	const regional = { 'crawler': crawlTreeExcelByFile, 'permitType': RegionalTreePermit };
 	const crawlMap = {
-		'hh': [hh],
-		'rg': [rg],
+		'hodHasharon': [hodHasharon],
+		'ramatGan': [ramatGan],
 		'haifa': [haifa],
-		'jer': [jer],
+		'jerusalem': [jerusalem],
 		'kkl': [kkl],
 		'regional': [regional],
-		'all': [hh, haifa, rg, jer, regional, kkl]
+		'all': [hodHasharon, haifa, ramatGan, jerusalem, regional, kkl]
 	};
 
 	return crawlMap[crawlType] || crawlMap['all'];
