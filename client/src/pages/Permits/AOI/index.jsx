@@ -96,7 +96,7 @@ const AOI = () => {
 
     const onClickItem = useCallback((index) => {
         setActiveItemIndex(index)
-    }, [activeItemIndex])
+    }, [])
 
     const onClickTrash = useCallback((item, index) => {
 
@@ -107,13 +107,10 @@ const AOI = () => {
             if (!item.draft) {
                 api.delete(`/permit/aoi/person/${item.id}`)
             }
-            if (activeItemIndex >= newItems.length) {
-                setActiveItemIndex(0);
-            }
         }
 
         setAois(newItems)
-    }, [aois, activeItemIndex])
+    }, [aois])
 
     useEffect(() => {
     }, [activeItemIndex])
