@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Map } from '../../components/Map/map';
-import { Layer, Popup, Source, useMap } from 'react-map-gl';
+import {Layer, Popup, Source, useMap} from 'react-map-gl';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { Button } from '../../shared';
+import {timeToObjectionText} from "../Tree/utils";
 
 const polygonStyle = {
 	id: 'geojson',
@@ -59,7 +60,7 @@ const TreeMap = ({ geojson }) => {
 
 	const selectedLocationProps = (locationInfo && locationInfo.properties) || '';
 
-	const timeToObjection = selectedLocationProps.is_active ? 'בתוקף': 'לא בתוקף';
+	const timeToObjection = selectedLocationProps ? timeToObjectionText(selectedLocationProps.last_date_to_objection): null;
 	const place = selectedLocationProps.place;
 
 
@@ -115,7 +116,7 @@ const TreeMap = ({ geojson }) => {
 							</CardContent>
 						</Card>
 					</Popup>)}
-			</Map>
+            </Map>
 		</>
 	);
 };

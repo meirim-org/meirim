@@ -74,7 +74,7 @@ class TreePermitController extends Controller {
 
 		const response = await super.browse(req, {
 			columns,
-			whereRaw: [Knex.raw('current_date() < DATE_ADD(tree_permit.start_date, INTERVAL 28 DAY)')],
+			whereRaw: [Knex.raw('DATE_SUB(current_date(), INTERVAL 14 DAY) < last_date_to_objection')],
 			pageSize: 10000000,
 		});
 		const now = moment();
@@ -87,7 +87,7 @@ class TreePermitController extends Controller {
 					return null;
 				}
 
-				const is_active = moment(item.attributes.start_date).add(14, 'days').isBefore(now);
+				const is_active = moment(item.attributes.last_date_to_objection).isBefore(now);
 				return {
 					'type': 'Feature',
 					'properties': { ...item.attributes, geom: null, is_active },
