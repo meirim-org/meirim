@@ -10,12 +10,13 @@ import Mapbox from 'react-map-gl';
 import PropTypes from 'prop-types';
 
 mapboxgl.workerClass = MapboxWorker;
+const apiKey = process.env.CONFIG.mapboxApiKey;
 
 
 export const Map = ({ onMouseMove, id, children, onClick, initialViewState, interactiveLayerIds, style, mapStyle = 'mapbox://styles/mapbox/light-v11' }) => {
 	return (
 		<Mapbox
-			mapboxAccessToken="pk.eyJ1IjoibWVpcmltIiwiYSI6ImNrbWNjYmlwYjJhYzYycW42NTYzcmdpYWcifQ.lCBjl1gWMI6UxySOCCBUHg"
+			mapboxAccessToken={apiKey}
 			initialViewState={initialViewState}
 			interactive={true}
 			id={id}

@@ -35,7 +35,6 @@ const symbolStyle = ({ image, size }) => ({
 	layout:{
 		'icon-image': image,
 		'icon-size': size,
-		'icon-allow-overlap': true,
 		'icon-ignore-placement': true,
 		'text-field': '{total_trees} עצים',
 		'text-size': 14,

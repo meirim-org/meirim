@@ -3,6 +3,7 @@
         "baseURL": "/api",
         "withCredentials": true
     },
+    "mapboxApiKey": "pk.eyJ1IjoibWVpcmltIiwiYSI6ImNrbWNjYmlwYjJhYzYycW42NTYzcmdpYWcifQ.lCBjl1gWMI6UxySOCCBUHg",
     "geocode": {
         "mapsApiKey": "",
         "autocompleteDelay": 2000
