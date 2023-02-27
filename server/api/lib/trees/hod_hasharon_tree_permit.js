@@ -12,7 +12,7 @@ const { formatDate } = require('./utils');
 const Log = require('../log');
 
 const TREES_HOD_HASHARON_URL = Config.get('trees.hodHasharonUrl');
-const HHTreePermit = {
+const hodHashTreePermit = {
   urls: [TREES_HOD_HASHARON_URL]
 };
 
@@ -66,7 +66,7 @@ function processRawPermits(rawPermits) {
         const treesPerPermit = parseTreesPerPermit(raw['סוג העצים'], raw['מספר עצים']);
         const totalTrees = sum(treesPerPermit);
         
-        const permitNumber = `meirim-hh-${raw['מספר רישיון']}`;
+        const permitNumber = `meirim-hodash-${raw['מספר רישיון']}`;
 
         const attributes = {
           [REGIONAL_OFFICE]: 'הוד השרון',
@@ -127,7 +127,7 @@ function sum(treeArray) {
 /**
  * Scrape hod hasharon Tree page, and return the results as a TreePermit[].
  */
-async function crawlHHTreesHTML(url, permitType) {
+async function crawlHodHashTreesHTML(url, permitType) {
   try {
     const raw = await parseTreesHtml(url);
     const treePermits = processRawPermits(raw);
@@ -138,4 +138,4 @@ async function crawlHHTreesHTML(url, permitType) {
   }
 }
 
-module.exports = { crawlHHTreesHTML, HHTreePermit };
+module.exports = { crawlHodHashTreesHTML, hodHashTreePermit };
