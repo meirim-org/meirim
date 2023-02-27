@@ -87,7 +87,7 @@ class TreePermitController extends Controller {
 					return null;
 				}
 
-				const is_active = moment(item.attributes.last_date_to_objection).isBefore(now);
+				const is_active = moment(item.attributes.last_date_to_objection).isAfter(now);
 				return {
 					'type': 'Feature',
 					'properties': { ...item.attributes, geom: null, is_active },
