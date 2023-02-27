@@ -116,7 +116,7 @@ const TreeMap = ({ geojson }) => {
 							</CardContent>
 						</Card>
 					</Popup>)}
-            </Map>
+			</Map>
 		</>
 	);
 };
@@ -146,10 +146,10 @@ function Address(props) {
 	// eslint-disable-next-line react/prop-types
 	const { street, street_number } = props.tree;
 	let address = 'לא מצוין';
-	if (street && street_number) {
+	if (street !== 'null' && street_number !== 'null') {
 		address = `${street} ${street_number}`;
 	}
-	else if (street) {
+	else if (street !== 'null') {
 		address = `${street}`;
 	}
 
