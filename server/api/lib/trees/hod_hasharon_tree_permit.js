@@ -108,10 +108,8 @@ function processRawPermits(rawPermits) {
 }
 
 function parseTreesPerPermit(treesInPermitStr, treeAmount) {
-    treesInPermitStr = cleanString(treesInPermitStr);
-    treeAmount = cleanString(treeAmount);
-    const linesName = treesInPermitStr.split('\n');
-    const linesAmount = treeAmount.split('\n');
+    const linesName = getCleanLines(treesInPermitStr);
+    const linesAmount = getCleanLines(treeAmount);
     var result = {};
     for (let i = 0; i < linesName.length; ++i) {
         result[i] = {[linesName[i]]: parseInt(linesAmount[i] || '0')}
@@ -119,10 +117,10 @@ function parseTreesPerPermit(treesInPermitStr, treeAmount) {
   return Object.assign({}, ...Object.values(result));
 }
 
-function cleanString(str) {
-  str = str.replaceAll('\t','');
-  str = str.replaceAll('\n\n','\n');
-  return str;
+function getCleanLines(str) {
+  str = replaceAll(str, '\t','');
+  str = replaceAll(str, '\n\n','\n');
+  return str.split('\n');
 }
 
 function replaceAll(str, from, to) {
