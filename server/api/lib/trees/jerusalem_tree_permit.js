@@ -10,7 +10,7 @@ const {
 const { formatDate } = require('./utils');
 const Log = require('../log');
 
-const TREES_JERUSALEM_URL = 'https://www.jerusalem.muni.il/he/residents/environment/improvingcity/trees-conservation/';
+const TREES_JERUSALEM_URL = 'https://www.jerusalem.muni.il/he/residents/clean-city/improvingcity/trees-conservation/';
 const JERTreePermit = {
 	urls: [TREES_JERUSALEM_URL]
 };
