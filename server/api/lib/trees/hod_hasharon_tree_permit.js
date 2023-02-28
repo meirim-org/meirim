@@ -11,6 +11,17 @@ const {
 const { formatDate } = require('./utils');
 const Log = require('../log');
 
+const STREET_NAME = 'שם הרחוב';
+const OBJECTION_TILL = 'ניתן להגיש ערעור עד';
+const TREE_NUM = 'מספר עצים';
+const TREE_TYPE = 'סוג העצים';
+const LICENSE_NUMBER = 'מספר רישיון';
+const LICENSE_OWNER = 'שם בעל הרישיון';
+const LICENSE_REASON = 'סיבת הכריתה';
+const CITY = 'הוד השרון';
+const SHORT_ACTION = 'כריתה';
+const APPROVER = 'פקיד יערות עירוני הוד השרון';
+
 const TREES_HOD_HASHARON_URL = Config.get('trees.hodHasharonUrl');
 const hodHashTreePermit = {
   urls: [TREES_HOD_HASHARON_URL]
@@ -53,31 +64,28 @@ async function parseTreesHtml(url) {
 function processRawPermits(rawPermits) {
   try {
     const treePermits = rawPermits.map(raw => {
-      try{
-        
-        const street = raw['שם הרחוב'];
-        
-        const last_date_to_objection = formatDate(raw['ניתן להגיש ערעור עד'], '09:00', 'DD.MM.YY');
+      try{        
+        const last_date_to_objection = formatDate(raw[OBJECTION_TILL], '09:00', 'DD.MM.YY');
         if (!last_date_to_objection) {
-          Log.error(`No / Bad dates format, ignore this license: hod hasharon, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
+          Log.error(`No / Bad dates format, ignore this license: hod hasharon, ${raw[STREET_NAME]} , ${raw[OBJECTION_TILL]}`);
           return null;
         }
         
-        const treesPerPermit = parseTreesPerPermit(raw['סוג העצים'], raw['מספר עצים']);
+        const treesPerPermit = parseTreesPerPermit(raw[TREE_TYPE], raw[TREE_NUM]);
         const totalTrees = sum(treesPerPermit);
         
-        const permitNumber = `meirim-hodash-${raw['מספר רישיון']}`;
+        const permitNumber = `meirim-hodash-${raw[LICENSE_NUMBER]}`;
 
         const attributes = {
-          [REGIONAL_OFFICE]: 'הוד השרון',
-          [PLACE]: 'הוד השרון',
-          [APPROVER_TITLE]: 'פקיד יערות עירוני הוד השרון',
+          [REGIONAL_OFFICE]: CITY,
+          [PLACE]: CITY,
+          [APPROVER_TITLE]: APPROVER,
           [PERMIT_NUMBER]: permitNumber,
-          [STREET]: street,
-          [ACTION]: 'כריתה',
+          [STREET]: raw[STREET_NAME],
+          [ACTION]: SHORT_ACTION,
           [LAST_DATE_TO_OBJECTION]: last_date_to_objection,
-          [PERSON_REQUEST_NAME]: raw['שם בעל הרישיון'],
-          [REASON_SHORT]: raw['סיבת הכריתה'],
+          [PERSON_REQUEST_NAME]: raw[LICENSE_OWNER],
+          [REASON_SHORT]: raw[LICENSE_REASON],
           [TREES_PER_PERMIT]: treesPerPermit,
           [TOTAL_TREES]: totalTrees,
           
@@ -87,7 +95,7 @@ function processRawPermits(rawPermits) {
         return permit;
       }
       catch (e) {
-        Log.error(`error in hod hasharon parse row, ignoring: ${raw['שם הרחוב']}`, e.message);
+        Log.error(`error in hod hasharon parse row, ignoring: ${raw[STREET_NAME]}`, e.message);
         return null;
       }
     }
@@ -100,17 +108,21 @@ function processRawPermits(rawPermits) {
 }
 
 function parseTreesPerPermit(treesInPermitStr, treeAmount) {
-    treesInPermitStr = treesInPermitStr.replaceAll('\t','');
-    treesInPermitStr = treesInPermitStr.replaceAll('\n\n','\n');
-    treeAmount = treeAmount.replaceAll('\t','');
-    treeAmount = treeAmount.replaceAll('\n\n','\n');
-  const linesName = treesInPermitStr.split('\n');
+    treesInPermitStr = cleanString(treesInPermitStr);
+    treeAmount = cleanString(treeAmount);
+    const linesName = treesInPermitStr.split('\n');
     const linesAmount = treeAmount.split('\n');
     var result = {};
     for (let i = 0; i < linesName.length; ++i) {
         result[i] = {[linesName[i]]: parseInt(linesAmount[i] || '0')}
     }
   return Object.assign({}, ...Object.values(result));
+}
+
+function cleanString(str) {
+  str = str.replaceAll('\t','');
+  str = str.replaceAll('\n\n','\n');
+  return str;
 }
 
 function replaceAll(str, from, to) {
