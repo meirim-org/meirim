@@ -5,10 +5,10 @@ const TreePermit = require('../../model/tree_permit');
 const {
   REGIONAL_OFFICE, PERMIT_NUMBER, APPROVER_TITLE, ACTION,
   LAST_DATE_TO_OBJECTION, TOTAL_TREES, REASON_SHORT,
-  PLACE, STREET,
+  PLACE, STREET, START_DATE,
   TREES_PER_PERMIT, PERSON_REQUEST_NAME, TREE_PERMIT_URL,
 } = require('../../model/tree_permit_constants');
-const { formatDate } = require('./utils');
+const { formatDate, figureStartDate } = require('./utils');
 const Log = require('../log');
 
 const STREET_NAME = 'שם הרחוב';
@@ -18,9 +18,11 @@ const TREE_TYPE = 'סוג העצים';
 const LICENSE_NUMBER = 'מספר רישיון';
 const LICENSE_OWNER = 'שם בעל הרישיון';
 const LICENSE_REASON = 'סיבת הכריתה';
-const CITY = 'הוד השרון';
+const HOD_HASHARON_CITY = 'הוד השרון';
 const SHORT_ACTION = 'כריתה';
 const APPROVER = 'פקיד יערות עירוני הוד השרון';
+const HOUR_PERMIT = '09:00'; 
+const DATE_FORMAT_PERMIT = 'DD.MM.YY';
 
 const TREES_HOD_HASHARON_URL = Config.get('trees.hodHasharonUrl');
 const hodHashTreePermit = {
@@ -65,7 +67,7 @@ function processRawPermits(rawPermits) {
   try {
     const treePermits = rawPermits.map(raw => {
       try{        
-        const last_date_to_objection = formatDate(raw[OBJECTION_TILL], '09:00', 'DD.MM.YY');
+        const last_date_to_objection = formatDate(raw[OBJECTION_TILL], HOUR_PERMIT, DATE_FORMAT_PERMIT);
         if (!last_date_to_objection) {
           Log.error(`No / Bad dates format, ignore this license: hod hasharon, ${raw[STREET_NAME]} , ${raw[OBJECTION_TILL]}`);
           return null;
@@ -77,13 +79,14 @@ function processRawPermits(rawPermits) {
         const permitNumber = `meirim-hodash-${raw[LICENSE_NUMBER]}`;
 
         const attributes = {
-          [REGIONAL_OFFICE]: CITY,
-          [PLACE]: CITY,
+          [REGIONAL_OFFICE]: HOD_HASHARON_CITY,
+          [PLACE]: HOD_HASHARON_CITY,
           [APPROVER_TITLE]: APPROVER,
           [PERMIT_NUMBER]: permitNumber,
           [STREET]: raw[STREET_NAME],
           [ACTION]: SHORT_ACTION,
           [LAST_DATE_TO_OBJECTION]: last_date_to_objection,
+          [START_DATE]: figureStartDate(null, raw[OBJECTION_TILL], HOUR_PERMIT, DATE_FORMAT_PERMIT, true),
           [PERSON_REQUEST_NAME]: raw[LICENSE_OWNER],
           [REASON_SHORT]: raw[LICENSE_REASON],
           [TREES_PER_PERMIT]: treesPerPermit,
