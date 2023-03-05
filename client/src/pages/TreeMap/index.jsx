@@ -24,16 +24,12 @@ const polygonStyle = {
 const symbolStyle = ({ image, size }) => ({
 	type:'symbol',
 	sourceIde: 'geojson',
-	paint: {
-		'icon-opacity': [
-			'case',
-			['==', ['get', 'is_active'], true],
-			1,
-			0.7
-		]
-	},
 	layout:{
-		'icon-image': image,
+		'icon-image': ['case',
+		['==', ['get', 'is_active'], true],
+		`${image}-active`,
+		`${image}-disable`,
+		],
 		'icon-size': size,
 		'icon-ignore-placement': true,
 		'text-field': '{total_trees} עצים',
@@ -77,9 +73,9 @@ const TreeMap = ({ geojson }) => {
 				<MapImage/>
 				{ geojson &&  <Source id="trees-data" type="geojson" data={geojson}>
 					<Layer {...polygonStyle} />
-					<Layer  id='high-tree' {...symbolStyle({ image: 'large-tree-pin', size: 0.35 })}  filter={['>', ['get', 'total_trees'], 50]}/>
-					<Layer  id='low-tree' {...symbolStyle({ image: 'medium-tree-pin', size: 0.2 })}  minzoom={12} filter={['<', ['get', 'total_trees'], 10]}/>
-					<Layer  id='mid-tree' {...symbolStyle({ image: 'medium-tree-pin', size: 0.2 })}  minzoom={10} filter={['all', ['>=', ['get', 'total_trees'], 10], ['<=', ['get', 'total_trees'], 49]]}/>
+					<Layer  id='high-tree' {...symbolStyle({ image: 'trees-large-pin', size: 0.7 })}  filter={['>', ['get', 'total_trees'], 50]}/>
+					<Layer  id='low-tree' {...symbolStyle({ image: 'trees-medium-pin', size: 0.8 })}  minzoom={12} filter={['<', ['get', 'total_trees'], 10]}/>
+					<Layer  id='mid-tree' {...symbolStyle({ image: 'trees-medium-pin', size: 0.8 })}  minzoom={10} filter={['all', ['>=', ['get', 'total_trees'], 10], ['<=', ['get', 'total_trees'], 49]]}/>
 				</Source>}
 
 				{locationInfo && (
@@ -121,20 +117,33 @@ const TreeMap = ({ geojson }) => {
 };
 
 
-
 function MapImage() {
 	const { current: map } = useMap();
-	if (!map.hasImage('large-tree-pin')) {
-		map.loadImage('/images/trees-large-icon.png', (error, image) => {
+	if (!map.hasImage('trees-large-pin-disable')) {
+		map.loadImage('/images/trees-large-pin-disable.png', (error, image) => {
 			if (error) throw error;
-			if (!map.hasImage('large-tree-pin')) map.addImage('large-tree-pin', image);
+			if (!map.hasImage('trees-large-pin-disable')) map.addImage('trees-large-pin-disable', image);
 		});
 	}
 
-	if (!map.hasImage('medium-tree-pin')) {
-		map.loadImage('/images/trees-medium-icon.png', (error, image) => {
+	if (!map.hasImage('trees-large-pin-active')) {
+		map.loadImage('/images/trees-large-pin-active.png', (error, image) => {
 			if (error) throw error;
-			if (!map.hasImage('medium-tree-pin')) map.addImage('medium-tree-pin', image);
+			if (!map.hasImage('trees-large-pin-active')) map.addImage('trees-large-pin-active', image);
+		});
+	}
+
+	if (!map.hasImage('trees-medium-pin-active')) {
+		map.loadImage('/images/trees-medium-pin-active.png', (error, image) => {
+			if (error) throw error;
+			if (!map.hasImage('trees-medium-pin-active')) map.addImage('trees-medium-pin-active', image);
+		});
+	}
+
+	if (!map.hasImage('trees-medium-pin-disable')) {
+		map.loadImage('/images/trees-medium-pin-disable.png', (error, image) => {
+			if (error) throw error;
+			if (!map.hasImage('trees-medium-pin-disable')) map.addImage('trees-medium-pin-disable', image);
 		});
 	}
 
