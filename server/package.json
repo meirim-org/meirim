@@ -90,7 +90,7 @@
         "eslint-plugin-react": "^7.20.6",
         "eslint-plugin-standard": "^4.0.1",
         "import-fresh": "^3.2.1",
-        "mocha": "^8.1.1",
+        "mocha": "^10.2.0",
         "mock-require": "^3.0.3",
         "nock": "^13.0.4",
         "prettier": "2.1.2",
