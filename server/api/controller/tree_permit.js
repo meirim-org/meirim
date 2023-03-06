@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Controller = require('../controller/controller');
 const TreePermit = require('../model/tree_permit');
 const tpc = require('../model/tree_permit_constants');
@@ -73,10 +74,10 @@ class TreePermitController extends Controller {
 
 		const response = await super.browse(req, {
 			columns,
-			whereRaw: [Knex.raw('current_date() < DATE_ADD(tree_permit.start_date, INTERVAL 28 DAY)')],
+			whereRaw: [Knex.raw('DATE_SUB(current_date(), INTERVAL 14 DAY) < last_date_to_objection')],
 			pageSize: 10000000,
 		});
-
+		const now = moment();
 		return {
 			type: 'FeatureCollection',
 			features: response.map(item => {
@@ -85,9 +86,12 @@ class TreePermitController extends Controller {
 				if (!geom) {
 					return null;
 				}
+
+				const is_active = moment(item.attributes.last_date_to_objection).isAfter(now);
 				return {
 					'type': 'Feature',
-					'properties': { ...item.attributes, geom: null },
+					'properties': { ...item.attributes, geom: null, is_active },
+					'id': item.attributes.id,
 					'geometry': geom
 				};
 			}).filter(Boolean)
