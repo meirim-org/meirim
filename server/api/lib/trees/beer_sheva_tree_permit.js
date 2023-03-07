@@ -30,9 +30,11 @@ const APPROVER = 'פקיד יערות עירוני באר שבע';
 const HOUR_PERMIT = '09:00'; 
 const DATE_FORMAT_PERMIT = 'DD/MM/YYYY';
 
-const TREES_BEER_SHEVA_URL = Config.get('trees.beerShevaUrl');
+const TREES_BEER_SHEVA_URL1 = "https://www.beer-sheva.muni.il/residents/environment/pkidyearot/pages/invalidlicense.aspx";
+const TREES_BEER_SHEVA_URL2 = "https://www.beer-sheva.muni.il/Residents/Environment/PkidYearot/pages/validlicense.aspx";
+
 const beerShevaTreePermit = {
-  urls: [TREES_BEER_SHEVA_URL]
+  urls: [TREES_BEER_SHEVA_URL1, TREES_BEER_SHEVA_URL2]
 };
 
 async function parseTreesHtml(url) {
@@ -80,7 +82,7 @@ async function getTreePermitData(rawPermits) {
     const urlPrefix = 'https://www.beer-sheva.muni.il';
     for (const raw of rawPermits) {
     try {   
-        const permitUrl = urlPrefix + raw['url'];
+        const permitUrl = replaceAll(urlPrefix + raw['url'], "//Lists", "/Lists");
         const treeHtml = await proxy.get(permitUrl);
         const dom = cheerio.load(treeHtml, {
             decodeEntities: false
