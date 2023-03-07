@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const Config = require('../../lib/config');
 const TreePermit = require('../../model/tree_permit');
 const moment = require('moment');
+const MAX_PERMITS = Config.get('trees.beerShevaMaxReadPermits');
 const {
   REGIONAL_OFFICE, PERMIT_NUMBER, APPROVER_TITLE, ACTION,
   LAST_DATE_TO_OBJECTION, TOTAL_TREES, REASON_SHORT,
@@ -47,6 +48,7 @@ async function parseTreesHtml(url) {
   }
   const keys = [];
   const result = [];
+  let amount = 0;
   dom('.ms-listviewtable').find('tr').each((row, elem) => {
     if (row === 0) {
       dom(elem).find('th').each((idx, elem) => {
@@ -70,6 +72,11 @@ async function parseTreesHtml(url) {
     if (reqDate.getFullYear() < new Date().getFullYear() - 1) {
         Log.error(`ignore this old license: Beer Sheva, ${treePermit[STREET_NAME]} , requested: ${treePermit[REQUEST_DATE]}`);
         return;
+    }
+
+    amount++;
+    if (amount > MAX_PERMITS) {
+      return;
     }
 
     result.push(treePermit);
@@ -183,23 +190,8 @@ function processRawPermits(rawPermits) {
 }
 
 function parseTreesPerPermit(treesInPermitStr, totalTrees) {
-    const parts = treesInPermitStr.split(' ');
-    var result = {};
-    let name = '';
-    let amount;
-    for (let i = 0; i < parts.length; ++i) {
-        let val = parts[i];
-        if (Number.isInteger(val)) {
-            amount = parseInt(val);
-            result[i] = {name : amount};
-            name = '';
-        } else {
-            name = (name.length === 0 ? val : name + ' ' + val);
-        }  
-    }
-    if (name.length > 0 && !amount) {
-        result[0] = {[name] : totalTrees};
-    }
+  var result = {};
+  result[0] = {[treesInPermitStr] : totalTrees};
   return Object.assign({}, ...Object.values(result));
 }
 
