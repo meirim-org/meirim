@@ -242,7 +242,10 @@ const HEBREW_TRANSLATION = {
 	remove: 'הסרה',
 	choosePermitRegion: 'בחרו וועדה אזורית',
 	noAOISavedTitle: 'טרם נוספו איזורי עניין',
-	addAOILinkTitle: 'מעבר להוספת איזורי עניין'
+	addAOILinkTitle: 'מעבר להוספת איזורי עניין',
+	GISFileUpload: 'העלאת קובץ GIS',
+	GISFile: 'קובץ GIS',
+	AOITitle: 'שם האיזור',
 };
 
 const ARABIC_TRANSLATION =  {

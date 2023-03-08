@@ -11,7 +11,7 @@ import usePermitTableColumns from './usePermitTableColumns';
 import { CheckIfUserCanAccessPage } from 'hooks';
 
 const Permits = () => {
-	CheckIfUserCanAccessPage();
+	//CheckIfUserCanAccessPage();
 
 	const { t } = useTranslation();
 	const [data, setData] = useState([]);
@@ -44,7 +44,7 @@ const Permits = () => {
 						/>
 					</SC.NoContent>
 					: data?.length
-						? <Table columns={columns} data={data} />
+						? <Table columns={columns} data={data} defaultSorting="permitSubject" />
 						: <SC.NoContent>
 							<Text
 								size="1.5rem"

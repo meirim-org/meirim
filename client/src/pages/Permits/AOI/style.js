@@ -23,7 +23,7 @@ export const List = styled.ul`
 `
 
 export const StyledTrashCanIcon = withTheme(styled(TrashCanIcon)`
-    color: ${props => props.theme.palette.white};
+    color: ${props => props.theme.palette.primary.main};
 `)
 
 export const Item = withTheme(styled.li`
@@ -88,7 +88,9 @@ export const NoContent = withTheme(styled.div`
 
 export const TableContainer = styled.div`
     > Table {
-        width: 100%;
+        background-color: white;
+        padding: 16px;
+        min-width: 100vh;
     }
     padding-top: 32px;
 `
