@@ -57,7 +57,8 @@
 		"maxPermits": 5,
 		"haifaUrl" : "https://stg-service-tree-6b3da185.s3.eu-west-1.amazonaws.com/haifa/rptPirsum.xlsx",
 		"hodHasharonUrl": "https://www.hod-hasharon.muni.il/%D7%91%D7%A7%D7%A9%D7%95%D7%AA-%D7%95%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%A0%D7%95%D7%AA-%D7%9B%D7%A8%D7%99%D7%AA%D7%94-2023/",
-		"beerShevaMaxReadPermits": 40
+		"beerShevaMaxReadPermits": 40,
+		"yavneUrl": "https://www.yavne.muni.il/html5/?_id=15059&did=1231&G=11650&SM=15059"
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,
