@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-import os
 import logging
+import os
+import shlex
+import subprocess
 import boto3
 import click
 from requests import get
@@ -111,6 +113,22 @@ def authorize_my_ip(zone, owner):
 def revoke_my_ip(zone):
     """Revoke current IP address from security groups"""
     configure_security_groups_ingress(zone, revoke=True)
+
+
+@cli.command()
+@click.option('-z', '--zone', type=click.Choice(ZONES, case_sensitive=False), default=DEFAULT_ZONE)
+@click.argument('ssh_options', nargs=-1)
+def ssh(zone, ssh_options):
+    """SSH into Meirim's AWS EC2 instances"""
+
+    # You can specify further arguments to ssh after a double-dash, for example:
+    # > meirim ssh -z stg -- hostname
+    # ip-172-31-24-129.eu-west-1.compute.internal
+
+    subdomain = {'stg': 'stg.', 'dev': 'dev.'}.get(zone, '')
+    ssh_options = ' '.join(ssh_options)
+    cmd = f'ssh ec2-user@{subdomain}meirim.org {ssh_options}'.strip()
+    subprocess.run(shlex.split(cmd))
 
 
 if __name__ == '__main__':
