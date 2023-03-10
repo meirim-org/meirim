@@ -11,6 +11,7 @@ authors = [
 dependencies = [
     'boto3',
     'click',
+    'paramiko',
     'requests',
     'rich',
 ]
