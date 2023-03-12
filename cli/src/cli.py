@@ -20,9 +20,7 @@ def entry_point():
     pass
 
 
-entry_point.add_command(authorization.external_ip)
-entry_point.add_command(authorization.authorize_my_ip)
-entry_point.add_command(authorization.revoke_my_ip)
+entry_point.add_command(authorization.authorization)
 entry_point.add_command(phpmyadmin.phpmyadmin)
 entry_point.add_command(ssh.ssh)
 
