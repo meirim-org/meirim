@@ -48,15 +48,17 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
             Filters=[dict(Name='group-name', Values=group_names)])
         for group in res['SecurityGroups']:
             group_id = group['GroupId']
-            group_name = f"{group['GroupName']} ({group_id})"
-            description = f'{security_group["description"]} for {owner}'
+            group_name = f'{group["GroupName"]} ({group_id})'
+            description = security_group['description']
+            if owner:
+                description += f' for {owner}'
             for port in security_group['ports_to_open']:
-                name = f"{description}: CIDR IP {cidr_ip} for port {port} in {group_name}"
+                name = f'{description}: CIDR IP {cidr_ip} for port {port} in {group_name}'
                 is_defined = is_cidr_ip_defined_in_security_group_ingress(
                     ec2, group_id, port, cidr_ip)
                 if revoke ^ is_defined:
                     defined_status = 'already defined' if is_defined else 'not defined'
-                    click.echo(f"{name}: {defined_status} - skipping")
+                    click.echo(f'{name}: {defined_status} - skipping')
                     continue
 
                 func = ec2.revoke_security_group_ingress if revoke else ec2.authorize_security_group_ingress
@@ -72,8 +74,8 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
                         }
                     ]
                 )
-                action = "removed" if revoke else "defined"
-                click.echo(f"{name}: {action}")
+                action = 'removed' if revoke else 'defined'
+                click.echo(f'{name}: {action}')
 
 
 @click.command()
