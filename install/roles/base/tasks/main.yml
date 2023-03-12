@@ -1,0 +1,7 @@
+---
+- name: Install Meirim's CLI application
+  pip:
+    name: "file://{{ playbook_dir }}/../cli/"
+    editable: true
+    state: present
+    executable: pip3
