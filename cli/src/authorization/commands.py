@@ -31,7 +31,8 @@ def is_cidr_ip_defined_in_security_group_ingress(ec2, group_id, port, cidr_ip):
     security_groups = response['SecurityGroups']
     assert len(security_groups) == 1
     ip_permissions = security_groups[0]['IpPermissions']
-    ip_perm = next(filter(lambda rule: rule['FromPort'] == port, ip_permissions))
+    ip_perm = next(
+        filter(lambda rule: rule['FromPort'] == port, ip_permissions))
     return any(filter(lambda x: x['CidrIp'] == cidr_ip, ip_perm['IpRanges']))
 
 
@@ -41,7 +42,8 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
     ec2 = boto3.client('ec2', region_name=region_name)
 
     for security_group in SECURITY_GROUPS:
-        group_names = [x % dict(zone=zone) for x in security_group['group_name_pattern']]
+        group_names = [x % dict(zone=zone)
+                       for x in security_group['group_name_pattern']]
         res = ec2.describe_security_groups(
             Filters=[dict(Name='group-name', Values=group_names)])
         for group in res['SecurityGroups']:
@@ -52,7 +54,8 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
                 description += f' for {owner}'
             for port in security_group['ports_to_open']:
                 name = f'{description}: CIDR IP {cidr_ip} for port {port} in {group_name}'
-                is_defined = is_cidr_ip_defined_in_security_group_ingress(ec2, group_id, port, cidr_ip)
+                is_defined = is_cidr_ip_defined_in_security_group_ingress(
+                    ec2, group_id, port, cidr_ip)
                 if revoke ^ is_defined:
                     defined_status = 'already defined' if is_defined else 'not defined'
                     click.echo(f'{name}: {defined_status} - skipping')
@@ -63,7 +66,8 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
                     ip_ranges = [{'CidrIp': cidr_ip}]
                 else:
                     func = ec2.authorize_security_group_ingress
-                    ip_ranges = [{'CidrIp': cidr_ip, 'Description': description}]
+                    ip_ranges = [
+                        {'CidrIp': cidr_ip, 'Description': description}]
 
                 func(
                     GroupId=group_id,
@@ -80,13 +84,19 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
                 click.echo(f'{name}: {action}')
 
 
-@click.command()
-def external_ip():
+@click.group()
+def authorization():
+    """Control AWS security groups"""
+    pass
+
+
+@authorization.command()
+def my_external_ip():
     """Get current external IP"""
     click.echo(get_external_ip())
 
 
-@click.command()
+@authorization.command()
 @click.option('-z', '--zone', type=click.Choice(ZONES, case_sensitive=False), default=DEFAULT_ZONE)
 @click.option('-o', '--owner', required=True, default=os.getenv('USER'), help='Owner of the added access rules')
 def authorize_my_ip(zone, owner):
@@ -94,7 +104,7 @@ def authorize_my_ip(zone, owner):
     configure_security_groups_ingress(zone, owner=owner)
 
 
-@click.command()
+@authorization.command()
 @click.option('-z', '--zone', type=click.Choice(ZONES, case_sensitive=False), default=DEFAULT_ZONE)
 def revoke_my_ip(zone):
     """Revoke current IP address from security groups"""
