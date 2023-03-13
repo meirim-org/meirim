@@ -22,6 +22,8 @@ const {
 	TREES_PER_PERMIT, PERSON_REQUEST_NAME, PERMIT_ISSUE_DATE, NUMBER_OF_TREES
 } = require('../../model/tree_permit_constants');
 
+const { HaifaTreePermit } = require('./haifa_tree_permit');
+
 const {
 	generateFilenameByTime,
 	formatDate,
@@ -95,7 +97,9 @@ const parseTreesXLS = async (filename, permit) => {
 						[APPROVER_TITLE]: row[permit[APPROVER_TITLE]],
 						// Dates
 						[PERMIT_ISSUE_DATE]: formatDate(row[permit[PERMIT_ISSUE_DATE]], MORNING, permit.dateFormat),
-						[START_DATE]: formatDate(start_date, MORNING, permit.dateFormat) || figureStartDate(row[permit[PERMIT_ISSUE_DATE]], row[permit[LAST_DATE_TO_OBJECTION]], MORNING, permit.dateFormat, row[permit[REGIONAL_OFFICE]]),
+						[START_DATE]: formatDate(start_date, MORNING, permit.dateFormat) || 
+							figureStartDate(row[permit[PERMIT_ISSUE_DATE]], row[permit[LAST_DATE_TO_OBJECTION]], MORNING, permit.dateFormat, 
+								permit[REGIONAL_OFFICE] == HaifaTreePermit[REGIONAL_OFFICE]),
 						[END_DATE]: formatDate(row[permit[END_DATE]], EVENING, permit.dateFormat),
 						[LAST_DATE_TO_OBJECTION]: row[permit[LAST_DATE_TO_OBJECTION]] ?
 							formatDate(row[permit[LAST_DATE_TO_OBJECTION]], EVENING, permit.dateFormat) :
