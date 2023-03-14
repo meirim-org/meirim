@@ -131,6 +131,7 @@ def aws_cli_setup():
         click.secho('Current AWS credentials file:', fg='green')
         click.echo(aws_credentials_file.read_text())
         click.secho('Going to override current credentials!', bg='yellow', fg='black')
+        click.echo('Please select eu-central-1 as your default region name')
 
     cmd = 'aws configure'
     subprocess.run(shlex.split(cmd))
