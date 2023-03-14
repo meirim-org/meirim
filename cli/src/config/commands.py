@@ -1,4 +1,7 @@
 import os
+import shlex
+import subprocess
+from pathlib import Path
 import boto3
 import click
 from requests import get
@@ -108,3 +111,26 @@ def authorize_my_ip(zone, owner):
 def revoke_my_ip(zone):
     """Revoke current IP address from security groups"""
     configure_security_groups_ingress(zone, revoke=True)
+
+
+def verify_aws_cli_tool_installed():
+    cmd = 'which aws'
+    try:
+        subprocess.run(shlex.split(cmd), capture_output=True, check=True)
+    except subprocess.CalledProcessError as e:
+        click.echo('Error: AWS CLI tools not installed. Go to https://aws.amazon.com/cli/')
+        raise click.exceptions.Exit() from e
+
+
+@config.command()
+def aws_cli_setup():
+    """Configure AWS CLI tools"""
+    verify_aws_cli_tool_installed()
+    aws_credentials_file = Path.home().joinpath('.aws/credentials')
+    if aws_credentials_file.exists():
+        click.secho('Current AWS credentials file:', fg='green')
+        click.echo(aws_credentials_file.read_text())
+        click.secho('Going to override current credentials!', bg='yellow', fg='black')
+
+    cmd = 'aws configure'
+    subprocess.run(shlex.split(cmd))
