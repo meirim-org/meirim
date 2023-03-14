@@ -9,7 +9,6 @@ LOG = logging.getLogger(__name__)
 @click.group()
 def dev():
     """Developers aids"""
-    pass
 
 
 dev.add_command(db_commands.db)

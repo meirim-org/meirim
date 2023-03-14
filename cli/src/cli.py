@@ -3,9 +3,9 @@ import logging
 import boto3
 import click
 from rich.logging import RichHandler
-from .authorization import commands as authorization
-from .dev import commands as dev
-from .ssh import commands as ssh
+from .config import commands as config_commands
+from .dev import commands as dev_commands
+from .ssh import commands as ssh_commands
 
 FORMAT = '%(message)s'
 # NOTSET
@@ -21,9 +21,9 @@ def entry_point():
     """Manage Meirim"""
 
 
-entry_point.add_command(authorization.authorization)
-entry_point.add_command(dev.dev)
-entry_point.add_command(ssh.ssh)
+entry_point.add_command(config_commands.config)
+entry_point.add_command(dev_commands.dev)
+entry_point.add_command(ssh_commands.ssh)
 
 if __name__ == '__main__':
     entry_point()

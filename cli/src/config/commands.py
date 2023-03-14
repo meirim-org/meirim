@@ -85,18 +85,17 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
 
 
 @click.group()
-def authorization():
-    """Control AWS security groups"""
-    pass
+def config():
+    """Configure dev-env"""
 
 
-@authorization.command()
+@config.command()
 def my_external_ip():
     """Get current external IP"""
     click.echo(get_external_ip())
 
 
-@authorization.command()
+@config.command()
 @click.option('-z', '--zone', type=click.Choice(ZONES, case_sensitive=False), default=DEFAULT_ZONE)
 @click.option('-o', '--owner', required=True, default=os.getenv('USER'), help='Owner of the added access rules')
 def authorize_my_ip(zone, owner):
@@ -104,7 +103,7 @@ def authorize_my_ip(zone, owner):
     configure_security_groups_ingress(zone, owner=owner)
 
 
-@authorization.command()
+@config.command()
 @click.option('-z', '--zone', type=click.Choice(ZONES, case_sensitive=False), default=DEFAULT_ZONE)
 def revoke_my_ip(zone):
     """Revoke current IP address from security groups"""
