@@ -1,14 +1,8 @@
 import json
-import logging
-import shlex
-import subprocess
 import boto3
-import click
 import paramiko
-from ..common.regions import DEFAULT_ZONE, ZONES, get_aws_region_name
-from ..common.ssh import ssh_params
-
-LOG = logging.getLogger(__name__)
+from ...common.regions import DEFAULT_ZONE, ZONES, get_aws_region_name
+from ...common.ssh import ssh_params
 
 
 def get_host_config(username, hostname):
@@ -44,22 +38,11 @@ def ec2_instance_public_dns_name(zone, instance_name):
     return instances[0]['PublicDnsName']
 
 
-@click.command()
-@click.option('-z', '--zone', type=click.Choice(ZONES, case_sensitive=False), default=DEFAULT_ZONE)
-def phpmyadmin(zone):
-    """Spawn phpMyAdmin docker locally"""
+def get_db_connection_info(zone):
     db_instance_name = f'{zone}-db'
     db_host = ec2_instance_public_dns_name(zone, db_instance_name)
 
-    username, server_hostname = ssh_params(zone)
-    user, password, _ = database_connection_info(username, server_hostname)
-    env_vars = {
-        'PMA_USER': user,
-        'PMA_PASSWORD': password,
-        'MYSQL_ROOT_PASSWORD': password,
-        'PMA_HOST': db_host,
-    }
-    LOG.info("Phpmyadmin will now run in http://localhost:8080")
-    env_vars_params = ' '.join(f'-e {k}={v}' for k, v in env_vars.items())
-    cmd = f'docker run --rm -it --name phpmyadmin {env_vars_params} -p 8080:80 phpmyadmin'
-    subprocess.run(shlex.split(cmd))
+    server_username, server_hostname = ssh_params(zone)
+    db_user, db_password, _ = database_connection_info(
+        server_username, server_hostname)
+    return db_host, db_user, db_password

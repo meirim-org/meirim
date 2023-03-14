@@ -4,7 +4,7 @@ import boto3
 import click
 from rich.logging import RichHandler
 from .authorization import commands as authorization
-from .phpmyadmin import commands as phpmyadmin
+from .dev import commands as dev
 from .ssh import commands as ssh
 
 FORMAT = '%(message)s'
@@ -22,7 +22,7 @@ def entry_point():
 
 
 entry_point.add_command(authorization.authorization)
-entry_point.add_command(phpmyadmin.phpmyadmin)
+entry_point.add_command(dev.dev)
 entry_point.add_command(ssh.ssh)
 
 if __name__ == '__main__':
