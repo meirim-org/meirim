@@ -15,7 +15,7 @@ def ssh(zone, ssh_options):
     # > meirim ssh -z stg -- hostname
     # ip-172-31-24-129.eu-west-1.compute.internal
 
-    username, hostname = ssh_params(zone)
+    ssh_username, ssh_server = ssh_params(zone)
     ssh_options = ' '.join(ssh_options)
-    cmd = f'ssh {username}@{hostname} {ssh_options}'.strip()
+    cmd = f'ssh {ssh_username}@{ssh_server} {ssh_options}'.strip()
     subprocess.run(shlex.split(cmd))

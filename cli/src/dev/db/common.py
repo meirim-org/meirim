@@ -7,17 +7,17 @@ from ...common.regions import DEFAULT_ZONE, ZONES, get_aws_region_name
 from ...common.ssh import ssh_params
 
 
-def get_host_config(username, hostname):
+def get_host_config(ssh_username, ssh_server):
     with paramiko.SSHClient() as ssh:
         ssh.load_system_host_keys()
-        ssh.connect(hostname, username=username)
+        ssh.connect(ssh_server, username=ssh_username)
         cmd = 'cat /home/ec2-user/meirim/server/config/local.json'
         _, stdout, _ = ssh.exec_command(cmd)
         return json.load(stdout)
 
 
-def database_connection_info(username, server_hostname):
-    host_config = get_host_config(username, server_hostname)
+def database_connection_info(ssh_username, ssh_server):
+    host_config = get_host_config(ssh_username, ssh_server)
     database_config = host_config['database']
     assert database_config is not None
     assert database_config['client'] == 'mysql'
@@ -44,9 +44,8 @@ def get_db_connection_info(zone):
     db_instance_name = f'{zone}-db'
     db_host = ec2_instance_public_dns_name(zone, db_instance_name)
 
-    server_username, server_hostname = ssh_params(zone)
-    db_user, db_password, _ = database_connection_info(
-        server_username, server_hostname)
+    ssh_username, ssh_server = ssh_params(zone)
+    db_user, db_password, _ = database_connection_info(ssh_username, ssh_server)
     return db_host, db_user, db_password
 
 
