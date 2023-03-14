@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import logging
+import boto3
 import click
 from rich.logging import RichHandler
 from .authorization import commands as authorization
@@ -11,6 +12,7 @@ FORMAT = '%(message)s'
 logging.basicConfig(level='INFO', format=FORMAT,
                     datefmt='[%X]', handlers=[RichHandler()])
 logging.getLogger('paramiko').setLevel(logging.WARNING)
+boto3.set_stream_logger('', logging.WARNING)
 LOG = logging.getLogger(__name__)
 
 
