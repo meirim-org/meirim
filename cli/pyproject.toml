@@ -11,9 +11,11 @@ authors = [
 dependencies = [
     'boto3',
     'click',
+    'pandas',
     'paramiko',
     'requests',
     'rich',
+    'sqlalchemy',
 ]
 description = "A CLI tool for developers of meirim.org"
 readme = "README.md"
