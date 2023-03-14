@@ -19,7 +19,7 @@ def phpmyadmin(zone):
         'MYSQL_ROOT_PASSWORD': db_password,
         'PMA_HOST': db_host,
     }
-    LOG.info("Phpmyadmin will now run in http://localhost:8080")
+    click.secho("phpMyAdmin will now run in http://localhost:8080", bg='yellow', fg='black')
     env_vars_params = ' '.join(f'-e {k}={v}' for k, v in env_vars.items())
     cmd = f'docker run --rm -it --name phpmyadmin {env_vars_params} -p 8080:80 phpmyadmin'
     subprocess.run(shlex.split(cmd))
