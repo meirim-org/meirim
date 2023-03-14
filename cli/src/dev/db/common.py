@@ -1,6 +1,8 @@
 import json
+from contextlib import contextmanager
 import boto3
 import paramiko
+import sqlalchemy as sa
 from ...common.regions import DEFAULT_ZONE, ZONES, get_aws_region_name
 from ...common.ssh import ssh_params
 
@@ -46,3 +48,17 @@ def get_db_connection_info(zone):
     db_user, db_password, _ = database_connection_info(
         server_username, server_hostname)
     return db_host, db_user, db_password
+
+
+def get_db_connection_string(zone):
+    db_host, db_user, db_password = get_db_connection_info(zone)
+    database = 'meirim'
+    return f'mariadb+mariadbconnector://{db_user}:{db_password}@{db_host}:3306/{database}'
+
+
+@contextmanager
+def get_db_connection(zone):
+    url = get_db_connection_string(zone)
+    engine = sa.create_engine(url)
+    with engine.connect() as conn:
+        yield conn
