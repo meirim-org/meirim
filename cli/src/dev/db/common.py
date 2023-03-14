@@ -1,23 +1,20 @@
 import json
 from contextlib import contextmanager
 import boto3
-import paramiko
 import sqlalchemy as sa
 from ...common.regions import DEFAULT_ZONE, ZONES, get_aws_region_name
-from ...common.ssh import ssh_params
+from ...common.ssh import ssh_connection
 
 
-def get_host_config(ssh_username, ssh_server):
-    with paramiko.SSHClient() as ssh:
-        ssh.load_system_host_keys()
-        ssh.connect(ssh_server, username=ssh_username)
+def get_host_config(zone):
+    with ssh_connection(zone) as ssh:
         cmd = 'cat /home/ec2-user/meirim/server/config/local.json'
         _, stdout, _ = ssh.exec_command(cmd)
         return json.load(stdout)
 
 
-def database_connection_info(ssh_username, ssh_server):
-    host_config = get_host_config(ssh_username, ssh_server)
+def database_connection_info(zone):
+    host_config = get_host_config(zone)
     database_config = host_config['database']
     assert database_config is not None
     assert database_config['client'] == 'mysql'
@@ -44,8 +41,7 @@ def get_db_connection_info(zone):
     db_instance_name = f'{zone}-db'
     db_host = ec2_instance_public_dns_name(zone, db_instance_name)
 
-    ssh_username, ssh_server = ssh_params(zone)
-    db_user, db_password, _ = database_connection_info(ssh_username, ssh_server)
+    db_user, db_password, _ = database_connection_info(zone)
     return db_host, db_user, db_password
 
 
