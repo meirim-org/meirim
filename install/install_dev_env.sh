@@ -4,7 +4,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 if ! which "ansible" 2>&1 >/dev/null; then
-    >&2 echo "Error: ansible is not installed. Please run 'pip3 install -U ansible'"
+    >&2 echo "Error: ansible is not installed. Go to https://command-not-found.com/ansible"
     exit 2
 fi
 
