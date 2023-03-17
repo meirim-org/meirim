@@ -10,7 +10,10 @@ const Impression = require('./controller/impression');
 const Funding = require('./controller/funding');
 const TreePermit = require('./controller/tree_permit');
 const Permit = require('./controller/permit');
+const PermitAoi = require('./controller/permit_aoi');
+const PermitAoiPerson = require('./controller/permit_aoi_person');
 const Subscription = require('./controller/subscription');
+const BlockParcel = require('./controller/block_parcel');
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
@@ -43,11 +46,19 @@ Router.get('/plan/:id/status', wrap(PlanStatusChange.byPlan, PlanStatusChange));
 // Tree
 Router.get('/tree/', wrap(TreePermit.browse, TreePermit));
 Router.get('/tree/:id', wrap(TreePermit.read, TreePermit));
+Router.get('/trees/geojson/', wrap(TreePermit.geojson, TreePermit));
+
 
 Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
 
 // Permit
 Router.get('/permit/', wrap(Permit.browse, Permit))
+Router.get('/permit/aoi', wrap(PermitAoi.browse, PermitAoi))
+Router.get('/permit/aoi/:id/preview', wrap(PermitAoi.preview, PermitAoi))
+Router.get('/permit/aoi/person', wrap(PermitAoiPerson.browse, PermitAoiPerson))
+Router.post('/permit/aoi/person', wrap(PermitAoiPerson.create, PermitAoiPerson))
+Router.delete('/permit/aoi/person/:id', wrap(PermitAoiPerson.delete, PermitAoiPerson))
+
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
@@ -89,6 +100,11 @@ Router.get('/public/plan', publicWrapper(Plan.publicBrowse, Plan));
 
 // Status
 // Router.get('/', wrap(Status.browse));
+
+// Block Parcel
+
+Router.get('/topfive', wrap(BlockParcel.topfive, BlockParcel));
+Router.get('/centroid', wrap(BlockParcel.centroid, BlockParcel));
 
 // Health
 Router.get('/health', wrap(() => true));

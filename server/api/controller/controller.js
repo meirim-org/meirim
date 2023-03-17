@@ -138,11 +138,12 @@ class Controller {
 			});
 	}
 
-	delete (req) {
+	delete (req, transaction) {
 		const id = parseInt(req.params.id, 10);
 		if (!id) {
 			throw new Exception.NotFound('Nof found');
 		}
+		const options = transaction ? { transacting: transaction } : {}
 		return this.model
 			.forge({
 				[this.id_attribute]: id
@@ -158,7 +159,7 @@ class Controller {
 					' delete success id:',
 					fetchedModel.get('id')
 				);
-				return fetchedModel.destroy(req.body);
+				return fetchedModel.destroy(req.body, options);
 			});
 	}
 

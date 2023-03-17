@@ -25,10 +25,12 @@ const Footer = () => {
 			<br />
 			<a href="https://linkedin.com/company/35602639">LinkedIn</a>{' '}|&nbsp;
 			<a href="https://twitter.com/meirimORG">{t.ourTwitter}</a>{' '}|&nbsp;
-			<a href="https://www.facebook.com/meirim.city/">{t.ourFacebook}</a>{' '}
+			<a href="https://www.facebook.com/meirim.city/">{t.ourFacebook}</a>{' '}|&nbsp;
+			<a href="https://www.instagram.com/meirim_org/">{t.ourInstagram}</a>{' '}|&nbsp;
+			<a href="https://github.com/meirim-org/meirim">{t.ourGithub}</a>{' '}
 			<br />
 	
-			Ⓒ {t.allRightsReserved} 2022 
+			Ⓒ {t.allRightsReserved} 2023 
 		</StyledFooter>
 	);
 };
