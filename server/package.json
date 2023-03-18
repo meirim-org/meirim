@@ -43,7 +43,7 @@
         "html-table-to-json": "^1.0.0",
         "http-proxy-middleware": "^1.0.5",
         "juice": "^7.0.0",
-        "knex": "^0.21.12",
+        "knex": "^2.4.0",
         "leaflet": "^1.6.0",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
