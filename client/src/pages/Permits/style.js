@@ -12,3 +12,8 @@ export const NoContent = withTheme(styled.div`
         text-align: center;
     }
 `)
+
+export const RealEstateItem = withTheme(styled.div`
+    display: flex;
+    justify-content: space-between;
+`)

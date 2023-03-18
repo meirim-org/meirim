@@ -16,14 +16,26 @@ class Permit extends Model {
 		};
 	}
 
-	get tableName () {
+	get tableName() {
 		return `${consts.PERMIT_TABLE}`;
 	}
 
-	parse (attributes) {
-		return mapKeys(attributes, function(_, key) {
+	parse(attributes) {
+		if (attributes[consts.REAL_ESTATE]) {
+			const rawRealEstate = attributes[consts.REAL_ESTATE]
+			const gushHelkaRegex = /גוש:\s+(\d+),\s+חלקה:\s+(\d+)/
+			const matches = rawRealEstate.match(gushHelkaRegex)
+			if (matches) {
+				attributes[consts.REAL_ESTATE] = {
+					gush: matches[1], helka: matches[2],
+					mapUrl: `https://www.govmap.gov.il/?q=%D7%92%D7%95%D7%A9%20${matches[1]}`
+				}
+			}
+		}
+	
+		return mapKeys(attributes, function (_, key) {
 			return camelCase('permit_' + key);
-		  });
+		});
 	}
 
 }

@@ -226,7 +226,7 @@ const HEBREW_TRANSLATION = {
 	// Permits table columns
 	permitSubject: 'נושא ההיתר',
 	permitPermitCreatedAt: 'תאריך פתיחת היתר',
-	permitRegion: 'ועדה איזורית',
+	permitRegion: 'ועדה מקומית',
 	permitRealEstate: 'מקרקעין',
 	permitAuthor: 'שם המבקש.ת',
 	permitStatus: 'סטטוס',
@@ -234,13 +234,13 @@ const HEBREW_TRANSLATION = {
 	permitImportance: 'חשיבות ההיתר בשבילי',
 
 	permitNav: {
-		mainTable: 'טבלה ראשית',
-		AOI: 'איזור אישי'
+		mainTable: 'היתרים למעקב',
+		AOI: 'איזורי עניין'
 	},
 
 	addAOI: '+ הוספת איזור עניין',
 	remove: 'הסרה',
-	choosePermitRegion: 'בחרו וועדה אזורית',
+	choosePermitRegion: 'בחרו וועדה מקומית',
 	noAOISavedTitle: 'טרם נוספו איזורי עניין',
 	addAOILinkTitle: 'מעבר להוספת איזורי עניין'
 };
