@@ -49,7 +49,9 @@ def configure_security_groups_ingress(zone, *, owner=None, revoke=False):
                        for x in security_group['group_name_pattern']]
         res = ec2.describe_security_groups(
             Filters=[dict(Name='group-name', Values=group_names)])
-        for group in res['SecurityGroups']:
+        security_groups = res['SecurityGroups']
+        assert security_groups, "No security groups found! Check your AWS credentials"
+        for group in security_groups:
             group_id = group['GroupId']
             group_name = f'{group["GroupName"]} ({group_id})'
             description = security_group['description']
