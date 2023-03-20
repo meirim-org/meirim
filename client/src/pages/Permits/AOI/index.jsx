@@ -6,13 +6,13 @@ import { useCallback } from "react";
 import { Button, Row, Text } from "shared";
 import api from 'services/api';
 import * as SC from "./style";
-import { Box, Checkbox, FormControl, Input, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Box, Input, MenuItem, Select/*, Checkbox, FormControl, InputLabel */ } from "@material-ui/core";
 import Table from 'components/Table/Table';
 import { useUserAoisTableColumns } from "../usePermitTableColumns";
-import { CheckIfUserCanAccessPage } from "hooks";
-import { toast } from "react-toastify";
+// import { CheckIfUserCanAccessPage } from "hooks";
+// import { toast } from "react-toastify";
 
-const MAX_AOI = 5;
+// const MAX_AOI = 5;
 
 const AOI = () => {
     //CheckIfUserCanAccessPage()
@@ -90,7 +90,7 @@ const AOI = () => {
             //     return [...currentState]
             // })
         })
-    })
+    }, []);
 
     const addDisabled = !isFormValid()
 
