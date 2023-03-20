@@ -12,6 +12,6 @@ export ANSIBLE_LOCALHOST_WARNING=False
 export ANSIBLE_NOCOWS=1
 
 SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
-pushd $SCRIPT_DIR
+pushd $SCRIPT_DIR/ansible
 ansible-playbook development_computer.yaml
 popd
