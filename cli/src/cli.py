@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import logging
+import os
 import boto3
 import click
 from rich.logging import RichHandler
@@ -25,5 +26,15 @@ entry_point.add_command(config_commands.config)
 entry_point.add_command(dev_commands.dev)
 entry_point.add_command(ssh_commands.ssh)
 
+
+def safe_entry_point():
+    try:
+        entry_point()
+    except Exception as e:
+        if os.getenv('DEBUG'):
+            raise
+        click.echo(f"Error: {e}")
+
+
 if __name__ == '__main__':
-    entry_point()
+    safe_entry_point()

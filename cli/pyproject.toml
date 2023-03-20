@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 [project.scripts]
-meirim = 'src.cli:entry_point'
+meirim = 'src.cli:safe_entry_point'
 
 [project.urls]
 "Homepage" = "https://github.com/meirim-org/meirim"
