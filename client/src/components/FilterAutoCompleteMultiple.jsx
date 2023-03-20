@@ -30,13 +30,7 @@ function renderInput(inputProps) {
     );
 }
 
-function renderSuggestion({
-                              suggestion,
-                              index,
-                              itemProps,
-                              highlightedIndex,
-                              selectedItem,
-                          }) {
+function renderSuggestion({suggestion, index, itemProps, highlightedIndex, selectedItem,}) {
     const isHighlighted = highlightedIndex === index;
     const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
