@@ -82,8 +82,10 @@ async function parseTreesHtml(url) {
 async function filterExistingLicenses(rawPermits) {
   const result = [];
   let amount = 0;
+  const existingPermits = await getExistingPermits();
   for (const treePermit of rawPermits) {
-    const exists = await doesPermitExists(treePermit);
+    const permitNumber = `meirim-beersheva-${treePermit[LICENSE_NUMBER]}`;
+    const exists = existingPermits.indexOf(permitNumber) >= 0;
     if (exists) {
       Log.info(`ignore this license, already in db: Beer Sheva, ${treePermit[LICENSE_NUMBER]} ${treePermit[STREET_NAME]} , requested: ${treePermit[REQUEST_DATE]}`);
     } else {
@@ -207,20 +209,16 @@ function sum(treeArray) {
   });
 }
 
-async function doesPermitExists(raw) {
-  var existingPermit = false;
-
-  const permitNumber = `meirim-beersheva-${raw[LICENSE_NUMBER]}`;
-
-	await database.Knex(TREE_PERMIT_TABLE).where(PERMIT_NUMBER, permitNumber)
-		.andWhere(REGIONAL_OFFICE, CITY)
+async function getExistingPermits() {
+  const existingPermits = [];
+	await database.Knex(TREE_PERMIT_TABLE).select(PERMIT_NUMBER).where(REGIONAL_OFFICE, CITY)
 		.then(rows => {
 			rows.map(row => {
-				existingPermit = true;
+				existingPermits.push(row[PERMIT_NUMBER]);
 			});
 		})
 		.catch(function (error) { Log.error(error); });
-    return existingPermit;
+    return existingPermits;
 }
 
 /**
