@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 const MAX_AOI = 5;
 
 const AOI = () => {
-    //CheckIfUserCanAccessPage()
+    CheckIfUserCanAccessPage()
 
     const { t } = useTranslation()
     const [userAois, setUserAois] = useState([])
@@ -69,26 +69,21 @@ const AOI = () => {
         }
 
         api.post('/permit/aoi/person', formData).then((permitPersonAoi) => {
-            // re fetch data or add manually to table array with permitPersonAoi data (see item below)
-            //fetchData()
-
             // const item = { "id": 1, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }
-            // setUserAois(currentState => ([
-            //     ...currentState,
-            //     item
-            // ]))
+            setUserAois(currentState => ([
+                ...currentState,
+                permitPersonAoi
+            ]))
         })
     }
 
     const deleteAOI = useCallback((item) => {
         api.delete(`/permit/aoi/person/${item.id}`).then(() => {
-            // refetch or remove manually from table array
-            //fetchData()
-            // setUserAois(currentState => {
-            //     const indexToRemove = currentState.findIndex(row => row.id === item.id)
-            //     currentState.splice(indexToRemove, 1)
-            //     return [...currentState]
-            // })
+            setUserAois(currentState => {
+                const indexToRemove = currentState.findIndex(row => row.id === item.id)
+                currentState.splice(indexToRemove, 1)
+                return [...currentState]
+            })
         })
     })
 
