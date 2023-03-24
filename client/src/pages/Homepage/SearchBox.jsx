@@ -1,6 +1,6 @@
 import { useTranslation } from 'locale/he_IL';
 import _ from 'lodash';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import React, { useCallback, useEffect, useState } from 'react';
 import { device } from 'style';
 import styled from 'styled-components';
@@ -243,7 +243,7 @@ export default function SearchBox({
   const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
   const { t } = useTranslation();
 
-  const history = useHistory();
+  // const history = useHistory();
   // Making a logic to change the input types using dropdown
   const classes = useStyles();
   const [block, setBlock] = useState('');

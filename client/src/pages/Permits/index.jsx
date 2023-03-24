@@ -4,11 +4,11 @@ import Wrapper from 'components/Wrapper';
 import React from 'react';
 import { useTranslation } from 'locale/he_IL';
 import api from 'services/api';
-import * as SC from './style'
+import * as SC from './style';
 import { Text } from 'shared';
 import { Link } from 'react-router-dom';
 import usePermitTableColumns from './usePermitTableColumns';
-import { CheckIfUserCanAccessPage } from 'hooks';
+// import { CheckIfUserCanAccessPage } from 'hooks';
 
 const Permits = () => {
 	//CheckIfUserCanAccessPage();
@@ -30,7 +30,7 @@ const Permits = () => {
 		fetchData();
 	}, []);
 
-	const columns = usePermitTableColumns()
+	const columns = usePermitTableColumns();
 
 	return (
 		<Wrapper>
