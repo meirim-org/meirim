@@ -68,11 +68,6 @@ async function parseTreesHtml(url) {
       treePermit[key] = value;
     });
 
-    const reqDate = moment(treePermit[REQUEST_DATE], DATE_FORMAT_PERMIT).toDate();
-    if (reqDate.getFullYear() < new Date().getFullYear() - 5) {
-        Log.info(`ignore this old license: Beer Sheva, ${treePermit[LICENSE_NUMBER]} ${treePermit[STREET_NAME]} , requested: ${treePermit[REQUEST_DATE]}`);
-        return;
-    }
     result.push(treePermit);
   });
   Log.info(`number of Beer Sheva permits read: ${result.length}`);
@@ -105,7 +100,8 @@ async function getTreePermitData(rawPermits) {
     for (const raw of rawPermits) {
     try {   
         const permitUrl = replaceAll(urlPrefix + raw['url'], "//Lists", "/Lists");
-        const treeHtml = await proxy.get(permitUrl);
+        Log.info(`Crawl Beer Sheva permit page : ${permitUrl}`);
+        const treeHtml = await proxy.get(permitUrl, 1000);
         const dom = cheerio.load(treeHtml, {
             decodeEntities: false
         });
@@ -139,6 +135,7 @@ async function getTreePermitData(rawPermits) {
     } catch (e) {
         Log.error(`error in Beer Sheva parse row, ignoring: ${raw[STREET_NAME]}`, e.message);
     }
+    Log.info( 'Done enrich raw:',raw);
     }
     return; 
 }
@@ -227,7 +224,8 @@ async function getExistingPermits() {
 async function crawlBeerShevaTreesHTML(url, permitType) {
   try {
     const raw = await parseTreesHtml(url);
-    const rawPermits = await filterExistingLicenses(raw)
+    const rawPermits = await filterExistingLicenses(raw);
+
     await getTreePermitData(rawPermits);
     const treePermits = processRawPermits(rawPermits);
     return treePermits;
