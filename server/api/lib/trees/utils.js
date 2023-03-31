@@ -14,6 +14,14 @@ const {
 
 const TIMEZONE_DIFF = 3;
 
+const figureLastObjectionDate = (startDay, hour, inputFormat) => {
+	let last_day_to_objection;
+	const format = inputFormat || 'DD/MM/YYYY';
+	last_day_to_objection  = moment.utc(startDay, format).subtract(1, 'days');
+	const isoDate = last_day_to_objection.toISOString().split('T')[0];
+	return `${isoDate}T${hour}`;
+};
+
 const figureStartDate = (permit_issue_date, last_day_to_objection, hour, inputFormat, useLastDay) => {
 	let start_day;
 	const format = inputFormat || 'DD/MM/YYYY';
@@ -115,5 +123,6 @@ module.exports = {
 	unifyPlaceFormat,
 	formatDate,
 	figureStartDate,
-	calculateLastDateToObject
+	calculateLastDateToObject,
+	figureLastObjectionDate
 };

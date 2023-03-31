@@ -14,6 +14,7 @@ const { KKLTreePermit } = require('./kkl_tree_permit');
 const { crawlTreesHTML , JERTreePermit } = require('./jerusalem_tree_permit');
 const { crawlRGTreesHTML , RGTreePermit } = require('./ramat_gan_tree_permit');
 const { crawlHodHashTreesHTML , hodHashTreePermit } = require('./hod_hasharon_tree_permit');
+const { crawlBeerShevaTreesHTML , beerShevaTreePermit } = require('./beer_sheva_tree_permit');
 
 const {
 	formatDate,
@@ -88,15 +89,18 @@ const chooseCrawl = (crawlType) => {
 	const jerusalem = { 'crawler': crawlTreesHTML , 'permitType': JERTreePermit };
 	const ramatGan  = { 'crawler': crawlRGTreesHTML , 'permitType': RGTreePermit};
 	const hodHasharon  = { 'crawler': crawlHodHashTreesHTML , 'permitType': hodHashTreePermit};
+	const beerSheva  = { 'crawler': crawlBeerShevaTreesHTML , 'permitType': beerShevaTreePermit};
 	const regional = { 'crawler': crawlTreeExcelByFile, 'permitType': RegionalTreePermit };
+
 	const crawlMap = {
+		'beerSheva': [beerSheva],
 		'hodHasharon': [hodHasharon],
 		'ramatGan': [ramatGan],
 		'haifa': [haifa],
 		'jerusalem': [jerusalem],
 		'kkl': [kkl],
 		'regional': [regional],
-		'all': [hodHasharon, haifa, ramatGan, jerusalem, regional, kkl]
+		'all': [beerSheva, hodHasharon, haifa, ramatGan, jerusalem, regional, kkl]
 	};
 
 	return crawlMap[crawlType] || crawlMap['all'];
