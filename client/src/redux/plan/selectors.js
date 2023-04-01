@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 
+// TODO: remove test data
 const testLinks = [
     {
         type: 'whatsapp',
@@ -37,7 +38,8 @@ const Selectors = () => {
     const dataArea = useSelector((state) => state.plan.dataArea);
 
     // const planLinks = useSelector((state) => state.plan.links);
-    const planLinks = testLinks;
+    // const planLinks = testLinks;
+    const planLinks = null;
 
     return {
         planData,
