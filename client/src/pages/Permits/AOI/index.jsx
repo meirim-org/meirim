@@ -9,7 +9,7 @@ import * as SC from "./style";
 import { Box, Input, MenuItem, Select/*, Checkbox, FormControl, InputLabel */ } from "@material-ui/core";
 import Table from 'components/Table/Table';
 import { useUserAoisTableColumns } from "../usePermitTableColumns";
-// import { CheckIfUserCanAccessPage } from "hooks";
+import { CheckIfUserCanAccessPage } from "hooks";
 // import { toast } from "react-toastify";
 
 // const MAX_AOI = 5;
