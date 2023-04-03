@@ -19,7 +19,7 @@ const { crawlBeerShevaTreesHTML , beerShevaTreePermit } = require('./beer_sheva_
 const {
 	formatDate,
 	unifyPlaceFormat,
-	generateGeomFromAddress,
+	generateGeom,
 } = require('./utils');
 const { REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, TOTAL_TREES, GUSH, HELKA, GEOM, PLACE, STREET, TREE_PERMIT_TABLE, STREET_NUMBER } = require('../../model/tree_permit_constants');
 const MORNING = '08:00';
@@ -67,7 +67,7 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 		// Not using map / async on purpose, so node won't run this code snippet in parallel
 		for await (const tp of newTreePermits.slice(0, numPermits)) {
 			await new Promise(r => setTimeout(r, GEO_CODING_INTERVAL)); // max rate to query nominatim is 1 request per second
-			const polygonFromPoint = await generateGeomFromAddress(database.Knex, tp.attributes[PLACE], tp.attributes[STREET], tp.attributes[STREET_NUMBER], tp.attributes[GUSH], tp.attributes[HELKA]);
+			const polygonFromPoint = await generateGeom(database.Knex, tp.attributes[PLACE], tp.attributes[STREET], tp.attributes[STREET_NUMBER], tp.attributes[GUSH], tp.attributes[HELKA]);
 			tp.attributes[GEOM] = polygonFromPoint;
 			Log.info(`Saving new tree permit: ${tp.attributes[REGIONAL_OFFICE]} ${tp.attributes[PERMIT_NUMBER]} with ${tp.attributes[TOTAL_TREES]} trees.`);
 			tp.attributes[PLACE] = unifyPlaceFormat(tp.attributes[PLACE]);

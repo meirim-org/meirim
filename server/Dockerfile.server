@@ -1,0 +1,25 @@
+FROM node:19
+
+ARG UNAME=testuser
+ARG UID=1000
+ARG GID=1000
+
+EXPOSE 3001
+
+VOLUME "/code"
+
+ARG apt_deps=" \
+    jq \
+    mycli \
+    "
+RUN apt-get update \
+    && apt-get -qy install ${apt_deps} \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -g $GID -o $UNAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME
+USER $UNAME
+
+WORKDIR /code
+
+ENTRYPOINT [ "/code/entrypoint.sh" ]
