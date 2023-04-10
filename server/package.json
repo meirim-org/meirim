@@ -18,7 +18,7 @@
         "@mapbox/geojson-area": "^0.2.2",
         "@sendgrid/mail": "^7.6.0",
         "abort-controller": "^3.0.0",
-        "aws-sdk": "^2.806.0",
+        "aws-sdk": "^2.1354.0",
         "axios": "^0.21.1",
         "bcrypt": "^5.1.0",
         "bluebird": "^3.7.2",
