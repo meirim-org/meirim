@@ -4,9 +4,9 @@
 context('Register and login', () => {
   // emails won't actually be sent since we are using ethereal as the
   // smtp service when running these tests
-  // const userEmail = `shanelle97+${Date.now()}@ethereal.email`;
+  const userEmail = `yossi.eynav+${Date.now()}@gmail.com`;
 
-  const userEmail = `rnd@meirim.org`;
+  // const userEmail = `rnd@meirim.org`;
 
   beforeEach(() => {
     cy.viewport('macbook-13');
