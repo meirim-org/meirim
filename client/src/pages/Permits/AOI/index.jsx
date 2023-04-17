@@ -60,7 +60,7 @@ const AOI = () => {
     }
 
     const isFormValid = useCallback(() => {
-        return formData?.name && formData?.permitRegion
+        return formData?.name && formData?.permit_aoi_id
     }, [formData])
 
     const addAOI = () => {
@@ -114,8 +114,8 @@ const AOI = () => {
                                     fullWidth
                                     id="region-aoi-selection"
                                     labelid="region-aoi-selection-label"
-                                    value={formData?.permitRegion || null}
-                                    onChange={(e) => updateFormData('permitRegion', e.target.value)}
+                                    value={formData?.permit_aoi_id || null}
+                                    onChange={(e) => updateFormData('permit_aoi_id', e.target.value)}
                                 >
                                     <MenuItem value={null}>{t.choosePermitRegion}</MenuItem>
                                     {allAois.map(aoi => <MenuItem key={aoi.id} value={aoi.id}>{aoi.name}</MenuItem>)}
