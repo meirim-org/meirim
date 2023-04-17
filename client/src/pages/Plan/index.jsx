@@ -27,8 +27,8 @@ import {
 const Plan = ({ isMobile, isTablet, match }) => {
     const { id: planId } = useParams();
     const [refetchComments, setRefetchComments] = useState(false);
-    // useDataHandler(planId);
-    // useCommentsDataHandler(planId, refetchComments, setRefetchComments);
+    useDataHandler(planId);
+    useCommentsDataHandler(planId, refetchComments, setRefetchComments);
     const dispatch = useDispatch();
     const { isAuthenticated, user } = UserSelectors();
     const [subCommentState, setSubCommentState] = useState({
