@@ -96,7 +96,7 @@ const AOI = () => {
 
     const onClickItem = useCallback((index) => {
         setActiveItemIndex(index)
-    }, [activeItemIndex])
+    }, [])
 
     const onClickTrash = useCallback((item, index) => {
 

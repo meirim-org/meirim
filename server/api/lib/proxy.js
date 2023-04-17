@@ -1,7 +1,7 @@
 const scrapingbee = require('scrapingbee'); 
 const config = require('./config');
 
-async function get(url) {
+async function get(url, wait =5000) {
 
 	try {
 		let client = new scrapingbee.ScrapingBeeClient(config.get('proxy.apiKey')); 
@@ -10,7 +10,7 @@ async function get(url) {
 			params: {
 				'country_code': 'il',
 				'premium_proxy': 'true',
-				'wait': 5000,
+				'wait': wait,
 			},
 			headers: {
 			}
