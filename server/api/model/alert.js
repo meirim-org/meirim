@@ -19,14 +19,16 @@ class Alert extends Model {
 			geom: [ 'object'],
 			radius: ['string'],
 			place: ['string'],
-			type: ['string']
+			type: ['string'],
+			alert: ['required', 'boolean'],
 		};
 	}
 
 	defaults () {
 		return {
 			radius: '4',
-			type: 'plan'
+			type: 'plan',
+			alert: true,
 		};
 	}
 
@@ -166,6 +168,18 @@ class Alert extends Model {
 			`${this.get('id')}_${this.get('person_id')}`
 		);
 		return Buffer.from(token).toString('base64');
+	}
+
+	static setSubscriptionCancelled (alertId) {
+		return new Alert()
+			.query(qb => {
+				qb.where('id', alertId);
+			})
+			.save(
+				{
+					subscription: false
+				}
+			);
 	}
 
 	static ByToken (token) {

@@ -11,7 +11,7 @@ class AlertUnsubscribe extends Component {
 
     unsubscribeAlertByToken(token) {
         api
-            .delete(`/alert/_token/${token}`)
+            .post(`/alert/_token/${token}`)
             .then(result => {
                 this.setState({
                     loading: false
