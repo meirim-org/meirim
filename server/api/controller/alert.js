@@ -66,7 +66,7 @@ class AlertController extends Controller {
 				}
 
 				Log.debug('unsubscribe request for alert id:', fetchedModel.get('id'));
-				fetchedModel.set('subscription', false);
+				fetchedModel.set('subscription', 0);
 				return fetchedModel.save();
 			})
 			.catch(err => {

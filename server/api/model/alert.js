@@ -20,7 +20,7 @@ class Alert extends Model {
 			radius: ['string'],
 			place: ['string'],
 			type: ['string'],
-			subscription: ['required', 'boolean'],
+			subscription: ['required', 'integer'],
 		};
 	}
 
@@ -29,6 +29,7 @@ class Alert extends Model {
 			radius: '4',
 			type: 'plan',
 			alert: true,
+			subscription: 1,
 		};
 	}
 
@@ -189,7 +190,8 @@ class Alert extends Model {
     INNER JOIN plan ON ST_Intersects(plan.geom,alert.geom)
     INNER JOIN person ON person.id=alert.person_id
     WHERE plan.id=${planId} AND
-    person.status=1
+    person.status=1 AND 
+	alert.subscription = 1
     GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
 	}
@@ -203,7 +205,8 @@ class Alert extends Model {
     INNER JOIN tree_permit ON tree_permit.place=alert.place
     INNER JOIN person ON person.id=alert.person_id
     WHERE tree_permit.id=${treeId} AND
-    person.status=1
+    person.status=1 AND 
+	alert.subscription = 1
     GROUP BY person.id, alert.id`;
 		return Knex.raw(sql);
 	}
@@ -215,7 +218,7 @@ class Alert extends Model {
 		}
 		const dateString = moment(date).format('YYYY-MM-DD h:mm');
 		return Alert.query(qb => {
-			qb.whereRaw(`last_email_sent < '${dateString}' OR last_email_sent IS NULL`);
+			qb.whereRaw(`subscription = 1 and (last_email_sent < '${dateString}' OR last_email_sent IS NULL)`);
 		}).fetchAll({
 			columns: [
 				'address',
@@ -224,7 +227,8 @@ class Alert extends Model {
 				'radius',
 				'place',
 				'type',
-				'id'
+				'id',
+				'subscription'
 			],
 			withRelated: ['person'],
 		}).then(res=>{
