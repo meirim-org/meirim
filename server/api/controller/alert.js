@@ -62,17 +62,16 @@ class AlertController extends Controller {
 			.fetch()
 			.then((fetchedModel) => {
 				if (!fetchedModel) {
-					// return successfully even if alert was not found since
-					// it is probably already unsubscribed
-					return null;
+					throw new Exception.NotFound('Nof found');
 				}
 
-				Log.debug(
-					this.tableName,
-					'unsubscribe success id:',
-					fetchedModel.get('id')
-				);
-				return Alert.setSubscriptionCancelled(fetchedModel.get('id'));
+				Log.debug('unsubscribe request for alert id:', fetchedModel.get('id'));
+				fetchedModel.set('subscription', false);
+				return fetchedModel.save();
+			})
+			.catch(err => {
+				Log.error(err);
+				throw new Exception.Error(err);
 			});
 	}
 }
