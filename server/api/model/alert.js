@@ -28,7 +28,6 @@ class Alert extends Model {
 		return {
 			radius: '4',
 			type: 'plan',
-			alert: true,
 			subscription: 1,
 		};
 	}
