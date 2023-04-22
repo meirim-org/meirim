@@ -22,7 +22,7 @@ const HEBREW_TRANSLATION = {
     urbanPlanningSubtitle: 'אנחנו מנגישים ידע ויוצרים תוכן כדי שתוכלו גם לדעת, גם להבין וגם להשפיע על המערכת שהכי משפיעה על החיים שלנו, מערכת התכנון והבניה.',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
 	newAlert: '🏠 תוכניות בניה',
-	newAlertTree: '🌳 רשיונות כריתה של עצים', 
+	newAlertTree: '🌳 רשיונות כריתה של עצים',
 	emailAddress: 'כתובת דוא"ל ',
 	fullName: 'שם מלא',
 	password: 'סיסמה',
@@ -126,12 +126,12 @@ const HEBREW_TRANSLATION = {
 	fundingSuccessPlans: 'לעמוד התוכניות',
 	fundingSuccessHome: 'לדף הבית',
 	fundingSuccessClose: 'סגירה',
-	readMoreAboutAchievements: 'קראו עוד על ההצלחות שלנו', 
+	readMoreAboutAchievements: 'קראו עוד על ההצלחות שלנו',
 	lastDateToObjectTrees: 'תאריך אחרון להגשת ערר',
 	permitNumber: 'מספר רשיון:',
 	treePermitOnGovSite: 'קישור לרשיון באתר הציבורי:',
 	treeAppealTitle: 'הגשת ערר',
-	treeAppealExplained: 
+	treeAppealExplained:
 `לפי החוק כריתה או העתקה של עץ בוגר בישראל נדרשת לאישור מפקיד היערות. ניתן להגיש ערר על ההחלטה לכרות או להעתיק עץ בוגר, תוך 14 ימים מפרסום ההחלטה.
 ערר ניתן להגיש מטעמים שונים, בין היתר, בשל פגיעה אקולוגית, ערך היסטורי, חברתי או עירוני הקשור בעץ.`,
 	shareTree: 'שיתוף רשיון כריתה',
@@ -168,8 +168,8 @@ const HEBREW_TRANSLATION = {
 	searchBoxTitle: 'סקרנים לדעת מה בונים לכם ליד הבית?',
 	searchAddress: 'חפשו כתובת',
 	searchBlockParcel:'חפשו גוש חלקה',
-	block: 'גוש', 
-	parcel: 'חלקה', 
+	block: 'גוש',
+	parcel: 'חלקה',
 	watchPlans: 'צפיה בתוכניות',
 	alertsSubtitle: 'כדי לקבל התראות רלבנטיות הזינו כתובת ורדיוס',
 	alertsSubtitleInfo: '*כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי הסביבה שלה',
@@ -202,11 +202,11 @@ const HEBREW_TRANSLATION = {
 	showPlans: 'הצג תוכניות:',
 	inProgress: 'בתהליך',
 	approved: 'מאושרות',
-	moreInfo: 'מידע נוסף', 
+	moreInfo: 'מידע נוסף',
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
 	tags: {
-		public: 'מבני ציבור', 
+		public: 'מבני ציבור',
 		housing: 'דיור',
 		commerce: 'מסחר',
 		employment: 'תעסוקה',
@@ -215,13 +215,16 @@ const HEBREW_TRANSLATION = {
 		lightRail: 'רכבת קלה',
 		river: 'נחל'
 	},
-	features: { 
-		createAlerts: 'נרשמים בחינם לקבלת התראות', 
-		discoverPlanning: 'מחפשים את הכתובת שלכם', 
-		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!', 
-		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם' 
+	features: {
+		createAlerts: 'נרשמים בחינם לקבלת התראות',
+		discoverPlanning: 'מחפשים את הכתובת שלכם',
+		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!',
+		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם'
 	},
-
+    planLinks: 'קישורים',
+    whatsappLinkAction: 'הצטרפות לקבוצה',
+    facebookLinkAction: 'מעבר לדף',
+    webLinkAction: 'לצפייה בקישור',
 
 	// Permits table columns
 	permitSubject: 'נושא ההיתר',
@@ -243,6 +246,7 @@ const HEBREW_TRANSLATION = {
 	choosePermitRegion: 'בחרו וועדה אזורית',
 	noAOISavedTitle: 'טרם נוספו איזורי עניין',
 	addAOILinkTitle: 'מעבר להוספת איזורי עניין'
+
 };
 
 const ARABIC_TRANSLATION =  {
@@ -284,8 +288,8 @@ const ARABIC_TRANSLATION =  {
 	loginToCompleteAction: 'لإكمال العملية يجب أن تسجلي الدخول',
 	searchAddress: 'ادخل عنوان',
 	searchBlockParcel:'البحث عن حوض وقسيمة',
-	block: 'حوض', 
-	parcel: 'قسيمة', 
+	block: 'حوض',
+	parcel: 'قسيمة',
 	plans: 'مخططات',
 	searchBoxTitle: 'هل لديك فضول لمعرفة ما الذي يتم بناؤه بالقرب من منزلك؟',
 	treePermits: 'اشجار',
@@ -296,7 +300,7 @@ const ARABIC_TRANSLATION =  {
 	alertsSubtitle: 'للحصول على إشعار، أدخل العنوان وقطر المحيط',
 	alertsSubtitleInfo: 'يمكنك ادخال عنوان سكني، او عنوان شقتك، أو أي عنوان تهتم به فيما يتعلق بمحيطه',
 	alertsSubtitleInfo2: 'يمكنك إضافة أكثر من عنوان',
-	newAlertTree: '🌳 تراخيص قطع الأشجار', 
+	newAlertTree: '🌳 تراخيص قطع الأشجار',
 	emailAddress: 'البريد الالكتروني',
 	fullName: 'الاسم الكامل',
 	password: 'كلمة السر',
@@ -398,7 +402,7 @@ const ARABIC_TRANSLATION =  {
 	monthlyPayment: 'תמיכה חודשית',
 	singleTimePayment: 'תמיכה חד פעמית',
 	startMonthlyPayment: 'התחילו תמיכה חודשית',
-	readMoreAboutAchievements: 'קראו עוד על ההצלחות שלנו', 
+	readMoreAboutAchievements: 'קראו עוד על ההצלחות שלנו',
 	fundingAboutUsText: '"מעירים" הנה עמותה ללא מטרות רווח. אנחנו קבוצה של אנשי מקצוע ופעילים חברתיים משדות התכנון, הבנייה, הסביבה והטכנולוגיה הפועלים לילות כימים ובהתנדבות על מנת להנגיש מידע ולהגביר את השקיפות והמעורבות הציבורית במערכת התכנון והבנייה. כאחת המערכות המשפיעות ביותר על החיים האזרחיים בישראל, אנחנו פועלים להפוך אותה לכזו שמשקפת את האיזון הראוי בין אינטרסים צרים לאינטרסים רחבים, האינטרסים של כולנו.',
 	fundingSuccessTitle: 'תודה על התמיכה!',
 	fundingSuccessText: 'יאללה, כנסו לעמוד התוכניות שלנו, גלו מה בונים לכם ליד הבית, שתפו עם החברים והחברות באזור והשפיעו על עתיד השכונה והעיר שלכם!',
@@ -410,7 +414,7 @@ const ARABIC_TRANSLATION =  {
 	permitNumber: 'מספר רשיון:',
 	treePermitOnGovSite: 'קישור לרשיון באתר הציבורי:',
 	treeAppealTitle: 'הגשת ערר',
-	treeAppealExplained: 
+	treeAppealExplained:
 `לפי החוק כריתה או העתקה של עץ בוגר בישראל נדרשת לאישור מפקיד היערות. ניתן להגיש ערר על ההחלטה לכרות או להעתיק עץ בוגר, תוך 14 ימים מפרסום ההחלטה.
 ערר ניתן להגיש מטעמים שונים, בין היתר, בשל פגיעה אקולוגית, ערך היסטורי, חברתי או עירוני הקשור בעץ.`,
 	shareTree: 'שיתוף רשיון כריתה',
@@ -443,7 +447,7 @@ const ARABIC_TRANSLATION =  {
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
 	tags: {
-		public: 'مباني عامة', 
+		public: 'مباني عامة',
 		housing: 'سكن',
 		commerce: 'تجارة',
 		employment: 'إشغال',
@@ -452,12 +456,16 @@ const ARABIC_TRANSLATION =  {
 		lightRail: 'قطار خفيف',
 		river: 'تيار مائي'
 	},
-	features: { 
-		createAlerts: 'נרשמים בחינם לקבלת התראות', 
-		discoverPlanning: 'מחפשים את הכתובת שלכם', 
-		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!', 
-		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם' 
-	}
+	features: {
+        createAlerts: 'נרשמים בחינם לקבלת התראות',
+        discoverPlanning: 'מחפשים את הכתובת שלכם',
+        treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!',
+        savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם'
+    },
+    planLinks: 'الروابط',
+    whatsappLinkAction: 'الانضمام للمجموعة',
+    facebookLinKAction: 'فوق الصفحة',
+    webLinkAction: 'لعرض الارتباط',
 };
 
 export const LANGUAGES = {
@@ -578,7 +586,7 @@ export default {
 	fundingSectionTitle: 'הפכו לשותפים שלנו!',
 	fundingStatsTitle: 'תמכו בנו כדי שנוכל להמשיך להפעיל ולפתח את המערכת שלנו, להנגיש יותר מידע בצורה טובה יותר ולהגיע לעוד אנשים.',
 	fundingEndGoal: 'אתר חדש עולה לאוויר!',
-	readMoreAboutAchievements: 'קראו עוד על ההצלחות שלנו', 
+	readMoreAboutAchievements: 'קראו עוד על ההצלחות שלנו',
 	fundingShekel: '₪',
 	fundingOutOf: 'מתוך',
 	fundingSupporters: 'תומכים/ות',
@@ -594,8 +602,8 @@ export default {
 	permitNumber: 'מספר רשיון:',
 	treePermitOnGovSite: 'קישור לרשיון באתר הציבורי:',
 	treeAppealTitle: 'הגשת ערר',
-	moreInfo: 'מידע נוסף', 
-	treeAppealExplained: 
+	moreInfo: 'מידע נוסף',
+	treeAppealExplained:
 `לפי החוק כריתה או העתקה של עץ בוגר בישראל נדרשת לאישור מפקיד היערות. ניתן להגיש ערר על ההחלטה לכרות או להעתיק עץ בוגר, תוך 14 ימים מפרסום ההחלטה.
 ערר ניתן להגיש מטעמים שונים, בין היתר, בשל פגיעה אקולוגית, ערך היסטורי, חברתי או עירוני הקשור בעץ.`,
     shareTree: 'שיתוף רשיון כריתה',
@@ -627,4 +635,5 @@ export default {
     approved: 'מאושרות',
     showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
+    planLinks: 'קישורים',
 };
