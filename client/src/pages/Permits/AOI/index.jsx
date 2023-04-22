@@ -69,10 +69,13 @@ const AOI = () => {
         }
 
         api.post('/permit/aoi/person', formData).then((permitPersonAoi) => {
-            // const item = { "id": 1, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }
+            const item = { "id": 1, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }
+            // debugger;
+            console.log("item", item);
+            console.log('data', permitPersonAoi.data)
             setUserAois(currentState => ([
                 ...currentState,
-                permitPersonAoi
+                {...permitPersonAoi.data, permit_aoi: {...item.permit_aoi, ...permitPersonAoi.data} }
             ]))
         })
     }
