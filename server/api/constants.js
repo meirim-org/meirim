@@ -19,7 +19,7 @@ exports.meirimStatuses = {
 	PUBLIC_OBJECTION: 'התנגדויות והערות הציבור',
 	APPROVED: 'התוכנית אושרה',
 	CANCELLED: 'תכנית מבוטלת'
-	};
+};
 
 const AREA_CHANGE_TYPES =  {
 	NEW_USAGE: 'NEW_USAGE',
@@ -31,45 +31,45 @@ exports.AREA_CHANGE_TYPES = AREA_CHANGE_TYPES;
 exports.tagDataRules = 
 [
 	{
-	tagName: 'Housing',
-	rules: [
-		 {
-			usage: 'מגורים (מ"ר)' ,
-			minValue: 1000,
-			description: 'adds more than 1,000 Sq Meters of housing',
-			changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
-		},
-		 {
-			usage: 'מגורים (יח"ד)',
-			minValue: 10,
-			description: 'adds more than 10 units of housing',
-			changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
-		}]
+		tagName: 'Housing',
+		rules: [
+			{
+				usage: 'מגורים (מ"ר)' ,
+				minValue: 1000,
+				description: 'adds more than 1,000 Sq Meters of housing',
+				changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
+			},
+			{
+				usage: 'מגורים (יח"ד)',
+				minValue: 10,
+				description: 'adds more than 10 units of housing',
+				changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
+			}]
 	},
 	{ 
-	tagName: 'Employment',
-	rules: [
-		{
-			usage: 'תעסוקה (מ"ר)' ,
-			minValue: 2000,
-			description: 'adds more than 2,000 Sq Meters of commerce to plan with existing commerce',
-			changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
-		},{
-			usage: 'תעסוקה (מ"ר)' ,
-			minValue: 200,
-			description: 'adds more than 200 Sq Meters of employment, completely new',
-			changeType: AREA_CHANGE_TYPES.NEW_USAGE
-		}]
+		tagName: 'Employment',
+		rules: [
+			{
+				usage: 'תעסוקה (מ"ר)' ,
+				minValue: 2000,
+				description: 'adds more than 2,000 Sq Meters of commerce to plan with existing commerce',
+				changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
+			},{
+				usage: 'תעסוקה (מ"ר)' ,
+				minValue: 200,
+				description: 'adds more than 200 Sq Meters of employment, completely new',
+				changeType: AREA_CHANGE_TYPES.NEW_USAGE
+			}]
 	},
 	{ 
-	tagName: 'Public',
-	rules: [
-		{
-			usage: 'מבני ציבור (מ"ר)' ,
-			minValue: 50,
-			description: 'adds more than 50 Sq Meters of public area',
-			changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
-		}]
+		tagName: 'Public',
+		rules: [
+			{
+				usage: 'מבני ציבור (מ"ר)' ,
+				minValue: 50,
+				description: 'adds more than 50 Sq Meters of public area',
+				changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
+			}]
 	},
 	{ 
 		tagName: 'Commerce',
@@ -90,28 +90,28 @@ exports.tagDataRules =
 				description: 'adds more than 20% commerce',
 				changeType: AREA_CHANGE_TYPES.PERCENT_INCREASE
 			}]
-		},	
-		{ 
-			tagName: 'Hoteliery',
-			rules: [
-				{
-					usage: 'חדרי מלון / תיירות (מ"ר)' ,
-					minValue: 200 ,
-					description: 'adds more than 200 Sq Meters of hoteliery',
-					changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
-				},			{
-					usage: 'חדרי מלון / תיירות (מ"ר)' ,
-					minValue: 1 ,
-					description: 'adds any Sq Meters of hoteliery where there was none',
-					changeType: AREA_CHANGE_TYPES.NEW_USAGE
-				},			{
-					usage: 'חדרי מלון / תיירות (מ"ר)' ,
-					minValue: 30 ,
-					description: 'adds more than 30% hoteliery',
-					changeType: AREA_CHANGE_TYPES.PERCENT_INCREASE
-				}]
-			},
-]
+	},	
+	{ 
+		tagName: 'Hoteliery',
+		rules: [
+			{
+				usage: 'חדרי מלון / תיירות (מ"ר)' ,
+				minValue: 200 ,
+				description: 'adds more than 200 Sq Meters of hoteliery',
+				changeType: AREA_CHANGE_TYPES.INCREASED_USAGE
+			},			{
+				usage: 'חדרי מלון / תיירות (מ"ר)' ,
+				minValue: 1 ,
+				description: 'adds any Sq Meters of hoteliery where there was none',
+				changeType: AREA_CHANGE_TYPES.NEW_USAGE
+			},			{
+				usage: 'חדרי מלון / תיירות (מ"ר)' ,
+				minValue: 30 ,
+				description: 'adds more than 30% hoteliery',
+				changeType: AREA_CHANGE_TYPES.PERCENT_INCREASE
+			}]
+	},
+];
 	
 	
 	
