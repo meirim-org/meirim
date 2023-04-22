@@ -178,6 +178,8 @@ We will do our best to acknowledge, review and reply to these contributions to t
 
 For methods of communicating with us, please see our [website](https://meirim.org).
 
+Issues are assigned a label 'Welcome' are suitable for first time contribution to meirim. You can see the full list here: https://github.com/meirim-org/meirim/labels/%F0%9F%99%8B%E2%80%8D%E2%99%80%EF%B8%8F%20Welcome
+
 ## Authors
 
 See the list of [contributors](https://github.com/meirim-org/meirim/contributors) who participated in this project <3.
