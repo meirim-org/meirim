@@ -11,6 +11,7 @@ import Terms from './Terms';
 import PrivacyPolicy from './PrivacyPolicy';
 import Vocabulary from './Vocabulary';
 import NotFound from './NotFound';
+import TreePermitsMap from './TreePermitsMap';
 
 export {
 	Home,
@@ -23,6 +24,7 @@ export {
 	ForgotPassword,
 	About,
 	Terms,
+    TreePermitsMap,
 	PrivacyPolicy,
 	Vocabulary,
 	NotFound
