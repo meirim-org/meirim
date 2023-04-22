@@ -36,7 +36,6 @@ exports.URL = 'url';
 
 exports.UNSUPPORTED_PLACES = [
 	'אשדוד',
-	'באר שבע',
 	'גבעתיים',
 	'גבעת שמואל',
 	'יבנה',
