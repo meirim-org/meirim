@@ -38,8 +38,8 @@ const Selectors = () => {
     const dataArea = useSelector((state) => state.plan.dataArea);
 
     // const planLinks = useSelector((state) => state.plan.links);
-    const planLinks = testLinks;
-    // const planLinks = null;
+    // const planLinks = testLinks;
+    const planLinks = null;
 
     return {
         planData,
