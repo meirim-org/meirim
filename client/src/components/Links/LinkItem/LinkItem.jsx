@@ -59,6 +59,7 @@ const LinkItem = ({ type, link, title, description }) => {
                 </LinkItemIcon>
             </LinkItemGeneral>
             <LinkItemAction>
+            { /* eslint-disable-next-line react/jsx-no-target-blank */}
                 <a target="_blank" href={link} rel="noreferrer">
                     {t[getLinkActionText(type)]}
                 </a>
