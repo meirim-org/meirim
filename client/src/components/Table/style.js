@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 export const Table = styled.table`
    margin: 0 auto;
-   margin-top: 50px;
 
    border-collapse: separate;
    border-spacing: 0;

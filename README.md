@@ -17,6 +17,16 @@ Things you need to install:
 * Node.js (we support and run on version 14.x)
 * MySQL (required only for the backend & crawler) Version 5.7
 
+#### Installing meirim's CLI tool
+
+Run the following command to install the `meirim` command-line application:
+
+```bash
+$ sudo ./cli/install_dev_env.sh
+```
+
+#### Installing client and server
+
 Once you have these you can clone the code:
 
 ```bash
@@ -167,6 +177,8 @@ We are thankful for any comments, suggestions, issue reports and pull requests a
 We will do our best to acknowledge, review and reply to these contributions to the best of our abilities (we are all volunteers).
 
 For methods of communicating with us, please see our [website](https://meirim.org).
+
+Issues are assigned a label 'Welcome' are suitable for first time contribution to meirim. You can see the full list here: https://github.com/meirim-org/meirim/labels/%F0%9F%99%8B%E2%80%8D%E2%99%80%EF%B8%8F%20Welcome
 
 ## Authors
 
