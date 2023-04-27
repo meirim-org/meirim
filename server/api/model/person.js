@@ -55,7 +55,7 @@ class Person extends BaseModel {
 	assignValues (model) {
 		model.attributes.email = model.attributes.email.toLowerCase().trim();
 		model.attributes.type = personTypes[model.attributes.type];
-		return Person.verifyEmail(model.attributes.email);
+		return true;
 	}
 
 	getActivationToken () {
