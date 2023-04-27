@@ -215,11 +215,11 @@ describe('Emails', function() {
 		await activateUser(secondUserReq);
 
 		// create first plan
-		const firstIPlan = createPlan(1, 'תוכנית 1', '1-1', '456456', getCoordP1());
+		const firstIPlan = createPlan(1, 'תוכנית 1', '1-1', '5000878739', getCoordP1());
 		const firstIPlanDb = await planModel.buildFromIPlan(firstIPlan);
 
 		// create second plan
-		const secondIPlan = createPlan(2, 'תוכנית 2', '2-1', '123123', getCoordP2());
+		const secondIPlan = createPlan(2, 'תוכנית 2', '2-1', '1005184392', getCoordP2());
 		const secondIPlanDb = await planModel.buildFromIPlan(secondIPlan);
 
 		// subscribe to both plans for second user
@@ -229,7 +229,7 @@ describe('Emails', function() {
 		// first plan return status data
 		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
 		.persist()
-		.get('/rest/api/SV4/1/?mid=456456')
+		.get('/rest/api/SV4/1/?mid=5000878739')
 		// actual reply copied from a browser performing the API response
 		.replyWithFile(
 			200,
@@ -239,7 +239,7 @@ describe('Emails', function() {
 
 		// second plan return status data
 		const newMavatScopeNotDone = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
-		.get('/rest/api/SV4/1/?mid=123123')
+		.get('/rest/api/SV4/1/?mid=1005184392')
 		// actual reply copied from a browser performing the API response
 		.replyWithFile(
 			200,
