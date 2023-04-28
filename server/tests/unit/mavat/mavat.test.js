@@ -143,7 +143,7 @@ describe('Challenged file download', function() {
 			.matchHeader('X-AA-Challenge', '691443')
 			.matchHeader('X-AA-Challenge-ID', '85836233')
 			.matchHeader('X-AA-Challenge-Result', '-207436983')
-			.matchHeader('Cookie', '')
+			.matchHeader('Cookie', ['BotMitigationCookie_11098923367694517286=\"323000001682496739UTkNrfYpDVmhIvINfzH1TyqGB+4=\"; path=/'])
 			// reply with challenge-success cookie
 			.reply(200, '', {
 				'Content-Type': 'text/html',
