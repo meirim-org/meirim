@@ -1,4 +1,5 @@
 const proxy = require('./../proxy');
+const database = require('../../service/database');
 const cheerio = require('cheerio');
 const Config = require('../../lib/config');
 const TreePermit = require('../../model/tree_permit');
@@ -8,7 +9,7 @@ const {
   REGIONAL_OFFICE, PERMIT_NUMBER, APPROVER_TITLE, ACTION,
   LAST_DATE_TO_OBJECTION, TOTAL_TREES, REASON_SHORT,
   PLACE, STREET, START_DATE, GUSH, HELKA, END_DATE,
-  TREES_PER_PERMIT, PERSON_REQUEST_NAME, TREE_PERMIT_URL,
+  TREES_PER_PERMIT, PERSON_REQUEST_NAME, TREE_PERMIT_URL, TREE_PERMIT_TABLE,
 } = require('../../model/tree_permit_constants');
 const { formatDate, figureLastObjectionDate } = require('./utils');
 const Log = require('../log');
@@ -48,7 +49,7 @@ async function parseTreesHtml(url) {
   }
   const keys = [];
   const result = [];
-  let amount = 0;
+
   dom('.ms-listviewtable').find('tr').each((row, elem) => {
     if (row === 0) {
       dom(elem).find('th').each((idx, elem) => {
@@ -68,20 +69,31 @@ async function parseTreesHtml(url) {
       treePermit[key] = value;
     });
 
-    const reqDate = moment(treePermit[REQUEST_DATE], DATE_FORMAT_PERMIT).toDate();
-    if (reqDate.getFullYear() < new Date().getFullYear() - 1) {
-        Log.error(`ignore this old license: Beer Sheva, ${treePermit[STREET_NAME]} , requested: ${treePermit[REQUEST_DATE]}`);
-        return;
-    }
-
-    amount++;
-    if (amount > MAX_PERMITS) {
-      return;
-    }
-
     result.push(treePermit);
   });
-  Log.info(`number of Beer Sheva permits: ${result.length}`);
+  Log.info(`number of Beer Sheva permits read: ${result.length}`);
+  return result;
+}
+
+async function filterExistingLicenses(rawPermits) {
+  const result = [];
+  let amount = 0;
+  const existingPermits = await getExistingPermits();
+  for (const treePermit of rawPermits) {
+    const permitNumber = `meirim-beersheva-${treePermit[LICENSE_NUMBER]}`;
+    const exists = existingPermits.indexOf(permitNumber) >= 0;
+    if (exists) {
+      Log.info(`ignore this license, already in db: Beer Sheva, ${treePermit[LICENSE_NUMBER]} ${treePermit[STREET_NAME]} , requested: ${treePermit[REQUEST_DATE]}`);
+    } else {
+      amount++;
+      if (amount > MAX_PERMITS) {
+        break;
+      }
+      result.push(treePermit);
+    } 
+  }
+  Log.info(`number of Beer Sheva permits filter existing: ${result.length}`);
+
   return result;
 }
 
@@ -90,7 +102,10 @@ async function getTreePermitData(rawPermits) {
     for (const raw of rawPermits) {
     try {   
         const permitUrl = replaceAll(urlPrefix + raw['url'], "//Lists", "/Lists");
-        const treeHtml = await proxy.get(permitUrl);
+
+        Log.info(`Crawl Beer Sheva permit page : ${permitUrl}`);
+        const treeHtml = await proxy.get(permitUrl, 1000);
+
         const dom = cheerio.load(treeHtml, {
             decodeEntities: false
         });
@@ -124,6 +139,8 @@ async function getTreePermitData(rawPermits) {
     } catch (e) {
         Log.error(`error in Beer Sheva parse row, ignoring: ${raw[STREET_NAME]}`, e.message);
     }
+
+    Log.info( 'Done enrich raw:',raw);
     }
     return; 
 }
@@ -133,18 +150,6 @@ function processRawPermits(rawPermits) {
     const treePermits = rawPermits.map(raw => {
       try{      
         const permitNumber = `meirim-beersheva-${raw[LICENSE_NUMBER]}`;
-
-        const startDate = moment(raw[START_DATE_STR], DATE_FORMAT_PERMIT).toDate();
-        if (startDate.getFullYear() < new Date().getFullYear() - 1) {
-            Log.error(`ignore this old license: Beer Sheva, ${raw[STREET_NAME]} , started: ${raw[START_DATE_STR]}`);
-            return null;
-        }
-
-        const endDate = moment(raw[END_DATE_STR], DATE_FORMAT_PERMIT).toDate();
-        if (endDate.getFullYear() < new Date().getFullYear()) {
-            Log.error(`ignore this old license: Beer Sheva, ${raw[STREET_NAME]} , ended: ${raw[END_DATE_STR]}`);
-            return null;
-        }
 
         const last_date_to_objection = figureLastObjectionDate(raw[START_DATE_STR], HOUR_PERMIT, DATE_FORMAT_PERMIT);
         if (!last_date_to_objection) {
@@ -206,14 +211,28 @@ function sum(treeArray) {
   });
 }
 
+async function getExistingPermits() {
+  const existingPermits = [];
+	await database.Knex(TREE_PERMIT_TABLE).select(PERMIT_NUMBER).where(REGIONAL_OFFICE, CITY)
+		.then(rows => {
+			rows.map(row => {
+				existingPermits.push(row[PERMIT_NUMBER]);
+			});
+		})
+		.catch(function (error) { Log.error(error); });
+    return existingPermits;
+}
+
 /**
  * Scrape Beer Sheva Tree page, and return the results as a TreePermit[].
  */
 async function crawlBeerShevaTreesHTML(url, permitType) {
   try {
     const raw = await parseTreesHtml(url);
-    await getTreePermitData(raw);
-    const treePermits = processRawPermits(raw);
+    const rawPermits = await filterExistingLicenses(raw);
+
+    await getTreePermitData(rawPermits);
+    const treePermits = processRawPermits(rawPermits);
     return treePermits;
   } catch (e) {
     Log.error(e.message);
