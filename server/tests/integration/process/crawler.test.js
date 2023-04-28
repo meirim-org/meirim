@@ -45,7 +45,7 @@ describe('Crawler', function() {
 	});
 
 	it('should run', async function() {
-		this.timeout(60 * 10000);
+		this.timeout(60000);
 
 		// make sure there are currently no plans in the database
 		plans = await planController.browse({ query: { status: null, query: null } });
