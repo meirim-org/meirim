@@ -6,6 +6,7 @@ const AlertStruct = function(table) {
 	table.specificType('geom', 'GEOMETRY');
 	table.string('type');
 	table.string('place');
+	table.integer('subscription');
 	return table;
 };
 
