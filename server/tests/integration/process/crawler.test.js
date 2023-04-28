@@ -497,8 +497,8 @@ describe('Crawler scraped data', function() {
 		assert.equal(chartFourRows.models[1].attributes.text, 'בינוי ו/או פיתוח \nרשאית הועדה המקומית להגדיל זכויות בניה לצורכי מסחר קמעונאי באזורי מגורים מתוך סה"כ \nאחוזי הבניה המותרים וזאת בתנאים הבאים :\nא. קבלת אישור משרד התחבורה בדבר תפקוד הדרך והצמתים הסמוכים ובדבר התקנת מקומות \nחניה בתוך המגרש.\nב. אישור המשרד לאיכות הסביבה בדבר אי הפרעות הפונקציות המסחריות למבני המגורים \nהסמוכים', 'second chart 4 row text is correct');
 
 		// fetch all chart five rows
-		// chartFiveRows = await chartFiveModel.fetchAll();
-		// assert.equal(chartFiveRows.length, 1, 'one chart 5 row was scraped');
+		chartFiveRows = await chartFiveModel.fetchAll();
+		assert.equal(chartFiveRows.length, 1, 'one chart 5 row was scraped');
 
 		// make sure all first chart five row fields are correct
 		assert.equal(chartFiveRows.models[0].id, 1, 'first chart 5 row id is correct');
@@ -661,7 +661,7 @@ describe('Crawler scraped data', function() {
 		assert.equal(plan.attributes.rating, 0, 'updated read plan rating is the default value');
 		assert.equal(plan.attributes.views, 0, 'updated read plan views are the default value');
 		assert.equal(plan.attributes.erosion_views, 0, 'updated read plan erosion views are the default value');
-		// assert.isTrue(plan.attributes.explanation.startsWith('התכנית שייכת למגרש מאושר מס'), 'pdf-read plan explanation is correct');
+		assert.isTrue(plan.attributes.explanation.startsWith('התכנית שייכת למגרש מאושר מס'), 'pdf-read plan explanation is correct');
 
 		// creation date should be less than current date minus 5 seconds and update should be
 		// above it. creation date should not equal update date
