@@ -93,7 +93,6 @@ async function filterExistingLicenses(rawPermits) {
     } 
   }
   Log.info(`number of Beer Sheva permits filter existing: ${result.length}`);
-
   return result;
 }
 
