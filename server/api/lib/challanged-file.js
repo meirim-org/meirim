@@ -2,13 +2,13 @@ const http = require('follow-redirects').http;
 const https = require('follow-redirects').https;
 const Log = require('../lib/log');
 
-const downloadChallengedFile = (url, file, options, protocol) => {
+const downloadChallengedFile = async (url, file, options, protocol) => {
 	return new Promise((resolve) => {
 		options = options || {};
 		protocol = protocol || http ;
 		const agent = (protocol === https) ? new protocol.Agent(): null ;
 
-		protocol.get(url, options, (response) => {
+		protocol.get(url, options, async(response) => {
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				Log.info(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
@@ -26,14 +26,14 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 						// download the entire response so we can solve the challenge
 						let responseData = '';
 						response.on('data', (chunk) => { responseData += chunk; });
-						response.on('end', () => {
+						response.on('end', async () => {
 							if (responseData.indexOf('ChallengeId=') > -1) {
 								// extract challenge params
 								const challenge = parseChallenge(responseData);
 								Log.info(`parsed challenge for url ${url}. ${challenge.challenge} = ${challenge.result}`);
 								// send the request again with the challenge headers
 								
-								downloadChallengedFile(url, file, {
+								await downloadChallengedFile(url, file, {
 									agent: agent,
 									headers: {
 										'X-AA-Challenge': challenge.challenge,
@@ -50,7 +50,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 					} else {
 						// if we did get a cookie we completed the challenge successfuly and
 						// should use it to download the file
-						downloadChallengedFile(url, file, {
+						await downloadChallengedFile(url, file, {
 							agent: agent,
 							headers: {
 								'Cookie': response.headers['set-cookie']
