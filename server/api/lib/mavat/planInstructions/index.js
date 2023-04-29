@@ -10,8 +10,9 @@ const unlink = util.promisify(fs.unlink);
 const mkdir = util.promisify(fs.mkdir);
 
 const processPlanInstructionsFile = async (fileDir) => {
+	console.error(`0 ${fileDir}`);
 	const files = await readdir(fileDir);
-
+	console.error(`01 ${files}`);
 	const pdfs = files.filter(fileName => fileName.endsWith('.pdf'));
 console.error(`1 ${pdfs}`);
 	if (pdfs.length > 0) {
@@ -19,7 +20,7 @@ console.error(`1 ${pdfs}`);
 		const filePath = path.join(fileDir, pdfs[0]);
 		console.error(`2 ${filePath}`);		
 		const data = await extractPdfData(filePath);
-		console.error(`3 ${data}`);	
+		console.error(`3 ${JSON.stringify(data)}`);	
 		return data;
 	}
 
