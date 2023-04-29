@@ -13,11 +13,13 @@ const processPlanInstructionsFile = async (fileDir) => {
 	const files = await readdir(fileDir);
 
 	const pdfs = files.filter(fileName => fileName.endsWith('.pdf'));
-
+console.error(`1 ${pdfs}`);
 	if (pdfs.length > 0) {
 		// we just want the one file, at least for now
 		const filePath = path.join(fileDir, pdfs[0]);
+		console.error(`2 ${filePath}`);		
 		const data = await extractPdfData(filePath);
+		console.error(`3 ${data}`);	
 		return data;
 	}
 
