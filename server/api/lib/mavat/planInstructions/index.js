@@ -20,7 +20,7 @@ console.error(`1 ${pdfs}`);
 		const filePath = path.join(fileDir, pdfs[0]);
 		console.error(`2 ${filePath}`);		
 		const data = await extractPdfData(filePath);
-		console.error(`3 ${JSON.stringify(data)}`);	
+		console.error(`3 data`);	
 		return data;
 	}
 

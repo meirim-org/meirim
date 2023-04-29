@@ -59,7 +59,9 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 					}
 				} else {
 					// this is the actual file, so pipe the response into the supplied file
+					console.error(`7 ${file.path}`);
 					response.pipe(file);
+					console.error(`8 ${file.path}`);
 					file.on('finish', async function () {
 						await file.close();
 						Log.info(`downloaded ${url} to ${file.path}`);
