@@ -9,7 +9,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 		const agent = (protocol === https) ? new protocol.Agent(): null ;
 
 		protocol.get(url, options, (response) => {
-			if (response.statusCode !== 200) { // download failed
+			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				Log.info(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				resolve(false);
@@ -21,13 +21,13 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 					// if we didn't get a cookie yet this is the first part of the challenge -
 					// the page source contains the javascript code we need to run and challenge
 					// paramters for the calculation
-					if (!('set-cookie' in response.headers)) { 
+					if (!('set-cookie' in response.headers)) {
 
 						// download the entire response so we can solve the challenge
 						let responseData = '';
 						response.on('data', (chunk) => { responseData += chunk; });
 						response.on('end', () => {
-							if (responseData.indexOf('ChallengeId=') > -1) { // set challange headers
+							if (responseData.indexOf('ChallengeId=') > -1) {
 								// extract challenge params
 								const challenge = parseChallenge(responseData);
 								Log.info(`parsed challenge for url ${url}. ${challenge.challenge} = ${challenge.result}`);
@@ -49,7 +49,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 					} else {
 						// if we did get a cookie we completed the challenge successfuly and
 						// should use it to download the file
-						downloadChallengedFile(url, file, { // set cookie header
+						downloadChallengedFile(url, file, {
 							agent: agent,
 							headers: {
 								'Cookie': response.headers['set-cookie']
