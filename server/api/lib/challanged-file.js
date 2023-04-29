@@ -1,4 +1,3 @@
-const fs = require('fs');
 const stream = require('stream');
 const axios = require('axios');
 const Log = require('../lib/log');
