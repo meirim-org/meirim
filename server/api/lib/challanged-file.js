@@ -8,7 +8,7 @@ const downloadChallengedFile = async (url, file, options, protocol) => {
 		protocol = protocol || http ;
 		const agent = (protocol === https) ? new protocol.Agent(): null ;
 
-		protocol.get(url, options, async(response) => {
+		return protocol.get(url, options, async(response) => {
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				Log.info(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
@@ -33,7 +33,7 @@ const downloadChallengedFile = async (url, file, options, protocol) => {
 								Log.info(`parsed challenge for url ${url}. ${challenge.challenge} = ${challenge.result}`);
 								// send the request again with the challenge headers
 								
-								await downloadChallengedFile(url, file, {
+								return downloadChallengedFile(url, file, {
 									agent: agent,
 									headers: {
 										'X-AA-Challenge': challenge.challenge,
@@ -50,7 +50,7 @@ const downloadChallengedFile = async (url, file, options, protocol) => {
 					} else {
 						// if we did get a cookie we completed the challenge successfuly and
 						// should use it to download the file
-						await downloadChallengedFile(url, file, {
+						return downloadChallengedFile(url, file, {
 							agent: agent,
 							headers: {
 								'Cookie': response.headers['set-cookie']
