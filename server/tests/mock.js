@@ -45,6 +45,10 @@ const mockDatabase = {
 		this.connection = clientConnection;
 		this.knexClient = clientConnection.knex;
 		console.log('DATABASE CONNECTION CONFIG', this.knexClient.context.client.config);
+
+		console.log('ENV VAR');
+			 console.log(process.env);
+			 console.log('ENV VAR');
 		return this.connection;
 	},
 

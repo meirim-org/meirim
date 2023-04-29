@@ -391,10 +391,6 @@ describe('Crawler scraped data', function() {
 			 	`${__dirname}/files/mavat_plan_instructions.pdf`,
 			 	{ 'Content-Type': 'application/pdf' }
 			 );
-
-			 console.log('ENV VAR');
-			 console.log(process.env);
-			 console.log('ENV VAR');
 	
 		// run crawler cron with limit of 1 plan
 		await cronController.iplan(1);
