@@ -37,7 +37,7 @@ describe('Challenged file download', function() {
 		// try to download the file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed
@@ -73,7 +73,7 @@ describe('Challenged file download', function() {
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed
@@ -105,7 +105,7 @@ describe('Challenged file download', function() {
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed
@@ -177,7 +177,7 @@ describe('Challenged file download', function() {
 		// try to download the challenged file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed

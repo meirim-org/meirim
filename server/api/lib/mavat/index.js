@@ -51,9 +51,9 @@ const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 	const downloadUrl = getFileUrl(entityDocId, entityDocNumber);
 	if (!downloadUrl) return false;
 
-	Log.info(`Trying download file for eid=${entityDocId}&enum=${entityDocNumber}`);
+	Log.info(`Trying download file for eid=${entityDocId}&enum=${entityDocNumber}`); 
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
-	const downloadSuccess = await downloadChallengedFile(downloadUrl, file, {}, https);
+	const downloadSuccess = await downloadChallengedFile(downloadUrl, file, {});
 
 	if (!downloadSuccess) {
 		Log.info(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);

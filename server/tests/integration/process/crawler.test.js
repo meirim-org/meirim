@@ -429,7 +429,7 @@ describe('Crawler scraped data', function() {
 		assert.equal(plan.attributes.rating, 0, 'read plan rating is the default value');
 		assert.equal(plan.attributes.views, 0, 'read plan views are the default value');
 		assert.equal(plan.attributes.erosion_views, 0, 'read plan erosion views are the default value');
-		 assert.isTrue(plan.attributes.explanation.startsWith('התכנית שייכת למגרש מאושר מס'), 'pdf-read plan explanation is correct');
+		assert.isTrue(plan.attributes.explanation.startsWith('התכנית שייכת למגרש מאושר מס'), 'pdf-read plan explanation is correct');
 
 		// creation date should be less than current date and should equal update date
 		assert.isBelow(plan.attributes.created_at.getTime(), new Date().getTime(), 'plan created_at value earlier than current time');
