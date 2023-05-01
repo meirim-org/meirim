@@ -138,6 +138,32 @@ class Controller {
 			});
 	}
 
+	unsubscribeAlertById (req, transaction) {
+		const id = parseInt(req.params.id, 10);
+		if (!id) {
+			throw new Exception.NotFound('Nof found');
+		}
+		const options = transaction ? { transacting: transaction } : {}
+		return this.model
+			.forge({
+				[this.id_attribute]: id
+			})
+			.fetch()
+			.then((fetchedModel) => {
+				if (!fetchedModel) {
+					throw new Exception.NotFound('Nof found');
+				}
+
+				Log.debug('unsubscribe request for alert id:', fetchedModel.get('id'));
+				fetchedModel.set('subscription', 0);
+				return fetchedModel.save();
+			})
+			.catch(err => {
+				Log.error(err);
+				throw new Exception.Error(err);
+			});
+	}
+
 	delete (req, transaction) {
 		const id = parseInt(req.params.id, 10);
 		if (!id) {
