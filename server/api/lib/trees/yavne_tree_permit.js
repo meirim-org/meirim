@@ -1,7 +1,6 @@
-const axios = require("axios");
 const cheerio = require('cheerio');
-const iconv = require('iconv-lite');
 const Config = require('../../lib/config');
+const iconv = require('iconv-lite');
 const TreePermit = require('../../model/tree_permit');
 const {
   REGIONAL_OFFICE, PERMIT_NUMBER, APPROVER_TITLE, ACTION,
@@ -11,6 +10,7 @@ const {
 } = require('../../model/tree_permit_constants');
 const { formatDate, figureStartDate } = require('./utils');
 const Log = require('../log');
+const fetch = require('node-fetch');
 
 const STREET_NAME = 'שם הרחוב';
 const OBJECTION_TILL = 'הגשת ערעור עד תאריך';
@@ -30,15 +30,8 @@ const yavneTreePermit = {
 };
 
 async function parseTreesHtml(url) {
-    const response = await axios.request({
-        method: 'GET',
-        url: TREES_YAVNE_URL,
-        responseType: 'arraybuffer',
-        responseEncoding: 'binary'
-      });
-
-  const treesHtml = iconv.decode(response.data, 'win1255');
-
+  const treesBuffer = await fetch(url, { method: "Get"}).then(resp => resp.arrayBuffer());
+  const treesHtml = iconv.decode(Buffer.from(treesBuffer), 'win1255');
   const dom = cheerio.load(treesHtml, {
     decodeEntities: false
   });
