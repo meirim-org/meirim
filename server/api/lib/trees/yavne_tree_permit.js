@@ -113,7 +113,7 @@ function parseTreesPerPermit(treesInPermitStr, totalTrees) {
 }
 
 /**
- * Scrape yavne Tree page, and return the results as a TreePermit[].
+ * Scrape yavne Tree page, and return the results as a TreePermit[]
  */
 async function crawlYavneTreesHTML(url, permitType) {
   try {
