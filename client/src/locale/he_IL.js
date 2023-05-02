@@ -221,7 +221,10 @@ const HEBREW_TRANSLATION = {
 		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!',
 		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם'
 	},
-
+    planLinks: 'קישורים',
+    whatsappLinkAction: 'הצטרפות לקבוצה',
+    facebookLinkAction: 'מעבר לדף',
+    webLinkAction: 'לצפייה בקישור',
 
 	// Permits table columns
 	permitSubject: 'נושא ההיתר',
@@ -243,6 +246,7 @@ const HEBREW_TRANSLATION = {
 	choosePermitRegion: 'בחרו וועדה אזורית',
 	noAOISavedTitle: 'טרם נוספו איזורי עניין',
 	addAOILinkTitle: 'מעבר להוספת איזורי עניין'
+
 };
 
 const ARABIC_TRANSLATION =  {
@@ -453,11 +457,15 @@ const ARABIC_TRANSLATION =  {
 		river: 'تيار مائي'
 	},
 	features: {
-		createAlerts: 'נרשמים בחינם לקבלת התראות',
-		discoverPlanning: 'מחפשים את הכתובת שלכם',
-		treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!',
-		savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם'
-	}
+        createAlerts: 'נרשמים בחינם לקבלת התראות',
+        discoverPlanning: 'מחפשים את הכתובת שלכם',
+        treePermits: 'ואפשר גם לעזור להציל עצים מכריתה!',
+        savePlans: 'שומרים את התוכניות הרלוונטיות עבורכם'
+    },
+    planLinks: 'الروابط',
+    whatsappLinkAction: 'الانضمام للمجموعة',
+    facebookLinKAction: 'فوق الصفحة',
+    webLinkAction: 'لعرض الارتباط',
 };
 
 export const LANGUAGES = {
@@ -627,4 +635,5 @@ export default {
     approved: 'מאושרות',
     showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
+    planLinks: 'קישורים',
 };
