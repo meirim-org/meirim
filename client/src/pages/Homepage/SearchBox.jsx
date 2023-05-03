@@ -284,10 +284,6 @@ export default function SearchBox({
   const [parcelinputerror, setParcelinputerror] = useState(false);
   const [isDisable, setIsDisable] = useState(true);
 
-  useEffect(() => {
-      console.log({blockinputerror})
-  }, [blockinputerror])
-
   // making the State to get the plans list
   const [blockList, setblockList] = useState([]);
   const [parcelList, setparcelList] = useState([]);
