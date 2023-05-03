@@ -9,6 +9,7 @@ import Downshift from 'downshift';
 import '../FilterAutoCompleteMultiple.css';
 
 import styled from 'styled-components';
+import {useTranslation} from "../../locale/he_IL";
 
 const AutocompleteWrapper = styled.div`
   .MuiPaper-elevation1 {
@@ -28,7 +29,6 @@ const AutocompleteWrapper = styled.div`
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, loading, disable, ...other } = inputProps;
-
   return (
     <>
       <TextField
@@ -144,9 +144,8 @@ class AutocompleteInput extends Component {
   }
 
   render() {
-    const { classes, placeholder, id, loading, disable } = this.props;
+    const { classes, placeholder, id, loading, disable, blockInputError, BlockInputErrorBlock } = this.props;
     const { inputValue, selectedItem } = this.state;
-
     return (
       <Downshift
         id="downshift-multiple"
@@ -175,7 +174,7 @@ class AutocompleteInput extends Component {
               loading,
               disable,
             })}
-            {isOpen ? (
+            {isOpen && !blockInputError && (
               <AutocompleteWrapper>
                 <Paper className={classes.paper} square>
                   {this.getSuggestions(inputValue2).map((suggestion, index) =>
@@ -191,7 +190,10 @@ class AutocompleteInput extends Component {
                   )}
                 </Paper>
               </AutocompleteWrapper>
-            ) : null}
+            )}
+            {blockInputError && (
+                <BlockInputErrorBlock>{this.props.t.searchAddressBlockNotFound}</BlockInputErrorBlock>
+            )}
           </div>
         )}
       </Downshift>

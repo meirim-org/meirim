@@ -11,15 +11,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AutocompleteBlock from '../../components/BlockParcelAutocomplete/BlockParcelAutocompleteInput';
 import AutocompleteParcel from '../../components/BlockParcelAutocomplete/BlockParcelAutocompleteInput';
+import classNames from "classnames";
+import {ExpandMoreRounded} from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
     formControl: {
-      margin: theme.spacing(1),
-      marginRight: 0,
+      margin: 0,
+      marginRight: 12,
       minWidth: 80,
       display: 'block',
+    },
+    selectWrapper: {
+      display: 'flex',
+      alignItems: 'center',
     },
     selectControl: {
       height: 0,
@@ -31,7 +36,36 @@ const useStyles = makeStyles((theme) => ({
     select: {
       margin: '3rem 1rem',
     },
+    pointer: {
+        cursor: 'pointer',
+    },
+    expandMoreIcon: {
+        width: 31,
+        height: 31
+    },
+    blockSearchInputError: {
+        'input[type="number"]': {
+            border: "2px solid #e21243",
+            background: "#fef4f6",
+            borderRadius: 8,
+            padding: "21px 6px",
+            color: "#1f1c21 !important",
+            paddingRight: 50
+        }
+    },
 }));
+
+const BlockInputErrorBlock = styled.div`
+    position: absolute;
+    bottom: -42px;
+    padding: 5px;
+    width: 185px;
+    left: calc(50% - 93px);
+    background: #FFFFFF;
+    border: 1px solid #F5F5F5;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.06), 1px 1px 1px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+`
 
 const Wrapper = styled.div`
 display: flex;
@@ -49,8 +83,8 @@ display: flex;
 	margin-bottom: 5px;
 
     @media ${device.tablet} {
-        width: 512px;
-        height: 100px;
+        width: 520px;
+        height: 88px;
 		padding: ${({ wrapperPadding })=> wrapperPadding || '32px' };
         margin: ${({ wrapperMargin })=> wrapperMargin || "32px 0px 0px 0px" };
         border-radius: 12px;
@@ -77,29 +111,32 @@ const Button = styled.button`
   border: 1px solid ${({ color }) => color || '#FFFFFF'};
   border-radius: 8px;
   text-align: center;
-  padding: 5px 0;
   color: ${({ color }) => color || '#FFFFFF'};
   line-height: 1;
   cursor: pointer;
-  padding: 8px 10px;
+  padding: 8px 11px;
   margin-top: -47px;
   @media ${device.tablet} {
+      width: 48px;
+      height: 48px;
     margin-right: 0;
     margin-top: 0;
 }
 `;
 
 const AutocompleteWrapper = styled.div`
-  margin-bottom: 35px;
   width: 220px;
   background-color: #ffffff;
-  margin: 0px 8px;
+  margin: 0;
   border-radius: 8px;
   position: relative;
   input[type='text'] {
     color: ${({ color }) => color || '#918899'};
     font-size: 18px;
-    line-height: 18px;
+    height: 48px !important;
+    border-bottom: none;
+    box-sizing: border-box;
+    padding: 0 8px;
     border-bottom: none;
     &::placeholder {
       opacity: 1;
@@ -117,7 +154,8 @@ const AutocompleteWrapper = styled.div`
   }
   @media ${device.tablet} {
     margin-bottom: 0;
-    width: 100%;
+    width: 288px;
+    overflow-x: hidden; 
   }
 `;
 
@@ -143,17 +181,19 @@ const AutocompleteWrapperItem = styled.div`
     display: none;
   }
   .MuiInputBase-input {
-    padding: 22px 8px 22px;
+    padding: 24px 8px 24px;
     height: 0.1876em !important;
   }
   #block-search-input {
     input[type='number'] {
-      padding-right: 48px;
+      padding-right: 52px;
+      box-sizing: border-box;
     }
   }
   #parcels-search-input {
     input[type='number'] {
-      padding-right: 54px;
+      padding-right: 60px;
+      box-sizing: border-box;
     }
   }
   #parcels-search-input-error {
@@ -178,14 +218,17 @@ const AutocompleteWrapperItem = styled.div`
   }
   b {
     position: absolute;
-    margin-right: 8px;
+    margin-right: 12px;
     top: 12px;
     z-index: 2;
   }
   @media ${device.tablet} {
     margin-bottom: 0;
-    width: 100%;
+    width: 131px;
   }
+    &:last-child {
+        margin-left: 0;
+    }
 `;
 
 const SelectWrapper = styled.div`
@@ -250,6 +293,10 @@ export default function SearchBox({
   const [parcelinputerror, setParcelinputerror] = useState(false);
   const [isDisable, setIsDisable] = useState(true);
 
+  useEffect(() => {
+      console.log({blockinputerror})
+  }, [blockinputerror])
+
   // making the State to get the plans list
   const [blockList, setblockList] = useState([]);
   const [parcelList, setparcelList] = useState([]);
@@ -304,13 +351,17 @@ export default function SearchBox({
 
     if (block && parcels) {
       // history.push(`/plans?block=${block}&parcel=${parcels}`);
-          // getting the block and parcel lat lon 
+          // getting the block and parcel lat lon
       const currentParcel= parcelList.find((parcel)=> parcel.label === parcels );
       const [ lng, lat ] = JSON.parse(currentParcel.centroid)?.coordinates;
       if(lat && lng) window.location.href = `/plans?loc=${lat},${lng}`;
-    }
-    else {
-      setBlockinputerror(true);
+    }  else if(!block && parcels) {
+        setBlockinputerror(true);
+    } else if (block && !parcels) {
+        setParcelinputerror(true);
+    } else {
+        setParcelinputerror(true);
+        setBlockinputerror(true);
     }
   }
 
@@ -320,14 +371,19 @@ export default function SearchBox({
       setloadingAutocompleteBlock(true);
       setBlockinputerror(false);
 
-      await api
+      api
         .get(`/topfive?blockNum=${text}`)
         .then((result) => {
+            console.log({result})
+            if(result.status === 'failed') {
+                throw new Error('No parcels found');
+            }
           setblockList(result.data);
           setloadingAutocompleteBlock(false);
         })
         .catch((error) => {
-          setloadingAutocompleteBlock(true);
+            setBlockinputerror(true);
+            setloadingAutocompleteBlock(false);
         });
     } else {
       setblockList([]);
@@ -350,13 +406,17 @@ export default function SearchBox({
       setParcelinputerror(false);
       setloadingAutocompleteParcel(true);
 
-      await api
+      api
         .get(`/topfive?blockNum=${block}&parcelNum=${text}`)
         .then((result) => {
+            if(result.status === 'failed') {
+                throw new Error('No parcels found');
+            }
           setparcelList(result.data);
           setloadingAutocompleteParcel(false);
         })
         .catch((error) => {
+          console.log({error})
           setloadingAutocompleteParcel(true);
           setParcelinputerror(true);
         });
@@ -370,6 +430,8 @@ export default function SearchBox({
     locationAutocompleteApi.init();
   }, []);
 
+  const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
+
   return (
     <Wrapper
       background={backgroundColor}
@@ -379,17 +441,22 @@ export default function SearchBox({
     >
       {showTitle && <Title color={color}>{t.searchBoxTitle}</Title>}
       <InputWrapper>
-        <SelectWrapper>
+        <SelectWrapper className={classes.selectWrapper}>
           <FormControl variant="outlined" className={classes.formControl}>
             <Select
               labelId="demo-simple-select-outlined-label"
               id="demo-simple-select-outlined"
               value={selected}
               onChange={(event) => setSelected(event.target.value)}
-              label=""
+              open={dropdownIsOpen}
+              onOpen={() => setDropdownIsOpen(true)}
+              onClose={() => setDropdownIsOpen(false)}
               className={classes.selectControl}
               MenuProps={{ classes: { paper: classes.select } }}
-              IconComponent={() => <ExpandMoreIcon />}
+              IconComponent={() => <ExpandMoreRounded className={classNames(classes.pointer, classes.expandMoreIcon, {['MuiSelect-iconOpen']: dropdownIsOpen})} onClick={(e) => {
+                  e.preventDefault();
+                  setDropdownIsOpen(true)
+              }} />}
             >
               <MenuItem value={'searchAddress'}>{t.searchAddress}</MenuItem>
               <MenuItem value={'searchBlockParcel'}>{t.searchBlockParcel}</MenuItem>
@@ -405,17 +472,20 @@ export default function SearchBox({
                 <b>{t.block}</b>
                 <AutocompleteBlock
                   placeholder={`16501`}
+                  t={t}
                   id={
                     blockinputerror
                       ? 'block-search-input-error'
                       : 'block-search-input'
                   }
+                  blockInputError={blockinputerror}
                   inputSuggestions={blockList}
                   onInputChange={(input) => {
                     handleInputChangeBlock(input);
                   }}
+                  BlockInputErrorBlock={BlockInputErrorBlock}
                   onFilterChange={(block) => handleSubmitBlockDetails(block)}
-                  classes={{ inputRoot: 'text' }}
+                  classes={classNames({inputRoot: 'text'})}
                   loading={loadingAutocompleteBlock}
                 />
               </AutocompleteWrapperItem>
@@ -428,12 +498,14 @@ export default function SearchBox({
                       ? 'parcels-search-input-error'
                       : 'parcels-search-input'
                   }
+                  blockInputError={parcelinputerror}
                   inputSuggestions={parcelList}
                   onInputChange={(input) => {
                     handleInputChangeParcel(input);
                   }}
                   onFilterChange={(parcel) => handleSubmitParcelDetails(parcel)}
-                  classes={{ inputRoot: 'text' }}
+                  classes={classNames({inputRoot: 'text'})}
+                  BlockInputErrorBlock={BlockInputErrorBlock}
                   loading={loadingAutocompleteParcel}
                   disable={isDisable}
                 />
@@ -452,7 +524,7 @@ export default function SearchBox({
           <>
             <AutocompleteWrapper color={color}>
               <Autocomplete
-                placeholder={t.searchAddress}
+                placeholder={t.searchAddressPlaceholder}
                 inputSuggestions={addresses}
                 onInputChange={onInputChange}
                 onFilterChange={onFilterChange}
