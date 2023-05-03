@@ -43,16 +43,6 @@ const useStyles = makeStyles((theme) => ({
         width: 31,
         height: 31
     },
-    blockSearchInputError: {
-        'input[type="number"]': {
-            border: "2px solid #e21243",
-            background: "#fef4f6",
-            borderRadius: 8,
-            padding: "21px 6px",
-            color: "#1f1c21 !important",
-            paddingRight: 50
-        }
-    },
 }));
 
 const BlockInputErrorBlock = styled.div`
@@ -75,9 +65,9 @@ display: flex;
   gap: 8px;
     background-color: ${({background})=> background || '#652DD0'};
     ${({background})=> !background && `box-shadow: 0px 29.6621px 147.057px rgba(0, 0, 0, 0.0503198), 0px 15.8588px 78.6238px rgba(0, 0, 0, 0.0417275), 0px 8.8903px 44.0759px rgba(0, 0, 0, 0.035), 0px 4.72157px 23.4084px rgba(0, 0, 0, 0.0282725);`}
-    padding: 23px;
+    padding: 20px;
     width: 100%;
-    height: ${({ height })=> height || '148px'};
+    height: ${({ height })=> height || '136px'};
     margin: 1em auto;
     z-index: 1;
 	margin-bottom: 5px;
@@ -233,9 +223,10 @@ const AutocompleteWrapperItem = styled.div`
 
 const SelectWrapper = styled.div`
   .makeStyles-formControl-10 {
-    margin-bottom: 1rem;
-    @media ${device.tablet} {
-      margin-bottom: 8px;
+    //margin-bottom: 1rem;
+    @media ${device.mobile} and (max-width: 767px) {
+      margin-bottom: 18px;
+      margin-right: 0;
     }
   }
   .MuiOutlinedInput-notchedOutline {
