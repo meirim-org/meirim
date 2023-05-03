@@ -9,7 +9,6 @@ import Downshift from 'downshift';
 import '../FilterAutoCompleteMultiple.css';
 
 import styled from 'styled-components';
-import {useTranslation} from "../../locale/he_IL";
 
 const AutocompleteWrapper = styled.div`
   .MuiPaper-elevation1 {
