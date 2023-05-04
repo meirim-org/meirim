@@ -47,14 +47,20 @@ const useStyles = makeStyles((theme) => ({
 
 const BlockInputErrorBlock = styled.div`
     position: absolute;
-    bottom: -42px;
-    padding: 5px;
+    bottom: -47px;
+    padding: 9px 5px;
     width: 185px;
+    text-align: center;
     left: calc(50% - 93px);
     background: #FFFFFF;
     border: 1px solid #F5F5F5;
     box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.06), 1px 1px 1px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
+    
+    @media screen and (max-width: 767px) {
+        z-index: 1;
+        right: 0;
+    }
 `
 
 const Wrapper = styled.div`
