@@ -194,12 +194,14 @@ const fetchPlanData = (planUrl) =>
 				resolve({ data: JSON.parse(jsonContent) });
 			} catch (e) {
 				Log.error('Mavat fetch error with puppeteer', e.message);
+				console.log(`Mavat fetch error with puppeteer ${planUrl}`, e.message);
 				try {
 					const jsonContent = await proxy.get(planUrl);
 					resolve({ data: JSON.parse(jsonContent) });
 					
 				} catch (e) {
-					Log.error('Mavat fetch error with puppeteer', e.message);
+					Log.error('Mavat fetch error with proxy', e.message);
+					console.log(`Mavat fetch error with proxy ${planUrl}`, e.message);
 					Log.error(e);
 					reject(e);
 				}
