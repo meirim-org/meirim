@@ -38,7 +38,8 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 									headers: {
 										'X-AA-Challenge': challenge.challenge,
 										'X-AA-Challenge-ID': challenge.challengeId,
-										'X-AA-Challenge-Result': challenge.result
+										'X-AA-Challenge-Result': challenge.result,
+										'Cookie': 'BotMitigationCookie_11098923367694517286=\"323000001682496739UTkNrfYpDVmhIvINfzH1TyqGB+4=\"; path=/'
 									}
 								}, protocol).then((res) => resolve(res));
 							} else {
