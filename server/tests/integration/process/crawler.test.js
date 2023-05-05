@@ -54,8 +54,18 @@ describe('Crawler', function() {
 		// Log.error was definitely not called yet
 		//assert.equal(Log.error.callCount, 0, 'no error messages should be logged');
 
+		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
+			 .get('/rest/api/Attacments/?eid=6000834691051&edn=6A87EB975512F02AE6AB5315FC91024A40B4E2532595E3A1136D6EF6D762323C')
+			 .replyWithFile(
+			 	200,
+			 	`${__dirname}/files/mavat_plan_instructions.pdf`,
+			 	{ 'Content-Type': 'application/pdf' }
+			 );
+
 		// run crawler cron with limit of 2 plans
 		await cronController.iplan(2);
+
+		newMavatScope.done();
 
 		// make sure Log.error hasn't been called during the crawling process
 		//assert.equal(Log.error.callCount, 0, 'no error messages should be logged');
