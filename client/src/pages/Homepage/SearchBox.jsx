@@ -132,7 +132,7 @@ const AutocompleteWrapper = styled.div`
     height: 48px !important;
     border-bottom: none;
     box-sizing: border-box;
-    padding: 0 8px;
+    padding: 0 12px;
     border-bottom: none;
     &::placeholder {
       opacity: 1;
