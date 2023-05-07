@@ -423,15 +423,13 @@ const fetchPlanStatus = () => {
 
 						// cut description to match db field length
 						planStatuses.forEach(ps => {
-							if (Boolean(ps.attributes.status_description) && ps.attributes.status_description.length > 255) {
-								ps.attributes.status_description = ps.attributes.status_description.substr(0, 254);
-							}
+							ps.attributes.status_description = ps.attributes.status_description.substr(0, 254);
 						});
 						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						Log.debug('updating last_visited_status to:', now );
 
-						if (! mostRecent[0]) {
+						if (!mostRecent[0]) {
 							Log.debug('No status in mavat for plan', plan.get('id'));
 							await plan.save({ 'last_visited_status': now });
 							return;
