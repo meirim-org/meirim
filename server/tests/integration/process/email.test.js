@@ -17,7 +17,7 @@ const { wait } = require('../../utils');
 
 describe('Emails', function() {
 
-	const tables = ['alert', 'person', 'plan', 'notification', 'plan_person', 'plan_status_change'];
+	const tables = ['alert', 'person', 'plan', 'notification', 'plan_person', 'plan_status_change', 'status_mapping'];
 	let sinonSandbox;
 
 	beforeEach(async function() {
