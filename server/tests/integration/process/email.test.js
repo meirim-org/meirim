@@ -13,6 +13,7 @@ const { fakeEmailVerification } = require('../../utils');
 const planPersonModel = require('../../../api/model/plan_person');
 const puppeteerBrowser = require('puppeteer/lib/cjs/puppeteer/common/Browser').Browser;
 const requestPromise = require('request-promise');
+const { wait } = require('../../utils');
 
 describe('Emails', function() {
 
@@ -66,11 +67,16 @@ describe('Emails', function() {
 				return newPage;
 			})
 		);
+		// make sure nock is active
+		if (!nock.isActive())
+			nock.activate();
 	});
 
 	afterEach(async function() {
-		await mockDatabase.dropTables(tables);
+		nock.restore();
 		await sinonSandbox.restore();
+		await wait(3);
+		await mockDatabase.dropTables(tables);
 	});
 
 	it('should send notifications to users with alerts intersecting a new plan', async function() {
