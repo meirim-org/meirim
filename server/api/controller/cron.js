@@ -447,7 +447,9 @@ const fetchPlanStatus = () => {
 						if (mavatStatus === null) {
 							const res = await PlanStatusChange.byMeirimStatus(meirimStatuses.PUBLIC_OBJECTION);
 							mavatStatus = res[0].map(rec => rec.mavat_status);
+							console.log(`status ${mavatStatus}`);
 						}
+						console.log(`status2 ${planStatuses}`);
 						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
 					}
 					catch (err) {

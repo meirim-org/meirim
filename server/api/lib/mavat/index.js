@@ -191,7 +191,6 @@ const fetchPlanData = (planUrl) =>
 				const jsonContent = await page.evaluate(
 					() => document.getElementsByTagName('pre')[0].innerText
 				);
-				console.log(jsonContent);
 				resolve({ data: JSON.parse(jsonContent) });
 			} catch (e) {
 				Log.error('Mavat fetch error with puppeteer', e.message);
