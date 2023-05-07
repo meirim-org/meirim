@@ -449,7 +449,6 @@ const fetchPlanStatus = () => {
 							mavatStatus = res[0].map(rec => rec.mavat_status);
 							console.log(`status ${mavatStatus}`);
 						}
-						console.log(`status2 ${planStatuses}`);
 						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
 					}
 					catch (err) {

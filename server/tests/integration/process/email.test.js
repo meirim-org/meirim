@@ -22,6 +22,29 @@ describe('Emails', function() {
 
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
+
+		status_mapping1 = 
+		[
+		{mavat_status:'הוגשו התנגדויות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'החלטה בדיון בהתנגדויות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'העברה להערות / תגובות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'התכנית פורסמה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'התכנית פורסמה להתנגדויות לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'התקבלו הערות / תגובות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'לא הוגשו התנגדויות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'פרסום להפקדה בעיתונים', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'פרסום להפקדה בעיתונים לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'פרסום להפקדה ברשומות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'פרסום להפקדה ברשומות לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'פרסום נוסח ההפקדה על גבי שלט בתחום התכנית', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'פרסום נוסח ההפקדה על גבי שלט בתחום התכנית לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'פרסום נוסח הודעה בדבר הפקדת תכנית באתר אינטרנט', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'רישום נתוני פרסום בעיתונות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'רישום נתוני פרסום ברשומות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור'},
+		{mavat_status:'תיקון התכנית לקראת פרסום לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
+		];
+		await mockDatabase.insertData(['status_mapping'], { 'status_mapping': [status_mapping1] });
+
 		const fakeVerifyEmail = fakeEmailVerification; 
 		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake'  });
 
