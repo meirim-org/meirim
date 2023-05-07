@@ -423,7 +423,9 @@ const fetchPlanStatus = () => {
 
 						// cut description to match db field length
 						planStatuses.forEach(ps => {
-							ps.attributes.status_description = ps.attributes.status_description.substr(0, 254);
+							if (Boolean(ps.attributes.status_description)) {
+								ps.attributes.status_description = ps.attributes.status_description.substr(0, 254);
+							}
 						});
 						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');

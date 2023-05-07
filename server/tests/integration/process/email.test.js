@@ -6,21 +6,25 @@ const verifier = require('email-verify');
 const { mockDatabase } = require('../../mock');
 const Email = require('../../../api/service/email');
 const signController = require('../../../api/controller/sign');
-const	alertController = require('../../../api/controller/alert');
+const alertController = require('../../../api/controller/alert');
 const cronController = require('../../../api/controller/cron');
 const planModel = require('../../../api/model/plan');
 const { fakeEmailVerification } = require('../../utils');
 const planPersonModel = require('../../../api/model/plan_person');
 const puppeteerBrowser = require('puppeteer/lib/cjs/puppeteer/common/Browser').Browser;
 const requestPromise = require('request-promise');
-let sinonSandbox = sinon.createSandbox();
 
 describe('Emails', function() {
+
 	const tables = ['alert', 'person', 'plan', 'notification', 'plan_person', 'plan_status_change'];
+	let sinonSandbox;
+
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 		const fakeVerifyEmail = fakeEmailVerification; 
 		const fakeSendEmail = sinon.fake.resolves({ messageId: 'fake'  });
+
+		sinonSandbox = sinon.createSandbox();
 		sinonSandbox.replace(verifier, 'verify', fakeVerifyEmail);
 		sinonSandbox.replace(Mailer.prototype, 'sendMail', fakeSendEmail);
 		await Email.init();
