@@ -34,7 +34,9 @@ describe('Crawler', function() {
 		planController = require('../../../api/controller/plan');
 		cronController = require('../../../api/controller/cron');
 
-		fs.mkdirSync(path.join(__dirname, './tmp'), { recursive: true });
+		const pathToChk = path.join(__dirname, 'tmp');
+console.log(`gtgtgtg make sure path exists ${pathToChk}`);
+		fs.mkdirSync(pathToChk, { recursive: true });
 	});
 
 	afterEach(async function() {
