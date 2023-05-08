@@ -83,7 +83,7 @@ const getBlueLines = async () => {
 	// xplan doesn't have MP_ID in the polygons API (service id of 0)
 	// so we query the centroid API (service id of 1) as well in order to get MP_ID.
 	const urlWithPolygons = buildMavatURL(MAVAT_SERVICE_ID, fields, 'objectid > 0', 'true');
-
+console.log(`yyy url ${urlWithPolygons} opt ${JSON.stringify(options)}`);
 	try {
 		const responseWithPolygons = await axios.get(urlWithPolygons, options);
 		const geojson = GeoJSON.fromEsri(responseWithPolygons.data, {});
