@@ -179,7 +179,8 @@ describe('Crawler scraped data', function() {
 				`${__dirname}/files/new_mavat_plan_json_page.html`,
 				{ 'Content-Type': 'text/html' }
 			)
-			.get('/rest/api/Attacments/?eid=6000661941817&edn=9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA')
+			.get('/rest/api/Attacments/')
+			.query({eid: '6000661941817', edn: '9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA'})
 			.replyWithFile(
 				200,
 				`${__dirname}/files/mavat_plan_instructions.pdf`,
