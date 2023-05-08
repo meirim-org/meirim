@@ -67,8 +67,8 @@ console.log(`yyy call url ${url} with ${JSON.stringify(options)}`);
 					response.pipe(file);
 					file.on('finish', async function () {
 						await file.close();
-						Log.info(`downloaded ${url} to ${file.path}`);
-						console.log(`downloaded ${url} to ${file.path}`);
+						Log.info(`ggg downloaded ${url} to ${file.path}`);
+						console.log(`ggg downloaded ${url} to ${file.path}`);
 						resolve(true);
 					});
 				}

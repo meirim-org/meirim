@@ -403,6 +403,7 @@ describe('Crawler scraped data', function() {
 
 		iPlanScope.done();
 		newMavatScope.done();
+		nock.cleanAll();
 
 		// now there should be a single plan
 		plans = await planController.browse({ query: { status: null, query: null } });
@@ -586,6 +587,7 @@ describe('Crawler scraped data', function() {
 
 		iPlanScope.done();
 		newMavatScope.done();
+		nock.cleanAll();
 
 		// there should still be only one plan
 		plans = await planController.browse({ query: { status: null, query: null } });

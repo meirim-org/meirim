@@ -64,6 +64,7 @@ const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 	if (!downloadSuccess) {
 		Log.info(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
 	}
+	console.log(`success downloading file for ${entityDocId}, ${entityDocNumber}`);
 	Log.info(`success downloading file for ${entityDocId}, ${entityDocNumber}`);
 	return downloadSuccess;
 };
@@ -137,7 +138,7 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 			const page = await browser.newPage();
 
 			try {
-				Log.debug('Loading plan page', planUrl);
+				Log.debug(`Loading plan page ${planUrl}`);
 				await clearOldPlanFiles(PLAN_DOWNLOAD_PATH);
 
 				try {
@@ -377,18 +378,10 @@ const getByPlan = async (plan, fetchPlanInstructions = true) => {
 			//}
 			const planFiles = getPlanFilesNewMavat(data);
 
-			Log.debug(
-				'Retrieving',
-				plan.get('PL_NUMBER'),
-				planFiles.length
-			);
+			Log.debug(`Retrieving ${plan.get('PL_NUMBER')} ${planFiles.length}`);
 
-			Log.debug(
-				'Fetched mavat plan data',
-				plan.get('PL_NUMBER'),
-				plan.get('MP_ID'),
-				response
-			);
+			Log.debug(`Fetched mavat plan data ${plan.get('PL_NUMBER')} ${plan.get('MP_ID')} ${response}`);
+
 			return Bluebird.props({
 				plan_url: getDirectUrl(planId),
 				goals: get(data, 'planDetails.GOALS'),
