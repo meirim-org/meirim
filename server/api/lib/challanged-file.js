@@ -7,7 +7,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 		options = options || {};
 		protocol = protocol || http ;
 		const agent = (protocol === https) ? new protocol.Agent(): null ;
-console.log(`yyy call url ${url} with ${options}`);
+console.log(`yyy call url ${url} with ${JSON.stringify(options)}`);
 		protocol.get(url, options, (response) => {
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
