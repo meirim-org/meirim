@@ -62,6 +62,7 @@ console.log(`yyy call url ${url}`);
 					file.on('finish', async function () {
 						await file.close();
 						Log.info(`downloaded ${url} to ${file.path}`);
+						console.log(`downloaded ${url} to ${file.path}`);
 						resolve(true);
 					});
 				}
