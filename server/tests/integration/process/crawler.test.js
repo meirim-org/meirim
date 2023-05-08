@@ -33,8 +33,8 @@ describe('Crawler', function() {
 
 		planController = require('../../../api/controller/plan');
 		cronController = require('../../../api/controller/cron');
-
-		const pathToChk = path.join(__dirname, 'tmp');
+		
+		const pathToChk = path.join(__dirname, '../../../api/lib/mavat/tmp');
 console.log(`gtgtgtg make sure path exists ${pathToChk}`);
 		fs.mkdirSync(pathToChk, { recursive: true });
 	});
