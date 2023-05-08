@@ -3,9 +3,9 @@ const nock = require('nock');
 const puppeteerBrowser = require('puppeteer/lib/cjs/puppeteer/common/Browser').Browser;
 const requestPromise = require('request-promise');
 const sinon = require('sinon');
-
+const fs = require('fs');
 const Log = require('../../../api/lib/log');
-
+const path = require('path');
 const { mockDatabase } = require('../../mock');
 const { wait } = require('../../utils');
 
@@ -33,6 +33,8 @@ describe('Crawler', function() {
 
 		planController = require('../../../api/controller/plan');
 		cronController = require('../../../api/controller/cron');
+
+		fs.mkdirSync(path.join(__dirname, './tmp'), { recursive: true });
 	});
 
 	afterEach(async function() {
