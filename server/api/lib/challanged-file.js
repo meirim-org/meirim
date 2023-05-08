@@ -12,6 +12,7 @@ console.log(`yyy call url ${url}`);
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
 				Log.info(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
+				console.log(`error status ${response.statusCode}`);
 				resolve(false);
 			} else {
 				const contentType = response.headers['content-type'] || '';
@@ -27,6 +28,7 @@ console.log(`yyy call url ${url}`);
 						let responseData = '';
 						response.on('data', (chunk) => { responseData += chunk; });
 						response.on('end', () => {
+							console.log(`responseData ${responseData}`);
 							if (responseData.indexOf('ChallengeId=') > -1) {
 								// extract challenge params
 								const challenge = parseChallenge(responseData);
