@@ -87,7 +87,7 @@ console.log(`yyy url ${urlWithPolygons} opt ${JSON.stringify(options)}`);
 	try {
 		const responseWithPolygons = await axios.get(urlWithPolygons, options);
 		const geojson = GeoJSON.fromEsri(responseWithPolygons.data, {});
-		Log.debug('Got', geojson.features.length, 'plans');
+		Log.debug(`Got ${geojson.features.length} plans`);
 
 		// Need to populate all plans with their MP_ID
 		// TODO- export to a mapping function
