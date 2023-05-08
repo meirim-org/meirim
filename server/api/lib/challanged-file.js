@@ -7,7 +7,7 @@ const downloadChallengedFile = (url, file, options, protocol) => {
 		options = options || {};
 		protocol = protocol || http ;
 		const agent = (protocol === https) ? new protocol.Agent(): null ;
-console.log(`yyy call url ${url}`);
+console.log(`yyy call url ${url} with ${options}`);
 		protocol.get(url, options, (response) => {
 			if (response.statusCode !== 200) {
 				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
@@ -45,6 +45,7 @@ console.log(`yyy call url ${url}`);
 									}
 								}, protocol).then((res) => resolve(res));
 							} else {
+								console.log(`error no challenge`);
 								Log.error(`url content type was html, but response contained no challenge: "${responseData.substr(0, 50)}..."`);
 								resolve(false);
 							}
@@ -52,6 +53,7 @@ console.log(`yyy call url ${url}`);
 					} else {
 						// if we did get a cookie we completed the challenge successfuly and
 						// should use it to download the file
+						console.log(`call url again`);
 						downloadChallengedFile(url, file, {
 							agent: agent,
 							headers: {
@@ -61,6 +63,7 @@ console.log(`yyy call url ${url}`);
 					}
 				} else {
 					// this is the actual file, so pipe the response into the supplied file
+					console.log(`call pipe file`);
 					response.pipe(file);
 					file.on('finish', async function () {
 						await file.close();
@@ -72,6 +75,7 @@ console.log(`yyy call url ${url}`);
 			}
 		}).on('error', (err) => {
 			Log.error(err);
+			console.log(`err dw ${err}`);
 			resolve(false);
 		});
 	});
