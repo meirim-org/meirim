@@ -172,13 +172,15 @@ describe('Crawler scraped data', function() {
 			 .reply(200, { 'displayFieldName':'pl_number','fieldAliases':{ 'objectid':'OBJECTID','plan_county_name':'ישוב','entity_subtype_desc':'סוג תכנית','pl_number':'מספר תכנית','pl_name':'שם תכנית','pl_area_dunam':'שטח תכנית רשום','depositing_date':'דיון בהפקדה','pl_date_8':'פרסום אישור','pl_landuse_string':'יעודי קרקע','station_desc':'סטטוס','pl_by_auth_of':'סמכות','pl_url':'PL_URL','shape_area':'shape_area','quantity_delta_120':'יחד מוצע שינוי','quantity_delta_125':'מר מגורים מוצע','last_update':'LAST_UPDATE','pl_order_print_version':'PL_ORDER_PRINT_VERSION','pl_tasrit_prn_version':'PL_TASRIT_PRN_VERSION',},'geometryType':'esriGeometryPolygon','spatialReference':{ 'wkid':102100,'latestWkid':3857 },'fields':[{ 'name':'objectid','type':'esriFieldTypeOID','alias':'OBJECTID' },{ 'name':'plan_county_name','type':'esriFieldTypeString','alias':'ישוב','length':78 },{ 'name':'entity_subtype_desc','type':'esriFieldTypeString','alias':'סוג תכנית','length':78 },{ 'name':'pl_number','type':'esriFieldTypeString','alias':'מספר תכנית','length':78 },{ 'name':'pl_name','type':'esriFieldTypeString','alias':'שם תכנית','length':78 },{ 'name':'pl_area_dunam','type':'esriFieldTypeDouble','alias':'שטח תכנית בדונם' },{ 'name':'depositing_date','type':'esriFieldTypeDate','alias':'הפקדה','length':8 },{ 'name':'pl_date_8','type':'esriFieldTypeDate','alias':'פרסום לאישור ברשומות','length':8 },{ 'name':'pl_landuse_string','type':'esriFieldTypeString','alias':'PL_LANDUSE_STRING','length':4000 },{ 'name':'station_desc','type':'esriFieldTypeString','alias':'STATION_DESC','length':26 },{ 'name':'pl_by_auth_of','type':'esriFieldTypeDouble','alias':'סמכות' },{ 'name':'pl_url','type':'esriFieldTypeString','alias':'PL_URL','length':255 }, { 'name':'shape_area','type':'esriFieldTypeDouble','alias':'shape_area' },{ 'name':'quantity_delta_120','type':'esriFieldTypeDouble','alias':'יחד מוצע שינוי' },{ 'name':'quantity_delta_125','type':'esriFieldTypeDouble','alias':'מר מגורים מוצע' },{ 'name':'last_update','type':'esriFieldTypeString','alias':'LAST_UPDATE','length':20 },{ 'name':'pl_order_print_version','type':'esriFieldTypeDouble','alias':'PL_ORDER_PRINT_VERSION' },{ 'name':'pl_tasrit_prn_version','type':'esriFieldTypeDouble','alias':'PL_TASRIT_PRN_VERSION' }],'features':[{ 'attributes':{ 'objectid':17737,'plan_county_name':'סח\'נין','entity_subtype_desc':'תכנית מתאר מקומית','pl_number':'262-0907907','pl_name':'שינוי בהוראות וזכויות הבניה בית עטיה אבו סאלח - סכנין','pl_area_dunam':0.65600000000000003,'depositing_date':null,'pl_date_8':null,'pl_landuse_string':'מגורים ב','station_desc':'סמכות מקומית בתהליך','pl_by_auth_of':3,'pl_url':'https://mavat.iplan.gov.il/SV4/1/2005099108/310','shape_area':656.2206166598944,'quantity_delta_120':0,'quantity_delta_125':0,'last_update':'20201003092718      ','pl_order_print_version':1,'pl_tasrit_prn_version':1 },'geometry':{ 'rings':[[[3930053.80647879,3876669.3068521186],[3930064.968131646,3876668.5508384234],[3930070.2667117235,3876669.4035235811],[3930070.9940953101,3876649.9953845385],[3930038.6509795687,3876649.3163289493],[3930036.3711044192,3876650.5552507825],[3930033.3768539387,3876650.9356909227],[3930021.2490044674,3876652.6631158828],[3930023.3139998987,3876665.7636409458],[3930027.2544126092,3876670.919169195],[3930034.105045598,3876670.5496508735],[3930042.8205890162,3876670.0507389829],[3930053.80647879,3876669.3068521186]]] } }] });
  
 		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
-			.get('/rest/api/SV4/1/?mid=2005099108')
+			.get('/rest/api/SV4/1/') // ?mid=2005099108
+			.query(true)
 			// actual reply copied from a browser performing the API response
 			.replyWithFile(
 				200,
 				`${__dirname}/files/new_mavat_plan_json_page.html`,
 				{ 'Content-Type': 'text/html' }
-			).get('/rest/api/Attacments/?eid=6000661941817&edn=9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA')
+			).get('/rest/api/Attacments/') // ?eid=6000661941817&edn=9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA
+			.query(true)
 			 .replyWithFile(
 			 	200,
 			 	`${__dirname}/files/mavat_plan_instructions.pdf`,
@@ -379,13 +381,15 @@ describe('Crawler scraped data', function() {
 
 		// mock mavat single plan page
 		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
-			.get('/rest/api/SV4/1/?mid=2005099108')
+			.get('/rest/api/SV4/1/') // ?mid=2005099108
+			.query(true)
 			// actual reply copied from a browser performing the API response
 			.replyWithFile(
 				200,
 				`${__dirname}/files/new_mavat_plan_json_page.html`,
 				{ 'Content-Type': 'text/html' }
-			).get('/rest/api/Attacments/?eid=6000661941817&edn=9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA')
+			).get('/rest/api/Attacments/') // ?eid=6000661941817&edn=9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA
+			.query(true)
 			 .replyWithFile(
 			 	200,
 			 	`${__dirname}/files/mavat_plan_instructions.pdf`,
@@ -610,13 +614,15 @@ describe('Crawler scraped data', function() {
 			
 		// mock mavat single plan page
 		newMavatScope
-			.get('/rest/api/SV4/1/?mid=2005099108')
+			.get('/rest/api/SV4/1/') // ?mid=2005099108
+			.query(true)
 		// actual reply copied from a browser performing the API response
 			.replyWithFile(
 				200,
 				`${__dirname}/files/new_mavat_plan_json_page_updated.html`,
 				{ 'Content-Type': 'text/html' }
-			).get('/rest/api/Attacments/?eid=6000661941817&edn=9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA')
+			).get('/rest/api/Attacments/') // ?eid=6000661941817&edn=9F9FF6CF1A89FA43A8705326272E61E75BCE98F745EDFE9FC08FF33E934A19AA
+			.query(true)
 		 // reply is an updated modified pdf file from mavat (personal details removed)
 		 .replyWithFile(
 			200,
