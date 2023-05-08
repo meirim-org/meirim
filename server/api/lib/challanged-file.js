@@ -65,7 +65,7 @@ console.log(`yyy call url ${url} with ${JSON.stringify(options)}`);
 					// this is the actual file, so pipe the response into the supplied file
 					console.log(`call pipe file`);
 					response.pipe(file);
-					file.on('finish', async function () {
+					return file.on('finish', async function () {
 						await file.close();
 						Log.info(`downloaded ${url} to ${file.path}`);
 						console.log(`downloaded ${url} to ${file.path}`);
