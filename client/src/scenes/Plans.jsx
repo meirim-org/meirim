@@ -27,7 +27,7 @@ const PlansHeader = styled.div`
     opacity: ${(props) => props.opacity};
     transform: ${(props) => `translateY(${props.translateY}px)`};
     transition: 0.2s ease-in-out;
-    z-index: 2;
+    z-index: 9999999;
     @media ${device.laptop} {
         padding: 16px 4.8rem 28px;
     }
@@ -442,7 +442,18 @@ class Plans extends Component {
                     </PlansHeaderSearchBox>
                 </PlansHeader>
                 <PlansWrapper>
-                    {loadingPlans ? (
+                    <div className="container">
+                        <Grid container spacing={5}>
+                            {plans.map((plan) => (
+                                <PlanCard plan={plan} key={plan.id} />
+                            ))}
+                        </Grid>
+                        {error && (
+                            <div className="error-container">{error}</div>
+                        )}
+                        {noData && <div>אין כאן כלום</div>}
+                    </div>
+                    {loadingPlans && (
                         <PlansSearching>
                             <Lottie
                                 animationData={loadingAnimation}
@@ -457,25 +468,13 @@ class Plans extends Component {
                                 </PlansSearchingText>
                             </PlansSearchingContent>
                         </PlansSearching>
-                    ) : (
-                        <div className="container">
-                            <Grid container spacing={5}>
-                                {plans.map((plan) => (
-                                    <PlanCard plan={plan} key={plan.id} />
-                                ))}
-                            </Grid>
-                            {error && (
-                                <div className="error-container">{error}</div>
-                            )}
-                            {noData && <div>אין כאן כלום</div>}
-                        </div>
                     )}
                 </PlansWrapper>
                 <InfiniteScroll
                     dataLength={plans.length}
                     next={this.loadNextPage}
                     hasMore={hasMore}
-                    loader={<h4 className="centerNote">{t.loading}</h4>}
+                    // loader={<h4 className="centerNote">{t.loading}</h4>}
                     endMessage={
                         <p className="centerNote">
                             <b>{t.seenAllPlans}</b>
