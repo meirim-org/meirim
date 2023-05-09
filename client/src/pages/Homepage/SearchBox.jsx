@@ -15,6 +15,10 @@ import AutocompleteBlock from '../../components/BlockParcelAutocomplete/BlockPar
 import AutocompleteParcel from '../../components/BlockParcelAutocomplete/BlockParcelAutocompleteInput';
 import classNames from 'classnames';
 import { ExpandMoreRounded } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
+import { setAddressText, setSearchType } from '../../redux/search/slice';
+import { SearchSelectors } from '../../redux/selectors';
+
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: 0,
@@ -129,6 +133,7 @@ const AutocompleteWrapper = styled.div`
     margin: 0;
     border-radius: 8px;
     position: relative;
+
     input[type='text'] {
         color: ${({ color }) => color || '#000000'};
         font-size: 18px;
@@ -137,21 +142,26 @@ const AutocompleteWrapper = styled.div`
         box-sizing: border-box;
         padding: 0 12px;
         border-bottom: none;
+
         &::placeholder {
             opacity: 1;
             color: #918899;
         }
     }
+
     input:focus::placeholder {
         color: transparent;
     }
+
     .MuiPaper-elevation1 {
         display: none;
     }
+
     .MuiInputBase-input {
         padding: 22px 8px 22px;
         height: 0.1876em !important;
     }
+
     @media ${device.tablet} {
         margin-bottom: 0;
         width: 288px;
@@ -165,38 +175,46 @@ const AutocompleteWrapperItem = styled.div`
     border-radius: 8px;
     position: relative;
     width: 110px;
+
     input[type='number'] {
         color: ${({ color }) => color || '#000000'};
         font-size: 18px;
         line-height: 18px;
         border-bottom: none;
+
         &::placeholder {
             opacity: 1;
             color: #918899;
         }
     }
+
     input:focus::placeholder {
         color: transparent;
     }
+
     .MuiPaper-elevation1 {
         display: none;
     }
+
     .MuiInputBase-input {
         padding: 24px 8px 24px;
         height: 0.1876em !important;
     }
+
     #block-search-input {
         input[type='number'] {
             padding-right: 52px;
             box-sizing: border-box;
         }
     }
+
     #parcels-search-input {
         input[type='number'] {
             padding-right: 60px;
             box-sizing: border-box;
         }
     }
+
     #parcels-search-input-error {
         input[type='number'] {
             border: 2px solid #e21243;
@@ -207,6 +225,7 @@ const AutocompleteWrapperItem = styled.div`
             padding-right: 50px;
         }
     }
+
     #block-search-input-error {
         input[type='number'] {
             border: 2px solid #e21243;
@@ -217,16 +236,19 @@ const AutocompleteWrapperItem = styled.div`
             padding-right: 50px;
         }
     }
+
     b {
         position: absolute;
         margin-right: 12px;
         top: 12px;
         z-index: 2;
     }
+
     @media ${device.tablet} {
         margin-bottom: 0;
         width: 131px;
     }
+
     &:last-child {
         margin-left: 0;
     }
@@ -240,21 +262,26 @@ const SelectWrapper = styled.div`
             margin-right: 0;
         }
     }
+
     .MuiOutlinedInput-notchedOutline {
         display: none;
     }
+
     .MuiSelect-select:focus {
         background: none !important;
     }
+
     .MuiSelect-outlined.MuiSelect-outlined {
         text-align: left !important;
         transition: none !important;
         padding: 0px !important;
     }
+
     .css-i4bv87-MuiSvgIcon-root {
         color: white;
         cursor: pointer;
     }
+
     .MuiPaper-root {
         margin: 3rem 1rem !important;
     }
@@ -282,15 +309,18 @@ export default function SearchBox({
     wrapperPadding,
     height,
 }) {
+    const { search } = SearchSelectors();
     const [addresses, setAddresses] = useState([]);
-    const [placeId, setPlaceId] = useState('');
+    const [placeId, setPlaceId] = useState(search.addressPlaceId);
     const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
     const { t } = useTranslation();
 
     // Making a logic to change the input types using dropdown
     const classes = useStyles();
-    const [block, setBlock] = useState('');
-    const [parcels, setParcels] = useState('');
+    const dispatch = useDispatch();
+
+    const [block, setBlock] = useState(search.block);
+    const [parcels, setParcels] = useState(search.parcel);
     const [blockinputerror, setBlockinputerror] = useState(false);
     const [parcelinputerror, setParcelinputerror] = useState(false);
     const [isDisable, setIsDisable] = useState(true);
@@ -303,7 +333,7 @@ export default function SearchBox({
     const [loadingAutocompleteParcel, setloadingAutocompleteParcel] =
         useState(false);
 
-    const [selected, setSelected] = React.useState('searchAddress');
+    const [selected, setSelected] = React.useState(search.type);
 
     const getAutocompleteSuggestions = useCallback(
         _.debounce(async (input) => {
@@ -331,6 +361,12 @@ export default function SearchBox({
             const place = addresses.find((address) => address.label === data);
             if (place) {
                 setPlaceId(place.id);
+                dispatch(
+                    setAddressText({
+                        addressText: data,
+                        addressPlaceId: place.id,
+                    })
+                );
             }
         }
     }
@@ -447,9 +483,12 @@ export default function SearchBox({
                             labelId="demo-simple-select-outlined-label"
                             id="demo-simple-select-outlined"
                             value={selected}
-                            onChange={(event) =>
-                                setSelected(event.target.value)
-                            }
+                            onChange={(event) => {
+                                dispatch(
+                                    setSearchType({ type: event.target.value })
+                                );
+                                setSelected(event.target.value);
+                            }}
                             open={dropdownIsOpen}
                             onOpen={() => setDropdownIsOpen(true)}
                             onClose={() => setDropdownIsOpen(false)}
@@ -552,6 +591,7 @@ export default function SearchBox({
                                 onFilterChange={onFilterChange}
                                 classes={{ inputRoot: 'text' }}
                                 loading={loadingAutocomplete}
+                                value={search.addressText}
                             />
                         </AutocompleteWrapper>
                         {/* // Button To Handle the Inputs and function of Text Filed //  */}
