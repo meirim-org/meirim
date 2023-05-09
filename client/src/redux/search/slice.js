@@ -16,7 +16,7 @@ const searchSlice = createSlice({
             state.addressText = type.payload.addressText;
             state.addressPlaceId = type.payload.addressPlaceId;
         },
-        setBlock(state, type) {
+        setBlockNum(state, type) {
             state.block = type.payload.block;
         },
         setParcel(state, type) {
@@ -34,7 +34,7 @@ const searchSlice = createSlice({
 export const {
     setSearchType,
     resetSearch,
-    setBlock,
+    setBlockNum,
     setParcel,
     setAddressText,
 } = searchSlice.actions;

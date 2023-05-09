@@ -16,7 +16,12 @@ import AutocompleteParcel from '../../components/BlockParcelAutocomplete/BlockPa
 import classNames from 'classnames';
 import { ExpandMoreRounded } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
-import { setAddressText, setSearchType } from '../../redux/search/slice';
+import {
+    setAddressText,
+    setSearchType,
+    setBlockNum,
+    setParcel,
+} from '../../redux/search/slice';
 import { SearchSelectors } from '../../redux/selectors';
 
 const useStyles = makeStyles((theme) => ({
@@ -427,11 +432,13 @@ export default function SearchBox({
 
     function handleSubmitBlockDetails(blockNum) {
         setBlock(blockNum);
+        dispatch(setBlockNum({ block: blockNum }));
         setIsDisable(false);
     }
 
     function handleSubmitParcelDetails(parcelNum) {
         setParcels(parcelNum);
+        dispatch(setParcel({ parcel: parcelNum }));
     }
 
     async function handleInputChangeParcel(text) {
@@ -530,6 +537,7 @@ export default function SearchBox({
                                 <AutocompleteBlock
                                     placeholder={`16501`}
                                     t={t}
+                                    value={block}
                                     id={
                                         blockinputerror
                                             ? 'block-search-input-error'
@@ -552,6 +560,7 @@ export default function SearchBox({
                                 <b>{t.parcel}</b>
                                 <AutocompleteParcel
                                     placeholder={'26'}
+                                    value={parcels}
                                     id={
                                         parcelinputerror
                                             ? 'parcels-search-input-error'
