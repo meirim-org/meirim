@@ -358,6 +358,12 @@ export default function SearchBox({
             getAutocompleteSuggestions.cancel();
             setloadingAutocomplete(false);
             setAddresses([]);
+            dispatch(
+                setAddressText({
+                    addressText: '',
+                    addressPlaceId: '',
+                })
+            );
         }
     }
 
