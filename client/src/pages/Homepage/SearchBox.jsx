@@ -23,6 +23,7 @@ import {
     setParcel,
 } from '../../redux/search/slice';
 import { SearchSelectors } from '../../redux/selectors';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -319,6 +320,7 @@ export default function SearchBox({
     const [placeId, setPlaceId] = useState(search.addressPlaceId);
     const [loadingAutocomplete, setloadingAutocomplete] = useState(false);
     const { t } = useTranslation();
+    const history = useHistory();
 
     // Making a logic to change the input types using dropdown
     const classes = useStyles();
@@ -387,7 +389,7 @@ export default function SearchBox({
             const { lat, lng } = await locationAutocompleteApi.getPlaceLocation(
                 placeId
             );
-            window.location.href = `/plans?loc=${lat},${lng}`;
+            history.push(`/plans?loc=${lat},${lng}`);
         }
     }
 
@@ -400,7 +402,7 @@ export default function SearchBox({
                 (parcel) => parcel.label === parcels
             );
             const [lng, lat] = JSON.parse(currentParcel.centroid)?.coordinates;
-            if (lat && lng) window.location.href = `/plans?loc=${lat},${lng}`;
+            if (lat && lng) history.push(`/plans?loc=${lat},${lng}`);
         } else if (!block && parcels) {
             setBlockinputerror(true);
         } else if (block && !parcels) {
