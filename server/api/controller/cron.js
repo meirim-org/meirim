@@ -423,7 +423,7 @@ const fetchPlanStatus = () => {
 
 						// cut description to match db field length
 						planStatuses.forEach(ps => {
-							if (Boolean(ps.attributes.status_description)) {
+							if (ps.attributes.status_description) {
 								ps.attributes.status_description = ps.attributes.status_description.substr(0, 254);
 							}
 						});
@@ -470,17 +470,17 @@ async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
 	var sendEmail = shouldSendEmail(plan, planStatuses, mavatStatus);
 	if (sendEmail) {
 		PlanPerson.getUsersForPlan(plan.get('id'))
-		.then(users => {
-			if (!users[0] || !users[0].length) {
-				return sendEmail;
-			}
-			return Bluebird.mapSeries(users[0], user =>
-				Email.planDepositAlert(user, plan)
-			) 
-		})
-		.then(plan.save({ 'was_deposited': true }))
-		.then(a => {return sendEmail;})
-		.catch(err => Log.error('Error:', err.message))
+			.then(users => {
+				if (!users[0] || !users[0].length) {
+					return sendEmail;
+				}
+				return Bluebird.mapSeries(users[0], user =>
+					Email.planDepositAlert(user, plan)
+				); 
+			})
+			.then(plan.save({ 'was_deposited': true }))
+			.then(a => {return sendEmail;})
+			.catch(err => Log.error('Error:', err.message))
 		;
 	}
 	return sendEmail;
@@ -546,8 +546,8 @@ const fillMPIDForMissingPlans = async () => {
 	} catch(e){
 		console.log('Error scrapping new MP_ID', e.message);
 	}
-	finally{
-	}
+	// finally{
+	// }
 
 };
 

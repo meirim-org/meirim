@@ -184,9 +184,9 @@ class Email {
 		return this.sendWithTemplate(this.templates.treeAlert, data);
 	}
 
-	digestPlanAlert (user, plans = []) {
+	// digestPlanAlert (user, plans = []) {
 		
-	}
+	// }
 
 	newAlertTemplateByType(type){
 		let alertTemplate = this.templates.newAlert;
