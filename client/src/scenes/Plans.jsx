@@ -2,7 +2,7 @@ import { Grid } from '@material-ui/core';
 import _ from 'lodash';
 import React, { Component } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { PlanCard, Typography } from 'shared';
+import { PlanCard } from 'shared';
 import Wrapper from '../components/Wrapper';
 import t from '../locale/he_IL';
 import api from '../services/api';
@@ -412,8 +412,8 @@ class Plans extends Component {
             error,
             noData,
             hasMore,
-            list,
-            loadingAutocomplete,
+            // list,
+            // loadingAutocomplete,
             hiddenTopSection,
             hiddenTopContentSection,
             translateY,

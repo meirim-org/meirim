@@ -515,7 +515,7 @@ export default function SearchBox({
                                         classes.pointer,
                                         classes.expandMoreIcon,
                                         {
-                                            ['MuiSelect-iconOpen']:
+                                            'MuiSelect-iconOpen':
                                                 dropdownIsOpen,
                                         }
                                     )}
