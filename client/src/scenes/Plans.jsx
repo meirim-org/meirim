@@ -358,7 +358,7 @@ class Plans extends Component {
         }
     }
 
-    handleScrollEvent = (e) => {
+    handleScrollEvent = () => {
         if (this.lastScrollY > window.scrollY) {
             this.setState({
                 hiddenTopSection: false,
