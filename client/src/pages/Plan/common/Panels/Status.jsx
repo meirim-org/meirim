@@ -11,6 +11,7 @@ export const StatusPanel = ({ planId }) => {
 
     const [steps, setSteps] = useState([]);
     const [isFinishedLoading, setIsFinishedLoading] = useState(false);
+    const [cancellationDate, setcancallationDate] = useState(false);
 
     useEffect(() => {
         getStatus(planId)
@@ -18,12 +19,15 @@ export const StatusPanel = ({ planId }) => {
                 if (res && res.data && isArray(res.data?.steps)) {
                     setSteps(res.data?.steps);
                 }
+                if (res.data && res.data.cancellationDate) {
+                    setcancallationDate(res.data.cancellationDate);
+                }
             })
             .catch((e) => {})
             .finally(() => {
                 setIsFinishedLoading(true);
             });
-    }, [planId]);
+    }, [ planId ]);
 
     const shouldDisplayPanel = useMemo(() => {
         return isFinishedLoading && steps.length > 0;
@@ -44,7 +48,11 @@ export const StatusPanel = ({ planId }) => {
                         {'תהליך התכנון'}
                     </Typography>
                     <div>לחצו על השלבים כדי לצפות בהסבר</div>
-                    <StepperProgress planId={planId} steps={steps} />
+                    <StepperProgress
+                        planId={planId}
+                        steps={steps}
+                        cancellationDate={cancellationDate}
+                    />
                 </TabBox>
             </TabPanel>
         </div>

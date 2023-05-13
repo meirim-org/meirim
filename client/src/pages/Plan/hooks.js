@@ -75,13 +75,7 @@ export const useCommentsDataHandler = (
 		setRefetchComments(false);
 	}, [planId, refetchComments, dispatch, setRefetchComments]);
 };
-// export const useStatus=()=>{
-//     useEffect(()=>{
-//         const fetchData=async()=>{
-//             const response= await stepeStatus
-//         }
-//     })
-// }
+
 export const useDataHandler = (planId) => {
 	const dispatch = useDispatch();
 	useEffect(() => {

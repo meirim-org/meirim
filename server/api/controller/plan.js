@@ -197,42 +197,6 @@ class PlanController extends Controller {
 			(results) => results[0]
 		);
 	}
-	stepeStatus() {
-		return [
-			{
-				stepId: 1,
-				name: 'על שולחן הועדה',
-				date: '1/12/12',
-				current: false,
-				completed: true,
-				description: 'this is an important step',
-			},
-			{
-				stepId: 2,
-				name: 'הסכמה עקרונית',
-				date: '2/12/12',
-				current: true,
-				completed: false,
-				description: 'החלטה להפקדה בתאריך',
-			},
-			{
-				stepId: 3,
-				name: 'הערות הציבור',
-				date: '3/12/12',
-				current: false,
-				completed: false,
-				description: 'תאריך אחרון להגשת התנגדויות',
-			},
-			{
-				stepId: 4,
-				name: 'תוכנית מאושרת',
-				date: '4/12/12',
-				current: false,
-				completed: false,
-				description: 'התוכנית אושרה בתאריך',
-			},
-		];
-	}
 }
 
 module.exports = new PlanController(Plan);
