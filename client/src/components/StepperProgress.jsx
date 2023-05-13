@@ -1,82 +1,83 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import { filter, minBy } from 'lodash';
 import StepLabel from '@material-ui/core/StepLabel';
 import styled, { useTheme } from 'styled-components';
 import { getStatus } from 'pages/Plan/controller';
 import { Button } from 'shared';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        cursor: 'pointer',
-    },
-    button: {
-        marginRight: theme.spacing(1),
-    },
-    backButton: {
-        marginRight: theme.spacing(1),
-    },
-    completed: {
-        display: 'inline-block',
-    },
+	root: {
+		width: '100%',
+		cursor: 'pointer',
+	},
+	button: {
+		marginRight: theme.spacing(1),
+	},
+	backButton: {
+		marginRight: theme.spacing(1),
+	},
+	completed: {
+		display: 'inline-block',
+	},
 
-    instructions: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-    },
-    backgroundColor: {
-        backgroundColor: 'red',
-    },
+	instructions: {
+		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(1),
+	},
+	backgroundColor: {
+		backgroundColor: 'red',
+	},
 }));
 const useQontoStepIconStyles = makeStyles({
-    root: {
-        color: '#eaeaf0',
-        display: 'flex',
-        alignItems: 'center',
-    },
-    active: {
-        color: '#ae7ff0',
-        borderRadius: '50%',
-        width: 13,
-        height: 13,
-        boxShadow: '0px 0px 0px 15px #f0e3fd',
-    },
+	root: {
+		color: '#eaeaf0',
+		display: 'flex',
+		alignItems: 'center',
+	},
+	active: {
+		color: '#ae7ff0',
+		borderRadius: '50%',
+		width: 13,
+		height: 13,
+		boxShadow: '0px 0px 0px 15px #f0e3fd',
+	},
 
-    circle: {
-        width: 13,
-        height: 13,
-        borderRadius: '50%',
-        backgroundColor: 'currentColor',
-    },
-    completed: {
-        width: 13,
-        height: 13,
-        boxShadow: 'none',
-        borderRadius: '50%',
-        backgroundColor: '#8bdbbf',
-    },
+	circle: {
+		width: 13,
+		height: 13,
+		borderRadius: '50%',
+		backgroundColor: 'currentColor',
+	},
+	completed: {
+		width: 13,
+		height: 13,
+		boxShadow: 'none',
+		borderRadius: '50%',
+		backgroundColor: '#8bdbbf',
+	},
 });
 
 const StepButtonStyle = styled(StepButton)`
     background: ${(props) =>
-        props.stepcomplited
-            ? '#e6f8f3 !important'
-            : props.index === props.activestep
-            ? 'linear-gradient(270deg,rgba(230, 248, 243, 1) 50%,rgba(251, 251, 251, 1) 50% ) !important'
-            : ' #fbfbfb !important'};
+		props.stepcomplited
+			? '#e6f8f3 !important'
+			: props.index === props.activestep
+				? 'linear-gradient(270deg,rgba(230, 248, 243, 1) 50%,rgba(251, 251, 251, 1) 50% ) !important'
+				: ' #fbfbfb !important'};
 
     padding: 10px 16px !important;
     border-radius: ${(props) =>
-        props.index === 3
-            ? '50px  0  0 50px'
-            : props.index === 0
-            ? '0px  50px  50px 0'
-            : '0'} !important;
+		props.index === 3
+			? '50px  0  0 50px'
+			: props.index === 0
+				? '0px  50px  50px 0'
+				: '0'} !important;
     :focus {
         outline: none;
     }
@@ -94,128 +95,148 @@ const LabelStep = styled.div`
 `;
 
 export const StepperProgress = () => {
-    const classes = useStyles();
-    const theme = useTheme();
+	const classes = useStyles();
+	const theme = useTheme();
 
-    const [activeStep, setActiveStep] = React.useState(null);
-    const [steps, setSteps] = useState([]);
-    const [clickedStep, setClickedSteps] = useState({});
-    useEffect(() => {
-        getStatus().then((res) => {
-            res.data.map((step, i) =>
-                step.current === true
-                    ? setActiveStep(i) || setClickedSteps(res.data[i - 1])
-                    : null
-            );
-            setSteps(res.data);
-        });
-    }, []);
+	const [steps, setSteps] = useState([]);
+	const [clickedStep, setClickedSteps] = useState({});
 
-    const allStepsCompleted = () => {
-        if (steps.length > 0) {
-            return steps[steps.length - 1].completed;
-        }
-    };
+	const mySteps = [{ active: false , completed: true, name: 'הכנת תכנית', index: 0 }, 
+		{ active: false ,  name: 'על שולחן הוועדה', index: 1,  completed: true }, 
+		{ active: false ,  name: 'הסכמה עקרונית', index: 2,  completed: true }, 
+		{ active: true ,  name: 'התנגדויות והערות הציבור', index: 3, completed: false  },
+		{ active: false , name: 'תכנית מאושרת', index: 4, completed: false }
+	];
 
-    const handleStep = (step) => () => {
-        setActiveStep(step);
-    };
+	// useEffect(()=> {
+	// 	setSteps(mySteps);
+	// 	// setActiveStep(3);
+	// }, []);
+	useEffect(() => {
+	    // setSteps([{active}])
+		getStatus().then((res) => {
+			// res.data.map((step, i) =>
+			// 	step.current === true
+			// 		? setActiveStep(i) || setClickedSteps(res.data[i - 1])
+			// 		: null
+			// );
+			setSteps(res.data);
+		});
+	}, []);
 
-    function QontoStepIcon(props) {
-        const classes = useQontoStepIconStyles();
-        const { active, completed } = props;
-        return (
-            <div
-                className={clsx(classes.root, {
-                    [classes.active]: active,
-                })}
-            >
-                {completed ? (
-                    <div className={classes.completed} />
-                ) : (
-                    <div className={classes.circle} />
-                )}
-            </div>
-        );
-    }
+	const allStepsCompleted = () => {
+		if (steps.length > 0) {
+			return steps[steps.length - 1].completed;
+		}
+	};
 
-    return (
-        <div className={classes.root}>
-            <StepperStyle
-                connector={''}
-                alternativeLabel
-                activeStep={activeStep}
-            >
-                {steps.map((step, index) => {
-                    const stepProps = {};
-                    const buttonProps = {};
+	const activeStep = useMemo(()=> {
+		// Returning the lowest index of the steps that is not completed
+		return minBy(filter(steps, (step)=> !step.completed), 'index')?.index || 0 ;
+	}, [steps]);
 
-                    return (
-                        <Step
-                            key={index}
-                            {...stepProps}
-                            onClick={() =>
-                                steps[index].completed &&
+	const handleStep = (step) => () => {
+		// TODO: don't know
+		// setActiveStep(step);
+	};
+
+
+	function QontoStepIcon(props) {
+		const classes = useQontoStepIconStyles();
+		const { active, completed } = props;
+		
+		return (
+			<div
+				className={clsx(classes.root, {
+					[classes.active]: active,
+				})}
+			>
+				{completed ? (
+					<div className={classes.completed} />
+				) : (
+					<div className={classes.circle} />
+				)}
+			</div>
+		);
+	}
+
+	return (
+		<div className={classes.root}>
+			<StepperStyle
+				connector={''}
+				alternativeLabel
+				activeStep={activeStep}
+			>
+				{steps.map((step, index) => {
+					const stepProps = {};
+					const buttonProps = {};
+
+					return (
+						<Step
+							key={index}
+							{...stepProps}
+							onClick={() =>
+								steps[index].completed &&
                                 setClickedSteps(steps[index])
-                            }
-                        >
-                            <StepButtonStyle
-                                index={index}
-                                disabled
-                                onClick={handleStep(index)}
-                                completed={steps[index].completed}
-                                activestep={activeStep}
-                                stepcomplited={steps[index].completed}
-                                {...buttonProps}
-                            >
-                                <StepLabel
-                                    StepIconComponent={QontoStepIcon}
-                                ></StepLabel>
-                            </StepButtonStyle>
-                            <LabelStep>{step.name}</LabelStep>
-                        </Step>
-                    );
-                })}
-            </StepperStyle>
-            <div>
-                {allStepsCompleted() ? (
-                    <div>
-                        <Typography className={classes.instructions}>
+							}
+						>
+							<StepButtonStyle
+								index={index}
+								disabled
+								onClick={handleStep(index)}
+								completed={steps[index].completed}
+								activestep={activeStep}
+								stepcomplited={steps[index].completed}
+								{...buttonProps}
+							>
+								<StepLabel
+									StepIconComponent={QontoStepIcon}
+								></StepLabel>
+							</StepButtonStyle>
+							<LabelStep>{step.name}</LabelStep>
+						</Step>
+					);
+				})}
+			</StepperStyle>
+			<div>
+				{allStepsCompleted() ? (
+					<div>
+						<Typography className={classes.instructions}>
                             התוכנית אושרה בתאריך:
-                        </Typography>
-                    </div>
-                ) : (
-                    <div>
-                        <Typography className={classes.instructions}>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    width: '100%',
-                                    justifyContent: 'space-between',
+						</Typography>
+					</div>
+				) : (
+					<div>
+						<Typography className={classes.instructions}>
+							<div
+								style={{
+									display: 'flex',
+									width: '100%',
+									justifyContent: 'space-between',
 
-                                    boxShadow:
+									boxShadow:
                                         ' 0px -2px 20px rgba(0, 0, 0, 0.08)',
-                                    borderRadius: '12px 12px 0 0',
-                                    padding: '12px 24px',
-                                }}
-                            >
-                                <div>{clickedStep.description}</div>
-                                <div>{clickedStep.date}</div>
-                            </div>
-                        </Typography>
-                        <div
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <div>איך אפשר להשפיע על התהליך?</div>
-                            <Button text="מידע נוסף" altColor />
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+									borderRadius: '12px 12px 0 0',
+									padding: '12px 24px',
+								}}
+							>
+								<div>{clickedStep.description}</div>
+								<div>{clickedStep.date}</div>
+							</div>
+						</Typography>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'center',
+							}}
+						>
+							<div>איך אפשר להשפיע על התהליך?</div>
+							<Button text="מידע נוסף" altColor />
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	);
 };
