@@ -452,6 +452,8 @@ const fetchPlanStatus = () => {
 					}
 					catch (err) {
 						Log.error('Error:', err.message);
+						const now = moment().format('YYYY-MM-DD HH:mm:ss');
+						await plan.save({ 'last_visited_status': now });
 					}
 				});
 			}));
