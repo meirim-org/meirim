@@ -15,7 +15,17 @@ Things you need to install:
 
 * Git
 * Node.js (we support and run on version 14.x)
-* MySQL (required only for the backend & crawler)
+* MySQL (required only for the backend & crawler) Version 5.7
+
+#### Installing meirim's CLI tool
+
+Run the following command to install the `meirim` command-line application:
+
+```bash
+$ sudo ./cli/install_dev_env.sh
+```
+
+#### Installing client and server
 
 Once you have these you can clone the code:
 
@@ -102,6 +112,11 @@ $ npm run crawl
 
 Tests require all prerequisites to be fulfilled and a database instance to be available at port 33060 on localhost. The odd port is for preventing people from running the tests on development databases accidentally (and can be changed by overriding the test section at [server/config/default.json](server/config/default.json)).
 
+If you use docker to run the MYSQL, you may use this command to lift a docker for testing
+```bash
+docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
+```
+
 ### Backend tests
 
 ```bash
@@ -149,6 +164,7 @@ $ crontab -e
 0 14 * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/logs/combined.log 2>&1
 * * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
 30 * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/aggregate_views >> /path_to_code/meirim/logs/combined.log 2>&1
+15 * * * * cd /home/ec2-user/meirim/server && node bin/plan_status_change >> /home/ec2-user/meirim/server/logs/combined.log 2>&1
 ```
 
 ## Further info
@@ -161,6 +177,8 @@ We are thankful for any comments, suggestions, issue reports and pull requests a
 We will do our best to acknowledge, review and reply to these contributions to the best of our abilities (we are all volunteers).
 
 For methods of communicating with us, please see our [website](https://meirim.org).
+
+Issues are assigned a label 'Welcome' are suitable for first time contribution to meirim. You can see the full list here: https://github.com/meirim-org/meirim/labels/%F0%9F%99%8B%E2%80%8D%E2%99%80%EF%B8%8F%20Welcome
 
 ## Authors
 

@@ -23,7 +23,6 @@ import {
 	unsubscribeUserToPlan,
 	subscribeUserToPlan,
 } from './controller';
-import { StepperProgress } from 'components/StepperProgress';
 
 const Plan = ({ isMobile, isTablet, match }) => {
 	const { id: planId } = useParams();
@@ -135,8 +134,6 @@ const Plan = ({ isMobile, isTablet, match }) => {
 					path={match.url + '/info'}
 					render={(props) => <PlanningInfoTab {...props} />}
 				/>
-				{/* <StepperProgress /> */}
-
 				<Route
 					path={match.url + '/comments'}
 					render={(props) => (

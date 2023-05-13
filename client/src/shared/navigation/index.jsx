@@ -12,7 +12,7 @@ import { gaPageView } from 'utils';
 
 const Navigation = ({isMobile, isTablet}) => {
 	const dispatch = useDispatch();
-	const { isAuthenticated, user } = UserSelectors();
+	const { isAuthenticated, user, isAdmin } = UserSelectors();
 	
 	const logoutHandler = async () => {
 		const response = await logout();
@@ -30,7 +30,7 @@ const Navigation = ({isMobile, isTablet}) => {
 		<React.Fragment>
 			{isMobile() || isTablet() ?
 				<MobileNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/> :  
-				<DesktopNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated}/>
+				<DesktopNavBar logoutHandler={logoutHandler} user={user} isAuthenticated={isAuthenticated} isAdmin={isAdmin}/>
 			}
 		</React.Fragment>
 	);

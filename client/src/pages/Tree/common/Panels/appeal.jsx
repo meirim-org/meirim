@@ -1,12 +1,12 @@
-import React from 'react';
-import { TabPanel, TabBox, Typography, Button } from 'shared';
 import { useTheme } from '@material-ui/styles';
-import * as SC from './style';
+import { useTranslation } from 'locale/he_IL';
+import React from 'react';
+import { Button, TabBox, TabPanel, Typography } from 'shared';
 import { treeAppealGuideUrl } from '../../constants';
-import t from 'locale/he_IL';
+import * as SC from './style';
 
 const TreeAppealPanel = () => {
-
+	const { t } = useTranslation(); 
 	const theme = useTheme();
 
 	return (

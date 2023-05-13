@@ -1,6 +1,6 @@
 export const members = [
 	{
-		name:`ד"ר אד' טליה מרגלית`,
+		name:`פרופ' אד' טליה מרגלית`,
 		title:`מייסדת ויו"ר ועד מנהל`,
 		order:1,
 		photo:'talia'
@@ -21,7 +21,7 @@ export const members = [
 		
 	},
 	{
-		name:` אד' יונתן דורטהיימר`,
+		name:`ד"ר אד' יונתן דורטהיימר `,
 		title:`מייסד`,
 		order:4,
 		photo:'yonatan'
@@ -41,24 +41,17 @@ export const members = [
 		
 	},
 	{
-		name:`כרם ואן מיל`,
-		title:`מנהלת קהילה`,
-		order:7,
-		photo:'kerem'
-		
-	},
-	{
-		name:`אד' בוריס פלוטניקוב`,
-		title:`פיתוח תוכנה`,
-		order:8,
-		photo:'boris'
-		
-	},
-	{
 		name:`גל גנדלר`,
 		title:`פיתוח תוכנה`,
-		order:9,
+		order:7,
 		photo:'gal'
+		
+	},
+	{
+		name:`כרם ואן מיל`,
+		title:`מנהלת קהילה`,
+		order:9,
+		photo:'kerem'
 		
 	},
 	{
@@ -68,11 +61,18 @@ export const members = [
 		photo:'galia'
 		
 	},
+	// {
+	// 	name:`דור זומר`,
+	// 	title:`שיווק ואסטרטגיה`,
+	// 	order:11,
+	// 	photo:'dor'
+		
+	// },
 	{
-		name:`דור זומר`,
-		title:`שיווק ואסטרטגיה`,
+		name:`לישי סוקול`,
+		title:`מעצב מוצר`,
 		order:11,
-		photo:'dor'
+		photo:'lishay'
 		
 	},
 	{
@@ -82,13 +82,13 @@ export const members = [
 		photo:'hiba'
 		
 	},
-	{
-		name:`יואב בן שלום`,
-		title:`צוות מוצר`,
-		order:13,
-		photo:'yoav'
+	// {
+	// 	name:`יואב בן שלום`,
+	// 	title:`צוות מוצר`,
+	// 	order:13,
+	// 	photo:'yoav'
 		
-	},
+	// },
 	{
 		name:`אד' מרינה ירמוננוק`,
 		title:`מחקר וייעוץ תכנוני`,
@@ -98,7 +98,7 @@ export const members = [
 	},
 	{
 		name:`נועה ויכנסקי`,
-		title:`מובילת עיצוב`,
+		title:`עיצוב UX/UI`,
 		order:15,
 		photo:'noa'
 		
@@ -110,25 +110,53 @@ export const members = [
 		photo:'idit'
 		
 	},
-	{
-		name:`רות אברהם `,
-		title:`מחקר וייעוץ תכנוני`,
-		order:17,
-		photo:'ruth'
+	// {
+	// 	name:`רות אברהם `,
+	// 	title:`מחקר וייעוץ תכנוני`,
+	// 	order:17,
+	// 	photo:'ruth'
 		
-	},
-	{
-		name:`שרה גדז'`,
-		title:`מעצבת UI / UX`,
-		order:18,
-		photo:'sarah'
+	// },
+	// {
+	// 	name:`שרה גדז'`,
+	// 	title:`מעצבת UI / UX`,
+	// 	order:18,
+	// 	photo:'sarah'
 		
-	},
+	// },
 	{
 		name:`תומר לאור`,
 		title:`מנהל נתונים`,
 		order:19,
 		photo:'tomerL'
+		
+	},
+	{
+		name:`סאן דרי`,
+		title: 'DevOps',
+		order:20,
+		photo:'sun'
+		
+	},
+	{
+		name:`אד׳ טל ישי`,
+		title:`קידום מדיניות`,
+		order:21,
+		photo:'tal'
+		
+	},
+	{
+		name:`אורי הירש`,
+		title:`מאפין UX`,
+		order:22,
+		photo:'ori'
+		
+	},
+	{
+		name:`דניאל גל`,
+		title:`תיאום פרויקטים`,
+		order:23,
+		photo:'daniel'
 		
 	},
 ];

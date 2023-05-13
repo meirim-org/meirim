@@ -1,14 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography } from 'shared';
-import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Moment from 'react-moment';
-//import {  Chip } from '@material-ui/core';
-//import { planTerms } from 'pages/Plan/utils';
+import { TabBox, TabPanel, Typography } from 'shared';
 import * as SC from './style';
 
 const DetailsPanel = ({ status, type, lastUpdate, url }) => {
+	const { t } = useTranslation();
 	const theme = useTheme();
 	
 	return (

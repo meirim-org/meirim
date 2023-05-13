@@ -21,7 +21,8 @@ class Person extends BaseModel {
 			about_me: 'string',
 			address: 'string',
 			status: ['required', 'integer'], 
-			admin: ['integer']
+			admin: ['integer'],
+			last_email_sent: ['datetime'],
 		};
 	}
 
@@ -30,7 +31,7 @@ class Person extends BaseModel {
 	}
 
 	get hidden () {
-		return ['password', 'admin', 'status'];
+		return ['password', 'status'];
 	}
 
 	get hasTimestamps() {
@@ -54,7 +55,7 @@ class Person extends BaseModel {
 	assignValues (model) {
 		model.attributes.email = model.attributes.email.toLowerCase().trim();
 		model.attributes.type = personTypes[model.attributes.type];
-		return Person.verifyEmail(model.attributes.email);
+		return true;
 	}
 
 	getActivationToken () {
@@ -174,6 +175,7 @@ class Person extends BaseModel {
 			else return true;
 		}); 
 	}
+
 	 /**
    * Verify and email returning a promise
    * @param {string} email
@@ -209,6 +211,53 @@ class Person extends BaseModel {
 					}
 				}
 			);
+		});
+	}
+
+	static getPersonToNotify (daysAgo) {
+		const options = userOptions || {};
+		if (!options.limit) {
+			options.limit = 1;
+		}
+		return Plan.query(qb => {
+			qb.where('sent', '=', '0');
+			if (options.OBJECTID) {
+				qb.where('OBJECTID', '=', options.OBJECTID);
+			}
+		}).fetchPage({
+			pageSize: options.limit,
+			columns: [
+				'id',
+				'data',
+				'goals_from_mavat',
+				'main_details_from_mavat',
+				'geom',
+				'jurisdiction'
+			]
+		});
+	}
+
+	static getPersonToNotify (daysAgo) {
+		const options = userOptions || {};
+		if (!options.limit) {
+			options.limit = 5;
+		}
+		return Plan.query(qb => {
+			qb.where('last_updated', '<', daysAgo);
+			// Fetch all the plans that were changed over the last x days
+			// and that this user has alerts that fall within 
+			qb.where('last_updated', '<', daysAgo);
+			
+		}).fetchPage({
+			pageSize: options.limit,
+			columns: [
+				'id',
+				'data',
+				'goals_from_mavat',
+				'main_details_from_mavat',
+				'geom',
+				'jurisdiction'
+			]
 		});
 	}
 }

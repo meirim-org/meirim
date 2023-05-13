@@ -102,8 +102,8 @@ describe('Emails', function() {
 		// set up an alert for the first user
 		const firstUserAlertReq = {
 			body: {
-				address: 'רימון 1 ערד',
-				radius: 1
+				address: 'מואב 59 ערד',
+				radius: '1'
 			},
 			session: {
 				person: firstUserReq.session.person.attributes
@@ -122,7 +122,7 @@ describe('Emails', function() {
 		const secondUserAlertReq = {
 			body: {
 				address: 'קניון ערד',
-				radius: 1
+				radius: '1'
 			},
 			session: {
 				person: secondUserReq.session.person.attributes
@@ -146,6 +146,7 @@ describe('Emails', function() {
 				OBJECTID: 1,
 				PLAN_COUNTY_NAME: 'ערד',
 				PL_NUMBER: '1-1',
+				MP_ID: '123132',
 				PL_NAME: 'תוכנית 1',
 				PL_URL: 'http://url',
 				STATION_DESC: 'מאושרות'
@@ -194,6 +195,7 @@ describe('Emails', function() {
 				PL_NUMBER: '2-1',
 				PL_NAME: 'תוכנית 2',
 				PL_URL: 'http://url',
+				MP_ID: '456456',
 				STATION_DESC: 'מאושרות'
 			},
 			geometry: {

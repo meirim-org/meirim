@@ -4,7 +4,7 @@
 context('Register and login', () => {
   // emails won't actually be sent since we are using ethereal as the
   // smtp service when running these tests
-  const userEmail = `kl2x5pwgrbhyps4s+${Date.now()}@ethereal.email`;
+  const userEmail = `rnd+${Date.now()}@meirim.org`;
 
   beforeEach(() => {
     cy.viewport('macbook-13');
@@ -58,14 +58,24 @@ context('Register and login', () => {
 
       cy.get('#register-address-input')
         .type('myaddres')
-        .get('#register-aboutme-input')
+      
+      cy.get('#register-type-input').click();
+
+      cy.wait(100);
+
+      cy.get('.MuiMenuItem-root').eq(1).click()
+
+        
+      cy.get('#register-aboutme-input')
         .type('aboutmeee');
 
       cy.get('#register-send-form-button')
         .click();
 
-      cy.get("#register-emailsent-sucess")
-        .should('be.visible');
+      cy.wait('@signup').then(xhr => {
+        cy.get("#register-emailsent-sucess")
+        .should('be.visible');  
+      });
     });
   });
 
@@ -109,7 +119,7 @@ context('Register and login', () => {
       cy.get('div.alert-danger')
         .should('not.be.visible');
 
-      cy.get('form.rectangle > .container-title')
+      cy.get('#alert-map-container > .container-title')
         .should('be.visible');
 
       cy.url().should('include', '/alerts');

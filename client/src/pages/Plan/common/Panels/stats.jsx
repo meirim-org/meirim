@@ -1,16 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Chart } from 'react-charts';
-import { TabPanel, TabBox, Typography, Text } from 'shared';
-import { renderMultiplier, renderPercent } from 'utils';
-import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import { series, axes } from '../../utils';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Chart } from 'react-charts';
+import { TabBox, TabPanel, Text, Typography } from 'shared';
+import { renderMultiplier, renderPercent } from 'utils';
+import { axes, series } from '../../utils';
 import * as SC from './style';
 
-export const StatsPanel = ({ dataArea, textArea, }) => {
+export const StatsPanel = ({ dataArea, textArea }) => {
+	const { t } = useTranslation();
 	const theme = useTheme();
-	if (!dataArea || !dataArea[0] || !dataArea[0].data.length) return null;
+	if (!dataArea || !dataArea[0] || !dataArea[0].data.length || (dataArea[0].data[0].y ===0 && dataArea[1].data[0].y ===0 )) return null;
 
 	return (
 		<TabPanel>

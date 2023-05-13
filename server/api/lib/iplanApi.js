@@ -1,7 +1,8 @@
-const Request = require('request-promise');
+const axios = require('axios');
 const GeoJSON = require('esri-to-geojson');
 const Bluebird = require('bluebird');
 const _ = require('lodash');
+const { map, chunk, reduce, extend, get } = require('lodash');
 // const proj4 = require('proj4');
 const reproject = require('reproject');
 const Config = require('../lib/config');
@@ -12,6 +13,8 @@ const BASE_AGS_URL =
 // "https://ags.iplan.gov.il/arcgis/rest/services/" +
 // "PlanningPublic/Xplan_2039/MapServer";
 
+const MAVAT_SERVICE_ID = 1;
+
 const options = {
 	rejectUnauthorized: false,
 	headers: {
@@ -21,17 +24,18 @@ const options = {
 };
 
 const fields = [
-	'OBJECTID',
-	'Shape',
-	'PLAN_AREA_CODE',
-	'JURSTICTION_CODE',
-	'PLAN_COUNTY_NAME',
-	'PLAN_COUNTY_CODE',
-	'ENTITY_SUBTYPE_DESC',
-	'PL_NUMBER',
-	'PL_NAME',
-	'PL_AREA_DUNAM',
-	'DEPOSITING_DATE',
+	'objectid',
+	'shape',
+	//	'plan_area_code',
+	//	'jurstiction_code',
+	'plan_county_name',
+	//	'plan_county_code',
+	'entity_subtype_desc',
+	'pl_number',
+	'pl_name',
+	'pl_area_dunam',
+	'depositing_date',
+	'mp_id',
 	// 'DATE_SAF',
 	// 'PL_LAST_DEPOSIT_DATE',
 	// 'PL_REJECTION_DATE',
@@ -39,18 +43,18 @@ const fields = [
 	// 'מטרות',
 	// 'PQ_AUTHORISED_QUANTITY_110',
 	// 'PQ_AUTHORISED_QUANTITY_120',
-	'PL_DATE_8',
-	'PL_LANDUSE_STRING',
-	'STATION',
-	'STATION_DESC',
-	'PL_BY_AUTH_OF',
-	'PL_URL',
-	'Shape_Area',
-	'QUANTITY_DELTA_120',
-	'QUANTITY_DELTA_125',
-	'LAST_UPDATE',
-	'PL_ORDER_PRINT_VERSION',
-	'PL_TASRIT_PRN_VERSION'
+	'pl_date_8',
+	'pl_landuse_string',
+	//	'station',
+	'station_desc',
+	'pl_by_auth_of',
+	'pl_url',
+	'shape_area',
+	'quantity_delta_120',
+	'quantity_delta_125',
+	'last_update',
+	'pl_order_print_version',
+	'pl_tasrit_prn_version'
 ];
 
 // const EPSG2039 = proj4.Proj(
@@ -60,28 +64,55 @@ const fields = [
 const EPSG3857 =
 	'+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs';
 
-const getBlueLines = () => {
-	const url = `${BASE_AGS_URL}/0/query?f=json&outFields=${fields.join(
+// TODO: save the links of the new website and the old website
+const buildMavatURL = (serviceId, fieldsToFill, whereClause, return_geom) => {
+	return `${BASE_AGS_URL}/${serviceId}/query?f=json&outFields=${fieldsToFill.join(
 		','
-	)}&returnGeometry=true&where=OBJECTID>0&orderByFields=LAST_UPDATE DESC&outSR=3857`;
-	const requestOptions = _.clone(options);
-	Log.debug(url);
-	requestOptions.uri = url;
-	return Request(requestOptions).then(data => {
-		const geojson = GeoJSON.fromEsri(data, {});
+	)}&returnGeometry=${return_geom}&where=${whereClause}&orderByFields=last_update DESC&outSR=3857`;
+};
+
+
+const getPlanMPID = (planUrl) => {
+	var regex = 'https://mavat.iplan.gov.il/SV4/1/(.+)/310';
+	const res = new RegExp(regex).exec(planUrl);
+	if (res && res.length > 0) return res[1];
+};
+
+const getBlueLines = async () => {
+	// we need MP_ID field to know the id in the new mavat website.
+	// xplan doesn't have MP_ID in the polygons API (service id of 0)
+	// so we query the centroid API (service id of 1) as well in order to get MP_ID.
+	const urlWithPolygons = buildMavatURL(MAVAT_SERVICE_ID, fields, 'objectid > 0', 'true');
+
+	try {
+		const responseWithPolygons = await axios.get(urlWithPolygons, options);
+		const geojson = GeoJSON.fromEsri(responseWithPolygons.data, {});
 		Log.debug('Got', geojson.features.length, 'plans');
-		return Bluebird.reduce(
+
+		// Need to populate all plans with their MP_ID
+		// TODO- export to a mapping function
+		for (const datum of geojson.features) {
+			for (let prop in datum.properties) {
+				datum.properties[prop.toUpperCase()] = datum.properties[prop];
+				delete datum.properties[prop];
+			}
+			const agamId = datum.properties.MP_ID || getPlanMPID(datum.properties.PL_URL);
+			if (agamId) {
+				datum.properties.MP_ID = agamId;
+				datum.properties.plan_new_mavat_url = datum.properties.PL_URL;
+			}
+		}
+		return Bluebird.map(
 			geojson.features,
-			(coll, datum) => {
-				// overriding geomerty with WGS84 coordinates
-				const res = Object.assign({}, datum, {
-					geometry: reproject.toWgs84(datum.geometry, EPSG3857)
-				});
-				return coll.concat(res);
-			},
-			[]
+			(datum) => Object.assign({}, datum, {
+				geometry: reproject.toWgs84(datum.geometry, EPSG3857) })
 		);
-	});
+
+	} catch (error) {
+		Log.error('Failed getting blue lines plans', error);
+		return [];
+	}
+
 };
 
 const getPlanningCouncils = () => {
@@ -94,5 +125,6 @@ const getPlanningCouncils = () => {
 
 module.exports = {
 	getBlueLines,
-	getPlanningCouncils
+	getPlanningCouncils,
+	buildMavatURL
 };

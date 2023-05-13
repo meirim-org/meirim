@@ -13,6 +13,8 @@ const File = require('./file');
 const Tag = require('./tag');
 const PlanTag = require('./plan_tag');
 const PlanAreaChanges = require ('./plan_area_changes');
+const PlanStatusChange = require('./plan_status_change');
+const Status = require('./status');
 
 module.exports = {
 	ArchiveNotification,
@@ -29,5 +31,7 @@ module.exports = {
 	File,
 	Tag,
 	PlanTag,
-	PlanAreaChanges
+	PlanAreaChanges,
+	PlanStatusChange,
+	Status
 };

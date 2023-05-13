@@ -1,11 +1,12 @@
+import { useTranslation } from 'locale/he_IL';
 import React from 'react';
-import styled from 'styled-components';
-import SearchBox from './SearchBox';
-import homepageImage from '../../assets/homepage.svg';
-import homepageMobileImage from '../../assets/homepage-mobile.svg'
-import { Link, Typography } from 'shared';
+// import { Link, Typography } from 'shared';
 import { device } from 'style';
-import t from 'locale/he_IL';
+import styled from 'styled-components';
+import homepageMobileImage from '../../assets/homepage-mobile.svg';
+import homepageImage from '../../assets/homepage.svg';
+import SearchBox from './SearchBox';
+import Banner from './Banner';
 
 const Image = styled.div`
     height: 288px;
@@ -38,7 +39,6 @@ const Cover = styled.div`
 
 const Section = styled.section`
     width: 100%;
-    margin-bottom: 20px;
     position: relative;
 
     @media ${device.tablet} {
@@ -52,7 +52,7 @@ const H1 = styled.h1`
     text-align: center;
     color: #270E78;
     font-size: 36px;
-    line-height: 54px;
+    line-height: 42px;
     padding-right: 16px;
     z-index: 1;
     margin-top: 0.1em;
@@ -61,62 +61,83 @@ const H1 = styled.h1`
 
     @media ${device.tablet} {
         text-align: right;
-        font-size: 48px;
-        line-height: 60px;
+        font-size: 56px;
+        line-height: 64.5px;
         padding-right: 0;
         margin-top: 0;
         margin-bottom: 16px;
         background-color: rgb(252 249 255 / 85%);
         display: inline;
+        font-weight: 700;
     }
 `;
 
-const Paragraph = styled(Typography)`
-    width: 100%;
+const H3 = styled.h3`
     text-align: center;
-    font-size: 16px;
-    line-height: 24px;
-    max-width: 328px;
-    margin: 0.1em auto;
+    color: #270E78;
+    font-size: 24px;
+    line-height: 30px;
     padding-right: 16px;
     z-index: 1;
-
-    a {
-        font-size: 16px;
-    }
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    font-weight: 600;
 
     @media ${device.tablet} {
         text-align: right;
-        margin: 24px 0 0;
-        max-width: 550px;
-        font-size: 20px;
+        font-size: 36px;
+        line-height: 42px;
         padding-right: 0;
+        margin-top: 0;
+        margin-bottom: 16px;
         background-color: rgb(252 249 255 / 85%);
-
-        a {
-            font-size: 20px;
-        }
+        width: 40%;
     }
-
 `;
 
+// const Paragraph = styled(Typography)`
+//     width: 100%;
+//     text-align: center;
+//     font-size: 16px;
+//     line-height: 24px;
+//     max-width: 328px;
+//     margin: 0.1em auto;
+//     padding-right: 16px;
+//     z-index: 1;
+
+//     a {
+//         font-size: 16px;
+//     }
+
+//     @media ${device.tablet} {
+//         text-align: right;
+//         margin: 24px 0 0;
+//         max-width: 550px;
+//         font-size: 20px;
+//         padding-right: 0;
+//         background-color: rgb(252 249 255 / 85%);
+
+//         a {
+//             font-size: 20px;
+//         }
+//     }
+// `;
+
 const TopSection = () => {
-	return (
+	const { t } = useTranslation();
+
+	return (<>
 		<Section>
 			<Image/>
-            <Cover>
-                <H1>{t.homepageMainTitle}</H1>
-                <Paragraph as="p" variant="paragraphText" mobileVariant="paragraphText">
-                    {t.homepageMainSubTitleA}
-                    <Link text={t.homepageMainSubTitlePlansLinkText} url="/plans/" textDecoration="none"/>
-                    {t.homepageMainSubTitleB}
-                    <Link text={t.homepageMainSubTitleTreesLinkText} url="/trees/" textDecoration="none"/>
-                    .
-                </Paragraph>
-                <SearchBox />
-            </Cover>
+			<Cover>
+                <H3>{t.homepageMainTopTitle}</H3>
+				<H1>{t.homepageMainTitle}</H1>
+				<SearchBox />
+			</Cover>
 		</Section>
-	)
-}
+        <Banner/>
+        </>
+	);
+};
 
 export default TopSection;

@@ -1,37 +1,39 @@
-import React from 'react';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
-import { openModal } from 'redux/modal/slice';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { TextInput, Button, Link } from 'shared';
+import { openModal } from 'redux/modal/slice';
+import { Button, Link, TextInput } from 'shared';
 import * as SC from './style';
 
 const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const dispatch = useDispatch();
 	const { name, email, password } = values;
-	const { nameError, emailError, passwordError } = errors;
+	const { t } = useTranslation();
 
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
+				<SC.Title>{t.joinMeirimCommunity}</SC.Title>
 				<SC.SubTitleWrapper>
-					<SC.SubTitle>כדי להשלים את הפעולה עליכם להיות מחוברים</SC.SubTitle>
+					<SC.SubTitle>{t.loginToCompleteAction}</SC.SubTitle>
 					<SC.SubTitle>
-						<span>כבר רשומים? </span>
-						<Link id="register-signin-link" text="התחברות" onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
+						<span>{t.alreadySignedup}</span>
+						<Link id="register-signin-link" text={t.signin} onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>
 			<SC.InputsWrapper>
-				<SC.InputsTitle>הרשמה למעירים</SC.InputsTitle>
+				<SC.InputsTitle>{t.signupToMeirim} </SC.InputsTitle>
 				<SC.InputWrapper>
 					<TextInput
 						id="register-name-input"
 						name="name"
 						onFocus={inputFocus}
 						onBlur={inputBlur}
-						error={!nameError.isValid}
-						label="שם מלא"
+						error={errors.name !== ''}
+						helperText={errors.name}
+						label={t.fullName}
 						type="text"
 						value={name}
 						onChange={({ target: { value } }) => setValues({ name: value, email, password })}
@@ -41,11 +43,11 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<TextInput
 						id="register-email-input"
 						name="email"
-						helperText={!emailError.isValid && emailError.message ? emailError.message : ''}
 						onFocus={inputFocus}
 						onBlur={inputBlur}
-						error={!emailError.isValid}
-						label="אימייל"
+						error={errors.email !== ''}
+						helperText={errors.email}
+						label={t.emailAddress}
 						type="email"
 						value={email}
 						onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
@@ -54,11 +56,11 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 					<TextInput
 						id="register-password-input"
 						name="password"
-						helperText={!passwordError.isValid && passwordError.message ? passwordError.message : ''}
 						onFocus={inputFocus}
 						onBlur={inputBlur}
-						error={!passwordError.isValid}
-						label="סיסמא"
+						error={errors.password !== ''}
+						helperText={errors.password}
+						label={t.password}
 						type="password"
 						value={password}
 						onChange={({ target: { value } }) => setValues({ name, email, password: value })}
@@ -66,7 +68,7 @@ const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, 
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper>
-				<Button id="register-firststep-button" text="המשך" onClick={handleSubmit} />
+				<Button id="register-firststep-button" text={t.continue} onClick={handleSubmit} />
 			</SC.ButtonWrapper>
 		</SC.MainWrapper>
 	);
@@ -79,10 +81,14 @@ FirstStepSignup.propTypes = {
 		password: PropTypes.string.isRequired,
 	}).isRequired,
 	setValues: PropTypes.func.isRequired,
-	handleSubmit: PropTypes.func.isRequired,
-	errors: PropTypes.object.isRequired,
+	errors: PropTypes.shape({
+		name: PropTypes.string.isRequired,
+		password: PropTypes.string.isRequired,
+		email: PropTypes.string.isRequired
+	}).isRequired,
 	inputFocus: PropTypes.func,
 	inputBlur: PropTypes.func,
+	handleSubmit: PropTypes.func.isRequired,
 };
 
 export default FirstStepSignup;

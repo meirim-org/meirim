@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography } from 'shared';
-import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
 import { Chip } from '@material-ui/core';
-import * as SC from './style';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { TreeSelectors } from 'redux/selectors';
+import { TabBox, TabPanel, Typography } from 'shared';
 import { timeToObjectionText } from '../../utils';
+import * as SC from './style';
 
 const TreeList = ({ trees_per_permit }) => {
-
 	if (!trees_per_permit) return null;
 	if (Object.keys(trees_per_permit).length === 1) {
 		return (
@@ -41,11 +40,14 @@ const TreeList = ({ trees_per_permit }) => {
 }
 
 const TreeDetailsPanel = () => {
+	const { t } = useTranslation();
 	const theme = useTheme();
-	const { treeData: { action, start_date, permit_number, total_trees, trees_per_permit } } = TreeSelectors();
+	const { treeData: { action, permit_number, total_trees, trees_per_permit, last_date_to_objection, url } } = TreeSelectors();
 
 	let treeText = (total_trees === 1) ? 'עץ אחד' : `${total_trees} עצים`;
 	if (total_trees === 0) { treeText = 'לא צוין מספר העצים'};
+	 const valid_permit_number = /meirim/.test(permit_number)? 'לא צוין' : permit_number;
+
 	return (
 		<TabPanel>
 			<TabBox>
@@ -74,8 +76,8 @@ const TreeDetailsPanel = () => {
 						</Typography>
 						<Typography variant="paragraphText" mobileVariant="paragraphText"
 							component="span" color={theme.palette.black}>
-							{start_date && new Intl.DateTimeFormat('he-IL').format(new Date(start_date))}
-							{ ` (${timeToObjectionText(start_date)})`}
+							{last_date_to_objection && new Intl.DateTimeFormat('he-IL').format(new Date(last_date_to_objection))}
+							{ ` (${timeToObjectionText(last_date_to_objection)})`}
 						</Typography>
 					</SC.StatusWrapper>
 				</SC.StatusAndTypeWrapper>
@@ -88,14 +90,14 @@ const TreeDetailsPanel = () => {
 						</Typography>
 						<Typography variant="paragraphText" mobileVariant="paragraphText"
 							component="span" color={theme.palette.black}>
-							{permit_number}
+							{valid_permit_number}
 
 						</Typography>
 					</SC.StatusWrapper>
 				</SC.StatusAndTypeWrapper>
 
 				<SC.UrlWrapper>
-					<a target="_blank" rel="noopener noreferrer" href={'https://www.gov.il/he/departments/guides/pro_felling_trees'}>{t.treePermitOnGovSite}</a>
+					<a target="_blank" rel="noopener noreferrer" href={url}>{t.treePermitOnGovSite}</a>
 					<SC.CustomLinkIcon></SC.CustomLinkIcon>
 				</SC.UrlWrapper>
 

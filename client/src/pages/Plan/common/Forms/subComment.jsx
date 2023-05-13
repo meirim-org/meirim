@@ -1,18 +1,19 @@
-import React, { useState }  from 'react';
+import { TextareaAutosize } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { openModal } from 'redux/modal/slice';
+import { UserSelectors } from 'redux/selectors';
 import { Button } from 'shared';
 import * as SC from './style';
-import t from 'locale/he_IL';
-import { useTheme } from '@material-ui/styles';
-import { TextareaAutosize } from '@material-ui/core';
-import { UserSelectors } from 'redux/selectors';
-import { openModal } from 'redux/modal/slice';
-import { useDispatch } from 'react-redux';
 
 export const SubCommentForm = ({ addSubComment, parentComment, subCommentState, setSubCommentState }) => {
 	const dispatch = useDispatch();
 	const { isAuthenticated } = UserSelectors();
 	const { inputValue } = subCommentState;
+	const { t } = useTranslation();
 	const [isOpen, setIsOpen] = useState(false);
 	const theme = useTheme();
 	const buttonHandler = () => {

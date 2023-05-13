@@ -1,14 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography } from 'shared';
-import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
+import { useTranslation } from 'locale/he_IL';
 import { daysPassed } from 'pages/Plan/utils';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { TabBox, TabPanel, Typography } from 'shared';
 import * as SC from './style';
 
 const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 	const theme = useTheme();
 	const { content, created_at, person: { name }, type } = commentData;
+	const { t } = useTranslation();
 
 	return (
 		<TabPanel>

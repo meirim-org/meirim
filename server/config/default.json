@@ -22,7 +22,8 @@
 	"services": {
 		"schedule": {
 			"iplan": "0 0 0 * * *",
-			"sendPlanningAlerts": "0 0 0 * * *"
+			"sendPlanningAlerts": "0 0 0 * * *",
+			"sendDigestPlanningAlerts": "*/1 * * * *"
 		}
 	},
 	"session": {
@@ -53,7 +54,10 @@
 	"trees": {
 		"rawDataDir": "/tmp/raw_trees",
 		"geoCodingInterval" : 30000,
-		"maxPermits": 5
+		"maxPermits": 5,
+		"haifaUrl" : "https://stg-service-tree-6b3da185.s3.eu-west-1.amazonaws.com/haifa/rptPirsum.xlsx",
+		"hodHasharonUrl": "https://www.hod-hasharon.muni.il/%D7%91%D7%A7%D7%A9%D7%95%D7%AA-%D7%95%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%A0%D7%95%D7%AA-%D7%9B%D7%A8%D7%99%D7%AA%D7%94-2023/",
+		"beerShevaMaxReadPermits": 20
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,
@@ -88,8 +92,12 @@
 				"secure": true,
 				"auth": {
 					"user": "user",
-					"pass": "pass"
+					"pass": "pass",
+					"templatePass":"pass"
 				}
+			},
+			"templates": {
+				"digestPlans": "d-db0b55ab042e4ba9878715acd35c1d6c"
 			}
 		}
 	},
@@ -117,8 +125,22 @@
 			"secure": true,
 			"auth": {
 				"user": "",
-				"pass": ""
-			}
+				"pass": "",
+				"templatePass":""
+			},
+			"templates": {
+				"digestPlans": ""
+			} 
 		}
+	},
+	"uptimeRobot": {
+		"iplanHeartbeatUrl": "https://heartbeat.uptimerobot.com/m792921014-956ad159c92c5627a866c35252d5348617fe05a8",
+		"treeFetchingHeartbeatUrl": "https://heartbeat.uptimerobot.com/m793386085-5b3e0b488d38872fb8420a66c7a05346a08cf309"			
+	},
+	"planStatusChange": {
+		"limit": 15
+	},
+	"proxy": {
+		"apiKey": ""
 	}
 }

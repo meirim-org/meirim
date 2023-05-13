@@ -4,6 +4,7 @@ const Success = require('../view/success');
 const Log = require('../lib/log');
 const Exception = require('../model/exception');
 const { bind } = require('lodash');
+const { map, get } = require('bluebird');
 
 class Controller {
 	constructor (model) {
@@ -78,15 +79,13 @@ class Controller {
 				options.orderByRaw.map((w) => qb.orderBy(w))
 			);
 		}
+
 		return bsQuery
 			.fetchPage({
 				columns,
 				page,
-				pageSize
-			})
-			.then(collection => {
-				Log.debug(this.tableName, 'browse success');
-				return collection;
+				pageSize,
+				withRelated: options.withRelated
 			});
 	}
 
@@ -139,11 +138,12 @@ class Controller {
 			});
 	}
 
-	delete (req) {
+	delete (req, transaction) {
 		const id = parseInt(req.params.id, 10);
 		if (!id) {
 			throw new Exception.NotFound('Nof found');
 		}
+		const options = transaction ? { transacting: transaction } : {}
 		return this.model
 			.forge({
 				[this.id_attribute]: id
@@ -159,7 +159,7 @@ class Controller {
 					' delete success id:',
 					fetchedModel.get('id')
 				);
-				return fetchedModel.destroy(req.body);
+				return fetchedModel.destroy(req.body, options);
 			});
 	}
 

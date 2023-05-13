@@ -6,6 +6,7 @@ module.exports = {
 		if (session && session.person) {
 			me.id = session.person.id;
 			me.name = session.person.name;
+			me.admin = session.person.admin && session.person.admin === '1';
 		}
 		// format collection with pagination
 

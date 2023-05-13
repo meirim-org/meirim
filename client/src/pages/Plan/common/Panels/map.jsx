@@ -1,14 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TabPanel, TabBox, Typography } from 'shared';
-import t from 'locale/he_IL';
 import { useTheme } from '@material-ui/styles';
-import * as SC from './style';
 import Mapa from 'components/Mapa';
+import { useTranslation } from 'locale/he_IL';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { TabBox, TabPanel, Typography } from 'shared';
+import * as SC from './style';
 
 export const MapPanel = (props) => {
 	const { geom } = props;
 	const theme = useTheme();
+	const { t } = useTranslation();
 
 	return (
 		<TabPanel>

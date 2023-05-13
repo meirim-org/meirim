@@ -1,17 +1,18 @@
-import React from 'react';
-import Wrapper from 'components/Wrapper';
-import { fetchUserPlans } from './controller';
-import { PlanCard, Text } from 'shared';
 import { Grid } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import t from 'locale/he_IL';
-import * as SC from './style';
-import { StarIcon } from 'shared/icons';
+import Wrapper from 'components/Wrapper';
 import { CheckIfUserCanAccessPage } from 'hooks';
+import { useTranslation } from 'locale/he_IL';
+import React from 'react';
+import { PlanCard, Text } from 'shared';
+import { StarIcon } from 'shared/icons';
+import { fetchUserPlans } from './controller';
+import * as SC from './style';
 
 const UserPlans = () => {
 	CheckIfUserCanAccessPage();
 	const theme = useTheme();
+	const { t } = useTranslation();
 	const [plans, setPlans] = React.useState([]);
 
 	React.useEffect( () => {

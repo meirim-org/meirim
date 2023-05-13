@@ -1,55 +1,66 @@
-import React from 'react';
+import { useTranslation } from 'locale/he_IL';
 import PropTypes from 'prop-types';
-import {
-	Dropdown, TextInput, TextArea, Button, Link,
-} from '../../shared';
+import React from 'react';
+import { Button, Dropdown, Link, TextArea, TextInput } from '../../shared';
+import { usePersonTypes } from './constants';
 import * as SC from './style';
-import { personTypes } from './constants';
 
-const SecondStepSignup = ({ handleSubmit, values, setValues }) => {
+const SecondStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
+	const personTypes = usePersonTypes();
+	const dropdownOptions = [{
+		value: '',
+		text: '-'
+	}, ...personTypes];
 	const { address, type, aboutme } = values;
+	const { t } = useTranslation();
 
 	return (
 		<SC.MainWrapper>
 			<SC.Titles>
-				<SC.Title>בואו להיות חלק מקהילת מעירים!</SC.Title>
+				<SC.Title>{t.joinMeirimCommunity}</SC.Title>
 			</SC.Titles>
 			<SC.InputsWrapper>
 				<SC.InputWrapper>
 					<TextInput
 						id="register-address-input"
 						name="adress"
-						label="כתובת"
+						label={t.address}
 						type="text"
 						value={address}
 						onChange={({ target: { value } }) => setValues({ type, aboutme, address: value })}
-						helperText="כדי לקבל עדכונים על מה בונים לך ליד הבית" />
+						helperText={t.toGetUpdates} />
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<Dropdown
 						id="register-type-input"
 						value={type}
 						onChange={({ target: { value } }) => setValues({ type: value, aboutme, address }) }
-						options={personTypes}
-						label="מי אני" />
+						options={dropdownOptions}
+						label={t.whoAmI}
+						error={errors.type !== ''}
+						helperText={errors.type}
+						onFocus={() => inputFocus('type')}
+						onBlur={() => inputBlur('type')}
+						required
+					/>
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<TextArea
 						id="register-aboutme-input"
 						value={aboutme}
 						onChange={({ target: { value } }) => setValues({ type, aboutme: value, address })}
-						helperText="כדי ששאר חברי הקהילה יכירו אותך"
-						label="קצת עליך" />
+						helperText={t.soMemembersKnowWhoYouAre}
+						label={t.aboutYou} />
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper smallPadding>
-				<Button id="register-send-form-button" text="הרשמה למעירים" onClick={handleSubmit} />
+				<Button id="register-send-form-button" text={t.signupToMeirim} onClick={handleSubmit} />
 			</SC.ButtonWrapper>
 			<SC.TermsOfUseWrapper>
-				<SC.TermsOfUse>בלחיצה על הכפתור הנך מאשר/ת את </SC.TermsOfUse>
-				<Link id="register-terms-of-use" text="תנאי השימוש" url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
+				<SC.TermsOfUse>{t.youAreConfirming}</SC.TermsOfUse>
+				<Link id="register-terms-of-use" text={t.termsOfUse} url="/terms/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 				<SC.TermsOfUse> ו</SC.TermsOfUse>
-				<Link id="register-terms-of-use" text="מדיניות הפרטיות" url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
+				<Link id="register-terms-of-use" text={t.privacyPolicy} url="/privacy-policy/" fontWeight="700" target="_blank" rel="noopener noreferrer"/>
 			</SC.TermsOfUseWrapper>
 		</SC.MainWrapper>
 	);
@@ -62,6 +73,11 @@ SecondStepSignup.propTypes = {
 		aboutme: PropTypes.string,
 	}).isRequired,
 	setValues: PropTypes.func.isRequired,
+	errors: PropTypes.shape({
+		type: PropTypes.string.isRequired
+	}).isRequired,
+	inputFocus: PropTypes.func,
+	inputBlur: PropTypes.func,
 	handleSubmit: PropTypes.func.isRequired,
 };
 

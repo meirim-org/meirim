@@ -1,9 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { device } from 'style';
-import Wrapper from 'components/Wrapper';
-import { resendActivationLinkToEmail } from './controller';
+/* eslint-disable react/prop-types */
 import { withTheme } from '@material-ui/core/styles';
+import Wrapper from 'components/Wrapper';
+import { useTranslation } from 'locale/he_IL';
+import React from 'react';
+import { device } from 'style';
+import { reportToAnalytics } from 'utils';
+import styled from 'styled-components';
+import { resendActivationLinkToEmail } from './controller';
 
 const MainWrapper = withTheme(styled.div`
     width: 100%;
@@ -37,7 +40,7 @@ const ImageCol = styled.div`
         top: 0;
         right: 0;
         height: 110%;
-        transform: translateX(100%) rotate(3.5deg);
+        transform: tX(100%) rotate(3.5deg);
         transform-origin: top left;
         width: 100%;
     }
@@ -155,27 +158,31 @@ const Link = styled.span`
 `;
 
 const EmailSent = ({ fullPage = true , ...props }) => {
-	let email = ''
+	const { t } = useTranslation();
+	let email = '';
 	if (props && props.location && props.location.state){
-		email = props.location.state.email
+		email = props.location.state.email;
 	}
+
+    reportToAnalytics({
+        event: 'registration-form-complete',
+    });
 	
 	return (
 		<Wrapper fullPage={fullPage}>
 			<MainWrapper style>
 				<ContentCol>
 					<Content>
-						<PreTitle>כמעט סיימנו...</PreTitle>
+						<PreTitle>{t.almostDone}</PreTitle>
 						<Title>
-                            נשאר רק לאשר את
-							<br/>
-                            כתובת האימייל שלך
+                            {t.confirmEmail1}
+                            <br />
+                            {t.confirmEmail2}
 						</Title>
-						<Text id="register-emailsent-sucess">שלחנו לך אימייל - לחיצה על הקישור שבתוכו תשלים את
-                            הרשמתך</Text>
+						<Text id="register-emailsent-sucess">{t.sentYouEmailForConfirmation}</Text>
 						<SmallTextWrapper>
-							<SmallText>המייל לא הגיע? לשליחה חוזרת </SmallText>
-							<Link onClick={()=> resendActivationLinkToEmail(email)}>לחצו כאן</Link>
+							<SmallText>{t.resendEmail}</SmallText>
+							<Link onClick={()=> resendActivationLinkToEmail(email)}>{t.clickHere}</Link>
 						</SmallTextWrapper>
 					</Content>
 				</ContentCol>
@@ -184,7 +191,7 @@ const EmailSent = ({ fullPage = true , ...props }) => {
 				</ImageCol>
 			</MainWrapper>
 		</Wrapper>
-	)
+	);
 };
 
 export default EmailSent;

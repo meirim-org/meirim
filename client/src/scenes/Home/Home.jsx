@@ -1,23 +1,31 @@
-import PropTypes from 'prop-types'
-import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Wrapper from '../../components/Wrapper';
-import t from '../../locale/he_IL';
-import traktor from '../../assets/traktor_op.png';
-import logoSmall from '../../assets/logo_small.png';
-import '../../assets/bootstrap.css';
-import './Home.css';
-import { howItWorks, whatSay } from './constants'
+import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'redux/modal/slice';
+import { reportToAnalytics } from 'utils';
+import '../../assets/bootstrap.css';
+import logoSmall from '../../assets/logo_small.png';
+import traktor from '../../assets/traktor_op.png';
+import Wrapper from '../../components/Wrapper';
+import { useTranslation } from '../../locale/he_IL';
+import { howItWorks, whatSay } from './constants';
+import './Home.css';
 
 const Home = (props) => {
-	const dispatch = useDispatch()
-	const { state } = props.location
+	const dispatch = useDispatch();
+	const { state } = props.location;
+	const { t } = useTranslation();
 
 	useEffect(() => {
-		if (state === 'openRegister') dispatch(openModal({ modalType: 'register' }))
-	}, [state, dispatch])
+		if (state === 'openRegister') {
+			reportToAnalytics({
+				event: 'registration-start',
+				ref: 'menu'
+			});
+			dispatch(openModal({ modalType: 'register' }));
+		};
+	}, [state, dispatch]);
 
 	return (
 		<Wrapper>
@@ -108,10 +116,10 @@ const Home = (props) => {
 			</div>
 		</Wrapper>
 	);
-}
+};
 
 Home.propTypes = {
 	location: PropTypes.object.isRequired
-}
+};
 
-export default Home
+export default Home;

@@ -4,10 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
 import { hotjar } from 'react-hotjar';
-import { authenticated } from 'redux/user/slice'; 
+import { map } from 'lodash';
+import { authenticated, fetchedFavoritePlans } from 'redux/user/slice'; 
 import { closeModal } from 'redux/modal/slice'; 
 import { HOME, ALERTS } from 'router/contants';
 import api from 'services/api';
+import { fetchUserPlans } from 'pages/UserPlans/controller';
 
 export const ValidUserHook = (user) => {
 	const dispatch = useDispatch();
@@ -30,11 +32,15 @@ export const CookieHook = () => {
 	const [ error, setError ] = useState({});
 	useEffect(() => {
 		api.get('/me').then((response) => {
-			const { name, id } = response.me;
+			const { name, id, admin } = response.me;
 			setSuccess(true);
-			dispatch(authenticated({ user: { name, id } }));
+			dispatch(authenticated({ user: { name, id, admin } }));
 			setLoading(false);
 			setResponse(response);
+			return fetchUserPlans(id).then(({ data })=>{
+				const favoritePlans = map(data, 'id');
+				dispatch(fetchedFavoritePlans({ favoritePlans }));
+			});
 		}).catch((err) => {
 			setError(err);
 			setLoading(false);

@@ -10,7 +10,7 @@ on:
 
 jobs:
     test:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         strategy:
             matrix:
@@ -74,7 +74,7 @@ jobs:
 
             - name: serve
               env:
-                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}, "email": {"options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
+                  NODE_CONFIG: '{"database": {"connection": {"host": "localhost", "port": "33060", "user": "root", "password": "password", "database": "test_meirim"}}, "email": {"templates": {"digestPlans": "d-db0b55ab042e4ba9878715acd35c1d6c"}, "options": {"host": "smtp.ethereal.email", "port": 587, "secure": false, "auth": {"user": "${{ steps.get_ethereal_credentials.outputs.user }}", "pass": "${{ steps.get_ethereal_credentials.outputs.pass }}"}}}}'
               working-directory: server
               run: |
                   npm run serve &

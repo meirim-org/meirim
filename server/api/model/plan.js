@@ -1,4 +1,6 @@
 const Bluebird = require('bluebird');
+const moment = require('moment');
+const { get } = require('lodash');
 const Model = require('./base_model');
 const Log = require('../lib/log');
 const Exception = require('./exception');
@@ -11,6 +13,11 @@ const {	notification_types } = require('../constants');
 const Notification = require('./notification');
 const Alert = require('./alert');
 const File = require('./file');
+const { parseLandUses, describeChange, LAND_USES, LAND_USE_CHANGE_UNITS } = require('../service/landUseMappers');
+const { drawStaticMapWithPolygon } = require('../service/staticmap');
+const Tag = require('./tag');
+const StaticMap = require('./staticmap');
+const wkt = require('terraformer-wkt-parser');
 
 class Plan extends Model {
 	get rules () {
@@ -20,6 +27,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: 'string',
 			PL_NUMBER: 'string',
 			PL_NAME: 'string',
+			MP_ID: 'integer',
 			plan_display_name: 'string',
 			PLAN_CHARACTOR_NAME: 'string',
 			data: ['required'],
@@ -31,6 +39,7 @@ class Plan extends Model {
 			// numeric indicator of interestingness. It is update like the views field, but also eroded over time
 			erosion_views: ['required', 'number'],
 			plan_url: 'string',
+			plan_new_mavat_url: 'string',
 			status: 'string',
 			goals_from_mavat: 'string',
 			main_details_from_mavat: 'string',
@@ -52,6 +61,11 @@ class Plan extends Model {
 			attributes.data = JSON.stringify(attributes.data);
 		}
 		return super.format(attributes);
+	}
+
+	tags() {
+		return this.belongsToMany(Tag, 'plan_tag', 'plan_id', 'tag_id');
+		// return this.hasMany(PlanTag, 'plan_id');
 	}
 
 	get hasTimestamps() {
@@ -90,6 +104,7 @@ class Plan extends Model {
 	_creating (model) {
 		return new Promise((resolve) => {
 			// set the geometry's centroid using ST_Centroid function
+			//TODO: return this after the MP_ID migration
 			model.set('geom_centroid', Knex.raw('ST_Centroid(geom)'));
 			resolve();
 		});
@@ -167,9 +182,42 @@ class Plan extends Model {
 
 		return updates;
 	}
+	
+	parseAreaChanges(areaChangesString){
+		if (!areaChangesString) return {};
+		const rawlandUse = JSON.parse(areaChangesString);
+		const changesSummary = parseLandUses(rawlandUse);
 
+		return changesSummary;
+	}
 
-	canRead () {
+	describeHousingChange(){
+		const mappedAreaChange = this.parseAreaChanges(this.get('areaChanges'));
+		return describeChange(mappedAreaChange, LAND_USES.housing, LAND_USE_CHANGE_UNITS.units);
+	}
+
+	staticmap(){
+		return this.hasOne(StaticMap);
+	}
+
+	async getMap(){
+		const existingMap = get(this, 'relations.staticmap.attributes.base64string');
+		if (existingMap) return existingMap;
+		try {
+			const planGeom = this.get('geom');
+			if(!planGeom) return;
+			const mapBase64 = await drawStaticMapWithPolygon(planGeom);
+
+			const mapModel = new StaticMap({ plan_id: this.get('id'), base64string: mapBase64 });
+			mapModel.save();
+			return mapBase64;
+		}
+		catch(error){
+			Log.error('Failed creating a base64 staticmap');
+		}
+	}
+
+	canRead() {
 		return Bluebird.resolve(this);
 	}
 
@@ -325,7 +373,9 @@ class Plan extends Model {
 			geom: iPlan.geometry,
 			PLAN_CHARACTOR_NAME: '',
 			plan_url: iPlan.properties.PL_URL,
-			status: iPlan.properties.STATION_DESC
+			status: iPlan.properties.STATION_DESC,
+			MP_ID: iPlan.properties.MP_ID,
+			plan_new_mavat_url: iPlan.properties.plan_new_mavat_url
 		};
 		if (oldPlan) {
 			oldPlan.set(data);
@@ -340,112 +390,138 @@ class Plan extends Model {
 		const addPlanIdToArray = (chart) => {
 			chart.forEach(row => { row.plan_id = plan.id; });
 		};
-
-		await Bookshelf.transaction(async (transaction) => {
-			await plan.set({
-				goals_from_mavat: mavatData.goals,
-				main_details_from_mavat: mavatData.mainPlanDetails,
-				jurisdiction: mavatData.jurisdiction,
-				areaChanges: mavatData.areaChanges,
-				explanation: mavatData.planExplanation
+		
+		try {
+			await Bookshelf.transaction(async (transaction) => {
+				try{
+					await plan.set({
+						goals_from_mavat: mavatData.goals,
+						main_details_from_mavat: mavatData.mainPlanDetails,
+						jurisdiction: mavatData.jurisdiction,
+						areaChanges: mavatData.areaChanges,
+						explanation: mavatData.planExplanation
+					});
+					
+					await plan.save(null, { transacting: transaction });
+					
+					// delete all of the plan's existing files
+					const fileRows = await File.query(qb => {
+						qb.where('plan_id', plan.id);
+					}).fetchAll({ transacting: transaction }).catch(e => {
+						Log.error(`error fetch plan ${plan.id} file: ${e.message}`);
+					});
+					
+					for (const existingFile of fileRows.models) {
+						try {
+							await existingFile.destroy({ transacting: transaction });
+						} catch (e) {
+							Log.error(`error destroy file: ${e.message}`, e.trace());
+						}
+					}
+		
+					// save all plan files scraped from mavat
+					mavatData.files.forEach(async (file) => {
+						try {
+							if (!file.extension || file.extension.length === 0) {
+								file.extension = 'txt';
+								Log.info(`plan ${plan.id} set file extension to txt, link: ${file.link}`);
+							}
+							await new File({ plan_id: plan.id, ...file }).save(null, { transacting: transaction });
+						} catch (e) {
+							Log.error(`error save plan ${plan.id} file: ${file.link}`, e.message, e.errors);
+						}
+					});
+		
+					// delete existing chart rows since we have no identifiers for the single
+					// rows and so scrape them all again each time
+					for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
+						const chartRows = await modelClass.query(qb => {
+							qb.where('plan_id', plan.id);
+						}).fetchAll({ transacting: transaction }).catch(e => {
+							Log.error(`error fetch plan ${plan.id} chart: ${e.message}`, e.trace());
+						});
+		
+						for (const chartModel of chartRows.models) {
+							await chartModel.destroy({ transacting: transaction });
+						}
+					}
+					
+					if (mavatData.chartsOneEight !== undefined) {
+						const chart181 = mavatData.chartsOneEight.chart181;
+						// add plan_id and origin
+						chart181.forEach(row => {
+							row.plan_id = plan.id;
+							row.origin = '1.8.1';
+						});
+		
+						const chart182 = mavatData.chartsOneEight.chart182;
+						chart182.forEach(row => {
+							row.plan_id = plan.id;
+							row.origin = '1.8.2';
+						});
+		
+						const chart183 = mavatData.chartsOneEight.chart183;
+						chart183.forEach(row => {
+							row.plan_id = plan.id;
+							row.origin = '1.8.3';
+						});
+		
+						const chartsOneEight = chart181.concat(chart182, chart183);
+						for (let i = 0; i < chartsOneEight.length; i++) {
+							try {
+								await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error('error save chart 18', e);
+							}
+						}
+					}
+					
+					const chartFourData = mavatData.chartFour;
+					if (chartFourData !== undefined) {
+						addPlanIdToArray(chartFourData);
+		
+						for (let i = 0; i < chartFourData.length; i++) {
+							try {
+								await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error('error save chart 4', e);
+							}
+						}
+					}
+					
+					const chartFiveData = mavatData.chartFive;
+					if (chartFiveData !== undefined) {
+						addPlanIdToArray(chartFiveData);
+		
+						for (let i = 0; i < chartFiveData.length; i++) {
+							try {
+								await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error('error save chart 5', e);
+							}
+						}
+					}
+					
+					const chartSixData = mavatData.chartSix;
+					if (chartSixData !== undefined) {
+						addPlanIdToArray(chartSixData);
+		
+						for (let i = 0; i < chartSixData.length; i++) {
+							try {
+								await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
+							} catch (e) {
+								Log.error('error save chart 6', e);
+							}
+						}
+					}
+				} catch (e) {
+					Log.error(`error setMavatData tx for plan: ${e.message}`, e.trace());
+				}
+			
 			});
-
-			await plan.save(null, { transacting: transaction });
-
-			// delete all of the plan's existing files
-			const fileRows = await File.query(qb => {
-				qb.where('plan_id', plan.id);
-			}).fetchAll({transacting: transaction});
-			for (const existingFile of fileRows.models) {
-				await existingFile.destroy({transacting: transaction});
-			}
-
-			// save all plan files scraped from mavat
-			mavatData.files.forEach(async (file) => {
-				await new File({ plan_id: plan.id, ...file }).save(null, {transacting: transaction});
-			});
-
-			// delete existing chart rows since we have no identifiers for the single
-			// rows and so scrape them all again each time
-			for (let modelClass of [PlanChartOneEightRow, PlanChartFourRow, PlanChartFiveRow, PlanChartSixRow]) {
-				const chartRows = await modelClass.query(qb => {
-					qb.where('plan_id', plan.id);
-				}).fetchAll({ transacting: transaction });
-
-				for (const chartModel of chartRows.models) {
-					await chartModel.destroy({ transacting: transaction });
-				}
-			}
-
-			if (mavatData.chartsOneEight !== undefined) {
-				const chart181 = mavatData.chartsOneEight.chart181;
-				// add plan_id and origin
-				chart181.forEach(row => {
-					row.plan_id = plan.id;
-					row.origin = '1.8.1';
-				});
-
-				const chart182 = mavatData.chartsOneEight.chart182;
-				chart182.forEach(row => {
-					row.plan_id = plan.id;
-					row.origin = '1.8.2';
-				});
-
-				const chart183 = mavatData.chartsOneEight.chart183;
-				chart183.forEach(row => {
-					row.plan_id = plan.id;
-					row.origin = '1.8.3';
-				});
-
-				const chartsOneEight = chart181.concat(chart182, chart183);
-				for (let i = 0; i < chartsOneEight.length; i++) {
-					try {
-						await new PlanChartOneEightRow(chartsOneEight[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-
-			const chartFourData = mavatData.chartFour;
-			if (chartFourData !== undefined) {
-				addPlanIdToArray(chartFourData);
-
-				for (let i = 0; i < chartFourData.length; i++) {
-					try {
-						await new PlanChartFourRow(chartFourData[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-
-			const chartFiveData = mavatData.chartFive;
-			if (chartFiveData !== undefined) {
-				addPlanIdToArray(chartFiveData);
-
-				for (let i = 0; i < chartFiveData.length; i++) {
-					try {
-						await new PlanChartFiveRow(chartFiveData[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-
-			const chartSixData = mavatData.chartSix;
-			if (chartSixData !== undefined) {
-				addPlanIdToArray(chartSixData);
-
-				for (let i = 0; i < chartSixData.length; i++) {
-					try {
-						await new PlanChartSixRow(chartSixData[i]).save(null, { transacting: transaction });
-					} catch (e) {
-						Log.error(e);
-					}
-				}
-			}
-		});
+	    } catch (e) {
+			Log.error(`error setMavatData for plan: ${e.message}`, e.trace());
+		}
 
 		return plan;
 	}
@@ -478,6 +554,32 @@ class Plan extends Model {
 		return Knex.raw(query);
 	}
 
+	static getPlansByGeometryThatWereUpdatedSince(geometryPolygon, date, limit) {
+		const dateString = moment(date).format('YYYY-MM-DD h:mm');
+		return Plan.query(qb => {
+			qb.where('created_at', '>', dateString);
+			const polygon = wkt.convert(geometryPolygon);
+			qb.whereRaw(`ST_Intersects(geom, ST_GeomFromText("${polygon}", 4326))`);
+		}).fetchPage({
+			pageSize: limit || 5,
+			columns: [
+				'id',
+				'data',
+				'main_details_from_mavat',
+				'geom',
+				'jurisdiction',
+				'PL_NAME',
+				'plan_display_name',
+				'PLAN_COUNTY_NAME',
+				'goals_from_mavat',
+				'areaChanges', 
+				'plan_url',
+				'status'
+			],
+			withRelated: ['staticmap']
+		}).then(res=> res.models);
+	}
+
 	// TODO: actually get the plans we want to tag today, for now getting all of them in dev
 	static async getPlansToTag (options) {
 		return Plan.query(qb => {
@@ -487,9 +589,58 @@ class Plan extends Model {
 		}).fetchAll({
 			columns: [
 				'id',
-				'geom'
+				'geom',
+				'PL_NAME'
 			]
 		});
 	}	
+
+	static getStatusChanges (collection, steps) {
+		// if date is not null, set completed to true
+		steps = steps.concat(collection.map(function(element){
+			element.completed = element.date===null ? false : true;
+			return element;
+		}));
+
+		// find the latest step this plan has reached
+		const maxStep= Math.max(...[-1],...steps.filter(step => step.completed===true ).map(step => step.stepId));
+		Log.debug('Max Step', maxStep);
+
+		/* mark latest step as the current one 
+		/* If there is no plan_status table, set stepId: 1 to completed:True and Current:True, and the rest of the steps to completed:false and current:false 
+		*/
+		steps = steps.map(function(element){
+			element.current = false;
+			if ( (maxStep===-1 && element.stepId===1)) {
+				Log.debug('max step is -1 and current step is 1 so setting current to true, and complete to true for step 1');
+				element.current = true;
+				element.completed = true;
+			} else if (element.stepId===maxStep) {
+				Log.debug('Max step reached so setting current to true for step', maxStep);
+				element.current = true;					
+			} else if (element.stepId<maxStep) {
+				Log.debug(`element.stepId is ${element.stepId} and maxStep is ${maxStep}`);
+				// some status changes are missing, so if a status was reached, assume the previous ones were completed
+				// excpetion: if the plan is canceled, the previous step (approval) shouldn't be completed
+				if ((maxStep===5)&&(element.stepId===maxStep-1)){
+					Log.debug(`Skipping because reaching step 5 does not mean that step 4 happened`);
+					return element;	
+				}
+				Log.debug(`Setting completed to true`);
+				element.completed = true;
+			}
+			return element;
+		});	
+		
+		// if the plan was canceled, set the cancelation date
+		const cancellationDate = maxStep!==5 ? null : steps.find(element => element.stepId === 5).date;
+
+		// remove the RowDataPacket 
+		steps = steps.map((result) => ({
+			...result,
+		})); 	
+		const ret = {"cancellationDate": cancellationDate, "steps": steps};		
+		return ret;
+	}
 }
 module.exports = Plan;

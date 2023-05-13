@@ -12,7 +12,7 @@ const isSHPZip = ({ name, fileIcon }) => {
 };
 
 const isMSG = ({ kind, fileIcon }) => {
-	return kind === 'תכתובת' && fileIcon.includes('file.gif');
+	return (kind === 'תכתובת' || kind.trim() === 'msg') && fileIcon.includes('file.gif');
 };
 
 const getFileType = (file) => {
@@ -53,30 +53,16 @@ const getFileExtension = (file) => {
 	else return '';
 };
 
-const getFileUrl = (openDocString) => {
-	if (openDocString === undefined) {
-		return false;
-	}
-
-	// functionCallText is in the format `openDoc(X, Y)`
-	// where X can be `'6000611696321'` for example
-	// and Y can be `'0F249F3C4F7BC0CB0F1AB48D496389B23D5A3144FBBB0E125CC5472DE98A40AE'` for example
-	// we wish to find X and Y, so we look for substrings that has numbers and letters between two ' chars.
-	const matches = openDocString.match(/'[\dA-Z]+'/g);
-	if (matches === null) {
-		return false;
-	}
-
-	const entityDocId = matches[0].slice(1, matches[0].length - 1); // without the beginning and ending quotes
-	const entityDocNumber = matches[1].slice(1, matches[1].length - 1);
-
-	return `http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=${entityDocId}&edn=${entityDocNumber}&opener=AttachmentError.aspx`;
+const getFileUrl = (id, num) => {
+	if(!id || !num) return false;
+	
+	return `https://mavat.iplan.gov.il/rest/api/Attacments/?eid=${id}&edn=${num}`;
 };
 
 const formatFile = (file) => {
 	return {
 		name: file.name,
-		link: getFileUrl(file.openDoc),
+		link: getFileUrl(file.id, file.num),
 		type: getFileType(file),
 		extension: getFileExtension(file),
 		source: FILE_SOURCES.MAVAT

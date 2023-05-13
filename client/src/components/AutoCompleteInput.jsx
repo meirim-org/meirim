@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,6 +9,22 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Downshift from 'downshift';
 
 import './FilterAutoCompleteMultiple.css';
+
+const AutocompleteWrapper = styled.div`
+  .MuiPaper-elevation1 {
+    display: block !important;
+    position: absolute;
+    min-width: 300px;
+    border: 1px solid #652dd0;
+    border-radius: 0px 0px 8px 8px;
+    z-index: 10000;
+  }
+  @media (max-width: 767px) {
+    .MuiPaper-elevation1 {
+      min-width: 120px !important;
+    }
+  }
+`;
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, loading, ...other } = inputProps;
@@ -154,6 +170,7 @@ class AutocompleteInput extends Component {
               loading
             })}
             {isOpen ? (
+              <AutocompleteWrapper>
               <Paper className={classes.paper} square>
                 {this.getSuggestions(inputValue2).map((suggestion, index) =>
                   renderSuggestion({
@@ -165,6 +182,7 @@ class AutocompleteInput extends Component {
                   })
                 )}
               </Paper>
+              </AutocompleteWrapper>
             ) : null}
           </div>
         )}

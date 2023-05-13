@@ -2,15 +2,21 @@
 const cheerio = require('cheerio');
 const Bluebird = require('bluebird');
 const puppeteer = require('puppeteer');
+const { map, get } = require('lodash');
 const HtmlTableToJson = require('html-table-to-json');
+const https = require('follow-redirects').https;
 const Log = require('../../lib/log');
 const path = require('path');
 const fs = require('fs');
 const { getFileUrl, formatFile } = require('./files');
 const { clearOldPlanFiles, processPlanInstructionsFile } = require('./planInstructions/');
 const { downloadChallengedFile } = require('../challanged-file');
+const PlanStatusChange = require('../../model/plan_status_change');
+const { formatDate } = require('../date');
+const proxy = require('../proxy');
 
 const mavatSearchPage = 'http://mavat.moin.gov.il/MavatPS/Forms/SV3.aspx?tid=3';
+const newMavatURL = 'https://mavat.iplan.gov.il/rest/api/SV4/1';
 
 let browser = false;
 
@@ -18,6 +24,7 @@ const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const PLAN_DOWNLOAD_PATH = path.join(__dirname, './tmp');
 
+// TODO: remove this function
 const init = () =>
 	new Promise((resolve, reject) => {
 		(async () => {
@@ -39,21 +46,40 @@ const init = () =>
 		})();
 	});
 
-const downloadPlanPDF = async (functionCallText) => {
+const downloadPlanPDF = async (entityDocId, entityDocNumber) => {
 
-	const downloadUrl = getFileUrl(functionCallText)
+	const downloadUrl = getFileUrl(entityDocId, entityDocNumber);
 	if (!downloadUrl) return false;
 
+	Log.info(`Trying download file for eid=${entityDocId}&enum=${entityDocNumber}`);
 	const file = fs.createWriteStream(path.join(__dirname, 'tmp', 'tmpPDF.pdf'));
-	const downloadSuccess = await downloadChallengedFile(downloadUrl, file);
+	const downloadSuccess = await downloadChallengedFile(downloadUrl, file, {}, https);
 
 	if (!downloadSuccess) {
-		Log.error(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
+		Log.info(`had a problem downloading file for ${entityDocId}, ${entityDocNumber}`);
 	}
-
+	Log.info(`success downloading file for ${entityDocId}, ${entityDocNumber}`);
 	return downloadSuccess;
 };
+const isInstructionsFile = ({ DOC_NAME, FILE_TYPE }) =>  (DOC_NAME.indexOf('הוראות התכנית') !== -1 && FILE_TYPE.indexOf('pdf')!== -1);
 
+const getPlanInstructionsNewMavat = async (planFiles) => {
+	const planInstructionsFiles = planFiles.filter(isInstructionsFile);
+
+	if(planInstructionsFiles.length === 0) return undefined;
+
+	const planFileData = planInstructionsFiles[0];
+
+	const hasDownloaded = await downloadPlanPDF(planFileData.ID, planFileData.PLAN_ENTITY_DOC_NUM);
+	if (hasDownloaded) {
+		try {
+			return processPlanInstructionsFile(PLAN_DOWNLOAD_PATH);
+		} catch (err) {
+			Log.error('Fetch plan instructions error', err);
+		}
+	}
+};
+// TODO: remove this function, old mavat
 const getPlanInstructions = async (page) => {
 	const functionCallText = await page.evaluate(() => {
 		const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
@@ -62,12 +88,12 @@ const getPlanInstructions = async (page) => {
 		// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
 		// (flattened table)
 		for (let i = 0; i < innerTexts.length; i += 5) {
-			// before approval
 			if ((innerTexts[i] === 'הוראות התכנית' && innerTexts[i + 1] === 'הוראות התכנית') || // before approval
                 (innerTexts[i] === 'מסמכים חתומים' && innerTexts[i + 1] === 'תדפיס הוראות התכנית - חתום לאישור')) { // after approval
 				return elements[i + 4].querySelector('img').getAttribute('onclick');
 			}
 		}
+		// note: this is run in the headless browser context. `Log` is not available for use
 		console.log('couldn\'t find the plan details PDF link on this web page');
 		return undefined;
 	});
@@ -82,37 +108,24 @@ const getPlanInstructions = async (page) => {
 	}
 };
 
+const getPlanFilesNewMavat = (data) => {
+	const files = map(data.rsPlanDocsAdd, (file)=> {
+		return {
+			kind: file.FILE_TYPE,
+			name: file.DOC_NAME,
+			description: file.RUB_DESC,
+			date: file.EDITING_DATE,
+			id: file.ID,
+			fileIcon: file.FILE_DATA.ficon,
+			num: file.PLAN_ENTITY_DOC_NUM
+		};
+	});
 
-const getPlanFiles = async (page) => {
-		const files = await page.evaluate(() => {
-			const elements = Array.from(document.querySelectorAll('#trCategory3 .clsTableRowNormal td'));
-			const innerTexts = elements.map(ele => ele.innerText.trim());
+	// cleaning and formatting the files
+	return files.map(formatFile);
+};
 
-			// elements look like this:
-			// [kind, description, thoola, date, file, kind, description, thoola, date, file...]
-			// (flattened table)
-			let files = []
-			for (let i = 0; i < innerTexts.length; i += 5) {
-				const file = {
-					kind: innerTexts[i], 
-					name: innerTexts[i+1],
-					description: innerTexts[i+2],
-					date: innerTexts[i+3],
-					openDoc: elements[i + 4].querySelector('img').getAttribute('onclick'),
-					fileIcon: elements[i + 4].querySelector('img').getAttribute('src')
-				}
-				files.push(file)
-			}
-
-			console.log(`fetched ${files.length} files`);
-			return files;
-		});
-
-		// cleaning and formatting the files
-		return files.map(formatFile)
-}
-
-const fetch = planUrl =>
+const fetch = (planUrl, fetchPlanInstruction = true) =>
 	new Promise((resolve, reject) => {
 		(async () => {
 			const page = await browser.newPage();
@@ -133,9 +146,9 @@ const fetch = planUrl =>
 				const bodyHTML = await page.evaluate(
 					() => document.body.innerHTML
 				);
-
-				const pageInstructions = await getPlanInstructions(page);
-				const planFiles = await getPlanFiles(page);
+				
+				const pageInstructions =  fetchPlanInstruction &&  await getPlanInstructions(page);
+				const planFiles = await getPlanFilesNewMavat(page);
 
 				page.close();
 
@@ -145,7 +158,7 @@ const fetch = planUrl =>
 				if (!dom) {
 					reject('cheerio dom is null');
 				}
-				
+
 				resolve({ cheerioPage: dom, planFiles, pageInstructions  });
 			} catch (err) {
 				Log.error('Mavat fetch error', err);
@@ -163,6 +176,39 @@ const fetch = planUrl =>
 			}
 		})();
 	});
+
+// This function opens a pup browser to perform an API request to MAVAT.
+// This is because the API is blocked from outside of Israel. The response is JSON
+// and the pup browser waits for the auto HTML rendering of the response
+const fetchPlanData = (planUrl) =>
+	new Promise((resolve, reject) => {
+		(async () => {
+			const page = await browser.newPage();
+			Log.debug('Loading plan page', planUrl);
+			try {
+				await page.goto(planUrl);
+				await page.waitForSelector('body > pre');
+				const jsonContent = await page.evaluate(
+					() => document.getElementsByTagName('pre')[0].innerText
+				);
+				resolve({ data: JSON.parse(jsonContent) });
+			} catch (e) {
+				Log.error('Mavat fetch error with puppeteer', e.message);
+				try {
+					const jsonContent = await proxy.get(planUrl);
+					resolve({ data: JSON.parse(jsonContent) });
+					
+				} catch (e) {
+					Log.error('Mavat fetch error with puppeteer', e.message);
+					Log.error(e);
+					reject(e);
+				}
+			}
+		})();
+	});
+
+
+	
 
 const search = planNumber =>
 	new Promise((resolve, reject) => {
@@ -217,18 +263,11 @@ const search = planNumber =>
 			}
 		})();
 	});
-const getGoalsText = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_tdGOALS').html();
 
-const getMainPlanDetailText = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_tdINSTRACTIONS').html();
-
-const getJurisdictionString = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_AUTH').val();
-
-const getDirectUrl = cheerioPage =>
-	cheerioPage('#ctl00_ContentPlaceHolder1_PlanLink').attr('href');
-
+const getDirectUrl = planId =>
+	`${newMavatURL}/${planId}/310`;
+	
+// TODO: remove this function, old mavat
 const getAreaChanges = cheerioPage => {
 	const html = cheerioPage('#tblQuantities tbody').html();
 
@@ -245,70 +284,131 @@ const getAreaChanges = cheerioPage => {
 	return JSON.stringify(jsonTables.results);
 };
 
-// function getShapeFile(cheerioPage) {
+const getAreaChangesNewMavat = (quantities = []) => {
+	if (!quantities) return '';
+	const areaChanges = quantities.map((quantity) => ({
+		1: `${quantity.ID}`,
+		2: `${quantity.QUANTITY_CODE}`,
+		3: quantity.QUANTITY_DESC,
+		4: quantity.UNIT_DESC,
+		5: quantity.AUTHORISED_QUANTITY,
+		6: quantity.AUTHORISED_QUANTITY_ADD || '',
+		7: quantity.IMPLEMENTATION,
+		8: quantity.DETAILED_PLAN || '',
+		9: quantity.REMARK
+	}));
+	return JSON.stringify([areaChanges]);
+};
 
-//     shapefile.open("example.shp")
-//         .then(source => source.read()
-//             .then(function log(result) {
-//                 if (result.done) return;
-//                 console.log(result.value);
-//                 return source.read().then(log);
-//             }))
-//         .catch(error => console.error(error.stack));
-// }
+// TODO: remove this function, old mavat
+const getPlanStatusList = cheerioPage => {
+	const html = cheerioPage('#tblInternet tbody').html();
 
-// const getByUrl = planUrl =>
-//     init()
-//         .then(() => fetch(planUrl))
-//         .then(cheerioPage => {
-//             log.debug("Retrieving", planUrl);
+	// a library update led to this conversion using the first row as field names
+	// instead of using the field ids as their names, so create a fake first row
+	// to be used as headers. in the future we probably should stop using this
+	// library in favour of a bit of custom cheerio value extraction code
+	const jsonTables = new HtmlTableToJson(
+		`<table>
+			<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+			${html}
+		</table>`
+	);
+	return jsonTables.results;
+};
 
-//             return Bluebird.props({
-//                 goals: getGoalsText(cheerioPage),
-//                 mainPlanDetails: getMainPlanDetailText(cheerioPage),
-//                 areaChanges: getAreaChanges(cheerioPage),
-//                 jurisdiction: getJurisdictionString(cheerioPage)
-//             });
-//         });
+const getPlanStatusListNewMavat = statusList => {
+	return map(statusList, (statusDetails => ({
+		status: statusDetails.LIS_DESC,
+		date: formatDate(statusDetails.EIS_DATE),
+		status_description: statusDetails.DETAILS
+	})));
+};
 
-const getByPlan = plan =>
-	init()
-		.then(() => {
-			return plan.get('plan_url') ? fetch(plan.get('plan_url')) : search(plan.get('PL_NUMBER'));
+
+const getPlanStatus = (plan) => {
+	const planId = plan.id;
+	return new Promise((resolve, reject) => {
+		getByPlan(plan, false)
+			.then(mavatData => {
+				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
+					!mavatData.planStatusList)) {
+					return null;
+				}
+
+				const planStatusList = mavatData.planStatusList.map(status => {
+					Log.debug(`${`title: ${status.title}: date: ${status.date}`} `);
+					return new PlanStatusChange({
+						plan_id: planId,
+						...status
+					});
+				});
+				resolve(planStatusList);
+			})
+			.catch(err => Log.error('plan status error:', err));
+	});
+};
+
+const getByPlan = async (plan, fetchPlanInstructions = true) => {
+	await init();
+	const planId = plan.get('MP_ID');
+	if (!planId) {
+		// maybe here, we can populate agam id from a search service
+		return new Promise((resolve, reject)=>{ reject(new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`));});
+	}
+	const url = `${newMavatURL}/?mid=${planId}`;
+	// Performing the new MAVAT API call
+	return fetchPlanData(url)
+		.catch(er=> {
+			Log.error('Mavat fetch error', er);
 		})
-		.then(dict => {
-			const cheerioPage = dict.cheerioPage;
-			const pageInstructions = dict.pageInstructions;
-			const planFiles = dict.planFiles;
+	// return planId ? fetch(plan.get('plan_url'), fetchPlanInstructions ) : search(plan.get('PL_NUMBER'));
+		.then(async (response) => {
+			const { data } = response;
+			let pageInstructions;
+			if(false){
+				pageInstructions = await getPlanInstructionsNewMavat([...get(data, 'rsPlanDocs', []), ...get(data, 'rsPlanDocsAdd', [])] );
+			}
+			const planFiles = getPlanFilesNewMavat(data);
 
 			Log.debug(
 				'Retrieving',
 				plan.get('PL_NUMBER'),
-				getGoalsText(cheerioPage),
-				getAreaChanges(cheerioPage),
 				planFiles.length
 			);
 
+			Log.debug(
+				'Fetched mavat plan data',
+				plan.get('PL_NUMBER'),
+				plan.get('MP_ID'),
+				response
+			);
 			return Bluebird.props({
-				plan_url: getDirectUrl(cheerioPage),
-				goals: getGoalsText(cheerioPage),
-				mainPlanDetails: getMainPlanDetailText(cheerioPage),
-				areaChanges: getAreaChanges(cheerioPage),
-				jurisdiction: getJurisdictionString(cheerioPage),
+				plan_url: getDirectUrl(planId),
+				goals: get(data, 'planDetails.GOALS'),
+				mainPlanDetails: get(data, 'planDetails.INSTRACTIONS'),
+				areaChanges: getAreaChangesNewMavat(get(data, 'rsQuantities'),),
+				jurisdiction: get(data, 'planDetails.AUTH'),
 				files: planFiles,
+				planStatusList: getPlanStatusListNewMavat(get(data, 'rsInternet', [])),
 				planExplanation: pageInstructions ? pageInstructions.planExplanation : undefined,
 				chartsOneEight: pageInstructions ? pageInstructions.chartsOneEight : undefined,
 				chartFour: pageInstructions ? pageInstructions.chartFour : undefined,
 				chartFive: pageInstructions ? pageInstructions.chartFive : undefined,
 				chartSix: pageInstructions ? pageInstructions.chartSix : undefined
 			});
+		}).catch(e => {
+			Log.error(`error getByPlan: ${e.message}`, e.stack);
+			return Promise.resolve();
 		});
+};
 
 module.exports = {
 	// getByUrl,
 	getByPlan,
 	init,
 	fetch,
+	getPlanStatus,
 
 	// exported for tests
 	testOnly: {
