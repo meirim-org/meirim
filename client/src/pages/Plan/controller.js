@@ -94,9 +94,11 @@ export const getCommentsByPlanId = async (planId) => {
 	}
 };
 
-export const getStatus = async () => {
+export const getStatus = async (planId) => {
 	try {
-		const response = await api.get('/plan/status');
+		// const response = await api.get('/plan/status');
+
+		const response = await api.get(`/plan/${planId}/status`);
 		
 		return response;
 	} catch (err) {

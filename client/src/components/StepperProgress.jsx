@@ -5,10 +5,10 @@ import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { filter, minBy } from 'lodash';
+import { size } from 'lodash';
+import moment from 'moment';
 import StepLabel from '@material-ui/core/StepLabel';
-import styled, { useTheme } from 'styled-components';
-import { getStatus } from 'pages/Plan/controller';
+import styled from 'styled-components';
 import { Button } from 'shared';
 
 const useStyles = makeStyles((theme) => ({
@@ -94,51 +94,36 @@ const LabelStep = styled.div`
     font-weight: ${(props) => (props.active ? 'bold' : '')};
 `;
 
-export const StepperProgress = () => {
+export const StepperProgress = ({ steps }) => {
 	const classes = useStyles();
-	const theme = useTheme();
+	// const theme = useTheme();
 
-	const [steps, setSteps] = useState([]);
-	const [clickedStep, setClickedSteps] = useState({});
+	const [activeStep, setActiveStep] = useState(null);
+    const [clickedStep, setClickedSteps] = useState({});
 
-	const mySteps = [{ active: false , completed: true, name: 'הכנת תכנית', index: 0 }, 
-		{ active: false ,  name: 'על שולחן הוועדה', index: 1,  completed: true }, 
-		{ active: false ,  name: 'הסכמה עקרונית', index: 2,  completed: true }, 
-		{ active: true ,  name: 'התנגדויות והערות הציבור', index: 3, completed: false  },
-		{ active: false , name: 'תכנית מאושרת', index: 4, completed: false }
-	];
-
-	// useEffect(()=> {
-	// 	setSteps(mySteps);
-	// 	// setActiveStep(3);
-	// }, []);
-	useEffect(() => {
-	    // setSteps([{active}])
-		getStatus().then((res) => {
-			// res.data.map((step, i) =>
-			// 	step.current === true
-			// 		? setActiveStep(i) || setClickedSteps(res.data[i - 1])
-			// 		: null
-			// );
-			setSteps(res.data);
-		});
-	}, []);
-
-	const allStepsCompleted = () => {
-		if (steps.length > 0) {
-			return steps[steps.length - 1].completed;
-		}
-	};
-
-	const activeStep = useMemo(()=> {
-		// Returning the lowest index of the steps that is not completed
-		return minBy(filter(steps, (step)=> !step.completed), 'index')?.index || 0 ;
+	const allStepsCompleted = useMemo(() => {
+        if (!steps || steps.length === 0) return false;
+        return steps[steps.length -1].completed;
 	}, [steps]);
 
-	const handleStep = (step) => () => {
-		// TODO: don't know
-		// setActiveStep(step);
-	};
+    useEffect(()=> {
+        steps.map((step, i) =>
+				step.current === true
+					? setActiveStep(i) || setClickedSteps(steps[i - 1])
+					: null
+			);
+    }, [
+        steps
+    ]);
+
+
+    const handleStep = (stepIndex) => () => {
+        setActiveStep(stepIndex);
+    };
+    const planApprovalDate = useMemo(()=> {
+        if ( !steps || size (steps) === 0 || !allStepsCompleted) return '';
+        return moment(steps[steps.length - 1].date).format("DD/MM/YYYY");
+    }, [steps, allStepsCompleted]);
 
 
 	function QontoStepIcon(props) {
@@ -199,10 +184,10 @@ export const StepperProgress = () => {
 				})}
 			</StepperStyle>
 			<div>
-				{allStepsCompleted() ? (
+				{allStepsCompleted ? (
 					<div>
 						<Typography className={classes.instructions}>
-                            התוכנית אושרה בתאריך:
+                            התוכנית אושרה בתאריך: {planApprovalDate}
 						</Typography>
 					</div>
 				) : (
@@ -220,8 +205,8 @@ export const StepperProgress = () => {
 									padding: '12px 24px',
 								}}
 							>
-								<div>{clickedStep.description}</div>
-								<div>{clickedStep.date}</div>
+								<div>{clickedStep?.description}</div>
+								<div>{clickedStep?.date}</div>
 							</div>
 						</Typography>
 						<div

@@ -155,6 +155,7 @@ const Plan = ({ isMobile, isTablet, match }) => {
 						<SummaryTab
 							subscribePanel={subscribePanel}
 							handleSubscribePanel={handleSubscribePanel}
+							planId={planId}
 							{...props}
 						/>
 					)}
