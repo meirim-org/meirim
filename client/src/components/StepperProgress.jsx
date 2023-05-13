@@ -11,7 +11,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import styled from 'styled-components';
 import { Button } from 'shared';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => (  {
 	root: {
 		width: '100%',
 		cursor: 'pointer',
