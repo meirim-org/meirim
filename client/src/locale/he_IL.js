@@ -249,6 +249,7 @@ const HEBREW_TRANSLATION = {
 	GISFileUpload: 'העלאת קובץ GIS',
 	GISFile: 'קובץ GIS',
 	AOITitle: 'שם האיזור',
+	undefined: 'לא הוגדר',
 };
 
 const ARABIC_TRANSLATION =  {

@@ -8,10 +8,10 @@ import * as SC from './style';
 import { Text } from 'shared';
 import { Link } from 'react-router-dom';
 import usePermitTableColumns from './usePermitTableColumns';
-// import { CheckIfUserCanAccessPage } from 'hooks';
+import { CheckIfUserCanAccessPage } from 'hooks';
 
 const Permits = () => {
-	//CheckIfUserCanAccessPage();
+	CheckIfUserCanAccessPage();
 
 	const { t } = useTranslation();
 	const [data, setData] = useState([]);

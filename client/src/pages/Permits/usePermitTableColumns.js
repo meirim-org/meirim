@@ -48,7 +48,8 @@ export function useUserAoisTableColumns() {
             header: () => t.permitRegion
         }),
         columnHelper.accessor('permit_aoi.url', {
-            header: () => t.GISFile
+            cell: t.undefined,
+            header: () => t.GISFile,
         })
     ]
 

@@ -23,8 +23,9 @@ const AOI = () => {
     const [formData, setFormData] = useState({})
     const columns = useUserAoisTableColumns()
 
+
     useEffect(() => {
-        const fetchData = () => {
+        const fetchAllAois = () => {
             //const result = { data: [{ "id": 2, "type": "region", "name": "גזר" }, { "id": 3, "type": "region", "name": "חוף הכרמל" }, { "id": 4, "type": "region", "name": "רמת הנגב" }] }
             //return setAllAois(result.data)
 
@@ -33,10 +34,10 @@ const AOI = () => {
                     setAllAois(result.data.map((aoi) => ({ ...aoi, draft: false })))
                 })
         }
-        fetchData()
+        fetchAllAois()
     }, [])
 
-    const fetchData = () => {
+    const fetchUserAois = () => {
         //const item = { "id": 1, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }
         //const item2 = { "id": 2, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }
         //const result = { data: [item, item2] }
@@ -49,7 +50,7 @@ const AOI = () => {
     }
 
     useEffect(() => {
-        fetchData();
+        fetchUserAois();
     }, [])
 
     const updateFormData = (field, value) => {
@@ -69,14 +70,19 @@ const AOI = () => {
         }
 
         api.post('/permit/aoi/person', formData).then((permitPersonAoi) => {
-            const item = { "id": 1, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }
-            // debugger;
-            console.log("item", item);
-            console.log('data', permitPersonAoi.data)
-            setUserAois(currentState => ([
-                ...currentState,
-                {...permitPersonAoi.data, permit_aoi: {...item.permit_aoi, ...permitPersonAoi.data} }
-            ]))
+            //const item = { "id": 1, "permit_aoi_id": 2, "person_id": 1, "name": "testing", "permit_aoi": { "id": 2, "type": "region", "name": "גזר", "geom": { "x": 1, "y": 1 }, "visibility": "public", "url": "", "created_at": "2023-02-07T14:16:46.000Z", "updated_at": "2023-02-07T14:16:46.000Z" } }
+
+            // reset form data
+            setFormData({})
+
+            if (permitPersonAoi.data) {
+                const newItem = { ...permitPersonAoi.data, permit_aoi: allAois.find(aoi => aoi.id === permitPersonAoi.data.permit_aoi_id) }
+
+                setUserAois(currentState => ([
+                    ...currentState,
+                    newItem
+                ]))
+            }
         })
     }
 
@@ -108,10 +114,10 @@ const AOI = () => {
                         <Row alignItems="baseline" justify="center">
                             <Box>
                                 <Input placeholder="שם איזור עניין"
-                                    value={formData.title}
+                                    value={formData?.name || ''}
                                     onChange={(e) => updateFormData('name', e.target.value)} />
                             </Box>
-                            <Box sx={{ minWidth: 200 }}>
+                            <Box>
                                 <Select
                                     displayEmpty
                                     fullWidth
