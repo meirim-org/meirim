@@ -90,7 +90,7 @@ export const TableContainer = styled.div`
     > Table {
         background-color: white;
         padding: 16px;
-        min-width: 80vw;
+        min-width: 100vw;
     }
     padding-top: 32px;
 `
