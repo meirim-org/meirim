@@ -23,25 +23,25 @@ describe('Emails', function() {
 	beforeEach(async function() {
 		await mockDatabase.createTables(tables);
 
-		status_mapping1 = 
+		const status_mapping1 = 
 		[
-		{mavat_status:'הוגשו התנגדויות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'החלטה בדיון בהתנגדויות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'העברה להערות / תגובות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'התכנית פורסמה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'התכנית פורסמה להתנגדויות לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'התקבלו הערות / תגובות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'לא הוגשו התנגדויות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'פרסום להפקדה בעיתונים', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'פרסום להפקדה בעיתונים לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'פרסום להפקדה ברשומות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'פרסום להפקדה ברשומות לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'פרסום נוסח ההפקדה על גבי שלט בתחום התכנית', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'פרסום נוסח ההפקדה על גבי שלט בתחום התכנית לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'פרסום נוסח הודעה בדבר הפקדת תכנית באתר אינטרנט', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'רישום נתוני פרסום בעיתונות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'רישום נתוני פרסום ברשומות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור'},
-		{mavat_status:'תיקון התכנית לקראת פרסום לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור'},
+			{ mavat_status:'הוגשו התנגדויות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'החלטה בדיון בהתנגדויות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'העברה להערות / תגובות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'התכנית פורסמה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'התכנית פורסמה להתנגדויות לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'התקבלו הערות / תגובות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'לא הוגשו התנגדויות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'פרסום להפקדה בעיתונים', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'פרסום להפקדה בעיתונים לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'פרסום להפקדה ברשומות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'פרסום להפקדה ברשומות לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'פרסום נוסח ההפקדה על גבי שלט בתחום התכנית', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'פרסום נוסח ההפקדה על גבי שלט בתחום התכנית לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'פרסום נוסח הודעה בדבר הפקדת תכנית באתר אינטרנט', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'רישום נתוני פרסום בעיתונות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'רישום נתוני פרסום ברשומות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status:'תיקון התכנית לקראת פרסום לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור' },
 		];
 		await mockDatabase.insertData(['status_mapping'], { 'status_mapping': [status_mapping1] });
 
@@ -261,24 +261,24 @@ describe('Emails', function() {
 	
 		// first plan return status data
 		const newMavatScope = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
-		.persist()
-		.get('/rest/api/SV4/1/?mid=5000878739')
+			.persist()
+			.get('/rest/api/SV4/1/?mid=5000878739')
 		// actual reply copied from a browser performing the API response
-		.replyWithFile(
-			200,
-			`${__dirname}/files/new_mavat_plan_json_page.html`,
-			{ 'Content-Type': 'text/html' }
-		);
+			.replyWithFile(
+				200,
+				`${__dirname}/files/new_mavat_plan_json_page.html`,
+				{ 'Content-Type': 'text/html' }
+			);
 
 		// second plan return status data
 		const newMavatScopeNotDone = nock('https://mavat.iplan.gov.il', { allowUnmocked: true })
-		.get('/rest/api/SV4/1/?mid=1005184392')
+			.get('/rest/api/SV4/1/?mid=1005184392')
 		// actual reply copied from a browser performing the API response
-		.replyWithFile(
-			200,
-			`${__dirname}/files/new_mavat_plan_json_page_start.html`,
-			{ 'Content-Type': 'text/html' }
-		);
+			.replyWithFile(
+				200,
+				`${__dirname}/files/new_mavat_plan_json_page_start.html`,
+				{ 'Content-Type': 'text/html' }
+			);
 
 		// run get plan status
 		await cronController.fetchPlanStatus();
