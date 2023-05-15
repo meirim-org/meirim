@@ -17,7 +17,7 @@ exports.personTypes = {
 exports.meirimStatuses = {
 	DEPOSIT: 'הפקדה',
 	PUBLIC_OBJECTION: 'התנגדויות והערות הציבור',
-	APPROVED: 'התוכנית אושרה',
+	APPROVED: 'תכנית מאושרת',
 	CANCELLED: 'תכנית מבוטלת'
 };
 
