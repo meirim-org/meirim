@@ -159,9 +159,13 @@ class AutocompleteInput extends Component {
                             fullWidth: true,
                             classes,
                             InputProps: getInputProps({
-                                startAdornment: selectedItem.map((item) => (
-                                    <div>{item}</div>
-                                )),
+                                startAdornment: selectedItem.map(
+                                    (item, index) => (
+                                        <div key={`${item}_${index}`}>
+                                            {item}
+                                        </div>
+                                    )
+                                ),
                                 onChange: this.handleInputChange,
                                 onKeyDown: this.handleKeyDown,
                                 placeholder,
@@ -172,16 +176,19 @@ class AutocompleteInput extends Component {
                             <AutocompleteWrapper>
                                 <Paper className={classes.paper} square>
                                     {this.getSuggestions(inputValue2).map(
-                                        (suggestion, index) =>
-                                            renderSuggestion({
-                                                suggestion,
-                                                index,
-                                                itemProps: getItemProps({
-                                                    item: suggestion.label,
-                                                }),
-                                                highlightedIndex,
-                                                selectedItem: selectedItem2,
-                                            })
+                                        (suggestion, index) => (
+                                            <React.Fragment key={index}>
+                                                {renderSuggestion({
+                                                    suggestion,
+                                                    index,
+                                                    itemProps: getItemProps({
+                                                        item: suggestion.label,
+                                                    }),
+                                                    highlightedIndex,
+                                                    selectedItem: selectedItem2,
+                                                })}
+                                            </React.Fragment>
+                                        )
                                     )}
                                 </Paper>
                             </AutocompleteWrapper>

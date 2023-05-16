@@ -401,7 +401,7 @@ export default function SearchBox({
             const currentParcel = parcelList.find(
                 (parcel) => parcel.label === parcels
             );
-            const [lng, lat] = JSON.parse(currentParcel.centroid)?.coordinates;
+            const [lng, lat] = JSON.parse(currentParcel?.centroid)?.coordinates;
             if (lat && lng) history.push(`/plans?loc=${lat},${lng}`);
         } else if (!block && parcels) {
             setBlockinputerror(true);
@@ -421,7 +421,6 @@ export default function SearchBox({
 
             api.get(`/topfive?blockNum=${text}`)
                 .then((result) => {
-                    console.log({ result });
                     if (result.status === 'failed') {
                         throw new Error('No parcels found');
                     }
@@ -441,6 +440,8 @@ export default function SearchBox({
     function handleSubmitBlockDetails(blockNum) {
         setBlock(blockNum);
         dispatch(setBlockNum({ block: blockNum }));
+        dispatch(setParcel({ parcel: '' }));
+        setParcels('');
         setIsDisable(false);
     }
 

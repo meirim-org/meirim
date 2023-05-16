@@ -263,6 +263,10 @@ const HEBREW_TRANSLATION = {
     choosePermitRegion: 'בחרו וועדה אזורית',
     noAOISavedTitle: 'טרם נוספו איזורי עניין',
     addAOILinkTitle: 'מעבר להוספת איזורי עניין',
+
+    plansHelperTitle: 'חיפוש תוכניות בנייה',
+    plansSearchingTextA: 'אנחנו מחפשים בשבילך את התוכניות...',
+    plansSearchingTextB: 'זה לא יקח הרבה זמן!',
 };
 
 const ARABIC_TRANSLATION = {
@@ -674,8 +678,6 @@ export default {
         'כדי לכרות עץ בוגר בישראל - בשטח ציבורי או פרטי - יש להוציא רישיון כריתה. מיום פרסום הרישיון יש לציבור 14 יום ',
     treesHelperTextLink: 'להגיש ערר',
     treesHelperTextB: '.\nהכניסו שם יישוב וצפו ברישיונות הכריתה:',
-    plansHelperText:
-        'שינויים במרחב שלנו מחייבים עריכת תוכנית. ועדות התכנון והבנייה אמונות על פיקוח ואישור התוכניות.',
     searchAddressOrCity: 'חפש כתובת או עיר',
     showPlans: 'הצג תוכניות:',
     inProgress: 'בתהליך',
@@ -683,7 +685,4 @@ export default {
     showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
     planLinks: 'קישורים',
-    plansHelperTitle: 'חיפוש תוכניות בנייה',
-    plansSearchingTextA: 'אנחנו מחפשים בשבילך את התוכניות...',
-    plansSearchingTextB: 'זה לא יקח הרבה זמן!',
 };

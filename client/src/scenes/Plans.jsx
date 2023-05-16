@@ -1,10 +1,10 @@
 import { Grid } from '@material-ui/core';
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlanCard } from 'shared';
 import Wrapper from '../components/Wrapper';
-import t from '../locale/he_IL';
+import { useTranslation } from '../locale/he_IL';
 import api from '../services/api';
 import locationAutocompleteApi from '../services/location-autocomplete';
 import './Plans.css';
@@ -174,6 +174,7 @@ const PlansSearchingText = styled.div`
     align-items: center;
     justify-content: center;
     font-weight: 400;
+
     span {
         color: #652dd0;
         font-weight: 600;
@@ -195,6 +196,77 @@ const PlansSearching = styled.div`
         }
     }
 `;
+
+const PlansSearchingComponent = () => {
+    const { t } = useTranslation();
+    return (
+        <PlansSearching>
+            <Lottie animationData={loadingAnimation} loop={true} />
+            <PlansSearchingContent>
+                <PlansSearchingText>{t.plansSearchingTextA}</PlansSearchingText>
+                <PlansSearchingText>
+                    <span>{t.plansSearchingTextB}</span>
+                </PlansSearchingText>
+            </PlansSearchingContent>
+        </PlansSearching>
+    );
+};
+
+const PlansHeaderComponent = () => {
+    const { t } = useTranslation();
+
+    const [translateY, setTranslateY] = useState(0);
+    const [hiddenTopSection, setHiddenTopSection] = useState(false);
+    const [hiddenTopContentSection, setHiddenTopContentSection] =
+        useState(false);
+    const [lastScrollY, setLastScrollY] = useState(window.scrollY);
+
+    useEffect(() => {
+        document.addEventListener('scroll', handleScrollEvent);
+        return () => document.removeEventListener('scroll', handleScrollEvent);
+    }, []);
+
+    const handleScrollEvent = () => {
+        if (lastScrollY > window.scrollY) {
+            setHiddenTopSection(false);
+            setTranslateY(-100);
+        } else if (lastScrollY < window.scrollY) {
+            setHiddenTopSection(true);
+            setHiddenTopContentSection(true);
+            setTranslateY(-200);
+        }
+        setLastScrollY(window.scrollY);
+        if (window.scrollY === 0) {
+            setHiddenTopSection(false);
+            setHiddenTopContentSection(false);
+            setTranslateY(0);
+        }
+    };
+
+    return (
+        <PlansHeader
+            translateY={translateY}
+            opacity={!hiddenTopSection ? 1 : 0}
+        >
+            <PlansHeaderContent opacity={!hiddenTopContentSection ? 1 : 0}>
+                <PlansHeaderTitle>{t.plansHelperTitle}</PlansHeaderTitle>
+                <PlansHeaderText>{t.plansHelperText}</PlansHeaderText>
+            </PlansHeaderContent>
+            <PlansHeaderSearchBox>
+                <SearchBox backgroundColor="none" wrapperPadding="0px" />
+            </PlansHeaderSearchBox>
+        </PlansHeader>
+    );
+};
+
+const InfiniteScrollEndMessage = () => {
+    const { t } = useTranslation();
+    return (
+        <p className="centerNote">
+            <b>{t.seenAllPlans}</b>
+        </p>
+    );
+};
 
 class Plans extends Component {
     state = {
@@ -358,32 +430,7 @@ class Plans extends Component {
         }
     }
 
-    handleScrollEvent = () => {
-        if (this.lastScrollY > window.scrollY) {
-            this.setState({
-                hiddenTopSection: false,
-                translateY: -100,
-            });
-        } else if (this.lastScrollY < window.scrollY) {
-            this.setState({
-                hiddenTopSection: true,
-                hiddenTopContentSection: true,
-                translateY: -200,
-            });
-            console.log('down');
-        }
-        this.lastScrollY = window.scrollY;
-        if (window.scrollY === 0) {
-            this.setState({
-                hiddenTopSection: false,
-                hiddenTopContentSection: false,
-                translateY: -0,
-            });
-        }
-    };
-
     componentDidMount() {
-        this.lastScrollY = window.scrollY;
         // init location service
         locationAutocompleteApi.init();
 
@@ -391,12 +438,6 @@ class Plans extends Component {
         if (!this.loadQsSearchParams()) {
             this.loadPlans(this.state.pageNumber);
         }
-
-        document.addEventListener('scroll', this.handleScrollEvent);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('scroll', this.handleScrollEvent);
     }
 
     componentDidUpdate(prevProps) {
@@ -420,27 +461,11 @@ class Plans extends Component {
             loadingPlans,
         } = this.state;
 
+        const { t } = this.props;
+
         return (
             <Wrapper>
-                <PlansHeader
-                    translateY={translateY}
-                    opacity={!hiddenTopSection ? 1 : 0}
-                >
-                    <PlansHeaderContent
-                        opacity={!hiddenTopContentSection ? 1 : 0}
-                    >
-                        <PlansHeaderTitle>
-                            {t.plansHelperTitle}
-                        </PlansHeaderTitle>
-                        <PlansHeaderText>{t.plansHelperText}</PlansHeaderText>
-                    </PlansHeaderContent>
-                    <PlansHeaderSearchBox>
-                        <SearchBox
-                            backgroundColor="none"
-                            wrapperPadding="0px"
-                        />
-                    </PlansHeaderSearchBox>
-                </PlansHeader>
+                <PlansHeaderComponent />
                 <PlansWrapper>
                     <div className="container">
                         <Grid container spacing={5}>
@@ -453,33 +478,14 @@ class Plans extends Component {
                         )}
                         {noData && <div>אין כאן כלום</div>}
                     </div>
-                    {loadingPlans && (
-                        <PlansSearching>
-                            <Lottie
-                                animationData={loadingAnimation}
-                                loop={true}
-                            />
-                            <PlansSearchingContent>
-                                <PlansSearchingText>
-                                    {t.plansSearchingTextA}
-                                </PlansSearchingText>
-                                <PlansSearchingText>
-                                    <span>{t.plansSearchingTextB}</span>
-                                </PlansSearchingText>
-                            </PlansSearchingContent>
-                        </PlansSearching>
-                    )}
+                    {loadingPlans && <PlansSearchingComponent />}
                 </PlansWrapper>
                 <InfiniteScroll
                     dataLength={plans.length}
                     next={this.loadNextPage}
                     hasMore={hasMore}
                     // loader={<h4 className="centerNote">{t.loading}</h4>}
-                    endMessage={
-                        <p className="centerNote">
-                            <b>{t.seenAllPlans}</b>
-                        </p>
-                    }
+                    endMessage={<InfiniteScrollEndMessage />}
                 />
             </Wrapper>
         );
