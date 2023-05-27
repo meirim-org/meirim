@@ -343,17 +343,18 @@ const getPlanStatus = (plan) => {
 					});
 				});
 				resolve(planStatusList);
+			}).catch(()=> {
+				return resolve([]);
 			})
-			.catch(err => {Log.error('plan status error:', err);});
 	});
 };
 
 const getByPlan = async (plan, fetchPlanInstructions = true) => {
 	await init();
 	const planId = plan.get('MP_ID');
-	if (!planId) {
-		// maybe here, we can populate agam id from a search service
-		return new Promise((resolve, reject)=>{ reject(new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`));});
+	if (!planId || planId === 'NOT_FOUND') {
+		// TODO- maybe? we can populate agam id from a search service
+		throw new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`);
 	}
 	const url = `${newMavatURL}/?mid=${planId}`;
 	// Performing the new MAVAT API call

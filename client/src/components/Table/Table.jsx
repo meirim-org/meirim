@@ -2,8 +2,9 @@ import { useReactTable, getCoreRowModel, flexRender, getSortedRowModel } from "@
 import React from "react"
 import * as SC from './style';
 
-const Table = ({ columns, data }) => {
-    const [sorting, setSorting] = React.useState([{ id: 'permitSubject', desc: false }])
+const Table = ({ accessory, options, columns, data, defaultSorting }) => {
+    const initSorting = defaultSorting && [{ id: defaultSorting, desc: false }]
+    const [sorting, setSorting] = React.useState(initSorting)
 
     const table = useReactTable({
         data,
@@ -14,7 +15,7 @@ const Table = ({ columns, data }) => {
         enableSortingRemoval: false,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        onSortingChange: setSorting,
+        onSortingChange: defaultSorting && setSorting,
     })
 
     return (
@@ -29,7 +30,7 @@ const Table = ({ columns, data }) => {
                                     : (
                                         <SC.HeaderCellSortable sortable={header.column.getCanSort()}
                                             onClick={header.column.getToggleSortingHandler()}>
-                                            <SC.CellContent>
+                                            <SC.CellContent align={options?.align}>
                                                 {flexRender(
                                                     header.column.columnDef.header,
                                                     header.getContext()
@@ -49,10 +50,15 @@ const Table = ({ columns, data }) => {
                         {index === 0 && <SC.RowSpacer />}
                         <SC.Row key={row.id}>
                             {row.getVisibleCells().map(cell => (
-                                <SC.Cell key={cell.id}>
+                                <SC.Cell key={cell.id} align={options?.align}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </SC.Cell>
                             ))}
+                            {accessory &&
+                                <SC.AccessoryCell>
+                                    {accessory(row.original)}
+                                </SC.AccessoryCell>
+                            }
                         </SC.Row>
                         <SC.RowSpacer />
                     </React.Fragment>
