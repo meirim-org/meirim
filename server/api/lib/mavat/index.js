@@ -376,10 +376,10 @@ const getByPlan = async (plan, fetchPlanInstructions = true) => {
 			);
 
 			Log.debug(
-				'Fetched mavat plan data',
-				plan.get('PL_NUMBER'),
-				plan.get('MP_ID'),
-				response
+				'Fetched mavat plan data', {
+					PL_NUMBER: plan.get('PL_NUMBER'),
+					MP_ID: plan.get('MP_ID')
+				}
 			);
 			return Bluebird.props({
 				plan_url: getDirectUrl(planId),
