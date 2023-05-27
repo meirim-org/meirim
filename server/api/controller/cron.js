@@ -406,8 +406,16 @@ const fetchPlanStatus = () => {
 	var mavatStatus = null;
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
+	// const lastVisitedDifference = 14; //days, may take from config
+	// const timeDifference = moment.duration(lastVisitedDifference, 'd');
+	// const date = moment().subtract(timeDifference);
+	// const dateString = moment(date).format('YYYY-MM-DD h:mm');
 	return Plan.query(qb => {
-		qb.where('status', '!=', meirimStatuses.APPROVED ).orderBy('last_visited_status','asc');
+		// TODO: add outer join for not approved plans
+		qb.where('status', '!=', meirimStatuses.APPROVED )
+			.whereRaw('MP_ID NOT LIKE \'NOT_FOUND\'')
+			// .whereRaw(`last_visited_status < '${dateString}' OR last_visited_status IS NULL`)
+			.orderBy('last_visited_status','asc');
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
@@ -455,8 +463,15 @@ const fetchPlanStatus = () => {
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						await plan.save({ 'last_visited_status': now });
 					}
-				});
-			}));
+				})
+					.catch(async (err)=> {
+						Log.error('Error:', err.message);
+						const now = moment().format('YYYY-MM-DD HH:mm:ss');
+						await plan.save({ 'last_visited_status': now });
+					});
+			
+			}
+			));
 };
 
 /**
