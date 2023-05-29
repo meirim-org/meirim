@@ -18,6 +18,7 @@ const searchSlice = createSlice({
         },
         setBlockNum(state, type) {
             state.block = type.payload.block;
+            state.parcel = 0;
         },
         setParcel(state, type) {
             state.parcel = type.payload.parcel;

@@ -455,7 +455,7 @@ export default function SearchBox({
         setBlock(blockNum);
         dispatch(setBlockNum({ block: blockNum }));
         dispatch(setParcel({ parcel: '' }));
-        setParcels('');
+        setParcels(0);
         setIsDisable(false);
     }
 
