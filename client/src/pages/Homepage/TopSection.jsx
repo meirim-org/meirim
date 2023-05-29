@@ -132,7 +132,7 @@ const TopSection = () => {
 			<Cover>
                 <H3>{t.homepageMainTopTitle}</H3>
 				<H1>{t.homepageMainTitle}</H1>
-				<SearchBox />
+				<SearchBox backgroundColor="#4D20B2" wrapperPadding="20px" />
 			</Cover>
 		</Section>
         <Banner/>

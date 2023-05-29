@@ -4,13 +4,14 @@ import CommentSelectors from './comments/selectors';
 import PlanSelectors from './plan/selectors';
 import FundingSelectors from './funding/selectors';
 import TreeSelectors from './tree/selectors';
+import SearchSelectors from './search/selectors';
 
-
-export { 
-	PlanSelectors, 
-	CommentSelectors,
-	UserSelectors,
-	ModalSelectors,
-	FundingSelectors,
-	TreeSelectors
+export {
+    PlanSelectors,
+    CommentSelectors,
+    UserSelectors,
+    ModalSelectors,
+    FundingSelectors,
+    TreeSelectors,
+    SearchSelectors,
 };
