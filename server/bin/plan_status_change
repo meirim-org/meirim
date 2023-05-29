@@ -2,9 +2,10 @@
 
 const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
+const Email = require('../api/service/email');
 
-controller
-	.fetchPlanStatus()
+Email.init()
+	.then(() =>controller.fetchPlanStatus())
 	.then(() => Log.info("Done running plan_status_change"))
 	.catch(e => Log.error(e))
 	.finally(() => process.exit());
