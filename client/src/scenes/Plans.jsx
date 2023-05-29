@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core';
 import _ from 'lodash';
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useEffect, useState, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlanCard } from 'shared';
 import Wrapper from '../components/Wrapper';
@@ -221,11 +221,6 @@ const PlansHeaderComponent = () => {
         useState(false);
     const [lastScrollY, setLastScrollY] = useState(window.scrollY);
 
-    useEffect(() => {
-        document.addEventListener('scroll', handleScrollEvent);
-        return () => document.removeEventListener('scroll', handleScrollEvent);
-    }, []);
-
     const handleScrollEvent = () => {
         if (lastScrollY > window.scrollY) {
             setHiddenTopSection(false);
@@ -243,10 +238,21 @@ const PlansHeaderComponent = () => {
         }
     };
 
+    useEffect(() => {
+        document.addEventListener('scroll', handleScrollEvent);
+        return () => document.removeEventListener('scroll', handleScrollEvent);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const headerOpcaity = useMemo(()=> {
+        return hiddenTopSection? 0: 1
+    }, 
+    [hiddenTopSection ]);
+
     return (
         <PlansHeader
             translateY={translateY}
-            opacity={!hiddenTopSection ? 1 : 0}
+            opacity={headerOpcaity}
         >
             <PlansHeaderContent opacity={!hiddenTopContentSection ? 1 : 0}>
                 <PlansHeaderTitle>{t.plansHelperTitle}</PlansHeaderTitle>
@@ -455,13 +461,13 @@ class Plans extends Component {
             hasMore,
             // list,
             // loadingAutocomplete,
-            hiddenTopSection,
-            hiddenTopContentSection,
-            translateY,
+            // hiddenTopSection,
+            // hiddenTopContentSection,
+            // translateY,
             loadingPlans,
         } = this.state;
 
-        const { t } = this.props;
+        // const { t } = this.props;
 
         return (
             <Wrapper>

@@ -49,6 +49,7 @@ async function parseTreesHtml(url) {
   }
   const keys = [];
   const result = [];
+
   dom('.ms-listviewtable').find('tr').each((row, elem) => {
     if (row === 0) {
       dom(elem).find('th').each((idx, elem) => {
@@ -100,8 +101,10 @@ async function getTreePermitData(rawPermits) {
     for (const raw of rawPermits) {
     try {   
         const permitUrl = replaceAll(urlPrefix + raw['url'], "//Lists", "/Lists");
+
         Log.info(`Crawl Beer Sheva permit page : ${permitUrl}`);
         const treeHtml = await proxy.get(permitUrl, 1000);
+
         const dom = cheerio.load(treeHtml, {
             decodeEntities: false
         });
@@ -135,6 +138,7 @@ async function getTreePermitData(rawPermits) {
     } catch (e) {
         Log.error(`error in Beer Sheva parse row, ignoring: ${raw[STREET_NAME]}`, e.message);
     }
+
     Log.info( 'Done enrich raw:',raw);
     }
     return; 
