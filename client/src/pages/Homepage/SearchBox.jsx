@@ -302,6 +302,20 @@ const InputWrapper = styled.div`
         justify-content: space-between;
     }
 
+    .MuiLinearProgress-root {
+        height: 8px !important;
+        overflow: hidden;
+        position: relative;
+        border-bottom-left-radius: 360px;
+        border-bottom-right-radius: 360px;
+        margin-top: -8px;
+    }
+
+    .MuiInput-underline:before,
+    .MuiInput-underline:after {
+        border-bottom: none !important;
+    }
+
     .text {
         font-family: Assistant;
     }
