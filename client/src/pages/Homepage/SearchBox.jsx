@@ -466,7 +466,7 @@ export default function SearchBox({
 
     async function handleInputChangeParcel(text) {
         if (text) {
-            // setParcels(text);
+            setparcelList([]);
             setParcelinputerror(false);
             setloadingAutocompleteParcel(true);
 

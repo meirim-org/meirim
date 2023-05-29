@@ -201,21 +201,25 @@ class AutocompleteInput extends Component {
                         {isOpen && !blockInputError && (
                             <AutocompleteWrapper>
                                 <Paper className={classes.paper} square>
-                                    {this.getSuggestions(inputValue2).map(
-                                        (suggestion, index) => (
-                                            <React.Fragment key={index}>
-                                                {renderSuggestion({
-                                                    suggestion,
-                                                    index,
-                                                    itemProps: getItemProps({
-                                                        item: suggestion.label,
-                                                    }),
-                                                    highlightedIndex,
-                                                    selectedItem: selectedItem2,
-                                                })}
-                                            </React.Fragment>
-                                        )
-                                    )}
+                                    {this.getSuggestions() &&
+                                        this.getSuggestions().map(
+                                            (suggestion, index) => (
+                                                <React.Fragment key={index}>
+                                                    {renderSuggestion({
+                                                        suggestion,
+                                                        index,
+                                                        itemProps: getItemProps(
+                                                            {
+                                                                item: suggestion.label,
+                                                            }
+                                                        ),
+                                                        highlightedIndex,
+                                                        selectedItem:
+                                                            selectedItem2,
+                                                    })}
+                                                </React.Fragment>
+                                            )
+                                        )}
                                 </Paper>
                             </AutocompleteWrapper>
                         )}
