@@ -271,7 +271,7 @@ describe('Emails', function() {
 		// actual reply copied from a browser performing the API response
 			.replyWithFile(
 				200,
-				`${__dirname}/files/new_mavat_plan_json_page.html`,
+				`${__dirname}/files/new_mavat_plan_json_page_deposit.html`,
 				{ 'Content-Type': 'text/html' }
 			);
 
