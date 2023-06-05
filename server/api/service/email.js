@@ -146,7 +146,7 @@ class Email {
 		return this.sendWithTemplate(this.templates.planDeposit, data);
 	}
 
-	donePlanAlert (user, unsentPlan, meirimStatus) {
+	donePlanAlert (user, unsentPlan, meirimStatus, planStaticMap) {
 		const alert = new Alert({
 			id: user.alert_id,
 			person_id: user.person_id
