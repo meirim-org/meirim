@@ -73,13 +73,10 @@ class PlanStatusChange extends Model {
 	 * @param {meirimStatus} string 
 	 * @returns array of mavat statuses
 	 */
-	static async byMeirimStatus(meirimStatus) {
+	static async getAllStatuses() {
 		const res = await Knex.raw(
-			`SELECT m.mavat_status
-				FROM status_mapping m 
-				 WHERE meirim_status=?`
-			, [meirimStatus]
-		);
+			`SELECT m.mavat_status, m.meirim_status
+				FROM status_mapping m`);
 		return res;
 	}
 }

@@ -25,7 +25,7 @@ const PlanStruct = function(table) {
 	table.string('MP_ID', 256);
 	table.string('plan_new_mavat_url', 256);
 	table.timestamp('last_visited_status');
-	table.integer('was_deposited').defaultTo(0);
+	table.integer('status_email').defaultTo(0);
 	return table;
 };
 
