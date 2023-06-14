@@ -219,7 +219,7 @@ const PlansHeaderComponent = () => {
     const [hiddenTopSection, setHiddenTopSection] = useState(false);
     const [hiddenTopContentSection, setHiddenTopContentSection] =
         useState(false);
-    const [lastScrollY, setLastScrollY] = useState(window.scrollY);
+    let lastScrollY = 0;
 
     const handleScrollEvent = () => {
         if (lastScrollY > window.scrollY) {
@@ -230,7 +230,7 @@ const PlansHeaderComponent = () => {
             setHiddenTopContentSection(true);
             setTranslateY(-200);
         }
-        setLastScrollY(window.scrollY);
+        lastScrollY = window.scrollY;
         if (window.scrollY === 0) {
             setHiddenTopSection(false);
             setHiddenTopContentSection(false);
@@ -244,16 +244,12 @@ const PlansHeaderComponent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const headerOpcaity = useMemo(()=> {
-        return hiddenTopSection? 0: 1
-    }, 
-    [hiddenTopSection ]);
+    const headerOpacity = useMemo(() => {
+        return hiddenTopSection ? 0 : 1;
+    }, [hiddenTopSection]);
 
     return (
-        <PlansHeader
-            translateY={translateY}
-            opacity={headerOpcaity}
-        >
+        <PlansHeader translateY={translateY} opacity={headerOpacity}>
             <PlansHeaderContent opacity={!hiddenTopContentSection ? 1 : 0}>
                 <PlansHeaderTitle>{t.plansHelperTitle}</PlansHeaderTitle>
                 <PlansHeaderText>{t.plansHelperText}</PlansHeaderText>
