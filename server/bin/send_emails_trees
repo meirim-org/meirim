@@ -3,10 +3,25 @@
 const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
 const Email = require('../api/service/email');
+const Config = require('../api/lib/config');
+const axios = require('axios');
+
+
+async function handleMonitor() {
+  const sendEmailsHeartbeatUrl = Config.get('uptimeRobot.sendTreesEmailsHeartbeatUrl');
+    try {
+			Log.info('reporting to tree email send monitor on success '+ sendEmailsHeartbeatUrl);
+			const response = await axios.get(sendEmailsHeartbeatUrl);
+			Log.info('tree email send monitor success');
+		} catch (error) {
+			Log.error('tree email send monitor error msg: ' + error.response.body);
+		}
+}
 
 
 Email.init()
   .then(() => controller.sendTreeAlerts())
   .then(() => Log.info('sendTreeAlerts completed'))
+  .then(() => handleMonitor())
   .catch((err) => Log.error('sendTreeAlerts error', err.message, err.stack))
   .finally(() => process.exit());
