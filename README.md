@@ -162,11 +162,12 @@ Set up cron to schedule three jobs - crawling for new data, emailing alerts to u
 
 ```bash
 $ crontab -e
-*/40 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node bin/iplan >> /home/ec2-user/meirim/server/logs/combined.log
-*/20 * * * * cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node bin/plan_status_change >> /path_to_code/meirim/server/logs/combined.log 2>&1
-0 10,21 * * SUN-THU cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node bin/fetch_tree_permit >> /path_to_code/meirim/server/logs/combined.log 2>&1
-*/50 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node   bin/send_emails_trees >> /path_to_code/meirim/logs/combined.log 2>&1
-*/50 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node   bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
+*/40 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/server/logs/combined.log
+*/20 * * * * cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/plan_status_change >> /path_to_code/meirim/server/logs/combined.log 2>&1
+0 10,21 * * SUN-THU cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/fetch_tree_permit >> /path_to_code/meirim/server/logs/combined.log 2>&1
+*/50 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails_trees >> /path_to_code/meirim/logs/combined.log 2>&1
+*/50 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
+30 * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/aggregate_views >> /path_to_code/meirim/logs/combined.log 2>&1
 ```
 
 ## Further info
