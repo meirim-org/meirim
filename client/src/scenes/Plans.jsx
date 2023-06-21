@@ -111,19 +111,33 @@ const PlansHeaderSearchBox = styled.div`
         }
 
         .makeStyles-selectWrapper-13,
+        .jss-13,
+        .jss-11,
         .makeStyles-selectWrapper-11 {
-            border-radius: 8px;
+            border-radius: 8px !important;
             background: #ffffff;
             border: 1px solid #652dd0;
-            padding: 0 20px 0 15px;
+            padding: 0 20px 0 15px !important;
+            margin-bottom: 0 !important;
+            max-width: 100% !important;
+
+            @media screen and (max-width: 767px) {
+                border: 0 !important;
+                padding: 0 !important;
+                margin-bottom: 7px !important;
+            }
 
             .makeStyles-formControl-12,
+            .jss-12,
+            .jss-10,
             .makeStyles-formControl-10 {
                 margin-right: 0;
                 margin-bottom: 0;
             }
 
             .makeStyles-selectControl-14,
+            .jss-14,
+            .jss-12,
             .makeStyles-selectControl-12 {
                 color: #652dd0;
                 font-style: normal;
@@ -133,7 +147,8 @@ const PlansHeaderSearchBox = styled.div`
             }
         }
 
-        .makeStyles-selectWrapper-11 {
+        .makeStyles-selectWrapper-11,
+        .jss-11 {
             padding: 5px 12px 5px 8px;
             border-radius: 4px;
             margin-bottom: 16px;
@@ -141,7 +156,8 @@ const PlansHeaderSearchBox = styled.div`
             box-sizing: border-box;
         }
 
-        .makeStyles-selectControl-12 {
+        .makeStyles-selectControl-12,
+        .jss-12 {
             font-size: 16px !important;
         }
     }
