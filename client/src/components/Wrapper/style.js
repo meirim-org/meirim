@@ -9,6 +9,9 @@ export const ChildrenWrapper = withTheme(styled.div`
     @media ${device.tablet} {
        padding-top: ${props => props.theme.navigation.desktop};
     }
+    @media screen and (max-width: 361px) {
+        padding-top: 120px;
+    }
 `);
 
 export const Wrapper = withTheme(styled.div`
