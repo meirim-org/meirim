@@ -3,7 +3,7 @@ import _ from 'lodash';
 // import { useHistory } from 'react-router-dom';
 import React, { useCallback, useEffect, useState } from 'react';
 import { device } from 'style';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete from '../../components/AutoCompleteInput';
 import locationAutocompleteApi from '../../services/location-autocomplete';
@@ -292,6 +292,36 @@ const SelectWrapper = styled.div`
     .MuiPaper-root {
         margin: 3rem 1rem !important;
     }
+
+    ${(props) =>
+        props.type === 'border' &&
+        css`
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid #652dd0;
+            padding: 0 20px 0 15px;
+            margin-bottom: 0;
+            max-width: 100%;
+
+            @media screen and (max-width: 767px) {
+                border: 0;
+                padding: 0;
+                margin-bottom: 7px;
+            }
+
+            .MuiFormControl-root {
+                margin-bottom: 0;
+                margin-right: 0;
+            }
+
+            .MuiInputBase-formControl {
+                color: #652dd0;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 18px;
+                font-family: 'Assistant', sans-serif;
+            }
+        `};
 `;
 
 const InputWrapper = styled.div`
@@ -329,6 +359,7 @@ export default function SearchBox({
     wrapperMargin,
     wrapperPadding,
     height,
+    type,
 }) {
     const { search } = SearchSelectors();
     const [addresses, setAddresses] = useState([]);
@@ -505,7 +536,7 @@ export default function SearchBox({
         >
             {showTitle && <Title color={color}>{t.searchBoxTitle}</Title>}
             <InputWrapper>
-                <SelectWrapper className={classes.selectWrapper}>
+                <SelectWrapper type={type} className={classes.selectWrapper}>
                     <FormControl
                         variant="outlined"
                         className={classes.formControl}
