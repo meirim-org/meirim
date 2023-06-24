@@ -13,9 +13,9 @@ Currently two separate packages live in this repository - server (which includes
 
 Things you need to install:
 
-* Git
-* Node.js (we support and run on version 14.x)
-* MySQL (required only for the backend & crawler) Version 5.7
+- Git
+- Node.js (we support and run on version 14.x)
+- MySQL (required only for the backend & crawler) Version 5.7
 
 #### Installing meirim's CLI tool
 
@@ -113,6 +113,7 @@ $ npm run crawl
 Tests require all prerequisites to be fulfilled and a database instance to be available at port 33060 on localhost. The odd port is for preventing people from running the tests on development databases accidentally (and can be changed by overriding the test section at [server/config/default.json](server/config/default.json)).
 
 If you use docker to run the MYSQL, you may use this command to lift a docker for testing
+
 ```bash
 docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
 ```
@@ -161,10 +162,12 @@ Set up cron to schedule three jobs - crawling for new data, emailing alerts to u
 
 ```bash
 $ crontab -e
-0 14 * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/logs/combined.log 2>&1
-* * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
+*/40 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/iplan >> /path_to_code/meirim/server/logs/combined.log
+*/20 * * * * cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/plan_status_change >> /path_to_code/meirim/server/logs/combined.log 2>&1
+0 10,21 * * SUN-THU cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/fetch_tree_permit >> /path_to_code/meirim/server/logs/combined.log 2>&1
+*/50 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails_trees >> /path_to_code/meirim/logs/combined.log 2>&1
+*/50 * * * *  cd /path_to_code/meirim/server && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/send_emails >> /path_to_code/meirim/logs/combined.log 2>&1
 30 * * * *  cd /path_to_code/meirim/ && NODE_ENV='production' /usr/bin/node /path_to_code/meirim/bin/aggregate_views >> /path_to_code/meirim/logs/combined.log 2>&1
-15 * * * * cd /home/ec2-user/meirim/server && node bin/plan_status_change >> /home/ec2-user/meirim/server/logs/combined.log 2>&1
 ```
 
 ## Further info
