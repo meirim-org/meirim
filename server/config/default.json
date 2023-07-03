@@ -142,7 +142,8 @@
 		"sendTreesEmailsHeartbeatUrl": "https://heartbeat.uptimerobot.com/m794608230-48adb414934d57d1d15a70dfed2c1754bef030f1"	
 	},
 	"planStatusChange": {
-		"limit": 15
+		"limit": 15,
+		"lastVisitedDifference": 14
 	},
 	"proxy": {
 		"apiKey": ""
