@@ -1,6 +1,8 @@
 {
     "uptimeRobot": {
 		"iplanHeartbeatUrl": "https://www.google.com",
-		"treeFetchingHeartbeatUrl":	"https://www.google.com"		
+		"treeFetchingHeartbeatUrl":	"https://www.google.com",
+		"sendEmailsHeartbeatUrl": "https://www.google.com",
+		"sendTreesEmailsHeartbeatUrl": "https://www.google.com"		
 	}
 }

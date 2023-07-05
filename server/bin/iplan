@@ -12,7 +12,7 @@ controller
 		// report to monitor that iplan ended successfuly
 		const iplanHeartbeatUrl = Config.get('uptimeRobot.iplanHeartbeatUrl');
 		try {
-			Log.info('reporting to monitor on iplan success'+ iplanHeartbeatUrl);
+			Log.info('reporting to monitor on iplan success '+ iplanHeartbeatUrl);
 			const response = await axios.get(iplanHeartbeatUrl);
 			Log.info('iplan monitor success');
 		} catch (error) {
