@@ -47,6 +47,14 @@ const getLinkActionText = (type) => {
 const LinkItem = ({ type, link, title, description }) => {
 	const { t } = useTranslation();
 
+	const formatLink = () => {
+		if (link.includes('http')) {
+			return link;
+		}
+		
+		return `https://${link}`;
+	};
+
 	return (
 		<LinkItemWrapper>
 			<LinkItemGeneral>
@@ -60,7 +68,7 @@ const LinkItem = ({ type, link, title, description }) => {
 			</LinkItemGeneral>
 			<LinkItemAction>
 				{/* eslint-disable-next-line react/jsx-no-target-blank */}
-				<a target="_blank" href={`//${link}`} rel="noreferrer">
+				<a target="_blank" href={formatLink(link)} rel="noreferrer">
 					{t[getLinkActionText(type)]}
 				</a>
 			</LinkItemAction>
