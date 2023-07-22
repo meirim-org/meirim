@@ -7,7 +7,7 @@ const {
 	LAST_DATE_TO_OBJECTION, TOTAL_TREES,
 	PLACE, STREET, START_DATE,
 	TREES_PER_PERMIT, PERSON_REQUEST_NAME, TREE_PERMIT_URL,
-	GUSH, HELKA, REASON_DETAILED
+	GUSH, HELKA, REASON_DETAILED, APPROVER_NAME
 } = require('../../model/tree_permit_constants');
 const { formatDate, figureStartDate } = require('./utils');
 const Log = require('../log');
@@ -19,6 +19,7 @@ const TREE_TYPE =  'מין העץ:';
 const LICENSE_NUMBER = 'מספר רישיון';
 const LICENSE_OWNER = 'שם בעל הרישיון';
 const LICENSE_REASON = 'סיבה:';
+const LICENSE_APPROVER_TITLE = 'פקיד יערות עירוני תל אביב-יפו';
 const TEL_AVIV_CITY = 'תל אביב-יפו';
 const SHORT_ACTION = 'כריתה';
 const APPROVER = 'שם פקיד היערות המאשר:';
@@ -45,7 +46,6 @@ async function parseTreesHtml(url) {
 	const rawRows = dom('.table-scrl').find('tr');
 	//ignore row 0
 	for (let i = 1; i < rawRows.length; i = i+2) {
-		console.log(`i = ${i}`);
 		const permit = {};
 		permit.permitNumber = dom(rawRows[i]).attr('title');
 		dom(rawRows[i]).find('td').each((idx,elem) => {				
@@ -91,7 +91,8 @@ function processRawPermits(rawPermits) {
 				const attributes = {
 					[REGIONAL_OFFICE]: TEL_AVIV_CITY,
 					[PLACE]: TEL_AVIV_CITY,
-					[APPROVER_TITLE]: raw[APPROVER],
+					[APPROVER_NAME]: raw[APPROVER],
+					[APPROVER_TITLE]: LICENSE_APPROVER_TITLE,
 					[PERMIT_NUMBER]: raw[LICENSE_NUMBER],
 					[STREET]: raw[STREET_NAME],
 					[GUSH]: raw[PERMIT_GUSH],
