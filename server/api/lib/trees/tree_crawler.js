@@ -25,6 +25,7 @@ const {
 const { REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, TOTAL_TREES, GUSH, HELKA, GEOM, PLACE, STREET, TREE_PERMIT_TABLE, STREET_NUMBER } = require('../../model/tree_permit_constants');
 const MORNING = '08:00';
 const { crawlTreeExcelByFile } = require('./tree_crawler_excel');
+const { crawlTLVTrees, tlvTreePermit } = require('./tlv_tree_permit');
 async function saveNewTreePermits(treePermits, maxPermits) {
 	// Tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
 	// buffer should be enough for human to remove those lines from the excel sheet.
@@ -92,6 +93,7 @@ const chooseCrawl = (crawlType) => {
 	const hodHasharon  = { 'crawler': crawlHodHashTreesHTML , 'permitType': hodHashTreePermit};
 	const beerSheva  = { 'crawler': crawlBeerShevaTreesHTML , 'permitType': beerShevaTreePermit};
 	const yavne  = { 'crawler': crawlYavneTreesHTML , 'permitType': yavneTreePermit};
+	const tlv  = { 'crawler': crawlTLVTrees , 'permitType': tlvTreePermit};
 	const regional = { 'crawler': crawlTreeExcelByFile, 'permitType': RegionalTreePermit };
 
 	const crawlMap = {
@@ -103,7 +105,8 @@ const chooseCrawl = (crawlType) => {
 		'jerusalem': [jerusalem],
 		'kkl': [kkl],
 		'regional': [regional],
-		'all': [yavne, beerSheva, hodHasharon, haifa, ramatGan, jerusalem, regional, kkl]
+		'tlv': [tlv],
+		'all': [tlv, yavne, beerSheva, hodHasharon, haifa, ramatGan, jerusalem, regional, kkl]
 	};
 
 	return crawlMap[crawlType] || crawlMap['all'];
