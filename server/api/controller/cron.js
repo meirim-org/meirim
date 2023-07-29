@@ -409,16 +409,15 @@ const fetchPlanStatus = () => {
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
 
-	// const lastVisitedDifference = 14; //days, may take from config
-	// const timeDifference = moment.duration(lastVisitedDifference, 'd');
-	// const date = moment().subtract(timeDifference);
-	// const dateString = moment(date).format('YYYY-MM-DD h:mm');
-	return Plan.query(qb => {
-		// TODO: add outer join for not approved plans
-		qb.where('status', '!=', meirimStatuses.APPROVED )
-			.whereRaw('MP_ID NOT LIKE \'NOT_FOUND\'')
-			// .whereRaw(`last_visited_status < '${dateString}' OR last_visited_status IS NULL`)
-			.orderBy('last_visited_status','asc');
+	const lastVisitedDifference = Config.get('planStatusChange.lastVisitedDifference'); //days
+	const timeDifference = moment.duration(lastVisitedDifference, 'd');
+	const date = moment().subtract(timeDifference);
+	const dateString = moment(date).format('YYYY-MM-DD h:mm');
+	return Plan.query(qb => {	
+		qb.leftJoin('status_mapping', 'plan.status', '=' ,'status_mapping.mavat_status')
+		.whereRaw(`(status_mapping.meirim_status is null or status_mapping.meirim_status != '${meirimStatuses.APPROVED}') and plan.MP_ID NOT LIKE \'NOT_FOUND\' and (plan.last_visited_status < '${dateString}' OR plan.last_visited_status IS NULL)`)
+		  .orderBy('plan.last_visited_status','asc');
+
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()

@@ -189,7 +189,7 @@ class TreePermits extends Component {
 												</Typography>
 												<this.CardContentAddress tree={tree} />
 												<this.CardContentField field={tree.action} fieldBold='פעולה:'/>
-												<this.CardContentField field={tree.reason_short} fieldBold='סיבה:' />
+												<this.CardContentField field={tree.reason_short || tree.reason_detailed} fieldBold='סיבה:' />
 											</CardContent>
 										</CardActionArea>
 									</Link>

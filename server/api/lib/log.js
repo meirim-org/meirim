@@ -30,14 +30,18 @@ logger.level = 'debug';
 module.exports = {
 	debug: (...args) => {
 		logger.debug(args);
+		console.log (args);
 	},
 	info: (...args) => {
 		logger.info(args);
+		console.log (args);
 	},
 	error: (...args) => {
 		logger.error(args);
+		console.log (args);
 	},
 	warn: (...args) => {
 		logger.warn(args);
+		console.log (args);
 	}
 };
