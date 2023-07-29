@@ -597,6 +597,8 @@ class Plan extends Model {
 
 	static getStatusChanges (collection, steps) {
 		// if date is not null, set completed to true
+		// This should be fixed, as steps are completed once we 
+		//move to the next step
 		steps = steps.concat(collection.map(function(element){
 			element.completed = element.date===null ? false : true;
 			return element;
