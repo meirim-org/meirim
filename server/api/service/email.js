@@ -129,6 +129,22 @@ class Email {
 		return this.sendWithTemplate(this.templates.alert, data);
 	}
 
+	planDepositAlert (user, unsentPlan) {
+		const data = user;
+
+		Object.assign(data, unsentPlan.attributes);
+		if (data.data.DEPOSITING_DATE) {
+			const dates = data.data.DEPOSITING_DATE.split('T');
+			data.data.DEPOSITING_DATE = dates[0];
+		}
+
+		data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}`;
+		data.jurisdiction = unsentPlan.get('jurisdiction');
+		data.type = 'plan-alert';
+
+		return this.sendWithTemplate(this.templates.planDeposit, data);
+	}
+
 	formatDate(date) {
 		const d = new Date(date);
 		return `${(d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())}/${(d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))}/${d.getFullYear()}`;
@@ -168,9 +184,9 @@ class Email {
 		return this.sendWithTemplate(this.templates.treeAlert, data);
 	}
 
-	digestPlanAlert (user, plans = []) {
+	// digestPlanAlert (user, plans = []) {
 		
-	}
+	// }
 
 	newAlertTemplateByType(type){
 		let alertTemplate = this.templates.newAlert;
