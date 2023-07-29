@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { size } from 'lodash';
+import { size, findIndex } from 'lodash';
 import moment from 'moment';
 import StepLabel from '@material-ui/core/StepLabel';
 import styled from 'styled-components';
@@ -110,7 +110,6 @@ const LabelStep = styled.div`
 export const StepperProgress = ({ steps, cancellationDate }) => {
     const classes = useStyles();
 
-    const [activeStep, setActiveStep] = useState(null);
     const [clickedStep, setClickedSteps] = useState(null);
 
     const allStepsCompleted = useMemo(() => {
@@ -118,13 +117,9 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
         return steps[steps.length - 1].completed;
     }, [steps]);
 
-    useEffect(() => {
-        steps.map((step, i) => {
-            if (step.current) {
-                setActiveStep(i);
-                // setClickedSteps({ ...steps[i] });
-            }
-        });
+
+    const activeStep = useMemo(()=> {
+        return findIndex(steps, (step)=> step.current);
     }, [steps]);
 
     const displayDate = (dateString) => {
