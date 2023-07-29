@@ -51,6 +51,29 @@ class AlertController extends Controller {
 				return fetchedModel.destroy();
 			});
 	}
+
+	/**
+   * Unsubscribe from alert by token, when clicking an unsubscribe
+   * link in an email
+   * @param {IncomingRequest} req
+   */
+	unsubscribeAlert (req) {
+		return Alert.ByToken(req.params.token)
+			.fetch()
+			.then((fetchedModel) => {
+				if (!fetchedModel) {
+					throw new Exception.NotFound('Nof found');
+				}
+
+				Log.debug('unsubscribe request for alert id:', fetchedModel.get('id'));
+				fetchedModel.set('subscription', 0);
+				return fetchedModel.save();
+			})
+			.catch(err => {
+				Log.error(err);
+				throw new Exception.Error(err);
+			});
+	}
 }
 
 module.exports = new AlertController(Alert);

@@ -26,7 +26,7 @@ const AlertList = ({ notifyDeletedAlert, alerts }) => {
 	}, [alerts]);
 
 	const handleDelete = (alertId) => {
-		api.delete('/alert/' + alertId).then(() => {
+		api.post('/alert/' + alertId).then(() => {
 			notifyDeletedAlert();
 		});
 	};

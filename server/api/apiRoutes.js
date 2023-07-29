@@ -81,7 +81,9 @@ Router.get('/alert/', wrap(Alert.browse, Alert));
 Router.get('/alert/:id', wrap(Alert.read, Alert));
 Router.post('/alert/', wrap(Alert.create, Alert));
 Router.delete('/alert/:id', wrap(Alert.delete, Alert));
+Router.post('/alert/:id', wrap(Alert.unsubscribeAlertById, Alert));
 Router.delete('/alert/_token/:token', wrap(Alert.unsubscribe, Alert));
+Router.post('/alert/_token/:token', wrap(Alert.unsubscribeAlert, Alert));
 
 // Funding
 Router.post('/funding/', wrap(Funding.create, Funding));
