@@ -6,6 +6,6 @@
 		"sendTreesEmailsHeartbeatUrl": "https://www.google.com"		
 	},
 	"planStatusChange": {
-		"lastVisitedDifference": 0
+		"lastVisitedDifference": -1
 	}
 }

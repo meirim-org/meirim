@@ -28,7 +28,8 @@ export const HeaderCellSortable = styled.div`
 `;
 
 export const CellContent = styled.div`
-    text-align: center;
+    padding: 0 20px;
+    text-align: ${props => props.align ? props.align : 'center'};
     flex-grow: 1;
     
 `;
@@ -77,7 +78,13 @@ export const Row = styled.tr`
 `;
 
 export const Cell = styled.td`
-    text-align: center;
+    text-align: ${props => props.align ? props.align : 'center'};
     padding:24px;
-    
+`;
+
+export const AccessoryCell = styled.td`
+    background-color: white;
+    text-align: center;
+    padding:0;
+    width: 0;
 `;

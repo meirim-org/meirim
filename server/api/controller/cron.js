@@ -9,6 +9,7 @@ const iplanApi = require('../lib/iplanApi');
 const Alert = require('../model/alert');
 const Plan = require('../model/plan');
 const PlanTag = require('../model/plan_tag');
+const PlanPerson = require('../model/plan_person');
 const Email = require('../service/email');
 const DigestEmail = require('../service/template_email');
 const MavatAPI = require('../lib/mavat');
@@ -18,6 +19,7 @@ const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
+const {	meirimStatuses } = require('../constants');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -401,15 +403,21 @@ async function fetchTreePermit(crawlMethod){
 }
 
 const fetchPlanStatus = () => {
-
+	var mavatStatus = null;
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
-	return Plan.query(qb => {
-		qb.where('status', '!=', 'התכנית אושרה' ).orderBy('last_visited_status','asc');
+	const lastVisitedDifference = Config.get('planStatusChange.lastVisitedDifference'); //days
+	const timeDifference = moment.duration(lastVisitedDifference, 'd');
+	const date = moment().subtract(timeDifference);
+	const dateString = moment(date).format('YYYY-MM-DD h:mm');
+	return Plan.query(qb => {	
+		qb.leftJoin('status_mapping', 'plan.status', '=' ,'status_mapping.mavat_status')
+		.whereRaw(`(status_mapping.meirim_status is null or status_mapping.meirim_status != '${meirimStatuses.APPROVED}') and plan.MP_ID NOT LIKE \'NOT_FOUND\' and (plan.last_visited_status < '${dateString}' OR plan.last_visited_status IS NULL)`)
+		  .orderBy('plan.last_visited_status','asc');
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
-		.then(planCollection =>
+		.then(planCollection => 
 			Bluebird.mapSeries(planCollection.models, plan => {
 				
 				Log.debug(plan.get('plan_url'));
@@ -418,28 +426,93 @@ const fetchPlanStatus = () => {
 
 				return MavatAPI.getPlanStatus(plan).then(async (planStatuses) => {
 					try {
+
+						// cut description to match db field length
+						planStatuses.forEach(ps => {
+							if (ps.attributes.status_description) {
+								ps.attributes.status_description = ps.attributes.status_description.substr(0, 254);
+							}
+						});
 						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						Log.debug('updating last_visited_status to:', now );
 
-						if (! mostRecent[0]) {
+						if (!mostRecent[0]) {
 							Log.debug('No status in mavat for plan', plan.get('id'));
-							plan.save({ 'last_visited_status': now });
+							await plan.save({ 'last_visited_status': now });
 							return;
 						}
 						const mostRecentStatus = mostRecent[0].attributes.status;
 						Log.debug('updating plan status to:', mostRecentStatus);
-						plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
+						await plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
 						// save all plan statuses into plan_status_change table
 						await PlanStatusChange.savePlanStatusChange(planStatuses);
+
+						// get all relevant mavat status for deposited plan
+						if (mavatStatus === null) {
+							const res = await PlanStatusChange.byMeirimStatus(meirimStatuses.PUBLIC_OBJECTION);
+							mavatStatus = res[0].map(rec => rec.mavat_status);
+						}
+						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
 					}
 					catch (err) {
 						Log.error('Error:', err.message);
+						const now = moment().format('YYYY-MM-DD HH:mm:ss');
+						await plan.save({ 'last_visited_status': now });
 					}
-				});
-			}));
+				})
+					.catch(async (err)=> {
+						Log.error('Error:', err.message);
+						const now = moment().format('YYYY-MM-DD HH:mm:ss');
+						await plan.save({ 'last_visited_status': now });
+					});
+			
+			}
+			));
 };
+
+/**
+ * Check if plan is now in deposited status and send email to watching users
+ * @param {*} plan 
+ * @param {*} planStatuses - plan statuses
+ * @param {*} mavatStatus - all mavat status for deposited plan
+ */
+async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
+	if (Config.get('email.send_plan_deposit_email') !== true) {
+		return false;
+	}
+	var sendEmail = shouldSendEmail(plan, planStatuses, mavatStatus);
+	if (sendEmail) {
+		PlanPerson.getUsersForPlan(plan.get('id'))
+			.then(users => {
+				if (!users[0] || !users[0].length) {
+					return sendEmail;
+				}
+				return Bluebird.mapSeries(users[0], user =>
+					Email.planDepositAlert(user, plan)
+				); 
+			})
+			.then(plan.save({ 'was_deposited': true }))
+			.then(a => {return sendEmail;})
+			.catch(err => Log.error('Error:', err.message))
+		;
+	}
+	return sendEmail;
+}
+
+function shouldSendEmail(plan, planStatuses, mavatStatus) {
+	var sendEmail = false;
+	if (!plan.attributes.was_deposited) { 
+		for (var i = 0; i < planStatuses.length; ++i)	{
+			const status = planStatuses[i];
+			if (Boolean(status.attributes.status) && mavatStatus.indexOf(status.attributes.status) >= 0) {
+				sendEmail = true;
+			}		
+		}		
+	}
+	return sendEmail;
+}
 
 const fillMPIDForMissingPlans = async () => {
 
@@ -488,8 +561,8 @@ const fillMPIDForMissingPlans = async () => {
 	} catch(e){
 		console.log('Error scrapping new MP_ID', e.message);
 	}
-	finally{
-	}
+	// finally{
+	// }
 
 };
 

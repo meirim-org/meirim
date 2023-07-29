@@ -15,6 +15,7 @@ const { crawlTreesHTML , JERTreePermit } = require('./jerusalem_tree_permit');
 const { crawlRGTreesHTML , RGTreePermit } = require('./ramat_gan_tree_permit');
 const { crawlHodHashTreesHTML , hodHashTreePermit } = require('./hod_hasharon_tree_permit');
 const { crawlBeerShevaTreesHTML , beerShevaTreePermit } = require('./beer_sheva_tree_permit');
+const { crawlYavneTreesHTML , yavneTreePermit } = require('./yavne_tree_permit');
 
 const {
 	formatDate,
@@ -24,6 +25,7 @@ const {
 const { REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, TOTAL_TREES, GUSH, HELKA, GEOM, PLACE, STREET, TREE_PERMIT_TABLE, STREET_NUMBER } = require('../../model/tree_permit_constants');
 const MORNING = '08:00';
 const { crawlTreeExcelByFile } = require('./tree_crawler_excel');
+const { crawlTLVTrees, tlvTreePermit } = require('./tlv_tree_permit');
 async function saveNewTreePermits(treePermits, maxPermits) {
 	// Tree permits are published for objecctions for a period of 2 weeks. taking a 12 months
 	// buffer should be enough for human to remove those lines from the excel sheet.
@@ -90,9 +92,12 @@ const chooseCrawl = (crawlType) => {
 	const ramatGan  = { 'crawler': crawlRGTreesHTML , 'permitType': RGTreePermit};
 	const hodHasharon  = { 'crawler': crawlHodHashTreesHTML , 'permitType': hodHashTreePermit};
 	const beerSheva  = { 'crawler': crawlBeerShevaTreesHTML , 'permitType': beerShevaTreePermit};
+	const yavne  = { 'crawler': crawlYavneTreesHTML , 'permitType': yavneTreePermit};
+	const tlv  = { 'crawler': crawlTLVTrees , 'permitType': tlvTreePermit};
 	const regional = { 'crawler': crawlTreeExcelByFile, 'permitType': RegionalTreePermit };
 
 	const crawlMap = {
+		'yavne': [yavne],
 		'beerSheva': [beerSheva],
 		'hodHasharon': [hodHasharon],
 		'ramatGan': [ramatGan],
@@ -100,7 +105,8 @@ const chooseCrawl = (crawlType) => {
 		'jerusalem': [jerusalem],
 		'kkl': [kkl],
 		'regional': [regional],
-		'all': [beerSheva, hodHasharon, haifa, ramatGan, jerusalem, regional, kkl]
+		'tlv': [tlv],
+		'all': [tlv, yavne, beerSheva, hodHasharon, haifa, ramatGan, jerusalem, regional, kkl]
 	};
 
 	return crawlMap[crawlType] || crawlMap['all'];
@@ -136,7 +142,7 @@ const crawlTrees = async (crawlMethod) => {
 		// report to monitor that ended successfuly
 		const treeFetchingHeartbeatUrl = Config.get('uptimeRobot.treeFetchingHeartbeatUrl');
 		try {
-			Log.info('reporting to monitor on success'+ treeFetchingHeartbeatUrl);
+			Log.info('reporting to tree fetching monitor on success '+ treeFetchingHeartbeatUrl);
 			const response = await axios.get(treeFetchingHeartbeatUrl);
 			Log.info('tree fetching monitor success');
 		} catch (error) {
