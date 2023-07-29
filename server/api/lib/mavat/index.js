@@ -2,7 +2,7 @@
 const cheerio = require('cheerio');
 const Bluebird = require('bluebird');
 const puppeteer = require('puppeteer');
-const { map, get } = require('lodash');
+const { map, get, isArray } = require('lodash');
 const HtmlTableToJson = require('html-table-to-json');
 const https = require('follow-redirects').https;
 const Log = require('../../lib/log');
@@ -199,7 +199,7 @@ const fetchPlanData = (planUrl) =>
 					resolve({ data: JSON.parse(jsonContent) });
 					
 				} catch (e) {
-					Log.error('Mavat fetch error with puppeteer', e.message);
+					Log.error('Mavat fetch error with proxy', e.message);
 					Log.error(e);
 					reject(e);
 				}
@@ -331,9 +331,8 @@ const getPlanStatus = (plan) => {
 	return new Promise((resolve, reject) => {
 		getByPlan(plan, false)
 			.then(mavatData => {
-				if (!Object.prototype.hasOwnProperty.call(mavatData, 'planStatusList' ||
-					!mavatData.planStatusList)) {
-					return null;
+				if(!mavatData || !isArray(mavatData?.planStatusList)) {
+					return resolve([]);
 				}
 
 				const planStatusList = mavatData.planStatusList.map(status => {
@@ -344,31 +343,31 @@ const getPlanStatus = (plan) => {
 					});
 				});
 				resolve(planStatusList);
+			}).catch(()=> {
+				return resolve([]);
 			})
-			.catch(err => Log.error('plan status error:', err));
 	});
 };
 
 const getByPlan = async (plan, fetchPlanInstructions = true) => {
 	await init();
 	const planId = plan.get('MP_ID');
-	if (!planId) {
-		// maybe here, we can populate agam id from a search service
-		return new Promise((resolve, reject)=>{ reject(new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`));});
+	if (!planId || planId === 'NOT_FOUND') {
+		// TODO- maybe? we can populate agam id from a search service
+		throw new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`);
 	}
 	const url = `${newMavatURL}/?mid=${planId}`;
 	// Performing the new MAVAT API call
 	return fetchPlanData(url)
 		.catch(er=> {
 			Log.error('Mavat fetch error', er);
+			return null;
 		})
 	// return planId ? fetch(plan.get('plan_url'), fetchPlanInstructions ) : search(plan.get('PL_NUMBER'));
 		.then(async (response) => {
+			if (!response) return null;
 			const { data } = response;
 			let pageInstructions;
-			if(false){
-				pageInstructions = await getPlanInstructionsNewMavat([...get(data, 'rsPlanDocs', []), ...get(data, 'rsPlanDocsAdd', [])] );
-			}
 			const planFiles = getPlanFilesNewMavat(data);
 
 			Log.debug(
@@ -378,10 +377,10 @@ const getByPlan = async (plan, fetchPlanInstructions = true) => {
 			);
 
 			Log.debug(
-				'Fetched mavat plan data',
-				plan.get('PL_NUMBER'),
-				plan.get('MP_ID'),
-				response
+				'Fetched mavat plan data', {
+					PL_NUMBER: plan.get('PL_NUMBER'),
+					MP_ID: plan.get('MP_ID')
+				}
 			);
 			return Bluebird.props({
 				plan_url: getDirectUrl(planId),

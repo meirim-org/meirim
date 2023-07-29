@@ -35,4 +35,23 @@ export default function usePermitTableColumns() {
     ]
 
     return columns
-} 
+}
+
+export function useUserAoisTableColumns() {
+    const { t } = useTranslation();
+
+    const columns = [
+        columnHelper.accessor('name', {
+            header: () => t.AOITitle
+        }),
+        columnHelper.accessor('permit_aoi.name', {
+            header: () => t.permitRegion
+        }),
+        columnHelper.accessor('permit_aoi.url', {
+            cell: t.undefined,
+            header: () => t.GISFile,
+        })
+    ]
+
+    return columns
+}

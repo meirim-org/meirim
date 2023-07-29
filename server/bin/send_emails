@@ -3,13 +3,23 @@
 const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
 const Email = require('../api/service/email');
+const Config = require('../api/lib/config');
+const axios = require('axios');
 
+async function handleMonitor() {
+  const sendEmailsHeartbeatUrl = Config.get('uptimeRobot.sendEmailsHeartbeatUrl');
+    try {
+			Log.info('reporting to email send monitor on success '+ sendEmailsHeartbeatUrl);
+			const response = await axios.get(sendEmailsHeartbeatUrl);
+			Log.info('email send monitor success');
+		} catch (error) {
+			Log.error('email send monitor error msg: ' + error.response.body);
+		}
+}
 
 Email.init()
   .then(() => controller.sendPlanningAlerts())
   .then(() => Log.info('sendPlanningAlerts completed'))
+  .then(() => handleMonitor())
   .catch((err) => Log.error('sendPlanningAlerts error', err.message, err.stack))
-  .then(() => controller.sendTreeAlerts())
-  .then(() => Log.info('sendTreeAlerts completed'))
-  .catch((err) => Log.error('sendTreeAlerts error', err.message, err.stack))
   .finally(() => process.exit());

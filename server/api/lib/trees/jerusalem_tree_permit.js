@@ -81,7 +81,7 @@ function processRawPermits(rawPermits) {
 					[PERMIT_ISSUE_DATE]: dates[0],
 					[START_DATE]: dates[1],
 					[END_DATE]: dates[2],
-					[TREE_PERMIT_URL]: 'https://www.jerusalem.muni.il/he/residents/environment/improvingcity/trees-conservation/',
+					[TREE_PERMIT_URL]: TREES_JERUSALEM_URL,
 				};
 				const permit = new TreePermit(attributes);
 				return permit;
