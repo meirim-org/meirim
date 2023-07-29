@@ -24,7 +24,7 @@ const SummaryTab = ({
 }) => {
 	const { planData, dataArea, dataUnits, textArea, planLinks } =
         PlanSelectors();
-	const { type, status, lastUpdate, url, goalsFromMavat, countyName } =
+	const { type, stationDesc, lastUpdate, url, goalsFromMavat, countyName } =
         planData;
 	useScrollToTop();
 
@@ -32,7 +32,7 @@ const SummaryTab = ({
 		<>
 			<DetailsPanel
 				type={type}
-				status={status}
+				status={stationDesc}
 				lastUpdate={lastUpdate}
 				url={url}
 			/>

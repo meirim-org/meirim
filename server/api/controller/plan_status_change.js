@@ -2,7 +2,6 @@ const Controller = require('./controller');
 const PlanStatusChange = require('../model/plan_status_change');
 const Plan = require('../model/plan');
 const Log = require('../lib/log');
-const { debug } = require('../lib/log');
 const PLAN_TYPE_77_78 = {
 	name: 'פרסום על הכנת תוכנית', 
 	description:'הודעה לפי סעיף 77 ו 78 לחוק התכנון והבניה'

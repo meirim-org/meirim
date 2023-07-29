@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
     instructions: {
         marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
+        marginBottom: theme.spacing(1)
     },
     backgroundColor: {
         backgroundColor: 'red',
@@ -39,13 +39,6 @@ const useQontoStepIconStyles = makeStyles({
         color: '#eaeaf0',
         display: 'flex',
         alignItems: 'center',
-    },
-    active: {
-        color: '#ae7ff0',
-        borderRadius: '50%',
-        width: 13,
-        height: 13,
-        boxShadow: '0px 0px 0px 15px #f0e3fd',
     },
 
     circle: {
@@ -61,6 +54,14 @@ const useQontoStepIconStyles = makeStyles({
         borderRadius: '50%',
         backgroundColor: '#8bdbbf',
     },
+    active: {
+        color: '#ae7ff0',
+        borderRadius: '50%',
+        width: 13,
+        height: 13,
+        boxShadow: '0px 0px 0px 15px #f0e3fd',
+        backgroundColor: '#ae7ff0',
+    },
     approval: {
         width: 13,
         height: 13,
@@ -71,12 +72,16 @@ const useQontoStepIconStyles = makeStyles({
 });
 
 const StepButtonStyle = styled(StepButton)`
-    background: ${(props) =>
+    background: 
+    
+    ${(props) =>
         props.stepcomplited
             ? '#e6f8f3 !important'
-            : props.index === props.activestep
+            : (props.isActiveStep
             ? 'linear-gradient(270deg,rgba(230, 248, 243, 1) 50%,rgba(251, 251, 251, 1) 50% ) !important'
-            : ' #fbfbfb !important'};
+            : ' #fbfbfb !important')};
+
+    ${(props)=> props.isActiveStep &&'background: linear-gradient(90deg, rgba(251, 251, 251, 1), 50%, rgba(230, 248, 243, 1) 50%) !important;'}
 
     padding: 10px 16px !important;
     border-radius: ${(props) =>
@@ -104,7 +109,6 @@ const LabelStep = styled.div`
 
 export const StepperProgress = ({ steps, cancellationDate }) => {
     const classes = useStyles();
-    // const theme = useTheme();
 
     const [activeStep, setActiveStep] = useState(null);
     const [clickedStep, setClickedSteps] = useState(null);
@@ -118,17 +122,24 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
         steps.map((step, i) => {
             if (step.current) {
                 setActiveStep(i);
-                setClickedSteps({ ...steps[i] });
+                // setClickedSteps({ ...steps[i] });
             }
         });
     }, [steps]);
 
-    const handleStep = (step) => () => {
-        setClickedSteps(step);
+    const displayDate = (dateString) => {
+        const string = moment(dateString).format('DD/MM/YYYY');
+        if(string && string !== 'Invalid date') return string
+        return '';
     };
 
-    const displayDate = (dateString) => {
-        return moment(dateString).format('DD/MM/YYYY');
+    const onButtonClick = () => {
+        // Opening a poptin based on the selected step
+        const poptinIdsForSteps = ['d31f5c4276200', '7c7e66500c4ac', '0c47c056d9c62', '672c4710c1670', ''];
+        const poptinId = poptinIdsForSteps[clickedStep.stepId];
+        if(window.poptin_display && poptinId) {
+			window.poptin_display(poptinId);
+		}
     };
 
     const planApprovalDate = useMemo(() => {
@@ -162,7 +173,7 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
                     [classes.active]: active,
                 })}
             >
-                {completed ? (
+                {completed && !active ? (
                     <div className={classes.completed} />
                 ) : (
                     <div className={classes.circle} />
@@ -192,18 +203,16 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
                         <Step
                             key={index}
                             {...stepProps}
-                            onClick={() =>
-                                steps[index].completed &&
-                                setClickedSteps(steps[index])
+                            onClick={() => {setClickedSteps(steps[index]) }
                             }
                         >
                             <StepButtonStyle
                                 index={index}
                                 disabled
-                                onClick={handleStep(index)}
                                 completed={steps[index].completed}
                                 approval={true}
                                 activestep={activeStep}
+                                isActiveStep={index === activeStep}
                                 stepcomplited={steps[index].completed}
                                 {...buttonProps}
                             >
@@ -240,11 +249,10 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
                         </>
                     </div>
                 ) : (
-                    <div>
+                    <div> { !!clickedStep &&
                         <Typography className={classes.instructions}>
                             <div
                                 style={{
-                                    display: 'flex',
                                     width: '100%',
                                     justifyContent: 'space-between',
 
@@ -255,9 +263,10 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
                                 }}
                             >
                                 <div>{clickedStep?.description}</div>
-                                <div>{clickedStep?.date}</div>
+                                <div>{displayDate(clickedStep?.date)}</div>
                             </div>
                         </Typography>
+}
                         <div
                             style={{
                                 display: 'flex',
@@ -266,7 +275,7 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
                             }}
                         >
                             <div>איך אפשר להשפיע על התהליך?</div>
-                            <Button text="מידע נוסף" altColor />
+                            <Button text="מידע נוסף" altColor onClick={onButtonClick} />
                         </div>
                     </div>
                 )}
