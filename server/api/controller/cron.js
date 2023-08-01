@@ -20,6 +20,7 @@ const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
 const {	meirimStatuses } = require('../constants');
+const Objection = require('../model/objection');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -566,6 +567,26 @@ const fillMPIDForMissingPlans = async () => {
 
 };
 
+const sendObjectionEmails = async () => {
+	return Objection.getNewObjections()
+		.then(newObjections => 
+			Bluebird.mapSeries(newObjections.models, objection => {
+				Alert.getAlertByTypeAndPlace('tree',objection.get('place'))
+				.then(users => {
+					if (!users[0] || !users[0].length) {
+						return;
+					}
+					return Bluebird.mapSeries(users[0], user =>
+						Email.newObjectionAlert(user, objection)
+					); 
+				})
+				.then(objection.save({ 'email_sent': true }))
+				.then(a => {return;})
+				.catch(err => Log.error('Error:', err.message))
+			;
+		}));
+}
+
 module.exports = {
 	iplan,
 	complete_mavat_data,
@@ -578,5 +599,6 @@ module.exports = {
 	sendDigestPlanningAlerts,
 	updatePlanTags,
 	fetchPlanStatus,
-	fillMPIDForMissingPlans
+	fillMPIDForMissingPlans,
+	sendObjectionEmails
 };

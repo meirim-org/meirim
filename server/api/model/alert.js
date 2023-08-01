@@ -235,6 +235,20 @@ class Alert extends Model {
 			console.log(err);
 		});
 	}
+
+	static getAlertByTypeAndPlace(type, place) {
+		const sql = `SELECT 
+			person.email,
+			person.id as person_id,
+			alert.id as alert_id
+			FROM alert 
+			INNER JOIN person ON person.id=alert.person_id
+			WHERE alert.type=${type} AND
+			alert.place=${place} AND
+			alert.subscription = 1
+			GROUP BY person.id, alert.id`;
+		return Knex.raw(sql);
+	}
 }
 
 module.exports = Alert;
