@@ -3,11 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const planSlice = createSlice({
 	name: 'plan',
 	initialState: {
-		dataArea : [],
+		dataArea: [],
 		dataUnits: [],
 		planData: {},
 		textArea: {},
-		responseCode: 0
+		responseCode: 0,
+		planLinks: null,
 	},
 	reducers: {
 		setPlanData(state, type) {
@@ -16,6 +17,7 @@ const planSlice = createSlice({
 			state.dataArea = type.payload.dataArea;
 			state.dataUnits = type.payload.dataUnits;
 			state.responseCode = type.payload.responseCode;
+			state.planLinks = type.payload.planLinks;
 		},
 		resetPlanData(state) {
 			state.planData = [];
@@ -23,8 +25,9 @@ const planSlice = createSlice({
 			state.dataArea = [];
 			state.dataUnits = [];
 			state.responseCode = 0;
-		}
-	}
+			state.planLinks = null;
+		},
+	},
 });
 
 export const { setPlanData, resetPlanData } = planSlice.actions;

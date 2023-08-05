@@ -7,7 +7,7 @@ const { bind } = require('lodash');
 const { map, get } = require('bluebird');
 
 class Controller {
-	constructor (model) {
+	constructor(model) {
 		if (model) {
 			this.model = model;
 			this.id_attribute = model.prototype.idAttribute;
@@ -16,36 +16,36 @@ class Controller {
 	}
 
 	// try catch wrapper for all controllers
-	static wrap (fn, ctx) {
+	static wrap(fn, ctx) {
 		return (req, res, next) =>
 			Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-				.then(response => Success.set(res, response, req.session))
-				.catch(Checkit.Error, err => {
+				.then((response) => Success.set(res, response, req.session))
+				.catch(Checkit.Error, (err) => {
 					req.error = new Exception.BadRequest(err);
 					next();
 				})
-				.catch(err => {
+				.catch((err) => {
 					req.error = err;
 					next();
 				});
 	}
 
 	// try catch wrapper for all controllers
-	static publicWrapper (fn, ctx) {
+	static publicWrapper(fn, ctx) {
 		return (req, res, next) =>
 			Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
 				.then((response) => Success.public(res, response, req.session))
-				.catch(Checkit.Error, err => {
+				.catch(Checkit.Error, (err) => {
 					req.error = new Exception.BadRequest(err);
 					next();
 				})
-				.catch(err => {
+				.catch((err) => {
 					req.error = err;
 					next();
 				});
 	}
 
-	browse (req, options = {}) {
+	browse(req, options = {}) {
 		const { query } = req;
 
 		let page = parseInt(query.page, 10) || 1;
@@ -55,20 +55,20 @@ class Controller {
 
 		const columns = options.columns || '*';
 		const where = options.where || {};
-		
-		let bsQuery = this.model.query(qb =>
-			Object.keys(where).map(index => qb.where(index, 'in', where[index]))
+
+		let bsQuery = this.model.query((qb) =>
+			Object.keys(where).map((index) => qb.where(index, 'in', where[index]))
 		);
-		
+
 		if (options.whereNotIn) {
 			bsQuery = bsQuery.query((qb) =>
-				Object.keys(options.whereNotIn).map(index => qb.whereNotIn(index, options.whereNotIn[index]))
+				Object.keys(options.whereNotIn).map((index) =>
+					qb.whereNotIn(index, options.whereNotIn[index])
+				)
 			);
 		}
 		if (options.whereRaw) {
-			bsQuery = bsQuery.query((qb) =>
-				options.whereRaw.map((w) => qb.where(w))
-			);
+			bsQuery = bsQuery.query((qb) => options.whereRaw.map((w) => qb.where(w)));
 		}
 
 		if (options.order) {
@@ -80,16 +80,15 @@ class Controller {
 			);
 		}
 
-		return bsQuery
-			.fetchPage({
-				columns,
-				page,
-				pageSize,
-				withRelated: options.withRelated
-			});
+		return bsQuery.fetchPage({
+			columns,
+			page,
+			pageSize,
+			withRelated: options.withRelated,
+		});
 	}
 
-	read (req) {
+	read(req) {
 		const id = parseInt(req.params.id, 10);
 
 		if (!id) {
@@ -97,63 +96,68 @@ class Controller {
 		}
 		return this.model
 			.forge({
-				[this.id_attribute]: id
+				[this.id_attribute]: id,
 			})
 			.fetch()
-			.then(fetchedModel => {
+			.then((fetchedModel) => {
 				if (!fetchedModel) throw new Exception.NotFound('Nof found');
 				return fetchedModel.canRead(req.session);
 			})
-			.then(fetchedModel => {
-				Log.debug(
-					this.tableName,
-					'read success',
-					fetchedModel.get('id')
-				);
-				return fetchedModel;
+			.then((fetchedModel) => {
+				Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
+				return this.model
+					.query((qb) => {
+						qb.select('plan_links.*')
+							.from('plan')
+							.join('plan_links', 'plan.id', '=', 'plan_links.plan_id')
+							.where('plan.id', '=', id);
+					})
+					.fetchAll()
+					.then((result) => {
+						if (result && result.length !== 0) {
+							fetchedModel.set('plan_links', result);
+						}
+						return fetchedModel;
+					});
 			});
 	}
 
-	patch (req) {
+	patch(req) {
 		const id = parseInt(req.params.id, 10);
 		if (!id) {
 			throw new Exception.NotFound('Nof found');
 		}
 		return this.model
 			.forge({
-				[this.id_attribute]: id
+				[this.id_attribute]: id,
 			})
 			.fetch()
-			.then(fetchedModel => {
+			.then((fetchedModel) => {
 				if (!fetchedModel) throw new Exception.NotFound('Nof found');
 				return fetchedModel.canEdit(req.session);
 			})
-			.then(fetchedModel => {
-				Log.debug(
-					this.tableName,
-					' patch success id:',
-					fetchedModel.get('id')
-				);
+			.then((fetchedModel) => {
+				Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
 				return fetchedModel.save(req.body);
 			});
 	}
 
-	delete (req, transaction) {
+	delete(req, transaction) {
 		const id = parseInt(req.params.id, 10);
 		if (!id) {
 			throw new Exception.NotFound('Nof found');
 		}
-		const options = transaction ? { transacting: transaction } : {}
+		const options = transaction ? { transacting: transaction } : {};
 		return this.model
 			.forge({
-				[this.id_attribute]: id
+				[this.id_attribute]: id,
 			})
 			.fetch()
-			.then(fetchedModel => {
+			.then((fetchedModel) => {
 				if (!fetchedModel) throw new Exception.NotFound('Nof found');
 				return fetchedModel.canEdit(req.session);
 			})
-			.then(fetchedModel => {
+			.then((fetchedModel) => {
 				Log.debug(
 					this.tableName,
 					' delete success id:',
@@ -163,11 +167,11 @@ class Controller {
 			});
 	}
 
-	create (req, transaction) {
+	create(req, transaction) {
 		let options = {};
 		if (transaction) {
 			options = {
-				transacting: transaction
+				transacting: transaction,
 			};
 		}
 		return this.model
@@ -177,22 +181,19 @@ class Controller {
 				model.setPerson(req.session);
 				return model.save(null, options);
 			})
-			.then(savedModel => {
-				Log.debug(
-					this.tableName,
-					' create success id:',
-					savedModel.get('id')
-				);
+			.then((savedModel) => {
+				Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
 				return savedModel;
 			});
 	}
 
-	upload (req) {
+	upload(req) {
 		const id = parseInt(req.params[this.id_attribute], 10);
 		const model = this.model.forge({
-			[this.id_attribute]: id
+			[this.id_attribute]: id,
 		});
 		return model.canEdit(req.session).then(() => model.upload(req.files));
 	}
 }
+
 module.exports = Controller;
