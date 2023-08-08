@@ -12,7 +12,6 @@ import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 
 export const CommentsWrapper = withTheme(styled.div`
     grid-column-start: span 2;
-    border-top: 1px solid ${(props) => props.theme.palette.gray['300']};
 `);
 
 export const AddSubComment = withTheme(styled.div`
@@ -171,14 +170,19 @@ export const Like = withTheme(styled.div`
 
     .MuiBadge-badge {
         position: relative;
-        margin-right: 0.25rem;
         transform: none;
         font-weight: 300;
         color: ${(props) => props.theme.palette.black} !important;
         background-color: ${(props) =>
 		props.theme.palette.gray['200']} !important;
         font-size: 14px !important;
-        padding: 0.6rem;
+
+        width: 24px;
+        height: 24px;
+        border-radius: 360px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .MuiButton-label {

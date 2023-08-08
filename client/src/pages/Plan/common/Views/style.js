@@ -148,13 +148,26 @@ export const SubCommentBox = withTheme(styled.div`
     padding: 2rem 60px 24px 40px;
 `);
 
+export const HeaderCommentDate = withTheme(styled.div`
+    display: flex;
+    gap: 4px;
+    align-items: center;
+
+    > * {
+        color: ${(props) => props.theme.palette.gray['600']} !important;
+    }
+`);
+
 export const SubCommentHeader = styled.div`
     position: relative;
     display: flex;
-    margin: 0 -0.5rem 0.5rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
 
-    > *:not(svg) {
-        padding: 0 0.5rem;
+    & > div {
+        padding-right: 0;
+        margin-right: -24px;
     }
 `;
 

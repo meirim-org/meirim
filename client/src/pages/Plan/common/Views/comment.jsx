@@ -35,7 +35,7 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 							</Typography>
 						</HeaderTypeCommentBox>
 						<HeaderAvatarBox>
-							<img src={defaultAvatar} alt={'Avatar {name}'} />
+							<img src={defaultAvatar} alt={`Avatar ${name}`} />
 							<Typography
 								variant="highlightedText"
 								mobileVariant="highlightedText"
