@@ -73,7 +73,14 @@ class Comment extends Model {
 								'name',
 								'type',
 								'status',
-								'person_photo.url'
+								'person_photo.url',
+								'facebook',
+								'linkedin',
+								'email',
+								'twitter',
+								'about_me_public',
+								'email_public',
+								'title'
 							).leftJoin(
 								'person_photo',
 								'person.id',

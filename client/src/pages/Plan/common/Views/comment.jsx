@@ -10,10 +10,11 @@ import clockIcon from '../../../../assets/icons/clock.svg';
 import verifiedIcon from '../../../../assets/icons/verified.svg';
 import {
 	HeaderAvatarBox,
-	HeaderPersonType,
 	HeaderPersonVerified,
 	HeaderTypeCommentBox,
 } from './style';
+import { openModal } from '../../../../redux/modal/slice';
+import { useDispatch } from 'react-redux';
 
 const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 	const theme = useTheme();
@@ -23,8 +24,8 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 		person: { name, type: personType, status, url },
 		type,
 	} = commentData;
-	console.log({ commentData });
 	const { t } = useTranslation();
+	const dispatch = useDispatch();
 
 	return (
 		<TabPanel>
@@ -41,7 +42,19 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 								{t[type]}
 							</Typography>
 						</HeaderTypeCommentBox>
-						<HeaderAvatarBox>
+						<HeaderAvatarBox
+							onClick={() =>
+								dispatch(
+									openModal({
+										modalType: 'profile',
+										modalProps: {
+											wrapperClass: 'profileModal',
+											...commentData.person,
+										},
+									})
+								)
+							}
+						>
 							<div className="UserAvatar">
 								<img
 									src={
