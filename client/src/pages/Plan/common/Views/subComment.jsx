@@ -4,17 +4,22 @@ import { Typography } from 'shared';
 import * as SC from './style';
 import { useTheme } from '@material-ui/styles';
 import { daysPassed } from 'pages/Plan/utils';
-import { HeaderAvatarBox, HeaderCommentDate } from './style';
+import {
+	HeaderAvatarBox,
+	HeaderCommentDate,
+	HeaderPersonVerified,
+} from './style';
 import defaultAvatar from '../../../../assets/svg/defaultAvatar.svg';
 import clockIcon from '../../../../assets/icons/clock.svg';
 import arrowReplyIcon from '../../../../assets/icons/arrow-reply.svg';
+import verifiedIcon from '../../../../assets/icons/verified.svg';
 
 const SubCommentView = ({ subCommentData }) => {
 	const theme = useTheme();
 	const {
 		content,
 		created_at,
-		person: { name },
+		person: { name, status, type: personType, url },
 	} = subCommentData;
 
 	return (
@@ -23,14 +28,33 @@ const SubCommentView = ({ subCommentData }) => {
 				<SC.SubCommentHeader>
 					<HeaderAvatarBox>
 						<img src={arrowReplyIcon} alt="Arrow Reply Icon" />
-						<img src={defaultAvatar} alt={`Avatar ${name}`} />
+						<div className="UserAvatar">
+							<img
+								src={
+									url && status === '1' ? url : defaultAvatar
+								}
+								alt={`Avatar ${name}`}
+							/>
+						</div>
 						<Typography
 							variant="highlightedText"
 							mobileVariant="highlightedText"
 							component="span"
 							color={theme.palette.black}
 						>
-							{name}
+							<span className="UserName">{name}</span>
+							{status === '1' && (
+								<>
+									<div className="HeaderPersonType">
+										{personType}
+									</div>
+									<HeaderPersonVerified
+										right={'23px'}
+										src={verifiedIcon}
+										alt="Person verified"
+									/>
+								</>
+							)}
 						</Typography>
 					</HeaderAvatarBox>
 					<HeaderCommentDate>

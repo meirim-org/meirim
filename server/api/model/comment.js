@@ -4,55 +4,59 @@ const Model = require('./base_model');
 const Person = require('./person');
 const Exception = require('./exception');
 const CommentPerson = require('./comment_person');
+const PersonPhoto = require('./person_photo');
 
 class Comment extends Model {
-	get rules () {
+	get rules() {
 		return {
 			person_id: ['required', 'integer'],
 			content: ['required', 'string'],
-			type: ['string', function(val) {
-				const validTypes = ['improvement', 'review', 'general'];
-				if(validTypes.indexOf(val) < 0) return false;
-				return true;
-			}],
+			type: [
+				'string',
+				function (val) {
+					const validTypes = ['improvement', 'review', 'general'];
+					if (validTypes.indexOf(val) < 0) return false;
+					return true;
+				},
+			],
 			plan_id: ['required', 'integer'],
 			parent_id: 'integer',
 		};
 	}
+
 	get hasTimestamps() {
 		return true;
 	}
 
-	get tableName () {
+	get tableName() {
 		return 'comment';
 	}
 
-	person () {
+	person() {
 		return this.belongsTo(Person);
 	}
 
-	initialize () {
+	initialize() {
 		this.on('saving', this._saving, this);
 		super.initialize();
 	}
 
-	_saving (model) {
+	_saving(model) {
 		return new Checkit(model.rules).run(model.attributes);
 	}
 
-	canRead () {
+	canRead() {
 		return Promise.resolve(this);
 	}
 
-	canEdit (session) {
+	canEdit(session) {
 		if (session.person.id !== this.get('person_id')) {
 			throw new Exception.NotAllowed('You cannot edit this comment');
 		}
 		return Promise.resolve(this);
 	}
 
-
-	static  async byPlan (planId) {
+	static async byPlan(planId) {
 		if (!planId) {
 			throw new Exception.BadRequest('Must provide planId');
 		}
@@ -63,21 +67,34 @@ class Comment extends Model {
 			.fetchAll({
 				withRelated: [
 					{
-						person (qb) {
-							qb.column('id', 'name');
-						}
-					}
-				]
+						person(qb) {
+							qb.column(
+								'person.id',
+								'name',
+								'type',
+								'status',
+								'person_photo.url'
+							).leftJoin(
+								'person_photo',
+								'person.id',
+								'=',
+								'person_photo.person_id'
+							);
+						},
+					},
+				],
 			});
-		const res = await Promise.all(result.models.map(async m => {
-			const likes = await CommentPerson.getLikesNumber(m.attributes.id );
-			return(merge(m, { attributes:{ likes } }));
-		}));
+		const res = await Promise.all(
+			result.models.map(async (m) => {
+				const likes = await CommentPerson.getLikesNumber(m.attributes.id);
+				return merge(m, { attributes: { likes } });
+			})
+		);
 
 		return res;
 	}
 
-	static canCreate (session) {
+	static canCreate(session) {
 		if (!session.person) {
 			throw new Exception.NotAllowed('Must be logged in');
 		}
@@ -86,4 +103,3 @@ class Comment extends Model {
 }
 
 module.exports = Comment;
-

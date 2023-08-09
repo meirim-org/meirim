@@ -7,16 +7,23 @@ import { TabBox, TabPanel, Typography } from 'shared';
 import * as SC from './style';
 import defaultAvatar from '../../../../assets/svg/defaultAvatar.svg';
 import clockIcon from '../../../../assets/icons/clock.svg';
-import { HeaderAvatarBox, HeaderTypeCommentBox } from './style';
+import verifiedIcon from '../../../../assets/icons/verified.svg';
+import {
+	HeaderAvatarBox,
+	HeaderPersonType,
+	HeaderPersonVerified,
+	HeaderTypeCommentBox,
+} from './style';
 
 const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 	const theme = useTheme();
 	const {
 		content,
 		created_at,
-		person: { name },
+		person: { name, type: personType, status, url },
 		type,
 	} = commentData;
+	console.log({ commentData });
 	const { t } = useTranslation();
 
 	return (
@@ -35,14 +42,34 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 							</Typography>
 						</HeaderTypeCommentBox>
 						<HeaderAvatarBox>
-							<img src={defaultAvatar} alt={`Avatar ${name}`} />
+							<div className="UserAvatar">
+								<img
+									src={
+										url && status === '1'
+											? url
+											: defaultAvatar
+									}
+									alt={`Avatar ${name}`}
+								/>
+							</div>
 							<Typography
 								variant="highlightedText"
 								mobileVariant="highlightedText"
 								component="span"
 								color={theme.palette.black}
 							>
-								{name}
+								<span className="UserName">{name}</span>
+								{status === '1' && (
+									<>
+										<div className="HeaderPersonType">
+											{personType}
+										</div>
+										<HeaderPersonVerified
+											src={verifiedIcon}
+											alt="Person verified"
+										/>
+									</>
+								)}
 							</Typography>
 						</HeaderAvatarBox>
 					</SC.HeaderCommentContent>
