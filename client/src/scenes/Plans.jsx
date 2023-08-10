@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core';
 import _ from 'lodash';
-import React, { Component, useEffect, useState, useMemo } from 'react';
+import React, { Component, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlanCard } from 'shared';
 import Wrapper from '../components/Wrapper';
@@ -13,6 +13,7 @@ import SearchBox from '../pages/Homepage/SearchBox';
 import { device } from '../style';
 import Lottie from 'lottie-react';
 import loadingAnimation from '../assets/animations/loader.json';
+import { useStickyPlansHeader } from '../hooks';
 
 const PlansHeader = styled.div`
     position: fixed;
@@ -69,6 +70,9 @@ const PlansHeaderContent = styled.div`
     margin-bottom: 32px;
     transition: 0.2s ease-in-out;
     opacity: ${(props) => props.opacity};
+    @media screen and (max-width: 767px) {
+        margin-bottom: 16px;
+    }
 `;
 
 const PlansHeaderSearchBox = styled.div`
@@ -114,12 +118,13 @@ const PlansHeaderSearchBox = styled.div`
 
 const PlansWrapper = styled.div`
     width: 100%;
-    margin-top: 310px;
+    margin-top: ${(props) => 310 + props.translateY}px;
+    transition: 0.2s ease-in-out;
     @media ${device.tablet} {
-        margin-top: 280px;
+        margin-top: ${(props) => 280 + props.translateY}px;
     }
     @media screen and (max-width: 670px) {
-        margin-top: 350px;
+        margin-top: ${(props) => 300 + props.translateY}px;
     }
 `;
 
@@ -177,37 +182,30 @@ const PlansSearchingComponent = () => {
     );
 };
 
+const PlansWrapperComponent = ({ plans, noData, error, loadingPlans }) => {
+    const { translateY } = useStickyPlansHeader();
+
+    return (
+        <PlansWrapper translateY={translateY}>
+            <div className="container">
+                <Grid container spacing={5}>
+                    {plans.map((plan) => (
+                        <PlanCard plan={plan} key={plan.id} />
+                    ))}
+                </Grid>
+                {error && <div className="error-container">{error}</div>}
+                {noData && <div>אין כאן כלום</div>}
+            </div>
+            {loadingPlans && <PlansSearchingComponent />}
+        </PlansWrapper>
+    );
+};
+
 const PlansHeaderComponent = () => {
     const { t } = useTranslation();
 
-    const [translateY, setTranslateY] = useState(0);
-    const [hiddenTopSection, setHiddenTopSection] = useState(false);
-    const [hiddenTopContentSection, setHiddenTopContentSection] =
-        useState(false);
-    let lastScrollY = 0;
-
-    const handleScrollEvent = () => {
-        if (lastScrollY > window.scrollY) {
-            setHiddenTopSection(false);
-            setTranslateY(-100);
-        } else if (lastScrollY < window.scrollY) {
-            setHiddenTopSection(true);
-            setHiddenTopContentSection(true);
-            setTranslateY(-200);
-        }
-        lastScrollY = window.scrollY;
-        if (window.scrollY === 0) {
-            setHiddenTopSection(false);
-            setHiddenTopContentSection(false);
-            setTranslateY(0);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('scroll', handleScrollEvent);
-        return () => document.removeEventListener('scroll', handleScrollEvent);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { translateY, hiddenTopContentSection, hiddenTopSection } =
+        useStickyPlansHeader();
 
     const headerOpacity = useMemo(() => {
         return hiddenTopSection ? 0 : 1;
@@ -437,20 +435,12 @@ class Plans extends Component {
         return (
             <Wrapper>
                 <PlansHeaderComponent />
-                <PlansWrapper>
-                    <div className="container">
-                        <Grid container spacing={5}>
-                            {plans.map((plan) => (
-                                <PlanCard plan={plan} key={plan.id} />
-                            ))}
-                        </Grid>
-                        {error && (
-                            <div className="error-container">{error}</div>
-                        )}
-                        {noData && <div>אין כאן כלום</div>}
-                    </div>
-                    {loadingPlans && <PlansSearchingComponent />}
-                </PlansWrapper>
+                <PlansWrapperComponent
+                    plans={plans}
+                    loadingPlans={loadingPlans}
+                    error={error}
+                    noData={noData}
+                />
                 <InfiniteScroll
                     dataLength={plans.length}
                     next={this.loadNextPage}
