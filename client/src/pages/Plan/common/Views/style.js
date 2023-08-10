@@ -13,119 +13,6 @@ export const Header = styled.span`
     margin: 0 -1rem 0.8rem;
 `;
 
-export const HeaderComment = styled.div`
-    padding: 40px 40px 0;
-    margin: 0;
-    grid-column-start: span 2;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-`;
-
-export const HeaderCommentContent = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-export const HeaderPersonType = styled.div`
-    color: #222222;
-    font-weight: 300;
-`;
-
-export const HeaderPersonVerified = styled.img`
-    position: absolute;
-    right: ${(props) => props.right || '15px'};
-    bottom: 0;
-`;
-
-export const HeaderTypeCommentBox = styled.div`
-    padding-left: 16px;
-    position: relative;
-
-    &:after {
-        content: '';
-        position: absolute;
-        width: 1px;
-        height: 16px;
-        background-color: rgba(0, 0, 0, 0.08);
-        left: 0;
-        top: calc(50% - 8px);
-    }
-
-    span {
-        color: #007e6c !important;
-        text-align: right;
-        font-feature-settings: 'clig' off, 'liga' off;
-        /* Default Text 16 */
-        font-family: Assistant, sans-serif !important;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 24px; /* 150% */
-    }
-`;
-
-export const HeaderAvatarBox = withTheme(styled.div`
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-right: 16px;
-    position: relative;
-
-    cursor: pointer;
-
-    .HeaderPersonType {
-        color: #222222;
-        font-weight: 300;
-        border-bottom: 1px solid transparent;
-        transition: 0.5s;
-    }
-
-    .UserName {
-        border-bottom: 1px solid transparent;
-        transition: 0.5s;
-    }
-
-    .UserAvatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 360px;
-        border: 1px solid ${(props) => props.theme.palette.gray['300']};
-
-        img {
-            width: 100%;
-            height: 100%;
-            border-radius: 360px;
-            transition: 0.5s;
-        }
-    }
-
-    &:hover {
-        .UserAvatar img {
-            filter: brightness(0.75);
-            transition: 0.5s;
-        }
-
-        .HeaderPersonType,
-        .UserName {
-            border-bottom: 1px solid
-                ${(props) => props.theme.palette.text['main']};
-        }
-    }
-
-    span {
-        color: #222 !important;
-        text-align: right;
-        font-feature-settings: 'clig' off, 'liga' off;
-        font-family: Assistant, sans-serif;
-        font-size: 14px !important;
-        font-style: normal;
-        font-weight: 600 !important;
-        line-height: normal;
-    }
-`);
-
 export const CommentsWrapper = withTheme(styled.div`
     grid-area: comments;
     border-top: 1px solid ${(props) => props.theme.palette.gray['300']};
@@ -163,6 +50,10 @@ export const Text = withTheme(styled.div`
     margin: 0;
     // border-bottom: 1px solid ${(props) => props.theme.palette.gray['300']};
 
+    @media screen and (max-width: 345px) {
+        padding: 16px 40px 8px;
+    }
+
     color: #000;
     text-align: right;
     font-feature-settings: 'clig' off, 'liga' off;
@@ -199,16 +90,6 @@ export const addCommentButtonWrapper = styled.div`
 export const SubCommentBox = withTheme(styled.div`
     background-color: ${(props) => props.theme.palette.white} !important;
     padding: 2rem 60px 24px 40px;
-`);
-
-export const HeaderCommentDate = withTheme(styled.div`
-    display: flex;
-    gap: 4px;
-    align-items: center;
-
-    > * {
-        color: ${(props) => props.theme.palette.gray['600']} !important;
-    }
 `);
 
 export const SubCommentHeader = styled.div`

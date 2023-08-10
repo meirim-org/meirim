@@ -168,6 +168,10 @@ export const Like = withTheme(styled.div`
     border-bottom: 1px solid ${(props) => props.theme.palette.gray['300']};
     margin-right: 40px;
 
+    @media screen and (max-width: 767px) {
+        margin-right: 0;
+    }
+
     .MuiBadge-badge {
         position: relative;
         transform: none;

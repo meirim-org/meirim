@@ -9,6 +9,7 @@ import {
 	UserProfileSocial,
 	UserProfileSocials,
 	UserProfileTitle,
+	UserProfileTooltip,
 	UserProfileType,
 	UserProfileVerified,
 } from './style';
@@ -19,9 +20,9 @@ import linkedInIcon from '../../assets/icons/socials/linkedin.svg';
 import twitterIcon from '../../assets/icons/socials/twitter.svg';
 import emailIcon from '../../assets/icons/socials/email.svg';
 import PropTypes from 'prop-types';
+import { useTranslation } from '../../locale/he_IL';
 
 const UserProfile = (props) => {
-	console.log({ props });
 	const {
 		url,
 		name,
@@ -35,16 +36,25 @@ const UserProfile = (props) => {
 		status,
 	} = props;
 
+	const { t } = useTranslation();
+
 	return (
 		<UserProfileBox>
 			<UserProfileAvatarBox>
 				<UserProfileAvatar
 					src={url && status === '1' ? url : defaultAvatar}
 				/>
-				{status === '1' && <UserProfileVerified src={verifiedIcon} />}
+				{status === '1' && (
+					<>
+						<UserProfileVerified src={verifiedIcon} />
+						<UserProfileTooltip>
+							{t.profileVerified}
+						</UserProfileTooltip>
+					</>
+				)}
 			</UserProfileAvatarBox>
 			{name && <UserProfileName>{name}</UserProfileName>}
-			{type && <UserProfileType>{type}</UserProfileType>}
+			{title && <UserProfileType>{title}</UserProfileType>}
 			<UserProfileSocials>
 				{facebook && (
 					<UserProfileSocial href={facebook}>
@@ -67,9 +77,9 @@ const UserProfile = (props) => {
 					</UserProfileSocial>
 				)}
 			</UserProfileSocials>
-			{(title || about_me_public) && (
+			{about_me_public && (
 				<UserProfileContent>
-					{title && <UserProfileTitle>{title}</UserProfileTitle>}
+					<UserProfileTitle>{t.aboutMePublic}</UserProfileTitle>
 					{about_me_public && (
 						<UserProfileAboutMe>
 							{about_me_public}

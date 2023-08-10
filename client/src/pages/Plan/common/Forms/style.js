@@ -154,6 +154,14 @@ export const AddSubComment = withTheme(styled.div`
     border-bottom: 1px solid ${(props) => props.theme.palette.gray['300']};
     margin-left: 40px;
 
+    @media screen and (max-width: 767px) {
+        margin-left: 0;
+    }
+
+    @media screen and (max-width: 350px) {
+        padding: 10px 0;
+    }
+
     .MuiSvgIcon-root {
         font-size: 1.125rem !important;
         fill: ${(props) => props.theme.palette.primary['600']} !important;

@@ -45,6 +45,8 @@ const ModalContentWRapper = styled.div`
 
     &.profileModal {
         min-width: inherit;
+        max-width: initial;
+        width: unset;
     }
 
     &.videoModal {
