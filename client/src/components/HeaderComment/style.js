@@ -6,7 +6,7 @@ export const HeaderPersonVerified = styled.img`
     right: ${(props) => props.right || '15px'};
     bottom: 0;
     @media screen and (max-width: 767px) {
-        right: 0;
+        right: ${(props) => (props.mode === 'subComment' ? '23px' : '0px')};
     }
 
     &:hover {
@@ -131,9 +131,9 @@ export const HeaderCommentBox = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
-    @media screen and (max-width: 345px) {
-        padding: 30px 30px 0;
-    }
+    //@media screen and (max-width: 345px) {
+    //    padding: 30px 30px 0;
+    //}
 `;
 
 export const HeaderCommentDate = withTheme(styled.div`
@@ -143,8 +143,12 @@ export const HeaderCommentDate = withTheme(styled.div`
     position: absolute;
     left: ${(props) => (props.mode !== 'subComment' ? '39px' : '0px')};
 
-    @media screen and (max-width: 345px) {
-        left: 31px;
+    //@media screen and (max-width: 345px) {
+    //    left: 31px;
+    //}
+
+    @media screen and (max-width: 350px) {
+        font-size: 12px;
     }
 
     > * {

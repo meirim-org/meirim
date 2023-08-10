@@ -50,9 +50,9 @@ export const Text = withTheme(styled.div`
     margin: 0;
     // border-bottom: 1px solid ${(props) => props.theme.palette.gray['300']};
 
-    @media screen and (max-width: 345px) {
-        padding: 16px 40px 8px;
-    }
+    //@media screen and (max-width: 345px) {
+    //    padding: 16px 40px 8px;
+    //}
 
     color: #000;
     text-align: right;

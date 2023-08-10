@@ -80,6 +80,7 @@ const HeaderComment = (data) => {
 							<>
 								<div className="HeaderPersonType">{title}</div>
 								<HeaderPersonVerified
+									mode={mode}
 									src={verifiedIcon}
 									alt="Person verified"
 									right={
