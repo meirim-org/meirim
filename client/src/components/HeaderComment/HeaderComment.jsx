@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@material-ui/styles';
 import { useTranslation } from '../../locale/he_IL';
 import { useDispatch } from 'react-redux';
-import defaultAvatar from '../../assets/svg/defaultAvatar.svg';
 import verifiedIcon from '../../assets/icons/verified.svg';
 import clockIcon from '../../assets/icons/clock.svg';
 import arrowReplyIcon from '../../assets/icons/arrow-reply.svg';
@@ -19,10 +18,11 @@ import {
 	HeaderTypeCommentBox,
 } from './style';
 import VerifiedTooltip from '../VerifiedTooltip/VerifiedTooltip';
+import { defaultAvatars } from '../../assets/avatars/defaultAvatars';
 
 const HeaderComment = (data) => {
 	const theme = useTheme();
-	const { name, type, status, url, created_at, personType, mode } = data;
+	const { name, type, status, url, created_at, title, mode, personId } = data;
 	const { t } = useTranslation();
 	const dispatch = useDispatch();
 
@@ -60,7 +60,11 @@ const HeaderComment = (data) => {
 					)}
 					<div className="UserAvatar">
 						<img
-							src={url && status === '1' ? url : defaultAvatar}
+							src={
+								url && status === '1'
+									? url
+									: defaultAvatars[personId % 10]
+							}
 							alt={`Avatar ${name}`}
 						/>
 					</div>
@@ -73,9 +77,7 @@ const HeaderComment = (data) => {
 						<span className="UserName">{name}</span>
 						{status === '1' && (
 							<>
-								<div className="HeaderPersonType">
-									{personType}
-								</div>
+								<div className="HeaderPersonType">{title}</div>
 								<HeaderPersonVerified
 									src={verifiedIcon}
 									alt="Person verified"

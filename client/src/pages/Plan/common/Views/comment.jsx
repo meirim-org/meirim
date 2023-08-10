@@ -21,6 +21,7 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 			facebook,
 			title,
 			about_me_public,
+			id,
 		},
 		type,
 	} = commentData;
@@ -41,6 +42,7 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 					linkedin={linkedin}
 					email_public={email_public}
 					about_me_public={about_me_public}
+					personId={id}
 				/>
 				<SC.Text>
 					<Typography

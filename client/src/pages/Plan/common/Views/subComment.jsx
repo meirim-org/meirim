@@ -21,6 +21,7 @@ const SubCommentView = ({ subCommentData }) => {
 			facebook,
 			title,
 			about_me_public,
+			id,
 		},
 	} = subCommentData;
 
@@ -40,6 +41,7 @@ const SubCommentView = ({ subCommentData }) => {
 					linkedin={linkedin}
 					email_public={email_public}
 					about_me_public={about_me_public}
+					personId={id}
 				/>
 				<Typography
 					variant="paragraphTextLight"

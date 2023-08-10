@@ -12,7 +12,6 @@ import {
 	UserProfileType,
 	UserProfileVerified,
 } from './style';
-import defaultAvatar from '../../assets/svg/defaultAvatar.svg';
 import verifiedIcon from '../../assets/icons/verified.svg';
 import facebookIcon from '../../assets/icons/socials/facebook.svg';
 import linkedInIcon from '../../assets/icons/socials/linkedin.svg';
@@ -21,6 +20,7 @@ import emailIcon from '../../assets/icons/socials/email.svg';
 import PropTypes from 'prop-types';
 import { useTranslation } from '../../locale/he_IL';
 import VerifiedTooltip from '../VerifiedTooltip/VerifiedTooltip';
+import { defaultAvatars } from '../../assets/avatars/defaultAvatars';
 
 const UserProfile = (props) => {
 	const {
@@ -33,6 +33,7 @@ const UserProfile = (props) => {
 		linkedin,
 		email_public,
 		status,
+		personId,
 	} = props;
 
 	const { t } = useTranslation();
@@ -41,7 +42,11 @@ const UserProfile = (props) => {
 		<UserProfileBox>
 			<UserProfileAvatarBox>
 				<UserProfileAvatar
-					src={url && status === '1' ? url : defaultAvatar}
+					src={
+						url && status === '1'
+							? url
+							: defaultAvatars[personId % 10]
+					}
 				/>
 				{status === '1' && (
 					<>
@@ -99,6 +104,7 @@ UserProfile.propTypes = {
 	linkedin: PropTypes.string,
 	email_public: PropTypes.string,
 	status: PropTypes.string,
+	personId: PropTypes.number,
 };
 
 export default UserProfile;

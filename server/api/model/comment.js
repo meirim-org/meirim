@@ -4,7 +4,7 @@ const Model = require('./base_model');
 const Person = require('./person');
 const Exception = require('./exception');
 const CommentPerson = require('./comment_person');
-const PersonPhoto = require('./person_photo');
+require('./person_photo');
 
 class Comment extends Model {
 	get rules() {
