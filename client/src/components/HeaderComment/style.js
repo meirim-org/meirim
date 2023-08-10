@@ -24,7 +24,7 @@ export const HeaderAvatarBox = withTheme(styled.div`
     margin-right: ${(props) => (props.mode !== 'subComment' ? '0' : '-24px')};
     position: relative;
 
-    cursor: pointer;
+    cursor: ${(props) => (props.status === '1' ? 'pointer' : 'default')};
 
     @media screen and (max-width: 767px) {
         padding-right: 0;
@@ -33,12 +33,14 @@ export const HeaderAvatarBox = withTheme(styled.div`
     .HeaderPersonType {
         color: #222222;
         font-weight: 300;
-        border-bottom: 1px solid transparent;
+        text-decoration: underline;
+        text-decoration-color: transparent;
         transition: 0.5s;
     }
 
     .UserName {
-        border-bottom: 1px solid transparent;
+        text-decoration: underline;
+        text-decoration-color: transparent;
         transition: 0.5s;
     }
 
@@ -58,14 +60,15 @@ export const HeaderAvatarBox = withTheme(styled.div`
 
     &:hover {
         .UserAvatar img {
-            filter: brightness(0.75);
+            filter: ${(props) =>
+		props.status === '1' ? 'brightness(0.75)' : 'brightness(1)'};
             transition: 0.5s;
         }
 
         .HeaderPersonType,
         .UserName {
-            border-bottom: 1px solid
-                ${(props) => props.theme.palette.text['main']};
+            text-decoration-color: ${(props) =>
+		props.status === '1' ? '#000000' : 'transparent'};
         }
     }
 

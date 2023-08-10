@@ -42,11 +42,7 @@ const UserProfile = (props) => {
 		<UserProfileBox>
 			<UserProfileAvatarBox>
 				<UserProfileAvatar
-					src={
-						url && status === '1'
-							? url
-							: defaultAvatars[personId % 10]
-					}
+					src={url && status === '1' ? url : defaultAvatars[8]}
 				/>
 				{status === '1' && (
 					<>
@@ -59,22 +55,25 @@ const UserProfile = (props) => {
 			{title && <UserProfileType>{title}</UserProfileType>}
 			<UserProfileSocials>
 				{facebook && (
-					<UserProfileSocial href={facebook}>
+					<UserProfileSocial href={facebook} target="_blank">
 						<img src={facebookIcon} alt="Facebook Icon" />
 					</UserProfileSocial>
 				)}
 				{linkedin && (
-					<UserProfileSocial href={linkedin}>
+					<UserProfileSocial href={linkedin} target="_blank">
 						<img src={linkedInIcon} alt="LinkedIn Icon" />
 					</UserProfileSocial>
 				)}
 				{twitter && (
-					<UserProfileSocial href={twitter}>
+					<UserProfileSocial href={twitter} target="_blank">
 						<img src={twitterIcon} alt="Twitter Icon" />
 					</UserProfileSocial>
 				)}
 				{email_public && (
-					<UserProfileSocial href={`mailto:${email_public}`}>
+					<UserProfileSocial
+						href={`mailto:${email_public}`}
+						target="_blank"
+					>
 						<img src={emailIcon} alt="Email Icon" />
 					</UserProfileSocial>
 				)}

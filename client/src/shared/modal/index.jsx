@@ -99,7 +99,11 @@ const Modal = ({ id }) => {
 
     return (
         <ModalWrapper id={`wrapper-${id}`}>
-            <StyledModal id={id} open={open}>
+            <StyledModal
+                onBackdropClick={ModalActions().close}
+                id={id}
+                open={open}
+            >
                 <ModalContentWRapper className={modalProps?.wrapperClass}>
                     <IconWrapper className="iconWrapper">
                         <StyledIcon onClick={ModalActions().close} />

@@ -22,7 +22,7 @@ import { defaultAvatars } from '../../assets/avatars/defaultAvatars';
 
 const HeaderComment = (data) => {
 	const theme = useTheme();
-	const { name, type, status, url, created_at, title, mode, personId } = data;
+	const { name, type, status, url, created_at, title, mode } = data;
 	const { t } = useTranslation();
 	const dispatch = useDispatch();
 
@@ -43,17 +43,20 @@ const HeaderComment = (data) => {
 				)}
 				<HeaderAvatarBox
 					mode={mode}
-					onClick={() =>
-						dispatch(
-							openModal({
-								modalType: 'profile',
-								modalProps: {
-									wrapperClass: 'profileModal',
-									...data,
-								},
-							})
-						)
-					}
+					status={status}
+					onClick={() => {
+						if (status === '1') {
+							dispatch(
+								openModal({
+									modalType: 'profile',
+									modalProps: {
+										wrapperClass: 'profileModal',
+										...data,
+									},
+								})
+							);
+						}
+					}}
 				>
 					{mode === 'subComment' && (
 						<img src={arrowReplyIcon} alt="Arrow Reply Icon" />
@@ -61,9 +64,7 @@ const HeaderComment = (data) => {
 					<div className="UserAvatar">
 						<img
 							src={
-								url && status === '1'
-									? url
-									: defaultAvatars[personId % 10]
+								url && status === '1' ? url : defaultAvatars[8]
 							}
 							alt={`Avatar ${name}`}
 						/>
