@@ -70,6 +70,9 @@ const PlansHeaderContent = styled.div`
     margin-bottom: 32px;
     transition: 0.2s ease-in-out;
     opacity: ${(props) => props.opacity};
+    @media screen and (max-width: 767px) {
+        margin-bottom: 16px;
+    }
 `;
 
 const PlansHeaderSearchBox = styled.div`
@@ -121,7 +124,7 @@ const PlansWrapper = styled.div`
         margin-top: ${(props) => 280 + props.translateY}px;
     }
     @media screen and (max-width: 670px) {
-        margin-top: ${(props) => 250 + props.translateY}px;
+        margin-top: ${(props) => 300 + props.translateY}px;
     }
 `;
 
