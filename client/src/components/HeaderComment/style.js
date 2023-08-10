@@ -8,6 +8,12 @@ export const HeaderPersonVerified = styled.img`
     @media screen and (max-width: 767px) {
         right: 0;
     }
+
+    &:hover {
+        & + div {
+            opacity: 1;
+        }
+    }
 `;
 
 export const HeaderAvatarBox = withTheme(styled.div`

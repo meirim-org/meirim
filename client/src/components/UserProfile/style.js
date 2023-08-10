@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { colors, device, font } from '../../style';
+import { colors, font } from '../../style';
 import { withTheme } from '@material-ui/core/styles';
-import tooltipIcon from '../../assets/icons/tooltip.svg';
 
 export const UserProfileBox = styled.div`
     font-family: ${font.assistant}, sans-serif;
@@ -104,34 +103,5 @@ export const UserProfileVerified = styled.img`
         & + div {
             opacity: 1;
         }
-    }
-`;
-
-export const UserProfileTooltip = styled.div`
-    position: absolute;
-    padding: 4px 8px;
-    background: #fdfdfd;
-    bottom: 5px;
-    right: -87px;
-    color: #222;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 24px;
-    opacity: 0;
-    transition: 0.5s;
-    border-radius: 4px;
-
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15),
-        0 8px 16px 0 rgba(0, 0, 0, 0.08);
-
-    &:before {
-        content: '';
-        width: 6px;
-        height: 8px;
-        background: url(${tooltipIcon});
-        position: absolute;
-        left: -6px;
-        top: calc(50% - 4px);
     }
 `;

@@ -9,7 +9,6 @@ import {
 	UserProfileSocial,
 	UserProfileSocials,
 	UserProfileTitle,
-	UserProfileTooltip,
 	UserProfileType,
 	UserProfileVerified,
 } from './style';
@@ -21,12 +20,12 @@ import twitterIcon from '../../assets/icons/socials/twitter.svg';
 import emailIcon from '../../assets/icons/socials/email.svg';
 import PropTypes from 'prop-types';
 import { useTranslation } from '../../locale/he_IL';
+import VerifiedTooltip from '../VerifiedTooltip/VerifiedTooltip';
 
 const UserProfile = (props) => {
 	const {
 		url,
 		name,
-		type,
 		title,
 		about_me_public,
 		facebook,
@@ -47,9 +46,7 @@ const UserProfile = (props) => {
 				{status === '1' && (
 					<>
 						<UserProfileVerified src={verifiedIcon} />
-						<UserProfileTooltip>
-							{t.profileVerified}
-						</UserProfileTooltip>
+						<VerifiedTooltip>{t.profileVerified}</VerifiedTooltip>
 					</>
 				)}
 			</UserProfileAvatarBox>

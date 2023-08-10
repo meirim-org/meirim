@@ -1,4 +1,3 @@
-import * as SC from '../../pages/Plan/common/Views/style';
 import { Typography } from '../../shared';
 import { openModal } from '../../redux/modal/slice';
 import { daysPassed } from '../../pages/Plan/utils';
@@ -19,6 +18,7 @@ import {
 	HeaderPersonVerified,
 	HeaderTypeCommentBox,
 } from './style';
+import VerifiedTooltip from '../VerifiedTooltip/VerifiedTooltip';
 
 const HeaderComment = (data) => {
 	const theme = useTheme();
@@ -82,6 +82,26 @@ const HeaderComment = (data) => {
 									right={
 										mode === 'subComment' ? '23px' : '15px'
 									}
+								/>
+								<VerifiedTooltip
+									{...(mode === 'subComment'
+										? {
+											bottom: '24px',
+											right: '-5px',
+											fontSize: '12px',
+											padding: '0 5px',
+											beforeLeft: 'calc(50% - 3px)',
+											beforeTransform:
+                                                  'rotateZ(-90deg)',
+											beforeTop: 'initial',
+											beforeBottom: '-6px',
+										}
+										: {
+											fontSize: '12px',
+											padding: '0 5px',
+											bottom: '-4px',
+											right: '-67px',
+										})}
 								/>
 							</>
 						)}
