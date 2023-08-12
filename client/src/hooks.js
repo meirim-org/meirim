@@ -107,10 +107,6 @@ export const useStickyPlansHeader = () => {
 	};
 
 	useEffect(() => {
-		console.log('lastScrollY', lastScrollY, window.scrollY);
-	}, [translateY]);
-
-	useEffect(() => {
 		window.addEventListener('scroll', handleScrollEvent);
 
 		return () => {

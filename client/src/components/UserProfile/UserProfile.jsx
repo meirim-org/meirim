@@ -33,7 +33,6 @@ const UserProfile = (props) => {
 		linkedin,
 		email_public,
 		status,
-		personId,
 	} = props;
 
 	const { t } = useTranslation();
@@ -103,7 +102,6 @@ UserProfile.propTypes = {
 	linkedin: PropTypes.string,
 	email_public: PropTypes.string,
 	status: PropTypes.string,
-	personId: PropTypes.number,
 };
 
 export default UserProfile;
