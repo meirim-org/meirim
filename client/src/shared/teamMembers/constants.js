@@ -1,62 +1,62 @@
 export const members = [
 	{
-		name:`פרופ' אד' טליה מרגלית`,
-		title:`מייסדת ויו"ר ועד מנהל`,
+		name:'פרופ\' אד\' טליה מרגלית',
+		title:'מייסדת ויו"ר ועד מנהל',
 		order:1,
 		photo:'talia'
 		
 	},
 	{
-		name:`רון ון ראלטה`,
-		title:`ועד מנהל`,
+		name:'רון ון ראלטה',
+		title:'ועד מנהל',
 		order:2,
 		photo:'ron'
 		
 	},
 	{
-		name:`תומר צ'ציק`,
-		title:`ועד מנהל`,
+		name:'תומר צ\'ציק',
+		title:'ועד מנהל',
 		order:3,
 		photo:'tomer'
 		
 	},
 	{
-		name:`ד"ר אד' יונתן דורטהיימר `,
-		title:`מייסד`,
+		name:'ד"ר אד\' יונתן דורטהיימר ',
+		title:'מייסד',
 		order:4,
 		photo:'yonatan'
 	},
 	{
-		name:`אד' איל מגדלוביץ`,
-		title:`מייסד ומנכ"ל`,
+		name:'אד\' איל מגדלוביץ',
+		title:'מייסד ומנכ"ל',
 		order:5,
 		photo:'eyal'
 		
 	},
 	{
-		name:`דרור גבתון`,
-		title:`מנהל מוצר`,
+		name:'דרור גבתון',
+		title:'מנהל מוצר',
 		order:6,
 		photo:'dror'
 		
 	},
 	{
-		name:`גל גנדלר`,
-		title:`פיתוח תוכנה`,
+		name:'גל גנדלר',
+		title:'מנהלת פיתוח',
 		order:7,
 		photo:'gal'
 		
 	},
 	{
-		name:`כרם ואן מיל`,
-		title:`מנהלת קהילה`,
+		name:'כרם ואן מיל',
+		title:'מנהלת קהילה',
 		order:9,
 		photo:'kerem'
 		
 	},
 	{
-		name:`גליה רופין`,
-		title:`ראש תחום סביבה`,
+		name:'גליה רופין',
+		title:'ראש תחום סביבה',
 		order:10,
 		photo:'galia'
 		
@@ -69,15 +69,15 @@ export const members = [
 		
 	// },
 	{
-		name:`לישי סוקול`,
-		title:`מעצב מוצר`,
+		name:'לישי סוקול',
+		title:'מעצב מוצר',
 		order:11,
 		photo:'lishay'
 		
 	},
 	{
-		name:`היבה בוארדי`,
-		title:`מחקר וייעוץ תכנוני`,
+		name:'היבה בוארדי',
+		title:'מחקר וייעוץ תכנוני',
 		order:12,
 		photo:'hiba'
 		
@@ -90,22 +90,22 @@ export const members = [
 		
 	// },
 	{
-		name:`אד' מרינה ירמוננוק`,
-		title:`מחקר וייעוץ תכנוני`,
+		name:'אד\' מרינה ירמוננוק',
+		title:'מחקר וייעוץ תכנוני',
 		order:14,
 		photo:'marina'
 		
 	},
 	{
-		name:`נועה ויכנסקי`,
-		title:`עיצוב UX/UI`,
+		name:'נועה ויכנסקי',
+		title:'עיצוב UX/UI',
 		order:15,
 		photo:'noa'
 		
 	},
 	{
-		name:`אד' עידית מן`,
-		title:`מחקר וייעוץ תכנוני`,
+		name:'אד\' עידית מן',
+		title:'מחקר וייעוץ תכנוני',
 		order:16,
 		photo:'idit'
 		
@@ -125,36 +125,36 @@ export const members = [
 		
 	// },
 	{
-		name:`תומר לאור`,
-		title:`מנהל נתונים`,
+		name:'תומר לאור',
+		title:'מנהל נתונים',
 		order:19,
 		photo:'tomerL'
 		
 	},
 	{
-		name:`סאן דרי`,
+		name:'סאן דרי',
 		title: 'DevOps',
 		order:20,
 		photo:'sun'
 		
 	},
 	{
-		name:`אד׳ טל ישי`,
-		title:`קידום מדיניות`,
+		name:'אד׳ טל ישי',
+		title:'קידום מדיניות',
 		order:21,
 		photo:'tal'
 		
 	},
 	{
-		name:`אורי הירש`,
-		title:`מאפין UX`,
+		name:'אורי הירש',
+		title:'מאפין UX',
 		order:22,
 		photo:'ori'
 		
 	},
 	{
-		name:`דניאל גל`,
-		title:`תיאום פרויקטים`,
+		name:'דניאל גל',
+		title:'תיאום פרויקטים',
 		order:23,
 		photo:'daniel'
 		
