@@ -8,36 +8,73 @@ import { tabIsActive } from 'utils';
 import { AddNewComment, SavePlan, SharePlan, Title } from './components';
 import * as SC from './style';
 
-const Header = ({ isFavPlan, subscriptionHandler, match, newCommentViewHandler }) => {
+const Header = ({
+	isFavPlan,
+	subscriptionHandler,
+	match,
+	newCommentViewHandler,
+}) => {
 	const history = useHistory();
 	const { t } = useTranslation();
-	const { planData: { name, countyName } } = PlanSelectors();
+	const {
+		planData: { name, countyName, arabicName },
+	} = PlanSelectors();
 	const { commentsCount } = CommentSelectors();
-	const pathData  = {
+	const pathData = {
 		pathName: history.location.pathname,
-		planId: match.params.id
+		planId: match.params.id,
 	};
 
 	return (
 		<SC.Header>
 			<SC.TitlesAndTabs>
-				<Title countyName={countyName} planName={name}/>
+				<Title
+					countyName={countyName}
+					planName={name}
+					planNameArabic={arabicName}
+				/>
 				<SC.AppBar position="static">
 					<div>
-						<SC.Tab className={tabIsActive('summary',pathData) ? 'active' : ''} onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
-						<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''} onClick={() => history.push(`${match.url}/comments`)}>
+						<SC.Tab
+							className={
+								tabIsActive('summary', pathData) ? 'active' : ''
+							}
+							onClick={() => history.push(match.url)}
+						>
+							{t.summary}
+						</SC.Tab>
+						<SC.Tab
+							className={
+								tabIsActive('comments', pathData)
+									? 'active'
+									: ''
+							}
+							onClick={() =>
+								history.push(`${match.url}/comments`)
+							}
+						>
 							<Badge badgeContent={commentsCount} color="primary">
 								{t.opinion}
 							</Badge>
 						</SC.Tab>
-						<SC.Tab className={tabIsActive('info',pathData) ? 'active' : ''} onClick={() => history.push(`${match.url}/info`)}>{t.planningInformation}</SC.Tab>
+						<SC.Tab
+							className={
+								tabIsActive('info', pathData) ? 'active' : ''
+							}
+							onClick={() => history.push(`${match.url}/info`)}
+						>
+							{t.planningInformation}
+						</SC.Tab>
 					</div>
 				</SC.AppBar>
 			</SC.TitlesAndTabs>
 			<SC.Buttons>
 				<SharePlan />
-				<SavePlan isFavPlan={isFavPlan} subscriptionHandler={subscriptionHandler}/>
-				<AddNewComment newCommentViewHandler={newCommentViewHandler}/>
+				<SavePlan
+					isFavPlan={isFavPlan}
+					subscriptionHandler={subscriptionHandler}
+				/>
+				<AddNewComment newCommentViewHandler={newCommentViewHandler} />
 			</SC.Buttons>
 		</SC.Header>
 	);

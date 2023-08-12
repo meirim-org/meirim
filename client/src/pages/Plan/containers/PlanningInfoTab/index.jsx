@@ -1,16 +1,35 @@
 import React from 'react';
 import { PlanSelectors } from 'redux/selectors';
-import { GoalsPanel, DataPanel, DescriptionPanel, HousingUnitPanel, AreaUnitPanel } from 'pages/Plan/common';
+import {
+	GoalsPanel,
+	DataPanel,
+	DescriptionPanel,
+	HousingUnitPanel,
+	AreaUnitPanel,
+} from 'pages/Plan/common';
 import { useScrollToTop } from '../../hooks';
 
 const PlanningInfoTab = () => {
 	const { planData, dataUnits, dataArea } = PlanSelectors();
-	const { number, type, jurisdiction, depositingDate, stationDesc, lastUpdate,
-		notCredible, landUse, goalsFromMavat, mainDetailsFromMavat, originalName } = planData;
+	const {
+		number,
+		type,
+		jurisdiction,
+		depositingDate,
+		stationDesc,
+		lastUpdate,
+		notCredible,
+		landUse,
+		goalsFromMavat,
+		mainDetailsFromMavat,
+		mainDetailsFromMavatArabic,
+		originalName,
+		goalsFromMavatArabic,
+	} = planData;
 	useScrollToTop();
-    
+
 	return (
-	    <>
+		<>
 			<DataPanel
 				number={number}
 				type={type}
@@ -22,14 +41,18 @@ const PlanningInfoTab = () => {
 				landUse={landUse}
 				originalName={originalName}
 			/>
-			<DescriptionPanel mainDetailsFromMavat={mainDetailsFromMavat}/>
-			<GoalsPanel goalsFromMavat={goalsFromMavat} />
+			<DescriptionPanel
+				mainDetailsFromMavat={mainDetailsFromMavat}
+				mainDetailsFromMavatArabic={mainDetailsFromMavatArabic}
+			/>
+			<GoalsPanel
+				goalsFromMavat={goalsFromMavat}
+				goalsFromMavatArabic={goalsFromMavatArabic}
+			/>
 			<AreaUnitPanel dataArea={dataArea} />
 			<HousingUnitPanel dataUnits={dataUnits} />
 		</>
-
 	);
 };
 
 export default PlanningInfoTab;
-

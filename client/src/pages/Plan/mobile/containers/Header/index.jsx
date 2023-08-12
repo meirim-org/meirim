@@ -10,15 +10,21 @@ import { tabIsActive } from 'utils';
 import { Title } from './components';
 import * as SC from './style';
 
-const Header = ({  match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, setCommentState }) => {
+const Header = ({
+	match,
+	handleTabsPanelRef,
+	fixedHeader,
+	isNewCommentOpen,
+	setCommentState,
+}) => {
 	const history = useHistory();
 	const { planData } = PlanSelectors();
-	const { name, countyName } = planData;
-	const { t } = useTranslation();
+	const { name, countyName, arabicName } = planData;
+	const { selectedLanguage, t } = useTranslation();
 	const { commentsCount } = CommentSelectors();
-	const pathData  = {
+	const pathData = {
 		pathName: history.location.pathname,
-		planId: match.params.id
+		planId: match.params.id,
 	};
 
 	const tabsPanelRef = useRef(null);
@@ -27,37 +33,86 @@ const Header = ({  match, handleTabsPanelRef, fixedHeader, isNewCommentOpen, set
 	return (
 		<SC.Header className={isNewCommentOpen ? 'low' : ''}>
 			<SC.HeaderContent>
-				{!isNewCommentOpen
-					?
+				{!isNewCommentOpen ? (
 					<>
 						<SC.TitlesButtonWrapper>
-							<BackButton onclick={goBack} label={t.backToComments} classname="back-button"/>
-					    	<Title title={countyName} subTitle={name}/>
+							<BackButton
+								onclick={goBack}
+								label={t.backToComments}
+								classname="back-button"
+							/>
+							<Title
+								title={countyName}
+								subTitle={
+									selectedLanguage === 'AR'
+										? arabicName || name
+										: name
+								}
+							/>
 						</SC.TitlesButtonWrapper>
-						<SC.AppBar ref={tabsPanelRef} position="static" className={fixedHeader ? 'fixed' : ''}>
+						<SC.AppBar
+							ref={tabsPanelRef}
+							position="static"
+							className={fixedHeader ? 'fixed' : ''}
+						>
 							<SC.TabWrapper>
-								<SC.Tab className={tabIsActive('summary',pathData) ? 'active' : ''}
-									onClick={() => history.push(match.url)}>{t.summary}</SC.Tab>
-								<SC.Tab className={tabIsActive('comments',pathData) ? 'active' : ''}
-									onClick={() => history.push(`${match.url}/comments`)}>
-									<Badge badgeContent={commentsCount} color="primary">
+								<SC.Tab
+									className={
+										tabIsActive('summary', pathData)
+											? 'active'
+											: ''
+									}
+									onClick={() => history.push(match.url)}
+								>
+									{t.summary}
+								</SC.Tab>
+								<SC.Tab
+									className={
+										tabIsActive('comments', pathData)
+											? 'active'
+											: ''
+									}
+									onClick={() =>
+										history.push(`${match.url}/comments`)
+									}
+								>
+									<Badge
+										badgeContent={commentsCount}
+										color="primary"
+									>
 										{t.opinion}
 									</Badge>
 								</SC.Tab>
-								<SC.Tab className={tabIsActive('info',pathData) ? 'active' : ''}
-									onClick={() => history.push(`${match.url}/info`)}>{t.planningInformation}</SC.Tab>
+								<SC.Tab
+									className={
+										tabIsActive('info', pathData)
+											? 'active'
+											: ''
+									}
+									onClick={() =>
+										history.push(`${match.url}/info`)
+									}
+								>
+									{t.planningInformation}
+								</SC.Tab>
 							</SC.TabWrapper>
 						</SC.AppBar>
 					</>
-					:
+				) : (
 					<SC.TitlesButtonWrapper>
-						<BackButton onclick={() => {
-							setCommentState(pv =>({ ...pv, isOpen: false }));}
-						} 
-						label={t.backToComments} classname="back-button"/>
-						<Title subTitle={t.addNewComment}/>
+						<BackButton
+							onclick={() => {
+								setCommentState((pv) => ({
+									...pv,
+									isOpen: false,
+								}));
+							}}
+							label={t.backToComments}
+							classname="back-button"
+						/>
+						<Title subTitle={t.addNewComment} />
 					</SC.TitlesButtonWrapper>
-				}
+				)}
 			</SC.HeaderContent>
 		</SC.Header>
 	);
