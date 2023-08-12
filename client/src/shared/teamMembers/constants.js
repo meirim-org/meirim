@@ -159,6 +159,20 @@ export const members = [
 		photo:'daniel'
 		
 	},
+	{
+		name:'זיו אריאלי',
+		title:'עיצוב UX/UI',
+		order:16,
+		photo:'ziv'
+		
+	},
+	{
+		name:'אופיר קירי',
+		title:'קשרי קהילה',
+		order:17,
+		photo:'ofir'
+		
+	},
 ];
 
 // // template

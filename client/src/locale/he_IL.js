@@ -354,7 +354,7 @@ const ARABIC_TRANSLATION = {
 	ourInstagram: 'Instagram',
 	ourGithub: 'Github',
 	privacyPolicy: 'سياسة الخصوصية',
-	accessibilityDeclaration: 'הצהרת נגישות', 
+	accessibilityDeclaration: 'إتاحة المعلومات', 
 	whyRegister: (
 		<div>
             רוצים לדעת מה בונים לכם <strong>ליד הבית?</strong>
