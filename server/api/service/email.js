@@ -227,11 +227,13 @@ class Email {
 			path: path.resolve('api/service/email/logo_email.png'),
 			cid: 'logomeirim'
 		});
-		attachments.push({
-			filename: 'support_us.png',
-			path: path.resolve('api/service/email/support_us.png'),
-			cid: 'supportus'
-		});
+
+		// Temporarily removed as part of issue 741
+		// attachments.push({
+		// 	filename: 'support_us.png',
+		// 	path: path.resolve('api/service/email/support_us.png'),
+		// 	cid: 'supportus'
+		// });
 
 		const subject = Mustache.render(template.title, templateProperties)
 			.replace(/\r?\n|\r/g, '')
