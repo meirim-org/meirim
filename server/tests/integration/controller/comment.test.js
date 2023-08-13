@@ -1,34 +1,37 @@
 const expect = require('chai').expect;
 const { mockDatabase } = require('../../mock');
-const { CommentController, CommentPersonController } = require('../../../api/controller');
+const {
+	CommentController,
+	CommentPersonController,
+} = require('../../../api/controller');
 
-describe('comment controller', function() {
-	const tables = ['comment', 'person', 'comment_person'];
+describe('comment controller', function () {
+	const tables = ['comment', 'person', 'comment_person', 'person_photo'];
 	const person = {
 		name: 'myname',
 		email: 'test@meirim.org',
 		password: 'xxxx',
 		status: 1,
-		id: 1,	
+		id: 1,
 		type: 'type',
 	};
 
-	beforeEach(async function() {
+	beforeEach(async function () {
 		await mockDatabase.dropTables(tables);
 		await mockDatabase.createTables(tables);
-		await mockDatabase.insertData(['person'], { 'person': [person] });
+		await mockDatabase.insertData(['person'], { person: [person] });
 	});
 
-	afterEach(async function() {
+	afterEach(async function () {
 		await mockDatabase.dropTables(tables);
 	});
 
-	it('creates row in db successfuly', async function() {
+	it('creates row in db successfuly', async function () {
 		const req = {
 			session: {
-				person: { 
-					id: 1 
-				} 
+				person: {
+					id: 1,
+				},
 			},
 			body: {
 				name: 'myname',
@@ -36,25 +39,25 @@ describe('comment controller', function() {
 				person_id: 1,
 				plan_id: 123,
 				type: 'review',
-				likes: 0
-			}
+				likes: 0,
+			},
 		};
 		const { attributes } = await CommentController.create(req);
 		const addLikeRequest = {
 			session: {
-				person: { 
-					id: 1 
-				} 
+				person: {
+					id: 1,
+				},
 			},
-			body: { commentId: attributes.id }
+			body: { commentId: attributes.id },
 		};
 		const addLikeRequest1 = {
 			session: {
-				person: { 
-					id: 2 
-				} 
+				person: {
+					id: 2,
+				},
 			},
-			body: { commentId: attributes.id }
+			body: { commentId: attributes.id },
 		};
 		await CommentPersonController.addLike(addLikeRequest);
 		await CommentPersonController.addLike(addLikeRequest1);
@@ -66,19 +69,19 @@ describe('comment controller', function() {
 		expect(res[0].attributes.likes).to.eql(2);
 		const req1 = {
 			session: {
-				person: { 
-					id: 1 
-				} 
+				person: {
+					id: 1,
+				},
 			},
 			params: {
 				plan_id: 123,
-			}
+			},
 		};
 		const reqForNestedComment = {
 			session: {
-				person: { 
-					id: 1 
-				} 
+				person: {
+					id: 1,
+				},
 			},
 			body: {
 				name: 'myname',
@@ -87,11 +90,11 @@ describe('comment controller', function() {
 				parent_id: attributes.id,
 				plan_id: 123,
 				type: 'review',
-				likes: 0
-			}
+				likes: 0,
+			},
 		};
 		await CommentController.create(reqForNestedComment);
-		const comments = await CommentController.byPlan(req1); 
+		const comments = await CommentController.byPlan(req1);
 		expect(comments.length).to.eql(2);
 	});
 });
