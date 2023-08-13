@@ -8,11 +8,14 @@ const Alert = require('./alert');
 const BaseModel = require('./base_model');
 const Exception = require('./exception');
 const { personTypes } = require('../../api/constants');
+const PersonPhoto = require('./person_photo');
 
 const seconds = 1000;
+
 class Person extends BaseModel {
-	get rules () {
+	get rules() {
 		return {
+			id: ['required', 'integer'],
 			email: ['required', 'email'],
 			password: ['required', 'string'],
 			name: ['required', 'string'],
@@ -20,58 +23,63 @@ class Person extends BaseModel {
 			social_network_url: 'string',
 			about_me: 'string',
 			address: 'string',
-			status: ['required', 'integer'], 
+			status: ['required', 'integer'],
 			admin: ['integer'],
+			photo_id: ['integer'],
 			last_email_sent: ['datetime'],
 		};
 	}
 
-	get defaults () {
+	get defaults() {
 		return { status: 0 };
 	}
 
-	get hidden () {
-		return ['password', 'status'];
+	get hidden() {
+		return ['password'];
 	}
 
 	get hasTimestamps() {
 		return true;
 	}
 
-	get tableName () {
+	get tableName() {
 		return 'person';
 	}
 
-	initialize () {
+	initialize() {
 		this.on('creating', this.assignValues);
 		this.on('saving', this.hashPassword);
 		super.initialize();
 	}
 
-	alerts () {
+	alerts() {
 		return this.hasMany(Alert);
 	}
 
-	assignValues (model) {
+	photo() {
+		return this.belongsToMany(PersonPhoto);
+	}
+
+	assignValues(model) {
 		model.attributes.email = model.attributes.email.toLowerCase().trim();
 		model.attributes.type = personTypes[model.attributes.type];
 		return true;
 	}
 
-	getActivationToken () {
+	getActivationToken() {
 		const data = this.get('email');
 		const hashedPassword = Crypt.encrypt(data);
 		return Buffer.from(hashedPassword).toString('base64');
 	}
 
-	resetPasswordToken () {
+	resetPasswordToken() {
 		const now = new Date().getTime();
 		const data = `${this.get('id')}_${now}`;
 		const token = Crypt.encrypt(data);
 		return Buffer.from(token).toString('base64');
 	}
 
-	static resetPasswordByToken (token, newPassword) {
+	static resetPasswordByToken(token, newPassword) {
 		const now = new Date().getTime();
 		const details = Crypt.decrypt(
 			Buffer.from(token, 'base64').toString('ascii')
@@ -99,7 +107,7 @@ class Person extends BaseModel {
 			);
 		}
 		return Person.forge({
-			id: parts[0]
+			id: parts[0],
 		})
 			.fetch()
 			.then((person) => {
@@ -114,7 +122,7 @@ class Person extends BaseModel {
 			.then(() => true);
 	}
 
-	hashPassword (model) {
+	hashPassword(model) {
 		const passwordLength = 6;
 		if (!model.hasChanged('password')) {
 			Log.debug('Password not hashed');
@@ -136,7 +144,7 @@ class Person extends BaseModel {
 	// upload(files) {
 	//   return this;
 	// }
-	checkPassword (password) {
+	checkPassword(password) {
 		return Bcrypt.compare(password, this.get('password')).then((res) => {
 			if (!res) {
 				throw new Exception.NotAllowed('Password mismatch');
@@ -145,18 +153,18 @@ class Person extends BaseModel {
 		});
 	}
 
-	static canCreate (session) {
+	static canCreate(session) {
 		if (session.person) {
 			throw new Exception.NotAllowed('Must be signed out');
 		}
 		return Promise.resolve(Person);
 	}
 
-	static activateByToken (token) {
+	static activateByToken(token) {
 		const data = Buffer.from(token, 'base64').toString('ascii');
 		const email = Crypt.decrypt(data);
 		return Person.forge({
-			email
+			email,
 		})
 			.fetch()
 			.then((fetchedPerson) => {
@@ -169,18 +177,20 @@ class Person extends BaseModel {
 			.then(() => true);
 	}
 
-	static isUserExist (email) {
-		return Person.forge({ email }).fetch().then(p => {
-			if(!p) return false;
-			else return true;
-		}); 
+	static isUserExist(email) {
+		return Person.forge({ email })
+			.fetch()
+			.then((p) => {
+				if (!p) return false;
+				else return true;
+			});
 	}
 
-	 /**
+	/**
    * Verify and email returning a promise
    * @param {string} email
    */
-	static verifyEmail (email) {
+	static verifyEmail(email) {
 		const codes = verifier.verifyCodes;
 		return new Promise((resolve, reject) => {
 			verifier.verify(
@@ -214,12 +224,12 @@ class Person extends BaseModel {
 		});
 	}
 
-	static getPersonToNotify (daysAgo) {
+	static getPersonToNotify(daysAgo) {
 		const options = userOptions || {};
 		if (!options.limit) {
 			options.limit = 1;
 		}
-		return Plan.query(qb => {
+		return Plan.query((qb) => {
 			qb.where('sent', '=', '0');
 			if (options.OBJECTID) {
 				qb.where('OBJECTID', '=', options.OBJECTID);
@@ -232,22 +242,21 @@ class Person extends BaseModel {
 				'goals_from_mavat',
 				'main_details_from_mavat',
 				'geom',
-				'jurisdiction'
-			]
+				'jurisdiction',
+			],
 		});
 	}
 
-	static getPersonToNotify (daysAgo) {
+	static getPersonToNotify(daysAgo) {
 		const options = userOptions || {};
 		if (!options.limit) {
 			options.limit = 5;
 		}
-		return Plan.query(qb => {
+		return Plan.query((qb) => {
 			qb.where('last_updated', '<', daysAgo);
 			// Fetch all the plans that were changed over the last x days
-			// and that this user has alerts that fall within 
+			// and that this user has alerts that fall within
 			qb.where('last_updated', '<', daysAgo);
-			
 		}).fetchPage({
 			pageSize: options.limit,
 			columns: [
@@ -256,8 +265,8 @@ class Person extends BaseModel {
 				'goals_from_mavat',
 				'main_details_from_mavat',
 				'geom',
-				'jurisdiction'
-			]
+				'jurisdiction',
+			],
 		});
 	}
 }

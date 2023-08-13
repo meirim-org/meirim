@@ -15,98 +15,109 @@ import { ModalActions } from 'redux/actions';
 import { ModalSelectors } from 'redux/selectors';
 import { device } from 'style';
 import styled from 'styled-components';
+import UserProfile from '../../components/UserProfile/UserProfile';
 
 const StyledModal = styled(MUIModal)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: scroll;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: scroll;
 `;
 
 const StyledIcon = styled(CloseIcon)`
-	color: gray;
-	cursor: pointer;
+    color: gray;
+    cursor: pointer;
 `;
 
 const ModalWrapper = styled.div``;
 
 const ModalContentWRapper = styled.div`
-	display:flex;
-	flex-direction: column;
-	background-color: #ffffff;
-	min-width: 35%;
-	border-radius: 15px 15px;
-	width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    min-width: 35%;
+    border-radius: 15px 15px;
+    width: 100%;
     @media ${device.tablet} {
-      max-width: initial;
-	  width: unset;
+        max-width: initial;
+        width: unset;
     }
 
-	&.videoModal {
-		background-color: unset;
-		position: relative;
+    &.profileModal {
+        min-width: inherit;
+        max-width: initial;
+        width: unset;
+    }
 
-		@media ${device.mobile} {
+    &.videoModal {
+        background-color: unset;
+        position: relative;
 
-			.iconWrapper > * {
-				color: #918899;
-				right: -25px;
-				top: -25px;
-			}
-		}
+        @media ${device.mobile} {
+            .iconWrapper > * {
+                color: #918899;
+                right: -25px;
+                top: -25px;
+            }
+        }
 
-		@media ${device.tablet} {
-			max-width: initial;
-			width: unset;
+        @media ${device.tablet} {
+            max-width: initial;
+            width: unset;
 
-			.iconWrapper > * {
-				color: #918899;
-				position: absolute;
-				right: -25px;
-				top: -25px;
-			}
-		}
-	}
+            .iconWrapper > * {
+                color: #918899;
+                position: absolute;
+                right: -25px;
+                top: -25px;
+            }
+        }
+    }
 `;
 
 const IconWrapper = styled.div`
-	padding-top: 0.5em;
-	padding-right: 0.5em;
+    padding-top: 0.5em;
+    padding-right: 0.5em;
 `;
 
 const modalComponents = {
-	login: Login,
-	register: Register,
-	emailVerified: EmailVerified,
-	share: SharePlanView,
-	payment: Payment,
-	termsOfPayment: TermsOfPayment,
-	thankYou: ThankYou,
-	shareTree: ShareTreeView,
-	video: Video
+    login: Login,
+    register: Register,
+    emailVerified: EmailVerified,
+    share: SharePlanView,
+    payment: Payment,
+    termsOfPayment: TermsOfPayment,
+    thankYou: ThankYou,
+    shareTree: ShareTreeView,
+    video: Video,
+    profile: UserProfile,
 };
 
 const Modal = ({ id }) => {
-	const { open, modalType, modalProps } = ModalSelectors();
-	const ModalChildren = modalComponents[modalType];
+    const { open, modalType, modalProps } = ModalSelectors();
+    const ModalChildren = modalComponents[modalType];
 
-	return (
-		<ModalWrapper id={`wrapper-${id}`}>
-			<StyledModal id={id} open={open}>
-				<ModalContentWRapper className={modalProps?.wrapperClass}>
-					<IconWrapper className='iconWrapper'>
-						<StyledIcon onClick={ModalActions().close} />
-					</IconWrapper>
-					{modalType && <ModalChildren {...modalProps}/>}
-				</ModalContentWRapper>
-			</StyledModal>
-		</ModalWrapper>
-	);
+    return (
+        <ModalWrapper id={`wrapper-${id}`}>
+            <StyledModal
+                onBackdropClick={ModalActions().close}
+                id={id}
+                open={open}
+            >
+                <ModalContentWRapper className={modalProps?.wrapperClass}>
+                    <IconWrapper className="iconWrapper">
+                        <StyledIcon onClick={ModalActions().close} />
+                    </IconWrapper>
+                    {modalType && <ModalChildren {...modalProps} />}
+                </ModalContentWRapper>
+            </StyledModal>
+        </ModalWrapper>
+    );
 };
 
 Modal.propTypes = {
-	children: PropTypes.object,
-	id: PropTypes.string,
+    children: PropTypes.object,
+    id: PropTypes.string,
 };
 
 export default Modal;

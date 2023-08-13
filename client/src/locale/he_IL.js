@@ -272,6 +272,9 @@ const HEBREW_TRANSLATION = {
 	GISFile: 'קובץ GIS',
 	AOITitle: 'שם האיזור',
 	undefined: 'לא הוגדר',
+
+	profileVerified: 'פרופיל מאומת',
+	aboutMePublic: 'קצת על עצמי',
 };
 
 const ARABIC_TRANSLATION = {
@@ -516,6 +519,9 @@ const ARABIC_TRANSLATION = {
 	plansHelperTitle: 'البحث عن خرائط بناء',
 	plansSearchingTextA: 'نحن نبحث عن الخرائط من أجلك ...',
 	plansSearchingTextB: 'لن يستغرق الأمر وقتًا طويلاً',
+
+	profileVerified: 'פרופיל מאומת',
+	aboutMePublic: 'קצת על עצמי',
 };
 
 export const LANGUAGES = {
@@ -691,4 +697,6 @@ export default {
 	showPlansTooltip: `תוכניות מאושרות הן תוכניות שעברו.
 תוכניות בתהליך הן תוכניות שעוברות תהליך אישור בועדות.`,
 	planLinks: 'קישורים',
+	profileVerified: 'פרופיל מאומת',
+	aboutMePublic: 'קצת על עצמי',
 };

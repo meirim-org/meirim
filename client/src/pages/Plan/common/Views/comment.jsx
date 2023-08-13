@@ -1,51 +1,49 @@
 import { useTheme } from '@material-ui/styles';
-import { useTranslation } from 'locale/he_IL';
-import { daysPassed } from 'pages/Plan/utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { TabBox, TabPanel, Typography } from 'shared';
 import * as SC from './style';
+import HeaderComment from '../../../../components/HeaderComment/HeaderComment';
 
 const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 	const theme = useTheme();
-	const { content, created_at, person: { name }, type } = commentData;
-	const { t } = useTranslation();
+	const {
+		content,
+		created_at,
+		person: {
+			name,
+			type: personType,
+			status,
+			url,
+			email_public,
+			linkedin,
+			twitter,
+			facebook,
+			title,
+			about_me_public,
+			id,
+		},
+		type,
+	} = commentData;
 
 	return (
 		<TabPanel>
 			<TabBox isComment={true} disabled={isNewCommentOpen}>
-				<SC.Header>
-					<SC.FirstSide>
-						<Typography
-							variant="menuTitle"
-							mobileVariant="menuTitle"
-							component="span"
-							color={theme.palette.green['text2']}
-						>
-							{t[type]}
-						</Typography>
-						<Typography
-							variant="highlightedText"
-							mobileVariant="highlightedText"
-							component="span"
-							color={theme.palette.black}
-						>
-							{name}
-						</Typography>
-					</SC.FirstSide>
-					<SC.SecondSide>
-						<Typography
-							variant="light"
-							mobileVariant="light"
-							component="span"
-							color={theme.palette.gray['main']}
-						>
-	                    לפני
-							{created_at ? daysPassed(created_at) : ' הרבה '}
-	                    ימים
-						</Typography>
-					</SC.SecondSide>
-				</SC.Header>
+				<HeaderComment
+					created_at={created_at}
+					name={name}
+					status={status}
+					url={url}
+					personType={personType}
+					type={type}
+					title={title}
+					facebook={facebook}
+					twitter={twitter}
+					linkedin={linkedin}
+					email_public={email_public}
+					about_me_public={about_me_public}
+					personId={id}
+				/>
 				<SC.Text>
 					<Typography
 						variant="paragraphText"
@@ -63,13 +61,13 @@ const CommentView = ({ commentData, isNewCommentOpen, children }) => {
 };
 
 CommentView.defaultProps = {
-	isNewCommentOpen: false
+	isNewCommentOpen: false,
 };
 
 CommentView.propTypes = {
 	commentData: PropTypes.object.isRequired,
 	isNewCommentOpen: PropTypes.bool.isRequired,
-	children: PropTypes.any
+	children: PropTypes.any,
 };
 
 export default CommentView;
