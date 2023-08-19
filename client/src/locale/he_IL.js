@@ -169,6 +169,7 @@ const HEBREW_TRANSLATION = {
         'שינויים במרחב שלנו מחייבים עריכת תוכנית. ועדות התכנון והבנייה אמונות על פיקוח ואישור התוכניות.',
 	allRightsReserved: 'כל הזכויות שמורות',
 	privacyPolicy: 'מדיניות פרטיות',
+	accessibilityDeclaration: 'הצהרת נגישות', 
 	termsOfUse: 'תנאי שימוש',
 	signInToMeirim: 'התחברות למעירים',
 	continue: 'המשך',
@@ -353,6 +354,7 @@ const ARABIC_TRANSLATION = {
 	ourInstagram: 'Instagram',
 	ourGithub: 'Github',
 	privacyPolicy: 'سياسة الخصوصية',
+	accessibilityDeclaration: 'إتاحة المعلومات', 
 	whyRegister: (
 		<div>
             רוצים לדעת מה בונים לכם <strong>ליד הבית?</strong>

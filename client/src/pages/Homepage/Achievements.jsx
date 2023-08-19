@@ -7,10 +7,10 @@ import { device } from 'style';
 
 const achievements = [{
 	title: 'משתמשים רשומים',
-	value: 6500
+	value: 9200
 }, {
 	title: 'מבקרים חדשים בחודש',
-	value: 7000
+	value: 8000
 }, {
 	title: 'התראות שנשלחו',
 	value: 150000
@@ -88,9 +88,9 @@ const Achievements = () => {
 	return (
 		<AchievementSection>
 			<H2>מה השגנו יחד</H2>
-		<Wrapper>
-			{ map(achievements, ({ title, value }) => <Stat title={title} value={value} />)}
-		</Wrapper>
+			<Wrapper>
+				{ map(achievements, ({ title, value }) => <Stat title={title} value={value} />)}
+			</Wrapper>
 		</AchievementSection>
 	);
 };

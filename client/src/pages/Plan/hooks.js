@@ -8,7 +8,10 @@ import * as utils from './utils';
 import { getPlanData, getCommentsByPlanId } from './controller';
 import { useDispatch } from 'react-redux';
 import { fetchUserPlans } from 'pages/UserPlans/controller';
-import { unsubscribeUserToPlan, subscribeUserToPlan } from 'pages/Plan/controller';
+import {
+	unsubscribeUserToPlan,
+	subscribeUserToPlan,
+} from 'pages/Plan/controller';
 
 import { UserSelectors } from 'redux/selectors';
 
@@ -24,7 +27,7 @@ export const isFavoritePlan = async (userId, planId) => {
 export const useFavoritePlan = (planId) => {
 	const { favoritePlans } = UserSelectors();
 	const dispatch = useDispatch();
-	const isSubscribed = favoritePlans.indexOf(planId)!== -1;
+	const isSubscribed = favoritePlans.indexOf(planId) !== -1;
 
 	const subscribe = async () => {
 		try {
@@ -47,9 +50,9 @@ export const useFavoritePlan = (planId) => {
 	};
 
 	return {
-		isSubscribed, 
+		isSubscribed,
 		subscribe,
-		unsubscribe
+		unsubscribe,
 	};
 };
 
@@ -94,6 +97,7 @@ export const useDataHandler = (planId) => {
 				plan_url: url,
 				areaChanges,
 				geom,
+				plan_links,
 			} = response.data;
 			const {
 				ENTITY_SUBTYPE_DESC: type,
@@ -153,6 +157,7 @@ export const useDataHandler = (planId) => {
 					dataArea: newDataArea,
 					dataUnits: newDataUnits,
 					textArea: newTextArea,
+					planLinks: plan_links,
 					planData: {
 						countyName,
 						name,

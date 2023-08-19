@@ -18,4 +18,5 @@ exports.plan_tag = require('./plan_tag_struct');
 exports.status = require('./status_struct');
 exports.status_mapping = require('./status_mapping_struct');
 exports.plan_status_change = require('./plan_status_change_struct');
+exports.plan_links = require('./plan_link_struct');
 
