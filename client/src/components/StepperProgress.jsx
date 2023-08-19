@@ -131,7 +131,7 @@ export const StepperProgress = ({ steps, cancellationDate }) => {
     const onButtonClick = () => {
         // Opening a poptin based on the selected step
         const poptinIdsForSteps = ['d31f5c4276200', '7c7e66500c4ac', '0c47c056d9c62', '672c4710c1670', ''];
-        const poptinId = poptinIdsForSteps[clickedStep.stepId];
+        const poptinId = poptinIdsForSteps[activeStep];
         if(window.poptin_display && poptinId) {
 			window.poptin_display(poptinId);
 		}
