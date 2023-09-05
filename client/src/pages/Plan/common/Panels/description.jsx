@@ -6,12 +6,14 @@ import React from 'react';
 import { TabBox, TabPanel, Typography } from 'shared';
 import * as SC from './style';
 
-
-export const DescriptionPanel = ({ mainDetailsFromMavat }) => {
+export const DescriptionPanel = ({
+	mainDetailsFromMavat,
+	mainDetailsFromMavatArabic,
+}) => {
 	const theme = useTheme();
-	const { t } = useTranslation();
-	if (!mainDetailsFromMavat ) return null;
-	
+	const { selectedLanguage, t } = useTranslation();
+	if (!mainDetailsFromMavat) return null;
+
 	return (
 		<TabPanel>
 			<TabBox>
@@ -27,7 +29,12 @@ export const DescriptionPanel = ({ mainDetailsFromMavat }) => {
 				</SC.PlanSummaryTitleWrapper>
 				<SC.EntryContent>
 					<UnsafeRender
-						html={mainDetailsFromMavat}
+						html={
+							selectedLanguage === 'AR'
+								? mainDetailsFromMavatArabic ||
+                                  mainDetailsFromMavat
+								: mainDetailsFromMavat
+						}
 					/>
 				</SC.EntryContent>
 			</TabBox>

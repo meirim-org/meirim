@@ -7,18 +7,39 @@ import React from 'react';
 import { Text } from 'shared';
 import * as SC from '../../style';
 
-
-const Title = ({ countyName, planName }) => {
+const Title = ({ countyName, planName, planNameArabic }) => {
 	const theme = useTheme();
-	const { t } = useTranslation();
+	const { selectedLanguage, t } = useTranslation();
+
 	return (
 		<>
 			<SC.SubTitleWrapper>
-				<BackButton onclick={goBack} label={t.backToComments} classname="back-button"/>
-				<Text size="18px" weight="700" text={countyName} component="span" color={theme.palette.primary.main}/>
+				<BackButton
+					onclick={goBack}
+					label={t.backToComments}
+					classname="back-button"
+				/>
+				<Text
+					size="18px"
+					weight="700"
+					text={countyName}
+					component="span"
+					color={theme.palette.primary.main}
+				/>
 			</SC.SubTitleWrapper>
 			<SC.TitleWrapper>
-				<Text size="24px" lineHeight="1.17" weight="600" text={planName} component="h1" color={theme.palette.black}/>
+				<Text
+					size="24px"
+					lineHeight="1.17"
+					weight="600"
+					text={
+						selectedLanguage === 'AR'
+							? planNameArabic || planName
+							: planName
+					}
+					component="h1"
+					color={theme.palette.black}
+				/>
 			</SC.TitleWrapper>
 		</>
 	);
@@ -26,6 +47,7 @@ const Title = ({ countyName, planName }) => {
 
 Title.propTypes = {
 	planName: PropTypes.string,
+	planNameArabic: PropTypes.string,
 	countyName: PropTypes.string,
 };
 

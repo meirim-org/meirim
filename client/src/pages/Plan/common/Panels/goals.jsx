@@ -6,12 +6,11 @@ import React from 'react';
 import { TabBox, TabPanel, Typography } from 'shared';
 import * as SC from './style';
 
-
-export const GoalsPanel = ({ goalsFromMavat }) => {
+export const GoalsPanel = ({ goalsFromMavat, goalsFromMavatArabic }) => {
 	const theme = useTheme();
-	const { t } = useTranslation();
-	if (!goalsFromMavat ) return null;
-	
+	const { t, selectedLanguage } = useTranslation();
+	if (!goalsFromMavat) return null;
+
 	return (
 		<TabPanel>
 			<TabBox>
@@ -27,7 +26,11 @@ export const GoalsPanel = ({ goalsFromMavat }) => {
 				</SC.PlanSummaryTitleWrapper>
 				<SC.EntryContent>
 					<UnsafeRender
-						html={goalsFromMavat}
+						html={
+							selectedLanguage === 'AR'
+								? goalsFromMavatArabic || goalsFromMavat
+								: goalsFromMavat
+						}
 					/>
 				</SC.EntryContent>
 			</TabBox>
@@ -37,6 +40,7 @@ export const GoalsPanel = ({ goalsFromMavat }) => {
 
 GoalsPanel.propTypes = {
 	goalsFromMavat: PropTypes.string,
+	goalsFromMavatArabic: PropTypes.string,
 };
 
 export default GoalsPanel;
