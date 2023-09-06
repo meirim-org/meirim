@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - master
+            - feat/client-side-ci 
     pull_request:
         branches:
             - master
