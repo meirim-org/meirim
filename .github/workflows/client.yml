@@ -91,10 +91,10 @@ jobs:
     build-and-deploy:
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: use node v${{ matrix.node-version }}
-        uses: actions/setup-node@naster
+        uses: actions/setup-node@v1
         with:
             node-version: ${{ matrix.node-version }}
 
@@ -106,6 +106,7 @@ jobs:
         working-directory: client
         run: npm run build
       
+      - uses: actions/checkout@master
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
