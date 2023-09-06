@@ -87,10 +87,25 @@ jobs:
                   $(npm bin)/cypress run --browser chrome --headless &&
                   $(npm bin)/cypress run --browser firefox --headless
 
-    deploy:
+
+    build-and-deploy:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@master
+
+      - name: use node v${{ matrix.node-version }}
+        uses: actions/setup-node@naster
+        with:
+            node-version: ${{ matrix.node-version }}
+
+      - name: install client dependencies
+        working-directory: client
+        run: npm install
+
+      - name: build
+        working-directory: client
+        run: npm run build
+      
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
@@ -98,4 +113,4 @@ jobs:
           AWS_S3_BUCKET: meirim.org
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
-          SOURCE_DIR: "test"
+          SOURCE_DIR: "build"
