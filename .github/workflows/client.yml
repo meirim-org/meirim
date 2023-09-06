@@ -117,4 +117,4 @@ jobs:
           AWS_S3_BUCKET: meirim.org
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
-          SOURCE_DIR: "build"
+          SOURCE_DIR: "client/build"
