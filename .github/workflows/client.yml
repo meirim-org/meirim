@@ -87,7 +87,7 @@ jobs:
 
       - name: install client dependencies
         working-directory: client
-        run: npm install
+        run: npm install --production
 
       - name: build
         working-directory: client
@@ -123,7 +123,7 @@ jobs:
 
       - name: install client dependencies
         working-directory: client
-        run: npm install
+        run: npm install --production
 
       - name: build
         working-directory: client
