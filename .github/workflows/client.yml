@@ -88,7 +88,7 @@ jobs:
                   $(npm bin)/cypress run --browser firefox --headless
 
 
-    build-and-deploy:
+    build-and-deploy-prod:
       strategy:
         matrix:
             node-version: [14.x]
@@ -108,6 +108,8 @@ jobs:
       - name: build
         working-directory: client
         run: npm run build
+        env:
+          PUBLIC_URL: "http://meirim.org"
       
       - uses: jakejarvis/s3-sync-action@master
         with:
