@@ -33,10 +33,11 @@ library.add(
     faChartArea,
     faWhatsapp
 )
-
 let basename = "/";
-if (process.env.BASE_NAME) {
-	basename = process.env.BASE_NAME
+
+if (process.env.CONFIG.basename) {
+	console.log("here here here!", process.env.CONFIG.basename)
+	basename = process.env.CONFIG.basename
 }
 
 const App = (props) => {
