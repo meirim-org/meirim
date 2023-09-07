@@ -76,9 +76,6 @@ jobs:
                   $(npm bin)/cypress run --browser firefox --headless
 
     build-and-deploy-staging:
-      strategy:
-        matrix:
-            node-version: [14.x]
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
@@ -114,9 +111,6 @@ jobs:
           
     build-and-deploy-prod:
       if: github.ref == 'refs/heads/master'
-      strategy:
-        matrix:
-            node-version: [14.x]
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
