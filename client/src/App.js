@@ -34,6 +34,11 @@ library.add(
     faWhatsapp
 )
 
+let basename = "/";
+if (process.env.BASE_NAME) {
+	basename = process.env.BASE_NAME
+}
+
 const App = (props) => {
 	// initialize analytics
 	useInitGA();
@@ -46,7 +51,7 @@ const App = (props) => {
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
-			<BrowserRouter>
+			<BrowserRouter basename={basename}>
 				<>
 					<Modal />
 					<Switch>

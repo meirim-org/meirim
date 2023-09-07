@@ -94,6 +94,7 @@ jobs:
         run: npm run build
         env:
           PUBLIC_URL: "http://staging.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
+          BASE_NAME: ${{ github.ref_name }}
       
       - uses: jakejarvis/s3-sync-action@master
         with:
