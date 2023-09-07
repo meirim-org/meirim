@@ -104,9 +104,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
           SOURCE_DIR: "client/build"
           DEST_DIR: ${{ github.ref_name }}
-      - name: url
+      - name: info
         run: |
-          echo "deplyed to"
+          echo "deployed to"
           echo "http://staging.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
           
     build-and-deploy-prod:
