@@ -76,6 +76,7 @@ jobs:
                   $(npm bin)/cypress run --browser firefox --headless
 
     build-and-deploy-staging:
+      environment: staging
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
@@ -93,6 +94,7 @@ jobs:
         working-directory: client
         run: npm run build
         env:
+          NODE_ENV: production
           BASE_NAME: ${{ github.ref_name }}
           PUBLIC_URL: "http://staging.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
       
@@ -111,6 +113,7 @@ jobs:
           echo "http://staging.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
           
     build-and-deploy-prod:
+      environment: prod
       if: github.ref == 'refs/heads/master'
       runs-on: ubuntu-latest
       steps:
