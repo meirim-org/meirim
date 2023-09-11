@@ -36,7 +36,6 @@ library.add(
 let basename = "/";
 
 if (process.env.CONFIG.basename) {
-	console.log("here here here!", process.env.CONFIG.basename)
 	basename = process.env.CONFIG.basename
 }
 
