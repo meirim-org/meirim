@@ -96,13 +96,13 @@ jobs:
         env:
           NODE_ENV: staging
           BASE_NAME: ${{ github.ref_name }}
-          PUBLIC_URL: "http://staging.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
+          PUBLIC_URL: "http://stage.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
       
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: staging.meirim.org
+          AWS_S3_BUCKET: stage.meirim.org
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
           SOURCE_DIR: "client/build"
@@ -110,7 +110,7 @@ jobs:
       - name: info
         run: |
           echo "deployed to"
-          echo "http://staging.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
+          echo "http://stage.meirim.org.s3-website.eu-north-1.amazonaws.com/${{ github.ref_name }}" 
           
     build-and-deploy-prod:
       environment: prod
@@ -138,7 +138,7 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: meirim.org
+          AWS_S3_BUCKET: prod.meirim.org
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
           SOURCE_DIR: "client/build"
