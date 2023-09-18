@@ -134,6 +134,7 @@ jobs:
         run: npm run build
         env:
           PUBLIC_URL: "http://prod.meirim.org.s3-website.il-central-1.amazonaws.com"
+          NODE_ENV: production
       
       - uses: jakejarvis/s3-sync-action@master
         with:
