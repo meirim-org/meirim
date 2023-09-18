@@ -106,9 +106,9 @@
 	"database": {
 		"client": "mysql",
 		"connection": {
-			"host": "SERVER_DB_HOST",
-			"user": "SERVER_DB_USERNAME",
-			"password": "SERVER_DB_PASSWORD",
+			"host": "localhost",
+			"user": "root",
+			"password": "password",
 			"database": "meirim",
 			"charset": "utf8"
 		},
