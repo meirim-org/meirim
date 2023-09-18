@@ -1,6 +1,9 @@
 name: Client CI
 
-on: push
+on:
+  push:
+    paths:
+      - client/**
 
 jobs:
     test:
