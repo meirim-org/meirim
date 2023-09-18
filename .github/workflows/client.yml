@@ -1,21 +1,10 @@
 name: Client CI
 
-on:
-    push:
-        branches:
-            - master
-    pull_request:
-        branches:
-            - master
+on: push
 
 jobs:
     test:
         runs-on: ubuntu-latest
-
-        strategy:
-            matrix:
-                node-version: [14.x]
-
         services:
             test_mysql:
                 image: mysql:5.7
@@ -27,10 +16,10 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: use node v${{ matrix.node-version }}
+            - name: use node v14.x
               uses: actions/setup-node@v1
               with:
-                  node-version: ${{ matrix.node-version }}
+                  node-version: 14.x
 
             - name: cache node modules
               uses: actions/cache@v2
@@ -85,3 +74,73 @@ jobs:
               run: |
                   $(npm bin)/cypress run --browser chrome --headless &&
                   $(npm bin)/cypress run --browser firefox --headless
+
+    build-and-deploy-staging:
+      environment: staging
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: use node v14.x
+        uses: actions/setup-node@v1
+        with:
+            node-version: 14.x
+
+      - name: install client dependencies
+        working-directory: client
+        run: npm install
+
+      - name: build
+        working-directory: client
+        run: npm run build
+        env:
+          NODE_ENV: staging
+          BASE_NAME: ${{ github.ref_name }}
+          PUBLIC_URL: "http://stage.meirim.org.s3-website.il-central-1.amazonaws.com/${{ github.ref_name }}" 
+      
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: stage.meirim.org
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
+          SOURCE_DIR: "client/build"
+          DEST_DIR: ${{ github.ref_name }}
+          AWS_REGION: il-central-1
+      - name: info
+        run: |
+          echo "deployed to"
+          echo "http://stage.meirim.org.s3-website.il-central-1.amazonaws.com/${{ github.ref_name }}" 
+          
+    build-and-deploy-prod:
+      environment: prod
+      if: github.ref == 'refs/heads/master'
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: use node v14.x
+        uses: actions/setup-node@v1
+        with:
+            node-version: 14.x
+
+      - name: install client dependencies
+        working-directory: client
+        run: npm install
+
+      - name: build
+        working-directory: client
+        run: npm run build
+        env:
+          PUBLIC_URL: "http://prod.meirim.org.s3-website.il-central-1.amazonaws.com"
+      
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: prod.meirim.org
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
+          SOURCE_DIR: "client/build"
+          AWS_REGION: il-central-1

@@ -1,0 +1,13 @@
+{
+    "analytics": {
+        "ga": {
+            "enabled": false,
+            "ua": ""
+        },
+        "hotjar": {
+            "enabled": false,
+            "hjid": 0,
+            "hjsv": 0
+        }
+    }
+}

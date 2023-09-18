@@ -33,6 +33,11 @@ library.add(
     faChartArea,
     faWhatsapp
 )
+let basename = "/";
+
+if (process.env.CONFIG.basename) {
+	basename = process.env.CONFIG.basename
+}
 
 const App = (props) => {
 	// initialize analytics
@@ -46,7 +51,7 @@ const App = (props) => {
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
-			<BrowserRouter>
+			<BrowserRouter basename={basename}>
 				<>
 					<Modal />
 					<Switch>

@@ -1,0 +1,6 @@
+{
+    "basename": "BASE_NAME",
+    "geocode": {
+        "mapsApiKey": "MAPS_API_KEY" 
+    }
+}
