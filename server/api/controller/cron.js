@@ -364,8 +364,8 @@ const fetchIplan = iPlan =>
 				.then(plan => {
 					if (
 						!oldPlan ||
-						oldPlan.get('data').STATION !==
-						iPlan.properties.STATION
+						oldPlan.get('data').STATION_DESC !==
+						iPlan.properties.STATION_DESC
 					) {
 						plan.set('sent', oldPlan ? 1 : 0);
 					}
