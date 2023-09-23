@@ -10,10 +10,11 @@ env:
   CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
-on:
-  push:
-    paths:
-      - server/**
+on: push
+# on:
+#   push:
+#     paths:
+#       - server/**
 jobs:
   test:
     runs-on: ubuntu-latest
