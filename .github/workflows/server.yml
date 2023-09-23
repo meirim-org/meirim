@@ -81,29 +81,28 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
-      - run: echo "image=072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:0458cf9bd0ed2c6fe2ff55e7c09b5b95e7a8f343" >> $GITHUB_OUTPUT
-        id: build-image
-      # - name: use node 14.x
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version:  14.x
-
-      # - name: install server dependencies
-      #   working-directory: server
-      #   run: npm install
-
-      # - uses: mr-smithers-excellent/docker-build-push@v6
+      # - run: echo "image=072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:0458cf9bd0ed2c6fe2ff55e7c09b5b95e7a8f343" >> $GITHUB_OUTPUT
       #   id: build-image
-      #   with:
-      #     dockerfile: server/Dockerfile
-      #     image: meirim-server
-      #     registry: 072085314121.dkr.ecr.il-central-1.amazonaws.com
-      #     directory: server
-      #     tags: ${{github.sha}}
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
-      - run:  echo "image=072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:${{github.sha}}" >> $GITHUB_OUTPUT
+      - name: use node 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version:  14.x
+
+      - name: install server dependencies
+        working-directory: server
+        run: npm install
+
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        id: build-image
+        with:
+          dockerfile: server/Dockerfile
+          image: meirim-server
+          registry: 072085314121.dkr.ecr.il-central-1.amazonaws.com
+          directory: server
+          tags: ${{github.sha}}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
       # - id: install-aws-cli
       #   uses: unfor19/install-aws-cli-action@v1
       # - name: Configure AWS credentials
@@ -119,7 +118,7 @@ jobs:
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
+          image: "072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:${{github.sha}}"
           environment-variables: ${{ steps.env.outputs.env }}
 
       - name: Deploy Amazon ECS task definition
