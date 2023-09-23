@@ -1,7 +1,7 @@
 # Use the official Node.js 14 image as the base image
 FROM node:14
 
-ENV cmd bin/serve
+ENV cmd "bin/serve"
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
