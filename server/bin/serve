@@ -9,6 +9,11 @@ const staticApp = require('../api/staticApp');
 // create main app
 const mainApp = Express();
 
+// TODO: implement health check!
+mainApp.use('/health', (req, res) => {
+  res.sendStatus(200);
+})
+
 // mount api and static apps
 mainApp.use('/api', apiApp);
 mainApp.use('/', staticApp);
