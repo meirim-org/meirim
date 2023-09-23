@@ -75,6 +75,7 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       - run: |
           ENV=$(env)
+          echo "env=$ENV"
           echo "env=$ENV" >> $GITHUB_OUTPUT
         id: env
       - name: Login to Amazon ECR
