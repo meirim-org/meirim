@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: Run echo "image=072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:0458cf9bd0ed2c6fe2ff55e7c09b5b95e7a8f343" >> $GITHUB_OUTPUT
+      - run: echo "image=072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:0458cf9bd0ed2c6fe2ff55e7c09b5b95e7a8f343" >> $GITHUB_OUTPUT
       # - name: use node 14.x
       #   uses: actions/setup-node@v1
       #   with:
