@@ -6,6 +6,7 @@ const http = require('http');
 const apiApp = require('../api/apiApp');
 const staticApp = require('../api/staticApp');
 
+console.warn("running this env variables! ", process.env)
 // create main app
 const mainApp = Express();
 
