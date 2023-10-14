@@ -33,6 +33,9 @@ Router.post('/sign/auth/email', wrap(SignUp.authenticateEmail));
 Router.get('/plan/', wrap(Plan.browse, Plan));
 Router.get('/plan/user', wrap(Subscription.getUserPlans, Plan));
 Router.get('/plan/:id', wrap(Plan.read, Plan));
+Router.get('/plan/status', wrap(Plan.stepeStatus, Plan));
+Router.get('/plan_county', wrap(Plan.county, Plan));
+Router.get('/plan_status', wrap(Plan.statuses, Plan));
 
 Router.get('/plan_county', wrap(Plan.county, Plan));
 Router.get('/plan_status', wrap(Plan.statuses, Plan));
@@ -52,12 +55,12 @@ Router.get('/trees/geojson/', wrap(TreePermit.geojson, TreePermit));
 Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
 
 // Permit
-Router.get('/permit/', wrap(Permit.browse, Permit))
-Router.get('/permit/aoi', wrap(PermitAoi.browse, PermitAoi))
-Router.get('/permit/aoi/:id/preview', wrap(PermitAoi.preview, PermitAoi))
-Router.get('/permit/aoi/person', wrap(PermitAoiPerson.browse, PermitAoiPerson))
-Router.post('/permit/aoi/person', wrap(PermitAoiPerson.create, PermitAoiPerson))
-Router.delete('/permit/aoi/person/:id', wrap(PermitAoiPerson.delete, PermitAoiPerson))
+Router.get('/permit/', wrap(Permit.browse, Permit));
+Router.get('/permit/aoi', wrap(PermitAoi.browse, PermitAoi));
+Router.get('/permit/aoi/:id/preview', wrap(PermitAoi.preview, PermitAoi));
+Router.get('/permit/aoi/person', wrap(PermitAoiPerson.browse, PermitAoiPerson));
+Router.post('/permit/aoi/person', wrap(PermitAoiPerson.create, PermitAoiPerson));
+Router.delete('/permit/aoi/person/:id', wrap(PermitAoiPerson.delete, PermitAoiPerson));
 
 
 // Comment
@@ -107,6 +110,9 @@ Router.get('/topfive', wrap(BlockParcel.topfive, BlockParcel));
 Router.get('/centroid', wrap(BlockParcel.centroid, BlockParcel));
 
 // Health
-Router.get('/health', wrap(() => true));
+Router.get(
+	'/health',
+	wrap(() => true)
+);
 
 module.exports = Router;

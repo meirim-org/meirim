@@ -1,13 +1,11 @@
 const Controller = require('../controller/controller');
 const Plan = require('../model/plan');
-const GJV = require('geojson-validation');
+const GJV = require('geojson-validation'); 
 const { assign } = require('lodash');
 const Config = require('../lib/config');
 const { Knex } = require('../service/database');
 const Exception = require('../model/exception');
 const wkt = require('terraformer-wkt-parser');
-const Tag = require('../model/tag');
-const Log = require('../lib/log');
 
 const columns = [
 	'id',
@@ -16,7 +14,7 @@ const columns = [
 	'PL_NAME',
 	'PLAN_CHARACTOR_NAME',
 	'geom',
-	'plan_display_name'
+	'plan_display_name',
 ];
 
 class PlanController extends Controller {
@@ -43,8 +41,8 @@ class PlanController extends Controller {
 			q.where.PLAN_COUNTY_NAME = query.PLAN_COUNTY_NAME.split(',');
 		}
 
-		if(query.distancePoint) {
-			let points = query.distancePoint.split(',').map(i => parseFloat(i));
+		if (query.distancePoint) {
+			let points = query.distancePoint.split(',').map((i) => parseFloat(i));
 
 			const geojson = {
 				type: 'Point',
@@ -63,7 +61,11 @@ class PlanController extends Controller {
 			// multiplied to get an approximate meters value
 			const spatialUnitFactor = Config.locationSearch.dbDistanceInMeters ? 1 : 111195;
 
-			q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*${spatialUnitFactor} as distance`));
+			q.columns.push(
+				Knex.raw(
+					`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*${spatialUnitFactor} as distance`
+				)
+			);
 
 			q.orderByRaw = ['distance'];
 			delete q.order;
@@ -72,7 +74,9 @@ class PlanController extends Controller {
 				// use ST_Within to filter for plans with centroids within a polygon
 				// created with ST_Buffer. this makes use of the index on geom_centroid
 				q.whereRaw = [
-					Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000/${spatialUnitFactor}))`)
+					Knex.raw(
+						`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000/${spatialUnitFactor}))`
+					),
 				];
 			}
 
@@ -165,33 +169,33 @@ class PlanController extends Controller {
 				columns,
 				whereRaw,
 				order,
-				pageSize: 1000
+				pageSize: 1000,
 			})
-			.then(rows => {
-				response.features = rows.map(row => ({
+			.then((rows) => {
+				response.features = rows.map((row) => ({
 					type: 'Feature',
 					properties: {
 						uri: `${Config.general.domain}plan/${row.get('id')}/`,
 						name: row.get('PL_NAME'),
 						county: row.get('PLAN_COUNTY_NAME'),
-						number: row.get('PL_NUMBER')
+						number: row.get('PL_NUMBER'),
 					},
-					geometry: row.get('geom')
+					geometry: row.get('geom'),
 				}));
 				return response;
 			});
 	}
 
-	county () {
+	county() {
 		return Knex.raw(
 			'SELECT PLAN_COUNTY_NAME, COUNT(*) as num FROM plan GROUP BY PLAN_COUNTY_NAME'
-		).then(results => results[0]);
+		).then((results) => results[0]);
 	}
 
-	statuses () {
-		return Knex.raw(
-			'SELECT status, COUNT(*) as num  FROM plan GROUP BY status'
-		).then(results => results[0]);
+	statuses() {
+		return Knex.raw('SELECT status, COUNT(*) as num  FROM plan GROUP BY status').then(
+			(results) => results[0]
+		);
 	}
 }
 

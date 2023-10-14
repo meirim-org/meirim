@@ -1,6 +1,11 @@
 import api from 'services/api';
-import { SuccessAddComment, FailAddComment, 
-	SuccessSubscribeUserToPlan, SuccessUnsubscribeUserToPlan, FailSubscribeUserToPlan } from 'toasts';
+import {
+	SuccessAddComment,
+	FailAddComment,
+	SuccessSubscribeUserToPlan,
+	SuccessUnsubscribeUserToPlan,
+	FailSubscribeUserToPlan,
+} from 'toasts';
 
 
 export const unsubscribeUserToPlan = async (planId) => {
@@ -8,6 +13,7 @@ export const unsubscribeUserToPlan = async (planId) => {
 		const response = await api.delete(`/plan/${planId}/subscribe`);
 		const success = response.status === 'OK';
 		if (success) SuccessUnsubscribeUserToPlan();
+		
 		return true;
 	} catch (err){ 
 		FailSubscribeUserToPlan();
@@ -19,26 +25,34 @@ export const subscribeUserToPlan = async (planId) => {
 		const response = await api.post(`/plan/${planId}/subscribe`);
 		const success = response.status === 'OK';
 		if (success) SuccessSubscribeUserToPlan(); 
+		
 		return true;
 	} catch (err){ 
 		FailSubscribeUserToPlan();
 	}
 };
 
-export const addComment = async ({ content, planId, userId,  username, parentId, type }) => {
-	try {	
+export const addComment = async ({
+	content,
+	planId,
+	userId,
+	username,
+	parentId,
+	type,
+}) => {
+	try {
 		const data = {
 			content,
 			name: username,
 			person_id: userId,
 			plan_id: planId,
-			parent_id:  parentId,
-			type
+			parent_id: parentId,
+			type,
 		};
 		const response = await api.post(`/comment/${planId}`, { ...data });
 		const success = response.status === 'OK';
 		if (success) SuccessAddComment();
-	} catch (err){ 
+	} catch (err) {
 		FailAddComment();
 	}
 };
@@ -46,10 +60,10 @@ export const addComment = async ({ content, planId, userId,  username, parentId,
 export const addLike = async ({ commentId }) => {
 	try {
 		const response = await api.post('/comment/like/add', { commentId });
-		
+
 		return response;
 	} catch (err) {
-		console.log('err',err);
+		console.log('err', err);
 	}
 };
 
@@ -58,7 +72,7 @@ export const getPlanData = async (planId) => {
 		// this can fail and should not interfere with getting plan details
 		await api.post(`/impression/${planId}`);
 	} catch (err) {
-		console.log('err',err);
+		console.log('err', err);
 	}
 
 	try {
@@ -66,16 +80,28 @@ export const getPlanData = async (planId) => {
 
 		return response;
 	} catch (err) {
-		console.log('err',err);
+		console.log('err', err);
 	}
 };
 
 export const getCommentsByPlanId = async (planId) => {
-	try {	
+	try {
 		const response = await api.get(`/comment/${planId}`);
+
+		return response;
+	} catch (err) {
+		console.log('err', err);
+	}
+};
+
+export const getStatus = async (planId) => {
+	try {
+		// const response = await api.get('/plan/status');
+
+		const response = await api.get(`/plan/${planId}/status`);
 		
 		return response;
-	} catch (err){ 
-		console.log('err',err);
+	} catch (err) {
+		console.log('err', err);
 	}
 };

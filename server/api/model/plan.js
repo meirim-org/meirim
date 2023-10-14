@@ -597,6 +597,8 @@ class Plan extends Model {
 
 	static getStatusChanges (collection, steps) {
 		// if date is not null, set completed to true
+		// This should be fixed, as steps are completed once we 
+		//move to the next step
 		steps = steps.concat(collection.map(function(element){
 			element.completed = element.date===null ? false : true;
 			return element;
@@ -604,7 +606,6 @@ class Plan extends Model {
 
 		// find the latest step this plan has reached
 		const maxStep= Math.max(...[-1],...steps.filter(step => step.completed===true ).map(step => step.stepId));
-		Log.debug('Max Step', maxStep);
 
 		/* mark latest step as the current one 
 		/* If there is no plan_status table, set stepId: 1 to completed:True and Current:True, and the rest of the steps to completed:false and current:false 
@@ -623,10 +624,10 @@ class Plan extends Model {
 				// some status changes are missing, so if a status was reached, assume the previous ones were completed
 				// excpetion: if the plan is canceled, the previous step (approval) shouldn't be completed
 				if ((maxStep===5)&&(element.stepId===maxStep-1)){
-					Log.debug(`Skipping because reaching step 5 does not mean that step 4 happened`);
+					Log.debug('Skipping because reaching step 5 does not mean that step 4 happened');
 					return element;	
 				}
-				Log.debug(`Setting completed to true`);
+				Log.debug('Setting completed to true');
 				element.completed = true;
 			}
 			return element;
@@ -639,7 +640,7 @@ class Plan extends Model {
 		steps = steps.map((result) => ({
 			...result,
 		})); 	
-		const ret = {"cancellationDate": cancellationDate, "steps": steps};		
+		const ret = { 'cancellationDate': cancellationDate, 'steps': steps };		
 		return ret;
 	}
 }

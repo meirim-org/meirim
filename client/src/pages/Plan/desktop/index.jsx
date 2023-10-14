@@ -7,19 +7,21 @@ import { Header } from './containers';
 import Footer from 'components/Footer';
 import * as SC from './style';
 
-const Template = ({ 
+const Template = ({
 	children,
 	match,
 	subscriptionHandler,
 	newCommentViewHandler,
-	isFavPlan
+	isFavPlan,
 }) => {
 	const { comments } = CommentSelectors();
-	const { planData: { geom } } = PlanSelectors();
+	const {
+		planData: { geom },
+	} = PlanSelectors();
 	const isPlanHaveComments = comments.length > 0;
-	
+
 	return (
-	    <Wrapper hideFooter={true}>
+		<Wrapper hideFooter={true}>
 			<SC.MainWrapper>
 				<SC.Content>
 					<Header
@@ -28,12 +30,14 @@ const Template = ({
 						isFavPlan={isFavPlan}
 						match={match}
 					/>
-					<SC.Main className={!isPlanHaveComments ? 'no-comments' : ''}>
+					<SC.Main
+						className={!isPlanHaveComments ? 'no-comments' : ''}
+					>
 						{children}
 					</SC.Main>
-					<Footer/>
+					<Footer />
 				</SC.Content>
-				  <Mapa
+				<Mapa
 					geom={geom}
 					hideZoom={false}
 					disableInteractions={false}

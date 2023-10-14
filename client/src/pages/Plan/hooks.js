@@ -33,15 +33,19 @@ export const useFavoritePlan = (planId) => {
 		try {
 			const res = await subscribeUserToPlan(planId);
 			if (res) dispatch(subscribedToPlan({ planId }));
-		} finally {
+		}
+		finally {
+
 		}
 	};
 
 	const unsubscribe = async () => {
 		try {
 			const res = await unsubscribeUserToPlan(planId);
-			if (res) dispatch(unsubscribedFromPlan({ planId }));
-		} finally {
+			if (res)  dispatch(unsubscribedFromPlan({ planId }));
+		}
+		finally {
+
 		}
 	};
 
@@ -86,6 +90,7 @@ export const useDataHandler = (planId) => {
 				PL_NAME: originalName,
 				jurisdiction,
 				status,
+				stepStatus,
 				notCredible,
 				goals_from_mavat: goalsFromMavat,
 				main_details_from_mavat: mainDetailsFromMavat,
@@ -157,6 +162,7 @@ export const useDataHandler = (planId) => {
 						countyName,
 						name,
 						status,
+						stepStatus,
 						type,
 						number,
 						jurisdiction,
