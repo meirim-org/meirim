@@ -404,8 +404,11 @@ async function fetchTreePermit(crawlMethod){
 
 const fetchPlanStatus = () => {
 	var mavatStatus = null;
+	const mavatStatusList = [];
+	var mavatStatusApprove, mavatStatusCancel, mavatStatusObjection, mavatStatusDone;
 	const planStatusLimit = Config.get('planStatusChange.limit');
 	Log.info('plan limit:', planStatusLimit);
+
 	const lastVisitedDifference = Config.get('planStatusChange.lastVisitedDifference'); //days
 	const timeDifference = moment.duration(lastVisitedDifference, 'd');
 	const date = moment().subtract(timeDifference);
@@ -414,6 +417,7 @@ const fetchPlanStatus = () => {
 		qb.leftJoin('status_mapping', 'plan.status', '=' ,'status_mapping.mavat_status')
 		.whereRaw(`(status_mapping.meirim_status is null or status_mapping.meirim_status != '${meirimStatuses.APPROVED}') and plan.MP_ID NOT LIKE \'NOT_FOUND\' and (plan.last_visited_status < '${dateString}' OR plan.last_visited_status IS NULL)`)
 		  .orderBy('plan.last_visited_status','asc');
+
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
@@ -442,7 +446,20 @@ const fetchPlanStatus = () => {
 							await plan.save({ 'last_visited_status': now });
 							return;
 						}
-						const mostRecentStatus = mostRecent[0].attributes.status;
+
+						if (mavatStatus === null) {
+							const res = await PlanStatusChange.getAllStatuses();
+							mavatStatus = createStatusMap(res[0], mavatStatusList);
+							mavatStatusApprove = mavatStatus.get(meirimStatuses.APPROVED);
+							mavatStatusCancel = mavatStatus.get(meirimStatuses.CANCELLED);
+							mavatStatusObjection = mavatStatus.get(meirimStatuses.PUBLIC_OBJECTION);
+							mavatStatusDone = mavatStatusApprove.concat(mavatStatusCancel);
+						}
+
+						const mostRecentStatus = getLatestExistingStatus(mostRecent, mavatStatusList);
+						if (mostRecentStatus === null) {
+							mostRecentStatus = mostRecent[0].attributes.status;
+						}
 						Log.debug('updating plan status to:', mostRecentStatus);
 						await plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
@@ -450,11 +467,13 @@ const fetchPlanStatus = () => {
 						await PlanStatusChange.savePlanStatusChange(planStatuses);
 
 						// get all relevant mavat status for deposited plan
-						if (mavatStatus === null) {
-							const res = await PlanStatusChange.byMeirimStatus(meirimStatuses.PUBLIC_OBJECTION);
-							mavatStatus = res[0].map(rec => rec.mavat_status);
+						if (Config.get('email.send_plan_deposit_email') && plan.attributes.status_email === 0) { 
+							await sendEmailIfNeeded(plan, planStatuses, mavatStatusObjection, meirimStatuses.PUBLIC_OBJECTION);
 						}
-						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
+						if (Config.get('email.send_plan_end_email') && plan.attributes.status_email < 3) {
+							await sendEmailIfNeeded(plan, planStatuses, mavatStatusDone, 
+								mavatStatusCancel.indexOf(mostRecentStatus) >= 0 ? meirimStatuses.CANCELLED : meirimStatuses.APPROVED);
+						}
 					}
 					catch (err) {
 						Log.error('Error:', err.message);
@@ -472,28 +491,52 @@ const fetchPlanStatus = () => {
 			));
 };
 
+function getLatestExistingStatus(planStatuses, mavatStatusList) {
+	for (var i = 0; i < planStatuses.length; ++i) {
+		var status = planStatuses[i].attributes.status;
+		if (mavatStatusList.indexOf(status) >= 0) {
+			return status;
+		}
+	}
+	return null;
+}
+
+function createStatusMap(res, mavatStatusList) {
+	const groupedMap = new Map();
+	for (const e of res) {
+		if (!groupedMap.has(e.meirim_status)) {
+			groupedMap.set(e.meirim_status, []);
+		}
+		groupedMap.get(e.meirim_status).push(e.mavat_status);
+		mavatStatusList.push(e.mavat_status);
+	}
+	return groupedMap;
+}
+
 /**
  * Check if plan is now in deposited status and send email to watching users
  * @param {*} plan 
  * @param {*} planStatuses - plan statuses
- * @param {*} mavatStatus - all mavat status for deposited plan
+ * @param {*} mavatStatus - all relevant mavat status for plan
+ * @param {*} meirimStatus - plan meirim status
  */
-async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
-	if (Config.get('email.send_plan_deposit_email') !== true) {
-		return false;
-	}
-	var sendEmail = shouldSendEmail(plan, planStatuses, mavatStatus);
+async function sendEmailIfNeeded(plan, planStatuses, mavatStatus, meirimStatus) {
+	var sendEmail = shouldSendEmail(planStatuses, mavatStatus);
 	if (sendEmail) {
 		PlanPerson.getUsersForPlan(plan.get('id'))
 			.then(users => {
 				if (!users[0] || !users[0].length) {
 					return sendEmail;
 				}
-				return Bluebird.mapSeries(users[0], user =>
-					Email.planDepositAlert(user, plan)
-				); 
+				return Bluebird.mapSeries(users[0], user => {
+					if (meirimStatus === meirimStatuses.PUBLIC_OBJECTION) Email.planDepositAlert(user, plan)
+					else Email.donePlanAlert(user, plan, meirimStatus)
+				}); 
 			})
-			.then(plan.save({ 'was_deposited': true }))
+			.then(a => {
+				if (meirimStatus === meirimStatuses.PUBLIC_OBJECTION) plan.save({ 'status_email': 1 });
+				else plan.save({ 'status_email': 3 });
+			})
 			.then(a => {return sendEmail;})
 			.catch(err => Log.error('Error:', err.message))
 		;
@@ -501,16 +544,14 @@ async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
 	return sendEmail;
 }
 
-function shouldSendEmail(plan, planStatuses, mavatStatus) {
+function shouldSendEmail(planStatuses, mavatStatus) {
 	var sendEmail = false;
-	if (!plan.attributes.was_deposited) { 
-		for (var i = 0; i < planStatuses.length; ++i)	{
-			const status = planStatuses[i];
-			if (Boolean(status.attributes.status) && mavatStatus.indexOf(status.attributes.status) >= 0) {
-				sendEmail = true;
-			}		
+	for (var i = 0; i < planStatuses.length; ++i)	{
+		const status = planStatuses[i];
+		if (Boolean(status.attributes.status) && mavatStatus.indexOf(status.attributes.status) >= 0) {
+			sendEmail = true;
 		}		
-	}
+	}		
 	return sendEmail;
 }
 

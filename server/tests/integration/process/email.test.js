@@ -42,6 +42,11 @@ describe('Emails', function() {
 			{ mavat_status:'רישום נתוני פרסום בעיתונות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור' },
 			{ mavat_status:'רישום נתוני פרסום ברשומות על העברה להערות והשגות', meirim_status: 'התנגדויות והערות הציבור' },
 			{ mavat_status:'תיקון התכנית לקראת פרסום לפי סעיף 106 ב', meirim_status: 'התנגדויות והערות הציבור' },
+			{ mavat_status: 'פרסום לאישור בעיתונים', meirim_status: 'תכנית מאושרת'},
+			{ mavat_status: 'התכנית אושרה', meirim_status: 'תכנית מאושרת'},
+			{ mavat_status: 'התכנית נדחתה', meirim_status: 'תכנית מבוטלת'},
+			{ mavat_status: 'פרסום תכנית לדחייה בעיתונים', meirim_status: 'תכנית מבוטלת'},
+
 		];
 		await mockDatabase.insertData(['status_mapping'], { 'status_mapping': [status_mapping1] });
 
@@ -266,7 +271,7 @@ describe('Emails', function() {
 		// actual reply copied from a browser performing the API response
 			.replyWithFile(
 				200,
-				`${__dirname}/files/new_mavat_plan_json_page.html`,
+				`${__dirname}/files/new_mavat_plan_json_page_deposit.html`,
 				{ 'Content-Type': 'text/html' }
 			);
 

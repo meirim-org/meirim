@@ -134,7 +134,8 @@
 				"digestPlans": ""
 			} 
 		},
-		"send_plan_deposit_email": true
+		"send_plan_deposit_email": true,
+		"send_plan_end_email": true
 	},
 	"uptimeRobot": {
 		"iplanHeartbeatUrl": "https://heartbeat.uptimerobot.com/m792921014-956ad159c92c5627a866c35252d5348617fe05a8",

@@ -12,6 +12,7 @@ const Juice = require('juice');
 const Log = require('../lib/log');
 const Config = require('../lib/config');
 const Alert = require('../model/alert');
+const {	meirimStatuses } = require('../constants');
 
 class Email {
 	/**
@@ -143,6 +144,47 @@ class Email {
 		data.type = 'plan-alert';
 
 		return this.sendWithTemplate(this.templates.planDeposit, data);
+	}
+
+	donePlanAlert (user, unsentPlan, meirimStatus, planStaticMap) {
+		const alert = new Alert({
+			id: user.alert_id,
+			person_id: user.person_id
+		});
+		const data = user;
+
+		Object.assign(data, unsentPlan.attributes);
+		if (data.data.DEPOSITING_DATE) {
+			const dates = data.data.DEPOSITING_DATE.split('T');
+			data.data.DEPOSITING_DATE = dates[0];
+		}
+
+		
+		if (meirimStatus === meirimStatuses.APPROVED) {
+				data.data.PLAN_STATE_DESC = 'אושרה';
+				data.data.PLAN_STATE_LONG = meirimStatuses.APPROVED;
+		} else {
+			data.data.PLAN_STATE_DESC = 'בוטלה';
+			data.data.PLAN_STATE_LONG = meirimStatuses.CANCELLED;
+		}
+
+		data.unsubscribeLink =
+			`${this.baseUrl}alerts/unsubscribe/${alert.unsubsribeToken()}`;
+		data.link = `${this.baseUrl}plan/${unsentPlan.get('id')}`;
+		data.jurisdiction = unsentPlan.get('jurisdiction');
+		data.isLocalAuthority = data.jurisdiction === 'מקומית';
+		data.type = 'plan-alert';
+
+		data.attachments = [
+			{
+				cid: 'planmap',
+				filename: 'plan_map.png',
+				content: planStaticMap,
+				encoding: 'base64'
+			}
+		];
+
+		return this.sendWithTemplate(this.templates.planDone, data);
 	}
 
 	formatDate(date) {
