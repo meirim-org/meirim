@@ -66,7 +66,7 @@
         "terraformer-wkt-parser": "^1.2.1",
         "turf": "^3.0.14",
         "winston": "^3.3.3",
-        "xlsx": "^0.16.9"
+        "xlsx": "^0.18.5"
     },
     "scripts": {
         "build": "./node_modules/react-scripts/bin/react-scripts.js build",
