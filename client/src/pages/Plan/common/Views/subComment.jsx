@@ -3,36 +3,46 @@ import PropTypes from 'prop-types';
 import { Typography } from 'shared';
 import * as SC from './style';
 import { useTheme } from '@material-ui/styles';
-import { daysPassed } from 'pages/Plan/utils';
+import HeaderComment from '../../../../components/HeaderComment/HeaderComment';
 
 const SubCommentView = ({ subCommentData }) => {
 	const theme = useTheme();
-	const { content, created_at, person: { name } } = subCommentData;
-	
+	const {
+		content,
+		created_at,
+		person: {
+			name,
+			status,
+			type: personType,
+			url,
+			email_public,
+			linkedin,
+			twitter,
+			facebook,
+			title,
+			about_me_public,
+			id,
+		},
+	} = subCommentData;
+
 	return (
 		<>
 			<SC.SubCommentBox>
-				<SC.SubCommentHeader>
-					<SC.ArrowIcon />
-					<Typography
-						variant="smallTitle"
-						mobileVariant="smallTitle"
-						component="span"
-						color={theme.palette.black}
-					>
-						{name}
-					</Typography>
-					<Typography
-						variant="light"
-						mobileVariant="light"
-						component="span"
-						color={theme.palette.gray['main']}
-					>
-                        לפני
-						{created_at ? daysPassed(created_at) : ' הרבה '}
-                        ימים
-					</Typography>
-				</SC.SubCommentHeader>
+				<HeaderComment
+					mode="subComment"
+					name={name}
+					url={url}
+					status={status}
+					created_at={created_at}
+					personType={personType}
+					title={title}
+					facebook={facebook}
+					twitter={twitter}
+					linkedin={linkedin}
+					email_public={email_public}
+					about_me_public={about_me_public}
+					personId={id}
+				/>
 				<Typography
 					variant="paragraphTextLight"
 					mobileVariant="paragraphTextLight"
@@ -42,7 +52,6 @@ const SubCommentView = ({ subCommentData }) => {
 					{content}
 				</Typography>
 			</SC.SubCommentBox>
-
 		</>
 	);
 };

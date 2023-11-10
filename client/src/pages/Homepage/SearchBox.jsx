@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
     selectControl: {
         height: 0,
-        minHeight: '0.1876em',
+        minheight: '0.1876em',
         color: 'white',
         fontSize: 16,
         fontFamily: 'Assistant',

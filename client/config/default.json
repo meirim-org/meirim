@@ -1,6 +1,6 @@
 {
     "axios": {
-        "baseURL": "https://stg.meirim.org/api",
+        "baseURL": "/api",
         "withCredentials": true
     },
     "mapboxApiKey": "pk.eyJ1IjoibWVpcmltIiwiYSI6ImNrbWNjYmlwYjJhYzYycW42NTYzcmdpYWcifQ.lCBjl1gWMI6UxySOCCBUHg",

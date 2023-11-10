@@ -5,21 +5,23 @@ import { openModal, closeModal } from './slice';
 const Actions = () => {
 	const dispatch = useDispatch();
 	const openRegister = useCallback(
-		() =>  dispatch(openModal({ modalType: 'register' })),
-		[dispatch]
-	);
-	
-	const openLogin = useCallback(
-		() =>  dispatch(openModal({ modalType: 'login' })),
+		() => dispatch(openModal({ modalType: 'register' })),
 		[dispatch]
 	);
 
-	const close = useCallback(
-		() =>  dispatch(closeModal()),
+	const openLogin = useCallback(
+		() => dispatch(openModal({ modalType: 'login' })),
+		[dispatch]
+	);
+
+	const openProfile = useCallback(
+		() => dispatch(openModal({ modalType: 'profile' })),
 		[dispatch]
 	);
 	
-	return { openRegister, openLogin, close };
+	const close = useCallback(() => dispatch(closeModal()), [dispatch]);
+
+	return { openRegister, openLogin, openProfile, close };
 };
 
 export default Actions;

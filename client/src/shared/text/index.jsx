@@ -6,18 +6,18 @@ const StyledText = styled.div`
     font-size: ${props => props.size};
     font-weight: ${props => props.weight};
     color: ${props => props.color};
-    line-height: ${props => props.lineHeight};
+    line-height: ${props => props.lineheight};
 `;
 
-const Text = ({ component, size, weight, color, lineHeight, text }) => {
+const Text = ({ component, size, weight, color, lineheight, text }) => {
 
 	return (
-		<StyledText 
+		<StyledText
 			as={component}
-			size={size} 
-			weight={weight} 
+			size={size}
+			weight={weight}
 			color={color}
-			lineHeight={lineHeight}
+			lineheight={lineheight}
 		>
 			{text}
 		</StyledText>
@@ -31,7 +31,7 @@ Text.defaultProps = {
 	component: 'span',
 	size: '16px',
 	weight: '400',
-	lineHeight: '1.3',
+	lineheight: '1.3',
 	color: '#000000',
 	text: ''
 };
@@ -42,7 +42,7 @@ Text.propTypes = {
 	size: PropTypes.string,
 	weight: PropTypes.string,
 	color: PropTypes.string,
-	lineHeight: PropTypes.string,
+	lineheight: PropTypes.string,
 	text: PropTypes.string.isRequired,
 };
 

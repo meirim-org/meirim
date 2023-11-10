@@ -24,8 +24,8 @@ export {
 	ForgotPassword,
 	About,
 	Terms,
-    TreePermitsMap,
+	TreePermitsMap,
 	PrivacyPolicy,
 	Vocabulary,
-	NotFound
-}
+	NotFound,
+};

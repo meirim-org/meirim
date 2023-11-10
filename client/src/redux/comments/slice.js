@@ -5,7 +5,7 @@ const commentsSlice = createSlice({
 	initialState: {
 		data: [],
 		responseCode: 0,
-		commentsCount: ''
+		commentsCount: '',
 	},
 	reducers: {
 		setData(state, type) {
@@ -13,7 +13,7 @@ const commentsSlice = createSlice({
 			state.responseCode = type.payload.responseCode;
 			state.commentsCount = type.payload.commentsCount;
 		},
-	}
+	},
 });
 
 export const { setData } = commentsSlice.actions;

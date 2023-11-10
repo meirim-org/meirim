@@ -79,7 +79,7 @@ table#alertTable td {
     padding: 10px 0;
 }
 
-input[type="text"] {
+input[type='text'] {
     resize: none;
     background: none;
     color: #005cbf;
@@ -111,20 +111,6 @@ label#radiusLabale {
     display: inline-block;
 }
 
-#submitButton {
-    border: 0;
-    font-size: 15px;
-    color: #ffffff;
-    margin: 0 auto;
-    width: 129px;
-    height: 40px;
-    border-radius: 20px;
-    text-align: center;
-    display: block;
-    background-color: #005cbf;
-    cursor: pointer;
-}
-
 button.delete {
     height: 20px;
     width: 20px;
@@ -152,7 +138,7 @@ button.delete:after {
     cursor: pointer;
 }
 
-input[id="deleteAlert"] {
+input[id='deleteAlert'] {
     background: none;
     border: none;
     color: red;

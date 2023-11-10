@@ -9,38 +9,45 @@ export const useStatsDataHandler = (paymentDone) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getFundingStats().then((stats) => {
-			dispatch(setStatsData({
-				statsData: stats
-			}));
-		}).catch(err => {
-			console.error('get funding stats failed:', err);
-		});
+		getFundingStats()
+			.then((stats) => {
+				dispatch(
+					setStatsData({
+						statsData: stats,
+					})
+				);
+			})
+			.catch((err) => {
+				console.error('get funding stats failed:', err);
+			});
 	}, [dispatch, paymentDone]);
 };
 
 export const useSuccessCloseHandler = (paymentSuccessCb) => {
 	const dispatch = useDispatch();
 
-	const handleMessage = useCallback(event => {
-		try {
-			const data = JSON.parse(event.data);
+	const handleMessage = useCallback(
+		(event) => {
+			try {
+				const data = JSON.parse(event.data);
 
-			if (data.message === successPageTransactionCompleteMessage) {
-				// open the thank you modal window instead of the payment one
-				dispatch(openModal({ modalType: 'thankYou' }));
+				if (data.message === successPageTransactionCompleteMessage) {
+					// open the thank you modal window instead of the payment one
+					dispatch(openModal({ modalType: 'thankYou' }));
 
-				// refresh funding stats
-				paymentSuccessCb();
+					// refresh funding stats
+					paymentSuccessCb();
+				}
+			} catch (err) {
+				if (err instanceof SyntaxError) {
+					// this just means event.data wasn't a valid json
+				} else {
+					throw err;
+				}
 			}
-		} catch (err) {
-			if (err instanceof SyntaxError) {
-				// this just means event.data wasn't a valid json
-			} else {
-				throw err;
-			}
-		}
-	}, [dispatch, paymentSuccessCb]);
+		},
+		[dispatch, paymentSuccessCb]
+	);
 
 	useEffect(() => {
 		window.addEventListener('message', handleMessage);

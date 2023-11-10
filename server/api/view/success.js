@@ -7,6 +7,8 @@ module.exports = {
 			me.id = session.person.id;
 			me.name = session.person.name;
 			me.admin = session.person.admin && session.person.admin === '1';
+			me.subscribe_plan_id = session.person.subscribe_plan_id;
+			me.is_reached_max_alerts = session.person.is_reached_max_alerts;
 		}
 		// format collection with pagination
 
@@ -22,7 +24,7 @@ module.exports = {
 			status: 'OK',
 			data,
 			pagination,
-			me
+			me,
 		});
 	},
 
@@ -38,5 +40,5 @@ module.exports = {
 
 		res.set('Content-Type', 'application/json; charset=utf-8');
 		res.json(data);
-	}
+	},
 };

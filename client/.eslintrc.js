@@ -25,10 +25,7 @@ module.exports = {
 	],
 	'rules': {
 		'semi': ["error", "always"],
-		'indent': [
-			'error',
-			'tab'
-		],
+		'indent': 'off',
 		'linebreak-style': [
 			'error',
 			'unix'

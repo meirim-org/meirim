@@ -16,7 +16,7 @@ const StyledButton = withTheme(styled(MUIButton)`
 	line-height: 1.5;
 	letter-spacing: normal
 	text-align: center; 
-    color: ${props => props.theme.palette.white} !important;
+    color: ${(props) => props.theme.palette.white} !important;
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
@@ -28,13 +28,16 @@ const StyledButton = withTheme(styled(MUIButton)`
     }    
     
     &:hover {
-      background-color: ${props => props.theme.palette.primary['600']} !important;
+      background-color: ${(props) =>
+			props.theme.palette.primary['600']} !important;
     }
     &:focus {
        outline: none;
     }
     
-    ${({ simple, theme }) => simple && `
+    ${({ simple, theme }) =>
+		simple &&
+		`
         font-weight: 600 !important;
         color: ${theme.palette.primary.main} !important;
         border: none !important;
@@ -51,7 +54,9 @@ const StyledButton = withTheme(styled(MUIButton)`
        }
     `}
 
-    ${({ altcolor, theme }) => altcolor && `
+    ${({ altcolor, theme }) =>
+		altcolor &&
+		`
         color: ${theme.palette.primary.main} !important;
         background-color: ${theme.palette.white} !important;
        &:hover {
@@ -59,14 +64,18 @@ const StyledButton = withTheme(styled(MUIButton)`
        }
     `}
        
-    ${({ small }) => small && `
+    ${({ small }) =>
+		small &&
+		`
         font-weight: 400 !important;
         padding: 0.03rem 0.6rem !important;
         border-radius: 4px !important;
         min-height: 1em;
     `}
     
-    ${({ extrasmall }) => extrasmall && `
+    ${({ extrasmall }) =>
+		extrasmall &&
+		`
         font-weight: 400 !important;
         font-size: 14px !important;
         min-height: 1.374rem;
@@ -77,41 +86,103 @@ const StyledButton = withTheme(styled(MUIButton)`
         }
 `}
 
-    ${({ fontWeight }) => fontWeight && `
+    ${({ fontWeight }) =>
+		fontWeight &&
+		`
         font-weight: ${fontWeight} !important;
     `}
 
     
-    ${({ iconbefore, iconafter }) => (iconbefore || iconafter) && `
+    ${({ iconbefore, iconafter }) =>
+		`
        .MuiSvgIcon-root {
-             margin: 0 .25rem;
+             margin: 0;
+             ${iconbefore ? `margin-left: 10px;` : ''}
+             ${iconafter ? `margin-right: 10px;` : ''}
         }
-    `}    
+
+        svg {
+            margin: 0;
+            ${iconbefore ? `margin-left: 10px;` : ''}
+            ${iconafter ? `margin-right: 10px;` : ''}
+        }
+    `}
+
     
-    ${({ active, theme }) => active && `
+    ${({ active, theme }) =>
+		active &&
+		`
         background-color: ${theme.palette.primary['custom']} !important;
     `}    
     
-    ${({ disabled, theme }) => disabled && `
+    ${({ disabled, theme }) =>
+		disabled &&
+		`
         color: ${theme.palette.gray.main} !important;
     `}    
     
-    ${({ textcolor }) => textcolor && `
+    ${({ textcolor }) =>
+		textcolor &&
+		`
         color: ${textcolor} !important;
     `}   
 
-    ${({ fontSize }) => fontSize && `
+    ${({ fontSize }) =>
+		fontSize &&
+		`
         font-size: ${fontSize} !important;
     `}   
 
-    ${({ textDecoration }) => textDecoration && `
+    ${({ textDecoration }) =>
+		textDecoration &&
+		`
         text-decoration: ${textDecoration} !important;
     `}   
     
-    ${({ width }) => width && `
+    ${({ width }) =>
+		width &&
+		`
         width: ${width} !important;
-    `}   
-    
+    `} 
+
+    ${({ padding }) =>
+		padding &&
+		`
+        padding: ${padding} !important;
+    `}
+
+	${({ borderradius }) =>
+		borderradius &&
+		`
+        border-radius: ${borderradius} !important;
+    `}
+
+    ${({ lineheight }) =>
+		lineheight &&
+		`
+	    line-height: ${lineheight} !important;
+	`}
+
+    ${({ removebackground }) =>
+		removebackground === 'true' &&
+		`
+        background: none !important;
+        transition: opacity 0.3s !important;
+
+        &:hover {
+            background: none !important;
+            opacity: 0.8;
+        }
+    `}
+
+    ${({ minheight }) => `
+        min-height: ${minheight} !important;
+    `}  
+
+
+    ${({ border }) => `
+        border: ${border} !important;
+    `} 
 `);
 
 const Button = ({
@@ -135,7 +206,13 @@ const Button = ({
 	iconAfter,
 	active,
 	disabled,
-	width
+	width,
+	padding,
+	borderradius,
+	lineheight,
+	removebackground,
+	minheight,
+	border,
 }) => {
 	const theme = useTheme();
 
@@ -163,6 +240,12 @@ const Button = ({
 			disabled={disabled}
 			theme={theme}
 			width={width}
+			padding={padding}
+			borderradius={borderradius}
+			lineheight={lineheight}
+			removebackground={removebackground}
+			minheight={minheight}
+			border={border}
 		>
 			{iconBefore}
 			{text}
@@ -178,6 +261,7 @@ Button.defaultProps = {
 	extrasmall: false,
 	disabled: false,
 	active: false,
+	removebackground: 'false',
 };
 
 Button.propTypes = {
@@ -202,6 +286,9 @@ Button.propTypes = {
 	active: PropTypes.bool,
 	disabled: PropTypes.bool,
 	width: PropTypes.string,
+	removebackground: PropTypes.string,
+	minheight: PropTypes.string,
+	border: PropTypes.string,
 };
 
 export default Button;

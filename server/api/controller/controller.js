@@ -5,195 +5,240 @@ const Log = require('../lib/log');
 const Exception = require('../model/exception');
 const { bind } = require('lodash');
 const { map, get } = require('bluebird');
+const { Knex } = require('../service/database');
+const { Alert } = require('../model');
 
 class Controller {
-	constructor(model) {
-		if (model) {
-			this.model = model;
-			this.id_attribute = model.prototype.idAttribute;
-			this.tableName = model.prototype.tableName;
-		}
-	}
+  constructor(model) {
+    if (model) {
+      this.model = model;
+      this.id_attribute = model.prototype.idAttribute;
+      this.tableName = model.prototype.tableName;
+    }
+  }
 
-	// try catch wrapper for all controllers
-	static wrap(fn, ctx) {
-		return (req, res, next) =>
-			Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-				.then((response) => Success.set(res, response, req.session))
-				.catch(Checkit.Error, (err) => {
-					req.error = new Exception.BadRequest(err);
-					next();
-				})
-				.catch((err) => {
-					req.error = err;
-					next();
-				});
-	}
+  // try catch wrapper for all controllers
+  static wrap(fn, ctx) {
+    return (req, res, next) =>
+      Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+        .then(response => {
+          if (req?.session?.person) {
+            return Knex('person')
+              .select('subscribe_plan_id', 'is_reached_max_alerts')
+              .where({ id: req?.session?.person?.id })
+              .first()
+              .then(user => {
+                if (user) {
+                  req.session.person.subscribe_plan_id =
+                    user?.subscribe_plan_id;
+                  req.session.person.is_reached_max_alerts =
+                    user?.is_reached_max_alerts;
+                }
 
-	// try catch wrapper for all controllers
-	static publicWrapper(fn, ctx) {
-		return (req, res, next) =>
-			Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-				.then((response) => Success.public(res, response, req.session))
-				.catch(Checkit.Error, (err) => {
-					req.error = new Exception.BadRequest(err);
-					next();
-				})
-				.catch((err) => {
-					req.error = err;
-					next();
-				});
-	}
+                Success.set(res, response, req.session);
+              });
+          } else {
+            return Success.set(res, response, req.session);
+          }
+        })
+        .catch(Checkit.Error, err => {
+          req.error = new Exception.BadRequest(err);
+          next();
+        })
+        .catch(err => {
+          req.error = err;
+          next();
+        });
+  }
 
-	browse(req, options = {}) {
-		const { query } = req;
+  // try catch wrapper for all controllers
+  static publicWrapper(fn, ctx) {
+    return (req, res, next) =>
+      Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+        .then(response => Success.public(res, response, req.session))
+        .catch(Checkit.Error, err => {
+          req.error = new Exception.BadRequest(err);
+          next();
+        })
+        .catch(err => {
+          req.error = err;
+          next();
+        });
+  }
 
-		let page = parseInt(query.page, 10) || 1;
-		if (page < 1) page = 1;
+  browse(req, options = {}) {
+    const { query } = req;
 
-		const pageSize = parseInt(options.pageSize, 10) || 20;
+    let page = parseInt(query.page, 10) || 1;
+    if (page < 1) page = 1;
 
-		const columns = options.columns || '*';
-		const where = options.where || {};
+    const pageSize = parseInt(options.pageSize, 10) || 20;
 
-		let bsQuery = this.model.query((qb) =>
-			Object.keys(where).map((index) => qb.where(index, 'in', where[index]))
-		);
+    const columns = options.columns || '*';
+    const where = options.where || {};
 
-		if (options.whereNotIn) {
-			bsQuery = bsQuery.query((qb) =>
-				Object.keys(options.whereNotIn).map((index) =>
-					qb.whereNotIn(index, options.whereNotIn[index])
-				)
-			);
-		}
-		if (options.whereRaw) {
-			bsQuery = bsQuery.query((qb) => options.whereRaw.map((w) => qb.where(w)));
-		}
+    let bsQuery = this.model.query(qb =>
+      Object.keys(where).map(index => qb.where(index, 'in', where[index])),
+    );
 
-		if (options.order) {
-			bsQuery = bsQuery.orderBy(options.order);
-		}
-		if (options.orderByRaw) {
-			bsQuery = bsQuery.query((qb) =>
-				options.orderByRaw.map((w) => qb.orderBy(w))
-			);
-		}
+    if (options.whereNotIn) {
+      bsQuery = bsQuery.query(qb =>
+        Object.keys(options.whereNotIn).map(index =>
+          qb.whereNotIn(index, options.whereNotIn[index]),
+        ),
+      );
+    }
+    if (options.whereRaw) {
+      bsQuery = bsQuery.query(qb => options.whereRaw.map(w => qb.where(w)));
+    }
 
-		return bsQuery.fetchPage({
-			columns,
-			page,
-			pageSize,
-			withRelated: options.withRelated,
-		});
-	}
+    if (options.order) {
+      bsQuery = bsQuery.orderBy(options.order);
+    }
+    if (options.orderByRaw) {
+      bsQuery = bsQuery.query(qb => options.orderByRaw.map(w => qb.orderBy(w)));
+    }
 
-	read(req) {
-		const id = parseInt(req.params.id, 10);
+    return bsQuery.fetchPage({
+      columns,
+      page,
+      pageSize,
+      withRelated: options.withRelated,
+    });
+  }
 
-		if (!id) {
-			throw new Exception.NotFound('Nof found');
-		}
-		return this.model
-			.forge({
-				[this.id_attribute]: id,
-			})
-			.fetch()
-			.then((fetchedModel) => {
-				if (!fetchedModel) throw new Exception.NotFound('Nof found');
-				return fetchedModel.canRead(req.session);
-			})
-			.then((fetchedModel) => {
-				Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
-				return this.model
-					.query((qb) => {
-						qb.select('plan_links.*')
-							.from('plan')
-							.join('plan_links', 'plan.id', '=', 'plan_links.plan_id')
-							.where('plan.id', '=', id);
-					})
-					.fetchAll()
-					.then((result) => {
-						if (result && result.length !== 0) {
-							fetchedModel.set('plan_links', result);
-						}
-						return fetchedModel;
-					});
-			});
-	}
+  read(req) {
+    const id = parseInt(req.params.id, 10);
 
-	patch(req) {
-		const id = parseInt(req.params.id, 10);
-		if (!id) {
-			throw new Exception.NotFound('Nof found');
-		}
-		return this.model
-			.forge({
-				[this.id_attribute]: id,
-			})
-			.fetch()
-			.then((fetchedModel) => {
-				if (!fetchedModel) throw new Exception.NotFound('Nof found');
-				return fetchedModel.canEdit(req.session);
-			})
-			.then((fetchedModel) => {
-				Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
-				return fetchedModel.save(req.body);
-			});
-	}
+    if (!id) {
+      throw new Exception.NotFound('Nof found');
+    }
+    return this.model
+      .forge({
+        [this.id_attribute]: id,
+      })
+      .fetch()
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+        return fetchedModel.canRead(req.session);
+      })
+      .then(fetchedModel => {
+        Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
+        return this.model
+          .query(qb => {
+            qb.select('plan_links.*')
+              .from('plan')
+              .join('plan_links', 'plan.id', '=', 'plan_links.plan_id')
+              .where('plan.id', '=', id);
+          })
+          .fetchAll()
+          .then(result => {
+            if (result && result.length !== 0) {
+              fetchedModel.set('plan_links', result);
+            }
+            return fetchedModel;
+          });
+      });
+  }
 
-	delete(req, transaction) {
-		const id = parseInt(req.params.id, 10);
-		if (!id) {
-			throw new Exception.NotFound('Nof found');
-		}
-		const options = transaction ? { transacting: transaction } : {};
-		return this.model
-			.forge({
-				[this.id_attribute]: id,
-			})
-			.fetch()
-			.then((fetchedModel) => {
-				if (!fetchedModel) throw new Exception.NotFound('Nof found');
-				return fetchedModel.canEdit(req.session);
-			})
-			.then((fetchedModel) => {
-				Log.debug(
-					this.tableName,
-					' delete success id:',
-					fetchedModel.get('id')
-				);
-				return fetchedModel.destroy(req.body, options);
-			});
-	}
+  patch(req) {
+    const id = parseInt(req.params.id, 10);
+    if (!id) {
+      throw new Exception.NotFound('Nof found');
+    }
+    return this.model
+      .forge({
+        [this.id_attribute]: id,
+      })
+      .fetch()
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+        return fetchedModel.canEdit(req.session);
+      })
+      .then(fetchedModel => {
+        Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
+        return fetchedModel.save(req.body);
+      });
+  }
 
-	create(req, transaction) {
-		let options = {};
-		if (transaction) {
-			options = {
-				transacting: transaction,
-			};
-		}
-		return this.model
-			.canCreate(req.session)
-			.then(() => {
-				const model = this.model.forge(req.body);
-				model.setPerson(req.session);
-				return model.save(null, options);
-			})
-			.then((savedModel) => {
-				Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
-				return savedModel;
-			});
-	}
+  delete(req, transaction) {
+    const id = parseInt(req.params.id, 10);
+    if (!id) {
+      throw new Exception.NotFound('Nof found');
+    }
+    const options = transaction ? { transacting: transaction } : {};
+    return this.model
+      .forge({
+        [this.id_attribute]: id,
+      })
+      .fetch()
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+        return fetchedModel.canEdit(req.session);
+      })
+      .then(fetchedModel => {
+        Log.debug(
+          this.tableName,
+          ' delete success id:',
+          fetchedModel.get('id'),
+        );
+        return fetchedModel.destroy(req.body, options);
+      });
+  }
 
-	upload(req) {
-		const id = parseInt(req.params[this.id_attribute], 10);
-		const model = this.model.forge({
-			[this.id_attribute]: id,
-		});
-		return model.canEdit(req.session).then(() => model.upload(req.files));
-	}
+  create(req, transaction) {
+    let options = {};
+    if (transaction) {
+      options = {
+        transacting: transaction,
+      };
+    }
+    return this.model
+      .canCreate(req.session)
+      .then(() => {
+        const model = this.model.forge(req.body);
+        model.setPerson(req.session);
+        return model.save(null, options);
+      })
+      .then(savedModel => {
+        Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
+        return savedModel;
+      });
+  }
+
+  update(req, transaction) {
+    const id = parseInt(req.params.id, 10);
+    if (!id) {
+      throw new Exception.NotFound('Nof found');
+    }
+
+    const options = transaction ? { transacting: transaction } : {};
+    return this.model
+      .forge({
+        [this.id_attribute]: id,
+      })
+      .fetch()
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+        return fetchedModel.canEdit(req.session);
+      })
+      .then(fetchedModel => {
+        Log.debug(
+          this.tableName,
+          ' update success id:',
+          fetchedModel.get('id'),
+        );
+        return fetchedModel.save({ ...req.body }, options);
+      });
+  }
+
+  upload(req) {
+    const id = parseInt(req.params[this.id_attribute], 10);
+    const model = this.model.forge({
+      [this.id_attribute]: id,
+    });
+    return model.canEdit(req.session).then(() => model.upload(req.files));
+  }
 }
 
 module.exports = Controller;

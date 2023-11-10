@@ -15,12 +15,12 @@ const mobileTemplate = (mobileFontSize, mobileFontWeight, mobileLineHeight) => {
 `;
 };
 
-const template = (fontSize, fontWeight, lineHeight) => {
+const template = (fontSize, fontWeight, lineheight) => {
 	return `
          @media ${device.tablet} {
             font-size: ${fontSize} !important;
             font-weight: ${fontWeight} !important;
-            line-height: ${lineHeight} !important; 
+            line-height: ${lineheight} !important; 
          }
     `;
 };
@@ -53,7 +53,7 @@ const handleVariant = variant => {
 		return template('12px', '400', '1.5');
 	default:
 		return template('16px', '700', '1.5');
-	}	    
+	}
 };
 
 const handleMobileVariant = mobileVariant => {
