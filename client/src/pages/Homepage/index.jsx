@@ -30,6 +30,7 @@ const Homepage = () => {
 
 	return (
 		<Wrapper>
+            <h1>this is a test!!</h1>
 			<TopSection />
 			<Features />
 			<Vision />
