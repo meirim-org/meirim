@@ -50,7 +50,7 @@ async function parseTreesHtml(url) {
     const treePermit = {};
     dom(elem).find('td,th').each((idx, elem) => {
             const url = idx === 6 ? dom(elem).find('a').attr('href') : '';
-            if (url.length > 0) {
+            if (url && url.length > 0) {
                 treePermit['url'] = url.substr(1);
             }
       const value = dom(elem).text().trim();
@@ -92,7 +92,7 @@ function processRawPermits(rawPermits) {
           [TREES_PER_PERMIT]: treesPerPermit,
           [TOTAL_TREES]: totalTrees,
           
-          [TREE_PERMIT_URL]: 'https://www.hod-hasharon.muni.il' + raw['url'],
+          [TREE_PERMIT_URL]: raw['url'] ? 'https://www.hod-hasharon.muni.il' + raw['url'] : '',
         };
         const permit = new TreePermit(attributes);
         return permit;

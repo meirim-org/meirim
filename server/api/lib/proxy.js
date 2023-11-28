@@ -18,7 +18,7 @@ async function get(url, wait =5000) {
 		return response.data;
 	}
 	catch (err) {
-		console.error(`error in proxy for url ${url}`);
+		console.error(`error in proxy for url ${url}`, err);
 	}
 }
 module.exports = {
