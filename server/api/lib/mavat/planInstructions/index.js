@@ -11,16 +11,13 @@ const mkdir = util.promisify(fs.mkdir);
 
 const processPlanInstructionsFile = async (fileDir) => {
 	const files = await readdir(fileDir);
-
 	const pdfs = files.filter(fileName => fileName.endsWith('.pdf'));
-
 	if (pdfs.length > 0) {
 		// we just want the one file, at least for now
-		const filePath = path.join(fileDir, pdfs[0]);
+		const filePath = path.join(fileDir, pdfs[0]);	
 		const data = await extractPdfData(filePath);
 		return data;
 	}
-
 	return undefined;
 };
 
