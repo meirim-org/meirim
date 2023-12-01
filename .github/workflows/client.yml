@@ -99,7 +99,7 @@ jobs:
         env:
           NODE_ENV: staging
           BASE_NAME: ${{ github.ref_name }}
-          PUBLIC_URL: "http://staging.meirim.org/${{ github.ref_name }}" 
+          PUBLIC_URL: "https://staging.meirim.org/${{ github.ref_name }}" 
       
       - uses: jakejarvis/s3-sync-action@master
         with:
@@ -114,7 +114,7 @@ jobs:
       - name: info
         run: |
           echo "deployed to"
-          echo "http://staging.meirim.org/${{ github.ref_name }}" 
+          echo "https://staging.meirim.org/${{ github.ref_name }}" 
           
     build-and-deploy-prod:
       environment: prod
