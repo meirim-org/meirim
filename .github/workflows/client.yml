@@ -99,7 +99,7 @@ jobs:
         env:
           NODE_ENV: staging
           BASE_NAME: ${{ github.ref_name }}
-          PUBLIC_URL: "http://staging.meirim.org.s3-website.il-central-1.amazonaws.com/${{ github.ref_name }}" 
+          PUBLIC_URL: "http://staging.meirim.org/${{ github.ref_name }}" 
       
       - uses: jakejarvis/s3-sync-action@master
         with:
