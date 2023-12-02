@@ -21,7 +21,7 @@ mainApp.use('/api', apiApp);
 mainApp.use('/', staticApp);
 
 const server = http.createServer(mainApp);
-const port = normalizePort(process.env.PORT || '80');
+const port = normalizePort(process.env.PORT || '3000');
 server.listen(port);
 
 server.on('error', (error) => {
