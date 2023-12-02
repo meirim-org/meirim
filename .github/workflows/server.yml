@@ -119,7 +119,9 @@ jobs:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
           image: "072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:${{github.sha}}"
-          environment-variables: ${{ steps.env.outputs.env }}
+          environment-variables: |
+            TEST=100
+            TEST2= 
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
