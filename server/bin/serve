@@ -16,6 +16,7 @@ mainApp.use('/health', (req, res) => {
 })
 
 // mount api and static apps
+mainApp.get('/test', (req, res) => { res.sendStatus(200) } )
 mainApp.use('/api', apiApp);
 mainApp.use('/', staticApp);
 
