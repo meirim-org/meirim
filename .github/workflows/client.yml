@@ -79,6 +79,7 @@ jobs:
                   $(npm bin)/cypress run --browser firefox --headless
 
     build-and-deploy-staging:
+      if: github.ref != 'refs/heads/master'
       environment: staging
       runs-on: ubuntu-latest
       steps:
