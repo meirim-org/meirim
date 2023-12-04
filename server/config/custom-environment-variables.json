@@ -27,14 +27,14 @@
 		}
 	},
 	"session": {
-		"secret": "secret",
+		"secret": "SERVER_SESSION_SECRET",
 		"cookie": {
 			"secure": false,
 			"maxAge": 86400000
 		}
 	},
 	"cypher": {
-		"secret": "hvw3fKxl94GLbR7k74zz3B"
+		"secret": "SERVER_CYPHER_SECRET"
 	},
 	"opengraph": {
 		"locale": "he_IL"
@@ -67,9 +67,9 @@
 	},
 	"paymentServices": {
 		"baseURL": "https://icom.yaad.net",
-		"masofId": "",
-		"apiKey": "",
-		"PassP": ""
+		"masofId": "SERVER_PAYMENT_SERVICE_MASOF_ID",
+		"apiKey": "SERVER_PAYMENT_SERVICE_API_KEY",
+		"PassP": "SERVER_PAYMENT_SERVICE_PASS"
 	},
 	"test": {
 		"database": {
@@ -106,9 +106,9 @@
 	"database": {
 		"client": "mysql",
 		"connection": {
-			"host": "localhost",
-			"user": "root",
-			"password": "password",
+			"host": "SERVER_DATABASE_HOST",
+			"user": "SERVER_DATABASE_USER",
+			"password": "SERVER_DATABASE_PASSWORD",
 			"database": "meirim",
 			"charset": "utf8"
 		},
@@ -122,16 +122,16 @@
 		"from_name": "Meirim",
 		"from_email": "alert@meirim.org",
 		"options": {
-			"host": "smtp.example.com",
+			"host": "SERVER_EMAIL_SMTP_HOST",
 			"port": 465,
 			"secure": true,
 			"auth": {
-				"user": "",
-				"pass": "",
-				"templatePass":""
+				"user": "SERVER_EMAIL_SMTP_AUTH_USER",
+				"pass": "SERVER_EMAIL_SMTP_AUTH_PASSWORD",
+				"templatePass":"SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS"
 			},
 			"templates": {
-				"digestPlans": ""
+				"digestPlans": "SERVER_EMAIL_DIGEST_PLANS"
 			} 
 		},
 		"send_plan_deposit_email": true
@@ -147,6 +147,6 @@
 		"lastVisitedDifference": 14
 	},
 	"proxy": {
-		"apiKey": ""
+		"apiKey": "SERVER_PROXY_API_KEY"
 	}
 }
