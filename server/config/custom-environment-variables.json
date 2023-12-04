@@ -14,7 +14,7 @@
 		"connection": {
 			"host": "SERVER_DATABASE_HOST",
 			"user": "SERVER_DATABASE_USER",
-			"password": "SERVER_DATABASE_PASSWORD",
+			"password": "SERVER_DATABASE_PASSWORD"
 		}
 	},
 	"email": {
