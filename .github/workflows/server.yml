@@ -120,9 +120,20 @@ jobs:
           container-name: ${{ env.CONTAINER_NAME }}
           image: "072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:${{github.sha}}"
           environment-variables: |
-            TEST=100
-            TEST2= 
-
+            SERVER_SESSION_SECRET=${{ secrets.SERVER_SESSION_SECRET }}
+            SERVER_CYPHER_SECRET=${{ secrets.SERVER_CYPHER_SECRET }}
+            SERVER_PAYMENT_SERVICE_MASOF_ID=${{ secrets.SERVER_PAYMENT_SERVICE_MASOF_ID }}
+            SERVER_PAYMENT_SERVICE_API_KEY=${{ secrets.SERVER_PAYMENT_SERVICE_API_KEY }}
+            SERVER_PAYMENT_SERVICE_PASS=${{ secrets.SERVER_PAYMENT_SERVICE_PASS }}
+            SERVER_DATABASE_HOST=${{ secrets.SERVER_DATABASE_HOST }}
+            SERVER_DATABASE_USER=${{ secrets.SERVER_DATABASE_USER }}
+            SERVER_DATABASE_PASSWORD=${{ secrets.SERVER_DATABASE_PASSWORD }}
+            SERVER_EMAIL_SMTP_HOST=${{ secrets.SERVER_EMAIL_SMTP_HOST }}
+            SERVER_EMAIL_SMTP_AUTH_USER=${{ secrets.SERVER_EMAIL_SMTP_AUTH_USER }}
+            SERVER_EMAIL_SMTP_AUTH_PASSWORD=${{ secrets.SERVER_EMAIL_SMTP_AUTH_PASSWORD }}
+            SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS=${{ secrets.SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS }}
+            SERVER_EMAIL_DIGEST_PLANS=${{ secrets.SERVER_EMAIL_DIGEST_PLANS }}
+            SERVER_PROXY_API_KEY=${{ secrets.SERVER_PROXY_API_KEY }}
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
         with:
