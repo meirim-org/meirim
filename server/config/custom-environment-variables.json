@@ -1,130 +1,25 @@
 {
-	"geocoder": {
-		"provider": "openstreetmap"
-	},
-	"osmGeocoder": {
-		"provider": "openstreetmap",
-		"headers": {
-			"User-Agent": "Meirim.org (info@meirim.org)"
-		}
-	},
-	"staticmap": {
-		"width": 600,
-		"height": 400,
-		"tileRequestLimit": 20,
-		"tileRequestHeader": {}
-	},
-	"general": {
-		"userAgent": "Meirim.org (info@meirim.org)",
-		"domain": "https://meirim.org/",
-		"trustProxy": null
-	},
-	"services": {
-		"schedule": {
-			"iplan": "0 0 0 * * *",
-			"sendPlanningAlerts": "0 0 0 * * *",
-			"sendDigestPlanningAlerts": "*/1 * * * *"
-		}
-	},
 	"session": {
-		"secret": "SERVER_SESSION_SECRET",
-		"cookie": {
-			"secure": false,
-			"maxAge": 86400000
-		}
+		"secret": "SERVER_SESSION_SECRET"
 	},
 	"cypher": {
 		"secret": "SERVER_CYPHER_SECRET"
 	},
-	"opengraph": {
-		"locale": "he_IL"
-	},
-	"debug": {
-		"database": false
-	},
-	"log": {
-		"access": "logs/access.log",
-		"error": "logs/error.log",
-		"debug": "logs/debug.log"
-	},
-	"aws": {
-		"useS3ForTreeFiles": false,
-		"treeBucketName": "treeBucketName"
-	},
-	"trees": {
-		"rawDataDir": "/tmp/raw_trees",
-		"geoCodingInterval" : 30000,
-		"maxPermits": 5,
-		"haifaUrl" : "https://stg-service-tree-6b3da185.s3.eu-west-1.amazonaws.com/haifa/rptPirsum.xlsx",
-		"hodHasharonUrl": "https://www.hod-hasharon.muni.il/%D7%91%D7%A7%D7%A9%D7%95%D7%AA-%D7%95%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%A0%D7%95%D7%AA-%D7%9B%D7%A8%D7%99%D7%AA%D7%94-2023/",
-		"beerShevaMaxReadPermits": 20,
-		"yavneUrl": "https://www.yavne.muni.il/html5/?_id=15059&did=1231&G=11650&SM=15059",
-		"tlvUrl": "https://www.tel-aviv.gov.il/Residents/Environment/Pages/Trees.aspx"
-	},
-	"locationSearch": {
-		"dbDistanceInMeters": false,
-		"filterPlansRadiusKm": null
-	},
 	"paymentServices": {
-		"baseURL": "https://icom.yaad.net",
 		"masofId": "SERVER_PAYMENT_SERVICE_MASOF_ID",
 		"apiKey": "SERVER_PAYMENT_SERVICE_API_KEY",
 		"PassP": "SERVER_PAYMENT_SERVICE_PASS"
 	},
-	"test": {
-		"database": {
-			"client": "mysql",
-			"connection": {
-				"host": "localhost",
-				"port": 33060,
-				"user": "root",
-				"password": "password",
-				"database": "test_meirim",
-				"charset": "utf8"
-			},
-			"pool": {
-				"min": 2,
-				"max": 10
-			}
-		},
-		"email": {
-			"options": {
-				"host": "smtp.example.com",
-				"port": 465,
-				"secure": true,
-				"auth": {
-					"user": "user",
-					"pass": "pass",
-					"templatePass":"pass"
-				}
-			},
-			"templates": {
-				"digestPlans": "d-db0b55ab042e4ba9878715acd35c1d6c"
-			}
-		}
-	},
 	"database": {
-		"client": "mysql",
 		"connection": {
 			"host": "SERVER_DATABASE_HOST",
 			"user": "SERVER_DATABASE_USER",
 			"password": "SERVER_DATABASE_PASSWORD",
-			"database": "meirim",
-			"charset": "utf8"
-		},
-		"pool": {
-			"min": 2,
-			"max": 10
 		}
 	},
 	"email": {
-		"transport": "SMTP",
-		"from_name": "Meirim",
-		"from_email": "alert@meirim.org",
 		"options": {
 			"host": "SERVER_EMAIL_SMTP_HOST",
-			"port": 465,
-			"secure": true,
 			"auth": {
 				"user": "SERVER_EMAIL_SMTP_AUTH_USER",
 				"pass": "SERVER_EMAIL_SMTP_AUTH_PASSWORD",
@@ -133,18 +28,7 @@
 			"templates": {
 				"digestPlans": "SERVER_EMAIL_DIGEST_PLANS"
 			} 
-		},
-		"send_plan_deposit_email": true
-	},
-	"uptimeRobot": {
-		"iplanHeartbeatUrl": "https://heartbeat.uptimerobot.com/m792921014-956ad159c92c5627a866c35252d5348617fe05a8",
-		"treeFetchingHeartbeatUrl": "https://heartbeat.uptimerobot.com/m793386085-5b3e0b488d38872fb8420a66c7a05346a08cf309",
-		"sendEmailsHeartbeatUrl": "https://heartbeat.uptimerobot.com/m794608225-78e5e8c9bb81add02609d0038fb56ad44f205e95",
-		"sendTreesEmailsHeartbeatUrl": "https://heartbeat.uptimerobot.com/m794608230-48adb414934d57d1d15a70dfed2c1754bef030f1"	
-	},
-	"planStatusChange": {
-		"limit": 15,
-		"lastVisitedDifference": 14
+		}
 	},
 	"proxy": {
 		"apiKey": "SERVER_PROXY_API_KEY"
