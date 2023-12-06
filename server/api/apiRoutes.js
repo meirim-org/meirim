@@ -131,9 +131,13 @@ Router.get(
   ),
 );
 Router.get(
-  '/subscription_plans/:plan_id/get_payment_link',
-  wrap(SubscriptionPlansController.getPaymentLink, SubscriptionPlansController),
+  '/subscription_plans/paymentLink',
+  wrap(SubscriptionPlansController.paymentLink, SubscriptionPlansController),
 );
+// Router.get(
+//   '/subscription_plans/:plan_id/get_payment_link',
+//   wrap(SubscriptionPlansController.getPaymentLink, SubscriptionPlansController),
+// );
 Router.post(
   '/subscription_plans',
   wrap(SubscriptionPlansController.create, SubscriptionPlansController),

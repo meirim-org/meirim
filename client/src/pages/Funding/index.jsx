@@ -71,7 +71,6 @@ const FundingPage = ({ ...props }) => {
 		if (!isValidAmount || !isValidAcceptedTerms) return;
 
 		try {
-			debugger;
 			const paymentpageUrl = await createPaymentLink({
 				amount,
 				monthlyPayment,

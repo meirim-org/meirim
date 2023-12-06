@@ -7,16 +7,13 @@ const {
 	REASON_SHORT, PLACE, STREET,
 	TREES_PER_PERMIT, PERSON_REQUEST_NAME, TREE_PERMIT_URL
 } = require('../../model/tree_permit_constants');
-const { formatDate, figureLastObjectionDate } = require('./utils');
+const { formatDate } = require('./utils');
 const Log = require('../log');
 
 const TREES_RAMAT_GAN_URL = `https://www.ramat-gan.muni.il/tashtiot/view/forest_commissioner/license/${new Date().getFullYear()}/`;
 const RGTreePermit = {
 	urls:[TREES_RAMAT_GAN_URL]
 };
-
-const HOUR_PERMIT = '09:00'; 
-const DATE_FORMAT_PERMIT = 'YYYY-MM-DDTHH:mm';
 
 async function parseTreesHtml(url) {
 	const treesHtml = await proxy.get(url);
@@ -43,7 +40,7 @@ async function parseTreesHtml(url) {
         const treePermit = {};
         dom(elem).find('TD,TH').each((idx, elem) => {
             const value = idx === 6 ? dom(elem).find('a').attr('href') : dom(elem).text().trim();
-            if (value && value.length > 0) {
+            if (value.length > 0) {
                 const key = keys[idx];
                 treePermit[key] = value;
             }
@@ -64,21 +61,14 @@ function processRawPermits(rawPermits) {
 				const parts = raw['שם הרחוב'].split('\n'); // captures (כריתה), (העתקה)
 				const street = parts[0];
 				const action = parts.length > 1 ? parts[1] : 'כריתה';
-
-				const dates = parsePermitDates(raw['מתאריך – עד תאריך']);
-
-				var last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערעור עד'])[0];
+				const last_date_to_objection = parsePermitDates(raw['ניתן להגיש ערעור עד'])[0];
 				if (!last_date_to_objection) {
-					if (dates[0]) {
-						last_date_to_objection = figureLastObjectionDate(dates[0], HOUR_PERMIT, DATE_FORMAT_PERMIT);
-					} else {
-						Log.error(`No / Bad dates format, ignore this license: Ramat Gan, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
-						return null;
-					}
+					Log.error(`No / Bad dates format, ignore this license: Ramat Gan, ${raw['שם הרחוב']} , ${raw['ניתן להגיש ערעור עד']}`);
+					return null;
 				}
 				const treesPerPermit = raw['סוג העצים'] !== undefined ? parseTreesPerPermit(raw['סוג העצים']) : {};
 				const totalTrees = raw['סוג העצים'] !== undefined ? sum(Object.values(treesPerPermit)) : 0;
-				
+				const dates = parsePermitDates(raw['מתאריך – עד תאריך']);
 
 				const permitNumber = `meirim-rg-${street}-${dates[0]}`;
 
@@ -96,7 +86,7 @@ function processRawPermits(rawPermits) {
 					[TOTAL_TREES]: totalTrees,
 					[START_DATE]: dates[0],
 					[END_DATE]: dates[1],
-					[TREE_PERMIT_URL]: raw['הבקשה'] ? 'https://www.ramat-gan.muni.il/' + raw['הבקשה'] : '',
+					[TREE_PERMIT_URL]: 'https://www.ramat-gan.muni.il/' + raw['הבקשה'],
 				};
 				const permit = new TreePermit(attributes);
 				return permit;
@@ -161,7 +151,7 @@ function parseGushHelka(gushHelkaStr) {
 
 function parsePermitDates(treeDatesStr) {
 	const dates = treeDatesStr ? treeDatesStr.split('-') : [];
-	return dates.map(date => formatDate(date, HOUR_PERMIT, 'DD.MM.YY'));
+	return dates.map(date => formatDate(date, '09:00', 'DD.MM.YY'));
 }
 
 function sum(treeArray) {
