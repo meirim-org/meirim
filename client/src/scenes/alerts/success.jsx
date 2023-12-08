@@ -47,6 +47,10 @@ const SuccessPaymentAlert = ({ ...props }) => {
 		const ccode = qs.get('CCode');
 		const amount = parseInt(qs.get('Amount'));
 
+		console.log(props.location);
+
+		return;
+
 		// check that payment was successful
 		if (ccode === '0' && !isNaN(id) && !isNaN(amount)) {
 			// build redirect params object
