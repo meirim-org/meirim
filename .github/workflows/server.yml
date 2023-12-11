@@ -62,7 +62,7 @@ jobs:
         run: npm run test
 
 
-  deploy:
+  deploy-staging:
     environment: staging
     runs-on: ubuntu-latest
     steps:
