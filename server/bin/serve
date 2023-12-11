@@ -4,7 +4,6 @@ const Express = require('express');
 const http = require('http');
 
 const apiApp = require('../api/apiApp');
-const staticApp = require('../api/staticApp');
 
 // create main app
 const mainApp = Express();
@@ -17,7 +16,6 @@ mainApp.use('/health', (req, res) => {
 // mount api and static apps
 mainApp.get('/test', (req, res) => { res.sendStatus(200) } )
 mainApp.use('/api', apiApp);
-mainApp.use('/', staticApp);
 
 const server = http.createServer(mainApp);
 const port = normalizePort(process.env.PORT || '80');
