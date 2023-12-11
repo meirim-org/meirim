@@ -10,15 +10,14 @@ env:
   CONTAINER_NAME: meirim           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
-on: push
-# on:
-#   push:
-#     paths:
-#       - server/**
+on:
+  push:
+    paths:
+      - server/**
+
 jobs:
   test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x]
@@ -79,7 +78,7 @@ jobs:
           echo "env=$ENV"
           echo "env=$ENV" >> $GITHUB_OUTPUT
         id: env
-      - name: Login to Amazon ECR
+      - name: Login to Amazon ECR        
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
       # - run: echo "image=072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:0458cf9bd0ed2c6fe2ff55e7c09b5b95e7a8f343" >> $GITHUB_OUTPUT
