@@ -13,6 +13,13 @@ mainApp.use('/health', (req, res) => {
   res.sendStatus(200);
 })
 
+mainApp.use('/version', (req, res) => {
+  res.send({
+    commit: process.env.VERSION,
+    url: `https://github.com/meirim-org/meirim/commit/${process.env.VERSION}`,
+  });
+})
+
 // mount api and static apps
 mainApp.get('/test', (req, res) => { res.sendStatus(200) } )
 mainApp.use('/api', apiApp);
