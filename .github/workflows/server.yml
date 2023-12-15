@@ -171,7 +171,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env.CONTAINER_NAME }}
+          container-name: ${{ vars.CONTAINER_NAME }}
           image: "072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:${{github.sha}}"
           environment-variables: |
             SERVER_SESSION_SECRET=${{ secrets.SERVER_SESSION_SECRET }}
@@ -192,8 +192,8 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
+          service: ${{ vars.ECS_SERVICE }}
+          cluster: ${{ vars.ECS_CLUSTER }}
           wait-for-service-stability: true
     
     
