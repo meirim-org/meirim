@@ -32,8 +32,8 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
             openModal({
                 modalType: name,
             })
-        );
-    };
+        )
+    }
 
     const activeLink = (path) => (match, location) =>
         location.pathname.split('/')[1] === path.slice(1);
@@ -43,41 +43,39 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
             id: 'nav-bar-plans',
             path: '/plans',
             title: t.plans,
-            isActive: activeLink,
+            isActive: activeLink
         },
         {
             id: 'nav-bar-permits',
             path: '/permits',
             title: t.permits,
             isActive: activeLink,
-            hide: !isAdmin,
+            hide: !isAdmin
         },
         {
             id: 'nav-bar-trees',
             path: '/trees',
             title: t.treePermits,
-            isActive: activeLink,
+            isActive: activeLink
         },
         {
             id: 'nav-bar-alerts',
-            path: isAuthenticated ? '/alerts' : '#',
+            path: '/alerts',
             title: t.alerts,
             isActive: activeLink,
             onClick: () => {
-                !isAuthenticated && openModalByName('login');
-            },
+                !isAuthenticated && openModalByName('login')
+            }
         },
         {
             id: 'nav-bar-content',
             path: '/hub',
             title: t.urbanPlanning,
             isActive: activeLink,
-        },
-    ];
+        }
+    ]
 
-    const permitPath = window.location.pathname.includes(
-        navLinks.find((navLink) => navLink.id === 'nav-bar-permits').path
-    );
+    const permitPath = window.location.pathname.includes(navLinks.find(navLink => navLink.id === 'nav-bar-permits').path)
     return (
         <SC.DesktopHeader subMenu={permitPath}>
             <SC.StyledContainer>
@@ -91,25 +89,17 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
                             </Box>
                             <Box component="nav">
                                 <Box display="flex" alignItems="center">
-                                    {navLinks.map(
-                                        (navLink) =>
-                                            !navLink.hide && (
-                                                <Box px={2} key={navLink.id}>
-                                                    <SC.StyledLink
-                                                        id={navLink.id}
-                                                        to={navLink.path + '/'}
-                                                        isActive={navLink.isActive(
-                                                            navLink.path
-                                                        )}
-                                                        onClick={
-                                                            navLink.onClick
-                                                        }
-                                                    >
-                                                        {navLink.title}
-                                                    </SC.StyledLink>
-                                                </Box>
-                                            )
-                                    )}
+                                    {navLinks.map(navLink => !navLink.hide && (
+                                        <Box px={2} key={navLink.id}>
+                                        <SC.StyledLink
+                                                id={navLink.id}
+                                                to={navLink.path + '/'}
+                                                isActive={navLink.isActive(navLink.path)}
+                                                onClick={navLink.onClick}>
+                                                {navLink.title}
+                                            </SC.StyledLink>
+                                        </Box>
+                                    ))}
                                     <Box px={2}>
                                         <SC.StyledLink
                                             id="nav-bar-about"
@@ -240,9 +230,7 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
                                         text={t.signup}
                                         small
                                         altColor
-                                        onClick={() =>
-                                            openModalByName('register')
-                                        }
+                                        onClick={() => openModalByName('register')}
                                     />
                                 </Grid>
                             </Row>

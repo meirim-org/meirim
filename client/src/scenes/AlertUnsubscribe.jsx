@@ -18,7 +18,7 @@ class AlertUnsubscribe extends Component {
                 });
             })
             .catch(error => {
-                console.error(error);
+                console.log('error: ' + error);
                 this.setState({
                     loading: false,
                     error

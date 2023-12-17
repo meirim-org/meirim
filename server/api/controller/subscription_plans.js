@@ -5,8 +5,6 @@ const Exception = require('../model/exception');
 const moment = require('moment');
 const { Knex } = require('../service/database');
 const { BadRequest } = require('../model/exception');
-const { paymentServices: Config } = require('../lib/config');
-const axios = require('axios');
 
 class SubscriptionPlansController extends Controller {
   async browse() {
@@ -106,9 +104,9 @@ class SubscriptionPlansController extends Controller {
           const todayDate = moment(Date.now().toLocaleString());
           const diff = todayDate.diff(lastDate, 'days') || 31;
           const relativePrice = (newPlanPrice - currentPlanPrice) * (diff / 31);
-            return `http://localhost:3000/alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${relativePrice.toFixed(
-              2,
-            )}&ACode=0204860&Order=&Fild1=Steve%20Jobs&Fild2=steve%40jobs.com&Fild3=&Sign=c874af589a9428657bb7c9903a10e0304f0e6638d06231d7b24ac677d9739604&planId=${newPlanId}&mode=relativeUpgrade`;
+          return `http://localhost:3000/alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${relativePrice.toFixed(
+            2,
+          )}&ACode=0204860&Order=&Fild1=Steve%20Jobs&Fild2=steve%40jobs.com&Fild3=&Sign=c874af589a9428657bb7c9903a10e0304f0e6638d06231d7b24ac677d9739604&planId=${newPlanId}&mode=relativeUpgrade`;
         }
       }
 
@@ -120,63 +118,6 @@ class SubscriptionPlansController extends Controller {
       console.log(err);
       throw new Exception.BadRequest('Something went wrong');
     }
-  }
-
-  paymentLink(req) {
-    const { query } = req;
-
-    let instance = axios.create({
-      baseURL: Config.baseURL,
-    });
-
-    const paymentUrlConfig = {
-      action: 'APISign',
-      What: 'SIGN',
-      KEY: Config.apiKey,
-      PassP: Config.PassP,
-      Masof: Config.masofId,
-      UTF8: 'True',
-      UTF8out: 'True',
-      Coin: 1,
-      sendemail: 'True',
-      SendHesh: 'True',
-      PageLang: 'HEB',
-      tmp: 11,
-      Pritim: 'True',
-      OnlyOnApprove: 'True',
-      Sign: 'True',
-    };
-
-    let params = {
-      ...paymentUrlConfig,
-      Amount: !isNaN(query.amount) ? query.amount : 228,
-    };
-
-    if (query.monthly) {
-      params.HK = 'True';
-      params.Info = 'Subscription transaction';
-      params.heshDesc = [
-        '',
-        'תרומה%20חודשית%20לעמותת%20מעירים',
-        '1',
-        `${params.Amount}`,
-      ].join('~');
-      params.Tash = 999;
-    } else {
-      params.Info = 'תרומה חד פעמית לעמותת מעירים';
-      params.heshDesc = [
-        '',
-        'תרומה%20חד%20פעמית%20לעמותת%20מעירים',
-        '1',
-        `${params.Amount}`,
-      ].join('~');
-    }
-
-    return instance
-      .get('/p3/', {
-        params,
-      })
-      .then(res => `${Config.baseURL}/p3/?action=pay&${res.data}`);
   }
 }
 

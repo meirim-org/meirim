@@ -41,33 +41,27 @@ Router.get('/plan_county', wrap(Plan.county, Plan));
 Router.get('/plan_status', wrap(Plan.statuses, Plan));
 
 Router.post('/plan/:id/subscribe', wrap(Subscription.subscribe, Subscription));
-Router.delete(
-  '/plan/:id/subscribe',
-  wrap(Subscription.unsubscribe, Subscription),
-);
+Router.delete('/plan/:id/subscribe', wrap(Subscription.unsubscribe, Subscription));
 
-Router.get('/plan/:id/status', wrap(PlanStatusChange.byPlan, PlanStatusChange));
+Router.get('/plan/:id/status', wrap(PlanStatusChange.byPlan, PlanStatusChange)); 
+
 
 // Tree
 Router.get('/tree/', wrap(TreePermit.browse, TreePermit));
 Router.get('/tree/:id', wrap(TreePermit.read, TreePermit));
 Router.get('/trees/geojson/', wrap(TreePermit.geojson, TreePermit));
 
+
 Router.get('/tree_place', wrap(TreePermit.place, TreePermit));
 
 // Permit
-Router.get('/permit/', wrap(Permit.browse, Permit));
-Router.get('/permit/aoi', wrap(PermitAoi.browse, PermitAoi));
-Router.get('/permit/aoi/:id/preview', wrap(PermitAoi.preview, PermitAoi));
-Router.get('/permit/aoi/person', wrap(PermitAoiPerson.browse, PermitAoiPerson));
-Router.post(
-  '/permit/aoi/person',
-  wrap(PermitAoiPerson.create, PermitAoiPerson),
-);
-Router.delete(
-  '/permit/aoi/person/:id',
-  wrap(PermitAoiPerson.delete, PermitAoiPerson),
-);
+Router.get('/permit/', wrap(Permit.browse, Permit))
+Router.get('/permit/aoi', wrap(PermitAoi.browse, PermitAoi))
+Router.get('/permit/aoi/:id/preview', wrap(PermitAoi.preview, PermitAoi))
+Router.get('/permit/aoi/person', wrap(PermitAoiPerson.browse, PermitAoiPerson))
+Router.post('/permit/aoi/person', wrap(PermitAoiPerson.create, PermitAoiPerson))
+Router.delete('/permit/aoi/person/:id', wrap(PermitAoiPerson.delete, PermitAoiPerson))
+
 
 // Comment
 Router.get('/comment/:plan_id', wrap(Comment.byPlan, Comment));
@@ -117,40 +111,15 @@ Router.get('/topfive', wrap(BlockParcel.topfive, BlockParcel));
 Router.get('/centroid', wrap(BlockParcel.centroid, BlockParcel));
 
 // Health
-Router.get(
-  '/health',
-  wrap(() => true),
-);
+Router.get('/health', wrap(() => true));
 
 // Subscription Plans
-Router.get(
-  '/subscription_plans',
-  publicWrapper(
-    SubscriptionPlansController.browse,
-    SubscriptionPlansController,
-  ),
-);
-Router.get(
-  '/subscription_plans/paymentLink',
-  wrap(SubscriptionPlansController.paymentLink, SubscriptionPlansController),
-);
-// Router.get(
-//   '/subscription_plans/:plan_id/get_payment_link',
-//   wrap(SubscriptionPlansController.getPaymentLink, SubscriptionPlansController),
-// );
-Router.post(
-  '/subscription_plans',
-  wrap(SubscriptionPlansController.create, SubscriptionPlansController),
-);
+Router.get('/subscription_plans', publicWrapper(SubscriptionPlansController.browse, SubscriptionPlansController));
+Router.get('/subscription_plans/:plan_id/get_payment_link', wrap(SubscriptionPlansController.getPaymentLink, SubscriptionPlansController));
+Router.post('/subscription_plans', wrap(SubscriptionPlansController.create, SubscriptionPlansController));
 
 // Subscription Cancel
-Router.post(
-  '/subscription_cancel',
-  wrap(SubscriptionCancelController.cancel, SubscriptionCancelController),
-);
-Router.get(
-  '/subscription_cancel',
-  wrap(SubscriptionCancelController.browse, SubscriptionCancelController),
-);
+Router.post('/subscription_cancel', wrap(SubscriptionCancelController.cancel, SubscriptionCancelController));
+Router.get('/subscription_cancel', wrap(SubscriptionCancelController.browse, SubscriptionCancelController));
 
 module.exports = Router;

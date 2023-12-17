@@ -17,16 +17,7 @@ module.exports = {
 			})
 			.then((res) => res.status === 'OK');
 	},
+	cancelSubscription: (options) => {
 
-	getPaymentURL: (options) => {
-		return instance
-			.get('/paymentLink', {
-				params: {
-					amount: options.amount,
-					monthly: 1,
-					// monthly: options.monthlyPayment ? '1' : '',
-				},
-			})
-			.then((res) => res.data.data);
-	},
+	}
 };

@@ -79,7 +79,7 @@ table#alertTable td {
     padding: 10px 0;
 }
 
-input[type='text'] {
+input[type="text"] {
     resize: none;
     background: none;
     color: #005cbf;
@@ -138,7 +138,7 @@ button.delete:after {
     cursor: pointer;
 }
 
-input[id='deleteAlert'] {
+input[id="deleteAlert"] {
     background: none;
     border: none;
     color: red;

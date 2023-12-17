@@ -6,14 +6,7 @@ import { openModal } from 'redux/modal/slice';
 import { Button, Link, TextInput } from 'shared';
 import * as SC from './style';
 
-const FirstStepSignup = ({
-	handleSubmit,
-	values,
-	setValues,
-	errors,
-	inputFocus,
-	inputBlur,
-}) => {
+const FirstStepSignup = ({ handleSubmit, values, setValues, errors, inputFocus, inputBlur }) => {
 	const dispatch = useDispatch();
 	const { name, email, password } = values;
 	const { t } = useTranslation();
@@ -26,14 +19,7 @@ const FirstStepSignup = ({
 					<SC.SubTitle>{t.loginToCompleteAction}</SC.SubTitle>
 					<SC.SubTitle>
 						<span>{t.alreadySignedup}</span>
-						<Link
-							id="register-signin-link"
-							text={t.signin}
-							onClick={() =>
-								dispatch(openModal({ modalType: 'login' }))
-							}
-							fontWeight="700"
-						/>
+						<Link id="register-signin-link" text={t.signin} onClick={() => dispatch(openModal({ modalType: 'login' }))} fontWeight="700" />
 					</SC.SubTitle>
 				</SC.SubTitleWrapper>
 			</SC.Titles>
@@ -50,11 +36,8 @@ const FirstStepSignup = ({
 						label={t.fullName}
 						type="text"
 						value={name}
-						onChange={({ target: { value } }) =>
-							setValues({ name: value, email, password })
-						}
-						required
-					/>
+						onChange={({ target: { value } }) => setValues({ name: value, email, password })}
+						required />
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<TextInput
@@ -67,11 +50,7 @@ const FirstStepSignup = ({
 						label={t.emailAddress}
 						type="email"
 						value={email}
-						onChange={({ target: { value } }) =>
-							setValues({ name, email: value, password })
-						}
-						required
-					/>
+						onChange={({ target: { value } }) => setValues({ name, email: value, password })} required />
 				</SC.InputWrapper>
 				<SC.InputWrapper>
 					<TextInput
@@ -84,19 +63,12 @@ const FirstStepSignup = ({
 						label={t.password}
 						type="password"
 						value={password}
-						onChange={({ target: { value } }) =>
-							setValues({ name, email, password: value })
-						}
-						required
-					/>
+						onChange={({ target: { value } }) => setValues({ name, email, password: value })}
+						required />
 				</SC.InputWrapper>
 			</SC.InputsWrapper>
 			<SC.ButtonWrapper>
-				<Button
-					id="register-firststep-button"
-					text={t.continue}
-					onClick={handleSubmit}
-				/>
+				<Button id="register-firststep-button" text={t.continue} onClick={handleSubmit} />
 			</SC.ButtonWrapper>
 		</SC.MainWrapper>
 	);
@@ -112,7 +84,7 @@ FirstStepSignup.propTypes = {
 	errors: PropTypes.shape({
 		name: PropTypes.string.isRequired,
 		password: PropTypes.string.isRequired,
-		email: PropTypes.string.isRequired,
+		email: PropTypes.string.isRequired
 	}).isRequired,
 	inputFocus: PropTypes.func,
 	inputBlur: PropTypes.func,

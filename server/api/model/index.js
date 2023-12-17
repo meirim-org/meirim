@@ -12,30 +12,30 @@ const FundingTransaction = require('./funding_transaction');
 const File = require('./file');
 const Tag = require('./tag');
 const PlanTag = require('./plan_tag');
-const PlanAreaChanges = require('./plan_area_changes');
+const PlanAreaChanges = require ('./plan_area_changes');
 const PlanStatusChange = require('./plan_status_change');
 const Status = require('./status');
 const SubscriptionPlans = require('./subscription_plans');
 const SubscriptionTransactions = require('./subscription_transactions');
 
 module.exports = {
-  ArchiveNotification,
-  Notification,
-  Plan,
-  Person,
-  Alert,
-  Comment,
-  PlanChartOneEightRow,
-  PlanChartFourRow,
-  PlanChartFiveRow,
-  PlanChartSixRow,
-  FundingTransaction,
-  File,
-  Tag,
-  PlanTag,
-  PlanAreaChanges,
-  PlanStatusChange,
-  Status,
-  SubscriptionPlans,
-  SubscriptionTransactions,
+	ArchiveNotification,
+	Notification,
+	Plan,
+	Person,
+	Alert,
+	Comment,
+	PlanChartOneEightRow,
+	PlanChartFourRow,
+	PlanChartFiveRow,
+	PlanChartSixRow,
+	FundingTransaction,
+	File,
+	Tag,
+	PlanTag,
+	PlanAreaChanges,
+	PlanStatusChange,
+	Status,
+	SubscriptionPlans,
+	SubscriptionTransactions,
 };

@@ -13,11 +13,13 @@ import * as SC from './style';
 import { useDispatch } from 'react-redux';
 import { setAlerts } from '../../../../redux/alerts/slice';
 import { toast } from 'react-toastify';
-import { closeModal } from 'redux/modal/slice';
+import { closeModal, openModal } from 'redux/modal/slice';
 import { UserSelectors } from '../../../../redux/selectors';
 import { Link } from '../../../../shared';
 import { useUpdateManuallyUserState } from '../../../../scenes/alerts/hooks';
 import FilterAutoCompleteMultiple from '../../../FilterAutoCompleteMultiple';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 const sliderBounds = { min: 1, max: 10 };
 const sliderText = {};
@@ -334,9 +336,33 @@ const PlanAlertModal = () => {
 						<div className="alertModal__flex">
 							<p className="alertModal__radiusLock">
 								<b>רדיוס:</b> <span>1 ק״מ</span>
-								<RedLockIcon />
+								<OverlayTrigger
+									overlay={
+										<Tooltip style={{ zIndex: '99999' }}>
+											Upgrade to unlock radius
+										</Tooltip>
+									}
+									placement="left"
+								>
+									<p style={{ margin: 0 }}>
+										<RedLockIcon />
+									</p>
+								</OverlayTrigger>
 							</p>
-							<UpgradeButton variant="string" />
+							<UpgradeButton
+								variant="string"
+								text={t.upgrade}
+								onClick={() =>
+									dispatch(
+										openModal({
+											modalType: 'upgradeModal',
+											modalProps: {
+												wrapperClass: 'upgradeModal',
+											},
+										})
+									)
+								}
+							/>
 						</div>
 					</div>
 				</div>

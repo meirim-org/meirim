@@ -24,7 +24,7 @@ module.exports = {
 			status: 'OK',
 			data,
 			pagination,
-			me,
+			me
 		});
 	},
 
@@ -40,5 +40,5 @@ module.exports = {
 
 		res.set('Content-Type', 'application/json; charset=utf-8');
 		res.json(data);
-	},
+	}
 };

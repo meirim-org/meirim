@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import ReactGA from 'react-ga';
 import { hotjar } from 'react-hotjar';
 import { map } from 'lodash';
-import { authenticated, fetchedFavoritePlans } from 'redux/user/slice';
-import { closeModal } from 'redux/modal/slice';
+import { authenticated, fetchedFavoritePlans } from 'redux/user/slice'; 
+import { closeModal } from 'redux/modal/slice'; 
 import { HOME, ALERTS } from 'router/contants';
 import api from 'services/api';
 import { fetchUserPlans } from 'pages/UserPlans/controller';
@@ -16,131 +16,50 @@ export const ValidUserHook = (user) => {
 	const history = useHistory();
 	const isHomePage = history.location.pathname === '/';
 	useEffect(() => {
-		if (user) {
+		if (user){
 			dispatch(authenticated({ user }));
 			isHomePage && history.push(ALERTS);
 			dispatch(closeModal());
 		}
-	}, [user, dispatch, history, isHomePage]);
+	},[user, dispatch, history, isHomePage]);
 };
 
 export const CookieHook = () => {
 	const dispatch = useDispatch();
-	const [loading, setLoading] = useState(true);
-	const [success, setSuccess] = useState(false);
-	const [response, setResponse] = useState({});
-	const [error, setError] = useState({});
-	const history = useHistory();
+	const [ loading, setLoading ] = useState(true);
+	const [ success, setSuccess ] = useState(false);
+	const [ response, setResponse ] = useState({});
+	const [ error, setError ] = useState({});
 	useEffect(() => {
-		api.get('/me')
-			.then((response) => {
-				const {
-					name,
-					id,
-					admin,
-					subscribe_plan_id,
-					is_reached_max_alerts,
-				} = response.me;
-				setSuccess(true);
-				dispatch(
-					authenticated({
-						user: {
-							name,
-							id,
-							admin,
-							subscribe_plan_id,
-							is_reached_max_alerts,
-						},
-					})
-				);
-				setLoading(false);
-				setResponse(response);
-
-				return fetchUserPlans(id).then(({ data }) => {
-					const favoritePlans = map(data, 'id');
-					dispatch(fetchedFavoritePlans({ favoritePlans }));
-				});
-			})
-			.catch((err) => {
-				setError(err);
-				setLoading(false);
-				setSuccess(false);
+		api.get('/me').then((response) => {
+			const { name, id, admin } = response.me;
+			setSuccess(true);
+			dispatch(authenticated({ user: { name, id, admin } }));
+			setLoading(false);
+			setResponse(response);
+			return fetchUserPlans(id).then(({ data })=>{
+				const favoritePlans = map(data, 'id');
+				dispatch(fetchedFavoritePlans({ favoritePlans }));
 			});
-	}, [dispatch, history]);
+		}).catch((err) => {
+			setError(err);
+			setLoading(false);
+			setSuccess(false);
+		});
 
-	return { success, response, error, loading };
+	}, [dispatch]);
+	
+	return { success, response , error, loading };
 };
 
 export const CheckIfUserCanAccessPage = () => {
 	const { isAuthenticated } = UserSelectors();
 	const history = useHistory();
-	const dispatch = useDispatch();
-	const pathname = history && history.location && history.location.pathname;
 	useEffect(() => {
 		if (!isAuthenticated) {
 			history.push(HOME, 'openRegister');
-		} else {
-			const getUser = () => {
-				return api.get('/me').then((response) => {
-					const {
-						name,
-						id,
-						admin,
-						subscribe_plan_id,
-						is_reached_max_alerts,
-					} = response.me;
-					dispatch(
-						authenticated({
-							user: {
-								name,
-								id,
-								admin,
-								subscribe_plan_id,
-								is_reached_max_alerts,
-							},
-						})
-					);
-
-					return fetchUserPlans(id).then(({ data }) => {
-						const favoritePlans = map(data, 'id');
-						dispatch(fetchedFavoritePlans({ favoritePlans }));
-					});
-				});
-			};
-			getUser();
-
-			api.get('/me')
-				.then((response) => {
-					const {
-						name,
-						id,
-						admin,
-						subscribe_plan_id,
-						is_reached_max_alerts,
-					} = response.me;
-
-					dispatch(
-						authenticated({
-							user: {
-								name,
-								id,
-								admin,
-								subscribe_plan_id,
-								is_reached_max_alerts,
-							},
-						})
-					);
-
-					return fetchUserPlans(id).then(({ data }) => {
-						const favoritePlans = map(data, 'id');
-						dispatch(fetchedFavoritePlans({ favoritePlans }));
-					});
-				})
-				.catch((err) => {
-					console.error(err);
-				});
 		}
-	}, [isAuthenticated, history, pathname, dispatch]);
+	}, [isAuthenticated, history]);
 };
 
 export const useInitGA = () => {
@@ -166,7 +85,7 @@ export const useStickyPlansHeader = () => {
 	const [translateY, setTranslateY] = useState(0);
 	const [hiddenTopSection, setHiddenTopSection] = useState(false);
 	const [hiddenTopContentSection, setHiddenTopContentSection] =
-		useState(false);
+        useState(false);
 	const [lastScrollY, setLastScrollY] = useState(0);
 	const handleScrollEvent = () => {
 		if (lastScrollY > window.scrollY) {

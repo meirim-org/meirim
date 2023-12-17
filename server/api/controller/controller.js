@@ -9,13 +9,13 @@ const { Knex } = require('../service/database');
 const { Alert } = require('../model');
 
 class Controller {
-  constructor(model) {
-    if (model) {
-      this.model = model;
-      this.id_attribute = model.prototype.idAttribute;
-      this.tableName = model.prototype.tableName;
-    }
-  }
+	constructor(model) {
+		if (model) {
+			this.model = model;
+			this.id_attribute = model.prototype.idAttribute;
+			this.tableName = model.prototype.tableName;
+		}
+	}
 
   // try catch wrapper for all controllers
   static wrap(fn, ctx) {
@@ -51,160 +51,162 @@ class Controller {
         });
   }
 
-  // try catch wrapper for all controllers
-  static publicWrapper(fn, ctx) {
-    return (req, res, next) =>
-      Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-        .then(response => Success.public(res, response, req.session))
-        .catch(Checkit.Error, err => {
-          req.error = new Exception.BadRequest(err);
-          next();
-        })
-        .catch(err => {
-          req.error = err;
-          next();
-        });
-  }
+	// try catch wrapper for all controllers
+	static publicWrapper(fn, ctx) {
+		return (req, res, next) =>
+			Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+				.then((response) => Success.public(res, response, req.session))
+				.catch(Checkit.Error, (err) => {
+					req.error = new Exception.BadRequest(err);
+					next();
+				})
+				.catch((err) => {
+					req.error = err;
+					next();
+				});
+	}
 
-  browse(req, options = {}) {
-    const { query } = req;
+	browse(req, options = {}) {
+		const { query } = req;
 
-    let page = parseInt(query.page, 10) || 1;
-    if (page < 1) page = 1;
+		let page = parseInt(query.page, 10) || 1;
+		if (page < 1) page = 1;
 
-    const pageSize = parseInt(options.pageSize, 10) || 20;
+		const pageSize = parseInt(options.pageSize, 10) || 20;
 
-    const columns = options.columns || '*';
-    const where = options.where || {};
+		const columns = options.columns || '*';
+		const where = options.where || {};
 
-    let bsQuery = this.model.query(qb =>
-      Object.keys(where).map(index => qb.where(index, 'in', where[index])),
-    );
+		let bsQuery = this.model.query((qb) =>
+			Object.keys(where).map((index) => qb.where(index, 'in', where[index]))
+		);
 
-    if (options.whereNotIn) {
-      bsQuery = bsQuery.query(qb =>
-        Object.keys(options.whereNotIn).map(index =>
-          qb.whereNotIn(index, options.whereNotIn[index]),
-        ),
-      );
-    }
-    if (options.whereRaw) {
-      bsQuery = bsQuery.query(qb => options.whereRaw.map(w => qb.where(w)));
-    }
+		if (options.whereNotIn) {
+			bsQuery = bsQuery.query((qb) =>
+				Object.keys(options.whereNotIn).map((index) =>
+					qb.whereNotIn(index, options.whereNotIn[index])
+				)
+			);
+		}
+		if (options.whereRaw) {
+			bsQuery = bsQuery.query((qb) => options.whereRaw.map((w) => qb.where(w)));
+		}
 
-    if (options.order) {
-      bsQuery = bsQuery.orderBy(options.order);
-    }
-    if (options.orderByRaw) {
-      bsQuery = bsQuery.query(qb => options.orderByRaw.map(w => qb.orderBy(w)));
-    }
+		if (options.order) {
+			bsQuery = bsQuery.orderBy(options.order);
+		}
+		if (options.orderByRaw) {
+			bsQuery = bsQuery.query((qb) =>
+				options.orderByRaw.map((w) => qb.orderBy(w))
+			);
+		}
 
-    return bsQuery.fetchPage({
-      columns,
-      page,
-      pageSize,
-      withRelated: options.withRelated,
-    });
-  }
+		return bsQuery.fetchPage({
+			columns,
+			page,
+			pageSize,
+			withRelated: options.withRelated,
+		});
+	}
 
-  read(req) {
-    const id = parseInt(req.params.id, 10);
+	read(req) {
+		const id = parseInt(req.params.id, 10);
 
-    if (!id) {
-      throw new Exception.NotFound('Nof found');
-    }
-    return this.model
-      .forge({
-        [this.id_attribute]: id,
-      })
-      .fetch()
-      .then(fetchedModel => {
-        if (!fetchedModel) throw new Exception.NotFound('Nof found');
-        return fetchedModel.canRead(req.session);
-      })
-      .then(fetchedModel => {
-        Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
-        return this.model
-          .query(qb => {
-            qb.select('plan_links.*')
-              .from('plan')
-              .join('plan_links', 'plan.id', '=', 'plan_links.plan_id')
-              .where('plan.id', '=', id);
-          })
-          .fetchAll()
-          .then(result => {
-            if (result && result.length !== 0) {
-              fetchedModel.set('plan_links', result);
-            }
-            return fetchedModel;
-          });
-      });
-  }
+		if (!id) {
+			throw new Exception.NotFound('Nof found');
+		}
+		return this.model
+			.forge({
+				[this.id_attribute]: id,
+			})
+			.fetch()
+			.then((fetchedModel) => {
+				if (!fetchedModel) throw new Exception.NotFound('Nof found');
+				return fetchedModel.canRead(req.session);
+			})
+			.then((fetchedModel) => {
+				Log.debug(this.tableName, 'read success', fetchedModel.get('id'));
+				return this.model
+					.query((qb) => {
+						qb.select('plan_links.*')
+							.from('plan')
+							.join('plan_links', 'plan.id', '=', 'plan_links.plan_id')
+							.where('plan.id', '=', id);
+					})
+					.fetchAll()
+					.then((result) => {
+						if (result && result.length !== 0) {
+							fetchedModel.set('plan_links', result);
+						}
+						return fetchedModel;
+					});
+			});
+	}
 
-  patch(req) {
-    const id = parseInt(req.params.id, 10);
-    if (!id) {
-      throw new Exception.NotFound('Nof found');
-    }
-    return this.model
-      .forge({
-        [this.id_attribute]: id,
-      })
-      .fetch()
-      .then(fetchedModel => {
-        if (!fetchedModel) throw new Exception.NotFound('Nof found');
-        return fetchedModel.canEdit(req.session);
-      })
-      .then(fetchedModel => {
-        Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
-        return fetchedModel.save(req.body);
-      });
-  }
+	patch(req) {
+		const id = parseInt(req.params.id, 10);
+		if (!id) {
+			throw new Exception.NotFound('Nof found');
+		}
+		return this.model
+			.forge({
+				[this.id_attribute]: id,
+			})
+			.fetch()
+			.then((fetchedModel) => {
+				if (!fetchedModel) throw new Exception.NotFound('Nof found');
+				return fetchedModel.canEdit(req.session);
+			})
+			.then((fetchedModel) => {
+				Log.debug(this.tableName, ' patch success id:', fetchedModel.get('id'));
+				return fetchedModel.save(req.body);
+			});
+	}
 
-  delete(req, transaction) {
-    const id = parseInt(req.params.id, 10);
-    if (!id) {
-      throw new Exception.NotFound('Nof found');
-    }
-    const options = transaction ? { transacting: transaction } : {};
-    return this.model
-      .forge({
-        [this.id_attribute]: id,
-      })
-      .fetch()
-      .then(fetchedModel => {
-        if (!fetchedModel) throw new Exception.NotFound('Nof found');
-        return fetchedModel.canEdit(req.session);
-      })
-      .then(fetchedModel => {
-        Log.debug(
-          this.tableName,
-          ' delete success id:',
-          fetchedModel.get('id'),
-        );
-        return fetchedModel.destroy(req.body, options);
-      });
-  }
+	delete(req, transaction) {
+		const id = parseInt(req.params.id, 10);
+		if (!id) {
+			throw new Exception.NotFound('Nof found');
+		}
+		const options = transaction ? { transacting: transaction } : {};
+		return this.model
+			.forge({
+				[this.id_attribute]: id,
+			})
+			.fetch()
+			.then((fetchedModel) => {
+				if (!fetchedModel) throw new Exception.NotFound('Nof found');
+				return fetchedModel.canEdit(req.session);
+			})
+			.then((fetchedModel) => {
+				Log.debug(
+					this.tableName,
+					' delete success id:',
+					fetchedModel.get('id')
+				);
+				return fetchedModel.destroy(req.body, options);
+			});
+	}
 
-  create(req, transaction) {
-    let options = {};
-    if (transaction) {
-      options = {
-        transacting: transaction,
-      };
-    }
-    return this.model
-      .canCreate(req.session)
-      .then(() => {
-        const model = this.model.forge(req.body);
-        model.setPerson(req.session);
-        return model.save(null, options);
-      })
-      .then(savedModel => {
-        Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
-        return savedModel;
-      });
-  }
+	create(req, transaction) {
+		let options = {};
+		if (transaction) {
+			options = {
+				transacting: transaction,
+			};
+		}
+		return this.model
+			.canCreate(req.session)
+			.then(() => {
+				const model = this.model.forge(req.body);
+				model.setPerson(req.session);
+				return model.save(null, options);
+			})
+			.then((savedModel) => {
+				Log.debug(this.tableName, ' create success id:', savedModel.get('id'));
+				return savedModel;
+			});
+	}
 
   update(req, transaction) {
     const id = parseInt(req.params.id, 10);

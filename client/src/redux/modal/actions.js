@@ -18,7 +18,7 @@ const Actions = () => {
 		() => dispatch(openModal({ modalType: 'profile' })),
 		[dispatch]
 	);
-	
+
 	const close = useCallback(() => dispatch(closeModal()), [dispatch]);
 
 	return { openRegister, openLogin, openProfile, close };

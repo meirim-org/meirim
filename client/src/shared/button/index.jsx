@@ -16,7 +16,7 @@ const StyledButton = withTheme(styled(MUIButton)`
 	line-height: 1.5;
 	letter-spacing: normal
 	text-align: center; 
-    color: ${(props) => props.theme.palette.white} !important;
+    color: ${props => props.theme.palette.white} !important;
     min-height: 3.7em;
     border-radius: 12px !important;
     font-weight: 700 !important;
@@ -28,16 +28,13 @@ const StyledButton = withTheme(styled(MUIButton)`
     }    
     
     &:hover {
-      background-color: ${(props) =>
-			props.theme.palette.primary['600']} !important;
+      background-color: ${props => props.theme.palette.primary['600']} !important;
     }
     &:focus {
        outline: none;
     }
     
-    ${({ simple, theme }) =>
-		simple &&
-		`
+    ${({ simple, theme }) => simple && `
         font-weight: 600 !important;
         color: ${theme.palette.primary.main} !important;
         border: none !important;
@@ -54,9 +51,7 @@ const StyledButton = withTheme(styled(MUIButton)`
        }
     `}
 
-    ${({ altcolor, theme }) =>
-		altcolor &&
-		`
+    ${({ altcolor, theme }) => altcolor && `
         color: ${theme.palette.primary.main} !important;
         background-color: ${theme.palette.white} !important;
        &:hover {
@@ -64,18 +59,14 @@ const StyledButton = withTheme(styled(MUIButton)`
        }
     `}
        
-    ${({ small }) =>
-		small &&
-		`
+    ${({ small }) => small && `
         font-weight: 400 !important;
         padding: 0.03rem 0.6rem !important;
         border-radius: 4px !important;
         min-height: 1em;
     `}
     
-    ${({ extrasmall }) =>
-		extrasmall &&
-		`
+    ${({ extrasmall }) => extrasmall && `
         font-weight: 400 !important;
         font-size: 14px !important;
         min-height: 1.374rem;
@@ -86,9 +77,7 @@ const StyledButton = withTheme(styled(MUIButton)`
         }
 `}
 
-    ${({ fontWeight }) =>
-		fontWeight &&
-		`
+    ${({ fontWeight }) => fontWeight && `
         font-weight: ${fontWeight} !important;
     `}
 
@@ -115,57 +104,39 @@ const StyledButton = withTheme(styled(MUIButton)`
         background-color: ${theme.palette.primary['custom']} !important;
     `}    
     
-    ${({ disabled, theme }) =>
-		disabled &&
-		`
+    ${({ disabled, theme }) => disabled && `
         color: ${theme.palette.gray.main} !important;
     `}    
     
-    ${({ textcolor }) =>
-		textcolor &&
-		`
+    ${({ textcolor }) => textcolor && `
         color: ${textcolor} !important;
     `}   
 
-    ${({ fontSize }) =>
-		fontSize &&
-		`
+    ${({ fontSize }) => fontSize && `
         font-size: ${fontSize} !important;
     `}   
 
-    ${({ textDecoration }) =>
-		textDecoration &&
-		`
+    ${({ textDecoration }) => textDecoration && `
         text-decoration: ${textDecoration} !important;
     `}   
     
-    ${({ width }) =>
-		width &&
-		`
+    ${({ width }) => width && `
         width: ${width} !important;
-    `} 
-
-    ${({ padding }) =>
-		padding &&
-		`
+    `}   
+	
+				${({ padding }) => padding && `
         padding: ${padding} !important;
     `}
 
-	${({ borderradius }) =>
-		borderradius &&
-		`
+				${({ borderradius }) => borderradius && `
         border-radius: ${borderradius} !important;
     `}
 
-    ${({ lineheight }) =>
-		lineheight &&
-		`
-	    line-height: ${lineheight} !important;
-	`}
+    ${({ lineheight }) => lineheight && `
+	       line-height: ${lineheight} !important;
+				`}
 
-    ${({ removebackground }) =>
-		removebackground === 'true' &&
-		`
+    ${({ removebackground }) => removebackground === 'true' && `
         background: none !important;
         transition: opacity 0.3s !important;
 
@@ -177,12 +148,11 @@ const StyledButton = withTheme(styled(MUIButton)`
 
     ${({ minheight }) => `
         min-height: ${minheight} !important;
-    `}  
-
+    `}
 
     ${({ border }) => `
         border: ${border} !important;
-    `} 
+    `}
 `);
 
 const Button = ({

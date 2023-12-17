@@ -16,7 +16,10 @@ module.exports = {
 	},
 	'rules': {
 		"camelcase": 'off',
-		'indent': 'off',
+		'indent': [
+			'error',
+			'tab'
+		],
 		'linebreak-style': [
 			'error',
 			'unix'

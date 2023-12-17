@@ -26,36 +26,36 @@ import EditAlertModal from '../../components/AlertList/components/EditAlertModal
 import DowngradeSubscriptionModal from "../../components/AlertList/components/DowngradeSubscriptionModal";
 
 const StyledModal = styled(MUIModal)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: scroll;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: scroll;
 `;
 
 const StyledIcon = styled(CloseIcon)`
-	color: gray;
-	cursor: pointer;
+    color: gray;
+    cursor: pointer;
 `;
 
 const ModalWrapper = styled.div``;
 
 const ModalContentWRapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	background-color: #ffffff;
-	min-width: 35%;
-	border-radius: 15px 15px;
-	width: 100%;
-	@media ${device.tablet} {
-		max-width: initial;
-		width: unset;
-	}
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    min-width: 35%;
+    border-radius: 15px 15px;
+    width: 100%;
+    @media ${device.tablet} {
+        max-width: initial;
+        width: unset;
+    }
 
-	&.profileModal {
-		min-width: inherit;
-		max-width: initial;
-		width: unset;
-	}
+    &.profileModal {
+        min-width: inherit;
+        max-width: initial;
+        width: unset;
+    }
 
 	&.alertModal {
 		position: relative;
@@ -116,31 +116,31 @@ const ModalContentWRapper = styled.div`
 		background-color: unset;
 		position: relative;
 
-		@media ${device.mobile} {
-			.iconWrapper > * {
-				color: #918899;
-				right: -25px;
-				top: -25px;
-			}
-		}
+        @media ${device.mobile} {
+            .iconWrapper > * {
+                color: #918899;
+                right: -25px;
+                top: -25px;
+            }
+        }
 
-		@media ${device.tablet} {
-			max-width: initial;
-			width: unset;
+        @media ${device.tablet} {
+            max-width: initial;
+            width: unset;
 
-			.iconWrapper > * {
-				color: #918899;
-				position: absolute;
-				right: -25px;
-				top: -25px;
-			}
-		}
-	}
+            .iconWrapper > * {
+                color: #918899;
+                position: absolute;
+                right: -25px;
+                top: -25px;
+            }
+        }
+    }
 `;
 
 const IconWrapper = styled.div`
-	padding-top: 0.5em;
-	padding-right: 0.5em;
+    padding-top: 0.5em;
+    padding-right: 0.5em;
 `;
 
 const modalComponents = {
@@ -165,8 +165,8 @@ const modalComponents = {
 };
 
 const Modal = ({ id }) => {
-	const { open, modalType, modalProps } = ModalSelectors();
-	const ModalChildren = modalComponents[modalType];
+    const { open, modalType, modalProps } = ModalSelectors();
+    const ModalChildren = modalComponents[modalType];
 
 	return (
 		<ModalWrapper id={`wrapper-${id}`}>
@@ -183,8 +183,8 @@ const Modal = ({ id }) => {
 };
 
 Modal.propTypes = {
-	children: PropTypes.object,
-	id: PropTypes.string,
+    children: PropTypes.object,
+    id: PropTypes.string,
 };
 
 export default Modal;

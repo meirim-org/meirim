@@ -7,7 +7,8 @@ import { closeModal, openModal } from 'redux/modal/slice';
 import api from '../../../../services/api';
 import { UserSelectors } from '../../../../redux/selectors';
 import { useTranslation } from '../../../../locale/he_IL';
-import { createPaymentLink } from '../../../../scenes/alerts/controller';
+
+// display = 'free to pay', 'upgrade'
 
 const UpgradeModal = () => {
 	const [subscriptionPlans, setSubscriptionPlans] = useState([]);
@@ -44,56 +45,40 @@ const UpgradeModal = () => {
 			return dispatch(closeModal());
 		}
 
-		createPaymentLink({ amount: 1 }).then((url) => {
-			console.log('iframe:', url);
-			try {
-				dispatch(
-					openModal({
-						modalType: 'iframeModal',
-						modalProps: {
-							url,
-						},
-					})
-				);
-			} catch (err) {
-				console.error(err);
-			}
-		});
+		api.get(`/subscription_plans/${planId}/get_payment_link`).then(
+			(res) => {
+				const { data: paymentLink } = res;
 
-		// api.get(`/subscription_plans/${planId}/get_payment_link`).then(
-		// 	(res) => {
-		// 		const { data: paymentLink } = res;
-		//
-		// 		try {
-		// 			if (currentPlanId > planId) {
-		// 				return dispatch(
-		// 					openModal({
-		// 						modalType: 'downgradeSubscriptionModal',
-		// 						modalProps: {
-		// 							paymentLink,
-		// 							wrapperClass: 'newDesignModal',
-		// 						},
-		// 					})
-		// 				);
-		// 			}
-		//
-		// 			setIsLoading(true);
-		//
-		// 			dispatch(
-		// 				openModal({
-		// 					modalType: 'iframeModal',
-		// 					modalProps: {
-		// 						url: paymentLink,
-		// 					},
-		// 				})
-		// 			);
-		// 		} catch (err) {
-		// 			alert(err);
-		// 		} finally {
-		// 			setIsLoading(false);
-		// 		}
-		// 	}
-		// );
+				try {
+					if (currentPlanId > planId) {
+						return dispatch(
+							openModal({
+								modalType: 'downgradeSubscriptionModal',
+								modalProps: {
+									paymentLink,
+									wrapperClass: 'newDesignModal',
+								},
+							})
+						);
+					}
+
+					setIsLoading(true);
+
+					dispatch(
+						openModal({
+							modalType: 'iframeModal',
+							modalProps: {
+								url: paymentLink,
+							},
+						})
+					);
+				} catch (err) {
+					alert(err);
+				} finally {
+					setIsLoading(false);
+				}
+			}
+		);
 	};
 
 	const CancelMsg = () => {

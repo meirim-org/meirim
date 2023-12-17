@@ -15,7 +15,7 @@ const Title = ({ title, subTitle }) => {
                 </SC.SubTitleWrapper>
 			}
 			<SC.TitleWrapper>
-				<Text size="18px" lineheight="1.4" weight="600" text={subTitle} component="h1" color={theme.palette.black}/>
+				<Text size="18px" lineHeight="1.4" weight="600" text={subTitle} component="h1" color={theme.palette.black}/>
 			</SC.TitleWrapper>
 		</>
 	);

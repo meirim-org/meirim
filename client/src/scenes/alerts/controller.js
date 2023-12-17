@@ -2,15 +2,9 @@ import api from '../../services/subscriptionPlansApi';
 
 export const saveTransaction = async (options) => {
 	try {
-		return await api.saveTransaction({ ...options });
-	} catch (err) {
-		throw new Error(err);
-	}
-};
+		const response = await api.saveTransaction({ ...options });
 
-export const createPaymentLink = async (options) => {
-	try {
-		return await api.getPaymentURL({ ...options });
+		return response;
 	} catch (err) {
 		throw new Error(err);
 	}
