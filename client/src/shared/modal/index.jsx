@@ -57,64 +57,64 @@ const ModalContentWRapper = styled.div`
         width: unset;
     }
 
-	&.alertModal {
-		position: relative;
-		padding: 40px;
-		max-width: 640px;
+    &.alertModal {
+        position: relative;
+        padding: 40px;
+        max-width: 640px;
 
-		.iconWrapper {
-			position: absolute;
-			padding: 0;
-			top: 28px;
-			left: 28px;
-			z-index: 99999;
+        .iconWrapper {
+            position: absolute;
+            padding: 0;
+            top: 28px;
+            left: 28px;
+            z-index: 99999;
 
-			svg {
-				fill: black;
-			}
-		}
-	}
+            svg {
+                fill: black;
+            }
+        }
+    }
 
-	&.upgradeModal {
-		position: relative;
-		padding: 40px;
+    &.upgradeModal {
+        position: relative;
+        padding: 40px;
 
-		@media screen and (max-width: 768px) {
-			padding: 20px;
-		}
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+        }
 
-		.iconWrapper {
-			position: absolute;
-			padding: 0;
-			top: 18px;
-			right: 22px;
-		}
-	}
+        .iconWrapper {
+            position: absolute;
+            padding: 0;
+            top: 18px;
+            right: 22px;
+        }
+    }
 
-	&.newDesignModal {
-		position: relative;
-		padding: 40px;
-		min-width: 932px;
+    &.newDesignModal {
+        position: relative;
+        padding: 40px;
+        min-width: 932px;
 
-		@media screen and (max-width: 975px) {
-			min-width: auto;
-		}
+        @media screen and (max-width: 975px) {
+            min-width: auto;
+        }
 
-		@media screen and (max-width: 768px) {
-			padding: 20px;
-		}
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+        }
 
-		.iconWrapper {
-			position: absolute;
-			padding: 0;
-			top: 18px;
-			right: 22px;
-		}
-	}
+        .iconWrapper {
+            position: absolute;
+            padding: 0;
+            top: 18px;
+            right: 22px;
+        }
+    }
 
-	&.videoModal {
-		background-color: unset;
-		position: relative;
+    &.videoModal {
+        background-color: unset;
+        position: relative;
 
         @media ${device.mobile} {
             .iconWrapper > * {
@@ -144,42 +144,46 @@ const IconWrapper = styled.div`
 `;
 
 const modalComponents = {
-	login: Login,
-	register: Register,
-	emailVerified: EmailVerified,
-	share: SharePlanView,
-	payment: Payment,
-	termsOfPayment: TermsOfPayment,
-	thankYou: ThankYou,
-	shareTree: ShareTreeView,
-	video: Video,
-	profile: UserProfile,
-	addAlert: AlertModal,
-	editAlert: EditAlertModal,
-	upgradeModal: UpgradeModal,
-	successUpgradeModal: SuccessUpgradeModal,
-	successCancelModal: SuccessCancelModal,
-	downgradeSubscriptionModal: DowngradeSubscriptionModal,
-	cancelSubscriptionModal: CancelSubscriptionModal,
-	iframeModal: IframeModal,
+    login: Login,
+    register: Register,
+    emailVerified: EmailVerified,
+    share: SharePlanView,
+    payment: Payment,
+    termsOfPayment: TermsOfPayment,
+    thankYou: ThankYou,
+    shareTree: ShareTreeView,
+    video: Video,
+    profile: UserProfile,
+    addAlert: AlertModal,
+    editAlert: EditAlertModal,
+    upgradeModal: UpgradeModal,
+    successUpgradeModal: SuccessUpgradeModal,
+    successCancelModal: SuccessCancelModal,
+    downgradeSubscriptionModal: DowngradeSubscriptionModal,
+    cancelSubscriptionModal: CancelSubscriptionModal,
+    iframeModal: IframeModal,
 };
 
 const Modal = ({ id }) => {
     const { open, modalType, modalProps } = ModalSelectors();
     const ModalChildren = modalComponents[modalType];
 
-	return (
-		<ModalWrapper id={`wrapper-${id}`}>
-			<StyledModal onClose={ModalActions().close} id={id} open={open}>
-				<ModalContentWRapper className={modalProps?.wrapperClass}>
-					<IconWrapper className="iconWrapper">
-						<StyledIcon onClick={ModalActions().close} />
-					</IconWrapper>
-					{modalType && <ModalChildren {...modalProps} />}
-				</ModalContentWRapper>
-			</StyledModal>
-		</ModalWrapper>
-	);
+    return (
+        <ModalWrapper id={`wrapper-${id}`}>
+            <StyledModal
+                onBackdropClick={ModalActions().close}
+                id={id}
+                open={open}
+            >
+                <ModalContentWRapper className={modalProps?.wrapperClass}>
+                    <IconWrapper className="iconWrapper">
+                        <StyledIcon onClick={ModalActions().close} />
+                    </IconWrapper>
+                    {modalType && <ModalChildren {...modalProps} />}
+                </ModalContentWRapper>
+            </StyledModal>
+        </ModalWrapper>
+    );
 };
 
 Modal.propTypes = {
