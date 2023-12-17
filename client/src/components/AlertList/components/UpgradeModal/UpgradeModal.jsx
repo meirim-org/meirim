@@ -165,7 +165,7 @@ const UpgradeModal = () => {
 							{currentPlanId > newPlanId ? (
 								<>
 									<p>
-										Your plan will be downgraded to from{' '}
+										{t.yourPlanWillBeDowngradedOn}{' '}
 										{planEndDate}
 									</p>
 									<CancelMsg />
@@ -175,7 +175,10 @@ const UpgradeModal = () => {
 							)}
 						</>
 					) : currentPlanId && isPlanCancelled ? (
-						<p>Your plan will be canceled on {planEndDate}</p>
+						<p>
+							{t.yourPlanWillStayUntil}{' '}
+							{planEndDate}
+						</p>
 					) : (
 						t.revenuInvestMessage
 					)}

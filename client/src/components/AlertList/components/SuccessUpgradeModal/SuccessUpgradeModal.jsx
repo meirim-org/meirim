@@ -36,10 +36,10 @@ const SuccessUpgradeModal = ({ redirectParams }) => {
 			<SC.TextWrapper>
 				{(mode === 'upgrade' || mode === 'relativeUpgrade') && (
 					<SC.Heading>
-						{t.youIncreasedYourPlanTo}:{' '}
-						<SC.BoldColored>
-							{alertsQty} {t.addresses}
-						</SC.BoldColored>
+						{t.youIncreasedYourPlan}
+						{/*<SC.BoldColored>*/}
+						{/*	{alertsQty} {t.addresses}*/}
+						{/*</SC.BoldColored>*/}
 					</SC.Heading>
 				)}
 
