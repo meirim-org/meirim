@@ -5,6 +5,7 @@ const Exception = require('../model/exception');
 const moment = require('moment');
 const { Knex } = require('../service/database');
 const { BadRequest } = require('../model/exception');
+const Config = require('../lib/config');
 
 class SubscriptionPlansController extends Controller {
   async browse() {
@@ -88,7 +89,7 @@ class SubscriptionPlansController extends Controller {
     try {
       // Upgrade with No previous plan logic
       if (currentPlanPrice === null) {
-        return `http://localhost:3000/alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${newPlanPrice}&ACode=0204860&Order=&Fild1=Steve%20Jobs&Fild2=steve%40jobs.com&Fild3=&Sign=c874af589a9428657bb7c9903a10e0304f0e6638d06231d7b24ac677d9739604&planId=${newPlanId}&mode=upgrade`;
+        return `${Config.general.domain}alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${newPlanPrice}&ACode=0204860&Order=&Fild1=Steve%20Jobs&Fild2=steve%40jobs.com&Fild3=&Sign=c874af589a9428657bb7c9903a10e0304f0e6638d06231d7b24ac677d9739604&planId=${newPlanId}&mode=upgrade`;
       }
 
       // Upgrade with relative price logic
@@ -104,7 +105,7 @@ class SubscriptionPlansController extends Controller {
           const todayDate = moment(Date.now().toLocaleString());
           const diff = todayDate.diff(lastDate, 'days') || 31;
           const relativePrice = (newPlanPrice - currentPlanPrice) * (diff / 31);
-          return `http://localhost:3000/alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${relativePrice.toFixed(
+          return `${Config.general.domain}alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${relativePrice.toFixed(
             2,
           )}&ACode=0204860&Order=&Fild1=Steve%20Jobs&Fild2=steve%40jobs.com&Fild3=&Sign=c874af589a9428657bb7c9903a10e0304f0e6638d06231d7b24ac677d9739604&planId=${newPlanId}&mode=relativeUpgrade`;
         }
@@ -112,7 +113,7 @@ class SubscriptionPlansController extends Controller {
 
       // Downgrade logic
       if (currentPlanPrice > newPlanPrice) {
-        return `http://localhost:3000/alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${newPlanPrice}&ACode=0204860&Order=&Fild1=Steve%20Jobs&Fild2=steve%40jobs.com&Fild3=&Sign=c874af589a9428657bb7c9903a10e0304f0e6638d06231d7b24ac677d9739604&planId=${newPlanId}&mode=downgrade`;
+        return `${Config.general.domain}alerts/success?HKId=424350&Id=145288655&CCode=0&Amount=${newPlanPrice}&ACode=0204860&Order=&Fild1=Steve%20Jobs&Fild2=steve%40jobs.com&Fild3=&Sign=c874af589a9428657bb7c9903a10e0304f0e6638d06231d7b24ac677d9739604&planId=${newPlanId}&mode=downgrade`;
       }
     } catch (err) {
       console.log(err);
