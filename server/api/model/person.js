@@ -9,13 +9,14 @@ const BaseModel = require('./base_model');
 const Exception = require('./exception');
 const { personTypes } = require('../../api/constants');
 const PersonPhoto = require('./person_photo');
+const { Knex } = require('../service/database');
 
 const seconds = 1000;
 
 class Person extends BaseModel {
 	get rules() {
 		return {
-			id: ['required', 'integer'],
+			id: ['integer'],
 			email: ['required', 'email'],
 			password: ['required', 'string'],
 			name: ['required', 'string'],
@@ -151,6 +152,57 @@ class Person extends BaseModel {
 			}
 			return this;
 		});
+	}
+
+	static getById(id) {
+		return Knex('person').select('subscribe_plan_id').where({ id: id }).first();
+	}
+
+	static getAlerts(id) {
+		return Knex('alert')
+			.select('type', 'id', 'disabled')
+			.where({
+				person_id: id,
+			})
+			.orderBy('id', 'asc');
+	}
+
+	static updateSubscribePlanId(personId, planId) {
+		return Knex('person')
+			.where({ id: personId })
+			.update({
+				subscribe_plan_id: planId,
+			})
+			.catch(error => {
+				console.error('Error updating record:', error);
+			});
+	}
+
+	static updateIsReachedMaxAlerts(id, value) {
+		return Knex('person')
+			.where({ id: id })
+			.update({
+				is_reached_max_alerts: value,
+			})
+			.catch(error => {
+				console.error('Error updating record:', error);
+			});
+	}
+
+	static updateIsSubscriptionCanceled(personId, value) {
+		return Knex('person')
+			.where({ id: personId })
+			.update({ is_subscription_canceled: value })
+			.catch(err => console.error(err));
+	}
+
+	static async isSubscriptionCanceled(personId) {
+		return (
+			await Knex('person')
+				.where({ id: personId })
+				.select('is_subscription_canceled')
+				.first()
+		).is_subscription_canceled;
 	}
 
 	static canCreate(session) {

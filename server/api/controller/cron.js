@@ -19,7 +19,9 @@ const TreePermit = require('../model/tree_permit');
 const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
-const {	meirimStatuses } = require('../constants');
+const { meirimStatuses } = require('../constants');
+const { Knex } = require('../service/database');
+const { Person } = require('../model');
 
 const iplan = (limit = -1) =>
 	iplanApi
@@ -557,26 +559,91 @@ const fillMPIDForMissingPlans = async () => {
 
 		await Promise.all(models.map((planModel)=> planModel.save()));
 
-		// const planNumberToQuery = _.map(plans, (plan) => plan.attributes);
-	} catch(e){
-		console.log('Error scrapping new MP_ID', e.message);
-	}
-	// finally{
-	// }
+    // const planNumberToQuery = _.map(plans, (plan) => plan.attributes);
+  } catch (e) {
+    console.log('Error scrapping new MP_ID', e.message);
+  }
+  // finally{
+  // }
+};
 
+const checkSubscriptionExpiration = async () => {
+  try {
+    const allScheduledTasks = await Knex('scheduled_tasks').select('*');
+
+    if (!allScheduledTasks.length) return;
+
+    for (const task of allScheduledTasks) {
+      const {
+        person_id: personId,
+        subscription_id: subscriptionId,
+        date,
+      } = task;
+
+      if (moment().format('YYYY-MM-DD') >= date) {
+        const personPlanAlerts = await Knex('alert').where({
+          person_id: personId,
+          type: 'plan',
+        });
+
+        const activeAlerts = personPlanAlerts.filter(alert => !alert.disabled);
+
+        let alertsQty = 1;
+
+        if (subscriptionId) {
+          alertsQty = (
+            await Knex('subscription_plans')
+              .select('alerts_qty')
+              .where({ id: subscriptionId })
+              .first()
+          ).alerts_qty;
+        }
+
+        if (activeAlerts.length > alertsQty) {
+          if (!subscriptionId) {
+            console.log('fire')
+            await Knex('alert')
+              .where({ id: activeAlerts[0].id })
+              .update({ radius: 1 });
+          }
+
+          const disabledAlertsList = activeAlerts.slice(alertsQty);
+
+          for (const alert of disabledAlertsList) {
+            await Knex('alert')
+              .where({ id: alert.id })
+              .update({ disabled: true });
+          }
+        }
+
+        await Knex('person').where({ id: personId }).update({
+          subscribe_plan_id: subscriptionId,
+        });
+        await Person.updateIsSubscriptionCanceled(personId, false);
+        await Knex('scheduled_tasks').where('id', task.id).del();
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    Knex.destroy().then(() => {
+      console.log('Connection close');
+    });
+  }
 };
 
 module.exports = {
-	iplan,
-	complete_mavat_data,
-	sendPlanningAlerts,
-	complete_jurisdiction_from_mavat,
-	fix_geodata,
-	fetchIplan,
-	fetchTreePermit,
-	sendTreeAlerts,
-	sendDigestPlanningAlerts,
-	updatePlanTags,
-	fetchPlanStatus,
-	fillMPIDForMissingPlans
+  iplan,
+  complete_mavat_data,
+  sendPlanningAlerts,
+  complete_jurisdiction_from_mavat,
+  fix_geodata,
+  fetchIplan,
+  fetchTreePermit,
+  sendTreeAlerts,
+  sendDigestPlanningAlerts,
+  updatePlanTags,
+  fetchPlanStatus,
+  fillMPIDForMissingPlans,
+  checkSubscriptionExpiration,
 };

@@ -35,7 +35,8 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
         )
     }
 
-    const activeLink = (path) => (match, location) => location.pathname.includes(path)
+    const activeLink = (path) => (match, location) =>
+        location.pathname.split('/')[1] === path.slice(1);
 
     const navLinks = [
         {
@@ -59,7 +60,7 @@ const DesktopNavBar = ({ user, isAuthenticated, isAdmin, logoutHandler }) => {
         },
         {
             id: 'nav-bar-alerts',
-            path: isAuthenticated ? '/alerts' : '#',
+            path: '/alerts',
             title: t.alerts,
             isActive: activeLink,
             onClick: () => {

@@ -82,13 +82,25 @@ const StyledButton = withTheme(styled(MUIButton)`
     `}
 
     
-    ${({ iconbefore, iconafter }) => (iconbefore || iconafter) && `
+    ${({ iconbefore, iconafter }) =>
+		`
        .MuiSvgIcon-root {
-             margin: 0 .25rem;
+             margin: 0;
+             ${iconbefore ? `margin-left: 10px;` : ''}
+             ${iconafter ? `margin-right: 10px;` : ''}
         }
-    `}    
+
+        svg {
+            margin: 0;
+            ${iconbefore ? `margin-left: 10px;` : ''}
+            ${iconafter ? `margin-right: 10px;` : ''}
+        }
+    `}
+
     
-    ${({ active, theme }) => active && `
+    ${({ active, theme }) =>
+		active &&
+		`
         background-color: ${theme.palette.primary['custom']} !important;
     `}    
     
@@ -111,7 +123,36 @@ const StyledButton = withTheme(styled(MUIButton)`
     ${({ width }) => width && `
         width: ${width} !important;
     `}   
-    
+	
+				${({ padding }) => padding && `
+        padding: ${padding} !important;
+    `}
+
+				${({ borderradius }) => borderradius && `
+        border-radius: ${borderradius} !important;
+    `}
+
+    ${({ lineheight }) => lineheight && `
+	       line-height: ${lineheight} !important;
+				`}
+
+    ${({ removebackground }) => removebackground === 'true' && `
+        background: none !important;
+        transition: opacity 0.3s !important;
+
+        &:hover {
+            background: none !important;
+            opacity: 0.8;
+        }
+    `}
+
+    ${({ minheight }) => `
+        min-height: ${minheight} !important;
+    `}
+
+    ${({ border }) => `
+        border: ${border} !important;
+    `}
 `);
 
 const Button = ({
@@ -135,7 +176,13 @@ const Button = ({
 	iconAfter,
 	active,
 	disabled,
-	width
+	width,
+	padding,
+	borderradius,
+	lineheight,
+	removebackground,
+	minheight,
+	border,
 }) => {
 	const theme = useTheme();
 
@@ -163,6 +210,12 @@ const Button = ({
 			disabled={disabled}
 			theme={theme}
 			width={width}
+			padding={padding}
+			borderradius={borderradius}
+			lineheight={lineheight}
+			removebackground={removebackground}
+			minheight={minheight}
+			border={border}
 		>
 			{iconBefore}
 			{text}
@@ -178,6 +231,7 @@ Button.defaultProps = {
 	extrasmall: false,
 	disabled: false,
 	active: false,
+	removebackground: 'false',
 };
 
 Button.propTypes = {
@@ -202,6 +256,9 @@ Button.propTypes = {
 	active: PropTypes.bool,
 	disabled: PropTypes.bool,
 	width: PropTypes.string,
+	removebackground: PropTypes.string,
+	minheight: PropTypes.string,
+	border: PropTypes.string,
 };
 
 export default Button;

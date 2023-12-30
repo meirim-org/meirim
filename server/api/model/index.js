@@ -15,6 +15,8 @@ const PlanTag = require('./plan_tag');
 const PlanAreaChanges = require ('./plan_area_changes');
 const PlanStatusChange = require('./plan_status_change');
 const Status = require('./status');
+const SubscriptionPlans = require('./subscription_plans');
+const SubscriptionTransactions = require('./subscription_transactions');
 
 module.exports = {
 	ArchiveNotification,
@@ -33,5 +35,7 @@ module.exports = {
 	PlanTag,
 	PlanAreaChanges,
 	PlanStatusChange,
-	Status
+	Status,
+	SubscriptionPlans,
+	SubscriptionTransactions,
 };

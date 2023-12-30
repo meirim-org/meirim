@@ -21,6 +21,7 @@ import PlanCard from './planCard';
 import ProgressBar from './progressBar';
 import TeamMembers from './teamMembers';
 import WeNeedYou from './weNeedYou';
+import UpgradeButton from './upgradeButton/UpgradeButton';
 
 export {
 	Button,
@@ -45,5 +46,6 @@ export {
 	ProgressBar,
 	TeamMembers,
 	WeNeedYou,
-	Chip
+	Chip,
+	UpgradeButton
 };

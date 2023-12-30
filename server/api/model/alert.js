@@ -49,6 +49,9 @@ class Alert extends Model {
 		if(this.get('place')){
 			this.on('saving', this.geocodePlace, this);
 		}
+		
+		this.on('updating', this.geocodeAddress);
+		
 		super.initialize();
 	}
 
@@ -234,6 +237,13 @@ class Alert extends Model {
 		}).catch(err=> {
 			console.log(err);
 		});
+	}
+
+	static updateAlertDisabledStatus(alertId, disabled) {
+		return Knex('alert')
+		.where({ id: alertId })
+		.update({ disabled: disabled })
+		.catch(err => console.error(err));
 	}
 }
 

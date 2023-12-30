@@ -1,3 +1,4 @@
+//@formatter:off
 import React from 'react';
 import { createStore, useStore } from 'react-hookstore';
 
@@ -20,7 +21,7 @@ const HEBREW_TRANSLATION = {
 	urbanPlanning: 'ידע',
 	urbanPlanningTitle: 'מרכז הידע',
 	urbanPlanningSubtitle:
-        'אנחנו מנגישים ידע ויוצרים תוכן כדי שתוכלו גם לדעת, גם להבין וגם להשפיע על המערכת שהכי משפיעה על החיים שלנו, מערכת התכנון והבניה.',
+	'אנחנו מנגישים ידע ויוצרים תוכן כדי שתוכלו גם לדעת, גם להבין וגם להשפיע על המערכת שהכי משפיעה על החיים שלנו, מערכת התכנון והבניה.',
 	meirimTitle: 'מידע תכנוני ואקטיביזם עירוני',
 	newAlert: '🏠 תוכניות בניה',
 	newAlertTree: '🌳 רשיונות כריתה של עצים',
@@ -169,7 +170,7 @@ const HEBREW_TRANSLATION = {
         'שינויים במרחב שלנו מחייבים עריכת תוכנית. ועדות התכנון והבנייה אמונות על פיקוח ואישור התוכניות.',
 	allRightsReserved: 'כל הזכויות שמורות',
 	privacyPolicy: 'מדיניות פרטיות',
-	accessibilityDeclaration: 'הצהרת נגישות', 
+	accessibilityDeclaration: 'הצהרת נגישות',
 	termsOfUse: 'תנאי שימוש',
 	signInToMeirim: 'התחברות למעירים',
 	continue: 'המשך',
@@ -272,9 +273,56 @@ const HEBREW_TRANSLATION = {
 	GISFile: 'קובץ GIS',
 	AOITitle: 'שם האיזור',
 	undefined: 'לא הוגדר',
-
 	profileVerified: 'פרופיל מאומת',
 	aboutMePublic: 'קצת על עצמי',
+
+	alertsDescription:
+		'בעמוד זה תוכלו להגדיר את ההתראות שלכם במייל, בכדי להישאר מעודכנים',
+	alertsTrees: 'כריתת עצים',
+	alertsPlans: 'תוכניות בנייה',
+	mySubscription: 'החבילה שלך',
+	packageUpgrade: 'שדרוג חבילה',
+	addAlert: 'הוספת התראה',
+	emptyState: 'מצב ריק',
+	weCanCome: ' כדי שנוכל להגיע גם לעיר שלכם!',
+	cancelation: 'ביטול',
+	addResidentialAddress:
+		'הוסיפו כתובת מגורים, שיש בה דירה בבעלותכם, או כל כתובת שיש לכם עניין לגבי תוכניות בנייה בסביבה שלה',
+	edit: 'עריכה',
+	premium: 'משודרג',
+	disabled: 'לא פעיל',
+	free: 'חינם',
+	editPlan: 'עדכון',
+	freeNotificationMessage: 'קיבלתם מאיתנו התראה ראשונה חינמית',
+	upgradeToGetMore: 'שדרגו את החבילה כדי להוסיף עוד התראות',
+	numberOfAddresses: 'מספר כתובות',
+	month: 'חודש',
+	nis: 'ש״ח',
+	yourPlan: 'התכנית שלך',
+	asNeeded: 'לפי הצורך',
+	upTo: 'עד $ ק״מ',
+	revenuInvestMessage:
+		'כל ההכנסות משירות זה מושקעות בתפעול והמשך פיתוח הנגשת המידע!',
+	updateTheNotificationPackage: 'עידכון חבילת ההתראות',
+	toRemoveYourPackage: 'להסרת החבילה שלכם',
+	addresses: 'כתובות',
+	updatingTheProgramTo: 'עידכון התכנית ל',
+	nextBillingDateYouWillBeCharged: 'במועד החיוב הבא תחוייבו על סך $ ש״ח בלבד',
+	cancelYourPlan: 'ביטול חבילת ההתראות',
+    youWontGetAnyAdditionalCharges: 'אין תוכניות בנייה נוספות בחינם',
+    yourPlanWillStayUntil: 'ההתראות שלכם יישארו פעילות עד תאריך',
+	approve: 'אישור',
+	cancel: 'חזרה',
+	yourPlanHasBeenCanceled: 'החבילה שלך הוסרה',
+	fromNowNoAdditionalCharges: 'מעתה לא יהיו לכם חיובים נוספים',
+	youCanUpdateAgainInAnyMoment: 'ניתן לעדכן את החבילה שוב בכל רגע שתרצו.',
+    youIncreasedYourPlan: 'שודרגתם! תוכלו להוסיף עכשיו עוד כתובות',
+    yourPlanWillBeDowngradedOn: 'ביצעתם שינמוך ל-2 כתובות אשר ייכנס לתוקף בתאריך',
+	youUpdatedYourPlanTo: 'עדכנתם את התכנית ל',
+	youPaidTheRelativeCosts:
+		'חוייבתם על החלק היחסי עד מועד החיוב הבא, ממנו תחוייבו $ ש״ח בחודש',
+	reactivate: 'הפעלה',
+	upgrade: 'שדרוג',
 };
 
 const ARABIC_TRANSLATION = {
@@ -357,7 +405,7 @@ const ARABIC_TRANSLATION = {
 	ourInstagram: 'Instagram',
 	ourGithub: 'Github',
 	privacyPolicy: 'سياسة الخصوصية',
-	accessibilityDeclaration: 'إتاحة المعلومات', 
+	accessibilityDeclaration: 'إتاحة المعلومات',
 	whyRegister: (
 		<div>
             רוצים לדעת מה בונים לכם <strong>ליד הבית?</strong>

@@ -1,82 +1,60 @@
-import React, { useState } from 'react';
-import Wrapper from '../../components/Wrapper';
-import Snackbar from '@material-ui/core/Snackbar';
-
+import React, { useEffect } from 'react';
 import { CheckIfUserCanAccessPage } from 'hooks';
-import api from 'services/api';
-import './Alerts.css';
-import AlertPlans from '../../components/AlertPlans';
-import AlertTrees from '../../components/AlertTrees';
-import AlertList from '../../components/AlertList/';
-import { AlertSection, AlertContainer } from './styles';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import AlertList from 'components/AlertList';
+import { withGetScreen } from 'react-getscreen';
+import PlanMobile from './mobile/';
+import PlanDesktop from './desktop/';
+import { AlertsSelectors } from '../../redux/selectors';
+import { useSuccessCloseHandler, useUpdateManuallyAlertsState } from './hooks';
+import PropTypes from 'prop-types';
 
-const messages = {
-	alertAdded: 'התראת תכנון התווספה בהצלחה!',
-	alertDeleted: 'התראת תכנון הוסרה בהצלחה'
-}
+const Alert = ({ isMobile, isTablet, match }) => {
+	CheckIfUserCanAccessPage();
+	const { plans, trees } = AlertsSelectors();
 
-const Alerts = () => {
-	CheckIfUserCanAccessPage()
-
-	const [added, setAdded] = useState(false);
-	const [deleted, setDeleted] = useState(false);
-	const [alerts, setAlerts] = useState([]);
-
-	const handleCloseSnackbar = () => {
-		setAdded(false);
-		setDeleted(false);
+	const alertsProps = {
+		match,
+		alerts: [...plans, ...trees],
 	};
 
-	const handleAddedAlert = () => {
-		getAlerts();
-		setAdded(true);
-	};
+	const { getAlerts } = useUpdateManuallyAlertsState();
 
-	const handleDeletedAlert = () => {
-		getAlerts();
-		setDeleted(true);
-	};
-
-	const getAlerts = () => {
-		return api.get('/alert')
-			.then(result => {
-				setAlerts(result.data);
-			})
-			.catch(error => console.error(error));
-	}
-
-	React.useEffect(() => {
+	useEffect(() => {
 		getAlerts();
 	}, []);
 
-	const planAlerts = <AlertSection gridArea='alert-plans'>
-		<AlertPlans notifyAddedAlert={handleAddedAlert} />
-	</AlertSection>;
+	useSuccessCloseHandler();
 
-	const treeAlrets = <AlertSection gridArea='alert-trees'>
-		<AlertTrees notifyAddedAlert={handleAddedAlert} />
-	</AlertSection>;
+	const Template = isMobile() || isTablet() ? PlanMobile : PlanDesktop;
 
-	const alertList = <AlertSection gridArea='alert-list' height='fit-content'>
-		<AlertList notifyDeletedAlert={handleDeletedAlert} alerts={alerts} />
-	</AlertSection>;
+	return (
+		<Template {...alertsProps}>
+			<Switch>
+				<Route exact path="/alerts">
+					<Redirect to="/alerts/plans" />
+				</Route>
+				<Route
+					path={match.url + '/trees'}
+					render={() => <AlertList type="trees" alerts={trees} />}
+				/>
+				<Route
+					path={match.url + '/plans'}
+					render={() => <AlertList type="plans" alerts={plans} />}
+				/>
+			</Switch>
+		</Template>
+	);
+};
 
-	return (<Wrapper>
-		<AlertContainer>
-			{planAlerts}
-			{treeAlrets}
-			{alertList}
-		</AlertContainer>
-		<Snackbar
-			open={added || deleted}
-			anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-			autoHideDuration={3000}
-			onClose={handleCloseSnackbar}
-			onClick={handleCloseSnackbar}
-			ContentProps={{ 'aria-describedby': 'message-id' }}
-			message={<span id="message-id">{added ? messages.alertAdded : messages.alertDeleted}</span>}
-		/>
-	</Wrapper>);
-}
+Alert.propTypes = {
+	isMobile: PropTypes.func,
+	isTablet: PropTypes.func,
+	match: PropTypes.object,
+};
 
-export default Alerts;
+export default withGetScreen(Alert, {
+	mobileLimit: 768,
+	tabletLimit: 1024,
+	shouldListenOnResize: true,
+});

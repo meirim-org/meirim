@@ -5,6 +5,8 @@ const Log = require('../lib/log');
 const Exception = require('../model/exception');
 const { bind } = require('lodash');
 const { map, get } = require('bluebird');
+const { Knex } = require('../service/database');
+const { Alert } = require('../model');
 
 class Controller {
 	constructor(model) {
@@ -15,20 +17,39 @@ class Controller {
 		}
 	}
 
-	// try catch wrapper for all controllers
-	static wrap(fn, ctx) {
-		return (req, res, next) =>
-			Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
-				.then((response) => Success.set(res, response, req.session))
-				.catch(Checkit.Error, (err) => {
-					req.error = new Exception.BadRequest(err);
-					next();
-				})
-				.catch((err) => {
-					req.error = err;
-					next();
-				});
-	}
+  // try catch wrapper for all controllers
+  static wrap(fn, ctx) {
+    return (req, res, next) =>
+      Promise.try(() => (ctx ? bind(fn, ctx)(req) : fn(req)))
+        .then(response => {
+          if (req?.session?.person) {
+            return Knex('person')
+              .select('subscribe_plan_id', 'is_reached_max_alerts')
+              .where({ id: req?.session?.person?.id })
+              .first()
+              .then(user => {
+                if (user) {
+                  req.session.person.subscribe_plan_id =
+                    user?.subscribe_plan_id;
+                  req.session.person.is_reached_max_alerts =
+                    user?.is_reached_max_alerts;
+                }
+
+                Success.set(res, response, req.session);
+              });
+          } else {
+            return Success.set(res, response, req.session);
+          }
+        })
+        .catch(Checkit.Error, err => {
+          req.error = new Exception.BadRequest(err);
+          next();
+        })
+        .catch(err => {
+          req.error = err;
+          next();
+        });
+  }
 
 	// try catch wrapper for all controllers
 	static publicWrapper(fn, ctx) {
@@ -187,13 +208,39 @@ class Controller {
 			});
 	}
 
-	upload(req) {
-		const id = parseInt(req.params[this.id_attribute], 10);
-		const model = this.model.forge({
-			[this.id_attribute]: id,
-		});
-		return model.canEdit(req.session).then(() => model.upload(req.files));
-	}
+  update(req, transaction) {
+    const id = parseInt(req.params.id, 10);
+    if (!id) {
+      throw new Exception.NotFound('Nof found');
+    }
+
+    const options = transaction ? { transacting: transaction } : {};
+    return this.model
+      .forge({
+        [this.id_attribute]: id,
+      })
+      .fetch()
+      .then(fetchedModel => {
+        if (!fetchedModel) throw new Exception.NotFound('Nof found');
+        return fetchedModel.canEdit(req.session);
+      })
+      .then(fetchedModel => {
+        Log.debug(
+          this.tableName,
+          ' update success id:',
+          fetchedModel.get('id'),
+        );
+        return fetchedModel.save({ ...req.body }, options);
+      });
+  }
+
+  upload(req) {
+    const id = parseInt(req.params[this.id_attribute], 10);
+    const model = this.model.forge({
+      [this.id_attribute]: id,
+    });
+    return model.canEdit(req.session).then(() => model.upload(req.files));
+  }
 }
 
 module.exports = Controller;

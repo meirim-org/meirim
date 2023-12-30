@@ -1,0 +1,6 @@
+{
+    "axios": {
+        "baseURL": "https://meirim.org/api",
+        "withCredentials": true
+    }
+}

@@ -24,6 +24,7 @@ import 'App.css';
 import { muiTheme } from 'theme';
 import { CookieHook, useInitGA, useInitHotjar } from 'hooks';
 import AOI from 'pages/Permits/AOI';
+import SuccessPaymentAlert from './scenes/alerts/success';
 
 library.add(
     faSpinner,
@@ -32,7 +33,12 @@ library.add(
     faPaperPlane,
     faChartArea,
     faWhatsapp
-)
+);
+let basename = '/';
+
+if (process.env.CONFIG.basename) {
+    basename = process.env.CONFIG.basename;
+}
 
 const App = (props) => {
 	// initialize analytics
@@ -41,19 +47,19 @@ const App = (props) => {
 
 	const { loading } = CookieHook();
 	if (loading) {
-		return  <CircularProgress />; 
+		return  <CircularProgress />;
 	}
 
 	return (
 		<MuiThemeProvider theme={muiTheme}>
-			<BrowserRouter>
+			<BrowserRouter basename={basename}>
 				<>
 					<Modal />
 					<Switch>
 						<Route path="/" exact component={Homepage} />
 						<Route path="/#login" render={props => <Homepage {...props} />} />
-						<Route path="/alerts/unsubscribe/:token" 
-							render={props => <Scenes.AlertUnsubscribe {...props} />} />
+						<Route path="/alerts/unsubscribe/:token" render={props => <Scenes.AlertUnsubscribe {...props} />} />
+						<Route path="/alerts/success" render={(props) => <SuccessPaymentAlert {...props} />} />
 						<Route path="/alerts" render={props => <Scenes.Alerts {...props} />} />
 						<Route path="/plan/:id" render={props => <Plan {...props} />} />
 						<Route path="/my-plans" render={props => <UserPlans {...props} />} />
@@ -65,8 +71,8 @@ const App = (props) => {
 						<Route path="/vocabulary" render={props => <Scenes.Vocabulary {...props} />} />
 						<Route path="/about" render={props => <Scenes.About {...props} />} />
 						<Route path="/trees" render={props => <Scenes.TreePermits {...props} />}/>
-                        <Route path="/trees-map" render={props => <Scenes.TreePermitsMap {...props} />}/>
-                        <Route path="/tree/:id" render={props => <Tree {...props} />} />
+						<Route path="/trees-map" render={props => <Scenes.TreePermitsMap {...props} />}/>
+						<Route path="/tree/:id" render={props => <Tree {...props} />} />
 						<Route path="/terms" render={props => <Scenes.Terms {...props} />} />
 						<Route path="/privacy-policy" render={props => <Scenes.PrivacyPolicy {...props} />} />
 						<Route path="/404" render={props => <Scenes.NotFound {...props} />} />

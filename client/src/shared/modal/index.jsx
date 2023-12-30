@@ -16,6 +16,14 @@ import { ModalSelectors } from 'redux/selectors';
 import { device } from 'style';
 import styled from 'styled-components';
 import UserProfile from '../../components/UserProfile/UserProfile';
+import AlertModal from '../../components/AlertList/components/AlertModal';
+import UpgradeModal from 'components/AlertList/components/UpgradeModal/UpgradeModal';
+import SuccessUpgradeModal from '../../components/AlertList/components/SuccessUpgradeModal';
+import SuccessCancelModal from '../../components/AlertList/components/SuccessCancelModal';
+import CancelSubscriptionModal from '../../components/AlertList/components/CancelSubscriptionModal';
+import IframeModal from '../../components/AlertList/components/IframeModal';
+import EditAlertModal from '../../components/AlertList/components/EditAlertModal';
+import DowngradeSubscriptionModal from "../../components/AlertList/components/DowngradeSubscriptionModal";
 
 const StyledModal = styled(MUIModal)`
     display: flex;
@@ -47,6 +55,61 @@ const ModalContentWRapper = styled.div`
         min-width: inherit;
         max-width: initial;
         width: unset;
+    }
+
+    &.alertModal {
+        position: relative;
+        padding: 40px;
+        max-width: 640px;
+
+        .iconWrapper {
+            position: absolute;
+            padding: 0;
+            top: 28px;
+            left: 28px;
+            z-index: 99999;
+
+            svg {
+                fill: black;
+            }
+        }
+    }
+
+    &.upgradeModal {
+        position: relative;
+        padding: 40px;
+
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+        }
+
+        .iconWrapper {
+            position: absolute;
+            padding: 0;
+            top: 18px;
+            right: 22px;
+        }
+    }
+
+    &.newDesignModal {
+        position: relative;
+        padding: 40px;
+        min-width: 932px;
+
+        @media screen and (max-width: 975px) {
+            min-width: auto;
+        }
+
+        @media screen and (max-width: 768px) {
+            padding: 20px;
+        }
+
+        .iconWrapper {
+            position: absolute;
+            padding: 0;
+            top: 18px;
+            right: 22px;
+        }
     }
 
     &.videoModal {
@@ -91,6 +154,14 @@ const modalComponents = {
     shareTree: ShareTreeView,
     video: Video,
     profile: UserProfile,
+    addAlert: AlertModal,
+    editAlert: EditAlertModal,
+    upgradeModal: UpgradeModal,
+    successUpgradeModal: SuccessUpgradeModal,
+    successCancelModal: SuccessCancelModal,
+    downgradeSubscriptionModal: DowngradeSubscriptionModal,
+    cancelSubscriptionModal: CancelSubscriptionModal,
+    iframeModal: IframeModal,
 };
 
 const Modal = ({ id }) => {

@@ -14,6 +14,9 @@ const PermitAoi = require('./controller/permit_aoi');
 const PermitAoiPerson = require('./controller/permit_aoi_person');
 const Subscription = require('./controller/subscription');
 const BlockParcel = require('./controller/block_parcel');
+const SubscriptionPlansController = require('./controller/subscription_plans');
+const SubscriptionCancelController = require('./controller/subscription_cancel');
+
 // const Tag = require('./controller/tag');
 // const Status = require('./controller/status');
 // const health = require('./Controller/health');
@@ -80,6 +83,7 @@ Router.post('/password/resetWithToken', wrap(Password.resetWithToken));
 Router.get('/alert/', wrap(Alert.browse, Alert));
 Router.get('/alert/:id', wrap(Alert.read, Alert));
 Router.post('/alert/', wrap(Alert.create, Alert));
+Router.post('/alert/:id/edit', wrap(Alert.update, Alert));
 Router.delete('/alert/:id', wrap(Alert.delete, Alert));
 Router.delete('/alert/_token/:token', wrap(Alert.unsubscribe, Alert));
 
@@ -108,5 +112,14 @@ Router.get('/centroid', wrap(BlockParcel.centroid, BlockParcel));
 
 // Health
 Router.get('/health', wrap(() => true));
+
+// Subscription Plans
+Router.get('/subscription_plans', publicWrapper(SubscriptionPlansController.browse, SubscriptionPlansController));
+Router.get('/subscription_plans/:plan_id/get_payment_link', wrap(SubscriptionPlansController.getPaymentLink, SubscriptionPlansController));
+Router.post('/subscription_plans', wrap(SubscriptionPlansController.create, SubscriptionPlansController));
+
+// Subscription Cancel
+Router.post('/subscription_cancel', wrap(SubscriptionCancelController.cancel, SubscriptionCancelController));
+Router.get('/subscription_cancel', wrap(SubscriptionCancelController.browse, SubscriptionCancelController));
 
 module.exports = Router;
