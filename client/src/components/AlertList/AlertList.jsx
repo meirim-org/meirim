@@ -5,13 +5,15 @@ import PropTypes from 'prop-types';
 import EmptyState from './components/EmptyState';
 import AlertItemHeader from './components/AlertItemHeader';
 import '../../../node_modules/leaflet/dist/leaflet.css';
-import { UserSelectors } from '../../redux/selectors';
+// import { UserSelectors } from '../../redux/selectors';
 
 const AlertList = ({ type, alerts }) => {
 	if (alerts.length) {
-		const isReachedMaxAlerts = JSON.parse(
-			UserSelectors().user.is_reached_max_alerts
-		);
+		// TODO: fix
+		const isReachedMaxAlerts = false;
+		// const isReachedMaxAlerts = JSON.parse(
+		// 	UserSelectors().user.is_reached_max_alerts
+		// );
 
 		if (type === 'plans') {
 			const plans = alerts.filter((alert) => alert.type === 'plan');
