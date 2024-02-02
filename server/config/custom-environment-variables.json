@@ -1,0 +1,36 @@
+{
+	"session": {
+		"secret": "SERVER_SESSION_SECRET"
+	},
+	"cypher": {
+		"secret": "SERVER_CYPHER_SECRET"
+	},
+	"paymentServices": {
+		"masofId": "SERVER_PAYMENT_SERVICE_MASOF_ID",
+		"apiKey": "SERVER_PAYMENT_SERVICE_API_KEY",
+		"PassP": "SERVER_PAYMENT_SERVICE_PASS"
+	},
+	"database": {
+		"connection": {
+			"host": "SERVER_DATABASE_HOST",
+			"user": "SERVER_DATABASE_USER",
+			"password": "SERVER_DATABASE_PASSWORD"
+		}
+	},
+	"email": {
+		"options": {
+			"host": "SERVER_EMAIL_SMTP_HOST",
+			"auth": {
+				"user": "SERVER_EMAIL_SMTP_AUTH_USER",
+				"pass": "SERVER_EMAIL_SMTP_AUTH_PASSWORD",
+				"templatePass":"SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS"
+			},
+			"templates": {
+				"digestPlans": "SERVER_EMAIL_DIGEST_PLANS"
+			} 
+		}
+	},
+	"proxy": {
+		"apiKey": "SERVER_PROXY_API_KEY"
+	}
+}

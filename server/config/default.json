@@ -27,14 +27,10 @@
 		}
 	},
 	"session": {
-		"secret": "secret",
 		"cookie": {
 			"secure": false,
 			"maxAge": 86400000
 		}
-	},
-	"cypher": {
-		"secret": "hvw3fKxl94GLbR7k74zz3B"
 	},
 	"opengraph": {
 		"locale": "he_IL"
@@ -66,10 +62,7 @@
 		"filterPlansRadiusKm": null
 	},
 	"paymentServices": {
-		"baseURL": "https://icom.yaad.net",
-		"masofId": "",
-		"apiKey": "",
-		"PassP": ""
+		"baseURL": "https://icom.yaad.net"
 	},
 	"test": {
 		"database": {
@@ -106,9 +99,6 @@
 	"database": {
 		"client": "mysql",
 		"connection": {
-			"host": "localhost",
-			"user": "root",
-			"password": "password",
 			"database": "meirim",
 			"charset": "utf8"
 		},
@@ -122,17 +112,8 @@
 		"from_name": "Meirim",
 		"from_email": "alert@meirim.org",
 		"options": {
-			"host": "smtp.example.com",
 			"port": 465,
-			"secure": true,
-			"auth": {
-				"user": "",
-				"pass": "",
-				"templatePass":""
-			},
-			"templates": {
-				"digestPlans": ""
-			} 
+			"secure": true
 		},
 		"send_plan_deposit_email": true
 	},
@@ -145,8 +126,5 @@
 	"planStatusChange": {
 		"limit": 15,
 		"lastVisitedDifference": 14
-	},
-	"proxy": {
-		"apiKey": ""
 	}
 }

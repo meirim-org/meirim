@@ -1,6 +1,6 @@
 {
     "axios": {
-        "baseURL": "https://stg.meirim.org/api",
+        "baseURL": "https://staging-api.meirim.org/api",
         "withCredentials": true
     },
     "mapboxApiKey": "pk.eyJ1IjoibWVpcmltIiwiYSI6ImNrbWNjYmlwYjJhYzYycW42NTYzcmdpYWcifQ.lCBjl1gWMI6UxySOCCBUHg",

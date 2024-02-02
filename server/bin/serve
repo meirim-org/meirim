@@ -4,17 +4,28 @@ const Express = require('express');
 const http = require('http');
 
 const apiApp = require('../api/apiApp');
-const staticApp = require('../api/staticApp');
 
 // create main app
 const mainApp = Express();
 
+// TODO: implement health check!
+mainApp.use('/health', (req, res) => {
+  res.sendStatus(200);
+})
+
+mainApp.use('/version', (req, res) => {
+  res.send({
+    commit: process.env.VERSION,
+    url: `https://github.com/meirim-org/meirim/commit/${process.env.VERSION}`,
+  });
+})
+
 // mount api and static apps
+mainApp.get('/test', (req, res) => { res.sendStatus(200) } )
 mainApp.use('/api', apiApp);
-mainApp.use('/', staticApp);
 
 const server = http.createServer(mainApp);
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '80');
 server.listen(port);
 
 server.on('error', (error) => {
