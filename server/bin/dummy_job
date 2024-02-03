@@ -1,0 +1,37 @@
+const { CloudWatchClient, PutMetricDataCommand } = require("@aws-sdk/client-cloudwatch"); // CommonJS import
+const client = new CloudWatchClient();
+
+const run = async () => {
+    // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricData.html#API_PutMetricData_RequestParameters
+    // and https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html
+    // for more information about the parameters in this command.
+    const command = new PutMetricDataCommand({
+      MetricData: [
+        {
+          MetricName: "PAGES_VISITED",
+          Dimensions: [
+            {
+              Name: "UNIQUE_PAGES",
+              Value: "URLS",
+            },
+          ],
+          Unit: "None",
+          Value: 1.0,
+        },
+      ],
+      Namespace: "meirim",
+    });
+
+    try {
+      const response = await client.send(command);
+      console.log("success!", response)
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+async function main(){
+    await run()
+}
+
+main()

@@ -123,6 +123,8 @@ jobs:
             SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS=${{ secrets.SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS }}
             SERVER_EMAIL_DIGEST_PLANS=${{ secrets.SERVER_EMAIL_DIGEST_PLANS }}
             SERVER_PROXY_API_KEY=${{ secrets.SERVER_PROXY_API_KEY }}
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
             VERSION=${{github.sha}}
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
@@ -168,6 +170,8 @@ jobs:
             SERVER_EMAIL_DIGEST_PLANS=${{ secrets.SERVER_EMAIL_DIGEST_PLANS }}
             SERVER_PROXY_API_KEY=${{ secrets.SERVER_PROXY_API_KEY }}
             VERSION=${{github.sha}}
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
         with:
@@ -175,5 +179,3 @@ jobs:
           service: ${{ vars.ECS_SERVICE }}
           cluster: ${{ vars.ECS_CLUSTER }}
           wait-for-service-stability: true
-    
-    
