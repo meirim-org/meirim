@@ -9,7 +9,7 @@ async function run() {
 }
 
 async function main(){
-    await runAndReport({func: run, metricName: "dummy_job"})
+    await runAndReport({func: run, name: "dummy_job"})
 }
 
 main()

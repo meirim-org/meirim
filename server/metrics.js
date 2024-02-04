@@ -31,27 +31,35 @@ const report = async ({ metricName, unit = "None", value = 1.0, dims = [] }) => 
     };
 
 
-async function runAndReport({metricName, func}) {
+async function runAndReport({name, func}) {
     try {
         const res = await func()
         report({ 
-            metricName,
+            metricName: "job",
             dims: [
                 {
                     Name: "result",
                     Value: "success",
-                }
+                },
+                {
+                    Name: "component",
+                    Value: name,
+                },
             ]
         })
         return res
     } catch (e) {
         report({ 
-            metricName,
+            metricName: "job",
             dims: [
                 {
                     Name: "result",
                     Value: "failed",
-                }
+                },
+                {
+                    Name: "component",
+                    Value: name,
+                },
             ]
         })
         throw e
