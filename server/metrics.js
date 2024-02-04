@@ -1,6 +1,7 @@
 
 const { CloudWatchClient, PutMetricDataCommand } = require("@aws-sdk/client-cloudwatch"); // CommonJS import
 const client = new CloudWatchClient();
+const env = process.env.NODE_ENV
 
 // [
 //     {
@@ -16,7 +17,7 @@ const report = async ({ metricName, unit = "None", value = 1.0, dims = [] }) => 
       MetricData: [
         {
           MetricName: metricName,
-          Dimensions: dims,
+          Dimensions: [...dims, { Name: "environment", Value: env }],
           Unit: unit,
           Value: value,
         },
