@@ -2,11 +2,13 @@
 
 const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
+const { runAndReport } = require('../metrics')
 
 const crawlMethod = process.argv[2];
 
-controller
+runAndReport({ func: () => {
+	return controller
 	.fetchTreePermit(crawlMethod)
 	.then((res) => { Log.info(`Found ${res} new permits`); })
-	.catch(e => Log.error(e))
-	.finally(async () => { process.exit(); });
+}, name: "fetch_tree_permit" })
+

@@ -1,6 +1,8 @@
 
 const { CloudWatchClient, PutMetricDataCommand } = require("@aws-sdk/client-cloudwatch"); // CommonJS import
 const client = new CloudWatchClient();
+const Log = require('./api/lib/log');
+
 const env = process.env.NODE_ENV
 
 // [
@@ -63,6 +65,7 @@ async function runAndReport({name, func}) {
                 },
             ]
         })
+        Log.error("failed to run - ", name, e)
         throw e
     }
 } 

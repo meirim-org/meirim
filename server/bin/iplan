@@ -4,20 +4,20 @@ const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
 const axios = require('axios');
 const Config = require('../api/lib/config');
+const { runAndReport } = require('../metrics')
 
-controller
+
+runAndReport({ func: () => {
+return controller
 	.iplan()
 	.then(async () => {
 		Log.info('iplan completed');
 		// report to monitor that iplan ended successfuly
 		const iplanHeartbeatUrl = Config.get('uptimeRobot.iplanHeartbeatUrl');
-		try {
-			Log.info('reporting to monitor on iplan success '+ iplanHeartbeatUrl);
-			const response = await axios.get(iplanHeartbeatUrl);
-			Log.info('iplan monitor success');
-		} catch (error) {
-			Log.error('iplan monitor error msg: ' + error.response.body);
-		}
+		Log.info('reporting to monitor on iplan success '+ iplanHeartbeatUrl);
+		const response = await axios.get(iplanHeartbeatUrl);
+		Log.info('iplan monitor success');
+	
 	})
-	.catch(e => Log.error(e))
-	.finally(() => process.exit());
+}, name: "iplan"})
+
