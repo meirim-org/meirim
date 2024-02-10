@@ -79,7 +79,6 @@ jobs:
                   $(npm bin)/cypress run --browser firefox --headless
 
     build-and-deploy-staging:
-      if: github.ref != 'refs/heads/master'
       environment: staging
       runs-on: ubuntu-latest
       steps:
@@ -93,6 +92,10 @@ jobs:
       - name: install client dependencies
         working-directory: client
         run: npm install
+      
+      - name: create version.txt 
+        working-directory: client
+        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.ref_name }}" > public/version.txt
 
       - name: build
         working-directory: client
@@ -132,7 +135,11 @@ jobs:
       - name: install client dependencies
         working-directory: client
         run: npm install
-
+        
+      - name: create version.txt 
+        working-directory: client
+        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.ref_name }}" > public/version.txt
+      
       - name: build
         working-directory: client
         run: npm run build
