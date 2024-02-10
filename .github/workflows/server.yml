@@ -2,7 +2,6 @@ name: Server CI
 
 env:
   AWS_REGION: il-central-1	
-  ECS_TASK_DEFINITION: server/.aws/task-definition.json 
   ECR_REPOSITORY: 072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server 
 on:
   push:
@@ -105,7 +104,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          task-definition: server/.aws/staging-task-definition.json 
           container-name: ${{ vars.CONTAINER_NAME }}
           image: "072085314121.dkr.ecr.il-central-1.amazonaws.com/meirim-server:${{github.sha}}"
           environment-variables: |
@@ -130,7 +129,7 @@ jobs:
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: server/.aws/production-task-definition.json 
           service: ${{ vars.ECS_SERVICE }}
           cluster: ${{ vars.ECS_CLUSTER }}
           wait-for-service-stability: true
