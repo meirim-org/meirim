@@ -93,9 +93,9 @@ jobs:
         working-directory: client
         run: npm install
       
-      - name: create version.txt 
+      - name: create version file 
         working-directory: client
-        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.sha }}" > public/version.txt
+        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.sha }}" > public/version
 
       - name: build
         working-directory: client
@@ -136,9 +136,9 @@ jobs:
         working-directory: client
         run: npm install
         
-      - name: create version.txt 
+      - name: create version file 
         working-directory: client
-        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.sha }}" > public/version.txt
+        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.sha }}" > public/version
       
       - name: build
         working-directory: client
