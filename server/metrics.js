@@ -36,7 +36,7 @@ const report = async ({ metricName, unit = "None", value = 1.0, dims = [] }) => 
 
 async function runAndReport({name, func}) {
     try {
-        const res = await func()
+        await func()
         report({ 
             metricName: "job",
             dims: [
@@ -50,7 +50,7 @@ async function runAndReport({name, func}) {
                 },
             ]
         })
-        return res
+        process.exit();
     } catch (e) {
         report({ 
             metricName: "job",
@@ -66,8 +66,8 @@ async function runAndReport({name, func}) {
             ]
         })
         Log.error("failed to run - ", name, e)
-        throw e
-    }
+        process.exit();
+    } 
 } 
 
 module.exports = {
