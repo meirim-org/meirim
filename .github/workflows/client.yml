@@ -95,7 +95,7 @@ jobs:
       
       - name: create version.txt 
         working-directory: client
-        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.ref_name }}" > public/version.txt
+        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.sha }}" > public/version.txt
 
       - name: build
         working-directory: client
@@ -138,7 +138,7 @@ jobs:
         
       - name: create version.txt 
         working-directory: client
-        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.ref_name }}" > public/version.txt
+        run: echo "https://github.com/meirim-org/meirim/commit/${{ github.sha }}" > public/version.txt
       
       - name: build
         working-directory: client
