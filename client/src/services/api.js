@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const instance = axios.create(process.env.CONFIG.axios)
+const instance = axios.create({
+	"baseURL": process.env.REACT_APP_BASE_API_URL,
+	"withCredentials": true
+})
 
 export default {
 	get: (path, data, options) => instance.get(path, { params: data }, options)

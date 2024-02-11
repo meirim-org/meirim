@@ -10,7 +10,7 @@ import Mapbox from 'react-map-gl';
 import PropTypes from 'prop-types';
 
 mapboxgl.workerClass = MapboxWorker;
-const apiKey = process.env.CONFIG.mapboxApiKey;
+const apiKey = process.env.REACT_APP_MAPBOX_KEY;
 
 
 export const Map = ({ onMouseMove, id, children, onClick, initialViewState, interactiveLayerIds, style, mapStyle = 'mapbox://styles/mapbox/light-v11' }) => {
