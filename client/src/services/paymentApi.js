@@ -1,8 +1,8 @@
 const axios = require('axios');
-const config = process.env.CONFIG.axios;
+const config = process.env.REACT_APP_BASE_API_URL
 
 const instance = axios.create({
-    baseURL: `${config.baseURL}/funding`
+    baseURL: `${config}/funding`
 })
 
 module.exports = {
