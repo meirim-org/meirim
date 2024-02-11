@@ -84,6 +84,7 @@
     "scripts": {
         "start": "react-app-rewired start",
         "build": "NODE_ENV=production react-app-rewired build",
+        "build:staging": "NODE_ENV=staging react-app-rewired build",
         "api": "node bin/api",
         "serve": "node bin/serve",
         "cypress": "npx cypress open"

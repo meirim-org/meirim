@@ -99,7 +99,7 @@ jobs:
 
       - name: build
         working-directory: client
-        run: npm run build
+        run: npm run build:staging
         env:
           NODE_ENV: staging
           BASE_NAME: ${{ github.ref_name }}

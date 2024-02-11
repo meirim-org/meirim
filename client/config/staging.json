@@ -1,13 +1,6 @@
 {
-    "analytics": {
-        "ga": {
-            "enabled": false,
-            "ua": ""
-        },
-        "hotjar": {
-            "enabled": false,
-            "hjid": 0,
-            "hjsv": 0
-        }
+    "axios": {
+        "baseURL": "https://staging-api.meirim.org/api",
+        "withCredentials": true
     }
 }
