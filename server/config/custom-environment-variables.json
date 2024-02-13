@@ -1,4 +1,7 @@
 {
+	"geocoder": {
+        "apiKey": "SERVER_GEOCODER_API_KEY"
+    },
 	"session": {
 		"secret": "SERVER_SESSION_SECRET"
 	},

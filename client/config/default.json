@@ -10,13 +10,13 @@
     },
     "analytics": {
         "ga": {
-            "enabled": false,
-            "ua": ""
+            "enabled": true,
+            "ua": "UA-122025557-1"
         },
         "hotjar": {
-            "enabled": false,
-            "hjid": 0,
-            "hjsv": 0
+            "enabled": true,
+            "hjid": 2234872,
+            "hjsv": 6
         }
     }
 }

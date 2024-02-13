@@ -44,12 +44,12 @@
 		"debug": "logs/debug.log"
 	},
 	"aws": {
-		"useS3ForTreeFiles": false,
-		"treeBucketName": "treeBucketName"
+		"useS3ForTreeFiles": true,
+		"treeBucketName": "prd-service-tree-c281bf34"
 	},
 	"trees": {
 		"rawDataDir": "/tmp/raw_trees",
-		"geoCodingInterval" : 30000,
+		"geoCodingInterval" : 5000,
 		"maxPermits": 5,
 		"haifaUrl" : "https://stg-service-tree-6b3da185.s3.eu-west-1.amazonaws.com/haifa/rptPirsum.xlsx",
 		"hodHasharonUrl": "https://www.hod-hasharon.muni.il/%D7%91%D7%A7%D7%A9%D7%95%D7%AA-%D7%95%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%A0%D7%95%D7%AA-%D7%9B%D7%A8%D7%99%D7%AA%D7%94-2023/",
@@ -59,7 +59,7 @@
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,
-		"filterPlansRadiusKm": null
+		"filterPlansRadiusKm": 10
 	},
 	"paymentServices": {
 		"baseURL": "https://icom.yaad.net"
