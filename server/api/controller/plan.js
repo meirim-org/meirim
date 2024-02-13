@@ -68,13 +68,13 @@ class PlanController extends Controller {
 			q.orderByRaw = ['distance'];
 			delete q.order;
 
-			if (Config.locationSearch.filterPlansRadiusKm !== null) {
-				// use ST_Within to filter for plans with centroids within a polygon
-				// created with ST_Buffer. this makes use of the index on geom_centroid
-				q.whereRaw = [
-					Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm}*1000/${spatialUnitFactor}))`)
-				];
-			}
+			console.log("Config.locationSearch", Config.locationSearch)
+
+			// use ST_Within to filter for plans with centroids within a polygon
+			// created with ST_Buffer. this makes use of the index on geom_centroid
+			q.whereRaw = [
+				Knex.raw(`ST_Within(geom_centroid, ST_Buffer(ST_GeomFromText("${polygon}", 4326), ${Config.locationSearch.filterPlansRadiusKm || 10}*1000/${spatialUnitFactor}))`)
+			];
 
 			// filter out plans that should not be returned in geo search
 			q.where.geo_search_filter = [false];
