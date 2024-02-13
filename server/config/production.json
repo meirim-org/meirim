@@ -1,0 +1,6 @@
+{
+    "aws": {
+		"useS3ForTreeFiles": true,
+		"treeBucketName": "prd-service-tree-c281bf34"
+	}
+}
