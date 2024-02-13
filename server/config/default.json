@@ -1,7 +1,11 @@
 {
 	"geocoder": {
-		"provider": "openstreetmap"
-	},
+        "provider": "google",
+        "httpAdapter": "https",
+        "formatter": null,
+        "region": "IL",
+        "language": "he"
+    },
 	"osmGeocoder": {
 		"provider": "openstreetmap",
 		"headers": {
@@ -11,13 +15,15 @@
 	"staticmap": {
 		"width": 600,
 		"height": 400,
-		"tileRequestLimit": 20,
-		"tileRequestHeader": {}
+        "tileRequestHeader": {
+            "User-Agent": "http://Meirim.org - Urban planning public participation",
+            "Referer": "http://Meirim.org/"
+        }
 	},
 	"general": {
 		"userAgent": "Meirim.org (info@meirim.org)",
 		"domain": "https://meirim.org/",
-		"trustProxy": null
+		"trustProxy": 1
 	},
 	"services": {
 		"schedule": {
@@ -28,8 +34,8 @@
 	},
 	"session": {
 		"cookie": {
-			"secure": false,
-			"maxAge": 86400000
+			"secure": true,
+			"maxAge": 31536000000
 		}
 	},
 	"opengraph": {
@@ -45,7 +51,7 @@
 	},
 	"aws": {
 		"useS3ForTreeFiles": true,
-		"treeBucketName": "prd-service-tree-c281bf34"
+		"treeBucketName": "stg-service-tree-6b3da185"
 	},
 	"trees": {
 		"rawDataDir": "/tmp/raw_trees",
