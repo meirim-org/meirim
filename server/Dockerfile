@@ -1,6 +1,12 @@
 # Use the official Node.js 14 image as the base image
 FROM node:14
 
+RUN apt-get update -y
+RUN apt-get install gcc-4.9 -y 
+RUN apt-get upgrade libstdc++6 -y
+RUN apt-get dist-upgrade -y
+
+
 ENV ENTRY "node bin/serve"
 
 # Set the working directory inside the container

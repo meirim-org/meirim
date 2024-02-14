@@ -12,6 +12,8 @@ const sentryDsn = config.get('sentry_dsn')
 const mainApp = Express();
 
 Sentry.init({
+  environment: process.env.NODE_ENV,
+  release: "meirim-server#" + process.env.VERSION,
   dsn: sentryDsn,
   integrations: [
     // enable HTTP calls tracing
