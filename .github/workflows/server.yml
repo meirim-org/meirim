@@ -122,6 +122,7 @@ jobs:
             SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS=${{ secrets.SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS }}
             SERVER_EMAIL_DIGEST_PLANS=${{ secrets.SERVER_EMAIL_DIGEST_PLANS }}
             SERVER_PROXY_API_KEY=${{ secrets.SERVER_PROXY_API_KEY }}
+            SERVER_SENTRY_DSN=${{ secrets.SERVER_SENTRY_DSN }}
             AWS_ACCESS_KEY_ID=${{ secrets.SERVER_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.SERVER_AWS_SECRET_ACCESS_KEY }}
             VERSION=${{github.sha}}
@@ -169,6 +170,7 @@ jobs:
             SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS=${{ secrets.SERVER_EMAIL_SMTP_AUTH_TEMPLATE_PASS }}
             SERVER_EMAIL_DIGEST_PLANS=${{ secrets.SERVER_EMAIL_DIGEST_PLANS }}
             SERVER_PROXY_API_KEY=${{ secrets.SERVER_PROXY_API_KEY }}
+            SERVER_SENTRY_DSN=${{ secrets.SERVER_SENTRY_DSN }}
             VERSION=${{github.sha}}
             AWS_ACCESS_KEY_ID=${{ secrets.SERVER_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.SERVER_AWS_SECRET_ACCESS_KEY }}

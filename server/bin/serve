@@ -1,12 +1,30 @@
 #!/usr/bin/env node
-
+const Sentry = require("@sentry/node")
+const { ProfilingIntegration } = require("@sentry/profiling-node")
 const Express = require('express');
 const http = require('http');
-
 const apiApp = require('../api/apiApp');
+const config = require('config')
+
+const sentryDsn = config.get('sentry_dsn')
 
 // create main app
 const mainApp = Express();
+
+Sentry.init({
+  dsn: sentryDsn,
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Sentry.Integrations.Express({ app: mainApp }),
+    new ProfilingIntegration(),
+  ],
+  // Performance Monitoring
+  tracesSampleRate: 1.0, //  Capture 100% of the transactions
+  // Set sampling rate for profiling - this is relative to tracesSampleRate
+  profilesSampleRate: 1.0,
+});
 
 // TODO: implement health check!
 mainApp.use('/health', (req, res) => {
