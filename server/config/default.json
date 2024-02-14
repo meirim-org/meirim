@@ -64,7 +64,7 @@
 		"tlvUrl": "https://www.tel-aviv.gov.il/Residents/Environment/Pages/Trees.aspx"
 	},
 	"locationSearch": {
-		"dbDistanceInMeters": true,
+		"dbDistanceInMeters": false,
 		"filterPlansRadiusKm": 10
 	},
 	"paymentServices": {
