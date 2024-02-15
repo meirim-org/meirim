@@ -63,7 +63,7 @@ class PlanController extends Controller {
 			// multiplied to get an approximate meters value
 			const spatialUnitFactor = Config.locationSearch.dbDistanceInMeters ? 1 : 111195;
 
-			q.columns.push(Knex.raw(`ST_Distance(geom, ST_GeomFromText("${polygon}",4326))*${spatialUnitFactor} as distance`));
+			q.columns.push(Knex.raw(`ST_Distance(geom_centroid, ST_GeomFromText("${polygon}",4326))*${spatialUnitFactor} as distance`));
 
 			q.orderByRaw = ['distance'];
 			delete q.order;

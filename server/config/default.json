@@ -65,7 +65,7 @@
 	},
 	"locationSearch": {
 		"dbDistanceInMeters": false,
-		"filterPlansRadiusKm": 10
+		"filterPlansRadiusKm": 15
 	},
 	"paymentServices": {
 		"baseURL": "https://icom.yaad.net"

@@ -6,7 +6,7 @@
     "mapboxApiKey": "pk.eyJ1IjoibWVpcmltIiwiYSI6ImNrbWNjYmlwYjJhYzYycW42NTYzcmdpYWcifQ.lCBjl1gWMI6UxySOCCBUHg",
     "geocode": {
         "mapsApiKey": "AIzaSyBvJar-Gzqk4Ni0risfS_NvMEv-06qTx3I",
-        "autocompleteDelay": 2000
+        "autocompleteDelay": 1500
     },
     "analytics": {
         "ga": {
