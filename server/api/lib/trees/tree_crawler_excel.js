@@ -1,5 +1,6 @@
 const Log = require('../log');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const xlsx = require('xlsx');
 const https = require('follow-redirects').https;
@@ -13,7 +14,7 @@ const MORNING = '08:00';
 const EVENING = '20:00';
 
 const { treeBucketName: bucketName, useS3ForTreeFiles: useS3 } = Config.get('aws');
-const localTrees = path.resolve(Config.get('trees.rawDataDir'));
+const localTrees = os.tmpdir()  
 
 const {
 	REGIONAL_OFFICE, START_DATE, PERMIT_NUMBER, APPROVER_TITLE, ACTION, APPROVER_NAME,
