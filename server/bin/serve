@@ -6,6 +6,7 @@ const http = require('http');
 const apiApp = require('../api/apiApp');
 const config = require('config')
 const sentryDsn = config.get('sentry_dsn')
+const logger = require('../api/lib/log')
 
 // create main app
 const mainApp = Express();
@@ -74,8 +75,7 @@ server.on('listening', () => {
   const addr = server.address();
   const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
 
-  l.info("this is a test!")
-  console.log('Listening on ' + bind);
+  logger.info('Listening on ' + bind);
 });
 
 /**
