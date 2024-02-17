@@ -49,15 +49,15 @@ logger.info("logger initialized!")
 
 module.exports = {
 	debug: (...args) => {
-		logger.debug(args);
+		logger.debug({message: args.join(",")});
 	},
 	info: (...args) => {
-		logger.info(args);
+		logger.info({message: args.join(",")});
 	},
 	error: (...args) => {
-		logger.error(args);
+		logger.error({message: args.join(",")});
 	},
 	warn: (...args) => {
-		logger.warn(args);
+		logger.warn({message: args.join(",")});
 	}
 };
