@@ -57,6 +57,9 @@ module.exports = {
 	error: (...args) => {
 		logger.error({message: args.join(",")});
 	},
+	errorW: (message, payload) => {
+		logger.error({message, ...payload});
+	},
 	warn: (...args) => {
 		logger.warn({message: args.join(",")});
 	}
