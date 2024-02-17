@@ -45,6 +45,8 @@ const logger = winston.createLogger({
 });
 
 
+logger.info("logger initialized!")
+
 module.exports = {
 	debug: (...args) => {
 		logger.debug(args);
