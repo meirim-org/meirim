@@ -6,12 +6,10 @@ const apikey = Config.get('coralogix.apikey');
 const serviceName = Config.get('coralogix.serviceName');
 const host = Config.get('coralogix.host');
 
-
-const meta = { version: process.env.VERSION, env: process.env.NODE_ENV };
-
 const logger = winston.createLogger({
 	level: 'info',
 	format: winston.format.json(),
+	defaultMeta: { version: process.env.VERSION, env: process.env.NODE_ENV },
 	transports: [
 		new winston.transports.Console(),
 		new winston.transports.Http({
@@ -21,7 +19,7 @@ const logger = winston.createLogger({
                 applicationName: "meirim",
                 subsystemName: serviceName,
                 computerName: os.hostname(),
-                timestamp: Date.now(),
+                timestamp: opts.VERSION,
                 severity: {
                     silly: 1,
                     debug: 1,
@@ -31,7 +29,7 @@ const logger = winston.createLogger({
                     error: 5,
                     critical: 6
                 }[info.level] || 3,
-                text: info.message,
+                text: info[Symbol.for('message')]
             }))(),
             host: host,
             path: "logs/v1/singles",
@@ -46,22 +44,20 @@ const logger = winston.createLogger({
 });
 
 
-logger.info("logger initialized!")
-
 module.exports = {
 	debug: (...args) => {
-		logger.debug({message: args.join(","), ...meta});
+		logger.debug({message: args.join(',')});
 	},
 	info: (...args) => {
-		logger.info({message: args.join(","),...meta});
+		logger.info({message: args.join(",")});
 	},
 	error: (...args) => {
-		logger.error({message: args.join(","),...meta});
+		logger.error({message: args.join(",")});
 	},
 	errorW: (message, payload) => {
-		logger.error({message, ...payload, ...meta});
+		logger.error({message, ...payload});
 	},
 	warn: (...args) => {
-		logger.warn({message: args.join(","), ...meta});
+		logger.warn({message: args.join(",")});
 	}
 };
