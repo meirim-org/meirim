@@ -1,4 +1,7 @@
 {
+	"coralogix": {
+		"host": "ingress.cx498.coralogix.com"
+	},
 	"geocoder": {
         "provider": "google",
         "httpAdapter": "https",

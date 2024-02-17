@@ -1,31 +1,49 @@
 const winston = require('winston');
+const os =  require('os');
+const Config = require('./config');
+
+const apikey = Config.get('coralogix.apikey');
+const serviceName = Config.get('coralogix.serviceName');
+const host = Config.get('coralogix.host');
+
 
 const logger = winston.createLogger({
 	level: 'info',
 	format: winston.format.json(),
-	defaultMeta: { service: 'user-service' },
+	defaultMeta: { version: process.env.VERSION, env: process.env.NODE_ENV },
 	transports: [
-		new winston.transports.Console()
-		//
-		// - Write to all logs with level `info` and below to `combined.log`
-		// - Write all logs error (and below) to `error.log`.
-		//
-		// new winston.transports.File({ filename: 'error.log', level: 'error' }),
-		// new winston.transports.File({ filename: 'combined.log' })
+		new winston.transports.Console(),
+		new winston.transports.Http({
+            name: "coralogix",
+            level: "info",
+            format: winston.format((info) => ({
+                applicationName: "meirim",
+                subsystemName: serviceName,
+                computerName: os.hostname(),
+                timestamp: Date.now(),
+                severity: {
+                    silly: 1,
+                    debug: 1,
+                    verbose: 2,
+                    info: 3,
+                    warn: 4,
+                    error: 5,
+                    critical: 6
+                }[info.level] || 3,
+                text: info.message,
+            }))(),
+            host: host,
+            path: "logs/v1/singles",
+            headers: {
+                "authorization": "Bearer " + apikey,
+            },
+            ssl: true,
+            batchInterval: 1000,
+            handleExceptions: true,
+        }),
 	]
 });
 
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-// //
-// if (process.env.NODE_ENV !== 'production') {
-//   logger.add(new winston.transports.Console({
-//     format: winston.format.simple()
-//   }));
-// }
-
-logger.level = 'debug';
 
 module.exports = {
 	debug: (...args) => {

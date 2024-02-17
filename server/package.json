@@ -68,7 +68,7 @@
         "staticmaps": "^1.10.0",
         "terraformer-wkt-parser": "^1.2.1",
         "turf": "^3.0.14",
-        "winston": "^3.3.3",
+        "winston": "^3.10.3",
         "xlsx": "^0.16.9"
     },
     "scripts": {
