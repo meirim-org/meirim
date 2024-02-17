@@ -7,10 +7,11 @@ const serviceName = Config.get('coralogix.serviceName');
 const host = Config.get('coralogix.host');
 
 
+const meta = { version: process.env.VERSION, env: process.env.NODE_ENV };
+
 const logger = winston.createLogger({
 	level: 'info',
 	format: winston.format.json(),
-	defaultMeta: { version: process.env.VERSION, env: process.env.NODE_ENV },
 	transports: [
 		new winston.transports.Console(),
 		new winston.transports.Http({
@@ -49,18 +50,18 @@ logger.info("logger initialized!")
 
 module.exports = {
 	debug: (...args) => {
-		logger.debug({message: args.join(",")});
+		logger.debug({message: args.join(","), ...meta});
 	},
 	info: (...args) => {
-		logger.info({message: args.join(",")});
+		logger.info({message: args.join(","),...meta});
 	},
 	error: (...args) => {
-		logger.error({message: args.join(",")});
+		logger.error({message: args.join(","),...meta});
 	},
 	errorW: (message, payload) => {
-		logger.error({message, ...payload});
+		logger.error({message, ...payload, ...meta});
 	},
 	warn: (...args) => {
-		logger.warn({message: args.join(",")});
+		logger.warn({message: args.join(","), ...meta});
 	}
 };
