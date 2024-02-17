@@ -83,7 +83,7 @@ jobs:
           image: meirim-server
           registry: 072085314121.dkr.ecr.il-central-1.amazonaws.com
           directory: server
-          tags: ${{github.sha}},${{github.ref_name}}
+          tags: ${{github.sha}}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
