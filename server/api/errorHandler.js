@@ -29,14 +29,17 @@ module.exports = (req, res) => {
 		Log.info('NotImplemented', err.message, url);
 		return Failure.notImplemented(res, err.message);
 	}
+	
 	// serious errors
-	Log.error('General error', err.code, err.message, url, err.stack);
+	Log.error({
+		message: 'General error',
+		error: err,
+	});
 
 	// db errors
 	if (err.code === 'ER_GIS_INVALID_DATA') {
 		return Failure.badRequest(res, 'GIS data is invalid');
 	}
 
-	Log.error('General error', err.code, err.message, url, err.stack);
 	return Failure.error(res, 'General error. Please contact us if you receive this error.');
 };
