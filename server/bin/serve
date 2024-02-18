@@ -10,7 +10,7 @@ const logger = require('../api/lib/log')
 
 
 process.on('uncaughtException', function(err) {
-  logger.errorW('uncaught exception', { err })
+  logger.error('uncaught exception', { err })
   throw err;
 });
 

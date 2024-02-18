@@ -43,22 +43,17 @@ const logger = winston.createLogger({
 	]
 });
 
-
-
 module.exports = {
 	debug: (...args) => {
-		logger.debug({message: args.join(',')});
+		logger.debug(...args);
 	},
 	info: (...args) => {
-		logger.info({message: args.join(",")});
+		logger.info(...args);
 	},
 	error: (...args) => {
-		logger.error({message: args.join(",")});
-	},
-	errorW: (message, payload) => {
-		logger.error({message, ...payload});
+		logger.error(...args);
 	},
 	warn: (...args) => {
-		logger.warn({message: args.join(",")});
+		logger.warn(...args);
 	}
 };
