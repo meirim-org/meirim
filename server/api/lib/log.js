@@ -19,7 +19,7 @@ const logger = winston.createLogger({
                 applicationName: "meirim",
                 subsystemName: serviceName,
                 computerName: os.hostname(),
-                timestamp: opts.VERSION,
+                timestamp: Date.now(),
                 severity: {
                     silly: 1,
                     debug: 1,
@@ -42,6 +42,7 @@ const logger = winston.createLogger({
         }),
 	]
 });
+
 
 
 module.exports = {
