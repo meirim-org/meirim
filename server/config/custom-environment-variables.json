@@ -1,4 +1,5 @@
 {
+	"coralogix": {"apikey": "SERVER_CORALOGIX_API_KEY", "serviceName": "SERVER_CORALOGIX_SERVICE_NAME"},
 	"sentry_dsn": "SERVER_SENTRY_DSN",
 	"geocoder": {
         "apiKey": "SERVER_GEOCODER_API_KEY"

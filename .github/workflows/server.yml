@@ -83,7 +83,7 @@ jobs:
           image: meirim-server
           registry: 072085314121.dkr.ecr.il-central-1.amazonaws.com
           directory: server
-          tags: ${{github.sha}},${{github.ref_name}}
+          tags: ${{github.sha}}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CI_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CI_SECRET_KEY }}
@@ -125,6 +125,8 @@ jobs:
             SERVER_SENTRY_DSN=${{ secrets.SERVER_SENTRY_DSN }}
             AWS_ACCESS_KEY_ID=${{ secrets.SERVER_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.SERVER_AWS_SECRET_ACCESS_KEY }}
+            SERVER_CORALOGIX_SERVICE_NAME=${{ vars.SERVER_CORALOGIX_SERVICE_NAME }}
+            SERVER_CORALOGIX_API_KEY=${{secrets.SERVER_CORALOGIX_API_KEY}}
             VERSION=${{github.sha}}
             NODE_ENV=staging
       - name: Deploy Amazon ECS task definition
@@ -174,6 +176,8 @@ jobs:
             VERSION=${{github.sha}}
             AWS_ACCESS_KEY_ID=${{ secrets.SERVER_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.SERVER_AWS_SECRET_ACCESS_KEY }}
+            SERVER_CORALOGIX_SERVICE_NAME=${{ vars.SERVER_CORALOGIX_SERVICE_NAME }}
+            SERVER_CORALOGIX_API_KEY=${{secrets.SERVER_CORALOGIX_API_KEY}}
             NODE_ENV=production
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
