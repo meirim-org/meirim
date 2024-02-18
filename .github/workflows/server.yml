@@ -127,6 +127,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY=${{ secrets.SERVER_AWS_SECRET_ACCESS_KEY }}
             SERVER_CORALOGIX_SERVICE_NAME=${{ vars.SERVER_CORALOGIX_SERVICE_NAME }}
             SERVER_CORALOGIX_API_KEY=${{secrets.SERVER_CORALOGIX_API_KEY}}
+            SERVER_GEOCODER_API_KEY=${{secrets.SERVER_GEOCODER_API_KEY}}
             VERSION=${{github.sha}}
             NODE_ENV=staging
       - name: Deploy Amazon ECS task definition
@@ -178,6 +179,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY=${{ secrets.SERVER_AWS_SECRET_ACCESS_KEY }}
             SERVER_CORALOGIX_SERVICE_NAME=${{ vars.SERVER_CORALOGIX_SERVICE_NAME }}
             SERVER_CORALOGIX_API_KEY=${{secrets.SERVER_CORALOGIX_API_KEY}}
+            SERVER_GEOCODER_API_KEY=${{secrets.SERVER_GEOCODER_API_KEY}}
             NODE_ENV=production
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
