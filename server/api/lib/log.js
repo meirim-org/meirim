@@ -45,15 +45,15 @@ const logger = winston.createLogger({
 
 module.exports = {
 	debug: (...args) => {
-		logger.debug(...args);
+		logger.debug(args);
 	},
 	info: (...args) => {
-		logger.info(...args);
+		logger.info(args);
 	},
 	error: (...args) => {
-		logger.error(...args);
+		logger.error(args);
 	},
 	warn: (...args) => {
-		logger.warn(...args);
+		logger.warn(args);
 	}
 };
