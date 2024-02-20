@@ -45,7 +45,7 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 				existingPermitsCompact.add(key_as_string);
 			});
 		})
-		.catch(function (error) { Log.error(error); });
+		.catch(function (error) { Log.error({ message: error, treePermits, }); });
 
 	const newTreePermits = treePermits.map(tp => {
 		if (tp !== undefined) {
@@ -71,7 +71,7 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 			await new Promise(r => setTimeout(r, GEO_CODING_INTERVAL)); // max rate to query nominatim is 1 request per second
 			const polygonFromPoint = await generateGeomFromAddress(database.Knex, tp.attributes[PLACE], tp.attributes[STREET], tp.attributes[STREET_NUMBER], tp.attributes[GUSH], tp.attributes[HELKA]);
 			tp.attributes[GEOM] = polygonFromPoint;
-			Log.info(`Saving new tree permit: ${tp.attributes[REGIONAL_OFFICE]} ${tp.attributes[PERMIT_NUMBER]} with ${tp.attributes[TOTAL_TREES]} trees.`);
+			Log.debug(`Saving new tree permit: ${tp.attributes[REGIONAL_OFFICE]} ${tp.attributes[PERMIT_NUMBER]} with ${tp.attributes[TOTAL_TREES]} trees.`);
 			tp.attributes[PLACE] = unifyPlaceFormat(tp.attributes[PLACE]);
 			await tp.save();
 			savedTreePermits.push(tp);

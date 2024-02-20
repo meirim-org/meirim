@@ -86,9 +86,9 @@ async function generateGeom(db, place, street, home_number, gush, helka) {
 
 	if (!place) return;
 	if (PLACES_WITHOUT_GEOM.has(place)) return;
-	Log.info(`before resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
+	Log.debug(`before resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
 	const polygon = (gush && helka) ? await NodeGeocoder.gushHelkaToPolygon(gush, helka) : undefined;
-	Log.info(`after resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
+	Log.debug(`after resolution of gush helka ${gush}-${helka}. time: ${new Date().toString()}`);
 	if (!polygon) {
 		if (place && street) {
 			res = await Geocoder.getGeocode( place, address);

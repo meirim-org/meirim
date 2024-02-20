@@ -83,7 +83,7 @@ async function filterExistingLicenses(rawPermits) {
     const permitNumber = `meirim-beersheva-${treePermit[LICENSE_NUMBER]}`;
     const exists = existingPermits.indexOf(permitNumber) >= 0;
     if (exists) {
-      Log.info(`ignore this license, already in db: Beer Sheva, ${treePermit[LICENSE_NUMBER]} ${treePermit[STREET_NAME]} , requested: ${treePermit[REQUEST_DATE]}`);
+      Log.debug(`ignore this license, already in db: Beer Sheva, ${treePermit[LICENSE_NUMBER]} ${treePermit[STREET_NAME]} , requested: ${treePermit[REQUEST_DATE]}`);
     } else {
       amount++;
       if (amount > MAX_PERMITS) {
