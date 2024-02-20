@@ -11,6 +11,7 @@ const {
 	TEL_AVIV_OFFICAL, TEL_AVIV_FORMATS, PARDES_HANA_FORMATS, PARDES_HANA_OFFICAL,
 	PLACES_WITHOUT_GEOM
 } = require('./tree_crawler_consts');
+const { cache } = require('sharp');
 
 const TIMEZONE_DIFF = 3;
 
@@ -68,14 +69,19 @@ const unifyPlaceFormat = (place) => {
 };
 
 async function uploadToS3(filename, bucketName, fullFileName) {
-	const fileStream = fs.createReadStream(fullFileName);
-	fileStream.on('error', function (err) {
-		Log.error('File Error', err);
-	});
-	const keyName = 'regional/' + filename;
-	const objectParams = { Bucket: bucketName, Key: keyName, Body: fileStream };
-	const res = await new aws.S3({ apiVersion: '2006-03-01' }).putObject(objectParams).promise();
-	Log.info(`Successfully Uploaded to ${bucketName}/${keyName}. Status code: ${res.$response.httpResponse.statusCode}`);
+	try {
+		const fileStream = fs.createReadStream(fullFileName);
+		fileStream.on('error', function (err) {
+			Log.error('File Error', err);
+		});
+		const keyName = 'regional/' + filename;
+		const objectParams = { Bucket: bucketName, Key: keyName, Body: fileStream };
+		const res = await new aws.S3({ apiVersion: '2006-03-01' }).putObject(objectParams).promise();
+		Log.info(`Successfully Uploaded to ${bucketName}/${keyName}. Status code: ${res.$response.httpResponse.statusCode}`);
+	} catch (e) {
+		Log.error({message: "failed to upload to s3", error: e, filename, bucketName, fullFileName})
+		throw e
+	}
 }
 
 async function generateGeom(db, place, street, home_number, gush, helka) {
