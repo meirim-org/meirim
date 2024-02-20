@@ -1,4 +1,5 @@
 const Config = require('../lib/config');
+const log = require('../lib/log')
 
 const Knex = require('knex');
 
@@ -19,9 +20,10 @@ BookshelfConnection.plugin(require('../lib/bookshelf-mysql-gis'));
 
 async function isHealthy() {
 	try {
-		await KnexConnection.select("select 1")
+		await KnexConnection.raw("select 1")
 		return true
 	} catch(e) {
+		log.error({ message: "Knex is uhealthy", error: e, })
 		return false;
 	}
 
