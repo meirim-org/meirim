@@ -7,6 +7,7 @@ const apiApp = require('../api/apiApp');
 const config = require('config')
 const sentryDsn = config.get('sentry_dsn')
 const logger = require('../api/lib/log')
+const { isHealthy } = require('../api/service/database')
 
 
 process.on('uncaughtException', function(err) {
@@ -36,10 +37,9 @@ if (sentryDsn != '') {
   });
 }
 
-
-// TODO: implement health check!
-mainApp.use('/health', (req, res) => {
-  res.sendStatus(200);
+mainApp.use('/health', async (req, res) => {
+  const healthy = await isHealthy()
+  healthy ? res.sendStatus(200) : res.sendStatus(500)
 })
 
 mainApp.use('/version', (req, res) => {
@@ -49,8 +49,6 @@ mainApp.use('/version', (req, res) => {
   });
 })
 
-// mount api and static apps
-mainApp.get('/test', (req, res) => { res.sendStatus(200) } )
 mainApp.use('/api', apiApp);
 
 const server = http.createServer(mainApp);

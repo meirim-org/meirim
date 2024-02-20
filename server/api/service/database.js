@@ -17,7 +17,17 @@ let BookshelfConnection = Bookshelf(KnexConnection);
 
 BookshelfConnection.plugin(require('../lib/bookshelf-mysql-gis'));
 
+async function isHealthy() {
+	try {
+		await KnexConnection.select("select 1")
+		return true
+	} catch(e) {
+		return false;
+	}
+
+}
 module.exports = {
 	Bookshelf: BookshelfConnection,
 	Knex: KnexConnection,
+	isHealthy,	
 };
