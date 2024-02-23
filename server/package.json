@@ -16,7 +16,12 @@
     "dependencies": {
         "@aws-sdk/client-cloudwatch": "^3.504.0",
         "@florpor/pdf-table-extractor": "^1.0.6",
+        "@grpc/grpc-js": "^1.10.1",
         "@mapbox/geojson-area": "^0.2.2",
+        "@opentelemetry/exporter-metrics-otlp-grpc": "^0.48.0",
+        "@opentelemetry/resources": "^1.21.0",
+        "@opentelemetry/sdk-metrics": "^1.21.0",
+        "@opentelemetry/semantic-conventions": "^1.21.0",
         "@sendgrid/mail": "^7.6.0",
         "@sentry/node": "^7.101.0",
         "@sentry/profiling-node": "^7.101.0",
