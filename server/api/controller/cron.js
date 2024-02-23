@@ -20,11 +20,14 @@ const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
 const {	meirimStatuses } = require('../constants');
+const { report } = require('../../metrics')
 
 const iplan = (limit = -1) =>
 	iplanApi
 		.getBlueLines()
 		.then(iPlans => {
+			report({metricName: "iplane.bluelines.count", value: iPlans.length})
+			
 			// limit blue lines found so we output only *limit* plans
 			if (limit > -1) {
 				iPlans.splice(limit);
@@ -116,6 +119,7 @@ const sendPlanningAlerts = () => {
 		limit: 1
 	})
 		.then(unsentPlans => {
+			report({ metricName: "planning_alerts.unsent", value: unsentPlans.models.length })
 			Log.debug('Got', unsentPlans.models.length, 'Plans');
 			return unsentPlans.models;
 		})

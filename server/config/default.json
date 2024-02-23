@@ -1,6 +1,7 @@
 {
 	"coralogix": {
-		"host": "ingress.cx498.coralogix.com"
+		"host": "ingress.cx498.coralogix.com",
+		"metricsEndpoint": "https://ingress.cx498-aws-us-west-2.coralogix.com:443"
 	},
 	"geocoder": {
         "provider": "google",

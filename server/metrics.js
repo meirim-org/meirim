@@ -1,37 +1,55 @@
-
-const { CloudWatchClient, PutMetricDataCommand } = require("@aws-sdk/client-cloudwatch"); // CommonJS import
-const client = new CloudWatchClient();
+const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-grpc');
+const { MeterProvider, PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
+const { Resource } = require('@opentelemetry/resources');
+const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
+const { Metadata } = require('@grpc/grpc-js');
 const Log = require('./api/lib/log');
+const Config = require("config")
 
 const env = process.env.NODE_ENV
+const apikey = Config.get('coralogix.apikey');
+const url = Config.get('coralogix.metricsEndpoint');
+const serviceName = Config.get('coralogix.serviceName');
 
-// [
-//     {
-//       Name: "UNIQUE_PAGES",
-//       Value: "URLS",
-//     },
-//   ]
-const report = async ({ metricName, unit = "None", value = 1.0, dims = [] }) => {
-    // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricData.html#API_PutMetricData_RequestParameters
-    // and https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html
-    // for more information about the parameters in this command.
-    const command = new PutMetricDataCommand({
-      MetricData: [
-        {
-          MetricName: metricName,
-          Dimensions: [...dims, { Name: "environment", Value: env }],
-          Unit: unit,
-          Value: value,
-        },
-      ],
-      Namespace: "meirim",
-    });
 
+const metadata = new Metadata();
+metadata.add('Authorization', 'Bearer ' + apikey);
+
+const collectorOptions = {
+    url,
+    metadata: metadata
+};
+
+const metricExporter = new OTLPMetricExporter(collectorOptions);
+
+const meterProvider = new MeterProvider({
+    resource: new Resource({
+    [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+    }),
+});
+
+meterProvider.addMetricReader(new PeriodicExportingMetricReader({
+    exporter: metricExporter,
+    exportIntervalMillis: 100,
+}));
+
+['SIGINT', 'SIGTERM'].forEach(signal => {
+    process.on(signal, () => meterProvider.shutdown().catch(console.error));
+});
+
+const meter = meterProvider.getMeter('meirim');
+
+const report = async ({ metricName, value = 1, attributes = {} }) => {
     try {
-      await client.send(command);
+        const h = meter.createHistogram(metricName)
+        h.record(value, {
+            ...attributes,
+            env,
+        })
     } catch (err) {
-      console.error("failed to report metric", err);}
-    };
+      console.error("failed to report metric", err);
+    }
+};
 
 
 async function runAndReport({name, func}) {
@@ -39,34 +57,16 @@ async function runAndReport({name, func}) {
         await func()
         report({ 
             metricName: "job",
-            dims: [
-                {
-                    Name: "result",
-                    Value: "success",
-                },
-                {
-                    Name: "component",
-                    Value: name,
-                },
-            ]
+            attributes: {result: "success", "job-id": name}
         })
         process.exit();
     } catch (e) {
         report({ 
             metricName: "job",
-            dims: [
-                {
-                    Name: "result",
-                    Value: "failed",
-                },
-                {
-                    Name: "component",
-                    Value: name,
-                },
-            ]
+            attributes: {result: "failed", "job-id": name}
         })
         Log.error("failed to run - ", name, e)
-        process.exit();
+        process.exit(1);
     } 
 } 
 
