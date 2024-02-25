@@ -6,9 +6,6 @@
 	"geocoder": {
 		"provider": "openstreetmap"
 	},
-	"proxy": {
-		"apiKey": ""
-	},
 	"uptimeRobot": {
 		"iplanHeartbeatUrl": "https://www.google.com",
 		"treeFetchingHeartbeatUrl":	"https://www.google.com",
