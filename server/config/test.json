@@ -1,5 +1,9 @@
 {
-    "uptimeRobot": {
+	"coralogix": {"apikey": "abc", "serviceName": "test"},
+	"cypher": {
+		"secret": "abc"
+	},
+	"uptimeRobot": {
 		"iplanHeartbeatUrl": "https://www.google.com",
 		"treeFetchingHeartbeatUrl":	"https://www.google.com",
 		"sendEmailsHeartbeatUrl": "https://www.google.com",
