@@ -3,8 +3,11 @@
 	"cypher": {
 		"secret": "abc"
 	},
+	"geocoder": {
+		"provider": "openstreetmap"
+	},
 	"proxy": {
-		"apiKey": "apikey"
+		"apiKey": ""
 	},
 	"uptimeRobot": {
 		"iplanHeartbeatUrl": "https://www.google.com",
@@ -14,5 +17,20 @@
 	},
 	"planStatusChange": {
 		"lastVisitedDifference": -1
+	},
+	"database": {
+		"client": "mysql",
+		"connection": {
+			"host": "localhost",
+			"port": 33060,
+			"user": "root",
+			"password": "password",
+			"database": "test_meirim",
+			"charset": "utf8"
+		},
+		"pool": {
+			"min": 2,
+			"max": 10
+		}
 	}
 }
