@@ -12,9 +12,6 @@ jobs:
   test: 
     environment: test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
 
     services:
       test_mysql:
@@ -53,7 +50,7 @@ jobs:
 
       - name: "env"
         run: env
-        
+
       - name: test
         working-directory: server
         run: npm run test
