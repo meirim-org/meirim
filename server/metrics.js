@@ -59,12 +59,14 @@ async function runAndReport({name, func}) {
             metricName: "job",
             attributes: {result: "success", "job-id": name}
         })
+        await new Promise((r) => setTimeout(r, 3000))
         process.exit();
     } catch (e) {
         report({ 
             metricName: "job",
             attributes: {result: "failed", "job-id": name}
         })
+        await new Promise((r) => setTimeout(r, 3000))
         Log.error("failed to run - ", name, e)
         process.exit(1);
     } 
