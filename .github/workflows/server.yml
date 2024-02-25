@@ -51,6 +51,9 @@ jobs:
       - name: create database
         run: mysql --protocol=tcp --host=localhost --port=33060 --user=root --password=password -e "CREATE DATABASE test_meirim character set UTF8 collate utf8_bin; SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''));"
 
+      - name: "env"
+        run: env
+        
       - name: test
         working-directory: server
         run: npm run test
