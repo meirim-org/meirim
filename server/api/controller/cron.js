@@ -35,8 +35,7 @@ const iplan = (limit = -1) =>
 
 			return Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan));
 		}).catch(e => {
-			Log.error(`Error fetching new plans ${e}`);
-			console.log(`Error fetching new plans ${e}`);
+			Log.error(`Error fetching new plans`, e);
 		});
 
 const fix_geodata = () => {
@@ -53,13 +52,12 @@ const fix_geodata = () => {
 					});
 				})
 				.catch(e => {
-					console.log('iplan exception\n' + e.message + '\n' + e.stack);
+					console.log('iplan exceptio', e);
 					return Bluebird.resolve();
 				});
 		})
 	).catch(err => {
 		Log.error('Failed getting iplan Blue line plans', err);
-		console.log(err);
 	});
 };
 
@@ -377,12 +375,12 @@ const fetchIplan = iPlan =>
 						plan.save();
 					}
 				}).catch(e => {
-					console.log('iplan exception\n' + e.message + '\n' + e.stack);
+					Log.error('iplan exception', e);
 					return Promise.resolve();
 				});
 		})
 		.catch(e => {
-			console.log('iplan exception\n' + e.message + '\n' + e.stack);
+			Log.error('iplan exception', e);
 			return Bluebird.resolve();
 		});
 
@@ -396,7 +394,7 @@ const buildPlan = (iPlan, oldPlan) => {
 			})
 			.catch(e => {
 				// mavat might crash gracefully
-				Log.error('Mavat error', e.message, e.stack);
+				Log.error('Mavat error', e);
 				return plan;
 			})
 	);
@@ -447,7 +445,7 @@ const fetchPlanStatus = () => {
 							return;
 						}
 						const mostRecentStatus = mostRecent[0].attributes.status;
-						Log.debug('updating plan status to:', mostRecentStatus);
+						Log.info('updating plan status', {status: mostRecentStatus});
 						await plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
 						// save all plan statuses into plan_status_change table
@@ -461,13 +459,13 @@ const fetchPlanStatus = () => {
 						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
 					}
 					catch (err) {
-						Log.error('Error:', err.message);
+						Log.error('error', err);
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						await plan.save({ 'last_visited_status': now });
 					}
 				})
 					.catch(async (err)=> {
-						Log.error('Error:', err.message);
+						Log.error('error', err);
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						await plan.save({ 'last_visited_status': now });
 					});
@@ -499,7 +497,7 @@ async function sendEmailIfNeeded(plan, planStatuses, mavatStatus) {
 			})
 			.then(plan.save({ 'was_deposited': true }))
 			.then(a => {return sendEmail;})
-			.catch(err => Log.error('Error:', err.message))
+			.catch(err => Log.error('error in sendEmailIfNeeded', err))
 		;
 	}
 	return sendEmail;
