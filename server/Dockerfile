@@ -11,6 +11,10 @@ ENV ENTRY "node bin/serve"
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
+RUN apt-get update -y
+RUN apt-get install libnss -y
+RUN apt-get install libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev
+
 # Copy package.json and package-lock.json to the working directory
 COPY package.json ./
 COPY package-lock.json ./
