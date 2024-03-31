@@ -250,7 +250,7 @@ const sendTreeAlerts = () => {
 	Log.info('Running send tree permits alert');
 
 	return TreePermit.getUnsentTreePermits({
-		limit: 1
+		limit: 100
 	})
 		.then(unsentTrees => {
 			Log.debug('Got', unsentTrees.models.length, 'Tree permits');
