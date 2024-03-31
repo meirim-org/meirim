@@ -114,7 +114,7 @@ const sendPlanningAlerts = () => {
 	Log.info('Running send planning alert');
 
 	return Plan.getUnsentPlans({
-		limit: 100,
+		limit: 1
 	})
 		.then(unsentPlans => {
 			report({ metricName: "planning_alerts.unsent", value: unsentPlans.models.length })
@@ -250,7 +250,7 @@ const sendTreeAlerts = () => {
 	Log.info('Running send tree permits alert');
 
 	return TreePermit.getUnsentTreePermits({
-		limit: 100,
+		limit: 1
 	})
 		.then(unsentTrees => {
 			Log.debug('Got', unsentTrees.models.length, 'Tree permits');
