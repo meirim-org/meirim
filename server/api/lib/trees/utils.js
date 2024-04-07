@@ -102,11 +102,11 @@ async function generateGeom(db, place, street, home_number, gush, helka) {
 				Log.debug(`Couldn't geocode address: ${address}. try to fetch place from db.`);
 				res = await Geocoder.fetchOrGeocodePlace({ 'db':db, 'table':TREE_PERMIT_TABLE, 'place': place });
 				if (!res ) {
-					Log.debug(`Failed to geocode address: ${place}`);
+					Log.error(`Failed to geocode address: ${place}`);
 					return;
 				}
 			}
-			Log.debug(`Managed to geocode address ${address} : ${res.longitude},${res.latitude} `);
+			Log.info(`Managed to geocode address ${address} : ${res.longitude},${res.latitude} `);
 
 		}
 		else { // only place, no street

@@ -71,7 +71,7 @@ async function saveNewTreePermits(treePermits, maxPermits) {
 			await new Promise(r => setTimeout(r, GEO_CODING_INTERVAL)); // max rate to query nominatim is 1 request per second
 			const polygonFromPoint = await generateGeomFromAddress(database.Knex, tp.attributes[PLACE], tp.attributes[STREET], tp.attributes[STREET_NUMBER], tp.attributes[GUSH], tp.attributes[HELKA]);
 			tp.attributes[GEOM] = polygonFromPoint;
-			Log.debug(`Saving new tree permit: ${tp.attributes[REGIONAL_OFFICE]} ${tp.attributes[PERMIT_NUMBER]} with ${tp.attributes[TOTAL_TREES]} trees.`);
+			Log.info(`Saving new tree permit: ${tp.attributes[REGIONAL_OFFICE]} ${tp.attributes[PERMIT_NUMBER]} with ${tp.attributes[TOTAL_TREES]} trees.`);
 			tp.attributes[PLACE] = unifyPlaceFormat(tp.attributes[PLACE]);
 			await tp.save();
 			savedTreePermits.push(tp);
@@ -106,7 +106,7 @@ const chooseCrawl = (crawlType) => {
 		'kkl': [kkl],
 		'regional': [regional],
 		'tlv': [tlv],
-		'all': [tlv, beerSheva, hodHasharon, haifa, ramatGan, jerusalem, regional, kkl,] // removed yavne for now, as it's buggy
+		'all': [tlv, beerSheva,regional, kkl, hodHasharon, haifa, ramatGan, jerusalem, ] // removed yavne for now, as it's buggy
 	};
 
 	return crawlMap[crawlType] || crawlMap['all'];
