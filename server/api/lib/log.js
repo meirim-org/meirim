@@ -25,6 +25,7 @@ const logger = winston.createLogger({
 				}
 				
 				return {
+					fileName: __filename,
 					applicationName: "meirim",
 					subsystemName: serviceName,
 					computerName: os.hostname(),
