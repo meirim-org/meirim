@@ -444,8 +444,9 @@ const fetchPlanStatus = () => {
 							message: 'updating last_visited_status to:',
 							now,
 							plan: plan.get('id'),
-							mostRecent,
-							planStatuses,
+							plan: plan,
+							mostRecent: JSON.stringify(mostRecent),
+							planStatuses: JSON.stringify(planStatuses),
 						});
 
 						if (!mostRecent[0]) {
