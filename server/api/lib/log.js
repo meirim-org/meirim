@@ -23,9 +23,14 @@ const logger = winston.createLogger({
 				if (splat) {
 					text =  util.format(text, info[Symbol.for('splat')]);
 				}
+
+				try {
+					const payload = JSON.parse(text)
+					payload.fileName = __filename;
+					text = JSON.stringify(payload)
+				} catch(e) {}
 				
 				return {
-					fileName: __filename,
 					applicationName: "meirim",
 					subsystemName: serviceName,
 					computerName: os.hostname(),
