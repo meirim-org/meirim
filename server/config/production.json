@@ -2,5 +2,8 @@
     "aws": {
 		"useS3ForTreeFiles": true,
 		"treeBucketName": "prod-trees-audit"
+	},
+	"trees": {
+		"maxPermits": 1000
 	}
 }

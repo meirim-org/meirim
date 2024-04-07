@@ -422,10 +422,13 @@ const fetchPlanStatus = () => {
 		.then(planCollection => 
 			Bluebird.mapSeries(planCollection.models, plan => {
 				
-				Log.debug(plan.get('plan_url'));
-				Log.debug('plan visited status', plan.get('last_visited_status') );
-				Log.debug('plan current status', plan.get('status') );
-
+				Log.info({
+					plan: JSON.stringify(plan),
+					message: "working on plan",
+					last_visited_status: plan.get('last_visited_status'),
+					status:plan.get('status'),
+				});
+			
 				return MavatAPI.getPlanStatus(plan).then(async (planStatuses) => {
 					try {
 
@@ -437,15 +440,24 @@ const fetchPlanStatus = () => {
 						});
 						const mostRecent = planStatuses.sort((statusA, statusB) => { Date.parse(statusB.attributes.date) - Date.parse(statusA.attributes.date); });
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
-						Log.debug('updating last_visited_status to:', now );
+						Log.info({
+							message: 'updating last_visited_status to:',
+							now,
+							plan: plan.get('id'),
+							mostRecent,
+							planStatuses,
+						});
 
 						if (!mostRecent[0]) {
-							Log.debug('No status in mavat for plan', plan.get('id'));
+							Log.info({
+								message: 'No status in mavat for plan',
+								planId: plan.get('id'),
+							});
 							await plan.save({ 'last_visited_status': now });
 							return;
 						}
 						const mostRecentStatus = mostRecent[0].attributes.status;
-						Log.info('updating plan status', {status: mostRecentStatus});
+						Log.info({message: 'updating plan status', status: mostRecentStatus, planId: plan.get('id'), oldStatus: plan.get('status')});
 						await plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
 						// save all plan statuses into plan_status_change table
@@ -459,13 +471,13 @@ const fetchPlanStatus = () => {
 						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
 					}
 					catch (err) {
-						Log.error('error', err);
+						Log.error({err});
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						await plan.save({ 'last_visited_status': now });
 					}
 				})
 					.catch(async (err)=> {
-						Log.error('error', err);
+						Log.error({err});
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						await plan.save({ 'last_visited_status': now });
 					});
