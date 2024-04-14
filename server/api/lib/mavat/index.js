@@ -343,7 +343,11 @@ const getPlanStatus = (plan) => {
 					});
 				});
 				resolve(planStatusList);
-			}).catch(()=> {
+			}).catch((e)=> {
+				Log.error({
+					message: "failed to get plan status",
+					error: e,
+				})
 				return resolve([]);
 			})
 	});

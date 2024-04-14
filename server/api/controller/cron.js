@@ -423,7 +423,7 @@ const fetchPlanStatus = () => {
 			Bluebird.mapSeries(planCollection.models, plan => {
 				
 				Log.info({
-					plan: JSON.stringify(plan),
+					planId: plan.get("id") ,
 					message: "working on plan",
 					last_visited_status: plan.get('last_visited_status'),
 					status:plan.get('status'),
@@ -443,8 +443,7 @@ const fetchPlanStatus = () => {
 						Log.info({
 							message: 'updating last_visited_status to:',
 							now,
-							plan: plan.get('id'),
-							plan: plan,
+							planId: plan.get('id'),
 							mostRecent: JSON.stringify(mostRecent),
 							planStatuses: JSON.stringify(planStatuses),
 						});

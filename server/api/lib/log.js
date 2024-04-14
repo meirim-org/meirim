@@ -26,10 +26,11 @@ const logger = winston.createLogger({
 
 				try {
 					const payload = JSON.parse(text)
-					payload.fileName = __filename;
+					payload.stackTrace = new Error("stack").stack;
 					text = JSON.stringify(payload)
 				} catch(e) {}
 				
+		
 				return {
 					applicationName: "meirim",
 					subsystemName: serviceName,
