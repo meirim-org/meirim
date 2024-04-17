@@ -415,7 +415,7 @@ class Plan extends Model {
 						try {
 							await existingFile.destroy({ transacting: transaction });
 						} catch (e) {
-							Log.error(`error destroy file: ${e.message}`, e.trace());
+							Log.error({message: 'error destroy file', error: e});
 						}
 					}
 		
@@ -438,7 +438,7 @@ class Plan extends Model {
 						const chartRows = await modelClass.query(qb => {
 							qb.where('plan_id', plan.id);
 						}).fetchAll({ transacting: transaction }).catch(e => {
-							Log.error(`error fetch plan ${plan.id} chart: ${e.message}`, e.trace());
+							Log.error({ message: `error fetch plan`, error:  e, planId: plan.id });
 						});
 		
 						for (const chartModel of chartRows.models) {
@@ -515,12 +515,12 @@ class Plan extends Model {
 						}
 					}
 				} catch (e) {
-					Log.error(`error setMavatData tx for plan: ${e.message}`, e.trace());
+					Log.error({ message: 'error setMavatData tx for plan', error: e });
 				}
 			
 			});
 	    } catch (e) {
-			Log.error(`error setMavatData for plan: ${e.message}`, e.trace());
+			Log.error({ message: `error setMavatData for plan`, error: e });
 		}
 
 		return plan;
