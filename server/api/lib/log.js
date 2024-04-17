@@ -24,13 +24,14 @@ const logger = winston.createLogger({
 					text =  util.format(text, info[Symbol.for('splat')]);
 				}
 
-				try {
-					const payload = JSON.parse(text)
-					payload.stackTrace = new Error("stack").stack;
-					text = JSON.stringify(payload)
-				} catch(e) {}
+				if (info.level ===  'error') {
+					try {
+						const payload = JSON.parse(text)
+						payload.stackTrace = new Error("stack").stack;
+						text = JSON.stringify(payload)
+					} catch(e) {}
+				}
 				
-		
 				return {
 					applicationName: "meirim",
 					subsystemName: serviceName,

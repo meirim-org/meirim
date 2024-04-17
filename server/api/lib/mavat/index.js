@@ -199,8 +199,7 @@ const fetchPlanData = (planUrl) =>
 					resolve({ data: JSON.parse(jsonContent) });
 					
 				} catch (e) {
-					Log.error('Mavat fetch error with proxy', e.message);
-					Log.error(e);
+					Log.error({ message: 'Mavat fetch error with proxy', error: e });
 					reject(e);
 				}
 			}
