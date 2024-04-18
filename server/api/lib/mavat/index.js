@@ -180,18 +180,21 @@ const fetch = (planUrl, fetchPlanInstruction = true) =>
 // This function opens a pup browser to perform an API request to MAVAT.
 // This is because the API is blocked from outside of Israel. The response is JSON
 // and the pup browser waits for the auto HTML rendering of the response
-const fetchPlanData = (planUrl) =>
+const fetchPlanData = (planId) =>
 	new Promise((resolve, reject) => {
 		(async () => {
 			const page = await browser.newPage();
 			Log.debug('Loading plan page', planUrl);
 			try {
-				await page.goto(planUrl);
-				await page.waitForSelector('body > pre');
-				const jsonContent = await page.evaluate(
-					() => document.getElementsByTagName('pre')[0].innerText
-				);
-				resolve({ data: JSON.parse(jsonContent) });
+				const response = await Promise.all([
+					page.waitForResponse(`https://mavat.iplan.gov.il/rest/api/SV4/1?mid=${planId}`, {timeout: 20000}),
+					page.goto(`https://mavat.iplan.gov.il/SV4/1/${planId}/310`, {timeout: 10000}),
+				])			
+			
+			const apiRequest = response[0]
+			const apiPayload = await apiRequest.json()
+
+			resolve({ data: apiPayload });
 			} catch (e) {
 				let innerHTML
 				try {
@@ -364,9 +367,8 @@ const getByPlan = async (plan, fetchPlanInstructions = true) => {
 		// TODO- maybe? we can populate agam id from a search service
 		throw new Error(`No MP_ID exists for plan ${plan.get('PL_NUMBER')}`);
 	}
-	const url = `${newMavatURL}/?mid=${planId}`;
 	// Performing the new MAVAT API call
-	return fetchPlanData(url)
+	return fetchPlanData(planId)
 		.catch(er=> {
 			Log.error('Mavat fetch error', er);
 			return null;
