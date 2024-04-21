@@ -184,7 +184,7 @@ const fetchPlanData = (planId) =>
 	new Promise((resolve, reject) => {
 		(async () => {
 			const page = await browser.newPage();
-			Log.debug('Loading plan page', planUrl);
+			Log.debug('Loading plan page', planId);
 			try {
 				const response = await Promise.all([
 					page.waitForResponse(`https://mavat.iplan.gov.il/rest/api/SV4/1?mid=${planId}`, {timeout: 20000}),
@@ -201,9 +201,9 @@ const fetchPlanData = (planId) =>
 					innerHTML = await page.$eval('body', element => element.innerHTML);
 				} catch (e) {}
 
-				Log.error({ message: 'Mavat fetch error with puppeteer', error: e, innerHTML, url: planUrl});
+				Log.error({ message: 'Mavat fetch error with puppeteer', error: e, innerHTML, planId});
 				try {
-					const jsonContent = await proxy.get(planUrl);
+					const jsonContent = await proxy.get(`https://mavat.iplan.gov.il/rest/api/SV4/1?mid=${planId}`);
 					Log.info({ message: 'Mavat with proxy response', jsonContent })
 					resolve({ data: JSON.parse(jsonContent) });
 				} catch (e) {
