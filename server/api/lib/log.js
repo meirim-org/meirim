@@ -3,16 +3,16 @@ const os =  require('os');
 const util = require('util')
 const Config = require('./config');
 
-const apikey = Config.get('coralogix.apikey');
-const serviceName = Config.get('coralogix.serviceName');
-const host = Config.get('coralogix.host');
+const transports =  [
+	new winston.transports.Console()
+]
 
-const logger = winston.createLogger({
-	level: 'info',
-	format: winston.format.json(),
-	defaultMeta: { version: process.env.VERSION, env: process.env.NODE_ENV },
-	transports: [
-		new winston.transports.Console(),
+if (process.env.NODE_ENV === "staging" || process.env.NODE_ENV === "production") {
+	const apikey = Config.get('coralogix.apikey');
+	const serviceName = Config.get('coralogix.serviceName');
+	const host = Config.get('coralogix.host');
+
+	transports.push(
 		new winston.transports.Http({
             name: "coralogix",
             level: "info",
@@ -59,7 +59,14 @@ const logger = winston.createLogger({
             batchInterval: 1000,
             handleExceptions: true,
         }),
-	]
+	)
+
+} 
+const logger = winston.createLogger({
+	level: 'info',
+	format: winston.format.json(),
+	defaultMeta: { version: process.env.VERSION, env: process.env.NODE_ENV },
+	transports,
 });
 
 module.exports = {
