@@ -8,5 +8,5 @@ const { runAndReport } = require('../metrics')
 runAndReport({ func: () => {
 return controller
 	.complete_mavat_data()
-}, name: "iplan"})
+}, name: "backfill_mavat_data"})
 
