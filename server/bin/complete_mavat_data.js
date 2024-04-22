@@ -1,7 +1,4 @@
 const controller = require('../api/controller/cron');
-const Log = require('../api/lib/log');
-const axios = require('axios');
-const Config = require('../api/lib/config');
 const { runAndReport } = require('../metrics')
 
 
