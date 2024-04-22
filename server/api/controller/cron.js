@@ -68,24 +68,29 @@ const complete_mavat_data = () =>
 		qb.orderBy('id', 'desc');
 	})
 		.fetchAll()
+		.then(planCollection => {
+			Log.info({ message: "found incomplete mavat data", length: planCollection.length })
+			return planCollection;
+		})
 		.then(planCollection =>
-			Bluebird.mapSeries(planCollection.models, plan => {
-				Log.debug(plan.get('plan_url'));
+			
+			 Bluebird.mapSeries(planCollection.models, plan => {
+				Log.info({ message: "about to work on plan", id: plan.get("id"), url: plan.get('plan_url') })
 
 				return MavatAPI.getByPlan(plan)
 					.then(mavatData => {
 						Plan.setMavatData(plan, mavatData);
-						Log.debug(
-							'Saving with mavat',
-							JSON.stringify(mavatData)
-						);
-						return Promise.all([plan.save(),
+						Log.info({message: 'Saving with mavat',data: JSON.stringify(mavatData)});
+					 	return Promise.all([plan.save(),
 							PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges)
 						]);
 					})
-					.catch(() => {
+					.catch((e) => {
+						Log.error({message: "failure in complete_mavat_data", e})
 						// do nothing on error
-					});
+					}).finally(() => {
+						Log.info({ message: "finish working on plan", id: plan.get("id") })
+					})
 			})
 		);
 
