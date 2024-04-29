@@ -79,14 +79,13 @@ const complete_mavat_data = () =>
 
 				return MavatAPI.getByPlan(plan)
 					.then(mavatData => {
-						Plan.setMavatData(plan, mavatData);
 						Log.info({message: 'Saving with mavat',data: JSON.stringify(mavatData)});
-					 	return Promise.all([plan.save(),
+						return Plan.setMavatData(plan, mavatData).then(Promise.all([plan.save(),
 							PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges)
-						]);
+						]))
 					})
 					.catch((e) => {
-						Log.error({message: "failure in complete_mavat_data", e})
+						Log.error({message: "failure in complete_mavat_data", e, id: plan.get("id")})
 						// do nothing on error
 					}).finally(() => {
 						Log.info({ message: "finish working on plan", id: plan.get("id") })
