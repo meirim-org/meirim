@@ -202,14 +202,14 @@ const fetchPlanData = (planId) =>
 				} catch (e) {}
 
 				Log.error({ message: 'Mavat fetch error with puppeteer', error: e, innerHTML, planId});
-				try {
-					const jsonContent = await proxy.get(`https://mavat.iplan.gov.il/rest/api/SV4/1?mid=${planId}`);
-					Log.info({ message: 'Mavat with proxy response', jsonContent })
-					resolve({ data: JSON.parse(jsonContent) });
-				} catch (e) {
-					Log.error({ message: 'Mavat fetch error with proxy', error: e });
-					reject(e);
-				}
+				// try {
+				// 	const jsonContent = await proxy.get(`https://mavat.iplan.gov.il/rest/api/SV4/1?mid=${planId}`);
+				// 	Log.info({ message: 'Mavat with proxy response', jsonContent })
+				// 	resolve({ data: JSON.parse(jsonContent) });
+				// } catch (e) {
+				// 	Log.error({ message: 'Mavat fetch error with proxy', error: e });
+				// 	reject(e);
+				// }
 			}
 		})();
 	});
