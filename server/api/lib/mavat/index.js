@@ -116,7 +116,7 @@ const getPlanFilesNewMavat = (data) => {
 			description: file.RUB_DESC,
 			date: file.EDITING_DATE,
 			id: file.ID,
-			fileIcon: file.FILE_DATA.ficon,
+			fileIcon: file.FILE_DATA ? file.FILE_DATA.ficon: null,
 			num: file.PLAN_ENTITY_DOC_NUM
 		};
 	});
