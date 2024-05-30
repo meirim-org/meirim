@@ -10,4 +10,5 @@ runAndReport({ func: () => {
 	return Email.init()
 	.then(() =>controller.fetchPlanStatus())
 	.then(() => Log.info("Done running plan_status_change"))
+	.finally(() => process.exit());
 }, name: 'plan_status_change' })

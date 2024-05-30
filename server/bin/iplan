@@ -12,12 +12,7 @@ return controller
 	.iplan()
 	.then(async () => {
 		Log.info('iplan completed');
-		// report to monitor that iplan ended successfuly
-		const iplanHeartbeatUrl = Config.get('uptimeRobot.iplanHeartbeatUrl');
-		Log.info('reporting to monitor on iplan success '+ iplanHeartbeatUrl);
-		const response = await axios.get(iplanHeartbeatUrl);
-		Log.info('iplan monitor success');
-	
 	})
+	.finally(() => process.exit());
 }, name: "iplan"})
 

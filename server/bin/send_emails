@@ -22,6 +22,6 @@ runAndReport({ func: () => {
   return Email.init()
   .then(() => controller.sendPlanningAlerts())
   .then(() => Log.info('sendPlanningAlerts completed'))
-  .then(() => handleMonitor())
+  .finally(() => process.exit());
 }, name: "send_emails"})
 
