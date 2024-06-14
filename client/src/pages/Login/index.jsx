@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { closeModal, openModal } from 'redux/modal/slice';
 import { Button, Link, TextInput } from 'shared';
-import { serverErrorToast, wrongLoginCredsToast } from 'toasts';
+import { serverErrorToast, wrongLoginCredsToast, wrongLoginNotActivatedToast } from 'toasts';
 import { validateEmail } from 'validations';
 import { loginUser } from './controller';
 import * as SC from './style';
@@ -63,9 +63,11 @@ const Login = () => {
 		const res = await loginUser({ values: loginValues });
 		const successResponse = res.status === 'OK';
 		const wrongCredintials = res && res.response && res.response.status === 403;
+		const notActivated = res && res.response && res.response.status === 401;
 		const serverError = res && res.response && res.response.status === 504;
 		if (successResponse) setUser(res.data);
 		else if (wrongCredintials) wrongLoginCredsToast();
+		else if (notActivated) wrongLoginNotActivatedToast();
 		else if (serverError) serverErrorToast();
 	};
 	
