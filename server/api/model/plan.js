@@ -164,13 +164,14 @@ class Plan extends Model {
 
 		Log.info(`Creating ${usersSubscribedToPlanArea.length} updated plan notifications of ${types.length} types`);
 
-		for (let type of types) {
-			await Notification.createNotifications({
-				users: usersSubscribedToPlanArea,
-				planId,
-				type
-			});
-		}
+		// Current disabling notificatin creation
+		// for (let type of types) {
+		// 	await Notification.createNotifications({
+		// 		users: usersSubscribedToPlanArea,
+		// 		planId,
+		// 		type
+		// 	});
+		// }
 	}
 
 	getPlanUpdateTypes (model) {
@@ -623,10 +624,10 @@ class Plan extends Model {
 				// some status changes are missing, so if a status was reached, assume the previous ones were completed
 				// excpetion: if the plan is canceled, the previous step (approval) shouldn't be completed
 				if ((maxStep===5)&&(element.stepId===maxStep-1)){
-					Log.debug(`Skipping because reaching step 5 does not mean that step 4 happened`);
+					Log.debug('Skipping because reaching step 5 does not mean that step 4 happened');
 					return element;	
 				}
-				Log.debug(`Setting completed to true`);
+				Log.debug('Setting completed to true');
 				element.completed = true;
 			}
 			return element;
@@ -639,7 +640,7 @@ class Plan extends Model {
 		steps = steps.map((result) => ({
 			...result,
 		})); 	
-		const ret = {"cancellationDate": cancellationDate, "steps": steps};		
+		const ret = { 'cancellationDate': cancellationDate, 'steps': steps };		
 		return ret;
 	}
 }
