@@ -52,16 +52,15 @@ const report = async ({ metricName, value = 1, attributes = {} }) => {
 };
 
 
-async function runAndReport({name, func, timeout = 3*60*1000 }) {
+async function runAndReport({name, func, timeout = 15*60*1000 }) {
     try {
         await Promise.race(
-            func(),
-            new Promise((resolve, reject => {
+            [func(),
+            new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error("timeout from runAndReport"))
                 },timeout)
-            }))
-        )
+            })])
         report({ 
             metricName: "job",
             attributes: {result: "success", "job-id": name}
