@@ -52,7 +52,7 @@ const report = async ({ metricName, value = 1, attributes = {} }) => {
 };
 
 
-async function runAndReport({name, func, timeout = 15*60*1000 }) {
+async function runAndReport({name, func, timeout = 60*60*1000 }) {
     try {
         await Promise.race(
             [func(),
