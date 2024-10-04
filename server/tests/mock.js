@@ -45,6 +45,7 @@ const mockDatabase = {
 		this.connection = clientConnection;
 		this.knexClient = clientConnection.knex;
 		console.log('DATABASE CONNECTION CONFIG', this.knexClient.context.client.config);
+
 		return this.connection;
 	},
 

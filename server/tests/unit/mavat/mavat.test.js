@@ -37,7 +37,7 @@ describe('Challenged file download', function() {
 		// try to download the file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed
@@ -73,7 +73,7 @@ describe('Challenged file download', function() {
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed
@@ -105,7 +105,7 @@ describe('Challenged file download', function() {
 		// try to download the (un)challenged file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed
@@ -143,7 +143,7 @@ describe('Challenged file download', function() {
 			.matchHeader('X-AA-Challenge', '691443')
 			.matchHeader('X-AA-Challenge-ID', '85836233')
 			.matchHeader('X-AA-Challenge-Result', '-207436983')
-			.matchHeader('Cookie', '')
+			.matchHeader('Cookie', ['BotMitigationCookie_11098923367694517286=\"323000001682496739UTkNrfYpDVmhIvINfzH1TyqGB+4=\"; path=/'])
 			// reply with challenge-success cookie
 			.reply(200, '', {
 				'Content-Type': 'text/html',
@@ -177,7 +177,7 @@ describe('Challenged file download', function() {
 		// try to download the challenged file
 		const resSuccess = await downloadChallengedFile(
 			'http://mavat.moin.gov.il/MavatPS/Forms/Attachment.aspx?edid=1&edn=FAKEEDN&opener=AttachmentError.aspx',
-			resFile
+			resFile, {}
 		);
 
 		// make sure all mocked urls were accessed

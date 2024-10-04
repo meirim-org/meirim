@@ -1,77 +1,70 @@
-const http = require('follow-redirects').http;
-const https = require('follow-redirects').https;
+const stream = require('stream');
+const axios = require('axios');
 const Log = require('../lib/log');
+const { promisify } = require('util');
 
-const downloadChallengedFile = (url, file, options, protocol) => {
-	return new Promise((resolve) => {
-		options = options || {};
-		protocol = protocol || http ;
-		const agent = (protocol === https) ? new protocol.Agent(): null ;
+const finished = promisify(stream.finished);
 
-		protocol.get(url, options, (response) => {
-			if (response.statusCode !== 200) {
-				Log.error(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
-				Log.info(`downloadChallengedFile failed with status ${response.statusCode} for url ${url}`);
-				resolve(false);
+const downloadChallengedFile = async (url, file, options) => {
+	try {	
+		options.responseType = 'stream';
+		const response = await axios.get(url, options);
+		if (response.status !== 200) {
+			Log.error(`downloadChallengedFile failed with status ${response.status} for url ${url}`);
+			return Promise.resolve(false);
+		}
+		const contentType = response.headers['content-type'] || '';
+		// if content-type is text/html this isn't the file we wish to download but one
+		// of the challenge stages
+		if (contentType.startsWith('text/html')) {
+			if ('set-cookie' in response.headers) {
+				options.headers = options.headers || {};
+				options.headers['Cookie'] = response.headers['set-cookie'];				
 			} else {
-				const contentType = response.headers['content-type'] || '';
-				// if content-type is text/html this isn't the file we wish to download but one
-				// of the challenge stages
-				if (contentType.startsWith('text/html')) {
-					// if we didn't get a cookie yet this is the first part of the challenge -
-					// the page source contains the javascript code we need to run and challenge
-					// paramters for the calculation
-					if (!('set-cookie' in response.headers)) {
-
-						// download the entire response so we can solve the challenge
-						let responseData = '';
-						response.on('data', (chunk) => { responseData += chunk; });
-						response.on('end', () => {
-							if (responseData.indexOf('ChallengeId=') > -1) {
-								// extract challenge params
-								const challenge = parseChallenge(responseData);
-								Log.info(`parsed challenge for url ${url}. ${challenge.challenge} = ${challenge.result}`);
-								// send the request again with the challenge headers
-								
-								downloadChallengedFile(url, file, {
-									agent: agent,
-									headers: {
-										'X-AA-Challenge': challenge.challenge,
-										'X-AA-Challenge-ID': challenge.challengeId,
-										'X-AA-Challenge-Result': challenge.result
-									}
-								}, protocol).then((res) => resolve(res));
-							} else {
-								Log.error(`url content type was html, but response contained no challenge: "${responseData.substr(0, 50)}..."`);
-								resolve(false);
-							}
-						});
-					} else {
-						// if we did get a cookie we completed the challenge successfuly and
-						// should use it to download the file
-						downloadChallengedFile(url, file, {
-							agent: agent,
-							headers: {
-								'Cookie': response.headers['set-cookie']
-							}
-						}, protocol).then((res) => resolve(res));
-					}
+				// download the entire response so we can solve the challenge
+				let responseData = await fromStreamToString(response.data);
+				if (responseData.indexOf('ChallengeId=') > -1) {
+					// extract challenge params
+					const challenge = parseChallenge(responseData);
+					Log.info(`parsed challenge for url ${url}. ${challenge.challenge} = ${challenge.result}`);
+					// send the request again with the challenge headers
+					options.headers = options.headers || {};
+					options.headers['Cookie'] = ['BotMitigationCookie_11098923367694517286=\"323000001682496739UTkNrfYpDVmhIvINfzH1TyqGB+4=\"; path=/'];
+					options.headers['X-AA-Challenge'] = challenge.challenge;
+					options.headers['X-AA-Challenge-ID'] = challenge.challengeId;
+					options.headers['X-AA-Challenge-Result'] = challenge.result;
 				} else {
-					// this is the actual file, so pipe the response into the supplied file
-					response.pipe(file);
-					file.on('finish', async function () {
-						await file.close();
-						Log.info(`downloaded ${url} to ${file.path}`);
-						resolve(true);
-					});
+					Log.error(`url content type was html, but response contained no challenge: "${responseData.substr(0, 50)}..."`);
+					return Promise.resolve(false);
 				}
 			}
-		}).on('error', (err) => {
-			Log.error(err);
-			resolve(false);
-		});
-	});
+			return downloadChallengedFile(url, file, options);			
+		} else {
+			await response.data.pipe(file);
+			await finished(file);
+			return Promise.resolve(true);
+		}
+	} catch (err) {
+		Log.error('Failed to download file', err);
+		return Promise.resolve(false);
+	}
 };
+
+function fromStreamToString (stream) {
+	const chunks = [];
+	
+	return new Promise((res, rej) => {
+	  // when we receive a new chunk, push it to chunks array
+	  stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+	  
+	  // when we get the 'end' event, call the resolve promise function with the output
+	  // of turning the chunks into a string:
+	  stream.on('end', () => res(Buffer.concat(chunks).toString('utf8')));
+	  
+	  // on stream error call the promise reject function:
+	  stream.on('error', (err) => rej(err));
+	})
+  }
 
 const parseChallenge = (pageSrc) => {
 	// parse a challenge given by mavat's web servers, forcing us to solve a math
