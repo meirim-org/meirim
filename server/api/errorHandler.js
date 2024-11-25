@@ -25,6 +25,10 @@ module.exports = (req, res) => {
 		Log.info('NotFound', err.message, url);
 		return Failure.notFound(res, err.message);
 	}
+	if (err.name === 'Unauthorized') {
+		Log.info('Unauthorized', err.message, url);
+		return Failure.unauthorized(res, err.message);
+	}
 	if (err.name === 'NotImplemented') {
 		Log.info('NotImplemented', err.message, url);
 		return Failure.notImplemented(res, err.message);

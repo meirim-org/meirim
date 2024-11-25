@@ -20,5 +20,8 @@ module.exports = {
 	},
 	notFound: (res, message) => {
 		set(res, 404, message);
+	},
+	unauthorized: (res, message) => {
+		set(res, 401, message);
 	}
 };

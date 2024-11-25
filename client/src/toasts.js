@@ -25,6 +25,12 @@ export const wrongLoginCredsToast = () =>
 		...failConfiguration
 	});
 
+export const wrongLoginNotActivatedToast = () => 
+	toast.error('יש לאמת את כתובת המייל לפני תחילת השימוש', {
+		toastId: '401message',
+		...failConfiguration
+	});	
+
 export const externalPaymentErrorToast = () =>
 	toast.error('מתנצלים, יש תקלה בשירות התשלומים. נשמח אם תנסו שוב במועד מאוחר', {
 		toastId: '500message',
