@@ -580,11 +580,13 @@ class Plan extends Model {
 		}).then(res=> res.models);
 	}
 
-	// TODO: actually get the plans we want to tag today, for now getting all of them in dev
 	static async getPlansToTag (options) {
+
 		return Plan.query(qb => {
+			qb.where('last_tags_update', '<', Knex.raw('updated_at'));
+
 			if (options && options.OBJECTID) {
-				qb.where('OBJECTID', '=', options.OBJECTID);
+				qb.andWhere('OBJECTID', '=', options.OBJECTID);
 			}
 		}).fetchAll({
 			columns: [

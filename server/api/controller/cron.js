@@ -322,7 +322,6 @@ const updatePlanTags = async () => {
 	// Re-compute the tags of a plan if the last update time of the plan is after the last update time of the tags of this plan.
 	// Before re-computing the tags of a plan, remove all previous tags for this plan.
 
-	// TODO: Loop on the plans that need to be updated
 	const plans = await Plan.getPlansToTag();
 	Log.info(`Processing ${plans.models.length} plans`);
 	for (const planOrder in plans.models) {
@@ -338,10 +337,13 @@ const updatePlanTags = async () => {
 		}
 
 		const tags = await tagger(plan);
-		if (tags && tags.length > 0){
-			await PlanTag.createPlanTags(tags);
+		// call it even without tags to update the last_tags_update field
+		await PlanTag.createPlanTags(plan.id, tags);
+
+		if (tags && tags.length > 0) {
 			tagCounter++;
 		}
+
 	}
 	let end = Number(Date.now());
 	const duration = end - start;
