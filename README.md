@@ -7,6 +7,10 @@ The goal of this project is to empower citizens to effectively organize for thei
 This project is under development and has three main parts - backend, frontend and crawler.
 Currently two separate packages live in this repository - server (which includes the crawler code) and client.
 
+## Documentation
+
+To see our development and product documentation, run `mkdocs serve` and open <http://127.0.0.1:8000/>.
+
 ## Setup instructions for development
 
 ### Prerequisites
