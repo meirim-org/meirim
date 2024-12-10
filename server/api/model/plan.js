@@ -367,7 +367,7 @@ class Plan extends Model {
 			PLAN_COUNTY_NAME: iPlan.properties.PLAN_COUNTY_NAME || '',
 			PL_NUMBER: iPlan.properties.PL_NUMBER || '',
 			PL_NAME: iPlan.properties.PL_NAME || '',
-			plan_display_name: Plan.cleanPlanName(iPlan.properties.PL_NAME),
+			plan_display_name: iPlan.properties.PL_NAME? Plan.cleanPlanName(iPlan.properties.PL_NAME): '',
 			// 'PLAN_CHARACTOR_NAME': iPlan.properties.PLAN_CHARACTOR_NAME || '',
 			data: iPlan.properties,
 			geom: iPlan.geometry,

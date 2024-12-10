@@ -20,13 +20,13 @@ const PlanAreaChangesController = require('../controller/plan_area_changes');
 const getPlanTagger = require('../lib/tags');
 const PlanStatusChange = require('../model/plan_status_change');
 const {	meirimStatuses } = require('../constants');
-const { report } = require('../../metrics')
+const { report } = require('../../metrics');
 
 const iplan = (limit = -1) =>
 	iplanApi
 		.getBlueLines()
 		.then(iPlans => {
-			report({metricName: "iplane.bluelines.count", value: iPlans.length})
+			report({ metricName: 'iplane.bluelines.count', value: iPlans.length });
 			
 			// limit blue lines found so we output only *limit* plans
 			if (limit > -1) {
@@ -35,7 +35,7 @@ const iplan = (limit = -1) =>
 
 			return Bluebird.mapSeries(iPlans, iPlan => fetchIplan(iPlan));
 		}).catch(e => {
-			Log.error(`Error fetching new plans`, e);
+			Log.error('Error fetching new plans', e);
 		});
 
 const fix_geodata = () => {
@@ -69,27 +69,27 @@ const complete_mavat_data = () =>
 	})
 		.fetchAll()
 		.then(planCollection => {
-			Log.info({ message: "found incomplete mavat data", length: planCollection.length })
+			Log.info({ message: 'found incomplete mavat data', length: planCollection.length });
 			return planCollection;
 		})
 		.then(planCollection =>
 			
-			 Bluebird.mapSeries(planCollection.models, plan => {
-				Log.info({ message: "about to work on plan", id: plan.get("id"), url: plan.get('plan_url') })
+			Bluebird.mapSeries(planCollection.models, plan => {
+				Log.info({ message: 'about to work on plan', id: plan.get('id'), url: plan.get('plan_url') });
 
 				return MavatAPI.getByPlan(plan)
 					.then(mavatData => {
-						Log.info({message: 'Saving with mavat',data: JSON.stringify(mavatData)});
+						Log.info({ message: 'Saving with mavat',data: JSON.stringify(mavatData) });
 						return Plan.setMavatData(plan, mavatData).then(Promise.all([plan.save(),
 							PlanAreaChangesController.refreshPlanAreaChanges(plan.id, plan.attributes.areaChanges)
-						]))
+						]));
 					})
 					.catch((e) => {
-						Log.error({message: "failure in complete_mavat_data", e, id: plan.get("id")})
+						Log.error({ message: 'failure in complete_mavat_data', e, id: plan.get('id') });
 						// do nothing on error
 					}).finally(() => {
-						Log.info({ message: "finish working on plan", id: plan.get("id") })
-					})
+						Log.info({ message: 'finish working on plan', id: plan.get('id') });
+					});
 			})
 		);
 
@@ -121,7 +121,7 @@ const sendPlanningAlerts = () => {
 		limit: 1
 	})
 		.then(unsentPlans => {
-			report({ metricName: "planning_alerts.unsent", value: unsentPlans.models.length })
+			report({ metricName: 'planning_alerts.unsent', value: unsentPlans.models.length });
 			Log.debug('Got', unsentPlans.models.length, 'Plans');
 			return unsentPlans.models;
 		})
@@ -418,8 +418,8 @@ const fetchPlanStatus = () => {
 	const dateString = moment(date).format('YYYY-MM-DD h:mm');
 	return Plan.query(qb => {	
 		qb.leftJoin('status_mapping', 'plan.status', '=' ,'status_mapping.mavat_status')
-		.whereRaw(`(status_mapping.meirim_status is null or status_mapping.meirim_status != '${meirimStatuses.APPROVED}') and plan.MP_ID NOT LIKE \'NOT_FOUND\' and (plan.last_visited_status < '${dateString}' OR plan.last_visited_status IS NULL)`)
-		  .orderBy('plan.last_visited_status','asc');
+			.whereRaw(`(status_mapping.meirim_status is null or status_mapping.meirim_status != '${meirimStatuses.APPROVED}') and plan.MP_ID NOT LIKE \'NOT_FOUND\' and (plan.last_visited_status < '${dateString}' OR plan.last_visited_status IS NULL)`)
+			.orderBy('plan.last_visited_status','asc');
 		qb.limit(planStatusLimit);
 	})
 		.fetchAll()
@@ -427,8 +427,8 @@ const fetchPlanStatus = () => {
 			Bluebird.mapSeries(planCollection.models, plan => {
 				
 				Log.info({
-					planId: plan.get("id") ,
-					message: "working on plan",
+					planId: plan.get('id') ,
+					message: 'working on plan',
 					last_visited_status: plan.get('last_visited_status'),
 					status:plan.get('status'),
 				});
@@ -461,7 +461,7 @@ const fetchPlanStatus = () => {
 							return;
 						}
 						const mostRecentStatus = mostRecent[0].attributes.status;
-						Log.info({message: 'updating plan status', status: mostRecentStatus, planId: plan.get('id'), oldStatus: plan.get('status')});
+						Log.info({ message: 'updating plan status', status: mostRecentStatus, planId: plan.get('id'), oldStatus: plan.get('status') });
 						await plan.save({ 'last_visited_status': now , 'status': mostRecentStatus });
 
 						// save all plan statuses into plan_status_change table
@@ -475,13 +475,13 @@ const fetchPlanStatus = () => {
 						await sendEmailIfNeeded(plan, planStatuses, mavatStatus);
 					}
 					catch (err) {
-						Log.error({err});
+						Log.error({ err });
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						await plan.save({ 'last_visited_status': now });
 					}
 				})
 					.catch(async (err)=> {
-						Log.error({err});
+						Log.error({ err });
 						const now = moment().format('YYYY-MM-DD HH:mm:ss');
 						await plan.save({ 'last_visited_status': now });
 					});

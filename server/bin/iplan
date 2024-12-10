@@ -2,17 +2,15 @@
 
 const controller = require('../api/controller/cron');
 const Log = require('../api/lib/log');
-const axios = require('axios');
-const Config = require('../api/lib/config');
-const { runAndReport } = require('../metrics')
+const { runAndReport } = require('../metrics');
 
 
-runAndReport({ func: () => {
-return controller
-	.iplan()
-	.then(async () => {
-		Log.info('iplan completed');
-	})
-	.finally(() => process.exit());
-}, name: "iplan"})
+runAndReport({
+	func: () => {
+		return controller.iplan().then(async () => {
+			Log.info('iplan completed');
+		})
+			.finally(() => process.exit());
+	}, name: 'iplan'
+});
 
