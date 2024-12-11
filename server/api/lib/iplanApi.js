@@ -70,7 +70,7 @@ const buildMavatURL = () => {
 	// 	','
 	// )}&returnGeometry=${return_geom}&where=${whereClause}&outSR=3857`;
 
-	return 'https://ags.iplan.gov.il/arcgisiplan/rest/services/PlanningPublic/Xplan/MapServer/1/query?f=json&outFields=objectid,shape,plan_county_name,entity_subtype_desc,pl_number&returnGeometry=true&where=objectid%3E0&outSR=3857';
+	return 'https://ags.iplan.gov.il/arcgisiplan/rest/services/PlanningPublic/Xplan/MapServer/1/query?f=json&outFields=objectid,shape,plan_county_name,entity_subtype_desc,pl_number,pl_name,pl_url,mp_id&returnGeometry=true&where=objectid%3E0&outSR=3857';
 };
 
 
