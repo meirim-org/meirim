@@ -1,0 +1,31 @@
+{
+  "name": "erp_chirinos",
+  "version": "0.0.0",
+  "description": "Sistema ERP, proyecto de chirinos",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "erp",
+    "chirinos",
+    "proyecto",
+    "javascript",
+    "mysql"
+  ],
+  "author": "Carlos Leonardo Camilo Vargas Huamán",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jade": "^1.11.0",
+    "jquery": "^3.1.1",
+    "mysql": "^2.10.2",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
