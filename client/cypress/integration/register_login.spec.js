@@ -102,6 +102,9 @@ context('Register and login', () => {
 
       cy.get('#403message')
         .should('be.visible');
+        
+      cy.get('#401message')
+        .should('be.visible');
     });
 
     it('login with existing credentials should work', () => {
