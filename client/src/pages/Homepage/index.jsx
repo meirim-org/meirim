@@ -9,6 +9,7 @@ import Achievements from './Achievements';
 import Testimony from './Testimony';
 import CallToActionFooter from './CallToActionFooter';
 import TopSection from './TopSection';
+import ErrorBanner from './ErrorBanner';
 import { openModal } from 'redux/modal/slice';
 import { UserSelectors } from 'redux/selectors';
 
@@ -19,7 +20,7 @@ const Homepage = () => {
 	const { isAuthenticated } = UserSelectors();
 
 	useEffect(() => {
-		if (location.hash === '#openRegister' &&  !isAuthenticated) {
+		if (location.hash === '#openRegister' && !isAuthenticated) {
 			reportToAnalytics({
 				event: 'registration-start',
 				ref: 'popup'
@@ -30,10 +31,11 @@ const Homepage = () => {
 
 	return (
 		<Wrapper>
+			<ErrorBanner />
 			<TopSection />
 			<Features />
 			<Vision />
-			<Achievements/>
+			<Achievements />
 			<Testimony />
 			<CallToActionFooter />
 		</Wrapper>
